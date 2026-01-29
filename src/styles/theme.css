@@ -1,0 +1,39 @@
+/* Base theme variables */
+:root {
+  --transition-speed: 0.3s;
+}
+
+/* Dark theme colors */
+.dark {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+  --accent-primary: #00ff88;
+  --accent-secondary: #00cc6a;
+  --border-color: #333333;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* Light theme colors */
+.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #e5e5e5;
+  --text-primary: #0a0a0a;
+  --text-secondary: #4a4a4a;
+  --text-tertiary: #6a6a6a;
+  --accent-primary: #00aa5a;
+  --accent-secondary: #008844;
+  --border-color: #d0d0d0;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Apply theme transitions */
+* {
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease,
+              border-color var(--transition-speed) ease;
+}
