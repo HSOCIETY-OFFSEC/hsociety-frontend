@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice@hsociety.com",
+    "role": "Senior Pentester",
+    "status": "active",
+    "joinedDate": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "name": "Bob Smith",
+    "email": "bob@hsociety.com",
+    "role": "Red Team Lead",
+    "status": "active",
+    "joinedDate": "2023-11-20"
+  },
+  {
+    "id": 3,
+    "name": "Carol Williams",
+    "email": "carol@hsociety.com",
+    "role": "Security Analyst",
+    "status": "active",
+    "joinedDate": "2024-03-10"
+  },
+  {
+    "id": 4,
+    "name": "David Brown",
+    "email": "david@hsociety.com",
+    "role": "Pentester",
+    "status": "away",
+    "joinedDate": "2024-05-22"
+  },
+  {
+    "id": 5,
+    "name": "Eva Martinez",
+    "email": "eva@hsociety.com",
+    "role": "Security Consultant",
+    "status": "active",
+    "joinedDate": "2023-09-05"
+  }
+]
