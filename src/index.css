@@ -98,6 +98,28 @@ body {
   gap: 1rem;
 }
 
+
+/* Updated Nav Link Styles */
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+  position: relative;
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link svg {
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover svg {
+  transform: translateY(-2px);
+}
+
 /* Theme Toggle Button */
 .theme-toggle-btn {
   background: var(--bg-tertiary);
@@ -224,6 +246,14 @@ body {
   flex: 1;
 }
 
+/* Icon Transition */
+.icon-transition {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover .icon-transition {
+  transform: rotate(20deg) scale(1.1);
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   .navbar-menu {
