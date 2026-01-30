@@ -4,6 +4,13 @@ Hsociety OffSec is a technology-driven platform focused on **offensive security*
 
 ---
 
+# Hsociety OffSec
+
+![Hsociety Logo](public/hsociety-logo-white.png)
+
+Hsociety OffSec is a technology-driven platform focused on **offensive security**, **ethical hacking**, and **tech training**. The platform aims to provide hands-on learning experiences for aspiring cybersecurity enthusiasts and developers.
+
+
 ## Table of Contents
 
 - [Demo](#demo)  
