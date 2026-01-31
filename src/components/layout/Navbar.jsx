@@ -1,9 +1,29 @@
+// src/components/layout/Navbar.jsx
+
+/**
+ * Navbar Component
+ * Updated with authentication state and logout functionality
+ */
+
 import Logo from '../Logo';
 import ThemeToggle from './ThemeToggle';
-import { Link } from 'react-router-dom';
-import { HiHome, HiViewGrid, HiLogin, HiUserAdd } from 'react-icons/hi';
+import { Link, useNavigate } from 'react-router-dom';
+import { HiHome, HiViewGrid, HiLogin, HiUserAdd, HiLogout } from 'react-icons/hi';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -16,21 +36,38 @@ const Navbar = () => {
             <HiHome size={18} />
             <span>Home</span>
           </Link>
-          <Link to="/dashboard" className="nav-link">
-            <HiViewGrid size={18} />
-            <span>Dashboard</span>
-          </Link>
-          <Link to="/login" className="nav-link">
-            <HiLogin size={18} />
-            <span>Login</span>
-          </Link>
-          <Link to="/signup" className="nav-link">
-            <HiUserAdd size={18} />
-            <span>Sign Up</span>
-          </Link>
+          
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard" className="nav-link">
+                <HiViewGrid size={18} />
+                <span>Dashboard</span>
+              </Link>
+              <button onClick={handleLogout} className="nav-link nav-button">
+                <HiLogout size={18} />
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="nav-link">
+                <HiLogin size={18} />
+                <span>Login</span>
+              </Link>
+              <Link to="/signup" className="nav-link">
+                <HiUserAdd size={18} />
+                <span>Sign Up</span>
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="navbar-actions">
+          {isAuthenticated && user && (
+            <div className="navbar-user">
+              <span className="user-name">{user.name}</span>
+            </div>
+          )}
           <ThemeToggle />
         </div>
       </div>
