@@ -1,3 +1,10 @@
+// src/pages/Signup.jsx
+
+/**
+ * Signup Page
+ * Updated to use AuthContext and API service
+ */
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -9,35 +16,76 @@ import {
   HiEyeOff,
   HiCheckCircle 
 } from 'react-icons/hi';
+import { useAuth } from '../context/AuthContext';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { signup, error: authError, clearError } = useAuth();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
+  const [formError, setFormError] = useState('');
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    // Clear errors when user starts typing
+    if (formError) setFormError('');
+    if (authError) clearError();
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Mock signup - in real app, this would call an API
+  const validateForm = () => {
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+      setFormError('Please fill in all fields');
+      return false;
+    }
+
+    if (formData.password.length < 8) {
+      setFormError('Password must be at least 8 characters long');
+      return false;
+    }
+
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      setFormError('Passwords do not match');
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
       return;
     }
-    console.log('Signup attempt:', formData);
-    // Redirect to dashboard after "signup"
-    navigate('/dashboard');
+
+    try {
+      setIsLoading(true);
+      setFormError('');
+
+      await signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // Redirect to dashboard after successful signup
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setFormError(err.message || 'Signup failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -57,6 +105,7 @@ const Signup = () => {
   };
 
   const strength = passwordStrength();
+  const displayError = formError || authError;
 
   return (
     <div className="page auth-page">
@@ -69,6 +118,12 @@ const Signup = () => {
             <h1 className="auth-title">Join Hsociety</h1>
             <p className="auth-subtitle">Create your account and start securing your future</p>
           </div>
+
+          {displayError && (
+            <div className="error-message">
+              {displayError}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="auth-form">
             <div className="form-group">
@@ -86,6 +141,7 @@ const Signup = () => {
                   onChange={handleChange}
                   placeholder="John Doe"
                   required
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -105,6 +161,7 @@ const Signup = () => {
                   onChange={handleChange}
                   placeholder="your@email.com"
                   required
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -124,12 +181,14 @@ const Signup = () => {
                   onChange={handleChange}
                   placeholder="Create a password"
                   required
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   className="password-toggle"
                   onClick={togglePasswordVisibility}
                   aria-label="Toggle password visibility"
+                  disabled={isLoading}
                 >
                   {showPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
                 </button>
@@ -168,12 +227,14 @@ const Signup = () => {
                   onChange={handleChange}
                   placeholder="Confirm your password"
                   required
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   className="password-toggle"
                   onClick={toggleConfirmPasswordVisibility}
                   aria-label="Toggle confirm password visibility"
+                  disabled={isLoading}
                 >
                   {showConfirmPassword ? <HiEyeOff size={20} /> : <HiEye size={20} />}
                 </button>
@@ -197,7 +258,7 @@ const Signup = () => {
 
             <div className="form-terms">
               <label className="checkbox-label">
-                <input type="checkbox" required />
+                <input type="checkbox" required disabled={isLoading} />
                 <span>
                   I agree to the{' '}
                   <Link to="#" className="auth-link">Terms of Service</Link>
@@ -207,9 +268,22 @@ const Signup = () => {
               </label>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-full">
-              <HiUserAdd size={20} />
-              Create Account
+            <button 
+              type="submit" 
+              className="btn btn-primary btn-full"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <span className="btn-spinner"></span>
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  <HiUserAdd size={20} />
+                  Create Account
+                </>
+              )}
             </button>
           </form>
 
