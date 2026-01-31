@@ -336,7 +336,7 @@ Value: cname.vercel-dns.com
 
 ## 📞 Support
 
-For deployment issues, contact: contact@hsociety.com
+For deployment issues, contact: wsuits6@gmail.com
 
 ---
 
