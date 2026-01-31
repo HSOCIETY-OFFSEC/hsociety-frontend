@@ -200,6 +200,7 @@ body {
   font-size: 0.9rem;
   font-style: italic;
   margin-right: auto;
+  text-align: left;
 }
 
 .footer-links {
@@ -207,13 +208,14 @@ body {
   grid-template-columns: 1fr;
   gap: 2rem;
   margin-right: auto;
+  text-align: left;
 }
 
 .footer-section {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  text-align: center;
+  text-align: left;
 }
 
 .footer-section-title {
@@ -221,6 +223,7 @@ body {
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
+  text-align: left;
 }
 
 .footer-contact {
@@ -230,17 +233,20 @@ body {
   gap: 0.5rem;
   color: var(--text-secondary);
   font-size: 0.9rem;
+  text-align: left;
 }
 
 .footer-contact svg {
   color: var(--accent-primary);
   flex-shrink: 0;
+  text-align: left;
 }
 
 .footer-social {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  text-align: left;
 }
 
 .social-link {
