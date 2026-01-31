@@ -176,6 +176,8 @@ body {
   flex-direction: column;
   gap: 1rem;
   text-align: center;
+  margin-right: auto;
+
 }
 
 .footer-logo {
@@ -183,24 +185,28 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
+  margin-right: auto;
 }
 
 .footer-brand-name {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
+  margin-right: auto;
 }
 
 .footer-tagline {
   color: var(--text-tertiary);
   font-size: 0.9rem;
   font-style: italic;
+  margin-right: auto;
 }
 
 .footer-links {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
+  margin-right: auto;
 }
 
 .footer-section {
