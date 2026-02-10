@@ -1,129 +1,84 @@
-// src/services/auth.service.js
+// src/modules/auth/services/auth.service.js
 
 /**
  * Authentication Service
- * Handles all authentication operations
- * Uses httpOnly cookies for token storage (secure)
+ * Handles all authentication-related API calls
  */
 
-import { apiService } from './api.service.js';
-import { API_ROUTES } from '../config/api.config.js';
+import { apiClient } from '../../../shared/services/api.client';
 
 class AuthService {
-  constructor() {
-    this.currentUser = null;
-    this.isAuthenticated = false;
-  }
-
   /**
    * Login user
    * @param {string} email 
    * @param {string} password 
-   * @returns {Promise<Object>} User data
+   * @returns {Promise<{user: object, token: string}>}
    */
   async login(email, password) {
     try {
-      const response = await apiService.post(API_ROUTES.AUTH.LOGIN, {
+      const response = await apiClient.post('/auth/login', {
         email,
         password,
       });
-
-      // Response contains user data, tokens are in httpOnly cookies
-      this.currentUser = response.user;
-      this.isAuthenticated = true;
-
-      return response;
+      return response.data;
     } catch (error) {
-      this.handleAuthError(error);
-      throw error;
+      throw this.handleError(error);
     }
   }
 
   /**
-   * Register new user
-   * @param {Object} userData 
-   * @returns {Promise<Object>} User data
+   * Signup new user
+   * @param {object} userData - {name, email, password}
+   * @returns {Promise<{user: object, token: string}>}
    */
   async signup(userData) {
     try {
-      const response = await apiService.post(API_ROUTES.AUTH.SIGNUP, {
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
-      });
-
-      this.currentUser = response.user;
-      this.isAuthenticated = true;
-
-      return response;
+      const response = await apiClient.post('/auth/signup', userData);
+      return response.data;
     } catch (error) {
-      this.handleAuthError(error);
-      throw error;
+      throw this.handleError(error);
     }
   }
 
   /**
    * Logout user
+   * @returns {Promise<void>}
    */
   async logout() {
     try {
-      await apiService.post(API_ROUTES.AUTH.LOGOUT);
+      await apiClient.post('/auth/logout');
     } catch (error) {
+      // Even if logout fails on backend, clear client state
       console.error('Logout error:', error);
-    } finally {
-      // Clear local state regardless of API response
-      this.currentUser = null;
-      this.isAuthenticated = false;
     }
   }
 
   /**
    * Verify current session
-   * Called on app initialization
+   * @returns {Promise<object|null>} User data or null
    */
   async verifySession() {
     try {
-      const response = await apiService.get(API_ROUTES.AUTH.VERIFY);
-      
-      this.currentUser = response.user;
-      this.isAuthenticated = true;
-
-      return response.user;
+      const response = await apiClient.get('/auth/verify');
+      return response.data.user;
     } catch (error) {
-      this.currentUser = null;
-      this.isAuthenticated = false;
       return null;
-    }
-  }
-
-  /**
-   * Refresh access token
-   * Automatically called when token expires
-   */
-  async refreshToken() {
-    try {
-      const response = await apiService.post(API_ROUTES.AUTH.REFRESH);
-      return response;
-    } catch (error) {
-      // Refresh failed, logout user
-      await this.logout();
-      throw error;
     }
   }
 
   /**
    * Request password reset
    * @param {string} email 
+   * @returns {Promise<{message: string}>}
    */
-  async forgotPassword(email) {
+  async requestPasswordReset(email) {
     try {
-      const response = await apiService.post(API_ROUTES.AUTH.FORGOT_PASSWORD, {
+      const response = await apiClient.post('/auth/password-reset/request', {
         email,
       });
-      return response;
+      return response.data;
     } catch (error) {
-      this.handleAuthError(error);
-      throw error;
+      throw this.handleError(error);
     }
   }
 
@@ -131,59 +86,38 @@ class AuthService {
    * Reset password with token
    * @param {string} token 
    * @param {string} newPassword 
+   * @returns {Promise<{message: string}>}
    */
   async resetPassword(token, newPassword) {
     try {
-      const response = await apiService.post(API_ROUTES.AUTH.RESET_PASSWORD, {
+      const response = await apiClient.post('/auth/password-reset/confirm', {
         token,
         password: newPassword,
       });
-      return response;
+      return response.data;
     } catch (error) {
-      this.handleAuthError(error);
-      throw error;
+      throw this.handleError(error);
     }
   }
 
   /**
-   * Get current user
+   * Handle API errors
+   * @param {Error} error 
+   * @returns {Error}
    */
-  getCurrentUser() {
-    return this.currentUser;
-  }
-
-  /**
-   * Check if user is authenticated
-   */
-  isUserAuthenticated() {
-    return this.isAuthenticated;
-  }
-
-  /**
-   * Handle authentication errors
-   */
-  handleAuthError(error) {
-    // Log for debugging (remove in production or use proper logging service)
-    console.error('Auth error:', error);
-
-    // Handle specific error cases
-    if (error.status === 429) {
-      throw new Error('Too many login attempts. Please try again later.');
+  handleError(error) {
+    if (error.response) {
+      // Server responded with error
+      const message = error.response.data?.message || 'An error occurred';
+      return new Error(message);
+    } else if (error.request) {
+      // Request made but no response
+      return new Error('Network error. Please check your connection.');
+    } else {
+      // Something else happened
+      return new Error(error.message || 'An unexpected error occurred');
     }
-
-    if (error.status === 401) {
-      throw new Error('Invalid credentials. Please try again.');
-    }
-
-    if (error.status === 403) {
-      throw new Error('Account is locked or suspended.');
-    }
-
-    // Generic error
-    throw new Error(error.message || 'Authentication failed. Please try again.');
   }
 }
 
-// Export singleton instance
 export const authService = new AuthService();
-export default authService;

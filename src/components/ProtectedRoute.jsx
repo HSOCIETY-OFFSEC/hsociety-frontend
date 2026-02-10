@@ -1,8 +1,8 @@
-// src/components/ProtectedRoute.jsx
+// src/modules/auth/components/ProtectedRoute.jsx
 
 /**
  * Protected Route Component
- * Redirects unauthenticated users to login
+ * Redirects unauthenticated users to login page
  */
 
 import { Navigate, useLocation } from 'react-router-dom';

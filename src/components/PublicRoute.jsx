@@ -1,4 +1,4 @@
-// src/components/PublicRoute.jsx
+// src/modules/auth/components/PublicRoute.jsx
 
 /**
  * Public Route Component
