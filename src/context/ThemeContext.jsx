@@ -1,3 +1,10 @@
+// src/shared/context/ThemeContext.jsx
+
+/**
+ * Theme Context
+ * Manages application theme (dark/light mode)
+ */
+
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
@@ -30,10 +37,21 @@ export const ThemeProvider = ({ children }) => {
     setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   };
 
+  const setDarkTheme = () => {
+    setTheme('dark');
+  };
+
+  const setLightTheme = () => {
+    setTheme('light');
+  };
+
   const value = {
     theme,
     toggleTheme,
+    setDarkTheme,
+    setLightTheme,
     isDark: theme === 'dark',
+    isLight: theme === 'light',
   };
 
   return (
@@ -42,3 +60,5 @@ export const ThemeProvider = ({ children }) => {
     </ThemeContext.Provider>
   );
 };
+
+export default ThemeContext;
