@@ -1,14 +1,15 @@
-// src/pages/Login.jsx
+// src/modules/auth/pages/Login.jsx
 
 /**
  * Login Page
- * Updated to use AuthContext and API service
+ * User authentication form
  */
 
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HiMail, HiLockClosed, HiLogin, HiEye, HiEyeOff } from 'react-icons/hi';
 import { useAuth } from '../context/AuthContext';
+import '../styles/auth.css';
 
 const Login = () => {
   const navigate = useNavigate();

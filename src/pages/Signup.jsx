@@ -1,8 +1,8 @@
-// src/pages/Signup.jsx
+// src/modules/auth/pages/Signup.jsx
 
 /**
  * Signup Page
- * Updated to use AuthContext and API service
+ * User registration form
  */
 
 import { useState } from 'react';
@@ -17,6 +17,7 @@ import {
   HiCheckCircle 
 } from 'react-icons/hi';
 import { useAuth } from '../context/AuthContext';
+import '../styles/auth.css';
 
 const Signup = () => {
   const navigate = useNavigate();
