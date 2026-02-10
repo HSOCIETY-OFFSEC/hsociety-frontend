@@ -1,14 +1,14 @@
-// src/pages/Dashboard.jsx
+// src/modules/dashboard/pages/Dashboard.jsx
 
 /**
  * Dashboard Page
- * Updated to use API services instead of mock JSON data
+ * Main dashboard with pentests and tasks overview
  */
 
 import { useEffect, useState } from 'react';
-import { pentestService } from '../services/pentest.service';
-import { taskService } from '../services/task.service';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../auth/context/AuthContext';
+import { pentestService } from '../../pentest/services/pentest.service';
+import { taskService } from '../../tasks/services/task.service';
 import { 
   HiShieldCheck, 
   HiClock, 
@@ -23,6 +23,7 @@ import {
   HiLightningBolt
 } from 'react-icons/hi';
 import { FaBug, FaExclamationTriangle } from 'react-icons/fa';
+import '../styles/dashboard.css';
 
 const Dashboard = () => {
   const { user } = useAuth();

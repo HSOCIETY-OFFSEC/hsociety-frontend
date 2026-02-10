@@ -1,5 +1,12 @@
+// src/shared/pages/Landing.jsx
+
+/**
+ * Landing Page
+ * Public homepage showcasing Hsociety services
+ */
+
 import { Link } from 'react-router-dom';
-import Logo from '../components/Logo';
+import Logo from '../components/common/Logo';
 import { 
   HiShieldCheck, 
   HiLightningBolt, 
@@ -12,6 +19,7 @@ import {
   FaUserSecret, 
   FaSearch 
 } from 'react-icons/fa';
+import './landing.css';
 
 const Landing = () => {
   const features = [
