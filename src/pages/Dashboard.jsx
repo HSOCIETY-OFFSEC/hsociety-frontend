@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../auth/context/AuthContext';
+import { useAuth } from '../auth/context/AuthContext';
 import { pentestService } from '../../pentest/services/pentest.service';
 import { taskService } from '../../tasks/services/task.service';
 import { 

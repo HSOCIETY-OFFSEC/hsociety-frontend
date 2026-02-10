@@ -17,7 +17,7 @@ import {
   HiCheckCircle 
 } from 'react-icons/hi';
 import { useAuth } from '../context/AuthContext';
-import '../styles/auth.css';
+import '../modules/auth/styles/auth.css';
 
 const Signup = () => {
   const navigate = useNavigate();
