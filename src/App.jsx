@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import Landing from './pages/Landing';
+import Landing from './pages/landing';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
