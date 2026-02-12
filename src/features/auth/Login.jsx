@@ -32,6 +32,7 @@ const Login = () => {
   // Form state
   const [step, setStep] = useState(1); // 1: email, 2: OTP, 3: 2FA
   const [email, setEmail] = useState('');
+  const [accountType, setAccountType] = useState('corporate');
   const [otp, setOtp] = useState('');
   const [twoFACode, setTwoFACode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -142,13 +143,13 @@ const Login = () => {
         id: '1',
         email: email,
         name: 'Test User',
-        role: 'client'
+        role: accountType
       };
       
       const mockToken = 'mock-jwt-token-' + Date.now();
       
       await login(mockUser, mockToken);
-      navigate('/dashboard');
+      navigate(accountType === 'student' ? '/student-dashboard' : '/dashboard');
     } catch (err) {
       setError('Login failed. Please try again.');
       console.error('Login error:', err);
@@ -162,6 +163,7 @@ const Login = () => {
     setOtp('');
     setTwoFACode('');
     setError('');
+    setAccountType('corporate');
   };
 
   return (
@@ -196,6 +198,27 @@ const Login = () => {
           {/* Step 1: Email Input */}
           {step === 1 && (
             <form onSubmit={handleRequestOTP} className="auth-form">
+              <div className="form-group">
+                <label>Account Type</label>
+                <div className="auth-toggle">
+                  <button
+                    type="button"
+                    className={accountType === 'corporate' ? 'active' : ''}
+                    onClick={() => setAccountType('corporate')}
+                    disabled={loading}
+                  >
+                    Corporate
+                  </button>
+                  <button
+                    type="button"
+                    className={accountType === 'student' ? 'active' : ''}
+                    onClick={() => setAccountType('student')}
+                    disabled={loading}
+                  >
+                    Student
+                  </button>
+                </div>
+              </div>
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <input

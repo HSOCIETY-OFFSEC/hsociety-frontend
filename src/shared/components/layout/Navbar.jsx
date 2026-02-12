@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiBarChart2, FiChevronDown, FiFileText, FiLogOut, FiMenu, FiMessageSquare, FiShield, FiUsers, FiX } from 'react-icons/fi';
+import { FiBarChart2, FiBriefcase, FiChevronDown, FiFileText, FiLogOut, FiMenu, FiMessageSquare, FiShield, FiUsers, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
@@ -35,15 +35,38 @@ const Navbar = () => {
     { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
     { path: '/pentest', label: 'Pentest', icon: FiShield },
     { path: '/audits', label: 'Audits', icon: FiFileText },
-    { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+    { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
+    { path: '/community', label: 'Community', icon: FiMessageSquare }
   ];
 
   const publicLinks = [
     { path: '/about', label: 'About Us', icon: FiUsers },
     { path: '/team', label: 'Meet the Team', icon: FiUsers },
     { path: '/developer', label: 'Meet the Developer', icon: FiUsers },
+    { path: '/community', label: 'Community', icon: FiMessageSquare },
+    { path: '/student-dashboard', label: 'Student Dashboard', icon: FiUsers },
+    { path: '/careers', label: 'Careers', icon: FiBriefcase },
+    { path: '/methodology', label: 'Methodology', icon: FiShield },
+    { path: '/case-studies', label: 'Case Studies', icon: FiFileText },
+    { path: '/blog', label: 'Field Notes', icon: FiMessageSquare },
     { path: '/feedback', label: 'Contact', icon: FiMessageSquare }
   ];
+
+  const dedupeLinks = (links) =>
+    links.reduce((acc, link) => {
+      if (!acc.some((item) => item.path === link.path)) {
+        acc.push(link);
+      }
+      return acc;
+    }, []);
+
+  const desktopLinks = isAuthenticated
+    ? dedupeLinks([...navLinks, ...publicLinks])
+    : publicLinks;
+
+  const mobileLinks = isAuthenticated
+    ? dedupeLinks([...navLinks, ...publicLinks.filter((link) => link.path !== '/feedback')])
+    : publicLinks;
 
   const isActive = (path) => location.pathname === path;
 
@@ -65,17 +88,18 @@ const Navbar = () => {
         gap: '2rem'
       }}>
         {/* Logo */}
-        <div style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
+        <div className="navbar-logo" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
           <Logo size="medium" />
         </div>
 
         {/* Desktop Navigation */}
-        {isAuthenticated && (
+        {(isAuthenticated || desktopLinks.length > 0) && (
           <div style={{
             display: 'flex',
-            gap: '0.5rem'
+            gap: '0.5rem',
+            flexWrap: 'wrap'
           }} className="desktop-nav">
-            {navLinks.map(link => (
+            {desktopLinks.map(link => (
               <button
                 key={link.path}
                 onClick={() => navigate(link.path)}
@@ -92,7 +116,8 @@ const Navbar = () => {
                   fontWeight: isActive(link.path) ? 600 : 500,
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
+                  minHeight: '44px'
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive(link.path)) {
@@ -117,13 +142,15 @@ const Navbar = () => {
         )}
 
         {/* Right Section */}
-        <div style={{
+        <div className="navbar-right" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '1rem'
         }}>
           {/* Theme Toggle */}
-          <ThemeToggle />
+          <span className="navbar-theme">
+            <ThemeToggle />
+          </span>
 
           {/* User Menu (Desktop) */}
           {isAuthenticated && user && (
@@ -252,7 +279,9 @@ const Navbar = () => {
               color: 'var(--text-primary)',
               fontSize: '1.5rem',
               cursor: 'pointer',
-              borderRadius: '10px'
+              borderRadius: '10px',
+              minWidth: '44px',
+              minHeight: '44px'
             }}
             className="mobile-menu-button"
             aria-label="Toggle navigation"
@@ -270,7 +299,7 @@ const Navbar = () => {
           background: 'var(--card-bg)'
         }} className="mobile-menu">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {(isAuthenticated ? navLinks : publicLinks).map(link => (
+            {mobileLinks.map(link => (
               <button
                 key={link.path}
                 onClick={() => {
@@ -367,7 +396,10 @@ const Navbar = () => {
             height: auto !important;
             padding-top: 0.75rem !important;
             padding-bottom: 0.75rem !important;
-            gap: 1rem !important;
+            gap: 0.75rem !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            flex-wrap: nowrap !important;
           }
           .desktop-nav {
             display: none !important;
@@ -377,6 +409,23 @@ const Navbar = () => {
           }
           .desktop-user-menu {
             display: none !important;
+          }
+          .navbar-logo {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+          }
+          .navbar-right {
+            margin-left: auto;
+            gap: 0.5rem;
+          }
+        }
+        @media (max-width: 420px) {
+          .navbar-logo .logo-image {
+            height: 40px !important;
+          }
+          .navbar-right {
+            gap: 0.4rem;
           }
         }
         @media (max-width: 640px) {

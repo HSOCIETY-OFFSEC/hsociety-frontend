@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiAlertTriangle, FiFileText, FiLock, FiMessageSquare, FiShield } from 'react-icons/fi';
+import { FiFileText, FiMessageSquare, FiShield } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
-import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
+import { getDashboardOverview } from './dashboard.service';
+import StatsGrid from './components/StatsGrid';
+import QuickActions from './components/QuickActions';
+import ActivityList from './components/ActivityList';
+import SecurityNotice from './components/SecurityNotice';
 import '../../styles/features/dashboard.css';
 
 /**
@@ -28,12 +32,9 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    activePentests: 0,
-    completedAudits: 0,
-    pendingReports: 0,
-    vulnerabilitiesFound: 0
-  });
+  const [stats, setStats] = useState(null);
+  const [recentActivities, setRecentActivities] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     loadDashboardData();
@@ -45,21 +46,15 @@ const Dashboard = () => {
     setLoading(true);
     
     try {
-      // TODO: Backend integration - Fetch dashboard data
-      // const data = await dashboardService.getDashboardData();
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock data
-      setStats({
-        activePentests: 3,
-        completedAudits: 12,
-        pendingReports: 2,
-        vulnerabilitiesFound: 47
-      });
+      const response = await getDashboardOverview();
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to load dashboard');
+      }
+      setStats(response.data.stats);
+      setRecentActivities(response.data.recentActivity);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
+      setError('Unable to load dashboard data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -86,33 +81,6 @@ const Dashboard = () => {
       icon: FiMessageSquare,
       path: '/feedback',
       color: '#f59e0b'
-    }
-  ];
-
-  const recentActivities = [
-    {
-      id: 1,
-      type: 'pentest',
-      title: 'Web Application Pentest',
-      status: 'in-progress',
-      date: '2 days ago',
-      icon: FiShield
-    },
-    {
-      id: 2,
-      type: 'audit',
-      title: 'Security Audit Report',
-      status: 'completed',
-      date: '5 days ago',
-      icon: FiFileText
-    },
-    {
-      id: 3,
-      type: 'report',
-      title: 'Vulnerability Assessment',
-      status: 'pending',
-      date: '1 week ago',
-      icon: FiAlertTriangle
     }
   ];
 
@@ -215,7 +183,7 @@ const Dashboard = () => {
       <div className="dashboard-container">
         <div className="dashboard-wrapper">
           {/* Header */}
-          <div className="dashboard-header reveal-on-scroll">
+          <div className="dashboard-header reveal-on-scroll dramatic-header">
             <div>
               <h1 className="dashboard-title">
                 Welcome back, {user?.name || 'User'}!
@@ -226,152 +194,21 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="stats-grid reveal-on-scroll">
-            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
-              <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
-                  <FiShield size={24} />
-                </div>
-                <div className="stat-content">
-                  <p className="stat-label">Active Pentests</p>
-                  <h2 className="stat-value">{stats.activePentests}</h2>
-                </div>
-              </div>
+          {error && (
+            <Card padding="large" shadow="small" className="security-notice reveal-on-scroll">
+              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
             </Card>
+          )}
 
-            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
-              <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
-                  <FiFileText size={24} />
-                </div>
-                <div className="stat-content">
-                  <p className="stat-label">Completed Audits</p>
-                  <h2 className="stat-value">{stats.completedAudits}</h2>
-                </div>
-              </div>
-            </Card>
-
-            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
-              <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
-                  <FiFileText size={24} />
-                </div>
-                <div className="stat-content">
-                  <p className="stat-label">Pending Reports</p>
-                  <h2 className="stat-value">{stats.pendingReports}</h2>
-                </div>
-              </div>
-            </Card>
-
-            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
-              <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
-                  <FiAlertTriangle size={24} />
-                </div>
-                <div className="stat-content">
-                  <p className="stat-label">Vulnerabilities Found</p>
-                  <h2 className="stat-value">{stats.vulnerabilitiesFound}</h2>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="section reveal-on-scroll">
-            <h2 className="section-title">Quick Actions</h2>
-            <div className="quick-actions-grid">
-              {quickActions.map((action, index) => (
-                <Card
-                  key={index}
-                  hover3d={true}
-                  onClick={() => navigate(action.path)}
-                  padding="large"
-                  shadow="medium"
-                  className="quick-action-card reveal-on-scroll"
-                >
-                  <div className="quick-action-content">
-                    <div
-                      className="quick-action-icon"
-                      style={{ background: `${action.color}20`, color: action.color }}
-                    >
-                      <action.icon size={28} />
-                    </div>
-                    <h3 className="quick-action-title">{action.title}</h3>
-                    <p className="quick-action-description">{action.description}</p>
-                    <Button variant="card" size="small" style={{ marginTop: 'auto' }}>
-                      Get Started →
-                    </Button>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          {/* Recent Activity */}
-          <div className="section reveal-on-scroll">
-            <div className="section-header">
-              <h2 className="section-title">Recent Activity</h2>
-              <button
-                onClick={() => navigate('/audits')}
-                className="view-all-link"
-              >
-                View All →
-              </button>
-            </div>
-
-            <Card padding="none" shadow="medium">
-              <div className="activity-list">
-                {recentActivities.map((activity, index) => (
-                  <div
-                    key={activity.id}
-                    className="activity-item"
-                    style={{
-                      borderBottom: index < recentActivities.length - 1
-                        ? '1px solid var(--border-color)'
-                        : 'none'
-                    }}
-                  >
-                    <div className="activity-icon">
-                      <activity.icon size={20} />
-                    </div>
-                    <div className="activity-content">
-                      <h4 className="activity-title">{activity.title}</h4>
-                      <p className="activity-date">{activity.date}</p>
-                    </div>
-                    <div className="activity-status">
-                      <span
-                        className="status-badge"
-                        style={{
-                          background: `${getStatusColor(activity.status)}20`,
-                          color: getStatusColor(activity.status),
-                          border: `1px solid ${getStatusColor(activity.status)}50`
-                        }}
-                      >
-                        {getStatusLabel(activity.status)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
-
-          {/* Security Notice */}
-          <Card padding="large" shadow="small" className="security-notice reveal-on-scroll">
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-              <FiLock size={28} />
-              <div>
-                <h3 style={{ margin: 0, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
-                  Security Notice
-                </h3>
-                <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                  All your data is encrypted and stored securely. We never share your information
-                  with third parties. For any security concerns, please contact our team immediately.
-                </p>
-              </div>
-            </div>
-          </Card>
+          <StatsGrid stats={stats || {}} />
+          <QuickActions actions={quickActions} onAction={(action) => navigate(action.path)} />
+          <ActivityList
+            activities={recentActivities}
+            onViewAll={() => navigate('/audits')}
+            getStatusColor={getStatusColor}
+            getStatusLabel={getStatusLabel}
+          />
+          <SecurityNotice />
         </div>
       </div>
     </>

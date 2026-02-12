@@ -9,6 +9,11 @@
   padding-bottom: 4rem;
 }
 
+.developer-page button,
+.developer-page a {
+  min-height: 44px;
+}
+
 .developer-hero {
   padding: 6rem 2rem 4rem;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);

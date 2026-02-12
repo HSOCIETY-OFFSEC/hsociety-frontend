@@ -13,6 +13,12 @@ const Landing = React.lazy(() => import('../features/landing/Landing'));
 const About = React.lazy(() => import('../features/about/About'));
 const Team = React.lazy(() => import('../features/team/Team'));
 const Developer = React.lazy(() => import('../features/developer/Developer'));
+const Community = React.lazy(() => import('../features/community/Community'));
+const StudentDashboard = React.lazy(() => import('../features/student/StudentDashboard'));
+const Careers = React.lazy(() => import('../features/careers/Careers'));
+const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
+const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
+const Blog = React.lazy(() => import('../features/blog/Blog'));
 
 /**
  * Protected Route
@@ -28,6 +34,30 @@ const ProtectedRoute = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+/**
+ * Role-protected Route
+ */
+const RoleRoute = ({ children, allowedRoles }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  const role = user?.role === 'client' ? 'corporate' : user?.role;
+
+  if (isLoading) {
+    return (
+      <PageLoader message="Preparing your workspace..." />
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!role || !allowedRoles.includes(role)) {
+    return <Navigate to={role === 'student' ? '/student-dashboard' : '/dashboard'} replace />;
   }
 
   return children;
@@ -64,7 +94,7 @@ const LoadingFallback = () => (
  */
 const AppRouter = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <React.Suspense fallback={<LoadingFallback />}>
         <Routes>
 
@@ -104,31 +134,65 @@ const AppRouter = () => {
             element={<Developer />}
           />
 
+          <Route
+            path="/community"
+            element={<Community />}
+          />
+
+          <Route
+            path="/careers"
+            element={<Careers />}
+          />
+
+          <Route
+            path="/methodology"
+            element={<Methodology />}
+          />
+
+          <Route
+            path="/case-studies"
+            element={<CaseStudies />}
+          />
+
+          <Route
+            path="/blog"
+            element={<Blog />}
+          />
+
+          <Route
+            path="/student-dashboard"
+            element={
+              <RoleRoute allowedRoles={['student']}>
+                <StudentDashboard />
+              </RoleRoute>
+            }
+          />
+
           {/* Protected Routes */}
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
+              <RoleRoute allowedRoles={['corporate']}>
                 <Dashboard />
-              </ProtectedRoute>
+              </RoleRoute>
             }
           />
 
           <Route
             path="/audits"
             element={
-              <ProtectedRoute>
+              <RoleRoute allowedRoles={['corporate']}>
                 <Audits />
-              </ProtectedRoute>
+              </RoleRoute>
             }
           />
 
           <Route
             path="/pentest"
             element={
-              <ProtectedRoute>
+              <RoleRoute allowedRoles={['corporate']}>
                 <Pentest />
-              </ProtectedRoute>
+              </RoleRoute>
             }
           />
 

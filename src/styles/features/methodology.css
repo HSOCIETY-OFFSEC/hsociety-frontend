@@ -1,0 +1,82 @@
+/**
+ * Methodology Page Styles
+ */
+
+.methodology-page {
+  min-height: 100vh;
+  background: radial-gradient(900px 420px at 90% -10%, rgba(45, 212, 191, 0.16), transparent 60%),
+    var(--bg-primary);
+  padding: 2rem 1.5rem 4rem;
+}
+
+.methodology-page button,
+.methodology-page a {
+  min-height: 44px;
+}
+
+.methodology-hero {
+  max-width: 1100px;
+  margin: 0 auto 2.5rem;
+  padding: 2rem 2.5rem;
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+.methodology-hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+}
+
+.methodology-hero p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.methodology-meta {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.methodology-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.methodology-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.methodology-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  color: var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .methodology-grid {
+    grid-template-columns: 1fr;
+  }
+}

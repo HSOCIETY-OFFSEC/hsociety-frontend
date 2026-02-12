@@ -20,6 +20,11 @@
   padding: 2rem 0;
 }
 
+.audits-container button,
+.audits-container a {
+  min-height: 44px;
+}
+
 .audits-wrapper {
   max-width: 1280px;
   margin: 0 auto;

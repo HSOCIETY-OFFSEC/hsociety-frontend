@@ -10,6 +10,11 @@
   padding-bottom: 4rem;
 }
 
+.about-page button,
+.about-page a {
+  min-height: 44px;
+}
+
 .about-hero {
   padding: 6rem 2rem 4rem;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);

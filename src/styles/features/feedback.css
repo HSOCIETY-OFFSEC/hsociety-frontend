@@ -20,6 +20,13 @@
   padding: 3rem 0;
 }
 
+.feedback-container button,
+.feedback-container a,
+.feedback-container input,
+.feedback-container textarea {
+  min-height: 44px;
+}
+
 .feedback-wrapper {
   max-width: 800px;
   margin: 0 auto;

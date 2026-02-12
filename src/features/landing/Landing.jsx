@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import { FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiCheck, FiCheckCircle, FiClipboard, FiCode, FiCpu, FiFileText, FiGlobe, FiGithub, FiLayers, FiLinkedin, FiLock, FiMenu, FiMessageSquare, FiPhone, FiSearch, FiShield, FiTarget, FiTerminal, FiTwitter, FiUsers, FiX, FiZap } from 'react-icons/fi';
+import { FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiBookOpen, FiCheck, FiCheckCircle, FiClipboard, FiCode, FiCpu, FiFileText, FiGlobe, FiGithub, FiLayers, FiLinkedin, FiLock, FiMenu, FiMessageSquare, FiPhone, FiSearch, FiShield, FiTarget, FiTerminal, FiTwitter, FiUsers, FiX, FiZap } from 'react-icons/fi';
 import Logo from '../../shared/components/common/Logo';
 import ThemeToggle from '../../shared/components/common/ThemeToggle';
 import Button from '../../shared/components/ui/Button';
@@ -189,6 +189,14 @@ const Landing = () => {
             <FiUsers size={18} />
             Meet the Team
           </button>
+          <button type="button" onClick={() => { navigate('/community'); setMobileNavOpen(false); }}>
+            <FiMessageSquare size={18} />
+            Community
+          </button>
+          <button type="button" onClick={() => { navigate('/student-dashboard'); setMobileNavOpen(false); }}>
+            <FiBookOpen size={18} />
+            Student Dashboard
+          </button>
           <button type="button" onClick={() => { navigate('/developer'); setMobileNavOpen(false); }}>
             <FiCode size={18} />
             Meet the Developer
@@ -238,7 +246,22 @@ const Landing = () => {
               Professional penetration testing and security audits that go beyond compliance.
               We find vulnerabilities before the bad actors do.
             </p>
-            
+
+            <div className="hero-highlights">
+              <div className="hero-highlight">
+                <FiCheckCircle size={16} />
+                <span>Executive-ready reporting in 7-14 days</span>
+              </div>
+              <div className="hero-highlight">
+                <FiShield size={16} />
+                <span>Risk reduction mapped to CVSS and MITRE</span>
+              </div>
+              <div className="hero-highlight">
+                <FiZap size={16} />
+                <span>Critical findings escalated within 24 hours</span>
+              </div>
+            </div>
+
             <div className="hero-cta">
               <Button 
                 variant="primary" 
@@ -256,6 +279,21 @@ const Landing = () => {
                 Learn More
                 <FiArrowRight size={18} />
               </Button>
+            </div>
+
+            <div className="hero-proof">
+              <div className="hero-proof-item">
+                <span className="proof-value">500+</span>
+                <span className="proof-label">validated findings</span>
+              </div>
+              <div className="hero-proof-item">
+                <span className="proof-value">96%</span>
+                <span className="proof-label">remediation success</span>
+              </div>
+              <div className="hero-proof-item">
+                <span className="proof-value">12</span>
+                <span className="proof-label">countries supported</span>
+              </div>
             </div>
 
             {/* Trust Indicators */}
@@ -566,19 +604,19 @@ const Landing = () => {
           <div className="footer-content">
             <div className="footer-column">
               <h4>Services</h4>
-              <a href="#services">
+              <a href="/pentest">
                 <FiShield size={16} />
                 Penetration Testing
               </a>
-              <a href="#services">
+              <a href="/audits">
                 <FiFileText size={16} />
                 Security Audits
               </a>
-              <a href="#services">
+              <a href="/pentest">
                 <FiTarget size={16} />
                 Red Team Ops
               </a>
-              <a href="#services">
+              <a href="/pentest">
                 <FiGlobe size={16} />
                 API & Cloud Testing
               </a>
@@ -586,13 +624,21 @@ const Landing = () => {
 
             <div className="footer-column">
               <h4>Company</h4>
-              <a href="#about">
+              <a href="/about">
                 <FiUsers size={16} />
                 About Us
               </a>
               <a href="/team">
                 <FiUsers size={16} />
                 Meet the Team
+              </a>
+              <a href="/community">
+                <FiMessageSquare size={16} />
+                Community
+              </a>
+              <a href="/student-dashboard">
+                <FiBookOpen size={16} />
+                Student Dashboard
               </a>
               <a href="/feedback">
                 <FiMessageSquare size={16} />
@@ -602,11 +648,11 @@ const Landing = () => {
                 <FiCode size={16} />
                 Meet the Developer
               </a>
-              <a href="#careers">
+              <a href="/careers">
                 <FiClipboard size={16} />
-                Careers
+                Careers & Opportunities
               </a>
-              <a href="#community">
+              <a href="/community">
                 <FiZap size={16} />
                 Community
               </a>
@@ -614,21 +660,21 @@ const Landing = () => {
 
             <div className="footer-column">
               <h4>Resources</h4>
-              <a href="#reports">
+              <a href="/case-studies">
                 <FiFileText size={16} />
-                Sample Reports
+                Case Studies
               </a>
-              <a href="#methodology">
+              <a href="/methodology">
                 <FiLayers size={16} />
                 Testing Methodology
               </a>
-              <a href="#case-studies">
+              <a href="/blog">
                 <FiBarChart2 size={16} />
-                Case Studies
-              </a>
-              <a href="#blog">
-                <FiTerminal size={16} />
                 Field Notes
+              </a>
+              <a href="/student-dashboard">
+                <FiTerminal size={16} />
+                Student Dashboard
               </a>
             </div>
 
