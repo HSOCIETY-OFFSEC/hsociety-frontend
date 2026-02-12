@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FiDownload, FiFileText, FiSearch } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
 import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
@@ -279,7 +280,8 @@ const Audits = () => {
                 size="small"
                 onClick={() => handleDownloadReport(audit.id)}
               >
-                📥 Download
+                <FiDownload size={16} />
+                Download
               </Button>
             )}
           </div>
@@ -322,7 +324,9 @@ const Audits = () => {
             <div className="filters-section">
               {/* Search */}
               <div className="search-box">
-                <span className="search-icon">🔍</span>
+                <span className="search-icon">
+                  <FiSearch size={16} />
+                </span>
                 <input
                   type="text"
                   placeholder="Search audits..."
@@ -370,7 +374,9 @@ const Audits = () => {
           {filteredAudits.length === 0 ? (
             <Card padding="large">
               <div className="empty-state">
-                <span style={{ fontSize: '3rem' }}>📋</span>
+                <span style={{ fontSize: '3rem', display: 'inline-flex' }}>
+                  <FiFileText size={40} />
+                </span>
                 <h3>No audits found</h3>
                 <p>
                   {searchQuery

@@ -13,7 +13,7 @@ import React from 'react';
  * - Theme-aware styling
  * 
  * Props:
- * - variant: 'primary' | 'secondary' | 'danger' | 'ghost'
+ * - variant: 'primary' | 'secondary' | 'danger' | 'ghost' | 'card'
  * - size: 'small' | 'medium' | 'large'
  * - loading: boolean
  * - disabled: boolean
@@ -65,6 +65,13 @@ const Button = ({
       border: '2px solid transparent',
       hoverBackground: 'var(--primary-color-alpha)',
       hoverBorder: 'transparent'
+    },
+    card: {
+      background: 'var(--bg-tertiary)',
+      color: 'var(--text-primary)',
+      border: '2px solid var(--border-color)',
+      hoverBackground: 'var(--primary-color-alpha)',
+      hoverBorder: 'var(--primary-color)'
     }
   };
 
@@ -89,6 +96,14 @@ const Button = ({
 
   const currentVariant = variantStyles[variant];
   const currentSize = sizeStyles[size];
+  const variantExtras = {
+    card: {
+      textTransform: 'uppercase',
+      letterSpacing: '0.12em',
+      fontSize: size === 'small' ? '0.75rem' : currentSize.fontSize
+    }
+  };
+  const currentExtras = variantExtras[variant] || {};
 
   const baseStyles = {
     position: 'relative',
@@ -108,6 +123,7 @@ const Button = ({
     background: currentVariant.background,
     color: currentVariant.color,
     border: currentVariant.border,
+    ...currentExtras,
     opacity: disabled || loading ? 0.6 : 1,
     transform: 'translateY(0)',
     boxShadow: disabled || loading 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FiAlertTriangle, FiFileText, FiLock, FiMessageSquare, FiShield } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
+import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
@@ -36,6 +38,8 @@ const Dashboard = () => {
     loadDashboardData();
   }, []);
 
+  useScrollReveal();
+
   const loadDashboardData = async () => {
     setLoading(true);
     
@@ -64,21 +68,21 @@ const Dashboard = () => {
     {
       title: 'Request Pentest',
       description: 'Schedule a new penetration testing engagement',
-      icon: '🔒',
+      icon: FiShield,
       path: '/pentest',
       color: '#10b981'
     },
     {
       title: 'View Audits',
       description: 'Access your security audit reports',
-      icon: '📋',
+      icon: FiFileText,
       path: '/audits',
       color: '#3b82f6'
     },
     {
       title: 'Submit Feedback',
       description: 'Share your experience or report issues',
-      icon: '💬',
+      icon: FiMessageSquare,
       path: '/feedback',
       color: '#f59e0b'
     }
@@ -91,7 +95,7 @@ const Dashboard = () => {
       title: 'Web Application Pentest',
       status: 'in-progress',
       date: '2 days ago',
-      icon: '🔒'
+      icon: FiShield
     },
     {
       id: 2,
@@ -99,7 +103,7 @@ const Dashboard = () => {
       title: 'Security Audit Report',
       status: 'completed',
       date: '5 days ago',
-      icon: '📋'
+      icon: FiFileText
     },
     {
       id: 3,
@@ -107,7 +111,7 @@ const Dashboard = () => {
       title: 'Vulnerability Assessment',
       status: 'pending',
       date: '1 week ago',
-      icon: '⚠️'
+      icon: FiAlertTriangle
     }
   ];
 
@@ -149,7 +153,7 @@ const Dashboard = () => {
       <div className="dashboard-container">
         <div className="dashboard-wrapper">
           {/* Header */}
-          <div className="dashboard-header">
+          <div className="dashboard-header reveal-on-scroll">
             <div>
               <h1 className="dashboard-title">
                 Welcome back, {user?.name || 'User'}!
@@ -161,11 +165,11 @@ const Dashboard = () => {
           </div>
 
           {/* Stats Grid */}
-          <div className="stats-grid">
+          <div className="stats-grid reveal-on-scroll">
             <Card hover3d={true} padding="large" shadow="medium">
               <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)' }}>
-                  <span style={{ fontSize: '2rem' }}>🔒</span>
+                <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
+                  <FiShield size={24} />
                 </div>
                 <div className="stat-content">
                   <p className="stat-label">Active Pentests</p>
@@ -176,8 +180,8 @@ const Dashboard = () => {
 
             <Card hover3d={true} padding="large" shadow="medium">
               <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
-                  <span style={{ fontSize: '2rem' }}>📋</span>
+                <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
+                  <FiFileText size={24} />
                 </div>
                 <div className="stat-content">
                   <p className="stat-label">Completed Audits</p>
@@ -188,8 +192,8 @@ const Dashboard = () => {
 
             <Card hover3d={true} padding="large" shadow="medium">
               <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
-                  <span style={{ fontSize: '2rem' }}>📄</span>
+                <div className="stat-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
+                  <FiFileText size={24} />
                 </div>
                 <div className="stat-content">
                   <p className="stat-label">Pending Reports</p>
@@ -200,8 +204,8 @@ const Dashboard = () => {
 
             <Card hover3d={true} padding="large" shadow="medium">
               <div className="stat-card">
-                <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
-                  <span style={{ fontSize: '2rem' }}>⚠️</span>
+                <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
+                  <FiAlertTriangle size={24} />
                 </div>
                 <div className="stat-content">
                   <p className="stat-label">Vulnerabilities Found</p>
@@ -212,7 +216,7 @@ const Dashboard = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="section">
+          <div className="section reveal-on-scroll">
             <h2 className="section-title">Quick Actions</h2>
             <div className="quick-actions-grid">
               {quickActions.map((action, index) => (
@@ -227,13 +231,13 @@ const Dashboard = () => {
                   <div className="quick-action-content">
                     <div
                       className="quick-action-icon"
-                      style={{ background: `${action.color}20` }}
+                      style={{ background: `${action.color}20`, color: action.color }}
                     >
-                      <span style={{ fontSize: '2.5rem' }}>{action.icon}</span>
+                      <action.icon size={28} />
                     </div>
                     <h3 className="quick-action-title">{action.title}</h3>
                     <p className="quick-action-description">{action.description}</p>
-                    <Button variant="ghost" style={{ marginTop: 'auto' }}>
+                    <Button variant="card" size="small" style={{ marginTop: 'auto' }}>
                       Get Started →
                     </Button>
                   </div>
@@ -243,7 +247,7 @@ const Dashboard = () => {
           </div>
 
           {/* Recent Activity */}
-          <div className="section">
+          <div className="section reveal-on-scroll">
             <div className="section-header">
               <h2 className="section-title">Recent Activity</h2>
               <button
@@ -267,7 +271,7 @@ const Dashboard = () => {
                     }}
                   >
                     <div className="activity-icon">
-                      <span style={{ fontSize: '1.5rem' }}>{activity.icon}</span>
+                      <activity.icon size={20} />
                     </div>
                     <div className="activity-content">
                       <h4 className="activity-title">{activity.title}</h4>
@@ -292,9 +296,9 @@ const Dashboard = () => {
           </div>
 
           {/* Security Notice */}
-          <Card padding="large" shadow="small" className="security-notice">
+          <Card padding="large" shadow="small" className="security-notice reveal-on-scroll">
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-              <span style={{ fontSize: '2rem' }}>🔒</span>
+              <FiLock size={28} />
               <div>
                 <h3 style={{ margin: 0, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
                   Security Notice

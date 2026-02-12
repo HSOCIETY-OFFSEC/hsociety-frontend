@@ -27,6 +27,6 @@ root.render(
 
 // Log successful mount in development
 if (import.meta.env.DEV) {
-  console.log('🚀 HSOCIETY MVP loaded successfully');
-  console.log('📍 Environment:', import.meta.env.MODE);
+  console.log('HSOCIETY MVP loaded successfully');
+  console.log('Environment:', import.meta.env.MODE);
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { FiMoon, FiSun } from 'react-icons/fi';
 import { useTheme } from '../../../app/providers';
 
 /**
@@ -22,7 +23,7 @@ const ThemeToggle = ({ className = '' }) => {
       className={`theme-toggle ${className}`}
     >
       <span className="theme-toggle-icon" aria-hidden="true">
-        {isDark ? '☀️' : '🌙'}
+        {isDark ? <FiSun /> : <FiMoon />}
       </span>
       <span className="theme-toggle-label">
         {theme === 'dark' ? 'Dark' : 'Light'}

@@ -55,6 +55,7 @@
   font-size: 1.1rem;
   color: var(--text-tertiary);
   pointer-events: none;
+  display: inline-flex;
 }
 
 .search-input {

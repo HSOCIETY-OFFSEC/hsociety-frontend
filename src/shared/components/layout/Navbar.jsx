@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { FiBarChart2, FiChevronDown, FiFileText, FiLogOut, FiMenu, FiMessageSquare, FiShield, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
@@ -31,10 +32,10 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/pentest', label: 'Pentest', icon: '🔒' },
-    { path: '/audits', label: 'Audits', icon: '📋' },
-    { path: '/feedback', label: 'Feedback', icon: '💬' }
+    { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
+    { path: '/pentest', label: 'Pentest', icon: FiShield },
+    { path: '/audits', label: 'Audits', icon: FiFileText },
+    { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -102,7 +103,9 @@ const Navbar = () => {
                   }
                 }}
               >
-                <span>{link.icon}</span>
+                <span style={{ display: 'inline-flex' }}>
+                  <link.icon size={18} />
+                </span>
                 <span>{link.label}</span>
               </button>
             ))}
@@ -158,7 +161,9 @@ const Navbar = () => {
                   {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                 </span>
                 <span>{user.name || user.email}</span>
-                <span style={{ fontSize: '0.7rem' }}>▼</span>
+                <span style={{ display: 'inline-flex' }}>
+                  <FiChevronDown size={14} />
+                </span>
               </button>
 
               {/* Dropdown Menu */}
@@ -222,7 +227,9 @@ const Navbar = () => {
                       e.currentTarget.style.background = 'transparent';
                     }}
                   >
-                    <span>🚪</span>
+                    <span style={{ display: 'inline-flex' }}>
+                      <FiLogOut size={16} />
+                    </span>
                     <span>Logout</span>
                   </button>
                 </div>
@@ -245,7 +252,7 @@ const Navbar = () => {
               }}
               className="mobile-menu-button"
             >
-              {mobileMenuOpen ? '✕' : '☰'}
+              {mobileMenuOpen ? <FiX /> : <FiMenu />}
             </button>
           )}
         </div>
@@ -282,7 +289,9 @@ const Navbar = () => {
                   transition: 'all 0.2s ease'
                 }}
               >
-                <span style={{ fontSize: '1.25rem' }}>{link.icon}</span>
+                <span style={{ fontSize: '1.25rem', display: 'inline-flex' }}>
+                  <link.icon size={18} />
+                </span>
                 <span>{link.label}</span>
               </button>
             ))}
@@ -310,7 +319,9 @@ const Navbar = () => {
                 textAlign: 'left'
               }}
             >
-              <span style={{ fontSize: '1.25rem' }}>🚪</span>
+              <span style={{ fontSize: '1.25rem', display: 'inline-flex' }}>
+                <FiLogOut size={18} />
+              </span>
               <span>Logout</span>
             </button>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FiAlertTriangle, FiLock } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import Logo from '../../shared/components/common/Logo';
@@ -185,7 +186,9 @@ const Login = () => {
           {/* Error Message */}
           {error && (
             <div className="auth-error">
-              <span className="error-icon">⚠</span>
+              <span className="error-icon">
+                <FiAlertTriangle size={16} />
+              </span>
               {error}
             </div>
           )}
@@ -320,7 +323,10 @@ const Login = () => {
         {/* Security Notice */}
         <div className="auth-notice">
           <p>
-            🔒 Your security is our priority. All communications are encrypted.
+            <span className="notice-icon">
+              <FiLock size={16} />
+            </span>
+            Your security is our priority. All communications are encrypted.
           </p>
         </div>
       </div>

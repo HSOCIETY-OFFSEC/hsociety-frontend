@@ -71,7 +71,7 @@ export const getRecentActivity = async (limit = 10) => {
           title: 'Web Application Pentest',
           status: 'in-progress',
           date: Date.now() - (2 * 24 * 60 * 60 * 1000),
-          icon: '🔒'
+          icon: 'shield'
         },
         {
           id: '2',
@@ -79,7 +79,7 @@ export const getRecentActivity = async (limit = 10) => {
           title: 'Security Audit Report',
           status: 'completed',
           date: Date.now() - (5 * 24 * 60 * 60 * 1000),
-          icon: '📋'
+          icon: 'file'
         },
         {
           id: '3',
@@ -87,7 +87,7 @@ export const getRecentActivity = async (limit = 10) => {
           title: 'Vulnerability Assessment',
           status: 'pending',
           date: Date.now() - (7 * 24 * 60 * 60 * 1000),
-          icon: '⚠️'
+          icon: 'alert'
         }
       ]
     };

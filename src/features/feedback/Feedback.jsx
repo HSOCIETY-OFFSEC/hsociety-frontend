@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FiAlertTriangle, FiCheckCircle, FiClock, FiMessageSquare, FiShield, FiStar } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
 import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
@@ -39,10 +40,10 @@ const Feedback = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const feedbackTypes = [
-    { value: 'bug', label: '🐛 Bug Report', description: 'Report a technical issue' },
-    { value: 'feature', label: '💡 Feature Request', description: 'Suggest a new feature' },
-    { value: 'security', label: '🔒 Security Concern', description: 'Report a security issue' },
-    { value: 'general', label: '💬 General Feedback', description: 'Share your thoughts' }
+    { value: 'bug', label: 'Bug Report', icon: FiAlertTriangle, description: 'Report a technical issue' },
+    { value: 'feature', label: 'Feature Request', icon: FiStar, description: 'Suggest a new feature' },
+    { value: 'security', label: 'Security Concern', icon: FiShield, description: 'Report a security issue' },
+    { value: 'general', label: 'General Feedback', icon: FiMessageSquare, description: 'Share your thoughts' }
   ];
 
   const handleInputChange = (e) => {
@@ -133,7 +134,9 @@ const Feedback = () => {
           {submitSuccess && (
             <Card padding="large" shadow="medium" className="success-card">
               <div className="success-content">
-                <div className="success-icon-large">✓</div>
+                <div className="success-icon-large">
+                  <FiCheckCircle size={40} />
+                </div>
                 <h2>Thank You!</h2>
                 <p>
                   Your feedback has been submitted successfully. We appreciate you taking the time
@@ -162,7 +165,9 @@ const Feedback = () => {
               {/* Error Message */}
               {formErrors.submit && (
                 <div className="error-message">
-                  <span className="error-icon">⚠</span>
+                  <span className="error-icon">
+                    <FiAlertTriangle size={18} />
+                  </span>
                   {formErrors.submit}
                 </div>
               )}
@@ -186,7 +191,12 @@ const Feedback = () => {
                           className="type-radio"
                         />
                         <div className="type-content">
-                          <div className="type-label">{type.label}</div>
+                          <div className="type-label">
+                            <span className="type-icon">
+                              <type.icon size={18} />
+                            </span>
+                            {type.label}
+                          </div>
                           <div className="type-description">{type.description}</div>
                         </div>
                       </label>
@@ -331,7 +341,9 @@ const Feedback = () => {
           <div className="info-section">
             <Card padding="medium" shadow="small">
               <div className="info-card">
-                <span className="info-icon">🔒</span>
+                <span className="info-icon">
+                  <FiShield size={18} />
+                </span>
                 <div>
                   <h4>Privacy & Security</h4>
                   <p>
@@ -344,7 +356,9 @@ const Feedback = () => {
 
             <Card padding="medium" shadow="small">
               <div className="info-card">
-                <span className="info-icon">⏱️</span>
+                <span className="info-icon">
+                  <FiClock size={18} />
+                </span>
                 <div>
                   <h4>Response Time</h4>
                   <p>
@@ -357,7 +371,9 @@ const Feedback = () => {
 
             <Card padding="medium" shadow="small">
               <div className="info-card">
-                <span className="info-icon">💬</span>
+                <span className="info-icon">
+                  <FiMessageSquare size={18} />
+                </span>
                 <div>
                   <h4>Alternative Contact</h4>
                   <p>
