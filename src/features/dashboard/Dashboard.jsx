@@ -1,0 +1,315 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../core/auth/AuthContext';
+import Navbar from '../../shared/components/layout/Navbar';
+import Card from '../../shared/components/ui/Card';
+import Button from '../../shared/components/ui/Button';
+import '../../styles/features/dashboard.css';
+
+/**
+ * Dashboard Component
+ * Location: src/features/dashboard/Dashboard.jsx
+ * 
+ * Features:
+ * - User overview and stats
+ * - Quick action cards
+ * - Recent activity feed
+ * - Service status overview
+ * - 3D card effects
+ * - Responsive layout
+ * 
+ * TODO: Backend integration for real data
+ */
+
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    activePentests: 0,
+    completedAudits: 0,
+    pendingReports: 0,
+    vulnerabilitiesFound: 0
+  });
+
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+  const loadDashboardData = async () => {
+    setLoading(true);
+    
+    try {
+      // TODO: Backend integration - Fetch dashboard data
+      // const data = await dashboardService.getDashboardData();
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock data
+      setStats({
+        activePentests: 3,
+        completedAudits: 12,
+        pendingReports: 2,
+        vulnerabilitiesFound: 47
+      });
+    } catch (error) {
+      console.error('Failed to load dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const quickActions = [
+    {
+      title: 'Request Pentest',
+      description: 'Schedule a new penetration testing engagement',
+      icon: '🔒',
+      path: '/pentest',
+      color: '#10b981'
+    },
+    {
+      title: 'View Audits',
+      description: 'Access your security audit reports',
+      icon: '📋',
+      path: '/audits',
+      color: '#3b82f6'
+    },
+    {
+      title: 'Submit Feedback',
+      description: 'Share your experience or report issues',
+      icon: '💬',
+      path: '/feedback',
+      color: '#f59e0b'
+    }
+  ];
+
+  const recentActivities = [
+    {
+      id: 1,
+      type: 'pentest',
+      title: 'Web Application Pentest',
+      status: 'in-progress',
+      date: '2 days ago',
+      icon: '🔒'
+    },
+    {
+      id: 2,
+      type: 'audit',
+      title: 'Security Audit Report',
+      status: 'completed',
+      date: '5 days ago',
+      icon: '📋'
+    },
+    {
+      id: 3,
+      type: 'report',
+      title: 'Vulnerability Assessment',
+      status: 'pending',
+      date: '1 week ago',
+      icon: '⚠️'
+    }
+  ];
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'completed': return '#10b981';
+      case 'in-progress': return '#3b82f6';
+      case 'pending': return '#f59e0b';
+      default: return '#6b7280';
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'completed': return 'Completed';
+      case 'in-progress': return 'In Progress';
+      case 'pending': return 'Pending';
+      default: return 'Unknown';
+    }
+  };
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="dashboard-container">
+          <div className="loading-state">
+            <div className="loading-spinner" />
+            <p>Loading dashboard...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Navbar />
+      <div className="dashboard-container">
+        <div className="dashboard-wrapper">
+          {/* Header */}
+          <div className="dashboard-header">
+            <div>
+              <h1 className="dashboard-title">
+                Welcome back, {user?.name || 'User'}!
+              </h1>
+              <p className="dashboard-subtitle">
+                Here's your security overview and recent activity
+              </p>
+            </div>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="stats-grid">
+            <Card hover3d={true} padding="large" shadow="medium">
+              <div className="stat-card">
+                <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)' }}>
+                  <span style={{ fontSize: '2rem' }}>🔒</span>
+                </div>
+                <div className="stat-content">
+                  <p className="stat-label">Active Pentests</p>
+                  <h2 className="stat-value">{stats.activePentests}</h2>
+                </div>
+              </div>
+            </Card>
+
+            <Card hover3d={true} padding="large" shadow="medium">
+              <div className="stat-card">
+                <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
+                  <span style={{ fontSize: '2rem' }}>📋</span>
+                </div>
+                <div className="stat-content">
+                  <p className="stat-label">Completed Audits</p>
+                  <h2 className="stat-value">{stats.completedAudits}</h2>
+                </div>
+              </div>
+            </Card>
+
+            <Card hover3d={true} padding="large" shadow="medium">
+              <div className="stat-card">
+                <div className="stat-icon" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                  <span style={{ fontSize: '2rem' }}>📄</span>
+                </div>
+                <div className="stat-content">
+                  <p className="stat-label">Pending Reports</p>
+                  <h2 className="stat-value">{stats.pendingReports}</h2>
+                </div>
+              </div>
+            </Card>
+
+            <Card hover3d={true} padding="large" shadow="medium">
+              <div className="stat-card">
+                <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+                  <span style={{ fontSize: '2rem' }}>⚠️</span>
+                </div>
+                <div className="stat-content">
+                  <p className="stat-label">Vulnerabilities Found</p>
+                  <h2 className="stat-value">{stats.vulnerabilitiesFound}</h2>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="section">
+            <h2 className="section-title">Quick Actions</h2>
+            <div className="quick-actions-grid">
+              {quickActions.map((action, index) => (
+                <Card
+                  key={index}
+                  hover3d={true}
+                  onClick={() => navigate(action.path)}
+                  padding="large"
+                  shadow="medium"
+                  className="quick-action-card"
+                >
+                  <div className="quick-action-content">
+                    <div
+                      className="quick-action-icon"
+                      style={{ background: `${action.color}20` }}
+                    >
+                      <span style={{ fontSize: '2.5rem' }}>{action.icon}</span>
+                    </div>
+                    <h3 className="quick-action-title">{action.title}</h3>
+                    <p className="quick-action-description">{action.description}</p>
+                    <Button variant="ghost" style={{ marginTop: 'auto' }}>
+                      Get Started →
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          <div className="section">
+            <div className="section-header">
+              <h2 className="section-title">Recent Activity</h2>
+              <button
+                onClick={() => navigate('/audits')}
+                className="view-all-link"
+              >
+                View All →
+              </button>
+            </div>
+
+            <Card padding="none" shadow="medium">
+              <div className="activity-list">
+                {recentActivities.map((activity, index) => (
+                  <div
+                    key={activity.id}
+                    className="activity-item"
+                    style={{
+                      borderBottom: index < recentActivities.length - 1
+                        ? '1px solid var(--border-color)'
+                        : 'none'
+                    }}
+                  >
+                    <div className="activity-icon">
+                      <span style={{ fontSize: '1.5rem' }}>{activity.icon}</span>
+                    </div>
+                    <div className="activity-content">
+                      <h4 className="activity-title">{activity.title}</h4>
+                      <p className="activity-date">{activity.date}</p>
+                    </div>
+                    <div className="activity-status">
+                      <span
+                        className="status-badge"
+                        style={{
+                          background: `${getStatusColor(activity.status)}20`,
+                          color: getStatusColor(activity.status),
+                          border: `1px solid ${getStatusColor(activity.status)}50`
+                        }}
+                      >
+                        {getStatusLabel(activity.status)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          {/* Security Notice */}
+          <Card padding="large" shadow="small" className="security-notice">
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+              <span style={{ fontSize: '2rem' }}>🔒</span>
+              <div>
+                <h3 style={{ margin: 0, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+                  Security Notice
+                </h3>
+                <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                  All your data is encrypted and stored securely. We never share your information
+                  with third parties. For any security concerns, please contact our team immediately.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Dashboard;
