@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiAlertTriangle, FiLock } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import Logo from '../../shared/components/common/Logo';
 import Navbar from '../../shared/components/layout/Navbar';
@@ -28,11 +28,12 @@ import '../../styles/core/auth.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
   
   // Form state
   const [step, setStep] = useState(1); // 1: email, 2: OTP, 3: 2FA
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(location.state?.email || '');
   const [accountType, setAccountType] = useState('corporate');
   const [otp, setOtp] = useState('');
   const [twoFACode, setTwoFACode] = useState('');

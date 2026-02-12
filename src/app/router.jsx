@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
-import Navbar from '../shared/components/layout/Navbar';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
+const Register = React.lazy(() => import('../features/auth/Register'));
 const Dashboard = React.lazy(() => import('../features/dashboard/Dashboard'));
 const Audits = React.lazy(() => import('../features/audits/Audits'));
 const Pentest = React.lazy(() => import('../features/pentest/Pentest'));
@@ -20,6 +20,7 @@ const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
 const Blog = React.lazy(() => import('../features/blog/Blog'));
+const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
 
 /**
  * Protected Route
@@ -116,6 +117,15 @@ const AppRouter = () => {
           />
 
           <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+
+          <Route
             path="/feedback"
             element={<Feedback />}
           />
@@ -200,16 +210,7 @@ const AppRouter = () => {
           {/* 404 */}
           <Route
             path="*"
-            element={
-              <>
-                <Navbar />
-                <div style={{ textAlign: 'center', padding: '3rem' }}>
-                  <h1>404</h1>
-                  <p>Page not found</p>
-                  <a href="/">Go home</a>
-                </div>
-              </>
-            }
+            element={<NotFound />}
           />
 
         </Routes>
