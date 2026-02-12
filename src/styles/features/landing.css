@@ -385,11 +385,35 @@
 
 /* Terminal */
 .terminal {
-  background: #0b1530;
+  background: #060d1c;
   border-radius: 14px;
   overflow: hidden;
   font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
-  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.25), 0 18px 35px -28px rgba(2, 6, 23, 0.9);
+  position: relative;
+}
+
+.terminal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(148, 163, 184, 0.04),
+    rgba(148, 163, 184, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.terminal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(500px 200px at 50% -20%, rgba(56, 189, 248, 0.12), transparent 60%);
+  pointer-events: none;
 }
 
 .terminal::-webkit-scrollbar,
@@ -411,9 +435,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(90deg, #0b1f45 0%, #102a5a 100%);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.35);
+  padding: 0.7rem 0.9rem;
+  background: linear-gradient(90deg, #0a162f 0%, #0f254f 100%);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.25);
 }
 
 .terminal-dot {
@@ -428,17 +452,22 @@
 
 .terminal-title {
   margin-left: auto;
-  font-size: 0.875rem;
-  color: #bfdbfe;
+  font-size: 0.8rem;
+  color: #93c5fd;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
 }
 
 .terminal-body {
   padding: 1.5rem;
-  color: #dbeafe;
-  font-size: 0.875rem;
-  line-height: 1.8;
-  background: radial-gradient(400px 180px at 10% 0%, rgba(59, 130, 246, 0.15), transparent 60%);
+  color: #cbd5e1;
+  font-size: 0.84rem;
+  line-height: 1.75;
+  background:
+    radial-gradient(450px 220px at 8% 0%, rgba(37, 99, 235, 0.18), transparent 62%),
+    linear-gradient(180deg, #081327 0%, #070f20 100%);
   overflow: hidden;
+  position: relative;
 }
 
 .terminal-line {
@@ -446,19 +475,30 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  color: #cbd5e1;
+}
+
+.terminal-line.command {
+  color: #e2e8f0;
+  font-weight: 500;
 }
 
 .prompt {
-  color: #93c5fd;
+  color: #22d3ee;
   font-weight: 700;
+  text-shadow: 0 0 12px rgba(34, 211, 238, 0.25);
 }
 
 .terminal-line.success {
-  color: #22d3ee;
+  color: #4ade80;
 }
 
 .terminal-line.warning {
-  color: #f59e0b;
+  color: #fbbf24;
+}
+
+.terminal-line.warning.critical {
+  color: #fb7185;
 }
 
 .icon {
@@ -474,8 +514,9 @@
 
 .terminal-cursor {
   display: inline-block;
-  background: #93c5fd;
+  color: #22d3ee;
   animation: blink 1s infinite;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.35);
 }
 
 .terminal-footer {

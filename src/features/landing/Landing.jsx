@@ -251,7 +251,7 @@ const Landing = () => {
                   <span className="terminal-title">hsociety_ops.sh</span>
                 </div>
                 <div className="terminal-body">
-                  <div className="terminal-line">
+                  <div className="terminal-line command">
                     <span className="prompt">root@kali:~#</span> ./launch --target edge-api.company
                   </div>
                   <div className="terminal-line success">
@@ -260,13 +260,13 @@ const Landing = () => {
                   <div className="terminal-line success">
                     <span className="icon"><FiCheckCircle size={16} /></span> httpx <span className="terminal-arrow"><FiArrowRight size={14} /></span> 4 endpoints, 2 auth surfaces
                   </div>
-                  <div className="terminal-line warning">
+                  <div className="terminal-line warning critical">
                     <span className="icon"><FiAlertTriangle size={16} /></span> sqlmap: injectable param `id` (critical)
                   </div>
                   <div className="terminal-line warning">
                     <span className="icon"><FiAlertTriangle size={16} /></span> lateral: weak JWT signing key (high)
                   </div>
-                  <div className="terminal-line">
+                  <div className="terminal-line command">
                     <span className="prompt">root@kali:~#</span> chain: auth bypass <span className="terminal-arrow"><FiArrowRight size={14} /></span> data exfil <span className="terminal-arrow"><FiArrowRight size={14} /></span> report
                   </div>
                   <div className="terminal-cursor">▊</div>
