@@ -258,6 +258,22 @@
 .overflow-auto { overflow: auto; }
 .overflow-hidden { overflow: hidden; }
 .overflow-visible { overflow: visible; }
+
+/* ========================================
+   RESPONSIVE CONTAINERS
+   ======================================== */
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+}
 .overflow-scroll { overflow: scroll; }
 
 .overflow-x-auto { overflow-x: auto; }

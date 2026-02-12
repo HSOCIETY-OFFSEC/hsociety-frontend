@@ -736,13 +736,44 @@
 }
 
 @media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-brand {
+    justify-content: center;
+  }
+
+  .nav-brand-text {
+    align-items: center;
+    text-align: center;
+  }
+
+  .nav-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .nav-actions .button {
+    flex: 1 1 160px;
+  }
+
   .hero-section {
     padding: 4rem 1rem 2rem;
+  }
+
+  .hero-container {
+    gap: 2rem;
   }
 
   .hero-brand {
     flex-direction: column;
     align-items: flex-start;
+    padding: 1rem;
   }
   
   .hero-title {
@@ -756,22 +787,49 @@
   .hero-cta {
     flex-direction: column;
   }
+
+  .hero-cta .button {
+    width: 100%;
+  }
   
   .nav-actions {
     gap: 0.5rem;
+  }
+
+  .trust-indicators {
+    gap: 1rem;
   }
   
   .stats-container {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .stats-section {
+    padding: 2.5rem 1.25rem;
+  }
   
   .section-title-large {
     font-size: 2rem;
   }
-  
+
+  .services-section,
+  .why-section,
+  .cta-section {
+    padding: 4rem 1.25rem;
+  }
+
   .cta-title {
     font-size: 1.75rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .cta-buttons .button {
+    width: 100%;
   }
   
   .footer-content {
@@ -782,5 +840,77 @@
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-brand-title {
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-brand-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+  }
+
+  .hero-logo .logo-image {
+    height: 72px !important;
+  }
+
+  .hero-brand-kicker {
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+  }
+
+  .hero-brand-sub {
+    font-size: 0.95rem;
+  }
+
+  .terminal-body {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .terminal-footer {
+    gap: 0.5rem;
+  }
+
+  .terminal-chip {
+    font-size: 0.7rem;
+  }
+
+  .stats-section {
+    padding: 2rem 1rem;
+  }
+
+  .landing-footer {
+    padding: 3rem 1.25rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo .logo-image {
+    height: 44px !important;
+  }
+
+  .hero-title {
+    font-size: 2.1rem;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+  }
+
+  .section-header-center {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title-large {
+    font-size: 1.65rem;
+  }
+
+  .section-subtitle-large {
+    font-size: 1rem;
   }
 }

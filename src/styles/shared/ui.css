@@ -413,3 +413,14 @@ select {
     padding: 0.2rem 0.6rem;
   }
 }
+
+@media (max-width: 480px) {
+  .button {
+    white-space: normal !important;
+    line-height: 1.2;
+  }
+
+  .button-card {
+    letter-spacing: 0.12em;
+  }
+}
