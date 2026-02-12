@@ -1,0 +1,80 @@
+/**
+ * Common Styles
+ * Location: src/styles/shared/common.css
+ * 
+ * Covers:
+ * - Theme variables
+ * - Base element resets
+ */
+
+/* ========================================
+   THEME VARIABLES
+   ======================================== */
+
+/* Light Theme (default) */
+:root {
+  --bg-primary: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --input-bg: #f9fafb;
+  --input-bg-focus: #ffffff;
+  --input-bg-disabled: #f3f4f6;
+  --notice-bg: #f0fdf4;
+  --primary-color: #10b981;
+  --primary-color-hover: #059669;
+  --primary-color-alpha: rgba(16, 185, 129, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --z-sticky: 50;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --card-bg: #0a0a0a;
+  --border-color: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+  --input-bg: #111827;
+  --input-bg-focus: #1f2937;
+  --input-bg-disabled: #0f1419;
+  --notice-bg: #064e3b;
+  --primary-color: #10b981;
+  --primary-color-hover: #34d399;
+  --primary-color-alpha: rgba(16, 185, 129, 0.15);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat', 'Segoe UI', Tahoma, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+}
