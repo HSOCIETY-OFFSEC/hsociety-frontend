@@ -203,22 +203,22 @@ const Landing = () => {
                 </div>
                 <div className="terminal-body">
                   <div className="terminal-line">
-                    <span className="prompt">$</span> ./launch --target edge-api.company
+                    <span className="prompt">root@kali:~#</span> ./launch --target edge-api.company
                   </div>
                   <div className="terminal-line success">
-                    <span className="icon"><FiCheckCircle size={16} /></span> Recon complete: 5 open ports
+                    <span className="icon"><FiCheckCircle size={16} /></span> nmap -sV -Pn edge-api.company
                   </div>
                   <div className="terminal-line success">
-                    <span className="icon"><FiCheckCircle size={16} /></span> Findings classified: 12 issues
+                    <span className="icon"><FiCheckCircle size={16} /></span> httpx -> 4 endpoints, 2 auth surfaces
                   </div>
                   <div className="terminal-line warning">
-                    <span className="icon"><FiAlertTriangle size={16} /></span> Critical: SQL Injection detected
+                    <span className="icon"><FiAlertTriangle size={16} /></span> sqlmap: injectable param `id` (critical)
                   </div>
                   <div className="terminal-line warning">
-                    <span className="icon"><FiAlertTriangle size={16} /></span> High: XSS vulnerability found
+                    <span className="icon"><FiAlertTriangle size={16} /></span> lateral: weak JWT signing key (high)
                   </div>
                   <div className="terminal-line">
-                    <span className="prompt">$</span> Generating executive report...
+                    <span className="prompt">root@kali:~#</span> chain: auth bypass -> data exfil -> report
                   </div>
                   <div className="terminal-cursor">▊</div>
                 </div>
@@ -270,7 +270,7 @@ const Landing = () => {
 
           <div className="services-grid">
             {services.map((service, index) => (
-              <Card key={index} hover3d={true} padding="large" className="service-card">
+              <Card key={index} hover3d={true} padding="large" className="service-card reveal-on-scroll">
                 <div className="service-icon">
                   <service.icon size={28} />
                 </div>
@@ -311,7 +311,7 @@ const Landing = () => {
 
           <div className="why-grid">
             {whyChooseUs.map((item, index) => (
-              <div key={index} className="why-item">
+              <div key={index} className="why-item reveal-on-scroll">
                 <div className="why-icon">
                   <item.icon size={28} />
                 </div>

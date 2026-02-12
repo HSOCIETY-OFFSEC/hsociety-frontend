@@ -4,6 +4,8 @@ import { useAuth } from '../../core/auth/AuthContext';
 import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
+import useScrollReveal from '../../shared/hooks/useScrollReveal';
+import Skeleton from '../../shared/components/ui/Skeleton';
 import { formatDate, getRelativeTime } from '../../utils/helpers';
 import '../../styles/features/audits.css';
 
@@ -29,6 +31,8 @@ const Audits = () => {
   const [selectedAudit, setSelectedAudit] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  useScrollReveal('.reveal-on-scroll', {}, [loading, filteredAudits.length]);
 
   useEffect(() => {
     loadAudits();
@@ -295,9 +299,55 @@ const Audits = () => {
       <>
         <Navbar />
         <div className="audits-container">
-          <div className="loading-state">
-            <div className="loading-spinner" />
-            <p>Loading audits...</p>
+          <div className="audits-wrapper">
+            <div className="page-header">
+              <Skeleton className="skeleton-line" style={{ width: '220px' }} />
+              <Skeleton className="skeleton-line" style={{ width: '320px', marginTop: '0.75rem' }} />
+            </div>
+
+            <Card padding="medium" shadow="small">
+              <div className="filters-section">
+                <div className="search-box">
+                  <Skeleton className="skeleton-rect" style={{ width: '100%', height: '44px', borderRadius: '8px' }} />
+                </div>
+                <div className="filter-group">
+                  <Skeleton className="skeleton-line" style={{ width: '70px' }} />
+                  <div className="filter-buttons" style={{ gap: '0.5rem' }}>
+                    {[...Array(3)].map((_, index) => (
+                      <Skeleton key={index} className="skeleton-rect" style={{ width: '90px', height: '36px', borderRadius: '8px' }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <div className="audits-grid">
+              {[...Array(3)].map((_, index) => (
+                <Card key={index} padding="large" shadow="medium">
+                  <div className="audit-card">
+                    <div className="audit-header">
+                      <Skeleton className="skeleton-line" style={{ width: '200px' }} />
+                      <Skeleton className="skeleton-line" style={{ width: '80px', height: '20px' }} />
+                    </div>
+                    <div className="audit-meta" style={{ marginTop: '1rem' }}>
+                      <Skeleton className="skeleton-line" style={{ width: '160px' }} />
+                      <Skeleton className="skeleton-line" style={{ width: '120px' }} />
+                    </div>
+                    <div className="audit-summary" style={{ marginTop: '1.5rem' }}>
+                      <Skeleton className="skeleton-line" style={{ width: '100%' }} />
+                      <Skeleton className="skeleton-line" style={{ width: '80%', marginTop: '0.5rem' }} />
+                    </div>
+                    <div className="audit-footer" style={{ marginTop: '1.5rem' }}>
+                      <Skeleton className="skeleton-line" style={{ width: '140px' }} />
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <Skeleton className="skeleton-rect" style={{ width: '110px', height: '36px', borderRadius: '8px' }} />
+                        <Skeleton className="skeleton-rect" style={{ width: '110px', height: '36px', borderRadius: '8px' }} />
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </>
@@ -310,7 +360,7 @@ const Audits = () => {
       <div className="audits-container">
         <div className="audits-wrapper">
           {/* Header */}
-          <div className="page-header">
+          <div className="page-header reveal-on-scroll">
             <div>
               <h1 className="page-title">Security Audits</h1>
               <p className="page-subtitle">
@@ -320,7 +370,7 @@ const Audits = () => {
           </div>
 
           {/* Filters & Search */}
-          <Card padding="medium" shadow="small">
+          <Card padding="medium" shadow="small" className="reveal-on-scroll">
             <div className="filters-section">
               {/* Search */}
               <div className="search-box">
@@ -364,7 +414,7 @@ const Audits = () => {
           </Card>
 
           {/* Results Count */}
-          <div className="results-info">
+          <div className="results-info reveal-on-scroll">
             <p>
               Showing <strong>{filteredAudits.length}</strong> of <strong>{audits.length}</strong> audits
             </p>
@@ -372,7 +422,7 @@ const Audits = () => {
 
           {/* Audits Grid */}
           {filteredAudits.length === 0 ? (
-            <Card padding="large">
+            <Card padding="large" className="reveal-on-scroll">
               <div className="empty-state">
                 <span style={{ fontSize: '3rem', display: 'inline-flex' }}>
                   <FiFileText size={40} />
@@ -386,7 +436,7 @@ const Audits = () => {
               </div>
             </Card>
           ) : (
-            <div className="audits-grid">
+            <div className="audits-grid reveal-on-scroll">
               {filteredAudits.map(audit => renderAuditCard(audit))}
             </div>
           )}

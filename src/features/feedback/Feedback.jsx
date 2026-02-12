@@ -5,6 +5,7 @@ import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { validateForm } from '../../core/validation/input.validator';
+import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import '../../styles/features/feedback.css';
 
 /**
@@ -24,6 +25,8 @@ import '../../styles/features/feedback.css';
 
 const Feedback = () => {
   const { isAuthenticated, user } = useAuth();
+
+  useScrollReveal();
   
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -123,7 +126,7 @@ const Feedback = () => {
       <div className="feedback-container">
         <div className="feedback-wrapper">
           {/* Header */}
-          <div className="feedback-header">
+          <div className="feedback-header reveal-on-scroll">
             <h1 className="feedback-title">We Value Your Feedback</h1>
             <p className="feedback-subtitle">
               Help us improve by sharing your thoughts, reporting issues, or suggesting features
@@ -132,7 +135,7 @@ const Feedback = () => {
 
           {/* Success Message */}
           {submitSuccess && (
-            <Card padding="large" shadow="medium" className="success-card">
+            <Card padding="large" shadow="medium" className="success-card reveal-on-scroll">
               <div className="success-content">
                 <div className="success-icon-large">
                   <FiCheckCircle size={40} />
@@ -161,7 +164,7 @@ const Feedback = () => {
 
           {/* Feedback Form */}
           {!submitSuccess && (
-            <Card padding="large" shadow="medium">
+            <Card padding="large" shadow="medium" className="reveal-on-scroll">
               {/* Error Message */}
               {formErrors.submit && (
                 <div className="error-message">
@@ -338,7 +341,7 @@ const Feedback = () => {
           )}
 
           {/* Info Cards */}
-          <div className="info-section">
+          <div className="info-section reveal-on-scroll">
             <Card padding="medium" shadow="small">
               <div className="info-card">
                 <span className="info-icon">

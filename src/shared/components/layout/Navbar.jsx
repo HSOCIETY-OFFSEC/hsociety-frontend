@@ -66,10 +66,7 @@ const Navbar = () => {
         {isAuthenticated && (
           <div style={{
             display: 'flex',
-            gap: '0.5rem',
-            '@media (max-width: 768px)': {
-              display: 'none'
-            }
+            gap: '0.5rem'
           }} className="desktop-nav">
             {navLinks.map(link => (
               <button

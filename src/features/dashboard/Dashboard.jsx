@@ -6,6 +6,7 @@ import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
+import Skeleton from '../../shared/components/ui/Skeleton';
 import '../../styles/features/dashboard.css';
 
 /**
@@ -38,7 +39,7 @@ const Dashboard = () => {
     loadDashboardData();
   }, []);
 
-  useScrollReveal();
+  useScrollReveal('.reveal-on-scroll', {}, [loading]);
 
   const loadDashboardData = async () => {
     setLoading(true);
@@ -138,9 +139,70 @@ const Dashboard = () => {
       <>
         <Navbar />
         <div className="dashboard-container">
-          <div className="loading-state">
-            <div className="loading-spinner" />
-            <p>Loading dashboard...</p>
+          <div className="dashboard-wrapper">
+            <div className="dashboard-header">
+              <div>
+                <Skeleton className="skeleton-line" style={{ width: '220px' }} />
+                <Skeleton className="skeleton-line" style={{ width: '320px', marginTop: '0.75rem' }} />
+              </div>
+            </div>
+
+            <div className="stats-grid">
+              {[...Array(4)].map((_, index) => (
+                <Card key={index} padding="large" shadow="medium">
+                  <div className="stat-card">
+                    <Skeleton className="skeleton-circle" style={{ width: '64px', height: '64px' }} />
+                    <div className="stat-content">
+                      <Skeleton className="skeleton-line" style={{ width: '120px' }} />
+                      <Skeleton className="skeleton-line" style={{ width: '70px', height: '26px', marginTop: '0.75rem' }} />
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <div className="section">
+              <Skeleton className="skeleton-line" style={{ width: '140px' }} />
+              <div className="quick-actions-grid">
+                {[...Array(3)].map((_, index) => (
+                  <Card key={index} padding="large" shadow="medium" className="quick-action-card">
+                    <div className="quick-action-content">
+                      <Skeleton className="skeleton-rect" style={{ width: '80px', height: '80px', borderRadius: '16px' }} />
+                      <Skeleton className="skeleton-line" style={{ width: '160px' }} />
+                      <Skeleton className="skeleton-line" style={{ width: '220px' }} />
+                      <Skeleton className="skeleton-line" style={{ width: '120px', marginTop: 'auto' }} />
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            <div className="section">
+              <div className="section-header">
+                <Skeleton className="skeleton-line" style={{ width: '160px' }} />
+                <Skeleton className="skeleton-line" style={{ width: '90px' }} />
+              </div>
+              <Card padding="none" shadow="medium">
+                <div className="activity-list">
+                  {[...Array(3)].map((_, index) => (
+                    <div
+                      key={index}
+                      className="activity-item"
+                      style={{
+                        borderBottom: index < 2 ? '1px solid var(--border-color)' : 'none'
+                      }}
+                    >
+                      <Skeleton className="skeleton-circle" style={{ width: '48px', height: '48px' }} />
+                      <div className="activity-content">
+                        <Skeleton className="skeleton-line" style={{ width: '180px' }} />
+                        <Skeleton className="skeleton-line" style={{ width: '120px', marginTop: '0.5rem' }} />
+                      </div>
+                      <Skeleton className="skeleton-line" style={{ width: '90px', height: '20px' }} />
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </>
@@ -166,7 +228,7 @@ const Dashboard = () => {
 
           {/* Stats Grid */}
           <div className="stats-grid reveal-on-scroll">
-            <Card hover3d={true} padding="large" shadow="medium">
+            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
               <div className="stat-card">
                 <div className="stat-icon" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
                   <FiShield size={24} />
@@ -178,7 +240,7 @@ const Dashboard = () => {
               </div>
             </Card>
 
-            <Card hover3d={true} padding="large" shadow="medium">
+            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
               <div className="stat-card">
                 <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
                   <FiFileText size={24} />
@@ -190,7 +252,7 @@ const Dashboard = () => {
               </div>
             </Card>
 
-            <Card hover3d={true} padding="large" shadow="medium">
+            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
               <div className="stat-card">
                 <div className="stat-icon" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
                   <FiFileText size={24} />
@@ -202,7 +264,7 @@ const Dashboard = () => {
               </div>
             </Card>
 
-            <Card hover3d={true} padding="large" shadow="medium">
+            <Card hover3d={true} padding="large" shadow="medium" className="reveal-on-scroll">
               <div className="stat-card">
                 <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
                   <FiAlertTriangle size={24} />
@@ -226,7 +288,7 @@ const Dashboard = () => {
                   onClick={() => navigate(action.path)}
                   padding="large"
                   shadow="medium"
-                  className="quick-action-card"
+                  className="quick-action-card reveal-on-scroll"
                 >
                   <div className="quick-action-content">
                     <div

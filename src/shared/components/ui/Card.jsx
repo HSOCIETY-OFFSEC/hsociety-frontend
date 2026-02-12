@@ -65,7 +65,9 @@ const Card = ({
   const baseStyles = {
     position: 'relative',
     background: 'var(--card-bg)',
-    border: '1px solid var(--border-color)',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'var(--border-color)',
     borderRadius: '12px',
     padding: paddingMap[padding],
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',

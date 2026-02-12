@@ -99,8 +99,9 @@ const Button = ({
   const variantExtras = {
     card: {
       textTransform: 'uppercase',
-      letterSpacing: '0.12em',
-      fontSize: size === 'small' ? '0.75rem' : currentSize.fontSize
+      letterSpacing: '0.18em',
+      fontSize: size === 'small' ? '0.7rem' : currentSize.fontSize,
+      borderRadius: '999px'
     }
   };
   const currentExtras = variantExtras[variant] || {};
@@ -138,7 +139,9 @@ const Button = ({
     background: currentVariant.hoverBackground,
     borderColor: currentVariant.hoverBorder,
     transform: 'translateY(-2px)',
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+    boxShadow: variant === 'card'
+      ? '0 18px 30px -20px rgba(15, 23, 42, 0.45)'
+      : '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
   } : {};
 
   const pressedStyles = isPressed && !disabled && !loading ? {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
+import PageLoader from '../shared/components/ui/PageLoader';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
@@ -18,10 +19,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner" />
-        <p>Loading...</p>
-      </div>
+      <PageLoader message="Authenticating session..." />
     );
   }
 
@@ -40,10 +38,7 @@ const PublicRoute = ({ children }) => {
 
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner" />
-        <p>Loading...</p>
-      </div>
+      <PageLoader message="Preparing your workspace..." />
     );
   }
 
@@ -58,10 +53,7 @@ const PublicRoute = ({ children }) => {
  * Loading fallback
  */
 const LoadingFallback = () => (
-  <div className="loading-container">
-    <div className="loading-spinner" />
-    <p>Loading...</p>
-  </div>
+  <PageLoader message="Loading secure interface..." />
 );
 
 /**
