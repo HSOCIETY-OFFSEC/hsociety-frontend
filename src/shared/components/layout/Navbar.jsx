@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiBarChart2, FiChevronDown, FiFileText, FiLogOut, FiMenu, FiMessageSquare, FiShield, FiX } from 'react-icons/fi';
+import { FiBarChart2, FiChevronDown, FiFileText, FiLogOut, FiMenu, FiMessageSquare, FiShield, FiUsers, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
@@ -36,6 +36,13 @@ const Navbar = () => {
     { path: '/pentest', label: 'Pentest', icon: FiShield },
     { path: '/audits', label: 'Audits', icon: FiFileText },
     { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+  ];
+
+  const publicLinks = [
+    { path: '/about', label: 'About Us', icon: FiUsers },
+    { path: '/team', label: 'Meet the Team', icon: FiUsers },
+    { path: '/developer', label: 'Meet the Developer', icon: FiUsers },
+    { path: '/feedback', label: 'Contact', icon: FiMessageSquare }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -235,35 +242,35 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu Button */}
-          {isAuthenticated && (
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{
-                display: 'none',
-                padding: '0.5rem',
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--text-primary)',
-                fontSize: '1.5rem',
-                cursor: 'pointer'
-              }}
-              className="mobile-menu-button"
-            >
-              {mobileMenuOpen ? <FiX /> : <FiMenu />}
-            </button>
-          )}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              display: 'none',
+              padding: '0.625rem',
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--text-primary)',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              borderRadius: '10px'
+            }}
+            className="mobile-menu-button"
+            aria-label="Toggle navigation"
+          >
+            {mobileMenuOpen ? <FiX /> : <FiMenu />}
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isAuthenticated && mobileMenuOpen && (
+      {mobileMenuOpen && (
         <div style={{
           borderTop: '1px solid var(--border-color)',
           padding: '1rem',
           background: 'var(--card-bg)'
         }} className="mobile-menu">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {navLinks.map(link => (
+            {(isAuthenticated ? navLinks : publicLinks).map(link => (
               <button
                 key={link.path}
                 onClick={() => {
@@ -299,28 +306,56 @@ const Navbar = () => {
               margin: '0.5rem 0'
             }} />
 
-            <button
-              onClick={handleLogout}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                padding: '0.875rem 1rem',
-                background: 'transparent',
-                border: 'none',
-                borderRadius: '8px',
-                color: '#ef4444',
-                fontSize: '1rem',
-                fontWeight: 500,
-                cursor: 'pointer',
-                textAlign: 'left'
-              }}
-            >
-              <span style={{ fontSize: '1.25rem', display: 'inline-flex' }}>
-                <FiLogOut size={18} />
-              </span>
-              <span>Logout</span>
-            </button>
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.875rem 1rem',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '8px',
+                  color: '#ef4444',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  textAlign: 'left'
+                }}
+              >
+                <span style={{ fontSize: '1.25rem', display: 'inline-flex' }}>
+                  <FiLogOut size={18} />
+                </span>
+                <span>Logout</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  navigate('/login');
+                  setMobileMenuOpen(false);
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  padding: '0.875rem 1rem',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '8px',
+                  color: 'var(--text-primary)',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  textAlign: 'left'
+                }}
+              >
+                <span style={{ fontSize: '1.25rem', display: 'inline-flex' }}>
+                  <FiShield size={18} />
+                </span>
+                <span>Login</span>
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -328,6 +363,12 @@ const Navbar = () => {
       {/* Mobile Responsive Styles */}
       <style>{`
         @media (max-width: 768px) {
+          nav .container {
+            height: auto !important;
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+            gap: 1rem !important;
+          }
           .desktop-nav {
             display: none !important;
           }
@@ -336,6 +377,15 @@ const Navbar = () => {
           }
           .desktop-user-menu {
             display: none !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .mobile-menu {
+            padding-bottom: 1.5rem !important;
+          }
+          .mobile-menu-button {
+            min-width: 44px;
+            min-height: 44px;
           }
         }
       `}</style>

@@ -10,6 +10,9 @@ const Audits = React.lazy(() => import('../features/audits/Audits'));
 const Pentest = React.lazy(() => import('../features/pentest/Pentest'));
 const Feedback = React.lazy(() => import('../features/feedback/Feedback'));
 const Landing = React.lazy(() => import('../features/landing/Landing'));
+const About = React.lazy(() => import('../features/about/About'));
+const Team = React.lazy(() => import('../features/team/Team'));
+const Developer = React.lazy(() => import('../features/developer/Developer'));
 
 /**
  * Protected Route
@@ -84,6 +87,21 @@ const AppRouter = () => {
           <Route
             path="/feedback"
             element={<Feedback />}
+          />
+
+          <Route
+            path="/about"
+            element={<About />}
+          />
+
+          <Route
+            path="/team"
+            element={<Team />}
+          />
+
+          <Route
+            path="/developer"
+            element={<Developer />}
           />
 
           {/* Protected Routes */}

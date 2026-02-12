@@ -459,6 +459,17 @@ select.form-input {
   }
 }
 
+@media (max-width: 640px) {
+  .feedback-header {
+    text-align: left;
+  }
+
+  .feedback-subtitle {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 @media (max-width: 480px) {
   .feedback-container {
     padding: 1.5rem 0;
@@ -486,6 +497,20 @@ select.form-input {
 
   .form-actions {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 360px) {
+  .feedback-title {
+    font-size: 1.5rem;
+  }
+
+  .section-label {
+    font-size: 0.95rem;
+  }
+
+  .type-label {
+    font-size: 0.9rem;
   }
 }
 

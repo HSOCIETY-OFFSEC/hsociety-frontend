@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import { FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiCheck, FiCheckCircle, FiCpu, FiFileText, FiGlobe, FiLock, FiMessageSquare, FiShield, FiTarget, FiTerminal, FiUsers, FiZap } from 'react-icons/fi';
+import { FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiCheck, FiCheckCircle, FiClipboard, FiCode, FiCpu, FiFileText, FiGlobe, FiGithub, FiLayers, FiLinkedin, FiLock, FiMenu, FiMessageSquare, FiPhone, FiSearch, FiShield, FiTarget, FiTerminal, FiTwitter, FiUsers, FiX, FiZap } from 'react-icons/fi';
 import Logo from '../../shared/components/common/Logo';
 import ThemeToggle from '../../shared/components/common/ThemeToggle';
 import Button from '../../shared/components/ui/Button';
@@ -24,6 +24,7 @@ import '../../styles/features/landing.css';
 const Landing = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useScrollReveal();
 
@@ -88,6 +89,56 @@ const Landing = () => {
     }
   ];
 
+  const engagementSteps = [
+    {
+      icon: FiClipboard,
+      title: 'Scope & Threat Model',
+      description: 'Define assets, access paths, and crown-jewel risks before testing begins.',
+      meta: '1-2 days'
+    },
+    {
+      icon: FiSearch,
+      title: 'Recon & Exploitation',
+      description: 'Enumerate the attack surface and validate exploitable weaknesses.',
+      meta: '3-10 days'
+    },
+    {
+      icon: FiLayers,
+      title: 'Privilege & Impact',
+      description: 'Demonstrate real-world impact through controlled privilege escalation.',
+      meta: '2-5 days'
+    },
+    {
+      icon: FiCheckCircle,
+      title: 'Report & Retest',
+      description: 'Deliver fix-ready guidance with optional verification of remediation.',
+      meta: '3-5 days'
+    }
+  ];
+
+  const deliverables = [
+    {
+      icon: FiFileText,
+      title: 'Executive Narrative',
+      description: 'Risk framing, business impact, and a board-ready summary.'
+    },
+    {
+      icon: FiTerminal,
+      title: 'Proof-of-Exploit Pack',
+      description: 'Repro steps, evidence, and safe PoC artifacts.'
+    },
+    {
+      icon: FiLock,
+      title: 'Retest Validation',
+      description: 'Verification of fixes with updated risk scoring.'
+    },
+    {
+      icon: FiMessageSquare,
+      title: 'Remediation Workshop',
+      description: 'Live walkthroughs and fix guidance with your engineers.'
+    }
+  ];
+
   return (
     <div className="landing-page">
       {/* Navigation */}
@@ -118,6 +169,45 @@ const Landing = () => {
               </>
             )}
           </div>
+
+          <button
+            className="nav-mobile-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+            onClick={() => setMobileNavOpen((prev) => !prev)}
+          >
+            {mobileNavOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+          </button>
+        </div>
+
+        <div className={`nav-mobile-panel ${mobileNavOpen ? 'open' : ''}`}>
+          <button type="button" onClick={() => { navigate('/about'); setMobileNavOpen(false); }}>
+            <FiUsers size={18} />
+            About Us
+          </button>
+          <button type="button" onClick={() => { navigate('/team'); setMobileNavOpen(false); }}>
+            <FiUsers size={18} />
+            Meet the Team
+          </button>
+          <button type="button" onClick={() => { navigate('/developer'); setMobileNavOpen(false); }}>
+            <FiCode size={18} />
+            Meet the Developer
+          </button>
+          <button type="button" onClick={() => { navigate('/feedback'); setMobileNavOpen(false); }}>
+            <FiMessageSquare size={18} />
+            Contact
+          </button>
+          {isAuthenticated ? (
+            <button type="button" onClick={() => { navigate('/dashboard'); setMobileNavOpen(false); }}>
+              <FiBarChart2 size={18} />
+              Dashboard
+            </button>
+          ) : (
+            <button type="button" onClick={() => { navigate('/login'); setMobileNavOpen(false); }}>
+              <FiShield size={18} />
+              Login
+            </button>
+          )}
         </div>
       </nav>
 
@@ -323,6 +413,80 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Engagement Process Section */}
+      <section className="process-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header-center">
+            <div className="section-eyebrow">
+              <Logo size="small" />
+              <span>Engagement Flow</span>
+            </div>
+            <h2 className="section-title-large">Built for Clarity and Speed</h2>
+            <p className="section-subtitle-large">
+              Every engagement follows a structured, evidence-driven process.
+            </p>
+          </div>
+
+          <div className="process-grid">
+            {engagementSteps.map((step, index) => (
+              <Card key={index} padding="large" className="process-card reveal-on-scroll">
+                <div className="process-header">
+                  <div className="process-icon">
+                    <step.icon size={26} />
+                  </div>
+                  <div className="process-meta">{step.meta}</div>
+                </div>
+                <h3 className="process-title">{step.title}</h3>
+                <p className="process-description">{step.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Deliverables Section */}
+      <section className="deliverables-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header-center">
+            <div className="section-eyebrow">
+              <Logo size="small" />
+              <span>Outcome Driven</span>
+            </div>
+            <h2 className="section-title-large">What You Receive</h2>
+            <p className="section-subtitle-large">
+              Clear documentation and hands-on guidance for lasting fixes.
+            </p>
+          </div>
+
+          <div className="deliverables-grid">
+            {deliverables.map((item, index) => (
+              <Card key={index} padding="large" className="deliverable-card reveal-on-scroll">
+                <div className="deliverable-icon">
+                  <item.icon size={26} />
+                </div>
+                <h3 className="deliverable-title">{item.title}</h3>
+                <p className="deliverable-description">{item.description}</p>
+              </Card>
+            ))}
+          </div>
+
+          <div className="deliverables-highlight">
+            <div className="highlight-item">
+              <FiActivity size={18} />
+              <span>Live status updates during testing</span>
+            </div>
+            <div className="highlight-item">
+              <FiShield size={18} />
+              <span>Risk scoring aligned with CVSS and MITRE</span>
+            </div>
+            <div className="highlight-item">
+              <FiCheck size={18} />
+              <span>Actionable fixes prioritized by impact</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="cta-section reveal-on-scroll">
         <div className="cta-container">
@@ -360,41 +524,145 @@ const Landing = () => {
       {/* Footer */}
       <footer className="landing-footer reveal-on-scroll">
         <div className="footer-container">
-          <div className="footer-content">
+          <div className="footer-top">
             <div className="footer-brand">
               <Logo size="medium" />
               <p className="footer-tagline">
                 Real, in-depth, African-centric offensive security.
               </p>
+              <div className="footer-status">
+                <span className="status-chip">
+                  <FiShield size={14} />
+                  Zero-Trust Ops
+                </span>
+                <span className="status-chip">
+                  <FiCheckCircle size={14} />
+                  Verified Reporting
+                </span>
+                <span className="status-chip">
+                  <FiZap size={14} />
+                  24h Critical Response
+                </span>
+              </div>
             </div>
 
-            <div className="footer-links">
-              <div className="footer-column">
-                <h4>Services</h4>
-                <a href="#services">Penetration Testing</a>
-                <a href="#services">Security Audits</a>
-                <a href="#services">Red Team Ops</a>
+            <div className="footer-newsletter">
+              <h4>Get the Offensive Brief</h4>
+              <p>Monthly tactics, case studies, and critical advisories.</p>
+              <div className="footer-newsletter-form">
+                <input
+                  type="email"
+                  placeholder="you@company.com"
+                  aria-label="Email address"
+                />
+                <button type="button" className="footer-newsletter-button">
+                  Subscribe
+                </button>
               </div>
+              <p className="footer-privacy">No spam. Unsubscribe anytime.</p>
+            </div>
+          </div>
 
-              <div className="footer-column">
-                <h4>Company</h4>
-                <a href="#about">About Us</a>
-                <a href="/feedback">Contact</a>
-                <a href="#careers">Careers</a>
-              </div>
+          <div className="footer-content">
+            <div className="footer-column">
+              <h4>Services</h4>
+              <a href="#services">
+                <FiShield size={16} />
+                Penetration Testing
+              </a>
+              <a href="#services">
+                <FiFileText size={16} />
+                Security Audits
+              </a>
+              <a href="#services">
+                <FiTarget size={16} />
+                Red Team Ops
+              </a>
+              <a href="#services">
+                <FiGlobe size={16} />
+                API & Cloud Testing
+              </a>
+            </div>
 
-              <div className="footer-column">
-                <h4>Legal</h4>
-                <a href="#privacy">Privacy Policy</a>
-                <a href="#terms">Terms of Service</a>
-                <a href="#security">Security</a>
-              </div>
+            <div className="footer-column">
+              <h4>Company</h4>
+              <a href="#about">
+                <FiUsers size={16} />
+                About Us
+              </a>
+              <a href="/team">
+                <FiUsers size={16} />
+                Meet the Team
+              </a>
+              <a href="/feedback">
+                <FiMessageSquare size={16} />
+                Contact
+              </a>
+              <a href="/developer">
+                <FiCode size={16} />
+                Meet the Developer
+              </a>
+              <a href="#careers">
+                <FiClipboard size={16} />
+                Careers
+              </a>
+              <a href="#community">
+                <FiZap size={16} />
+                Community
+              </a>
+            </div>
+
+            <div className="footer-column">
+              <h4>Resources</h4>
+              <a href="#reports">
+                <FiFileText size={16} />
+                Sample Reports
+              </a>
+              <a href="#methodology">
+                <FiLayers size={16} />
+                Testing Methodology
+              </a>
+              <a href="#case-studies">
+                <FiBarChart2 size={16} />
+                Case Studies
+              </a>
+              <a href="#blog">
+                <FiTerminal size={16} />
+                Field Notes
+              </a>
+            </div>
+
+            <div className="footer-column">
+              <h4>Contact</h4>
+              <a href="mailto:ops@hsociety.africa">
+                <FiMessageSquare size={16} />
+                ops@hsociety.africa
+              </a>
+              <a href="tel:+254700000000">
+                <FiPhone size={16} />
+                +254 700 000 000
+              </a>
+              <span className="footer-address">
+                <FiGlobe size={16} />
+                Remote-first across Africa
+              </span>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <p>© 2025 HSOCIETY. All rights reserved.</p>
+            <p>© 2026 HSOCIETY. All rights reserved.</p>
             <p>Execution over marketing. Proof over promises.</p>
+            <div className="footer-socials">
+              <a href="#linkedin" aria-label="LinkedIn">
+                <FiLinkedin size={18} />
+              </a>
+              <a href="#twitter" aria-label="Twitter">
+                <FiTwitter size={18} />
+              </a>
+              <a href="#github" aria-label="GitHub">
+                <FiGithub size={18} />
+              </a>
+            </div>
           </div>
         </div>
       </footer>

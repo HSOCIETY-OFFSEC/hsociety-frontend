@@ -340,6 +340,31 @@
   }
 }
 
+@media (max-width: 640px) {
+  .dashboard-header,
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .view-all-link {
+    width: 100%;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .activity-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .activity-status {
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
   .dashboard-header {
     flex-direction: column;
@@ -358,5 +383,19 @@
   .quick-action-icon {
     width: 64px;
     height: 64px;
+  }
+}
+
+@media (max-width: 360px) {
+  .dashboard-title {
+    font-size: 1.35rem;
+  }
+
+  .stat-value {
+    font-size: 1.6rem;
+  }
+
+  .quick-action-title {
+    font-size: 1.05rem;
   }
 }
