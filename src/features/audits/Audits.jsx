@@ -7,6 +7,7 @@ import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Skeleton from '../../shared/components/ui/Skeleton';
 import { formatDate, getRelativeTime } from '../../utils/helpers';
+import { downloadAuditReport, getAudits } from './audits.service';
 import '../../styles/features/audits.css';
 
 /**
@@ -31,6 +32,7 @@ const Audits = () => {
   const [selectedAudit, setSelectedAudit] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState('');
 
   useScrollReveal('.reveal-on-scroll', {}, [loading, filteredAudits.length]);
 
@@ -44,89 +46,17 @@ const Audits = () => {
 
   const loadAudits = async () => {
     setLoading(true);
+    setError('');
 
     try {
-      // TODO: Backend integration
-      // const response = await auditService.getAudits();
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Mock data
-      const mockAudits = [
-        {
-          id: '1',
-          title: 'Q4 2024 Security Assessment',
-          type: 'Web Application',
-          date: Date.now() - (5 * 24 * 60 * 60 * 1000),
-          status: 'completed',
-          severity: {
-            critical: 2,
-            high: 5,
-            medium: 12,
-            low: 8,
-            info: 15
-          },
-          remediationProgress: 65,
-          tester: 'Security Team A',
-          reportAvailable: true
-        },
-        {
-          id: '2',
-          title: 'Network Infrastructure Audit',
-          type: 'Network',
-          date: Date.now() - (15 * 24 * 60 * 60 * 1000),
-          status: 'in-review',
-          severity: {
-            critical: 0,
-            high: 3,
-            medium: 7,
-            low: 5,
-            info: 10
-          },
-          remediationProgress: 40,
-          tester: 'Security Team B',
-          reportAvailable: false
-        },
-        {
-          id: '3',
-          title: 'Mobile App Security Scan',
-          type: 'Mobile Application',
-          date: Date.now() - (30 * 24 * 60 * 60 * 1000),
-          status: 'completed',
-          severity: {
-            critical: 1,
-            high: 4,
-            medium: 9,
-            low: 11,
-            info: 20
-          },
-          remediationProgress: 100,
-          tester: 'Security Team C',
-          reportAvailable: true
-        },
-        {
-          id: '4',
-          title: 'API Security Assessment',
-          type: 'API',
-          date: Date.now() - (45 * 24 * 60 * 60 * 1000),
-          status: 'completed',
-          severity: {
-            critical: 0,
-            high: 2,
-            medium: 6,
-            low: 8,
-            info: 12
-          },
-          remediationProgress: 85,
-          tester: 'Security Team A',
-          reportAvailable: true
-        }
-      ];
-
-      setAudits(mockAudits);
+      const response = await getAudits();
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to load audits');
+      }
+      setAudits(response.data);
     } catch (error) {
       console.error('Failed to load audits:', error);
+      setError('Failed to load audits.');
     } finally {
       setLoading(false);
     }
@@ -186,10 +116,11 @@ const Audits = () => {
     return Object.values(severity).reduce((sum, count) => sum + count, 0);
   };
 
-  const handleDownloadReport = (auditId) => {
-    // TODO: Backend integration - Download report
-    console.log('Downloading report for audit:', auditId);
-    alert('Download functionality will be implemented with backend integration');
+  const handleDownloadReport = async (auditId) => {
+    const response = await downloadAuditReport(auditId);
+    if (!response.success) {
+      setError(response.error || 'Failed to download report.');
+    }
   };
 
   const handleViewDetails = (audit) => {
@@ -419,6 +350,12 @@ const Audits = () => {
               Showing <strong>{filteredAudits.length}</strong> of <strong>{audits.length}</strong> audits
             </p>
           </div>
+
+          {error && (
+            <Card padding="medium" shadow="small" className="reveal-on-scroll">
+              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
+            </Card>
+          )}
 
           {/* Audits Grid */}
           {filteredAudits.length === 0 ? (

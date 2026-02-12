@@ -1,16 +1,35 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FiBookOpen, FiBookmark, FiBriefcase, FiCheckCircle, FiFilter, FiHash, FiHeart, FiImage, FiMessageSquare, FiPlus, FiSend, FiShield, FiStar, FiTrendingUp, FiUsers } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { useAuth } from '../../core/auth/AuthContext';
 import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
+import {
+  createCommunityPost,
+  getCommunityOverview,
+  normalizeFeedPosts,
+  reactToPost,
+  savePost
+} from './community.service';
 import '../../styles/features/community.css';
 
 const Community = () => {
   useScrollReveal();
   const { user } = useAuth();
   const [tab, setTab] = useState('popular');
+  const [overview, setOverview] = useState({
+    stats: { learners: 0, questions: 0, answered: 0 },
+    channels: [],
+    tags: [],
+    posts: [],
+    mentor: null,
+    challenge: null
+  });
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [postInput, setPostInput] = useState('');
+  const [error, setError] = useState('');
   const role = user?.role || 'student';
   const isCorporate = role === 'corporate';
 
@@ -21,48 +40,69 @@ const Community = () => {
       : 'Find peers for weekly practice and accountability.'
   }), [isCorporate]);
 
-  // TODO: Replace with backend data once available.
-  const tags = ['#career-switch', '#ctf', '#web-security', '#blue-team', '#owasp', '#interview-prep'];
+  useEffect(() => {
+    let mounted = true;
+    const loadOverview = async () => {
+      setLoading(true);
+      setError('');
+      const response = await getCommunityOverview({ role, feed: tab });
+      if (!mounted) return;
+      if (!response.success) {
+        setError(response.error || 'Failed to load community data.');
+      } else {
+        setOverview({
+          ...response.data,
+          posts: normalizeFeedPosts(response.data.posts || [])
+        });
+      }
+      setLoading(false);
+    };
 
-  // TODO: Replace with backend data once available.
-  const posts = [
-    {
-      id: 1,
-      author: 'Lena O.',
-      role: 'Junior Analyst',
-      time: '2h ago',
-      title: 'Best first CTF for absolute beginners?',
-      body: 'I know basics of networking and Linux. Any friendly CTF to build confidence?',
-      likes: 42,
-      replies: 8,
-      tags: ['#ctf', '#career-switch'],
-      avatar: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80'
-    },
-    {
-      id: 2,
-      author: 'Dev K.',
-      role: 'Security Student',
-      time: '5h ago',
-      title: 'How do you explain CVSS to non-technical stakeholders?',
-      body: 'Any frameworks or analogies that help in presentations?',
-      likes: 28,
-      replies: 6,
-      tags: ['#owasp', '#interview-prep'],
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
-    },
-    {
-      id: 3,
-      author: 'Ari P.',
-      role: 'SOC Intern',
-      time: '1d ago',
-      title: 'Resources for learning web pentesting in 60 days?',
-      body: 'Looking for a structured path with labs and real-world practice.',
-      likes: 63,
-      replies: 14,
-      tags: ['#web-security', '#career-switch'],
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'
+    loadOverview();
+    return () => {
+      mounted = false;
+    };
+  }, [role, tab]);
+
+  const handleCreatePost = async () => {
+    if (!postInput.trim() || submitting) return;
+    setSubmitting(true);
+    setError('');
+    const response = await createCommunityPost({ content: postInput, role });
+    if (!response.success) {
+      setError(response.error || 'Failed to create post.');
+      setSubmitting(false);
+      return;
     }
-  ];
+
+    const normalized = normalizeFeedPosts([response.data])[0];
+    setOverview((prev) => ({
+      ...prev,
+      posts: [normalized, ...prev.posts]
+    }));
+    setPostInput('');
+    setSubmitting(false);
+  };
+
+  const handleLikePost = async (postId) => {
+    setOverview((prev) => ({
+      ...prev,
+      posts: prev.posts.map((post) =>
+        post.id === postId ? { ...post, likes: post.likes + 1 } : post
+      )
+    }));
+    await reactToPost({ postId, reaction: 'like' });
+  };
+
+  const handleSavePost = async (postId, currentlySaved) => {
+    setOverview((prev) => ({
+      ...prev,
+      posts: prev.posts.map((post) =>
+        post.id === postId ? { ...post, isSaved: !currentlySaved } : post
+      )
+    }));
+    await savePost({ postId, saved: !currentlySaved });
+  };
 
   return (
     <>
@@ -85,15 +125,15 @@ const Community = () => {
           <div className="community-hero-stats">
             <div className="hero-stat">
               <FiUsers size={18} />
-              <span>12k learners</span>
+              <span>{overview.stats.learners || 0} learners</span>
             </div>
             <div className="hero-stat">
               <FiMessageSquare size={18} />
-              <span>4k questions</span>
+              <span>{overview.stats.questions || 0} questions</span>
             </div>
             <div className="hero-stat">
               <FiCheckCircle size={18} />
-              <span>1.3k answered</span>
+              <span>{overview.stats.answered || 0} answered</span>
             </div>
           </div>
         </header>
@@ -103,11 +143,11 @@ const Community = () => {
             <Card padding="large" className="sidebar-card">
               <h3>Channels</h3>
               <div className="sidebar-list">
-                <button type="button"><FiHash size={16} /> Introductions</button>
-                <button type="button"><FiHash size={16} /> Beginner Q&A</button>
-                <button type="button"><FiHash size={16} /> CTF Talk</button>
-                <button type="button"><FiHash size={16} /> Blue Team</button>
-                <button type="button"><FiHash size={16} /> Red Team</button>
+                {overview.channels.map((channel) => (
+                  <button key={channel.id} type="button">
+                    <FiHash size={16} /> {channel.name}
+                  </button>
+                ))}
               </div>
             </Card>
 
@@ -138,7 +178,7 @@ const Community = () => {
             <Card padding="large" className="sidebar-card">
               <h3>Trending Tags</h3>
               <div className="tag-list">
-                {tags.map((tag) => (
+                {overview.tags.map((tag) => (
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
@@ -161,6 +201,8 @@ const Community = () => {
                 </div>
                 <input
                   type="text"
+                  value={postInput}
+                  onChange={(e) => setPostInput(e.target.value)}
                   placeholder={isCorporate
                     ? 'Share an internship, office hours, or security insight...'
                     : 'Ask a question or share a win...'}
@@ -171,9 +213,14 @@ const Community = () => {
                   <button type="button"><FiImage size={16} /> Media</button>
                   <button type="button"><FiShield size={16} /> Lab Logs</button>
                 </div>
-                <Button variant="secondary" size="small">
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={handleCreatePost}
+                  disabled={submitting || !postInput.trim()}
+                >
                   <FiSend size={16} />
-                  Post
+                  {submitting ? 'Posting...' : 'Post'}
                 </Button>
               </div>
             </Card>
@@ -210,7 +257,17 @@ const Community = () => {
             </div>
 
             <div className="post-list">
-              {posts.map((post) => (
+              {error && (
+                <Card padding="large" className="post-card">
+                  <p>{error}</p>
+                </Card>
+              )}
+              {loading && (
+                <Card padding="large" className="post-card">
+                  <p>Loading community feed...</p>
+                </Card>
+              )}
+              {!loading && overview.posts.map((post) => (
                 <Card key={post.id} padding="large" className="post-card reveal-on-scroll">
                   <div className="post-header">
                     <div className="avatar-frame">
@@ -237,9 +294,13 @@ const Community = () => {
                     ))}
                   </div>
                   <div className="post-actions">
-                    <button type="button"><FiHeart size={16} /> {post.likes}</button>
+                    <button type="button" onClick={() => handleLikePost(post.id)}>
+                      <FiHeart size={16} /> {post.likes}
+                    </button>
                     <button type="button"><FiMessageSquare size={16} /> {post.replies}</button>
-                    <button type="button"><FiStar size={16} /> Save</button>
+                    <button type="button" onClick={() => handleSavePost(post.id, post.isSaved)}>
+                      <FiStar size={16} /> {post.isSaved ? 'Saved' : 'Save'}
+                    </button>
                   </div>
                 </Card>
               ))}
@@ -257,8 +318,8 @@ const Community = () => {
               <div className="mentor-item">
                 <div className="avatar-frame">
                   <img
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
-                    alt="Ria N."
+                    src={overview.mentor?.avatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'}
+                    alt={overview.mentor?.name || 'Mentor'}
                     loading="lazy"
                     onError={(e) => {
                       e.currentTarget.style.opacity = '0';
@@ -267,8 +328,8 @@ const Community = () => {
                   <div className="avatar-fallback" aria-hidden="true"></div>
                 </div>
                 <div>
-                  <h4>Ria N.</h4>
-                  <span>Blue Team Lead</span>
+                  <h4>{overview.mentor?.name || 'Mentor'}</h4>
+                  <span>{overview.mentor?.role || 'Security Mentor'}</span>
                 </div>
               </div>
               <Button variant="ghost" size="small">
@@ -277,12 +338,8 @@ const Community = () => {
             </Card>
 
             <Card padding="large" className="sidebar-card">
-              <h3>{isCorporate ? 'Top Learner Highlights' : 'Challenge of the Week'}</h3>
-              <p>
-                {isCorporate
-                  ? 'See the most active learners and award mentorship credits.'
-                  : 'Break down a real-world phishing sample and map it to MITRE.'}
-              </p>
+              <h3>{overview.challenge?.title || (isCorporate ? 'Top Learner Highlights' : 'Challenge of the Week')}</h3>
+              <p>{overview.challenge?.description}</p>
               <Button variant="secondary" size="small">
                 {isCorporate ? 'View Learners' : 'Start Challenge'}
               </Button>

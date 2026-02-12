@@ -81,6 +81,15 @@ export const API_ENDPOINTS = {
     OVERVIEW: '/dashboard/overview'
   },
 
+  // Student
+  STUDENT: {
+    OVERVIEW: '/student/overview',
+    LEARNING_PATH: '/student/learning-path',
+    CHALLENGES: '/student/challenges',
+    MENTORS: '/student/mentors',
+    SNAPSHOT: '/student/snapshot'
+  },
+
   // Penetration Testing
   PENTEST: {
     LIST: '/pentest',
@@ -109,6 +118,19 @@ export const API_ENDPOINTS = {
     SUBMIT: '/feedback',
     LIST: '/feedback',
     GET: '/feedback/:id'
+  },
+
+  // Community
+  COMMUNITY: {
+    OVERVIEW: '/community/overview',
+    POSTS: '/community/posts',
+    POST_BY_ID: '/community/posts/:id',
+    POST_REACT: '/community/posts/:id/react',
+    POST_SAVE: '/community/posts/:id/save',
+    CHANNELS: '/community/channels',
+    TAGS: '/community/tags',
+    MENTORS: '/community/mentors',
+    CHALLENGES: '/community/challenges'
   },
 
   // File Upload

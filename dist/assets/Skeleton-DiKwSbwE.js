@@ -1,0 +1,1 @@
+import{j as e}from"./index-3VLiaMkN.js";import"./react-vendor-Dt--M4EP.js";const s=({className:s="",style:a={},variant:t="line"})=>e.jsx("div",{className:`skeleton skeleton-${t} ${s}`,style:a,"aria-hidden":"true"});export{s as S};

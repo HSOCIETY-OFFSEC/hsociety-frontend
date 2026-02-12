@@ -6,6 +6,7 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { validateForm } from '../../core/validation/input.validator';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
+import { submitFeedback } from './feedback.service';
 import '../../styles/features/feedback.css';
 
 /**
@@ -41,6 +42,7 @@ const Feedback = () => {
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submittedReceipt, setSubmittedReceipt] = useState(null);
 
   const feedbackTypes = [
     { value: 'bug', label: 'Bug Report', icon: FiAlertTriangle, description: 'Report a technical issue' },
@@ -70,8 +72,15 @@ const Feedback = () => {
     e.preventDefault();
     setFormErrors({});
     setSubmitSuccess(false);
+    setSubmittedReceipt(null);
 
-    // Validate form
+    const validationInput = {
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message
+    };
+
     const validationRules = {
       name: { required: true, minLength: 2 },
       email: { required: true, type: 'email' },
@@ -79,7 +88,7 @@ const Feedback = () => {
       message: { required: true, minLength: 20 }
     };
 
-    const validation = validateForm(formData, validationRules);
+    const validation = validateForm(validationInput, validationRules);
 
     if (!validation.isValid) {
       setFormErrors(validation.errors);
@@ -89,14 +98,23 @@ const Feedback = () => {
     setLoading(true);
 
     try {
-      // TODO: Backend integration
-      // await feedbackService.submitFeedback(validation.sanitizedData);
+      const payload = {
+        ...formData,
+        ...validation.sanitizedData
+      };
+      const response = await submitFeedback(payload);
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to submit feedback.');
+      }
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      console.log('Feedback submitted:', validation.sanitizedData);
-
+      setSubmittedReceipt({
+        ...response.data,
+        contact: response.data?.contact || {
+          name: payload.name,
+          email: payload.email,
+          allowContact: payload.allowContact
+        }
+      });
       setSubmitSuccess(true);
       
       // Reset form
@@ -145,15 +163,23 @@ const Feedback = () => {
                   Your feedback has been submitted successfully. We appreciate you taking the time
                   to help us improve HSOCIETY.
                 </p>
-                {formData.allowContact && (
+                {submittedReceipt?.contact?.allowContact && (
                   <p className="contact-note">
-                    We'll reach out to you at <strong>{formData.email}</strong> if we need
+                    We'll reach out to you at <strong>{submittedReceipt?.contact?.email || formData.email}</strong> if we need
                     additional information.
+                  </p>
+                )}
+                {submittedReceipt?.ticketNumber && (
+                  <p className="contact-note">
+                    Ticket: <strong>{submittedReceipt.ticketNumber}</strong>
                   </p>
                 )}
                 <Button
                   variant="primary"
-                  onClick={() => setSubmitSuccess(false)}
+                  onClick={() => {
+                    setSubmitSuccess(false);
+                    setSubmittedReceipt(null);
+                  }}
                   style={{ marginTop: '1rem' }}
                 >
                   Submit Another Feedback
