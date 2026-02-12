@@ -25,7 +25,7 @@ import '../../styles/features/feedback.css';
  */
 
 const Feedback = () => {
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useAuth();
 
   useScrollReveal();
   
