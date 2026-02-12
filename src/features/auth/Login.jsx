@@ -3,6 +3,7 @@ import { FiAlertTriangle, FiLock } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import Logo from '../../shared/components/common/Logo';
+import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/core/auth.css';
@@ -167,7 +168,9 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
+    <>
+      <Navbar />
+      <div className="auth-container">
       <div className="auth-wrapper">
         {/* Logo */}
         <div className="auth-logo">
@@ -353,7 +356,8 @@ const Login = () => {
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

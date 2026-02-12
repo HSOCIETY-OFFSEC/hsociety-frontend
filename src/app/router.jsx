@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
+import Navbar from '../shared/components/layout/Navbar';
+import Sidebar from '../shared/components/layout/Sidebar';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
@@ -95,6 +97,7 @@ const LoadingFallback = () => (
 const AppRouter = () => {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <Sidebar />
       <React.Suspense fallback={<LoadingFallback />}>
         <Routes>
 
@@ -200,11 +203,14 @@ const AppRouter = () => {
           <Route
             path="*"
             element={
-              <div style={{ textAlign: 'center', padding: '3rem' }}>
-                <h1>404</h1>
-                <p>Page not found</p>
-                <a href="/">Go home</a>
-              </div>
+              <>
+                <Navbar />
+                <div style={{ textAlign: 'center', padding: '3rem' }}>
+                  <h1>404</h1>
+                  <p>Page not found</p>
+                  <a href="/">Go home</a>
+                </div>
+              </>
             }
           />
 

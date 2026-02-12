@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FiBarChart2, FiBriefcase, FiChevronDown, FiFileText, FiLogOut, FiMenu, FiMessageSquare, FiShield, FiUsers, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
@@ -20,16 +20,38 @@ import Button from '../ui/Button';
  * - Active route highlighting
  */
 
-const Navbar = () => {
+const Navbar = ({ sticky = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [viewportMode, setViewportMode] = useState(() =>
+    typeof window !== 'undefined' && window.innerWidth <= 768 ? 'mobile' : 'desktop'
+  );
 
   const handleLogout = async () => {
     await logout();
   };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const handleResize = () => {
+      const nextMode = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+      setViewportMode((prevMode) => {
+        if (prevMode !== nextMode) {
+          setMobileMenuOpen(false);
+          setUserMenuOpen(false);
+          return nextMode;
+        }
+        return prevMode;
+      });
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const navLinks = [
     { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
@@ -60,20 +82,22 @@ const Navbar = () => {
       return acc;
     }, []);
 
-  const desktopLinks = isAuthenticated
-    ? dedupeLinks([...navLinks, ...publicLinks])
-    : publicLinks;
-
   const mobileLinks = isAuthenticated
     ? dedupeLinks([...navLinks, ...publicLinks.filter((link) => link.path !== '/feedback')])
     : publicLinks;
 
   const isActive = (path) => location.pathname === path;
 
+  useEffect(() => {
+    // Always reset transient nav UI when route changes.
+    setMobileMenuOpen(false);
+    setUserMenuOpen(false);
+  }, [location.pathname]);
+
   return (
     <nav style={{
-      position: 'sticky',
-      top: 0,
+      position: sticky ? 'sticky' : 'relative',
+      top: sticky ? 0 : 'auto',
       zIndex: 'var(--z-sticky)',
       background: 'var(--card-bg)',
       borderBottom: '1px solid var(--border-color)',
@@ -91,55 +115,6 @@ const Navbar = () => {
         <div className="navbar-logo" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
           <Logo size="medium" />
         </div>
-
-        {/* Desktop Navigation */}
-        {(isAuthenticated || desktopLinks.length > 0) && (
-          <div style={{
-            display: 'flex',
-            gap: '0.5rem',
-            flexWrap: 'wrap'
-          }} className="desktop-nav">
-            {desktopLinks.map(link => (
-              <button
-                key={link.path}
-                onClick={() => navigate(link.path)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '0.625rem 1rem',
-                  background: isActive(link.path) ? 'var(--primary-color-alpha)' : 'transparent',
-                  color: isActive(link.path) ? 'var(--primary-color)' : 'var(--text-secondary)',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '0.95rem',
-                  fontWeight: isActive(link.path) ? 600 : 500,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  whiteSpace: 'nowrap',
-                  minHeight: '44px'
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive(link.path)) {
-                    e.currentTarget.style.background = 'var(--input-bg)';
-                    e.currentTarget.style.color = 'var(--text-primary)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive(link.path)) {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = 'var(--text-secondary)';
-                  }
-                }}
-              >
-                <span style={{ display: 'inline-flex' }}>
-                  <link.icon size={18} />
-                </span>
-                <span>{link.label}</span>
-              </button>
-            ))}
-          </div>
-        )}
 
         {/* Right Section */}
         <div className="navbar-right" style={{
@@ -269,30 +244,34 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              display: 'none',
-              padding: '0.625rem',
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--text-primary)',
-              fontSize: '1.5rem',
-              cursor: 'pointer',
-              borderRadius: '10px',
-              minWidth: '44px',
-              minHeight: '44px'
-            }}
-            className="mobile-menu-button"
-            aria-label="Toggle navigation"
-          >
-            {mobileMenuOpen ? <FiX /> : <FiMenu />}
-          </button>
+          {viewportMode === 'mobile' && (
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0.625rem',
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text-primary)',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                borderRadius: '10px',
+                minWidth: '44px',
+                minHeight: '44px'
+              }}
+              className="mobile-menu-button"
+              aria-label="Toggle navigation"
+            >
+              {mobileMenuOpen ? <FiX /> : <FiMenu />}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
+      {viewportMode === 'mobile' && mobileMenuOpen && (
         <div style={{
           borderTop: '1px solid var(--border-color)',
           padding: '1rem',
@@ -403,9 +382,6 @@ const Navbar = () => {
           }
           .desktop-nav {
             display: none !important;
-          }
-          .mobile-menu-button {
-            display: block !important;
           }
           .desktop-user-menu {
             display: none !important;

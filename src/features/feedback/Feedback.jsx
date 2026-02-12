@@ -122,7 +122,7 @@ const Feedback = () => {
 
   return (
     <>
-      {isAuthenticated && <Navbar />}
+      <Navbar />
       <div className="feedback-container">
         <div className="feedback-wrapper">
           {/* Header */}

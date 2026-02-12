@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiActivity, FiCode, FiCpu, FiGitBranch, FiGithub, FiMessageSquare, FiShield, FiTool } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
+import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/features/developer.css';
@@ -25,6 +26,7 @@ const Developer = () => {
 
   return (
     <div className="developer-page">
+      <Navbar />
       <header className="developer-hero reveal-on-scroll">
         <div className="developer-hero-content">
           <Logo size="large" />

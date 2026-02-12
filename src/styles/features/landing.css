@@ -1211,13 +1211,13 @@
    RESPONSIVE DESIGN
    ======================================== */
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .hero-container {
     grid-template-columns: 1fr;
   }
   
   .hero-visual {
-    order: -1;
+    order: 1;
   }
   
   .services-grid,

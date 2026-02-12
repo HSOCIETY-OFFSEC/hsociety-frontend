@@ -26,7 +26,9 @@ const App = () => {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <AppRouter />
+        <div className="app-shell">
+          <AppRouter />
+        </div>
       </AuthProvider>
     </ThemeProvider>
   );

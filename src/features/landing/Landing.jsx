@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../core/auth/AuthContext';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import { FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiBookOpen, FiCheck, FiCheckCircle, FiClipboard, FiCode, FiCpu, FiFileText, FiGlobe, FiGithub, FiLayers, FiLinkedin, FiLock, FiMenu, FiMessageSquare, FiPhone, FiSearch, FiShield, FiTarget, FiTerminal, FiTwitter, FiUsers, FiX, FiZap } from 'react-icons/fi';
+import { FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiBookOpen, FiCheck, FiCheckCircle, FiClipboard, FiCode, FiCpu, FiFileText, FiGlobe, FiGithub, FiLayers, FiLinkedin, FiLock, FiMessageSquare, FiPhone, FiSearch, FiShield, FiTarget, FiTerminal, FiTwitter, FiUsers, FiZap } from 'react-icons/fi';
 import Logo from '../../shared/components/common/Logo';
-import ThemeToggle from '../../shared/components/common/ThemeToggle';
+import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/features/landing.css';
@@ -23,8 +22,6 @@ import '../../styles/features/landing.css';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useScrollReveal();
 
@@ -141,83 +138,7 @@ const Landing = () => {
 
   return (
     <div className="landing-page">
-      {/* Navigation */}
-      <nav className="landing-nav">
-        <div className="nav-container">
-          <div className="nav-brand">
-            <Logo size="large" className="nav-logo" />
-            <div className="nav-brand-text">
-              <span className="nav-brand-title">HSOCIETY</span>
-              <span className="nav-brand-subtitle">Offensive Security</span>
-            </div>
-          </div>
-          
-          <div className="nav-actions">
-            <ThemeToggle />
-            {isAuthenticated ? (
-              <Button variant="primary" onClick={() => navigate('/dashboard')}>
-                Dashboard
-              </Button>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={() => navigate('/login')}>
-                  Login
-                </Button>
-                <Button variant="primary" onClick={() => navigate('/login')}>
-                  Get Started
-                </Button>
-              </>
-            )}
-          </div>
-
-          <button
-            className="nav-mobile-toggle"
-            type="button"
-            aria-label="Toggle navigation"
-            onClick={() => setMobileNavOpen((prev) => !prev)}
-          >
-            {mobileNavOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-          </button>
-        </div>
-
-        <div className={`nav-mobile-panel ${mobileNavOpen ? 'open' : ''}`}>
-          <button type="button" onClick={() => { navigate('/about'); setMobileNavOpen(false); }}>
-            <FiUsers size={18} />
-            About Us
-          </button>
-          <button type="button" onClick={() => { navigate('/team'); setMobileNavOpen(false); }}>
-            <FiUsers size={18} />
-            Meet the Team
-          </button>
-          <button type="button" onClick={() => { navigate('/community'); setMobileNavOpen(false); }}>
-            <FiMessageSquare size={18} />
-            Community
-          </button>
-          <button type="button" onClick={() => { navigate('/student-dashboard'); setMobileNavOpen(false); }}>
-            <FiBookOpen size={18} />
-            Student Dashboard
-          </button>
-          <button type="button" onClick={() => { navigate('/developer'); setMobileNavOpen(false); }}>
-            <FiCode size={18} />
-            Meet the Developer
-          </button>
-          <button type="button" onClick={() => { navigate('/feedback'); setMobileNavOpen(false); }}>
-            <FiMessageSquare size={18} />
-            Contact
-          </button>
-          {isAuthenticated ? (
-            <button type="button" onClick={() => { navigate('/dashboard'); setMobileNavOpen(false); }}>
-              <FiBarChart2 size={18} />
-              Dashboard
-            </button>
-          ) : (
-            <button type="button" onClick={() => { navigate('/login'); setMobileNavOpen(false); }}>
-              <FiShield size={18} />
-              Login
-            </button>
-          )}
-        </div>
-      </nav>
+      <Navbar sticky={false} />
 
       {/* Hero Section */}
       <section className="hero-section">
