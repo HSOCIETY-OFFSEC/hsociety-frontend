@@ -1,0 +1,361 @@
+/**
+ * Authentication Pages Styling
+ * Location: src/styles/core/auth.css
+ * 
+ * Covers:
+ * - Login page
+ * - Register page (future)
+ * - OTP verification
+ * - 2FA verification
+ * 
+ * Theme Support:
+ * - Light theme: white background, green accents
+ * - Dark theme: black background, green accents
+ */
+
+/* ========================================
+   AUTH CONTAINER & LAYOUT
+   ======================================== */
+
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--bg-primary);
+  transition: background-color 0.3s ease;
+}
+
+.auth-wrapper {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ========================================
+   LOGO SECTION
+   ======================================== */
+
+.auth-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* ========================================
+   AUTH CARD
+   ======================================== */
+
+.auth-card {
+  padding: 2.5rem 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+}
+
+.auth-card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   AUTH HEADER
+   ======================================== */
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.auth-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ========================================
+   ERROR MESSAGES
+   ======================================== */
+
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: #ef4444;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease;
+}
+
+.error-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   AUTH FORM
+   ======================================== */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  background: var(--input-bg-focus);
+  box-shadow: 0 0 0 3px var(--primary-color-alpha);
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--input-bg-disabled);
+}
+
+.form-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* OTP/2FA specific input */
+.otp-input {
+  font-size: 1.5rem;
+  letter-spacing: 0.5em;
+  text-align: center;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+.form-hint {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* ========================================
+   AUTH LINKS
+   ======================================== */
+
+.auth-link {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth-link:hover:not(:disabled) {
+  color: var(--primary-color-hover);
+  text-decoration: none;
+}
+
+.auth-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.auth-link-inline {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: all 0.2s ease;
+}
+
+.auth-link-inline:hover:not(:disabled) {
+  color: var(--primary-color-hover);
+}
+
+.auth-link-inline:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   AUTH FOOTER
+   ======================================== */
+
+.auth-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.auth-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ========================================
+   SECURITY NOTICE
+   ======================================== */
+
+.auth-notice {
+  text-align: center;
+  padding: 1rem;
+  background: var(--notice-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.auth-notice p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 640px) {
+  .auth-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .auth-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .otp-input {
+    font-size: 1.25rem;
+    letter-spacing: 0.3em;
+  }
+}
+
+/* ========================================
+   THEME VARIABLES
+   ======================================== */
+
+/* These will be defined in common.css but referenced here */
+
+/* Light Theme (default) */
+:root {
+  --bg-primary: #ffffff;
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --input-bg: #f9fafb;
+  --input-bg-focus: #ffffff;
+  --input-bg-disabled: #f3f4f6;
+  --notice-bg: #f0fdf4;
+  --primary-color: #10b981;
+  --primary-color-hover: #059669;
+  --primary-color-alpha: rgba(16, 185, 129, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --bg-primary: #000000;
+  --card-bg: #0a0a0a;
+  --border-color: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+  --input-bg: #111827;
+  --input-bg-focus: #1f2937;
+  --input-bg-disabled: #0f1419;
+  --notice-bg: #064e3b;
+  --primary-color: #10b981;
+  --primary-color-hover: #34d399;
+  --primary-color-alpha: rgba(16, 185, 129, 0.15);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   3D EFFECTS (for premium feel)
+   ======================================== */
+
+.auth-card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.auth-card-3d:hover {
+  transform: translateY(-4px) rotateX(2deg);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px var(--primary-color-alpha);
+}
+
+/* Apply 3D effect class to card for enhanced experience */
