@@ -1,0 +1,202 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from '../core/auth/AuthContext';
+
+// Lazy load components for better performance
+const Login = React.lazy(() => import('../features/auth/Login'));
+const Dashboard = React.lazy(() => import('../features/dashboard/Dashboard'));
+const Audits = React.lazy(() => import('../features/audits/Audits'));
+const Pentest = React.lazy(() => import('../features/pentest/Pentest'));
+const Feedback = React.lazy(() => import('../features/feedback/Feedback'));
+
+/**
+ * Router Configuration
+ * Location: src/app/router.jsx
+ * 
+ * Features:
+ * - Protected routes (require authentication)
+ * - Public routes (accessible without auth)
+ * - Auto redirect based on auth state
+ * - Lazy loading for performance
+ * - Loading fallback
+ */
+
+/**
+ * Protected Route Component
+ * Redirects to login if not authenticated
+ */
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="loading-container" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        gap: '1rem'
+      }}>
+        <div className="loading-spinner" />
+        <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+/**
+ * Public Route Component
+ * Redirects to dashboard if already authenticated
+ */
+const PublicRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="loading-container" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        gap: '1rem'
+      }}>
+        <div className="loading-spinner" />
+        <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+};
+
+/**
+ * Loading Fallback Component
+ */
+const LoadingFallback = () => (
+  <div className="loading-container" style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    gap: '1rem'
+  }}>
+    <div className="loading-spinner" />
+    <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
+  </div>
+);
+
+/**
+ * App Router
+ */
+const AppRouter = () => {
+  return (
+    <BrowserRouter>
+      <React.Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          {/* Default Route - Redirect based on auth */}
+          <Route 
+            path="/" 
+            element={<Navigate to="/login" replace />} 
+          />
+
+          {/* Public Routes */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+
+          {/* Public Feedback Route (no auth required) */}
+          <Route
+            path="/feedback"
+            element={<Feedback />}
+          />
+
+          {/* Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/audits"
+            element={
+              <ProtectedRoute>
+                <Audits />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/pentest"
+            element={
+              <ProtectedRoute>
+                <Pentest />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 404 Not Found */}
+          <Route
+            path="*"
+            element={
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+                gap: '1rem',
+                padding: '2rem',
+                textAlign: 'center'
+              }}>
+                <h1 style={{ fontSize: '4rem', color: 'var(--primary-color)' }}>404</h1>
+                <h2 style={{ color: 'var(--text-primary)' }}>Page Not Found</h2>
+                <p style={{ color: 'var(--text-secondary)' }}>
+                  The page you're looking for doesn't exist.
+                </p>
+                <a 
+                  href="/dashboard" 
+                  style={{
+                    marginTop: '1rem',
+                    padding: '0.75rem 1.5rem',
+                    background: 'var(--primary-color)',
+                    color: '#ffffff',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    fontWeight: 600
+                  }}
+                >
+                  Go to Dashboard
+                </a>
+              </div>
+            }
+          />
+        </Routes>
+      </React.Suspense>
+    </BrowserRouter>
+  );
+};
+
+// This is the key - default export
+export default AppRouter;

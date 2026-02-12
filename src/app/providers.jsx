@@ -108,16 +108,5 @@ export const useTheme = () => {
   return context;
 };
 
-/**
- * Auth Provider Wrapper
- * Combines all providers needed for the app
- */
-export const AppProviders = ({ children }) => {
-  return (
-    <ThemeProvider>
-      {children}
-    </ThemeProvider>
-  );
-};
-
-export default AppProviders;
+// Default export
+export default ThemeProvider;

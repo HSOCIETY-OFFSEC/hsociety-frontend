@@ -1,24 +1,32 @@
-// src/main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './app/App.jsx';
-import Providers from './app/providers.jsx';
-import './styles/shared/ui.css';
-import './styles/shared/layout.css';
-import './styles/core/auth.css';
-import './styles/features/dashboard.css';
-import './styles/features/audits.css';
-import './styles/features/feedback.css';
-import './styles/features/pentest.css';
-import './styles/shared/common.css';
+import App from './app/App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+/**
+ * Main Entry Point
+ * Location: src/main.jsx
+ * 
+ * Initializes the React application and mounts it to the DOM
+ */
 
-// Wrap App with Providers for theme, auth, etc.
+// Get the root element
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error('Failed to find the root element. Make sure index.html has a div with id="root"');
+}
+
+// Create root and render app
+const root = ReactDOM.createRoot(rootElement);
+
 root.render(
   <React.StrictMode>
-    <Providers>
-      <App />
-    </Providers>
+    <App />
   </React.StrictMode>
 );
+
+// Log successful mount in development
+if (import.meta.env.DEV) {
+  console.log('🚀 HSOCIETY MVP loaded successfully');
+  console.log('📍 Environment:', import.meta.env.MODE);
+}
