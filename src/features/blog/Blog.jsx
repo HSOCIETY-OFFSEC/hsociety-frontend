@@ -36,6 +36,20 @@ const Blog = () => {
             <p className="blog-kicker">Field Notes</p>
             <h1>Insights from offensive operations.</h1>
             <p>Research, tactics, and lessons for security teams and learners.</p>
+            <div className="blog-meta">
+              <div>
+                <span className="meta-value">Weekly</span>
+                <span className="meta-label">new briefings</span>
+              </div>
+              <div>
+                <span className="meta-value">Red Team</span>
+                <span className="meta-label">tactics & playbooks</span>
+              </div>
+              <div>
+                <span className="meta-value">Student</span>
+                <span className="meta-label">learning paths</span>
+              </div>
+            </div>
           </div>
           <Button variant="secondary" size="large">
             <FiBookOpen size={18} />

@@ -49,6 +49,11 @@ const StudentDashboard = () => {
     code: FiCode
   };
 
+  const mentorAvatars = [
+    'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
+  ];
+
   return (
     <>
       <Navbar />
@@ -135,8 +140,19 @@ const StudentDashboard = () => {
                 <h3>Mentor Support</h3>
               </div>
               <div className="mentor-list">
-                {data.mentors.map((mentor) => (
+                {data.mentors.map((mentor, index) => (
                   <div key={mentor.id} className="mentor-row">
+                    <div className="mentor-avatar">
+                      <img
+                        src={mentorAvatars[index % mentorAvatars.length]}
+                        alt={mentor.name}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.opacity = '0';
+                        }}
+                      />
+                      <div className="mentor-fallback" aria-hidden="true"></div>
+                    </div>
                     <div>
                       <h4>{mentor.name}</h4>
                       <span>{mentor.focus}</span>

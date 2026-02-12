@@ -35,7 +35,8 @@ const Community = () => {
       body: 'I know basics of networking and Linux. Any friendly CTF to build confidence?',
       likes: 42,
       replies: 8,
-      tags: ['#ctf', '#career-switch']
+      tags: ['#ctf', '#career-switch'],
+      avatar: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80'
     },
     {
       id: 2,
@@ -46,7 +47,8 @@ const Community = () => {
       body: 'Any frameworks or analogies that help in presentations?',
       likes: 28,
       replies: 6,
-      tags: ['#owasp', '#interview-prep']
+      tags: ['#owasp', '#interview-prep'],
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
     },
     {
       id: 3,
@@ -57,7 +59,8 @@ const Community = () => {
       body: 'Looking for a structured path with labs and real-world practice.',
       likes: 63,
       replies: 14,
-      tags: ['#web-security', '#career-switch']
+      tags: ['#web-security', '#career-switch'],
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'
     }
   ];
 
@@ -145,7 +148,17 @@ const Community = () => {
           <main className="community-feed">
             <Card padding="large" className="post-creator reveal-on-scroll">
               <div className="post-creator-header">
-                <div className="avatar-circle">HS</div>
+                <div className="avatar-frame">
+                  <img
+                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80"
+                    alt="HSOCIETY member"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.style.opacity = '0';
+                    }}
+                  />
+                  <div className="avatar-fallback" aria-hidden="true"></div>
+                </div>
                 <input
                   type="text"
                   placeholder={isCorporate
@@ -200,7 +213,17 @@ const Community = () => {
               {posts.map((post) => (
                 <Card key={post.id} padding="large" className="post-card reveal-on-scroll">
                   <div className="post-header">
-                    <div className="avatar-circle">{post.author[0]}</div>
+                    <div className="avatar-frame">
+                      <img
+                        src={post.avatar}
+                        alt={post.author}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.opacity = '0';
+                        }}
+                      />
+                      <div className="avatar-fallback" aria-hidden="true"></div>
+                    </div>
                     <div>
                       <h4>{post.author}</h4>
                       <span>{post.role} · {post.time}</span>
@@ -232,7 +255,17 @@ const Community = () => {
                   : 'Weekly live sessions with senior analysts.'}
               </p>
               <div className="mentor-item">
-                <div className="avatar-circle">RN</div>
+                <div className="avatar-frame">
+                  <img
+                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+                    alt="Ria N."
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.style.opacity = '0';
+                    }}
+                  />
+                  <div className="avatar-fallback" aria-hidden="true"></div>
+                </div>
                 <div>
                   <h4>Ria N.</h4>
                   <span>Blue Team Lead</span>

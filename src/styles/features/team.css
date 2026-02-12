@@ -88,6 +88,41 @@
   text-align: left;
 }
 
+.profile-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+}
+
+.profile-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.profile-fallback {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.2), transparent);
+}
+
+.profile-fallback::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'%3E%3Cpath fill='%23a5b4c2' d='M100 88c16.6 0 30-13.4 30-30s-13.4-30-30-30-30 13.4-30 30 13.4 30 30 30zm0 10c-27.6 0-50 16.3-50 36.5V150h100v-15.5C150 114.3 127.6 98 100 98z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80px 80px;
+  opacity: 0.5;
+}
+
 .team-card h3,
 .team-group-card h3 {
   margin: 1rem 0 0.35rem;

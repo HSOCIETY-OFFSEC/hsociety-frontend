@@ -220,7 +220,7 @@ const Landing = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-section reveal-on-scroll">
+      <section className="hero-section">
         <div className="hero-container">
           <div className="hero-content">
             <div className="hero-brand">
@@ -320,7 +320,7 @@ const Landing = () => {
           </div>
 
           {/* Hero Visual */}
-          <div className="hero-visual reveal-on-scroll">
+          <div className="hero-visual">
             <Card hover3d={true} padding="large" className="hero-card">
               <div className="terminal">
                 <div className="terminal-header">

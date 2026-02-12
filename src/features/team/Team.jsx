@@ -16,19 +16,22 @@ const Team = () => {
       name: 'Amina N.',
       role: 'Head of Offensive Ops',
       focus: 'Adversary simulation and enterprise compromise chains.',
-      icon: FiCrosshair
+      icon: FiCrosshair,
+      image: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=400&q=80'
     },
     {
       name: 'Kofi A.',
       role: 'Principal Pentester',
       focus: 'Cloud security, API attacks, and CI/CD hardening.',
-      icon: FiCpu
+      icon: FiCpu,
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'
     },
     {
       name: 'Zuri M.',
       role: 'Red Team Lead',
       focus: 'Covert access, privilege escalation, and opsec.',
-      icon: FiTarget
+      icon: FiTarget,
+      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80'
     }
   ];
 
@@ -78,6 +81,17 @@ const Team = () => {
         <div className="team-leadership-grid">
           {leadership.map((member, index) => (
             <Card key={index} padding="large" className="team-card">
+              <div className="profile-frame">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.style.opacity = '0';
+                  }}
+                />
+                <div className="profile-fallback" aria-hidden="true"></div>
+              </div>
               <div className="team-card-icon">
                 <member.icon size={26} />
               </div>
