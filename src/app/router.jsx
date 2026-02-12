@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
 import Navbar from '../shared/components/layout/Navbar';
-import Sidebar from '../shared/components/layout/Sidebar';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
@@ -97,7 +96,6 @@ const LoadingFallback = () => (
 const AppRouter = () => {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <Sidebar />
       <React.Suspense fallback={<LoadingFallback />}>
         <Routes>
 

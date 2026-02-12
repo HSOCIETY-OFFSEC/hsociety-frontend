@@ -116,10 +116,10 @@
 
 @media (min-width: 1200px) {
   .app-shell {
-    padding-left: var(--sidebar-width);
+    padding-left: 0;
   }
   .app-sidebar {
-    display: block;
+    display: none;
   }
 }
 

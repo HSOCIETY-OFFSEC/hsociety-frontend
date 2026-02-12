@@ -86,6 +86,19 @@ const Navbar = ({ sticky = true }) => {
     ? dedupeLinks([...navLinks, ...publicLinks.filter((link) => link.path !== '/feedback')])
     : publicLinks;
 
+  const desktopBasicLinks = isAuthenticated
+    ? [
+        { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
+        { path: '/community', label: 'Community', icon: FiMessageSquare },
+        { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+      ]
+    : [
+        { path: '/', label: 'Home', icon: FiShield },
+        { path: '/about', label: 'About', icon: FiUsers },
+        { path: '/community', label: 'Community', icon: FiMessageSquare },
+        { path: '/careers', label: 'Careers', icon: FiBriefcase }
+      ];
+
   const isActive = (path) => location.pathname === path;
 
   useEffect(() => {
@@ -114,6 +127,38 @@ const Navbar = ({ sticky = true }) => {
         {/* Logo */}
         <div className="navbar-logo" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
           <Logo size="medium" />
+        </div>
+
+        {/* Desktop Basic Navigation */}
+        <div className="desktop-nav" style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.4rem'
+        }}>
+          {desktopBasicLinks.map((link) => (
+            <button
+              key={link.path}
+              type="button"
+              onClick={() => navigate(link.path)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                minHeight: '44px',
+                padding: '0.5rem 0.8rem',
+                borderRadius: '9px',
+                border: '1px solid transparent',
+                background: isActive(link.path) ? 'var(--primary-color-alpha)' : 'transparent',
+                color: isActive(link.path) ? 'var(--primary-color)' : 'var(--text-secondary)',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                fontWeight: 600
+              }}
+            >
+              <link.icon size={16} />
+              <span>{link.label}</span>
+            </button>
+          ))}
         </div>
 
         {/* Right Section */}

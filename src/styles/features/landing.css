@@ -13,14 +13,8 @@
     radial-gradient(900px 500px at 110% 10%, rgba(45, 212, 191, 0.12), transparent 65%),
     var(--bg-primary);
   overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-width: none;
+  overflow-y: visible;
   position: relative;
-}
-
-.landing-page::-webkit-scrollbar {
-  width: 0;
-  height: 0;
 }
 
 /* ========================================
@@ -470,6 +464,12 @@
 .icon {
   font-size: 1rem;
   display: inline-flex;
+}
+
+.terminal-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: #7dd3fc;
 }
 
 .terminal-cursor {
