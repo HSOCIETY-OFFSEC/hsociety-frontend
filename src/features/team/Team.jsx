@@ -14,25 +14,28 @@ const Team = () => {
 
   const leadership = [
     {
-      name: 'Amina N.',
-      role: 'Head of Offensive Ops',
+      name: 'Wsuits6',
+      role: 'Offensive Security Engineer',
       focus: 'Adversary simulation and enterprise compromise chains.',
       icon: FiCrosshair,
-      image: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=400&q=80'
+      //Use Image form src/assets foler
+      image: ''
     },
     {
-      name: 'Kofi A.',
+      name: 'Shine',
       role: 'Principal Pentester',
-      focus: 'Cloud security, API attacks, and CI/CD hardening.',
+      focus: 'Network Security Expert',
       icon: FiCpu,
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'
+      //Use Image form src/assets foler
+      image: ''
     },
     {
-      name: 'Zuri M.',
-      role: 'Red Team Lead',
+      name: 'Non-Conformist',
+      role: 'Governance, Complaince and Risk Managment Officer (GRC)',
       focus: 'Covert access, privilege escalation, and opsec.',
       icon: FiTarget,
-      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80'
+      // Use Image form /src/assets folder
+      image: ''
     }
   ];
 

@@ -18,13 +18,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
-  // Initialize theme from localStorage or default to 'light'
+  // Initialize theme from localStorage or default to 'dark'
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('hsociety-theme');
-      return savedTheme || 'light';
+      return savedTheme || 'dark';
     }
-    return 'light';
+    return 'dark';
   });
 
   // Apply theme to document root on mount and when theme changes

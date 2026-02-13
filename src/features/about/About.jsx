@@ -31,11 +31,12 @@ const About = () => {
   ];
 
   const milestones = [
-    { year: '2021', title: 'First Engagements', detail: 'Launched offensive security for regional fintechs.' },
-    { year: '2022', title: 'Red Team Expansion', detail: 'Built multi-disciplinary adversary simulation squads.' },
-    { year: '2023', title: 'Community Training', detail: 'Sponsored local security workshops across Africa.' },
-    { year: '2024', title: 'Platform Build', detail: 'Introduced continuous testing and retest automation.' },
-    { year: '2025', title: 'Enterprise Coverage', detail: 'Scaled to critical infrastructure and telecom.' }
+    // { year: '2021', title: 'First Engagements', detail: 'Launched offensive security for regional fintechs.' },
+    // { year: '2022', title: 'Red Team Expansion', detail: 'Built multi-disciplinary adversary simulation squads.' },
+    // { year: '2023', title: 'Community Training', detail: 'Sponsored local security workshops across Africa.' },
+    { year: '2024', title: 'Platform Build', detail: 'Building of security Tools and plartform Building' },
+    { year: '2025', title: 'Initiation', detail: 'Main Hsociety Initiation. Creating of Hacking Group' },
+    { year: '2026', title: 'Website Launch and Comapany Launch'}
   ];
 
   return (
