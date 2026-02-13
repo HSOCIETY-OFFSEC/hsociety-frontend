@@ -700,6 +700,7 @@
 .service-icon {
   width: 52px;
   height: 52px;
+  margin: 0 0 0.9rem;
   border-radius: 14px;
   background: var(--primary-color-alpha);
   display: inline-flex;
@@ -712,26 +713,27 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0;
+  margin: 0 0 0.5rem;
 }
 
 .service-description {
   font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin: 0;
+  margin: 0 0 0.5rem;
 }
 
 .service-features {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .service-features li {
+  margin: 0 0 0.2rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -744,6 +746,9 @@
   font-weight: 700;
   font-size: 1rem;
   display: inline-flex;
+}
+.service-btn-arrow{
+  /*make sure that serice button arrow is  in line with button text*/
 }
 
 /* ========================================

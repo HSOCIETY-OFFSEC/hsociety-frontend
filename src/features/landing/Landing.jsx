@@ -147,7 +147,8 @@ const Landing = () => {
           {!heroVideoFailed && (
             <iframe
               className="hero-video-frame"
-              src="https://www.youtube.com/embed/67gYEK4FtzA?autoplay=1&mute=1&controls=0&loop=1&playlist=67gYEK4FtzA&modestbranding=1&rel=0&playsinline=1"
+              //use real video from assets folder video must contain your face
+              src=""
               title="Cybersecurity hero background"
               frameBorder="0"
               allow="autoplay; encrypted-media; picture-in-picture"
@@ -158,13 +159,13 @@ const Landing = () => {
         </div>
         <div className="hero-container">
           <div className="hero-content">
-            <div className="hero-brand">
+            {/* <div className="hero-brand">
               <Logo size="xlarge" className="hero-logo" />
               <div>
                 <p className="hero-brand-kicker">HSOCIETY OffSec</p>
                 <p className="hero-brand-sub">Elite offensive security for fast-moving teams.</p>
               </div>
-            </div>
+            </div> */}
 
             <div className="hero-badge">
               <span className="badge-dot"></span>
@@ -350,7 +351,7 @@ const Landing = () => {
                   ))}
                 </ul>
                 <Button variant="card" size="small" fullWidth style={{ marginTop: 'auto' }}>
-                  Learn More <FiArrowRight size={16} />
+                  Learn More <FiArrowRight className='service-btn-arrow' size={16} />
                 </Button>
               </Card>
             ))}
