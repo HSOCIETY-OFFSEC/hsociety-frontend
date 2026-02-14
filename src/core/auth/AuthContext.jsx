@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { sessionManager } from './session.manager';
 import { setupAutoLogout } from '../inactivity/autoLogout';
+import { refreshToken as refreshAuthToken, logout as logoutRequest } from './auth.service';
 
 /**
  * Authentication Context
@@ -86,7 +87,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Login function
-  const login = async (userData, authToken) => {
+  const login = async (userData, authToken, refreshToken = null) => {
     try {
       // Validate input
       if (!userData || !authToken) {
@@ -97,6 +98,7 @@ export const AuthProvider = ({ children }) => {
       sessionManager.setSession({
         user: userData,
         token: authToken,
+        refreshToken,
         timestamp: Date.now()
       });
 
@@ -124,8 +126,9 @@ export const AuthProvider = ({ children }) => {
         setAutoLogoutCleanup(null);
       }
 
-      // TODO: Backend integration - Invalidate token on server
-      // await authService.logout(token);
+      if (token) {
+        await logoutRequest(token);
+      }
 
       // Clear local session
       sessionManager.clearSession();
@@ -172,14 +175,22 @@ export const AuthProvider = ({ children }) => {
   // Refresh token
   const refreshToken = async () => {
     try {
-      // TODO: Backend integration - Refresh token
-      // const response = await authService.refreshToken(token);
-      // const newToken = response.token;
+      const session = sessionManager.getSession();
+      const currentRefreshToken = session?.refreshToken;
+      if (!currentRefreshToken) {
+        throw new Error('Refresh token is required');
+      }
 
-      const newToken = token; // Placeholder
+      const response = await refreshAuthToken(currentRefreshToken);
+      if (!response.success) {
+        throw new Error(response.message || 'Token refresh failed');
+      }
+
+      const newToken = response.token;
+      const newRefreshToken = response.refreshToken;
 
       // Update session
-      sessionManager.updateSession({ token: newToken });
+      sessionManager.updateSession({ token: newToken, refreshToken: newRefreshToken });
       
       // Update state
       setToken(newToken);

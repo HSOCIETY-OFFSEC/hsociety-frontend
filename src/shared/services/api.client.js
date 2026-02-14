@@ -105,7 +105,7 @@ class APIClient {
     // Other errors
     return {
       success: false,
-      error: data?.message || 'An error occurred',
+      error: data?.error || data?.message || 'An error occurred',
       status,
       data
     };

@@ -32,6 +32,13 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     otpSecret: { type: String, select: false },
+    twoFactorEnabled: {
+      type: Boolean,
+      default: false,
+    },
+    twoFactorSecret: { type: String, select: false },
+    twoFactorTempSecret: { type: String, select: false },
+    twoFactorBackupCodes: { type: [String], select: false, default: [] },
     lastLoginAt: Date,
   },
   {
@@ -41,7 +48,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
 
 const User = mongoose.model('User', userSchema);

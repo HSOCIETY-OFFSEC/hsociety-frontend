@@ -1,34 +1,20 @@
 /**
  * Authentication Service
  * Location: src/core/auth/auth.service.js
- * 
- * Features:
- * - User login/logout
- * - Registration
- * - Password reset
- * - Token refresh
- * - Session management
- * 
- * Security:
- * - Secure token handling
- * - Input validation
- * - Backend integration placeholders
- * 
- * TODO: Backend integration for all auth endpoints
  */
 
+import { API_ENDPOINTS } from '../../config/api.config';
+import { apiClient } from '../../shared/services/api.client';
 import { validateEmail, validatePassword } from '../validation/input.validator';
-import { encrypt } from '../encryption/encrypt';
 
 /**
  * Login with email and password
  * @param {string} email - User email
  * @param {string} password - User password
- * @returns {Promise<Object>} - { success, user, token, message }
+ * @returns {Promise<Object>} - { success, user, token, refreshToken, twoFactorRequired, twoFactorToken, message }
  */
 export const login = async (email, password) => {
   try {
-    // Validate inputs
     if (!validateEmail(email)) {
       throw new Error('Invalid email format');
     }
@@ -37,32 +23,35 @@ export const login = async (email, password) => {
       throw new Error('Password must be at least 6 characters');
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.post('/auth/login', {
-    //   email,
-    //   password: encrypt(password) // Encrypt password before sending
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, {
+      email,
+      password
+    });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.error || 'Login failed'
+      };
+    }
 
-    // Mock successful login
-    const user = {
-      id: 'user-' + Date.now(),
-      email: email,
-      name: email.split('@')[0],
-      role: 'client',
-      createdAt: Date.now()
-    };
+    const data = response.data || {};
 
-    const token = 'mock-jwt-token-' + Date.now();
-
-    console.log('[AUTH] Login successful for:', email);
+    if (data.twoFactorRequired) {
+      return {
+        success: true,
+        twoFactorRequired: true,
+        twoFactorToken: data.twoFactorToken,
+        user: data.user,
+        message: 'Two-factor verification required'
+      };
+    }
 
     return {
       success: true,
-      user,
-      token,
+      user: data.user,
+      token: data.token,
+      refreshToken: data.refreshToken,
       message: 'Login successful'
     };
   } catch (error) {
@@ -77,55 +66,45 @@ export const login = async (email, password) => {
 /**
  * Register new user
  * @param {Object} userData - { email, password, name }
- * @returns {Promise<Object>} - { success, user, token, message }
+ * @returns {Promise<Object>} - { success, user, token, refreshToken, message }
  */
 export const register = async (userData) => {
   try {
     const { email, password, name } = userData;
 
-    // Validate email
     if (!validateEmail(email)) {
       throw new Error('Invalid email format');
     }
 
-    // Validate password
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
       throw new Error(passwordValidation.errors[0]);
     }
 
-    // Validate name
     if (!name || name.trim().length < 2) {
       throw new Error('Name must be at least 2 characters');
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.post('/auth/register', {
-    //   email,
-    //   password: encrypt(password),
-    //   name: name.trim()
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, {
+      email,
+      password,
+      name: name.trim()
+    });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.error || 'Registration failed'
+      };
+    }
 
-    // Mock successful registration
-    const user = {
-      id: 'user-' + Date.now(),
-      email: email,
-      name: name.trim(),
-      role: 'client',
-      createdAt: Date.now()
-    };
-
-    const token = 'mock-jwt-token-' + Date.now();
-
-    console.log('[AUTH] Registration successful for:', email);
+    const data = response.data || {};
 
     return {
       success: true,
-      user,
-      token,
+      user: data.user,
+      token: data.token,
+      refreshToken: data.refreshToken,
       message: 'Registration successful'
     };
   } catch (error) {
@@ -148,15 +127,14 @@ export const logout = async (token) => {
       throw new Error('No token provided');
     }
 
-    // TODO: Backend integration - Invalidate token
-    // await apiClient.post('/auth/logout', {}, {
-    //   headers: { Authorization: `Bearer ${token}` }
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, {});
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    console.log('[AUTH] Logout successful');
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.error || 'Logout failed'
+      };
+    }
 
     return {
       success: true,
@@ -173,90 +151,61 @@ export const logout = async (token) => {
 
 /**
  * Request password reset
- * @param {string} email - User email
- * @returns {Promise<Object>} - { success, message }
  */
 export const requestPasswordReset = async (email) => {
   try {
-    // Validate email
     if (!validateEmail(email)) {
       throw new Error('Invalid email format');
     }
 
-    // TODO: Backend integration
-    // await apiClient.post('/auth/password-reset/request', { email });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.PASSWORD_RESET_REQUEST, { email });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    if (!response.success) {
+      return { success: false, message: response.error || 'Failed to request password reset' };
+    }
 
-    console.log('[AUTH] Password reset requested for:', email);
-
-    return {
-      success: true,
-      message: 'Password reset instructions sent to your email'
-    };
+    return { success: true, message: 'Password reset instructions sent to your email' };
   } catch (error) {
     console.error('[AUTH] Password reset request failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Failed to request password reset'
-    };
+    return { success: false, message: error.message || 'Failed to request password reset' };
   }
 };
 
 /**
  * Reset password with token
- * @param {string} token - Reset token from email
- * @param {string} newPassword - New password
- * @returns {Promise<Object>} - { success, message }
  */
 export const resetPassword = async (token, newPassword) => {
   try {
-    // Validate token
     if (!token) {
       throw new Error('Reset token is required');
     }
 
-    // Validate new password
     const passwordValidation = validatePassword(newPassword);
     if (!passwordValidation.isValid) {
       throw new Error(passwordValidation.errors[0]);
     }
 
-    // TODO: Backend integration
-    // await apiClient.post('/auth/password-reset/confirm', {
-    //   token,
-    //   password: encrypt(newPassword)
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.PASSWORD_RESET_CONFIRM, {
+      token,
+      password: newPassword
+    });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    if (!response.success) {
+      return { success: false, message: response.error || 'Password reset failed' };
+    }
 
-    console.log('[AUTH] Password reset successful');
-
-    return {
-      success: true,
-      message: 'Password reset successful'
-    };
+    return { success: true, message: 'Password reset successful' };
   } catch (error) {
     console.error('[AUTH] Password reset failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Password reset failed'
-    };
+    return { success: false, message: error.message || 'Password reset failed' };
   }
 };
 
 /**
  * Change password (authenticated user)
- * @param {string} currentPassword - Current password
- * @param {string} newPassword - New password
- * @param {string} token - Auth token
- * @returns {Promise<Object>} - { success, message }
  */
-export const changePassword = async (currentPassword, newPassword, token) => {
+export const changePassword = async (currentPassword, newPassword) => {
   try {
-    // Validate inputs
     if (!currentPassword || !newPassword) {
       throw new Error('Both current and new passwords are required');
     }
@@ -265,202 +214,113 @@ export const changePassword = async (currentPassword, newPassword, token) => {
       throw new Error('New password must be different from current password');
     }
 
-    // Validate new password
     const passwordValidation = validatePassword(newPassword);
     if (!passwordValidation.isValid) {
       throw new Error(passwordValidation.errors[0]);
     }
 
-    // TODO: Backend integration
-    // await apiClient.post('/auth/change-password', {
-    //   currentPassword: encrypt(currentPassword),
-    //   newPassword: encrypt(newPassword)
-    // }, {
-    //   headers: { Authorization: `Bearer ${token}` }
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, {
+      currentPassword,
+      newPassword
+    });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    if (!response.success) {
+      return { success: false, message: response.error || 'Password change failed' };
+    }
 
-    console.log('[AUTH] Password changed successfully');
-
-    return {
-      success: true,
-      message: 'Password changed successfully'
-    };
+    return { success: true, message: 'Password changed successfully' };
   } catch (error) {
     console.error('[AUTH] Password change failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Password change failed'
-    };
+    return { success: false, message: error.message || 'Password change failed' };
   }
 };
 
 /**
  * Refresh authentication token
- * @param {string} token - Current auth token
- * @returns {Promise<Object>} - { success, token, message }
+ * @param {string} refreshToken - Refresh token
  */
-export const refreshToken = async (token) => {
+export const refreshToken = async (refreshToken) => {
   try {
-    if (!token) {
-      throw new Error('Token is required');
+    if (!refreshToken) {
+      throw new Error('Refresh token is required');
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.post('/auth/refresh', {}, {
-    //   headers: { Authorization: `Bearer ${token}` }
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.REFRESH, { refreshToken });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
+    if (!response.success) {
+      return { success: false, message: response.error || 'Token refresh failed' };
+    }
 
-    const newToken = 'mock-jwt-token-' + Date.now();
-
-    console.log('[AUTH] Token refreshed');
+    const data = response.data || {};
 
     return {
       success: true,
-      token: newToken,
+      token: data.token,
+      refreshToken: data.refreshToken,
+      user: data.user,
       message: 'Token refreshed successfully'
     };
   } catch (error) {
     console.error('[AUTH] Token refresh failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Token refresh failed'
-    };
+    return { success: false, message: error.message || 'Token refresh failed' };
   }
 };
 
 /**
  * Verify authentication token
- * @param {string} token - Auth token to verify
- * @returns {Promise<Object>} - { success, user, message }
  */
-export const verifyToken = async (token) => {
+export const verifyToken = async () => {
   try {
-    if (!token) {
-      throw new Error('Token is required');
+    const response = await apiClient.get(API_ENDPOINTS.AUTH.VERIFY);
+
+    if (!response.success) {
+      return { success: false, message: response.error || 'Invalid token' };
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.get('/auth/verify', {
-    //   headers: { Authorization: `Bearer ${token}` }
-    // });
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    // Mock user data
-    const user = {
-      id: 'user-123',
-      email: 'user@example.com',
-      name: 'Test User',
-      role: 'client'
-    };
-
-    console.log('[AUTH] Token verified');
-
-    return {
-      success: true,
-      user,
-      message: 'Token is valid'
-    };
+    return { success: true, user: response.data?.user, message: 'Token is valid' };
   } catch (error) {
     console.error('[AUTH] Token verification failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Invalid token'
-    };
+    return { success: false, message: error.message || 'Invalid token' };
   }
 };
 
 /**
  * Get current user profile
- * @param {string} token - Auth token
- * @returns {Promise<Object>} - { success, user, message }
  */
-export const getCurrentUser = async (token) => {
+export const getCurrentUser = async () => {
   try {
-    if (!token) {
-      throw new Error('Token is required');
+    const response = await apiClient.get(API_ENDPOINTS.AUTH.ME);
+
+    if (!response.success) {
+      return { success: false, message: response.error || 'Failed to get user profile' };
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.get('/auth/me', {
-    //   headers: { Authorization: `Bearer ${token}` }
-    // });
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    // Mock user data
-    const user = {
-      id: 'user-123',
-      email: 'user@example.com',
-      name: 'Test User',
-      role: 'client',
-      createdAt: Date.now() - (30 * 24 * 60 * 60 * 1000), // 30 days ago
-      emailVerified: true,
-      twoFactorEnabled: true
-    };
-
-    console.log('[AUTH] User profile retrieved');
-
-    return {
-      success: true,
-      user,
-      message: 'Profile retrieved successfully'
-    };
+    return { success: true, user: response.data, message: 'Profile retrieved successfully' };
   } catch (error) {
     console.error('[AUTH] Failed to get user profile:', error);
-    return {
-      success: false,
-      message: error.message || 'Failed to get user profile'
-    };
+    return { success: false, message: error.message || 'Failed to get user profile' };
   }
 };
 
 /**
  * Update user profile
- * @param {Object} updates - Profile updates { name, email, etc. }
- * @param {string} token - Auth token
- * @returns {Promise<Object>} - { success, user, message }
  */
-export const updateProfile = async (updates, token) => {
+export const updateProfile = async (updates) => {
   try {
-    if (!token) {
-      throw new Error('Token is required');
-    }
-
-    // Validate email if updating
     if (updates.email && !validateEmail(updates.email)) {
       throw new Error('Invalid email format');
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.patch('/auth/profile', updates, {
-    //   headers: { Authorization: `Bearer ${token}` }
-    // });
+    const response = await apiClient.patch('/auth/profile', updates);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800));
+    if (!response.success) {
+      return { success: false, message: response.error || 'Profile update failed' };
+    }
 
-    console.log('[AUTH] Profile updated');
-
-    return {
-      success: true,
-      user: updates,
-      message: 'Profile updated successfully'
-    };
+    return { success: true, user: response.data, message: 'Profile updated successfully' };
   } catch (error) {
     console.error('[AUTH] Profile update failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Profile update failed'
-    };
+    return { success: false, message: error.message || 'Profile update failed' };
   }
 };
 

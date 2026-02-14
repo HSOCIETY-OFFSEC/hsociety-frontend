@@ -1,315 +1,162 @@
 /**
  * Two-Factor Authentication (2FA) Service
  * Location: src/core/auth/twofa.service.js
- * 
- * Features:
- * - Generate 2FA setup (QR code)
- * - Verify 2FA codes
- * - Enable/disable 2FA
- * - Backup codes generation
- * 
- * Security:
- * - TOTP (Time-based One-Time Password) support
- * - Backup codes for recovery
- * - Backend integration required
- * 
- * TODO: Backend integration for actual 2FA implementation
  */
+
+import { API_ENDPOINTS } from '../../config/api.config';
+import { apiClient } from '../../shared/services/api.client';
 
 /**
- * Setup 2FA for user account
- * @param {string} userId - User ID
- * @returns {Promise<Object>} - { success, secret, qrCode, backupCodes }
+ * Setup 2FA for current user
+ * @returns {Promise<Object>} - { success, secret, otpauthUrl, qrDataUrl }
  */
-export const setup2FA = async (userId) => {
+export const setup2FA = async () => {
   try {
-    if (!userId) {
-      throw new Error('User ID is required');
+    const response = await apiClient.post(API_ENDPOINTS.TWO_FA.SETUP, {});
+    if (!response.success) {
+      return { success: false, message: response.error || 'Failed to setup 2FA' };
     }
-
-    // TODO: Backend integration
-    // const response = await apiClient.post('/auth/2fa/setup', { userId });
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Mock response
-    const secret = generateMockSecret();
-    const qrCode = generateMockQRCode(secret);
-    const backupCodes = generateBackupCodes();
-
-    console.log('[2FA] Setup initiated for user:', userId);
 
     return {
       success: true,
-      secret,
-      qrCode,
-      backupCodes,
+      ...response.data,
       message: 'Scan the QR code with your authenticator app'
     };
   } catch (error) {
     console.error('[2FA] Setup failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Failed to setup 2FA'
-    };
+    return { success: false, message: error.message || 'Failed to setup 2FA' };
   }
 };
 
 /**
- * Verify 2FA code
- * @param {string} userId - User ID
- * @param {string} code - 6-digit 2FA code
- * @returns {Promise<Object>} - { success, message }
+ * Verify 2FA code during login
+ * @param {string} twoFactorToken
+ * @param {string} code
  */
-export const verify2FA = async (userId, code) => {
+export const verify2FA = async (twoFactorToken, code) => {
   try {
-    // Validate inputs
-    if (!userId || !code) {
-      throw new Error('User ID and code are required');
+    if (!twoFactorToken || !code) {
+      throw new Error('2FA token and code are required');
     }
 
-    if (code.length !== 6 || !/^\d{6}$/.test(code)) {
-      throw new Error('Invalid 2FA code format');
+    const response = await apiClient.post(API_ENDPOINTS.TWO_FA.VERIFY, {
+      twoFactorToken,
+      code
+    });
+
+    if (!response.success) {
+      return { success: false, message: response.error || '2FA verification failed' };
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.post('/auth/2fa/verify', {
-    //   userId,
-    //   code
-    // });
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800));
-
-    // Mock verification (for development)
-    const isValid = true; // Placeholder
-
-    if (!isValid) {
-      throw new Error('Invalid 2FA code');
-    }
-
-    console.log('[2FA] Code verified for user:', userId);
-
-    return {
-      success: true,
-      message: '2FA verification successful'
-    };
+    return { success: true, ...response.data, message: '2FA verification successful' };
   } catch (error) {
     console.error('[2FA] Verification failed:', error);
-    return {
-      success: false,
-      message: error.message || '2FA verification failed'
-    };
+    return { success: false, message: error.message || '2FA verification failed' };
   }
 };
 
 /**
- * Enable 2FA for user account
- * @param {string} userId - User ID
- * @param {string} code - Initial verification code
- * @returns {Promise<Object>} - { success, message }
+ * Enable 2FA for current user
+ * @param {string} code
  */
-export const enable2FA = async (userId, code) => {
+export const enable2FA = async (code) => {
   try {
-    // First verify the code
-    const verification = await verify2FA(userId, code);
-
-    if (!verification.success) {
-      throw new Error('Code verification failed');
+    if (!code) {
+      throw new Error('2FA code is required');
     }
 
-    // TODO: Backend integration
-    // await apiClient.post('/auth/2fa/enable', { userId });
+    const response = await apiClient.post(API_ENDPOINTS.TWO_FA.ENABLE, { code });
+    if (!response.success) {
+      return { success: false, message: response.error || 'Failed to enable 2FA' };
+    }
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    console.log('[2FA] 2FA enabled for user:', userId);
-
-    return {
-      success: true,
-      message: '2FA has been enabled successfully'
-    };
+    return { success: true, ...response.data, message: '2FA enabled successfully' };
   } catch (error) {
     console.error('[2FA] Enable failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Failed to enable 2FA'
-    };
+    return { success: false, message: error.message || 'Failed to enable 2FA' };
   }
 };
 
 /**
- * Disable 2FA for user account
- * @param {string} userId - User ID
- * @param {string} password - User password for confirmation
- * @returns {Promise<Object>} - { success, message }
+ * Disable 2FA for current user
+ * @param {string} code
  */
-export const disable2FA = async (userId, password) => {
+export const disable2FA = async (code) => {
   try {
-    if (!userId || !password) {
-      throw new Error('User ID and password are required');
+    if (!code) {
+      throw new Error('2FA code is required');
     }
 
-    // TODO: Backend integration
-    // await apiClient.post('/auth/2fa/disable', {
-    //   userId,
-    //   password
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.TWO_FA.DISABLE, { code });
+    if (!response.success) {
+      return { success: false, message: response.error || 'Failed to disable 2FA' };
+    }
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800));
-
-    console.log('[2FA] 2FA disabled for user:', userId);
-
-    return {
-      success: true,
-      message: '2FA has been disabled'
-    };
+    return { success: true, message: '2FA disabled' };
   } catch (error) {
     console.error('[2FA] Disable failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Failed to disable 2FA'
-    };
+    return { success: false, message: error.message || 'Failed to disable 2FA' };
   }
 };
 
 /**
- * Verify backup code
- * @param {string} userId - User ID
- * @param {string} backupCode - Backup code
- * @returns {Promise<Object>} - { success, message }
+ * Verify backup code during login
  */
-export const verifyBackupCode = async (userId, backupCode) => {
+export const verifyBackupCode = async (twoFactorToken, backupCode) => {
   try {
-    if (!userId || !backupCode) {
-      throw new Error('User ID and backup code are required');
+    if (!twoFactorToken || !backupCode) {
+      throw new Error('2FA token and backup code are required');
     }
 
-    // TODO: Backend integration
-    // const response = await apiClient.post('/auth/2fa/verify-backup', {
-    //   userId,
-    //   backupCode
-    // });
+    const response = await apiClient.post(API_ENDPOINTS.TWO_FA.VERIFY_BACKUP, {
+      twoFactorToken,
+      backupCode
+    });
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800));
+    if (!response.success) {
+      return { success: false, message: response.error || 'Invalid backup code' };
+    }
 
-    console.log('[2FA] Backup code verified for user:', userId);
-
-    return {
-      success: true,
-      message: 'Backup code verified. Please set up 2FA again.'
-    };
+    return { success: true, ...response.data, message: 'Backup code verified' };
   } catch (error) {
     console.error('[2FA] Backup code verification failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Invalid backup code'
-    };
+    return { success: false, message: error.message || 'Invalid backup code' };
   }
 };
 
 /**
- * Generate new backup codes
- * @param {string} userId - User ID
- * @returns {Promise<Object>} - { success, backupCodes }
+ * Regenerate backup codes for current user
  */
-export const regenerateBackupCodes = async (userId) => {
+export const regenerateBackupCodes = async () => {
   try {
-    if (!userId) {
-      throw new Error('User ID is required');
+    const response = await apiClient.post(API_ENDPOINTS.TWO_FA.REGENERATE_BACKUP, {});
+    if (!response.success) {
+      return { success: false, message: response.error || 'Failed to regenerate backup codes' };
     }
-
-    // TODO: Backend integration
-    // const response = await apiClient.post('/auth/2fa/regenerate-backup', {
-    //   userId
-    // });
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const backupCodes = generateBackupCodes();
-
-    console.log('[2FA] Backup codes regenerated for user:', userId);
 
     return {
       success: true,
-      backupCodes,
+      backupCodes: response.data?.backupCodes,
       message: 'New backup codes generated. Store them safely.'
     };
   } catch (error) {
     console.error('[2FA] Backup code regeneration failed:', error);
-    return {
-      success: false,
-      message: error.message || 'Failed to regenerate backup codes'
-    };
+    return { success: false, message: error.message || 'Failed to regenerate backup codes' };
   }
 };
 
 /**
- * Check if user has 2FA enabled
- * @param {string} userId - User ID
- * @returns {Promise<boolean>} - True if 2FA is enabled
+ * Check 2FA status for current user
  */
-export const is2FAEnabled = async (userId) => {
+export const is2FAEnabled = async () => {
   try {
-    if (!userId) return false;
-
-    // TODO: Backend integration
-    // const response = await apiClient.get(`/auth/2fa/status/${userId}`);
-    // return response.enabled;
-
-    // Mock response
-    return true; // Placeholder
+    const response = await apiClient.get(API_ENDPOINTS.TWO_FA.STATUS);
+    if (!response.success) return false;
+    return !!response.data?.enabled;
   } catch (error) {
     console.error('[2FA] Status check failed:', error);
     return false;
   }
-};
-
-// ========================================
-// HELPER FUNCTIONS (Mock implementations)
-// ========================================
-
-/**
- * Generate mock secret key
- * @returns {string} - Mock secret
- */
-const generateMockSecret = () => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-  let secret = '';
-  for (let i = 0; i < 32; i++) {
-    secret += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return secret;
-};
-
-/**
- * Generate mock QR code URL
- * @param {string} secret - Secret key
- * @returns {string} - QR code URL
- */
-const generateMockQRCode = (secret) => {
-  // In production, this would generate actual QR code
-  const appName = 'HSOCIETY';
-  const userEmail = 'user@example.com';
-  return `otpauth://totp/${appName}:${userEmail}?secret=${secret}&issuer=${appName}`;
-};
-
-/**
- * Generate backup codes
- * @returns {Array<string>} - Array of backup codes
- */
-const generateBackupCodes = () => {
-  const codes = [];
-  for (let i = 0; i < 10; i++) {
-    const code = Math.random().toString(36).substring(2, 10).toUpperCase();
-    codes.push(code);
-  }
-  return codes;
 };
 
 export default {
