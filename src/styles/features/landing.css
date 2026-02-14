@@ -170,6 +170,18 @@
   background-position: center;
 }
 
+.hero-video-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("../../assets/circuit-hero.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
 .hero-video-bg.fallback-only {
   filter: saturate(1.05) brightness(0.72);
 }
@@ -641,6 +653,34 @@
 .services-section {
   padding: 6rem 2rem;
   position: relative;
+  overflow: hidden;
+}
+
+.services-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../../assets/circuit-services.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.services-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(58, 163, 255, 0.18), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(58, 163, 255, 0.12), transparent 55%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.services-section .section-container {
+  position: relative;
+  z-index: 1;
 }
 
 .section-container {
