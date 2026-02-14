@@ -221,6 +221,24 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
+  margin: 10px 0 0px;
+}
+
+/* =====================
+Post button CSS
+**/
+
+.post-btn{
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin: 10px 0 0px;
 }
 
 .post-creator-tools button.active {

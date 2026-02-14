@@ -345,6 +345,7 @@ const Community = () => {
                   </button>
                 </div>
                 <Button
+                  className='post-btn'
                   variant="secondary"
                   size="small"
                   onClick={handleCreatePost}
