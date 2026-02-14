@@ -140,18 +140,34 @@
   border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
 }
 
+.sidebar-list button.active {
+  background: var(--primary-color-alpha);
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+}
+
 .tag-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.tag-list span {
+.tag-list button {
+  border: 1px solid var(--border-color);
+  background: transparent;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  border: 1px solid var(--border-color);
   color: var(--text-secondary);
   font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-list button:hover,
+.tag-list button.active {
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
 }
 
 .community-feed {
@@ -207,6 +223,43 @@
   cursor: pointer;
 }
 
+.post-creator-tools button.active {
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+}
+
+.composer-panel {
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 45%, transparent);
+  border-radius: 14px;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--card-bg) 90%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.composer-panel h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.composer-panel p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.composer-panel button {
+  align-self: flex-start;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
 .feed-tabs {
   display: flex;
   gap: 0.75rem;
@@ -229,6 +282,63 @@
   background: var(--primary-color-alpha);
   color: var(--primary-color);
   border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.active-filters button {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.filters-panel {
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filters-panel h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.filters-panel label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.filters-panel button {
+  align-self: flex-start;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
 }
 
 .post-list {
@@ -270,12 +380,22 @@
   margin-bottom: 1rem;
 }
 
-.post-tags span {
+.post-tags button {
+  border: 1px solid var(--border-color);
+  background: transparent;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
-  border: 1px solid var(--border-color);
   font-size: 0.8rem;
   color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.post-tags button:hover,
+.post-tags button.active {
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
 }
 
 .post-actions {
@@ -291,6 +411,32 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+}
+
+.reply-box {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.reply-box input {
+  flex: 1;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  min-width: 200px;
+}
+
+.reply-box button {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
   cursor: pointer;
 }
 
@@ -347,6 +493,29 @@
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1rem;
+}
+
+.action-panel {
+  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--card-bg));
+}
+
+.action-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.action-panel-header h3 {
+  margin: 0;
+}
+
+.action-panel-header button {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
 }
 
 @media (max-width: 1100px) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FiBookOpen, FiBookmark, FiBriefcase, FiCheckCircle, FiFilter, FiHash, FiHeart, FiImage, FiMessageSquare, FiPlus, FiSend, FiShield, FiStar, FiTrendingUp, FiUsers } from 'react-icons/fi';
+import { FiBookOpen, FiBookmark, FiBriefcase, FiCheckCircle, FiFilter, FiHash, FiHeart, FiImage, FiMessageSquare, FiPlus, FiSend, FiShield, FiStar, FiTrendingUp, FiUsers, FiX } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { useAuth } from '../../core/auth/AuthContext';
 import Navbar from '../../shared/components/layout/Navbar';
@@ -30,6 +30,19 @@ const Community = () => {
   const [submitting, setSubmitting] = useState(false);
   const [postInput, setPostInput] = useState('');
   const [error, setError] = useState('');
+  const [activeChannelId, setActiveChannelId] = useState(null);
+  const [activeTag, setActiveTag] = useState(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    questions: true,
+    wins: true,
+    labs: true,
+    mentorship: true
+  });
+  const [composerTool, setComposerTool] = useState(null);
+  const [replyOpenId, setReplyOpenId] = useState(null);
+  const [replyDrafts, setReplyDrafts] = useState({});
+  const [actionPanel, setActionPanel] = useState(null);
   const role = user?.role || 'student';
   const isCorporate = role === 'corporate';
 
@@ -104,6 +117,45 @@ const Community = () => {
     await savePost({ postId, saved: !currentlySaved });
   };
 
+  const handleChannelClick = (channel) => {
+    setActiveChannelId((prev) => (prev === channel.id ? null : channel.id));
+  };
+
+  const handleTagClick = (tag) => {
+    setActiveTag((prev) => (prev === tag ? null : tag));
+  };
+
+  const handleFilterToggle = (key) => {
+    setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleComposerTool = (tool) => {
+    setComposerTool((prev) => (prev === tool ? null : tool));
+  };
+
+  const handleReplyToggle = (postId) => {
+    setReplyOpenId((prev) => (prev === postId ? null : postId));
+  };
+
+  const handleReplyChange = (postId, value) => {
+    setReplyDrafts((prev) => ({ ...prev, [postId]: value }));
+  };
+
+  const handleSendReply = (postId) => {
+    const draft = replyDrafts[postId]?.trim();
+    if (!draft) return;
+    setReplyDrafts((prev) => ({ ...prev, [postId]: '' }));
+    setReplyOpenId(null);
+    setActionPanel({
+      title: 'Reply queued',
+      description: 'Your response is ready for backend integration.'
+    });
+  };
+
+  const handleAction = (action) => {
+    setActionPanel(action);
+  };
+
   return (
     <>
       <Navbar />
@@ -117,7 +169,14 @@ const Community = () => {
                 Ask questions, share wins, and build your cybersecurity path with peers and mentors.
               </p>
             </div>
-            <Button variant="primary" size="large">
+            <Button
+              variant="primary"
+              size="large"
+              onClick={() => handleAction({
+                title: cta.title,
+                description: cta.subtitle
+              })}
+            >
               {isCorporate ? <FiBriefcase size={18} /> : <FiBookOpen size={18} />}
               {cta.title}
             </Button>
@@ -144,7 +203,12 @@ const Community = () => {
               <h3>Channels</h3>
               <div className="sidebar-list">
                 {overview.channels.map((channel) => (
-                  <button key={channel.id} type="button">
+                  <button
+                    key={channel.id}
+                    type="button"
+                    className={activeChannelId === channel.id ? 'active' : ''}
+                    onClick={() => handleChannelClick(channel)}
+                  >
                     <FiHash size={16} /> {channel.name}
                   </button>
                 ))}
@@ -161,15 +225,63 @@ const Community = () => {
               <div className="sidebar-list">
                 {isCorporate ? (
                   <>
-                    <button type="button"><FiBriefcase size={16} /> Post Internships</button>
-                    <button type="button"><FiShield size={16} /> Sponsor Lab Time</button>
-                    <button type="button"><FiUsers size={16} /> Mentor Circle</button>
+                    <button
+                      type="button"
+                      onClick={() => handleAction({
+                        title: 'Post Internships',
+                        description: 'Draft an internship listing for the community.'
+                      })}
+                    >
+                      <FiBriefcase size={16} /> Post Internships
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAction({
+                        title: 'Sponsor Lab Time',
+                        description: 'Outline lab sponsorship details and availability.'
+                      })}
+                    >
+                      <FiShield size={16} /> Sponsor Lab Time
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAction({
+                        title: 'Mentor Circle',
+                        description: 'Create a mentor circle session outline.'
+                      })}
+                    >
+                      <FiUsers size={16} /> Mentor Circle
+                    </button>
                   </>
                 ) : (
                   <>
-                    <button type="button"><FiBookOpen size={16} /> Learning Roadmaps</button>
-                    <button type="button"><FiShield size={16} /> Beginner Labs</button>
-                    <button type="button"><FiUsers size={16} /> Find Study Buddy</button>
+                    <button
+                      type="button"
+                      onClick={() => handleAction({
+                        title: 'Learning Roadmaps',
+                        description: 'Preview curated roadmaps for your track.'
+                      })}
+                    >
+                      <FiBookOpen size={16} /> Learning Roadmaps
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAction({
+                        title: 'Beginner Labs',
+                        description: 'Choose a starter lab to run next.'
+                      })}
+                    >
+                      <FiShield size={16} /> Beginner Labs
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAction({
+                        title: 'Find Study Buddy',
+                        description: 'Set your availability and topic focus.'
+                      })}
+                    >
+                      <FiUsers size={16} /> Find Study Buddy
+                    </button>
                   </>
                 )}
               </div>
@@ -179,7 +291,14 @@ const Community = () => {
               <h3>Trending Tags</h3>
               <div className="tag-list">
                 {overview.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
+                  <button
+                    key={tag}
+                    type="button"
+                    className={activeTag === tag ? 'active' : ''}
+                    onClick={() => handleTagClick(tag)}
+                  >
+                    {tag}
+                  </button>
                 ))}
               </div>
             </Card>
@@ -210,8 +329,20 @@ const Community = () => {
               </div>
               <div className="post-creator-actions">
                 <div className="post-creator-tools">
-                  <button type="button"><FiImage size={16} /> Media</button>
-                  <button type="button"><FiShield size={16} /> Lab Logs</button>
+                  <button
+                    type="button"
+                    className={composerTool === 'media' ? 'active' : ''}
+                    onClick={() => handleComposerTool('media')}
+                  >
+                    <FiImage size={16} /> Media
+                  </button>
+                  <button
+                    type="button"
+                    className={composerTool === 'labs' ? 'active' : ''}
+                    onClick={() => handleComposerTool('labs')}
+                  >
+                    <FiShield size={16} /> Lab Logs
+                  </button>
                 </div>
                 <Button
                   variant="secondary"
@@ -223,6 +354,25 @@ const Community = () => {
                   {submitting ? 'Posting...' : 'Post'}
                 </Button>
               </div>
+              {composerTool && (
+                <div className="composer-panel">
+                  <h4>{composerTool === 'media' ? 'Attach media' : 'Add lab log'}</h4>
+                  <p>
+                    {composerTool === 'media'
+                      ? 'Upload screenshots or diagrams to support your post.'
+                      : 'Capture lab environment, tools used, and results.'}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleAction({
+                      title: composerTool === 'media' ? 'Media upload' : 'Lab log entry',
+                      description: 'Prepared for backend integration.'
+                    })}
+                  >
+                    {composerTool === 'media' ? 'Select files' : 'Add entry'}
+                  </button>
+                </div>
+              )}
             </Card>
 
             <div className="feed-tabs reveal-on-scroll">
@@ -250,11 +400,70 @@ const Community = () => {
                 <FiBookmark size={16} />
                 Saved
               </button>
-              <button type="button">
+              <button
+                type="button"
+                className={filtersOpen ? 'active' : ''}
+                onClick={() => setFiltersOpen((prev) => !prev)}
+              >
                 <FiFilter size={16} />
                 Filters
               </button>
             </div>
+
+            {(activeChannelId || activeTag) && (
+              <div className="active-filters">
+                {activeChannelId && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveChannelId(null)}
+                  >
+                    Channel: {overview.channels.find((channel) => channel.id === activeChannelId)?.name || 'Selected'}
+                    <FiX size={14} />
+                  </button>
+                )}
+                {activeTag && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTag(null)}
+                  >
+                    Tag: {activeTag}
+                    <FiX size={14} />
+                  </button>
+                )}
+              </div>
+            )}
+
+            {filtersOpen && (
+              <div className="filters-panel">
+                <h4>Feed filters</h4>
+                <div className="filters-grid">
+                  {[
+                    { key: 'questions', label: 'Questions' },
+                    { key: 'wins', label: 'Wins' },
+                    { key: 'labs', label: 'Lab logs' },
+                    { key: 'mentorship', label: 'Mentorship' }
+                  ].map((item) => (
+                    <label key={item.key}>
+                      <input
+                        type="checkbox"
+                        checked={filters[item.key]}
+                        onChange={() => handleFilterToggle(item.key)}
+                      />
+                      <span>{item.label}</span>
+                    </label>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleAction({
+                    title: 'Filters saved',
+                    description: 'Your feed preferences are ready for backend integration.'
+                  })}
+                >
+                  Save filters
+                </button>
+              </div>
+            )}
 
             <div className="post-list">
               {error && (
@@ -290,18 +499,40 @@ const Community = () => {
                   <p>{post.body}</p>
                   <div className="post-tags">
                     {post.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
+                      <button
+                        key={tag}
+                        type="button"
+                        className={activeTag === tag ? 'active' : ''}
+                        onClick={() => handleTagClick(tag)}
+                      >
+                        {tag}
+                      </button>
                     ))}
                   </div>
                   <div className="post-actions">
                     <button type="button" onClick={() => handleLikePost(post.id)}>
                       <FiHeart size={16} /> {post.likes}
                     </button>
-                    <button type="button"><FiMessageSquare size={16} /> {post.replies}</button>
+                    <button type="button" onClick={() => handleReplyToggle(post.id)}>
+                      <FiMessageSquare size={16} /> {post.replies}
+                    </button>
                     <button type="button" onClick={() => handleSavePost(post.id, post.isSaved)}>
                       <FiStar size={16} /> {post.isSaved ? 'Saved' : 'Save'}
                     </button>
                   </div>
+                  {replyOpenId === post.id && (
+                    <div className="reply-box">
+                      <input
+                        type="text"
+                        placeholder="Write a quick reply..."
+                        value={replyDrafts[post.id] || ''}
+                        onChange={(e) => handleReplyChange(post.id, e.target.value)}
+                      />
+                      <button type="button" onClick={() => handleSendReply(post.id)}>
+                        Send reply
+                      </button>
+                    </div>
+                  )}
                 </Card>
               ))}
             </div>
@@ -332,7 +563,14 @@ const Community = () => {
                   <span>{overview.mentor?.role || 'Security Mentor'}</span>
                 </div>
               </div>
-              <Button variant="ghost" size="small">
+              <Button
+                variant="ghost"
+                size="small"
+                onClick={() => handleAction({
+                  title: isCorporate ? 'Propose Session' : 'Join Session',
+                  description: 'Session preferences are ready for backend integration.'
+                })}
+              >
                 {isCorporate ? 'Propose Session' : 'Join Session'}
               </Button>
             </Card>
@@ -340,10 +578,36 @@ const Community = () => {
             <Card padding="large" className="sidebar-card">
               <h3>{overview.challenge?.title || (isCorporate ? 'Top Learner Highlights' : 'Challenge of the Week')}</h3>
               <p>{overview.challenge?.description}</p>
-              <Button variant="secondary" size="small">
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => handleAction({
+                  title: isCorporate ? 'View Learners' : 'Start Challenge',
+                  description: 'Challenge details are ready for backend integration.'
+                })}
+              >
                 {isCorporate ? 'View Learners' : 'Start Challenge'}
               </Button>
             </Card>
+
+            {actionPanel && (
+              <Card padding="large" className="sidebar-card action-panel">
+                <div className="action-panel-header">
+                  <h3>{actionPanel.title}</h3>
+                  <button type="button" onClick={() => setActionPanel(null)}>
+                    <FiX size={16} />
+                  </button>
+                </div>
+                <p>{actionPanel.description}</p>
+                <Button
+                  variant="ghost"
+                  size="small"
+                  onClick={() => setActionPanel(null)}
+                >
+                  Clear action
+                </Button>
+              </Card>
+            )}
           </aside>
         </div>
       </div>
