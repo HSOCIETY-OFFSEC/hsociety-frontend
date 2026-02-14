@@ -1,6 +1,5 @@
 import React from 'react';
 import { FiArrowUpRight, FiBriefcase, FiClock, FiCompass, FiFlag, FiMapPin } from 'react-icons/fi';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
@@ -34,9 +33,7 @@ const Careers = () => {
   ];
 
   return (
-    <>
-      <Navbar />
-      <div className="careers-page">
+    <div className="careers-page">
         <header className="careers-hero reveal-on-scroll">
           <div>
             <p className="careers-kicker">Careers</p>
@@ -82,8 +79,7 @@ const Careers = () => {
             </Card>
           ))}
         </section>
-      </div>
-    </>
+    </div>
   );
 };
 

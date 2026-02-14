@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FiBookOpen, FiCheckCircle, FiClock, FiCode, FiCompass, FiFlag, FiLock, FiMessageSquare, FiShield, FiTarget } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
@@ -55,9 +54,7 @@ const StudentDashboard = () => {
   ];
 
   return (
-    <>
-      <Navbar />
-      <div className="student-page">
+    <div className="student-page">
         <header className="student-hero reveal-on-scroll">
           <div>
             <p className="student-kicker">Student Dashboard</p>
@@ -196,8 +193,7 @@ const StudentDashboard = () => {
             </div>
           </Card>
         </section>
-      </div>
-    </>
+    </div>
   );
 };
 

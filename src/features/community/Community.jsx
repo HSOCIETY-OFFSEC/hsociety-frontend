@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FiBookOpen, FiBookmark, FiBriefcase, FiCheckCircle, FiFilter, FiHash, FiHeart, FiImage, FiMessageSquare, FiPlus, FiSend, FiShield, FiStar, FiTrendingUp, FiUsers, FiX } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { useAuth } from '../../core/auth/AuthContext';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import {
@@ -157,9 +156,7 @@ const Community = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="community-page">
+    <div className="community-page">
         <header className="community-hero reveal-on-scroll">
           <div className="community-hero-content">
             <div>
@@ -612,7 +609,6 @@ const Community = () => {
           </aside>
         </div>
       </div>
-    </>
   );
 };
 

@@ -2,6 +2,10 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
+import AppLayout from '../shared/components/layout/AppLayout';
+import AuthLayout from '../shared/components/layout/AuthLayout';
+import LandingLayout from '../shared/components/layout/LandingLayout';
+import PublicLayout from '../shared/components/layout/PublicLayout';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
@@ -27,17 +31,8 @@ const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
  */
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <PageLoader message="Authenticating session..." />
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
+  if (isLoading) return <PageLoader message="Authenticating session..." />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 };
 
@@ -48,171 +43,110 @@ const RoleRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
   const role = user?.role === 'client' ? 'corporate' : user?.role;
 
-  if (isLoading) {
-    return (
-      <PageLoader message="Preparing your workspace..." />
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
+  if (isLoading) return <PageLoader message="Preparing your workspace..." />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (!role || !allowedRoles.includes(role)) {
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/dashboard'} replace />;
   }
-
   return children;
 };
 
 /**
- * Public Route
+ * Public Route (redirects auth users to dashboard)
  */
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <PageLoader message="Preparing your workspace..." />
-    );
-  }
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
+  if (isLoading) return <PageLoader message="Preparing your workspace..." />;
+  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
   return children;
 };
 
-/**
- * Loading fallback
- */
-const LoadingFallback = () => (
-  <PageLoader message="Loading secure interface..." />
-);
+const LoadingFallback = () => <PageLoader message="Loading secure interface..." />;
 
 /**
- * App Router
+ * App Router with nested layouts
  */
 const AppRouter = () => {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <React.Suspense fallback={<LoadingFallback />}>
         <Routes>
+          {/* Landing - full-width marketing layout */}
+          <Route element={<LandingLayout />}>
+            <Route index element={<Landing />} />
+          </Route>
 
-          {/* Default Route - Landing Page */}
-          <Route 
-            path="/" 
-            element={<Landing />} 
-          />
+          {/* Auth pages - login, register */}
+          <Route element={<AuthLayout />}>
+            <Route
+              path="login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <PublicRoute>
+                  <Register />
+                </PublicRoute>
+              }
+            />
+          </Route>
 
-          {/* Public Routes */}
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
+          {/* App pages - dashboard, audits, pentest, student */}
+          <Route element={<AppLayout />}>
+            <Route
+              path="dashboard"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Dashboard />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="audits"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Audits />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentest"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Pentest />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-dashboard"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentDashboard />
+                </RoleRoute>
+              }
+            />
+          </Route>
 
-          <Route
-            path="/register"
-            element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
-            }
-          />
+          {/* Public pages - about, team, blog, etc. */}
+          <Route element={<PublicLayout />}>
+            <Route path="feedback" element={<Feedback />} />
+            <Route path="about" element={<About />} />
+            <Route path="team" element={<Team />} />
+            <Route path="developer" element={<Developer />} />
+            <Route path="community" element={<Community />} />
+            <Route path="careers" element={<Careers />} />
+            <Route path="methodology" element={<Methodology />} />
+            <Route path="case-studies" element={<CaseStudies />} />
+            <Route path="blog" element={<Blog />} />
+          </Route>
 
-          <Route
-            path="/feedback"
-            element={<Feedback />}
-          />
-
-          <Route
-            path="/about"
-            element={<About />}
-          />
-
-          <Route
-            path="/team"
-            element={<Team />}
-          />
-
-          <Route
-            path="/developer"
-            element={<Developer />}
-          />
-
-          <Route
-            path="/community"
-            element={<Community />}
-          />
-
-          <Route
-            path="/careers"
-            element={<Careers />}
-          />
-
-          <Route
-            path="/methodology"
-            element={<Methodology />}
-          />
-
-          <Route
-            path="/case-studies"
-            element={<CaseStudies />}
-          />
-
-          <Route
-            path="/blog"
-            element={<Blog />}
-          />
-
-          <Route
-            path="/student-dashboard"
-            element={
-              <RoleRoute allowedRoles={['student']}>
-                <StudentDashboard />
-              </RoleRoute>
-            }
-          />
-
-          {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <RoleRoute allowedRoles={['corporate']}>
-                <Dashboard />
-              </RoleRoute>
-            }
-          />
-
-          <Route
-            path="/audits"
-            element={
-              <RoleRoute allowedRoles={['corporate']}>
-                <Audits />
-              </RoleRoute>
-            }
-          />
-
-          <Route
-            path="/pentest"
-            element={
-              <RoleRoute allowedRoles={['corporate']}>
-                <Pentest />
-              </RoleRoute>
-            }
-          />
-
-          {/* 404 */}
-          <Route
-            path="*"
-            element={<NotFound />}
-          />
-
+          {/* 404 - minimal layout */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </React.Suspense>
     </BrowserRouter>

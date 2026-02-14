@@ -57,7 +57,7 @@ export const envConfig = {
   
   // API Configuration
   api: {
-    baseURL: getEnvVar('VITE_API_BASE_URL', 'http://localhost:3000/api'),
+    baseURL: getEnvVar('VITE_API_BASE_URL', '/api'),  // Use /api in dev (Vite proxy) or full URL in prod
     timeout: parseInt(getEnvVar('VITE_API_TIMEOUT', '30000')),
     version: getEnvVar('VITE_API_VERSION', 'v1')
   },

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiDownload, FiFileText, FiSearch } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
@@ -227,9 +226,7 @@ const Audits = () => {
 
   if (loading) {
     return (
-      <>
-        <Navbar />
-        <div className="audits-container">
+      <div className="audits-container">
           <div className="audits-wrapper">
             <div className="page-header">
               <Skeleton className="skeleton-line" style={{ width: '220px' }} />
@@ -281,14 +278,11 @@ const Audits = () => {
             </div>
           </div>
         </div>
-      </>
     );
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="audits-container">
+    <div className="audits-container">
         <div className="audits-wrapper">
           {/* Header */}
           <div className="page-header reveal-on-scroll">
@@ -379,7 +373,6 @@ const Audits = () => {
           )}
         </div>
       </div>
-    </>
   );
 };
 

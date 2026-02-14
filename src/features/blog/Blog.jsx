@@ -1,6 +1,5 @@
 import React from 'react';
 import { FiBookOpen, FiCalendar, FiChevronRight } from 'react-icons/fi';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
@@ -28,9 +27,7 @@ const Blog = () => {
   ];
 
   return (
-    <>
-      <Navbar />
-      <div className="blog-page">
+    <div className="blog-page">
         <header className="blog-hero reveal-on-scroll">
           <div>
             <p className="blog-kicker">Field Notes</p>
@@ -72,8 +69,7 @@ const Blog = () => {
             </Card>
           ))}
         </section>
-      </div>
-    </>
+    </div>
   );
 };
 

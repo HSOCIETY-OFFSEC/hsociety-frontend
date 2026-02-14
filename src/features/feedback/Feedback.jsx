@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FiAlertTriangle, FiCheckCircle, FiClock, FiMessageSquare, FiShield, FiStar } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { validateForm } from '../../core/validation/input.validator';
@@ -139,9 +138,7 @@ const Feedback = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="feedback-container">
+    <div className="feedback-container">
         <div className="feedback-wrapper">
           {/* Header */}
           <div className="feedback-header reveal-on-scroll">
@@ -414,8 +411,7 @@ const Feedback = () => {
             </Card>
           </div>
         </div>
-      </div>
-    </>
+    </div>
   );
 };
 

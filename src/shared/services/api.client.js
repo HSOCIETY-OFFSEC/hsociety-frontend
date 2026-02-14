@@ -17,8 +17,8 @@
 
 import { sessionManager } from '../../core/auth/session.manager';
 
-// API Base URL from environment config
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+// API Base URL - use env or default to /api (proxied to backend in dev)
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 /**
  * HTTP Methods

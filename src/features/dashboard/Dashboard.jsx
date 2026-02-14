@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiFileText, FiMessageSquare, FiShield } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Skeleton from '../../shared/components/ui/Skeleton';
 import { getDashboardOverview } from './dashboard.service';
@@ -104,9 +103,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <>
-        <Navbar />
-        <div className="dashboard-container">
+      <div className="dashboard-container">
           <div className="dashboard-wrapper">
             <div className="dashboard-header">
               <div>
@@ -173,14 +170,11 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </>
     );
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="dashboard-container">
+    <div className="dashboard-container">
         <div className="dashboard-wrapper">
           {/* Header */}
           <div className="dashboard-header reveal-on-scroll dramatic-header">
@@ -211,7 +205,6 @@ const Dashboard = () => {
           <SecurityNotice />
         </div>
       </div>
-    </>
   );
 };
 

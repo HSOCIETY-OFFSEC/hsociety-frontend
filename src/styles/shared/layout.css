@@ -22,6 +22,30 @@
   min-height: 100vh;
 }
 
+/* Layout-specific main content areas */
+.app-layout .app-main,
+.auth-layout .auth-main,
+.public-layout .public-main {
+  flex: 1;
+  padding: 1.5rem 1rem;
+}
+
+.app-layout .app-main {
+  padding-top: 1.5rem;
+}
+
+.auth-layout .auth-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 72px);
+  padding: 2rem 1rem;
+}
+
+.landing-layout .landing-main {
+  flex: 1;
+}
+
 .app-sidebar {
   position: fixed;
   top: 0;

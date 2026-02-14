@@ -49,44 +49,47 @@ cp .env.example .env
 
 4. Update `.env` with your configuration
 
-5. Start development server:
-```bash
-npm run dev
-```
+5. Start the app:
+
+   **Option A: Frontend only** (mock data):
+   ```bash
+   npm run dev
+   ```
+
+   **Option B: Frontend + Backend** (with Express API):
+   ```bash
+   # Terminal 1 - API server
+   cd server && npm install && npm run dev
+
+   # Terminal 2 - Frontend (from project root)
+   npm run dev
+   ```
 
 6. Open browser to `http://localhost:5173`
 
 ## 📁 Project Structure
 ```
-src/
-├── app/                    # App configuration
-│   ├── App.jsx            # Main app component
-│   ├── providers.jsx      # Theme & context providers
-│   └── router.jsx         # Route configuration
-├── core/                   # Core functionality
-│   ├── auth/              # Authentication logic
-│   ├── encryption/        # Encryption utilities
-│   ├── inactivity/        # Auto-logout
-│   ├── security-tests/    # Security scanning
-│   └── validation/        # Input validation
-├── features/              # Feature modules
-│   ├── audits/           # Security audits
-│   ├── dashboard/        # User dashboard
-│   ├── feedback/         # Feedback system
-│   └── pentest/          # Penetration testing
-├── shared/               # Shared components
-│   ├── components/       # Reusable UI components
-│   └── services/         # API client
-├── styles/               # CSS files
-├── config/               # Configuration files
-└── utils/                # Utility functions
+hsociety-offsec/
+├── src/                    # Frontend (React + Vite)
+│   ├── app/               # App config, router, providers
+│   ├── core/              # Auth, encryption, validation
+│   ├── features/          # Feature modules (dashboard, audits, etc.)
+│   ├── shared/            # Layout, UI components, API client
+│   ├── config/            # API, env, navigation config
+│   ├── styles/            # CSS
+│   └── utils/             # Helpers
+├── server/                 # Backend (Express.js)
+│   ├── routes/            # API route handlers
+│   ├── index.js           # Server entry
+│   └── .env.example       # Backend env template
+└── .env.example           # Frontend env template
 ```
 
 ## 🎨 Tech Stack
 
-- **Frontend**: React 18
+- **Frontend**: React 18, Vite
+- **Backend**: Express.js (see `server/`)
 - **Routing**: React Router v6
-- **Build Tool**: Vite
 - **Styling**: Custom CSS with CSS Variables
 - **State Management**: React Context API
 
@@ -107,16 +110,16 @@ Key variables:
 - `VITE_SESSION_DURATION` - Session timeout duration
 - `VITE_INACTIVITY_TIMEOUT` - Auto-logout timeout
 
-## 📝 TODO: Backend Integration
+## 📝 Backend Integration
 
-All service files contain placeholders for backend integration:
-- Authentication endpoints
-- OTP & 2FA verification
-- Pentest management
-- Audit reports
-- Feedback submission
+The Express backend in `server/` is scaffolded and ready. Vite proxies `/api` to the backend in dev.
 
-Search for `TODO: Backend integration` in the codebase.
+- **Dashboard**: `GET /api/dashboard/overview` returns mock data
+- **Feedback**: `POST /api/feedback` accepts submissions
+- **Pentest**: `POST /api/pentest` accepts requests
+- **Auth, Audits, etc.**: Placeholders; implement with JWT + DB
+
+See `server/README.md` for backend setup.
 
 ## 🔐 Security Notes
 

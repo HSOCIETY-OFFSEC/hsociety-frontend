@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FiAlertTriangle, FiLock } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../shared/components/common/Logo';
-import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
@@ -54,9 +53,7 @@ const Register = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <div className="auth-container">
+    <div className="auth-container">
         <div className="auth-wrapper">
           <div className="auth-logo">
             <Logo size="large" />
@@ -213,8 +210,7 @@ const Register = () => {
             </p>
           </div>
         </div>
-      </div>
-    </>
+    </div>
   );
 };
 

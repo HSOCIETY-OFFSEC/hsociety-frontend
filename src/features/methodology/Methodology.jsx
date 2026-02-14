@@ -1,6 +1,5 @@
 import React from 'react';
 import { FiCheckCircle, FiClipboard, FiSearch, FiShield, FiTarget, FiTool } from 'react-icons/fi';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import '../../styles/features/methodology.css';
@@ -18,9 +17,7 @@ const Methodology = () => {
   ];
 
   return (
-    <>
-      <Navbar />
-      <div className="methodology-page">
+    <div className="methodology-page">
         <header className="methodology-hero reveal-on-scroll">
           <h1>Testing Methodology</h1>
           <p>Repeatable, evidence-driven engagement flow aligned to OWASP and PTES.</p>
@@ -42,8 +39,7 @@ const Methodology = () => {
             </Card>
           ))}
         </section>
-      </div>
-    </>
+    </div>
   );
 };
 

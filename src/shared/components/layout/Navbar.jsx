@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiBarChart2, FiBriefcase, FiChevronDown, FiFileText, FiLogOut, FiMenu, FiMessageSquare, FiShield, FiUsers, FiX } from 'react-icons/fi';
+import { FiChevronDown, FiLogOut, FiMenu, FiShield, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
+import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
-import Button from '../ui/Button';
 
 /**
  * Navbar Component
@@ -53,51 +53,8 @@ const Navbar = ({ sticky = true }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navLinks = [
-    { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
-    { path: '/pentest', label: 'Pentest', icon: FiShield },
-    { path: '/audits', label: 'Audits', icon: FiFileText },
-    { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
-    { path: '/community', label: 'Community', icon: FiMessageSquare }
-  ];
-
-  const publicLinks = [
-    { path: '/about', label: 'About Us', icon: FiUsers },
-    { path: '/team', label: 'Meet the Team', icon: FiUsers },
-    { path: '/developer', label: 'Meet the Developer', icon: FiUsers },
-    { path: '/community', label: 'Community', icon: FiMessageSquare },
-    { path: '/student-dashboard', label: 'Student Dashboard', icon: FiUsers },
-    { path: '/careers', label: 'Careers', icon: FiBriefcase },
-    { path: '/methodology', label: 'Methodology', icon: FiShield },
-    { path: '/case-studies', label: 'Case Studies', icon: FiFileText },
-    { path: '/blog', label: 'Field Notes', icon: FiMessageSquare },
-    { path: '/feedback', label: 'Contact', icon: FiMessageSquare }
-  ];
-
-  const dedupeLinks = (links) =>
-    links.reduce((acc, link) => {
-      if (!acc.some((item) => item.path === link.path)) {
-        acc.push(link);
-      }
-      return acc;
-    }, []);
-
-  const mobileLinks = isAuthenticated
-    ? dedupeLinks([...navLinks, ...publicLinks.filter((link) => link.path !== '/feedback')])
-    : publicLinks;
-
-  const desktopBasicLinks = isAuthenticated
-    ? [
-        { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
-        { path: '/community', label: 'Community', icon: FiMessageSquare },
-        { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
-      ]
-    : [
-        { path: '/', label: 'Home', icon: FiShield },
-        { path: '/about', label: 'About', icon: FiUsers },
-        { path: '/community', label: 'Community', icon: FiMessageSquare },
-        { path: '/careers', label: 'Careers', icon: FiBriefcase }
-      ];
+  const mobileLinks = getMobileLinks(isAuthenticated);
+  const desktopBasicLinks = getDesktopLinks(isAuthenticated);
 
   const isActive = (path) => location.pathname === path;
 

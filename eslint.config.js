@@ -1,10 +1,3 @@
-// eslint.config.js
-
-/**
- * ESLint Configuration
- * Code quality and style rules
- */
-
 import js from '@eslint/js';
 import globals from 'globals';
 import react from 'eslint-plugin-react';
@@ -12,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'server/node_modules', 'node_modules'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -24,7 +17,7 @@ export default [
         sourceType: 'module',
       },
     },
-    settings: { react: { version: '18.3' } },
+    settings: { react: { version: '18.2' } },
     plugins: {
       react,
       'react-hooks': reactHooks,
@@ -42,7 +35,6 @@ export default [
       ],
       'react/prop-types': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
 ];

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiActivity, FiBookOpen, FiCheckCircle, FiGlobe, FiShield, FiTarget, FiUsers } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
-import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/features/about.css';
@@ -41,7 +40,6 @@ const About = () => {
 
   return (
     <div className="about-page">
-      <Navbar />
       <header className="about-hero reveal-on-scroll">
         <div className="about-hero-content">
           <div className="about-hero-brand">

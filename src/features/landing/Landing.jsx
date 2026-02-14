@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiBookOpen, FiCheck, FiCheckCircle, FiClipboard, FiCode, FiCpu, FiFileText, FiGlobe, FiGithub, FiLayers, FiLinkedin, FiLock, FiMessageSquare, FiPhone, FiSearch, FiShield, FiTarget, FiTerminal, FiTwitter, FiUsers, FiZap } from 'react-icons/fi';
 import Logo from '../../shared/components/common/Logo';
-import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/features/landing.css';
@@ -139,8 +138,6 @@ const Landing = () => {
 
   return (
     <div className="landing-page">
-      <Navbar sticky={false} />
-
       {/* Hero Section */}
       <section className="hero-section">
         <div className={`hero-video-bg ${heroVideoFailed ? 'fallback-only' : ''}`} aria-hidden="true">

@@ -1,6 +1,5 @@
 import React from 'react';
 import { FiBarChart2, FiCheckCircle, FiShield } from 'react-icons/fi';
-import Navbar from '../../shared/components/layout/Navbar';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
@@ -31,9 +30,7 @@ const CaseStudies = () => {
   ];
 
   return (
-    <>
-      <Navbar />
-      <div className="case-studies-page">
+    <div className="case-studies-page">
         <header className="case-studies-hero reveal-on-scroll">
           <h1>Case Studies</h1>
           <p>Outcome-driven security work with measurable results.</p>
@@ -66,8 +63,7 @@ const CaseStudies = () => {
             </Card>
           ))}
         </section>
-      </div>
-    </>
+    </div>
   );
 };
 

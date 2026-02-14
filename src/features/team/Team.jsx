@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiCpu, FiCrosshair, FiMessageSquare, FiShield, FiTarget, FiUsers } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
-import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/features/team.css';
@@ -59,7 +58,6 @@ const Team = () => {
 
   return (
     <div className="team-page">
-      <Navbar />
       <header className="team-hero reveal-on-scroll">
         <div className="team-hero-content">
           <Logo size="large" />
