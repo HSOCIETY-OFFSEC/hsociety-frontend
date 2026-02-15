@@ -8,7 +8,7 @@ import { useTheme } from '../../../app/providers';
  * Features:
  * - Automatic theme-aware logo switching
  * - Black logo for light theme
- * - White logo for dark theme
+ * - White logo for dark/black themes
  * - Configurable sizes
  * - Clickable (navigates to home)
  * 
@@ -27,9 +27,9 @@ const Logo = ({
   const { theme } = useTheme();
   
   // Select logo based on current theme
-  const logoSrc = theme === 'dark' 
-    ? '/hsociety-logo-white.png'
-    : '/hsociety-logo-black.png';
+  const logoSrc = theme === 'light'
+    ? '/hsociety-logo-black.png'
+    : '/hsociety-logo-white.png';
   
   // Size configurations
   const sizeMap = {

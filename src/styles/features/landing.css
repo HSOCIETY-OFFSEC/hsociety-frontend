@@ -149,6 +149,12 @@
   z-index: 1;
 }
 
+[data-theme="light"] .hero-section::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.6));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 .hero-section::after {
   content: '';
   position: absolute;

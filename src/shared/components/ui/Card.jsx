@@ -60,6 +60,7 @@ const Card = ({
   };
 
   const isClickable = !!onClick;
+  const isDarkTheme = ['dark', 'black'].includes(document.documentElement.getAttribute('data-theme'));
 
   // Base card styles
   const baseStyles = {
@@ -81,14 +82,10 @@ const Card = ({
     transform: hover3d 
       ? `perspective(1000px) rotateX(${(mousePosition.y - 0.5) * 5}deg) rotateY(${(mousePosition.x - 0.5) * -5}deg) translateY(-4px)`
       : 'translateY(-2px)',
-    boxShadow: document.documentElement.getAttribute('data-theme') === 'dark'
-      ? darkShadowMap.large
-      : shadowMap.large,
+    boxShadow: isDarkTheme ? darkShadowMap.large : shadowMap.large,
     borderColor: 'var(--primary-color-alpha)'
   } : {
-    boxShadow: document.documentElement.getAttribute('data-theme') === 'dark'
-      ? darkShadowMap[shadow]
-      : shadowMap[shadow]
+    boxShadow: isDarkTheme ? darkShadowMap[shadow] : shadowMap[shadow]
   };
 
   // Handle mouse move for 3D effect

@@ -62,6 +62,31 @@
   --shadow-xl: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
 }
 
+/* Black Theme */
+[data-theme="black"] {
+  --bg-primary: #000000;
+  --bg-secondary: #050505;
+  --bg-tertiary: #0b0b0b;
+  --card-bg: #050505;
+  --border-color: #121212;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --input-bg: #050505;
+  --input-bg-focus: #0b0b0b;
+  --input-bg-disabled: #080808;
+  --notice-bg: #062a1d;
+  --primary-color: #2dd4bf;
+  --primary-color-hover: #22c3af;
+  --primary-color-alpha: rgba(45, 212, 191, 0.22);
+  --accent-ink: #ffffff;
+  --accent-glow: rgba(45, 212, 191, 0.35);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 18px 40px -22px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 30px 60px -30px rgba(0, 0, 0, 0.85);
+}
+
 /* ========================================
    BASE STYLES
    ======================================== */
