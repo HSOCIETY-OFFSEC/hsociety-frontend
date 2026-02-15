@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiBarChart2, FiBookOpen, FiCheck, FiCheckCircle, FiClipboard, FiCode, FiCpu, FiFileText, FiGlobe, FiGithub, FiLayers, FiLinkedin, FiLock, FiMessageSquare, FiPhone, FiSearch, FiShield, FiTarget, FiTerminal, FiTwitter, FiUsers, FiZap } from 'react-icons/fi';
@@ -21,8 +21,6 @@ import '../../styles/features/landing.css';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [heroVideoFailed, setHeroVideoFailed] = useState(false);
-
   useScrollReveal();
 
   const services = [
@@ -140,20 +138,7 @@ const Landing = () => {
     <div className="landing-page">
       {/* Hero Section */}
       <section className="hero-section">
-        <div className={`hero-video-bg ${heroVideoFailed ? 'fallback-only' : ''}`} aria-hidden="true">
-          {!heroVideoFailed && (
-            <iframe
-              className="hero-video-frame"
-              //use real video from assets folder video must contain your face
-              src=""
-              title="Cybersecurity hero background"
-              frameBorder="0"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              onError={() => setHeroVideoFailed(true)}
-            />
-          )}
-        </div>
+        <div className="hero-video-bg" aria-hidden="true" />
         <div className="hero-container">
           <div className="hero-content">
             {/* <div className="hero-brand">
