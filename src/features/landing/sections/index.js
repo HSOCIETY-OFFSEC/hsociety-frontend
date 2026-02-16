@@ -1,0 +1,12 @@
+export { default as HeroSection } from './HeroSection';
+export { default as StatsSection } from './StatsSection';
+export { default as ServicesSection } from './ServicesSection';
+export { default as WhySection } from './WhySection';
+export { default as ProcessSection } from './ProcessSection';
+export { default as DeliverablesSection } from './DeliverablesSection';
+export { default as ModulesSection } from './ModulesSection';
+export { default as TrustSection } from './TrustSection';
+export { default as PathwaysSection } from './PathwaysSection';
+export { default as CycleSection } from './CycleSection';
+export { default as CtaSection } from './CtaSection';
+export { default as FooterSection } from './FooterSection';
