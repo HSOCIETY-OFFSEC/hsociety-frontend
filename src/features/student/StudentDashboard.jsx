@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FiBookOpen,
   FiCheckCircle,
@@ -16,11 +17,11 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
 import { getStudentOverview } from './student.service';
-import { CourseLearning } from './courses/CourseLearning';
 import '../../styles/features/student.css';
 
 const StudentDashboard = () => {
   useScrollReveal();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     learningPath: [],
@@ -29,7 +30,6 @@ const StudentDashboard = () => {
     snapshot: []
   });
   const [error, setError] = useState('');
-  const [activeView, setActiveView] = useState('learning'); // 'overview' | 'learning'
 
   useEffect(() => {
     const loadStudentData = async () => {
@@ -74,32 +74,14 @@ const StudentDashboard = () => {
             <h1>Build skills with real-world practice.</h1>
             <p>Track your learning path, complete labs, and connect with mentors.</p>
           </div>
-          <div className="student-hero-actions">
-            <div className="student-tabs">
-              <button
-                type="button"
-                className={`student-tab ${activeView === 'overview' ? 'active' : ''}`}
-                onClick={() => setActiveView('overview')}
-              >
-                Overview
-              </button>
-              <button
-                type="button"
-                className={`student-tab ${activeView === 'learning' ? 'active' : ''}`}
-                onClick={() => setActiveView('learning')}
-              >
-                Learning Path
-              </button>
-            </div>
-            <Button
-              variant="primary"
-              size="large"
-              onClick={() => setActiveView('learning')}
-            >
-              <FiCompass size={18} />
-              Start Learning
-            </Button>
-          </div>
+          <Button
+            variant="primary"
+            size="large"
+            onClick={() => navigate('/student-learning')}
+          >
+            <FiCompass size={18} />
+            Go to Learning Path
+          </Button>
         </header>
 
         {error && (
@@ -108,8 +90,7 @@ const StudentDashboard = () => {
           </Card>
         )}
 
-        {activeView === 'overview' && (
-          <>
+        <>
             {loading ? (
               <div className="student-grid">
                 {[1, 2, 3].map((item) => (
@@ -250,10 +231,7 @@ const StudentDashboard = () => {
                 </div>
               </Card>
             </section>
-          </>
-        )}
-
-        {activeView === 'learning' && <CourseLearning />}
+        </>
     </div>
   );
 };

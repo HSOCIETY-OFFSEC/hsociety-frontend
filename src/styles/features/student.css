@@ -9,6 +9,12 @@
   padding: 2rem 1.5rem 4rem;
 }
 
+/* Ensure student views are always visible even if scroll-reveal fails */
+.student-page .reveal-on-scroll {
+  opacity: 1;
+  transform: none;
+}
+
 .student-page button {
   min-height: 44px;
 }

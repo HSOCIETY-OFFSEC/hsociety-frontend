@@ -20,6 +20,7 @@ const Team = React.lazy(() => import('../features/team/Team'));
 const Developer = React.lazy(() => import('../features/developer/Developer'));
 const Community = React.lazy(() => import('../features/community/Community'));
 const StudentDashboard = React.lazy(() => import('../features/student/StudentDashboard'));
+const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
@@ -127,6 +128,14 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentDashboard />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-learning"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentLearning />
                 </RoleRoute>
               }
             />

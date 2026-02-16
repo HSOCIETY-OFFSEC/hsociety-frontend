@@ -155,9 +155,11 @@ const Landing = () => {
             </div>
             
             <h1 className="hero-title">
-              Real Attacks.
+              HSOCIETY
               <br />
-              <span className="hero-title-accent">Real Fixes.</span>
+              <span>REAL HACKING.</span>
+              <br />
+              <span className="hero-title-accent">REAL SECURITY </span>
             </h1>
             
             <p className="hero-description">
