@@ -14,7 +14,7 @@ import {
   CtaSection,
   FooterSection
 } from './sections';
-import { FiBarChart2, FiClipboard, FiCpu, FiFileText, FiGlobe, FiLock, FiMessageSquare, FiSearch, FiShield, FiTarget, FiTerminal, FiUsers, FiZap } from 'react-icons/fi';
+import { FiBarChart2, FiCheckCircle, FiClipboard, FiCpu, FiFileText, FiGlobe, FiLayers, FiLock, FiMessageSquare, FiSearch, FiShield, FiTarget, FiTerminal, FiUsers, FiZap } from 'react-icons/fi';
 import '../../styles/features/landing.css';
 
 /**

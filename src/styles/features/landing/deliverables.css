@@ -1,0 +1,101 @@
+/* ========================================
+   DELIVERABLES SECTION
+   ======================================== */
+
+.deliverables-section {
+  padding: 6rem 2rem;
+}
+
+.deliverables-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.75rem;
+}
+
+.deliverable-card {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 96%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.deliverable-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(130deg, rgba(16, 185, 129, 0.16), transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.deliverable-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  box-shadow: 0 18px 32px -28px rgba(15, 23, 42, 0.55);
+}
+
+.deliverable-card:hover::after {
+  opacity: 1;
+}
+
+.deliverable-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+  color: var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.deliverable-card:hover .deliverable-icon {
+  transform: translateY(-4px);
+}
+
+.deliverable-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.deliverable-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.deliverables-highlight {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.highlight-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.highlight-item:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  color: var(--text-primary);
+}

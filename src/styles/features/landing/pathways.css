@@ -1,0 +1,35 @@
+/* ========================================
+   PATHWAYS SECTION
+   ======================================== */
+
+.pathways-section {
+  padding: 6rem 2rem;
+  background: radial-gradient(800px 360px at 10% 20%, rgba(59, 130, 246, 0.12), transparent 60%),
+    var(--bg-tertiary);
+}
+
+.pathways-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.pathway-card {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pathway-card h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--text-primary);
+}
+
+.pathway-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}

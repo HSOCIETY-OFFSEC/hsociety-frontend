@@ -1,0 +1,163 @@
+/* ========================================
+   SERVICES SECTION
+   ======================================== */
+
+.services-section {
+  padding: 6rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.services-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../../assets/circuit-services.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.services-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(58, 163, 255, 0.18), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(58, 163, 255, 0.12), transparent 55%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.services-section .section-container {
+  position: relative;
+  z-index: 1;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../../assets/circuit-services.svg");
+  background-size: 120%;
+  background-position: center;
+  opacity: 0.08;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.6s ease;
+}
+
+.service-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(16, 185, 129, 0.12), transparent 55%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.service-card-1::before {
+  background-position: 10% 10%;
+}
+
+.service-card-2::before {
+  background-position: 80% 20%;
+}
+
+.service-card-3::before {
+  background-position: 50% 70%;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  box-shadow: 0 20px 40px -28px rgba(15, 23, 42, 0.6);
+}
+
+.service-card:hover::before {
+  opacity: 0.16;
+  transform: scale(1.05);
+}
+
+.service-card:hover::after {
+  opacity: 1;
+}
+
+.service-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 0 0.9rem;
+  border-radius: 14px;
+  background: var(--primary-color-alpha);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 20px -15px rgba(16, 185, 129, 0.6);
+}
+
+.service-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.service-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 0.5rem;
+}
+
+.service-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.service-features li {
+  margin: 0 0 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.feature-check {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1rem;
+  display: inline-flex;
+}
+
+.service-btn-arrow{
+  /* make sure that service button arrow is in line with button text */
+}

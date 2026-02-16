@@ -1,0 +1,33 @@
+/* ========================================
+   TRUST SECTION
+   ======================================== */
+
+.trust-section {
+  padding: 6rem 2rem;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.trust-card {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 95%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.trust-card h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.trust-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
