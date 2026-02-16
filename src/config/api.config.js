@@ -87,7 +87,13 @@ export const API_ENDPOINTS = {
     LEARNING_PATH: '/student/learning-path',
     CHALLENGES: '/student/challenges',
     MENTORS: '/student/mentors',
-    SNAPSHOT: '/student/snapshot'
+    SNAPSHOT: '/student/snapshot',
+    // Future course learning system (gamified)
+    COURSE: '/student/course',
+    COURSES: '/student/courses',
+    COURSE_PROGRESS: '/student/course/progress',
+    QUIZ: '/student/quiz',
+    PROFILE: '/student/profile'
   },
 
   // Penetration Testing

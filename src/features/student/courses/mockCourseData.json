@@ -1,0 +1,70 @@
+{
+  "course": {
+    "id": "become-a-hacker",
+    "title": "Become a Hacker",
+    "creator": "Wsuits6",
+    "levelSystem": true,
+    "badgeSystem": true,
+    "modules": [
+      {
+        "moduleId": 1,
+        "title": "The Hacker Mindset & Learning Path",
+        "badge": "Mindset Master",
+        "rooms": [
+          { "roomId": 1, "title": "The Hacker Mindset" },
+          { "roomId": 2, "title": "How to Learn Hacking Effectively" }
+        ],
+        "ctf": "Mindset CTF"
+      },
+      {
+        "moduleId": 2,
+        "title": "Computer Networking Foundations",
+        "badge": "Network Explorer",
+        "rooms": [
+          { "roomId": 3, "title": "Networking Basics" },
+          { "roomId": 4, "title": "Networking Intermediate" },
+          { "roomId": 5, "title": "Hacker Network Techniques" }
+        ],
+        "ctf": "Network Breach Lab"
+      },
+      {
+        "moduleId": 3,
+        "title": "Linux & Terminal Mastery",
+        "badge": "Linux Operator",
+        "rooms": [
+          { "roomId": 6, "title": "Linux Basics" },
+          { "roomId": 7, "title": "Linux Intermediate" },
+          { "roomId": 8, "title": "Terminal Basics" },
+          { "roomId": 9, "title": "Terminal Intermediate" }
+        ],
+        "ctf": "Linux Survival CTF"
+      },
+      {
+        "moduleId": 4,
+        "title": "Web & Backend Systems",
+        "badge": "Web Architect",
+        "rooms": [
+          { "roomId": 10, "title": "How the Web Works" },
+          { "roomId": 11, "title": "Website Architecture" },
+          { "roomId": 12, "title": "Backend Basics" },
+          { "roomId": 13, "title": "Backend Intermediate" },
+          { "roomId": 14, "title": "Building a Full Stack App" }
+        ],
+        "ctf": "Web Exploitation Lab"
+      },
+      {
+        "moduleId": 5,
+        "title": "Psychology & Social Engineering",
+        "badge": "Human Hacker",
+        "rooms": [
+          { "roomId": 15, "title": "Psychology in Hacking" },
+          { "roomId": 16, "title": "Social Engineering Basics" },
+          { "roomId": 17, "title": "Social Engineering Intermediate" },
+          { "roomId": 18, "title": "Social Engineering Practice" }
+        ],
+        "ctf": "Social Breach Simulation"
+      }
+    ],
+    "certification": "Certified HSOCIETY Hacker"
+  }
+}
