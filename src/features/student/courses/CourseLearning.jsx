@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiAward, FiBookOpen, FiFlag, FiLock, FiPlayCircle, FiTarget, FiZap } from 'react-icons/fi';
+import { FiAward, FiBookOpen, FiCompass, FiFlag, FiLock, FiPlayCircle, FiTarget, FiZap } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
@@ -173,6 +173,14 @@ export const CourseLearning = () => {
     [course, progressState]
   );
 
+  const handleContinueLearning = () => {
+    if (typeof document === 'undefined') return;
+    const activeCard = document.getElementById('active-course-module');
+    if (activeCard && typeof activeCard.scrollIntoView === 'function') {
+      activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   const handleToggleRoomComplete = (moduleId, roomId) => {
     if (!course) return;
 
@@ -301,6 +309,13 @@ export const CourseLearning = () => {
               <span className="value">{unlockedBadges.length}</span>
             </div>
           </div>
+        </div>
+
+        <div className="course-header-actions">
+          <Button variant="primary" size="large" onClick={handleContinueLearning}>
+            <FiCompass size={18} />
+            Continue Learning
+          </Button>
         </div>
 
         <div className="course-progress-row">
@@ -582,4 +597,3 @@ export const CourseLearning = () => {
 };
 
 export default CourseLearning;
-

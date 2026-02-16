@@ -18,15 +18,26 @@ import {
 } from 'react-icons/fi';
 
 export const NAV_LINKS = {
-  /** Authenticated user nav (Dashboard, Pentest, etc.) */
-  app: [
-    { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
-    { path: '/pentest', label: 'Pentest', icon: FiShield },
-    { path: '/audits', label: 'Audits', icon: FiFileText },
-    { path: '/student-learning', label: 'Learn', icon: FiTerminal },
-    { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
-    { path: '/community', label: 'Community', icon: FiMessageSquare }
-  ],
+  /** Authenticated workspace nav (sidebar) */
+  workspace: {
+    corporate: [
+      { path: '/', label: 'Home', icon: FiShield },
+      { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
+      { path: '/pentest', label: 'Pentest', icon: FiShield },
+      { path: '/audits', label: 'Audits', icon: FiFileText },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
+      { path: '/about', label: 'About Us', icon: FiUsers }
+    ],
+    student: [
+      { path: '/', label: 'Home', icon: FiShield },
+      { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
+      { path: '/student-learning', label: 'Learn', icon: FiTerminal },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
+      { path: '/about', label: 'About Us', icon: FiUsers }
+    ]
+  },
 
   /** Public pages */
   public: [
@@ -44,12 +55,27 @@ export const NAV_LINKS = {
   ],
 
   /** Desktop quick links when authenticated */
-  desktopAuth: [
-    { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
-    { path: '/student-learning', label: 'Learn', icon: FiTerminal },
-    { path: '/community', label: 'Community', icon: FiMessageSquare },
-    { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
-  ],
+  desktopAuth: {
+    corporate: [
+      { path: '/', label: 'Home', icon: FiShield },
+      { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
+      { path: '/pentest', label: 'Pentest', icon: FiShield },
+      { path: '/audits', label: 'Audits', icon: FiFileText },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
+      { path: '/about', label: 'About Us', icon: FiUsers },
+      { path: '/team', label: 'Meet the Team', icon: FiUsers },
+      { path: '/developer', label: 'Meet the Developer', icon: FiCode }
+    ],
+    student: [
+      { path: '/', label: 'Home', icon: FiShield },
+      { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
+      { path: '/student-learning', label: 'Learn', icon: FiTerminal },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
+      { path: '/about', label: 'About Us', icon: FiUsers }
+    ]
+  },
 
   /** Desktop quick links when not authenticated */
   desktopPublic: [
@@ -69,21 +95,25 @@ export const dedupeLinks = (links) =>
     return acc;
   }, []);
 
-/** Get mobile nav links based on auth state */
-export const getMobileLinks = (isAuthenticated) =>
-  isAuthenticated
-    ? dedupeLinks([
-        ...NAV_LINKS.app,
-        ...NAV_LINKS.public.filter((l) => l.path !== '/feedback')
-      ])
-    : NAV_LINKS.public;
+const normalizeRole = (role) => (role === 'client' ? 'corporate' : role);
 
-/** Get desktop nav links based on auth state */
-export const getDesktopLinks = (isAuthenticated) =>
-  isAuthenticated ? NAV_LINKS.desktopAuth : NAV_LINKS.desktopPublic;
+/** Get mobile nav links based on auth state and role */
+export const getMobileLinks = (isAuthenticated, role) => {
+  if (!isAuthenticated) return NAV_LINKS.public;
+  const normalizedRole = normalizeRole(role) || 'student';
+  return dedupeLinks([...(NAV_LINKS.desktopAuth[normalizedRole] || [])]);
+};
+
+/** Get desktop nav links based on auth state and role */
+export const getDesktopLinks = (isAuthenticated, role) => {
+  if (!isAuthenticated) return NAV_LINKS.desktopPublic;
+  const normalizedRole = normalizeRole(role) || 'student';
+  return NAV_LINKS.desktopAuth[normalizedRole] || NAV_LINKS.desktopPublic;
+};
 
 /** Get full sidebar links */
-export const getSidebarLinks = (isAuthenticated) =>
-  isAuthenticated
-    ? dedupeLinks([...NAV_LINKS.app, ...NAV_LINKS.public])
-    : NAV_LINKS.public;
+export const getSidebarLinks = (isAuthenticated, role) => {
+  if (!isAuthenticated) return NAV_LINKS.public;
+  const normalizedRole = normalizeRole(role) || 'student';
+  return NAV_LINKS.workspace[normalizedRole] || NAV_LINKS.public;
+};

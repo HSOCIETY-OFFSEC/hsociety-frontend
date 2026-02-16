@@ -96,6 +96,11 @@
   border: 1px solid var(--border-color);
 }
 
+.course-header-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .course-mini-stat {
   display: flex;
   justify-content: space-between;
@@ -580,6 +585,15 @@
     justify-content: space-between;
   }
 
+  .course-header-actions {
+    width: 100%;
+  }
+
+  .course-header-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
   .course-layout {
     padding: 0 0.25rem;
   }
@@ -608,4 +622,3 @@
     align-items: center;
   }
 }
-

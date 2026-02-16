@@ -20,6 +20,7 @@
 
 .app-shell {
   min-height: 100vh;
+  position: relative;
 }
 
 /* Layout-specific main content areas */
@@ -56,16 +57,36 @@
   border-right: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   z-index: var(--z-sticky);
-  display: none;
+  display: block;
+  transform: translateX(-110%);
+  transition: transform 0.3s ease;
 }
 
 .app-sidebar-inner {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem 1.25rem;
+  gap: 1rem;
+  padding: 1.25rem 1rem;
   overflow-y: auto;
+}
+
+.app-sidebar-inner {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--primary-color) 45%, transparent) transparent;
+}
+
+.app-sidebar-inner::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-sidebar-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app-sidebar-inner::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  border-radius: 999px;
 }
 
 .app-sidebar-logo {
@@ -82,7 +103,7 @@
 }
 
 .app-sidebar-title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--text-primary);
@@ -90,7 +111,7 @@
 }
 
 .app-sidebar-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -101,30 +122,30 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  margin: 0.5rem 0 0.25rem;
+  margin: 0.35rem 0 0.25rem;
 }
 
 .app-sidebar-links {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .app-sidebar-link {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 0.6rem 0.75rem;
+  padding: 0.5rem 0.65rem;
   border-radius: 10px;
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
   transition: all 0.2s ease;
-  min-height: 44px;
+  min-height: 40px;
 }
 
 .app-sidebar-link:hover {
@@ -138,13 +159,103 @@
   font-weight: 600;
 }
 
-@media (min-width: 1200px) {
-  .app-shell {
-    padding-left: 0;
+@media (min-width: 900px) {
+  .workspace-layout .app-sidebar {
+    transform: translateX(0);
   }
-  .app-sidebar {
+}
+
+.workspace-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace-main {
+  flex: 1;
+  padding: 1.5rem 1rem;
+}
+
+.workspace-topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1rem;
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
+}
+
+.workspace-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: var(--z-sticky);
+  box-shadow: 0 16px 30px -18px rgba(15, 23, 42, 0.6);
+}
+
+.workspace-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: calc(var(--z-sticky) - 1);
+}
+
+.workspace-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.workspace-layout.sidebar-open .app-sidebar {
+  transform: translateX(0);
+}
+
+@media (min-width: 900px) {
+  .workspace-layout {
+    padding-left: var(--sidebar-width);
+  }
+
+  .workspace-topbar {
     display: none;
   }
+
+  .workspace-main {
+    padding: 2rem;
+  }
+
+  .workspace-overlay {
+    display: none;
+  }
+
+  .workspace-fab {
+    display: none;
+  }
+}
+
+.app-sidebar-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-start;
 }
 
 .page-container {

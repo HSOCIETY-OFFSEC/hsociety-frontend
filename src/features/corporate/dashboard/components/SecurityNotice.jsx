@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiLock } from 'react-icons/fi';
-import Card from '../../../shared/components/ui/Card';
+import Card from '../../../../shared/components/ui/Card';
 
 const SecurityNotice = () => (
   <Card padding="large" shadow="small" className="security-notice reveal-on-scroll dramatic-card">

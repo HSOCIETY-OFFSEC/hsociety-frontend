@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getSidebarLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
+import ThemeToggle from '../common/ThemeToggle';
 
 /**
  * Sidebar Component (large screens only via CSS)
@@ -11,8 +12,9 @@ import Logo from '../common/Logo';
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
-  const links = getSidebarLinks(isAuthenticated);
+  const { isAuthenticated, user } = useAuth();
+  const role = user?.role === 'client' ? 'corporate' : user?.role;
+  const links = getSidebarLinks(isAuthenticated, role);
 
   const isActive = (path) => location.pathname === path;
 
@@ -44,6 +46,10 @@ const Sidebar = () => {
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="app-sidebar-footer">
+          <ThemeToggle />
         </div>
       </div>
     </aside>

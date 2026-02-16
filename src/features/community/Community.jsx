@@ -463,6 +463,25 @@ const Community = () => {
               </div>
             )}
 
+            {actionPanel && (
+              <Card padding="large" className="action-panel-inline">
+                <div className="action-panel-header">
+                  <h3>{actionPanel.title}</h3>
+                  <button type="button" onClick={() => setActionPanel(null)}>
+                    <FiX size={16} />
+                  </button>
+                </div>
+                <p>{actionPanel.description}</p>
+                <Button
+                  variant="ghost"
+                  size="small"
+                  onClick={() => setActionPanel(null)}
+                >
+                  Clear action
+                </Button>
+              </Card>
+            )}
+
             <div className="post-list">
               {error && (
                 <Card padding="large" className="post-card">
@@ -472,6 +491,11 @@ const Community = () => {
               {loading && (
                 <Card padding="large" className="post-card">
                   <p>Loading community feed...</p>
+                </Card>
+              )}
+              {!loading && overview.posts.length === 0 && !error && (
+                <Card padding="large" className="post-card">
+                  <p>No posts yet for this view. Check back soon or start a conversation.</p>
                 </Card>
               )}
               {!loading && overview.posts.map((post) => (

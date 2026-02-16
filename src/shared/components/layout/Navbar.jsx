@@ -53,8 +53,9 @@ const Navbar = ({ sticky = true }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const mobileLinks = getMobileLinks(isAuthenticated);
-  const desktopBasicLinks = getDesktopLinks(isAuthenticated);
+  const role = user?.role === 'client' ? 'corporate' : user?.role;
+  const mobileLinks = getMobileLinks(isAuthenticated, role);
+  const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
 
   const isActive = (path) => location.pathname === path;
 

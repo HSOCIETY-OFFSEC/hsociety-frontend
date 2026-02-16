@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiFileText, FiMessageSquare, FiShield } from 'react-icons/fi';
-import { useAuth } from '../../core/auth/AuthContext';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import Card from '../../shared/components/ui/Card';
-import Skeleton from '../../shared/components/ui/Skeleton';
+import { useAuth } from '../../../core/auth/AuthContext';
+import useScrollReveal from '../../../shared/hooks/useScrollReveal';
+import Card from '../../../shared/components/ui/Card';
+import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getDashboardOverview } from './dashboard.service';
 import StatsGrid from './components/StatsGrid';
 import QuickActions from './components/QuickActions';
 import ActivityList from './components/ActivityList';
 import SecurityNotice from './components/SecurityNotice';
-import '../../styles/features/dashboard.css';
+import '../../../styles/features/dashboard.css';
 
 /**
  * Dashboard Component
- * Location: src/features/dashboard/Dashboard.jsx
+ * Location: src/features/corporate/dashboard/Dashboard.jsx
  * 
  * Features:
  * - User overview and stats

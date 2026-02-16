@@ -138,7 +138,11 @@ const Landing = () => {
     <div className="landing-page">
       {/* Hero Section */}
       <section className="hero-section">
-        <div className="hero-video-bg" aria-hidden="true" />
+        <div className="hero-video-bg" aria-hidden="true">
+          <span className="hero-bg-layer layer-1" />
+          <span className="hero-bg-layer layer-2" />
+          <span className="hero-bg-layer layer-3" />
+        </div>
         <div className="hero-container">
           <div className="hero-content">
             {/* <div className="hero-brand">
@@ -318,7 +322,12 @@ const Landing = () => {
 
           <div className="services-grid">
             {services.map((service, index) => (
-              <Card key={index} hover3d={true} padding="large" className="service-card reveal-on-scroll">
+              <Card
+                key={index}
+                hover3d={true}
+                padding="large"
+                className={`service-card reveal-on-scroll service-card-${index + 1}`}
+              >
                 <div className="service-icon">
                   <service.icon size={28} />
                 </div>

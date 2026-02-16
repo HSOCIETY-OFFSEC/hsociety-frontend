@@ -51,7 +51,7 @@ const Login = () => {
 
       await login(response.user, response.token, response.refreshToken);
       const role = response.user?.role;
-      navigate(role === 'student' ? '/student-dashboard' : '/dashboard');
+      navigate(role === 'student' ? '/student-dashboard' : '/corporate-dashboard');
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {
@@ -78,7 +78,7 @@ const Login = () => {
       const user = response.user || pendingUser;
       await login(user, response.token, response.refreshToken);
       const role = user?.role;
-      navigate(role === 'student' ? '/student-dashboard' : '/dashboard');
+      navigate(role === 'student' ? '/student-dashboard' : '/corporate-dashboard');
     } catch (err) {
       setError(err.message || 'Invalid 2FA code. Please try again.');
     } finally {

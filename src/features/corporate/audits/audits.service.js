@@ -3,8 +3,8 @@
  * Location: src/features/audits/audits.service.js
  */
 
-import { API_ENDPOINTS, buildEndpoint } from '../../config/api.config';
-import { apiClient } from '../../shared/services/api.client';
+import { API_ENDPOINTS, buildEndpoint } from '../../../config/api.config';
+import { apiClient } from '../../../shared/services/api.client';
 import { normalizeAudits } from './audits.contract';
 
 const mockAudits = [

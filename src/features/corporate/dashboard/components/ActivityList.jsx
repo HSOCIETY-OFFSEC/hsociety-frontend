@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiAlertTriangle, FiFileText, FiShield } from 'react-icons/fi';
-import Card from '../../../shared/components/ui/Card';
+import Card from '../../../../shared/components/ui/Card';
 import { getRelativeTime } from '../../../utils/helpers';
 
 const iconMap = {

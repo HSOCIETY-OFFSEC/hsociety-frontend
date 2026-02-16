@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
 import AppLayout from '../shared/components/layout/AppLayout';
+import WorkspaceLayout from '../shared/components/layout/WorkspaceLayout';
 import AuthLayout from '../shared/components/layout/AuthLayout';
 import LandingLayout from '../shared/components/layout/LandingLayout';
 import PublicLayout from '../shared/components/layout/PublicLayout';
@@ -10,9 +11,9 @@ import PublicLayout from '../shared/components/layout/PublicLayout';
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
 const Register = React.lazy(() => import('../features/auth/Register'));
-const Dashboard = React.lazy(() => import('../features/dashboard/Dashboard'));
-const Audits = React.lazy(() => import('../features/audits/Audits'));
-const Pentest = React.lazy(() => import('../features/pentest/Pentest'));
+const Dashboard = React.lazy(() => import('../features/corporate/dashboard/Dashboard'));
+const Audits = React.lazy(() => import('../features/corporate/audits/Audits'));
+const Pentest = React.lazy(() => import('../features/corporate/pentest/Pentest'));
 const Feedback = React.lazy(() => import('../features/feedback/Feedback'));
 const Landing = React.lazy(() => import('../features/landing/Landing'));
 const About = React.lazy(() => import('../features/about/About'));
@@ -48,7 +49,7 @@ const RoleRoute = ({ children, allowedRoles }) => {
   if (isLoading) return <PageLoader message="Preparing your workspace..." />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (!role || !allowedRoles.includes(role)) {
-    return <Navigate to={role === 'student' ? '/student-dashboard' : '/dashboard'} replace />;
+    return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
   }
   return children;
 };
@@ -57,9 +58,12 @@ const RoleRoute = ({ children, allowedRoles }) => {
  * Public Route (redirects auth users to dashboard)
  */
 const PublicRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   if (isLoading) return <PageLoader message="Preparing your workspace..." />;
-  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
+  const role = user?.role === 'client' ? 'corporate' : user?.role;
+  if (isAuthenticated) {
+    return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
+  }
   return children;
 };
 
@@ -98,10 +102,10 @@ const AppRouter = () => {
             />
           </Route>
 
-          {/* App pages - dashboard, audits, pentest, student */}
-          <Route element={<AppLayout />}>
+          {/* Workspace pages - dashboard and student learning */}
+          <Route element={<WorkspaceLayout />}>
             <Route
-              path="dashboard"
+              path="corporate-dashboard"
               element={
                 <RoleRoute allowedRoles={['corporate']}>
                   <Dashboard />
@@ -109,20 +113,8 @@ const AppRouter = () => {
               }
             />
             <Route
-              path="audits"
-              element={
-                <RoleRoute allowedRoles={['corporate']}>
-                  <Audits />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="pentest"
-              element={
-                <RoleRoute allowedRoles={['corporate']}>
-                  <Pentest />
-                </RoleRoute>
-              }
+              path="dashboard"
+              element={<Navigate to="/corporate-dashboard" replace />}
             />
             <Route
               path="student-dashboard"
@@ -145,6 +137,26 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentLesson />
+                </RoleRoute>
+              }
+            />
+          </Route>
+
+          {/* App pages - audits, pentest */}
+          <Route element={<AppLayout />}>
+            <Route
+              path="audits"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Audits />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentest"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Pentest />
                 </RoleRoute>
               }
             />

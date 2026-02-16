@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { FiDownload, FiFileText, FiSearch } from 'react-icons/fi';
-import { useAuth } from '../../core/auth/AuthContext';
-import Card from '../../shared/components/ui/Card';
-import Button from '../../shared/components/ui/Button';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import Skeleton from '../../shared/components/ui/Skeleton';
+import { useAuth } from '../../../core/auth/AuthContext';
+import Card from '../../../shared/components/ui/Card';
+import Button from '../../../shared/components/ui/Button';
+import useScrollReveal from '../../../shared/hooks/useScrollReveal';
+import Skeleton from '../../../shared/components/ui/Skeleton';
 import { formatDate, getRelativeTime } from '../../utils/helpers';
 import { downloadAuditReport, getAudits } from './audits.service';
-import '../../styles/features/audits.css';
+import '../../../styles/features/audits.css';
 
 /**
  * Audits Component
- * Location: src/features/audits/Audits.jsx
+ * Location: src/features/corporate/audits/Audits.jsx
  * 
  * Features:
  * - View security audit reports
