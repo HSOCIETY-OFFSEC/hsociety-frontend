@@ -34,7 +34,7 @@ const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
  */
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading) return <PageLoader message="Authenticating session..." />;
+  if (isLoading) return <PageLoader message="Authenticating session..." durationMs={0} />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 };
@@ -46,9 +46,13 @@ const RoleRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
   const role = user?.role === 'client' ? 'corporate' : user?.role;
 
-  if (isLoading) return <PageLoader message="Preparing your workspace..." />;
+  if (isLoading) return <PageLoader message="Preparing your workspace..." durationMs={0} />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
-  if (!role || !allowedRoles.includes(role)) {
+  if (!role) return <PageLoader message="Loading your profile..." durationMs={0} />;
+  if (!allowedRoles.includes(role)) {
+    if (allowedRoles.includes('corporate') && role !== 'student') {
+      return children;
+    }
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
   }
   return children;
@@ -59,7 +63,7 @@ const RoleRoute = ({ children, allowedRoles }) => {
  */
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
-  if (isLoading) return <PageLoader message="Preparing your workspace..." />;
+  if (isLoading) return <PageLoader message="Preparing your workspace..." durationMs={0} />;
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   if (isAuthenticated) {
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
@@ -117,6 +121,22 @@ const AppRouter = () => {
               element={<Navigate to="/corporate-dashboard" replace />}
             />
             <Route
+              path="audits"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Audits />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentest"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Pentest />
+                </RoleRoute>
+              }
+            />
+            <Route
               path="student-dashboard"
               element={
                 <RoleRoute allowedRoles={['student']}>
@@ -137,26 +157,6 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentLesson />
-                </RoleRoute>
-              }
-            />
-          </Route>
-
-          {/* App pages - audits, pentest */}
-          <Route element={<AppLayout />}>
-            <Route
-              path="audits"
-              element={
-                <RoleRoute allowedRoles={['corporate']}>
-                  <Audits />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="pentest"
-              element={
-                <RoleRoute allowedRoles={['corporate']}>
-                  <Pentest />
                 </RoleRoute>
               }
             />

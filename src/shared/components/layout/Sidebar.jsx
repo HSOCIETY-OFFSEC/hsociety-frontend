@@ -14,7 +14,14 @@ const Sidebar = () => {
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
   const role = user?.role === 'client' ? 'corporate' : user?.role;
-  const links = getSidebarLinks(isAuthenticated, role);
+  const path = location.pathname || '';
+  const routeRole = path.startsWith('/student')
+    ? 'student'
+    : path.startsWith('/corporate-dashboard') || path.startsWith('/pentest') || path.startsWith('/audits')
+    ? 'corporate'
+    : null;
+  const resolvedRole = routeRole || role || 'student';
+  const links = getSidebarLinks(true, resolvedRole);
 
   const isActive = (path) => location.pathname === path;
 

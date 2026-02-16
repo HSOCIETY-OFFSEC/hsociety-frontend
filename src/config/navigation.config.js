@@ -21,13 +21,10 @@ export const NAV_LINKS = {
   /** Authenticated workspace nav (sidebar) */
   workspace: {
     corporate: [
-      { path: '/', label: 'Home', icon: FiShield },
       { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
       { path: '/pentest', label: 'Pentest', icon: FiShield },
       { path: '/audits', label: 'Audits', icon: FiFileText },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
-      { path: '/about', label: 'About Us', icon: FiUsers }
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },

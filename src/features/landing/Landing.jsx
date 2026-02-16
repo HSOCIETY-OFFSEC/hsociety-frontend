@@ -134,6 +134,71 @@ const Landing = () => {
     }
   ];
 
+  const learningModules = [
+    {
+      title: 'Foundation: Hacker Mindset',
+      description: 'Linux, networking, and tooling fundamentals with guided labs.',
+      level: 'Starter',
+      duration: '2 weeks'
+    },
+    {
+      title: 'Web App Exploitation',
+      description: 'OWASP Top 10, API testing, and real bug chains in sandboxes.',
+      level: 'Intermediate',
+      duration: '4 weeks'
+    },
+    {
+      title: 'Cloud & Infrastructure',
+      description: 'IAM attacks, misconfigurations, and lateral movement drills.',
+      level: 'Advanced',
+      duration: '3 weeks'
+    },
+    {
+      title: 'Red Team Labs',
+      description: 'End-to-end simulations with reporting and remediation.',
+      level: 'Elite',
+      duration: '4 weeks'
+    }
+  ];
+
+  const trustSignals = [
+    {
+      title: 'African-Centric Threat Modeling',
+      description: 'We map regional attack patterns and compliance realities.'
+    },
+    {
+      title: 'Affordable, High-Value Engagements',
+      description: 'Premium expertise without the global-enterprise price tag.'
+    },
+    {
+      title: 'Proof-Driven Reporting',
+      description: 'Every finding includes evidence, impact, and fix-ready steps.'
+    }
+  ];
+
+  const pathways = [
+    {
+      title: 'Learners',
+      description: 'Join structured modules, weekly challenges, and mentorship.',
+      cta: 'Start Learning',
+      path: '/student-dashboard'
+    },
+    {
+      title: 'Corporate Teams',
+      description: 'Get offensive security that matches your real-world risk.',
+      cta: 'Request Pentest',
+      path: '/login'
+    }
+  ];
+
+  const cycleSteps = [
+    { title: 'Recon', description: 'Map assets, attack surface, and risk hotspots.' },
+    { title: 'Exploit', description: 'Validate weaknesses with controlled proof.' },
+    { title: 'Report', description: 'Deliver evidence, impact, and fixes.' },
+    { title: 'Remediate', description: 'Patch, harden, and retest.' },
+    { title: 'Verify', description: 'Confirm closure and updated risk score.' }
+  ];
+
   return (
     <div className="landing-page">
       {/* Hero Section */}
@@ -449,6 +514,125 @@ const Landing = () => {
             <div className="highlight-item">
               <FiCheck size={18} />
               <span>Actionable fixes prioritized by impact</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Modules Section */}
+      <section className="modules-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header-center">
+            <div className="section-eyebrow">
+              <Logo size="small" />
+              <span>Learning Modules</span>
+            </div>
+            <h2 className="section-title-large">Hands-On Hacker Curriculum</h2>
+            <p className="section-subtitle-large">
+              Structured modules designed to build real offensive security skills with African context.
+            </p>
+          </div>
+
+          <div className="modules-grid">
+            {learningModules.map((module, index) => (
+              <Card key={module.title} padding="large" className="module-card reveal-on-scroll">
+                <div className="module-meta">
+                  <span className="module-level">{module.level}</span>
+                  <span className="module-duration">{module.duration}</span>
+                </div>
+                <h3 className="module-title">{module.title}</h3>
+                <p className="module-description">{module.description}</p>
+                <div className="module-footer">
+                  <FiTerminal size={16} />
+                  <span>Interactive labs + CTFs</span>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Section */}
+      <section className="trust-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header-center">
+            <div className="section-eyebrow">
+              <Logo size="small" />
+              <span>Why Trust HSOCIETY</span>
+            </div>
+            <h2 className="section-title-large">Real Hacking For African Companies</h2>
+            <p className="section-subtitle-large">
+              We deliver high-value, affordable offensive security for teams that need clarity, speed, and proof.
+            </p>
+          </div>
+
+          <div className="trust-grid">
+            {trustSignals.map((item) => (
+              <Card key={item.title} padding="large" className="trust-card reveal-on-scroll">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pathways Section */}
+      <section className="pathways-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="pathways-grid">
+            {pathways.map((pathway) => (
+              <Card key={pathway.title} padding="large" className="pathway-card reveal-on-scroll">
+                <h3>{pathway.title}</h3>
+                <p>{pathway.description}</p>
+                <Button
+                  variant="primary"
+                  size="small"
+                  onClick={() => navigate(pathway.path)}
+                >
+                  {pathway.cta}
+                </Button>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pentest Cycle Section */}
+      <section className="cycle-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header-center">
+            <div className="section-eyebrow">
+              <Logo size="small" />
+              <span>Pentest Cycle</span>
+            </div>
+            <h2 className="section-title-large">From Penetration to Fix, End-to-End</h2>
+            <p className="section-subtitle-large">
+              A continuous loop that moves findings into verified remediation.
+            </p>
+          </div>
+
+          <div className="cycle-layout">
+            <div className="cycle-orbit">
+              <div className="cycle-ring">
+                {cycleSteps.map((step, index) => (
+                  <div key={step.title} className={`cycle-node cycle-node-${index + 1}`}>
+                    <span>{step.title}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="cycle-list">
+              {cycleSteps.map((step, index) => (
+                <div key={step.title} className="cycle-item">
+                  <div className="cycle-index">{index + 1}</div>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

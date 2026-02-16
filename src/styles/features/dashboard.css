@@ -22,6 +22,12 @@
   overflow: hidden;
 }
 
+/* Ensure dashboard content is visible even if scroll-reveal observers don't fire */
+.dashboard-container .reveal-on-scroll {
+  opacity: 1;
+  transform: none;
+}
+
 .dashboard-container button {
   min-height: 44px;
 }

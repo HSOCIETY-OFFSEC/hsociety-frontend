@@ -5,7 +5,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import Skeleton from '../../../shared/components/ui/Skeleton';
-import { formatDate, getRelativeTime } from '../../utils/helpers';
+import { formatDate, getRelativeTime } from '../../../utils/helpers';
 import { downloadAuditReport, getAudits } from './audits.service';
 import '../../../styles/features/audits.css';
 

@@ -1111,6 +1111,264 @@
 }
 
 /* ========================================
+   MODULES SECTION
+   ======================================== */
+
+.modules-section {
+  padding: 6rem 2rem;
+  background: radial-gradient(900px 420px at 90% 10%, rgba(16, 185, 129, 0.12), transparent 60%),
+    var(--bg-secondary);
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.module-card {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.module-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(16, 185, 129, 0.12), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.module-card:hover::after {
+  opacity: 1;
+}
+
+.module-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.module-level,
+.module-duration {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 90%, transparent);
+  color: var(--text-secondary);
+}
+
+.module-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.module-description {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.module-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+/* ========================================
+   TRUST SECTION
+   ======================================== */
+
+.trust-section {
+  padding: 6rem 2rem;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.trust-card {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 95%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.trust-card h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.trust-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ========================================
+   PATHWAYS SECTION
+   ======================================== */
+
+.pathways-section {
+  padding: 6rem 2rem;
+  background: radial-gradient(800px 360px at 10% 20%, rgba(59, 130, 246, 0.12), transparent 60%),
+    var(--bg-tertiary);
+}
+
+.pathways-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.pathway-card {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pathway-card h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--text-primary);
+}
+
+.pathway-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ========================================
+   CYCLE SECTION
+   ======================================== */
+
+.cycle-section {
+  padding: 6rem 2rem;
+  background: radial-gradient(900px 420px at 15% 0%, rgba(16, 185, 129, 0.12), transparent 60%),
+    var(--bg-secondary);
+}
+
+.cycle-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.cycle-orbit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 360px;
+}
+
+.cycle-ring {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 40%, transparent);
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.16), transparent 60%);
+  animation: cycleSpin 18s linear infinite;
+}
+
+.cycle-ring::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border-radius: 50%;
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 35%, transparent);
+}
+
+.cycle-node {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: 0 12px 25px -20px rgba(15, 23, 42, 0.7);
+  animation: cyclePulse 3.5s ease-in-out infinite;
+}
+
+.cycle-node span {
+  display: block;
+  padding: 0 0.4rem;
+}
+
+.cycle-node-1 { top: -20px; left: 112px; }
+.cycle-node-2 { top: 60px; right: -20px; }
+.cycle-node-3 { bottom: 40px; right: 0; }
+.cycle-node-4 { bottom: -20px; left: 112px; }
+.cycle-node-5 { top: 60px; left: -20px; }
+
+.cycle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cycle-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+}
+
+.cycle-index {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-color-alpha);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.cycle-item h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.cycle-item p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ========================================
    CTA SECTION
    ======================================== */
 
@@ -1462,6 +1720,15 @@
   50% { transform: translateY(-6px); }
 }
 
+@keyframes cycleSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cyclePulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
 @keyframes badgeFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
@@ -1493,6 +1760,22 @@
   .process-grid,
   .deliverables-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modules-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pathways-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cycle-layout {
+    grid-template-columns: 1fr;
   }
 
   .footer-top {
@@ -1600,7 +1883,11 @@
 
   .services-section,
   .why-section,
-  .cta-section {
+  .cta-section,
+  .modules-section,
+  .trust-section,
+  .pathways-section,
+  .cycle-section {
     padding: 4rem 1.25rem;
   }
 
@@ -1618,8 +1905,20 @@
   }
   
   .process-grid,
-  .deliverables-grid {
+  .deliverables-grid,
+  .modules-grid {
     grid-template-columns: 1fr;
+  }
+
+  .cycle-ring {
+    width: 260px;
+    height: 260px;
+  }
+
+  .cycle-node {
+    width: 84px;
+    height: 84px;
+    font-size: 0.8rem;
   }
 
   .footer-newsletter-form {
