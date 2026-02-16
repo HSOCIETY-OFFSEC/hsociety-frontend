@@ -15,6 +15,14 @@ import '../../styles/features/student.css';
 const StudentLearning = () => {
   useScrollReveal();
 
+  const handleContinue = () => {
+    if (typeof document === 'undefined') return;
+    const activeCard = document.getElementById('active-course-module');
+    if (activeCard && typeof activeCard.scrollIntoView === 'function') {
+      activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return (
     <div className="student-page">
       <header className="student-hero reveal-on-scroll">
@@ -23,7 +31,7 @@ const StudentLearning = () => {
           <h1>Become a Hacker.</h1>
           <p>Follow the structured HSOCIETY path with modules, rooms, CTFs, and badges.</p>
         </div>
-        <Button variant="primary" size="large">
+        <Button variant="primary" size="large" onClick={handleContinue}>
           <FiCompass size={18} />
           Continue Learning
         </Button>

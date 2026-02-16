@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiAward, FiBookOpen, FiFlag, FiLock, FiPlayCircle, FiTarget, FiZap } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
@@ -122,6 +123,7 @@ const getModuleState = (course, progressState, moduleId) => {
 
 export const CourseLearning = () => {
   useScrollReveal();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState(null);
@@ -216,6 +218,10 @@ export const CourseLearning = () => {
         }
       }
     }));
+  };
+
+  const handleOpenLesson = (moduleId, roomId) => {
+    navigate(`/student-learning/module/${moduleId}/room/${roomId}`);
   };
 
   const handleQuizForRoom = (moduleId, roomId) => {
@@ -360,6 +366,7 @@ export const CourseLearning = () => {
           return (
             <Card
               key={module.moduleId}
+              id={state === 'active' ? 'active-course-module' : undefined}
               padding="large"
               className={`course-module-card reveal-on-scroll state-${state} ${
                 activeModuleId === module.moduleId ? 'is-active' : ''
@@ -424,6 +431,18 @@ export const CourseLearning = () => {
                       </div>
                       <div className="course-room-actions">
                         <Button
+                          variant="primary"
+                          size="small"
+                          disabled={disabled}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenLesson(module.moduleId, room.roomId);
+                          }}
+                        >
+                          <FiPlayCircle size={14} />
+                          Open lesson
+                        </Button>
+                        <Button
                           variant="ghost"
                           size="small"
                           disabled={disabled}
@@ -432,19 +451,7 @@ export const CourseLearning = () => {
                             handleQuizForRoom(module.moduleId, room.roomId);
                           }}
                         >
-                          <FiPlayCircle size={14} />
                           Quiz
-                        </Button>
-                        <Button
-                          variant={completed ? 'secondary' : 'primary'}
-                          size="small"
-                          disabled={disabled}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleToggleRoomComplete(module.moduleId, room.roomId);
-                          }}
-                        >
-                          {completed ? 'Completed' : 'Mark done'}
                         </Button>
                       </div>
                     </div>

@@ -1,0 +1,105 @@
+/**
+ * Student Lesson Page Styles
+ * Location: src/styles/features/student-lesson.css
+ */
+
+.lesson-page .student-hero {
+  margin-bottom: 2rem;
+}
+
+.lesson-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 0.5rem;
+}
+
+.lesson-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.lesson-main-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.lesson-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.lesson-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 40%, transparent);
+  color: var(--primary-color);
+}
+
+.lesson-meta-chip.subtle {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.lesson-video-wrapper {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: #020617;
+  box-shadow: var(--shadow-md);
+}
+
+.lesson-video-aspect {
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.lesson-video-aspect iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lesson-content h2 {
+  margin-top: 1.25rem;
+}
+
+.lesson-content h3 {
+  margin-top: 1.5rem;
+}
+
+.lesson-content p {
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.lesson-content ul,
+.lesson-content ol {
+  padding-left: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.lesson-cta-button {
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .lesson-layout {
+    padding: 0;
+  }
+
+  .lesson-main-card {
+    padding: 1.25rem !important;
+  }
+}
+

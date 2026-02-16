@@ -23,6 +23,7 @@ export const NAV_LINKS = {
     { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
     { path: '/pentest', label: 'Pentest', icon: FiShield },
     { path: '/audits', label: 'Audits', icon: FiFileText },
+    { path: '/student-learning', label: 'Learn', icon: FiTerminal },
     { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
     { path: '/community', label: 'Community', icon: FiMessageSquare }
   ],
@@ -45,6 +46,7 @@ export const NAV_LINKS = {
   /** Desktop quick links when authenticated */
   desktopAuth: [
     { path: '/dashboard', label: 'Dashboard', icon: FiBarChart2 },
+    { path: '/student-learning', label: 'Learn', icon: FiTerminal },
     { path: '/community', label: 'Community', icon: FiMessageSquare },
     { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
   ],
