@@ -16,9 +16,9 @@
  */
 
 import { sessionManager } from '../../core/auth/session.manager';
+import { envConfig } from '../../config/env.config';
 
-// API Base URL - use env or default to /api (proxied to backend in dev)
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = envConfig.api.baseURL;
 
 /**
  * HTTP Methods

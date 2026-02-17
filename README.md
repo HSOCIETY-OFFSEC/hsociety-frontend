@@ -110,6 +110,22 @@ Key variables:
 - `VITE_SESSION_DURATION` - Session timeout duration
 - `VITE_INACTIVITY_TIMEOUT` - Auto-logout timeout
 
+## Vercel + Render Deployment
+
+For a Vercel frontend talking to your Render backend, set:
+
+- `VITE_API_BASE_URL=https://hsociety-backend.onrender.com`
+
+Where to set it:
+
+1. Vercel Dashboard
+2. Project Settings
+3. Environment Variables
+4. Add `VITE_API_BASE_URL` for Production (and Preview if needed)
+5. Redeploy
+
+Backend CORS must allow your Vercel domain (for example `https://<your-project>.vercel.app` and any custom domain).
+
 ## 📝 Backend Integration
 
 The Express backend in `server/` is scaffolded and ready. Vite proxies `/api` to the backend in dev.

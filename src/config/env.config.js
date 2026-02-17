@@ -57,7 +57,11 @@ export const envConfig = {
   
   // API Configuration
   api: {
-    baseURL: getEnvVar('VITE_API_BASE_URL', '/api'),  // Use /api in dev (Vite proxy) or full URL in prod
+    // Dev defaults to Vite proxy; production defaults to hosted Render backend.
+    baseURL: getEnvVar(
+      'VITE_API_BASE_URL',
+      isDevelopment() ? '/api' : 'https://hsociety-backend.onrender.com'
+    ),
     timeout: parseInt(getEnvVar('VITE_API_TIMEOUT', '30000')),
     version: getEnvVar('VITE_API_VERSION', 'v1')
   },
