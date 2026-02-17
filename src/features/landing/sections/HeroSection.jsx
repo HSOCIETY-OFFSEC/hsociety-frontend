@@ -33,8 +33,6 @@ const HeroSection = () => {
           </div>
           
           <h1 className="hero-title">
-            HSOCIETY
-            <br />
             <span>REAL HACKING.</span>
             <br />
             <span className="hero-title-accent">REAL SECURITY </span>
