@@ -49,6 +49,35 @@ export const isTest = () => {
 };
 
 /**
+ * Normalize API base URL so absolute host-only values still target backend API prefix.
+ * Example: https://example.com -> https://example.com/api
+ */
+const normalizeApiBaseURL = (rawBaseURL) => {
+  const trimmed = String(rawBaseURL || '').trim();
+  if (!trimmed) return '/api';
+
+  const withoutTrailingSlash = trimmed.replace(/\/+$/, '');
+  const isAbsoluteHttp =
+    withoutTrailingSlash.startsWith('http://') ||
+    withoutTrailingSlash.startsWith('https://');
+
+  if (!isAbsoluteHttp) {
+    return withoutTrailingSlash;
+  }
+
+  try {
+    const parsed = new URL(withoutTrailingSlash);
+    if (parsed.pathname === '' || parsed.pathname === '/') {
+      return `${withoutTrailingSlash}/api`;
+    }
+  } catch (_err) {
+    // Keep original value; request errors will surface in API client logs.
+  }
+
+  return withoutTrailingSlash;
+};
+
+/**
  * Application Environment Configuration
  */
 export const envConfig = {
@@ -58,9 +87,11 @@ export const envConfig = {
   // API Configuration
   api: {
     // Dev defaults to Vite proxy; production defaults to hosted Render backend.
-    baseURL: getEnvVar(
-      'VITE_API_BASE_URL',
-      isDevelopment() ? '/api' : 'https://hsociety-backend.onrender.com'
+    baseURL: normalizeApiBaseURL(
+      getEnvVar(
+        'VITE_API_BASE_URL',
+        isDevelopment() ? '/api' : 'https://hsociety-backend.onrender.com/api'
+      )
     ),
     timeout: parseInt(getEnvVar('VITE_API_TIMEOUT', '30000')),
     version: getEnvVar('VITE_API_VERSION', 'v1')

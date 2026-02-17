@@ -110,21 +110,23 @@ Key variables:
 - `VITE_SESSION_DURATION` - Session timeout duration
 - `VITE_INACTIVITY_TIMEOUT` - Auto-logout timeout
 
-## Vercel + Render Deployment
+## Netlify/Vercel + Render Deployment
 
-For a Vercel frontend talking to your Render backend, set:
+For a Netlify or Vercel frontend talking to your Render backend, set:
 
-- `VITE_API_BASE_URL=https://hsociety-backend.onrender.com`
+- `VITE_API_BASE_URL=https://hsociety-backend.onrender.com/api`
 
 Where to set it:
 
-1. Vercel Dashboard
+1. Netlify (or Vercel) Dashboard
 2. Project Settings
 3. Environment Variables
 4. Add `VITE_API_BASE_URL` for Production (and Preview if needed)
 5. Redeploy
 
-Backend CORS must allow your Vercel domain (for example `https://<your-project>.vercel.app` and any custom domain).
+Backend CORS must allow your frontend domain. On Render backend, set:
+
+- `FRONTEND_URLS=https://<your-project>.netlify.app,https://<your-project>.vercel.app,https://your-custom-domain.com`
 
 ## 📝 Backend Integration
 
