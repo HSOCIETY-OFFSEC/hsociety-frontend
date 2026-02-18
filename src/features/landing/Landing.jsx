@@ -14,24 +14,14 @@ import {
   CtaSection,
   FooterSection
 } from './sections';
-import { FiBarChart2, FiCheckCircle, FiClipboard, FiCpu, FiFileText, FiGlobe, FiLayers, FiLock, FiMessageSquare, FiSearch, FiShield, FiTarget, FiTerminal, FiUsers, FiZap } from 'react-icons/fi';
+import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa';
+import { FiShield, FiFileText, FiTarget, FiClipboard, FiSearch, FiLayers, FiCheckCircle, FiTerminal, FiLock, FiMessageSquare, FiGlobe, FiZap, FiBarChart2, FiCpu, FiUsers as FiUsersAlt } from 'react-icons/fi';
 import '../../styles/features/landing.css';
-
-/**
- * Landing Page Component
- * Location: src/features/landing/Landing.jsx
- * 
- * Features:
- * - Hero section with CTA
- * - Services showcase
- * - Why choose us section
- * - Security-focused design
- * - Smooth animations
- */
 
 const Landing = () => {
   useScrollReveal();
 
+  // Services offered
   const services = [
     {
       icon: FiShield,
@@ -48,11 +38,12 @@ const Landing = () => {
     {
       icon: FiTarget,
       title: 'Red Team Operations',
-      description: 'Real-world attack simulations to test your defenses and incident response capabilities.',
+      description: 'Simulated attacks to test defenses, uncover gaps, and strengthen incident response.',
       features: ['Social Engineering', 'Physical Security', 'Threat Simulation', 'Custom Scenarios']
     }
   ];
 
+  // Stats
   const stats = [
     { value: '500+', label: 'Vulnerabilities Found' },
     { value: '50+', label: 'Clients Secured' },
@@ -60,146 +51,68 @@ const Landing = () => {
     { value: '24/7', label: 'Support Available' }
   ];
 
+  // Why HSOCIETY: UVP-focused
   const whyChooseUs = [
     {
-      icon: FiTarget,
-      title: 'Real-World Experience',
-      description: 'Our team has hands-on experience with actual offensive security operations.'
+      icon: FaGraduationCap,
+      title: 'Hands-On Learning',
+      description: 'Beginner-friendly training with real-world exercises supervised by experts. Execution over theory.'
     },
     {
-      icon: FiGlobe,
-      title: 'African-Centric Approach',
-      description: 'Understanding local contexts, threats, and compliance requirements.'
+      icon: FaUsers,
+      title: 'Community & Mentorship',
+      description: 'Join an active cybersecurity community where collaboration, guidance, and continuous skill growth are central.'
     },
     {
-      icon: FiCpu,
-      title: 'Thorough Methodology',
-      description: 'We follow OWASP, PTES, and other industry-standard testing frameworks.'
+      icon: FaShieldAlt,
+      title: 'Real Engagements',
+      description: 'Participate in supervised penetration tests for actual companies to gain professional experience and credibility.'
     },
     {
-      icon: FiBarChart2,
-      title: 'Detailed Reporting',
-      description: 'Clear, actionable reports with step-by-step remediation guidance.'
-    },
-    {
-      icon: FiUsers,
-      title: 'Community-Driven',
-      description: 'Training and deploying the next generation of security professionals.'
-    },
-    {
-      icon: FiZap,
-      title: 'Fast Response',
-      description: 'Critical security issues are addressed within 24 hours.'
+      icon: FaRocket,
+      title: 'Career-Ready Pathway',
+      description: 'Move from learner to professional penetration tester with continuous skill refresh, specialization, and paid deployments.'
     }
   ];
 
+  // Engagement / process steps
   const engagementSteps = [
-    {
-      icon: FiClipboard,
-      title: 'Scope & Threat Model',
-      description: 'Define assets, access paths, and crown-jewel risks before testing begins.',
-      meta: '1-2 days'
-    },
-    {
-      icon: FiSearch,
-      title: 'Recon & Exploitation',
-      description: 'Enumerate the attack surface and validate exploitable weaknesses.',
-      meta: '3-10 days'
-    },
-    {
-      icon: FiLayers,
-      title: 'Privilege & Impact',
-      description: 'Demonstrate real-world impact through controlled privilege escalation.',
-      meta: '2-5 days'
-    },
-    {
-      icon: FiCheckCircle,
-      title: 'Report & Retest',
-      description: 'Deliver fix-ready guidance with optional verification of remediation.',
-      meta: '3-5 days'
-    }
+    { icon: FiClipboard, title: 'Scope & Threat Model', description: 'Define assets, attack paths, and critical risks.', meta: '1-2 days' },
+    { icon: FiSearch, title: 'Recon & Exploitation', description: 'Map the attack surface and validate vulnerabilities.', meta: '3-10 days' },
+    { icon: FiLayers, title: 'Privilege & Impact', description: 'Demonstrate controlled escalation to assess real-world impact.', meta: '2-5 days' },
+    { icon: FiCheckCircle, title: 'Report & Retest', description: 'Provide actionable reports and optional remediation verification.', meta: '3-5 days' }
   ];
 
+  // Deliverables
   const deliverables = [
-    {
-      icon: FiFileText,
-      title: 'Executive Narrative',
-      description: 'Risk framing, business impact, and a board-ready summary.'
-    },
-    {
-      icon: FiTerminal,
-      title: 'Proof-of-Exploit Pack',
-      description: 'Repro steps, evidence, and safe PoC artifacts.'
-    },
-    {
-      icon: FiLock,
-      title: 'Retest Validation',
-      description: 'Verification of fixes with updated risk scoring.'
-    },
-    {
-      icon: FiMessageSquare,
-      title: 'Remediation Workshop',
-      description: 'Live walkthroughs and fix guidance with your engineers.'
-    }
+    { icon: FiFileText, title: 'Executive Narrative', description: 'Risk framing, business impact, and board-ready summary.' },
+    { icon: FiTerminal, title: 'Proof-of-Exploit Pack', description: 'Repro steps, evidence, and safe PoC artifacts.' },
+    { icon: FiLock, title: 'Retest Validation', description: 'Verify fixes with updated risk scoring.' },
+    { icon: FiMessageSquare, title: 'Remediation Workshop', description: 'Live walkthroughs and fix guidance with your engineers.' }
   ];
 
+  // Learning modules
   const learningModules = [
-    {
-      title: 'Foundation: Hacker Mindset',
-      description: 'Linux, networking, and tooling fundamentals with guided labs.',
-      level: 'Starter',
-      duration: '2 weeks'
-    },
-    {
-      title: 'Web App Exploitation',
-      description: 'OWASP Top 10, API testing, and real bug chains in sandboxes.',
-      level: 'Intermediate',
-      duration: '4 weeks'
-    },
-    {
-      title: 'Cloud & Infrastructure',
-      description: 'IAM attacks, misconfigurations, and lateral movement drills.',
-      level: 'Advanced',
-      duration: '3 weeks'
-    },
-    {
-      title: 'Red Team Labs',
-      description: 'End-to-end simulations with reporting and remediation.',
-      level: 'Elite',
-      duration: '4 weeks'
-    }
+    { title: 'Foundation: Hacker Mindset', description: 'Linux, networking, and tooling fundamentals with guided labs.', level: 'Starter', duration: '2 weeks' },
+    { title: 'Web App Exploitation', description: 'OWASP Top 10, API testing, and real bug chains in sandboxes.', level: 'Intermediate', duration: '4 weeks' },
+    { title: 'Cloud & Infrastructure', description: 'IAM attacks, misconfigurations, and lateral movement drills.', level: 'Advanced', duration: '3 weeks' },
+    { title: 'Red Team Labs', description: 'End-to-end simulations with reporting and remediation.', level: 'Elite', duration: '4 weeks' }
   ];
 
+  // Trust signals
   const trustSignals = [
-    {
-      title: 'African-Centric Threat Modeling',
-      description: 'We map regional attack patterns and compliance realities.'
-    },
-    {
-      title: 'Affordable, High-Value Engagements',
-      description: 'Premium expertise without the global-enterprise price tag.'
-    },
-    {
-      title: 'Proof-Driven Reporting',
-      description: 'Every finding includes evidence, impact, and fix-ready steps.'
-    }
+    { title: 'African-Centric Threat Modeling', description: 'We map regional attack patterns and compliance realities.' },
+    { title: 'Affordable, High-Value Engagements', description: 'Premium expertise without the global-enterprise price tag.' },
+    { title: 'Proof-Driven Reporting', description: 'Every finding includes evidence, impact, and fix-ready steps.' }
   ];
 
+  // Pathways
   const pathways = [
-    {
-      title: 'Learners',
-      description: 'Join structured modules, weekly challenges, and mentorship.',
-      cta: 'Start Learning',
-      path: '/student-dashboard'
-    },
-    {
-      title: 'Corporate Teams',
-      description: 'Get offensive security that matches your real-world risk.',
-      cta: 'Request Pentest',
-      path: '/login'
-    }
+    { title: 'Learners', description: 'Structured modules, challenges, and mentorship.', cta: 'Start Learning', path: '/student-dashboard' },
+    { title: 'Corporate Teams', description: 'Offensive security services tailored to real-world risk.', cta: 'Request Pentest', path: '/login' }
   ];
 
+  // Cycle steps
   const cycleSteps = [
     { title: 'Recon', description: 'Map assets, attack surface, and risk hotspots.' },
     { title: 'Exploit', description: 'Validate weaknesses with controlled proof.' },
