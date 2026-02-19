@@ -47,6 +47,34 @@
   flex: 1;
 }
 
+.landing-layout {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.landing-layout::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('../../assets/circuit-hero.svg');
+  background-repeat: repeat;
+  background-size: 520px auto;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] .landing-layout::before {
+  opacity: 0.04;
+  filter: brightness(0.7);
+}
+
+.landing-layout > * {
+  position: relative;
+  z-index: 1;
+}
+
 .app-sidebar {
   position: fixed;
   top: 0;
