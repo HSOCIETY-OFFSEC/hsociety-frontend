@@ -31,11 +31,11 @@
     "title": "Measured training. Verified delivery.",
     "subtitle": "We track outcomes across training, community growth, and real-world security work.",
     "items": [
-      { "value": "500+", "label": "Learners Trained" },
-      { "value": "1,200+", "label": "Community Members" },
-      { "value": "120+", "label": "Engagements Completed" },
-      { "value": "500+", "label": "Vulnerabilities Identified" },
-      { "value": "40+", "label": "Paid Pentests Delivered" }
+      { "value": "0+", "label": "Learners Trained" },
+      { "value": "0+", "label": "Community Members" },
+      { "value": "0+", "label": "Engagements Completed" },
+      { "value": "0+", "label": "Vulnerabilities Identified" },
+      { "value": "0+", "label": "Paid Pentests Delivered" }
     ]
   },
   "services": [
