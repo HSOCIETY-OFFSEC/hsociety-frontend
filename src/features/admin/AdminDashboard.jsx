@@ -3,7 +3,7 @@ import { FiEdit2, FiSave, FiShield, FiUsers } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import PageLoader from '../../shared/components/ui/PageLoader';
-import { getUsers, updateUser } from './admin.service';
+import { getUsers, updateUser, getPentests, updatePentest } from './admin.service';
 import '../../styles/features/admin.css';
 
 const ROLE_OPTIONS = [
@@ -19,6 +19,9 @@ const AdminDashboard = () => {
   const [drafts, setDrafts] = useState({});
   const [savingId, setSavingId] = useState(null);
   const [error, setError] = useState('');
+  const [pentests, setPentests] = useState([]);
+  const [pentestEdits, setPentestEdits] = useState({});
+  const [pentestSavingId, setPentestSavingId] = useState(null);
 
   const loadUsers = async () => {
     setLoading(true);
@@ -32,8 +35,18 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
+  const loadPentests = async () => {
+    const response = await getPentests();
+    if (response.success) {
+      setPentests(response.data || []);
+    } else {
+      setError(response.error || 'Failed to load pentests');
+    }
+  };
+
   useEffect(() => {
     loadUsers();
+    loadPentests();
   }, []);
 
   const startEdit = (user) => {
@@ -75,6 +88,41 @@ const AdminDashboard = () => {
         [field]: value
       }
     }));
+  };
+
+  const startPentestEdit = (pentest) => {
+    const id = pentest._id || pentest.id;
+    setPentestEdits((prev) => ({
+      ...prev,
+      [id]: {
+        status: pentest.status || 'pending',
+        assignedTo: pentest.assignedTo || '',
+        reportAvailable: Boolean(pentest.metadata?.reportAvailable)
+      }
+    }));
+  };
+
+  const updatePentestDraft = (pentestId, field, value) => {
+    setPentestEdits((prev) => ({
+      ...prev,
+      [pentestId]: {
+        ...prev[pentestId],
+        [field]: value
+      }
+    }));
+  };
+
+  const savePentest = async (pentestId) => {
+    const payload = pentestEdits[pentestId];
+    if (!payload) return;
+    setPentestSavingId(pentestId);
+    const response = await updatePentest(pentestId, payload);
+    if (response.success) {
+      setPentests((prev) => prev.map((p) => ((p._id || p.id) === pentestId ? response.data : p)));
+    } else {
+      setError(response.error || 'Failed to update pentest');
+    }
+    setPentestSavingId(null);
   };
 
   const stats = useMemo(() => {
@@ -213,6 +261,79 @@ const AdminDashboard = () => {
                       </Button>
                     </>
                   )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+
+      <Card className="admin-card" padding="large">
+        <div className="admin-section-header">
+          <h2>Pentest Management</h2>
+          <p>Assign pentesters and update engagement status.</p>
+        </div>
+        <div className="admin-table">
+          <div className="admin-row admin-row-header admin-row-pentests">
+            <span>Target</span>
+            <span>Status</span>
+            <span>Assigned To</span>
+            <span>Report</span>
+            <span>Actions</span>
+          </div>
+          {pentests.map((pentest) => {
+            const pentestId = pentest._id || pentest.id;
+            const draft = pentestEdits[pentestId] || {};
+            return (
+              <div key={pentestId} className="admin-row admin-row-pentests">
+                <span>{pentest.title || pentest.metadata?.target?.identifier || 'Untitled'}</span>
+                <select
+                  className="admin-select"
+                  value={draft.status || pentest.status || 'pending'}
+                  onChange={(e) => updatePentestDraft(pentestId, 'status', e.target.value)}
+                >
+                  {['pending', 'in-progress', 'completed', 'cancelled'].map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="admin-select"
+                  value={draft.assignedTo || pentest.assignedTo || ''}
+                  onChange={(e) => updatePentestDraft(pentestId, 'assignedTo', e.target.value)}
+                >
+                  <option value="">Unassigned</option>
+                  {users
+                    .filter((u) => u.role === 'pentester')
+                    .map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.name || user.email}
+                      </option>
+                    ))}
+                </select>
+                <label className="admin-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={draft.reportAvailable ?? Boolean(pentest.metadata?.reportAvailable)}
+                    onChange={(e) => updatePentestDraft(pentestId, 'reportAvailable', e.target.checked)}
+                  />
+                  Ready
+                </label>
+                <div className="admin-actions">
+                  <Button size="small" variant="ghost" onClick={() => startPentestEdit(pentest)}>
+                    <FiEdit2 size={14} />
+                    Edit
+                  </Button>
+                  <Button
+                    size="small"
+                    variant="primary"
+                    onClick={() => savePentest(pentestId)}
+                    disabled={pentestSavingId === pentestId}
+                  >
+                    <FiSave size={14} />
+                    {pentestSavingId === pentestId ? 'Saving...' : 'Save'}
+                  </Button>
                 </div>
               </div>
             );

@@ -3,14 +3,19 @@ import { FiAlertTriangle, FiTrash2 } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
-import { deleteAccount } from './account.service';
+import { deleteAccount, updateProfile } from './account.service';
 import '../../styles/features/account.css';
 
 const AccountSettings = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const [confirmText, setConfirmText] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profile, setProfile] = useState({
+    name: user?.name || '',
+    organization: user?.organization || '',
+  });
 
   const handleDelete = async () => {
     setError('');
@@ -40,7 +45,21 @@ const AccountSettings = () => {
         <div className="account-info">
           <div>
             <span className="account-label">Name</span>
-            <strong>{user?.name || '—'}</strong>
+            <input
+              className="account-input"
+              value={profile.name}
+              onChange={(e) => setProfile((prev) => ({ ...prev, name: e.target.value }))}
+              placeholder="Your name"
+            />
+          </div>
+          <div>
+            <span className="account-label">Organization</span>
+            <input
+              className="account-input"
+              value={profile.organization}
+              onChange={(e) => setProfile((prev) => ({ ...prev, organization: e.target.value }))}
+              placeholder="Company or school"
+            />
           </div>
           <div>
             <span className="account-label">Email</span>
@@ -50,6 +69,16 @@ const AccountSettings = () => {
             <span className="account-label">Role</span>
             <strong>{user?.role || '—'}</strong>
           </div>
+        </div>
+        <div className="account-actions">
+          <Button
+            variant="primary"
+            size="small"
+            onClick={handleProfileSave}
+            disabled={profileSaving}
+          >
+            {profileSaving ? 'Saving...' : 'Save Profile'}
+          </Button>
         </div>
       </Card>
 
@@ -88,3 +117,14 @@ const AccountSettings = () => {
 };
 
 export default AccountSettings;
+  const handleProfileSave = async () => {
+    setError('');
+    setProfileSaving(true);
+    const response = await updateProfile(profile);
+    if (response.success) {
+      updateUser(response.data);
+    } else {
+      setError(response.error || 'Failed to update profile');
+    }
+    setProfileSaving(false);
+  };

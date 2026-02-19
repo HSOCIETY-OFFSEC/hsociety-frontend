@@ -82,6 +82,7 @@
   background: rgba(10, 10, 12, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2rem;
 }
 
 .admin-table {
@@ -157,6 +158,35 @@
   color: #8bffc2;
 }
 
+.admin-row-pentests {
+  grid-template-columns: 1.4fr 1fr 1.2fr 0.8fr 1.2fr;
+}
+
+.admin-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.admin-section-header h2 {
+  margin: 0;
+}
+
+.admin-section-header p {
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.admin-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+}
+
 @media (max-width: 1024px) {
   .admin-row {
     grid-template-columns: 1fr 1.4fr 1fr 0.9fr;
@@ -164,6 +194,10 @@
 
   .admin-row > div:last-child {
     grid-column: 1 / -1;
+  }
+
+  .admin-row-pentests {
+    grid-template-columns: 1fr 1fr;
   }
 }
 

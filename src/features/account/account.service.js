@@ -12,6 +12,15 @@ export const deleteAccount = async () => {
   return { success: false, error: response.error || 'Failed to delete account' };
 };
 
+export const updateProfile = async (updates) => {
+  const response = await apiClient.put(API_ENDPOINTS.PROFILE.UPDATE, updates);
+  if (response.success) {
+    return { success: true, data: response.data };
+  }
+  return { success: false, error: response.error || 'Failed to update profile' };
+};
+
 export default {
   deleteAccount,
+  updateProfile,
 };

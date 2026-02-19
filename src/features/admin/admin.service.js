@@ -21,7 +21,28 @@ export const updateUser = async (userId, updates) => {
   return { success: false, error: response.error || 'Failed to update user' };
 };
 
+export const getPentests = async () => {
+  const response = await apiClient.get('/admin/pentests');
+  if (response.success) {
+    return { success: true, data: response.data || [] };
+  }
+  return { success: false, error: response.error || 'Failed to fetch pentests' };
+};
+
+export const updatePentest = async (pentestId, updates) => {
+  const response = await apiClient.patch(
+    `/admin/pentests/${pentestId}`,
+    updates
+  );
+  if (response.success) {
+    return { success: true, data: response.data };
+  }
+  return { success: false, error: response.error || 'Failed to update pentest' };
+};
+
 export default {
   getUsers,
   updateUser,
+  getPentests,
+  updatePentest,
 };

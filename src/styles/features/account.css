@@ -25,6 +25,10 @@
   gap: 1.5rem;
 }
 
+.account-actions {
+  margin-top: 1.5rem;
+}
+
 .account-label {
   display: block;
   font-size: 0.75rem;
