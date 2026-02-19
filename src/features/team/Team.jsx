@@ -1,60 +1,35 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiCpu, FiCrosshair, FiMessageSquare, FiShield, FiTarget, FiUsers } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
+import teamContent from '../../data/team.json';
 import '../../styles/features/team.css';
 
 const Team = () => {
   const navigate = useNavigate();
   useScrollReveal();
 
-  const leadership = [
-    {
-      name: 'Wsuits6',
-      role: 'Offensive Security Engineer',
-      focus: 'Adversary simulation and enterprise compromise chains.',
-      icon: FiCrosshair,
-      //Use Image form src/assets foler
-      image: ''
-    },
-    {
-      name: 'Shine',
-      role: 'Principal Pentester',
-      focus: 'Network Security Expert',
-      icon: FiCpu,
-      //Use Image form src/assets foler
-      image: ''
-    },
-    {
-      name: 'Non-Conformist',
-      role: 'Governance, Complaince and Risk Managment Officer (GRC)',
-      focus: 'Covert access, privilege escalation, and opsec.',
-      icon: FiTarget,
-      // Use Image form /src/assets folder
-      image: ''
-    }
-  ];
+  const iconMap = useMemo(() => ({
+    FiCrosshair,
+    FiCpu,
+    FiTarget,
+    FiShield,
+    FiUsers,
+    FiMessageSquare
+  }), []);
 
-  const teams = [
-    {
-      title: 'Offensive Research',
-      description: 'Exploit development, attack tooling, and custom tradecraft.',
-      icon: FiShield
-    },
-    {
-      title: 'Engagement Delivery',
-      description: 'Execution, reporting, and remediation partnership.',
-      icon: FiUsers
-    },
-    {
-      title: 'Client Success',
-      description: 'Post-engagement retests and continuous validation.',
-      icon: FiMessageSquare
-    }
-  ];
+  const leadership = teamContent.leadership.members.map((member) => ({
+    ...member,
+    icon: iconMap[member.icon]
+  }));
+
+  const teams = teamContent.groups.items.map((group) => ({
+    ...group,
+    icon: iconMap[group.icon]
+  }));
 
   return (
     <div className="team-page">
@@ -62,15 +37,12 @@ const Team = () => {
         <div className="team-hero-content">
           <Logo size="large" />
           <div>
-            <p className="team-kicker">Meet the Team</p>
-            <h1>Operators, researchers, and builders.</h1>
-            <p>
-              A distributed team with deep offensive experience across fintech, telecom, and
-              critical infrastructure.
-            </p>
+            <p className="team-kicker">{teamContent.hero.kicker}</p>
+            <h1>{teamContent.hero.title}</h1>
+            <p>{teamContent.hero.subtitle}</p>
           </div>
-          <Button variant="primary" size="large" onClick={() => navigate('/feedback')}>
-            Work With Us
+          <Button variant="primary" size="large" onClick={() => navigate(teamContent.hero.route)}>
+            {teamContent.hero.button}
           </Button>
         </div>
       </header>
@@ -78,8 +50,8 @@ const Team = () => {
       <section className="team-leadership reveal-on-scroll">
         <div className="team-section-header">
           <Logo size="small" />
-          <h2>Leadership</h2>
-          <p>Hands-on leads who still run ops and guide engagements.</p>
+          <h2>{teamContent.leadership.title}</h2>
+          <p>{teamContent.leadership.subtitle}</p>
         </div>
         <div className="team-leadership-grid">
           {leadership.map((member, index) => (
@@ -109,8 +81,8 @@ const Team = () => {
       <section className="team-groups reveal-on-scroll">
         <div className="team-section-header">
           <Logo size="small" />
-          <h2>Operational Cells</h2>
-          <p>Each engagement is staffed by specialists across the offensive lifecycle.</p>
+          <h2>{teamContent.groups.title}</h2>
+          <p>{teamContent.groups.subtitle}</p>
         </div>
         <div className="team-group-grid">
           {teams.map((group, index) => (
@@ -129,11 +101,11 @@ const Team = () => {
         <Card padding="large" className="team-cta-card">
           <div className="team-cta-content">
             <div>
-              <h3>Want to join the team?</h3>
-              <p>We hire operators with offensive security experience and relentless curiosity.</p>
+              <h3>{teamContent.cta.title}</h3>
+              <p>{teamContent.cta.subtitle}</p>
             </div>
-            <Button variant="secondary" size="large" onClick={() => navigate('/feedback')}>
-              Open Roles
+            <Button variant="secondary" size="large" onClick={() => navigate(teamContent.cta.route)}>
+              {teamContent.cta.button}
             </Button>
           </div>
         </Card>

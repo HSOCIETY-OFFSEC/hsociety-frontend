@@ -1,0 +1,15 @@
+{
+  "hero": {
+    "title": "Testing Methodology",
+    "subtitle": "Repeatable, evidence-driven engagement flow aligned to OWASP and PTES.",
+    "chips": ["Scope in 48h", "Evidence-backed findings", "Retest included"]
+  },
+  "phases": [
+    { "title": "Scoping", "detail": "Define assets, risks, and constraints.", "icon": "FiClipboard" },
+    { "title": "Recon", "detail": "Enumerate external and internal attack surface.", "icon": "FiSearch" },
+    { "title": "Exploitation", "detail": "Validate real-world impact safely.", "icon": "FiTarget" },
+    { "title": "Hardening", "detail": "Prioritize fixes and verify remediation.", "icon": "FiShield" },
+    { "title": "Tooling", "detail": "Custom tooling and automated evidence capture.", "icon": "FiTool" },
+    { "title": "Reporting", "detail": "Board-ready narratives and technical proof.", "icon": "FiCheckCircle" }
+  ]
+}

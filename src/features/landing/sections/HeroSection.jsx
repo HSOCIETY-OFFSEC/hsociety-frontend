@@ -8,15 +8,15 @@ import {
   FiLock,
   FiMessageSquare,
   FiShield,
-  FiTerminal,
-  FiZap
+  FiTerminal
 } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
 import '../../../styles/features/landing/hero.css';
 
-const HeroSection = () => {
+const HeroSection = ({ content }) => {
   const navigate = useNavigate();
+  const { badge, title, description, highlights, ctas, trust } = content;
 
   return (
     <section className="hero-section">
@@ -29,50 +29,34 @@ const HeroSection = () => {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="badge-dot"></span>
-            Offensive Security Training + Delivery
+            {badge}
           </div>
           
-          <h1 className="hero-title">
-            Build Real Offensive Security Talent. Deliver Real Penetration Testing.
-          </h1>
+          <h1 className="hero-title">{title}</h1>
           
-          <p className="hero-description">
-            HSOCIETY is a cycle-based cybersecurity platform that trains beginners, integrates them into a community,
-            deploys them into supervised real-world engagements, and converts them into professional penetration testers.
-          </p>
+          <p className="hero-description">{description}</p>
 
           <div className="hero-highlights">
-            <div className="hero-highlight">
-              <FiCheckCircle size={16} />
-              <span>Paid training designed for complete beginners</span>
-            </div>
-            <div className="hero-highlight">
-              <FiShield size={16} />
-              <span>Supervised real-world engagements with reporting</span>
-            </div>
-            <div className="hero-highlight">
-              <FiZap size={16} />
-              <span>Professional pathway from student to pentester</span>
-            </div>
+            {highlights.map((item) => (
+              <div key={item} className="hero-highlight">
+                <FiCheckCircle size={16} />
+                <span>{item}</span>
+              </div>
+            ))}
           </div>
 
           <div className="hero-cta">
-            <Button 
-              variant="primary" 
-              size="large"
-              onClick={() => navigate('/register')}
-            >
-              Start Learning Offensive Security
-              <FiArrowUpRight size={18} />
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="large"
-              onClick={() => navigate('/corporate/pentest')}
-            >
-              Request a Penetration Test
-              <FiArrowRight size={18} />
-            </Button>
+            {ctas.map((cta, index) => (
+              <Button
+                key={cta.label}
+                variant={cta.variant}
+                size="large"
+                onClick={() => navigate(cta.route)}
+              >
+                {cta.label}
+                {index === 0 ? <FiArrowUpRight size={18} /> : <FiArrowRight size={18} />}
+              </Button>
+            ))}
           </div>
 
           <div className="hero-proof">
@@ -91,24 +75,16 @@ const HeroSection = () => {
           </div>
 
           <div className="trust-indicators">
-            <div className="trust-item">
-              <span className="trust-icon">
-                <FiShield size={18} />
-              </span>
-              <span className="trust-text">Two clear paths: Students + Companies</span>
-            </div>
-            <div className="trust-item">
-              <span className="trust-icon">
-                <FiCheckCircle size={18} />
-              </span>
-              <span className="trust-text">Supervised by senior offensive operators</span>
-            </div>
-            <div className="trust-item">
-              <span className="trust-icon">
-                <FiLock size={18} />
-              </span>
-              <span className="trust-text">Engagements delivered with verified evidence</span>
-            </div>
+            {trust.map((item, index) => (
+              <div key={item} className="trust-item">
+                <span className="trust-icon">
+                  {index === 0 && <FiShield size={18} />}
+                  {index === 1 && <FiCheckCircle size={18} />}
+                  {index === 2 && <FiLock size={18} />}
+                </span>
+                <span className="trust-text">{item}</span>
+              </div>
+            ))}
           </div>
         </div>
 

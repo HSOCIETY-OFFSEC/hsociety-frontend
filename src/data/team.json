@@ -1,0 +1,63 @@
+{
+  "hero": {
+    "kicker": "Meet the Team",
+    "title": "Operators, researchers, and builders.",
+    "subtitle": "A distributed team with deep offensive experience across fintech, telecom, and critical infrastructure.",
+    "button": "Work With Us",
+    "route": "/feedback"
+  },
+  "leadership": {
+    "title": "Leadership",
+    "subtitle": "Hands-on leads who still run ops and guide engagements.",
+    "members": [
+      {
+        "name": "Wsuits6",
+        "role": "Offensive Security Engineer",
+        "focus": "Adversary simulation and enterprise compromise chains.",
+        "icon": "FiCrosshair",
+        "image": ""
+      },
+      {
+        "name": "Shine",
+        "role": "Principal Pentester",
+        "focus": "Network Security Expert",
+        "icon": "FiCpu",
+        "image": ""
+      },
+      {
+        "name": "Non-Conformist",
+        "role": "Governance, Complaince and Risk Managment Officer (GRC)",
+        "focus": "Covert access, privilege escalation, and opsec.",
+        "icon": "FiTarget",
+        "image": ""
+      }
+    ]
+  },
+  "groups": {
+    "title": "Operational Cells",
+    "subtitle": "Each engagement is staffed by specialists across the offensive lifecycle.",
+    "items": [
+      {
+        "title": "Offensive Research",
+        "description": "Exploit development, attack tooling, and custom tradecraft.",
+        "icon": "FiShield"
+      },
+      {
+        "title": "Engagement Delivery",
+        "description": "Execution, reporting, and remediation partnership.",
+        "icon": "FiUsers"
+      },
+      {
+        "title": "Client Success",
+        "description": "Post-engagement retests and continuous validation.",
+        "icon": "FiMessageSquare"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Want to join the team?",
+    "subtitle": "We hire operators with offensive security experience and relentless curiosity.",
+    "button": "Open Roles",
+    "route": "/feedback"
+  }
+}

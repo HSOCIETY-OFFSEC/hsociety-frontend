@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FiBookOpen, FiBookmark, FiBriefcase, FiCheckCircle, FiFilter, FiHash, FiHeart, FiImage, FiMessageSquare, FiPlus, FiSend, FiShield, FiStar, FiTrendingUp, FiUsers, FiX } from 'react-icons/fi';
+import { FiBookmark, FiCheckCircle, FiHash, FiHeart, FiMessageSquare, FiSend, FiStar, FiX } from 'react-icons/fi';
+import { FiBookOpen, FiBriefcase, FiFilter, FiImage, FiPlus, FiShield, FiTrendingUp, FiUsers } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { useAuth } from '../../core/auth/AuthContext';
 import Card from '../../shared/components/ui/Card';
@@ -11,6 +12,7 @@ import {
   reactToPost,
   savePost
 } from './community.service';
+import communityContent from '../../data/community.json';
 import '../../styles/features/community.css';
 
 const Community = () => {
@@ -45,12 +47,21 @@ const Community = () => {
   const role = user?.role || 'student';
   const isCorporate = role === 'corporate';
 
-  const cta = useMemo(() => ({
-    title: isCorporate ? 'Host an Office Hour' : 'Start a Study Group',
-    subtitle: isCorporate
-      ? 'Support junior talent with live Q&A and review sessions.'
-      : 'Find peers for weekly practice and accountability.'
-  }), [isCorporate]);
+  const iconMap = useMemo(() => ({
+    FiBookOpen,
+    FiBriefcase,
+    FiShield,
+    FiUsers,
+    FiImage,
+    FiTrendingUp,
+    FiPlus,
+    FiBookmark,
+    FiFilter
+  }), []);
+
+  const cta = useMemo(() => (
+    isCorporate ? communityContent.hero.cta.corporate : communityContent.hero.cta.student
+  ), [isCorporate]);
 
   useEffect(() => {
     let mounted = true;
@@ -60,7 +71,7 @@ const Community = () => {
       const response = await getCommunityOverview({ role, feed: tab });
       if (!mounted) return;
       if (!response.success) {
-        setError(response.error || 'Failed to load community data.');
+        setError(response.error || communityContent.feed.errorFallback);
       } else {
         setOverview({
           ...response.data,
@@ -146,8 +157,8 @@ const Community = () => {
     setReplyDrafts((prev) => ({ ...prev, [postId]: '' }));
     setReplyOpenId(null);
     setActionPanel({
-      title: 'Reply queued',
-      description: 'Your response is ready for backend integration.'
+      title: communityContent.actions.replyQueuedTitle,
+      description: communityContent.actions.replyQueuedDescription
     });
   };
 
@@ -160,10 +171,10 @@ const Community = () => {
         <header className="community-hero reveal-on-scroll">
           <div className="community-hero-content">
             <div>
-              <p className="community-kicker">HSOCIETY Community</p>
-              <h1>Where future defenders meet.</h1>
+              <p className="community-kicker">{communityContent.hero.kicker}</p>
+              <h1>{communityContent.hero.title}</h1>
               <p>
-                Ask questions, share wins, and build your cybersecurity path with peers and mentors.
+                {communityContent.hero.subtitle}
               </p>
             </div>
             <Button
@@ -181,15 +192,15 @@ const Community = () => {
           <div className="community-hero-stats">
             <div className="hero-stat">
               <FiUsers size={18} />
-              <span>{overview.stats.learners || 0} learners</span>
+              <span>{overview.stats.learners || 0} {communityContent.stats.learnersLabel}</span>
             </div>
             <div className="hero-stat">
               <FiMessageSquare size={18} />
-              <span>{overview.stats.questions || 0} questions</span>
+              <span>{overview.stats.questions || 0} {communityContent.stats.questionsLabel}</span>
             </div>
             <div className="hero-stat">
               <FiCheckCircle size={18} />
-              <span>{overview.stats.answered || 0} answered</span>
+              <span>{overview.stats.answered || 0} {communityContent.stats.answeredLabel}</span>
             </div>
           </div>
         </header>
@@ -197,7 +208,7 @@ const Community = () => {
         <div className="community-layout">
           <aside className="community-sidebar reveal-on-scroll">
             <Card padding="large" className="sidebar-card">
-              <h3>Channels</h3>
+              <h3>{communityContent.sidebar.channelsTitle}</h3>
               <div className="sidebar-list">
                 {overview.channels.map((channel) => (
                   <button
@@ -213,79 +224,33 @@ const Community = () => {
             </Card>
 
             <Card padding="large" className="sidebar-card">
-              <h3>{isCorporate ? 'Corporate Corner' : 'Student Starter Pack'}</h3>
+              <h3>{isCorporate ? communityContent.sidebar.corporate.title : communityContent.sidebar.student.title}</h3>
               <p>
                 {isCorporate
-                  ? 'Share internship openings, sponsor labs, and offer mentorship.'
-                  : 'Guided paths, beginner labs, and weekly milestones.'}
+                  ? communityContent.sidebar.corporate.description
+                  : communityContent.sidebar.student.description}
               </p>
               <div className="sidebar-list">
-                {isCorporate ? (
-                  <>
+                {(isCorporate ? communityContent.sidebar.corporate.actions : communityContent.sidebar.student.actions).map((action) => {
+                  const ActionIcon = iconMap[action.icon];
+                  return (
                     <button
+                      key={action.label}
                       type="button"
                       onClick={() => handleAction({
-                        title: 'Post Internships',
-                        description: 'Draft an internship listing for the community.'
+                        title: action.actionTitle,
+                        description: action.actionDescription
                       })}
                     >
-                      <FiBriefcase size={16} /> Post Internships
+                      {ActionIcon && <ActionIcon size={16} />} {action.label}
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => handleAction({
-                        title: 'Sponsor Lab Time',
-                        description: 'Outline lab sponsorship details and availability.'
-                      })}
-                    >
-                      <FiShield size={16} /> Sponsor Lab Time
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleAction({
-                        title: 'Mentor Circle',
-                        description: 'Create a mentor circle session outline.'
-                      })}
-                    >
-                      <FiUsers size={16} /> Mentor Circle
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => handleAction({
-                        title: 'Learning Roadmaps',
-                        description: 'Preview curated roadmaps for your track.'
-                      })}
-                    >
-                      <FiBookOpen size={16} /> Learning Roadmaps
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleAction({
-                        title: 'Beginner Labs',
-                        description: 'Choose a starter lab to run next.'
-                      })}
-                    >
-                      <FiShield size={16} /> Beginner Labs
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleAction({
-                        title: 'Find Study Buddy',
-                        description: 'Set your availability and topic focus.'
-                      })}
-                    >
-                      <FiUsers size={16} /> Find Study Buddy
-                    </button>
-                  </>
-                )}
+                  );
+                })}
               </div>
             </Card>
 
             <Card padding="large" className="sidebar-card">
-              <h3>Trending Tags</h3>
+              <h3>{communityContent.sidebar.trendingTagsTitle}</h3>
               <div className="tag-list">
                 {overview.tags.map((tag) => (
                   <button
@@ -320,26 +285,25 @@ const Community = () => {
                   value={postInput}
                   onChange={(e) => setPostInput(e.target.value)}
                   placeholder={isCorporate
-                    ? 'Share an internship, office hours, or security insight...'
-                    : 'Ask a question or share a win...'}
+                    ? communityContent.composer.corporatePlaceholder
+                    : communityContent.composer.studentPlaceholder}
                 />
               </div>
               <div className="post-creator-actions">
                 <div className="post-creator-tools">
-                  <button
-                    type="button"
-                    className={composerTool === 'media' ? 'active' : ''}
-                    onClick={() => handleComposerTool('media')}
-                  >
-                    <FiImage size={16} /> Media
-                  </button>
-                  <button
-                    type="button"
-                    className={composerTool === 'labs' ? 'active' : ''}
-                    onClick={() => handleComposerTool('labs')}
-                  >
-                    <FiShield size={16} /> Lab Logs
-                  </button>
+                  {communityContent.composer.tools.map((tool) => {
+                    const ToolIcon = iconMap[tool.icon];
+                    return (
+                      <button
+                        key={tool.key}
+                        type="button"
+                        className={composerTool === tool.key ? 'active' : ''}
+                        onClick={() => handleComposerTool(tool.key)}
+                      >
+                        {ToolIcon && <ToolIcon size={16} />} {tool.label}
+                      </button>
+                    );
+                  })}
                 </div>
                 <Button
                   className='post-btn'
@@ -349,63 +313,57 @@ const Community = () => {
                   disabled={submitting || !postInput.trim()}
                 >
                   <FiSend size={16} />
-                  {submitting ? 'Posting...' : 'Post'}
+                  {submitting ? communityContent.composer.postingLabel : communityContent.composer.postLabel}
                 </Button>
               </div>
               {composerTool && (
                 <div className="composer-panel">
-                  <h4>{composerTool === 'media' ? 'Attach media' : 'Add lab log'}</h4>
-                  <p>
-                    {composerTool === 'media'
-                      ? 'Upload screenshots or diagrams to support your post.'
-                      : 'Capture lab environment, tools used, and results.'}
-                  </p>
+                  {(() => {
+                    const tool = communityContent.composer.tools.find((item) => item.key === composerTool);
+                    if (!tool) return null;
+                    return (
+                      <>
+                        <h4>{tool.panelTitle}</h4>
+                        <p>{tool.panelDescription}</p>
+                      </>
+                    );
+                  })()}
                   <button
                     type="button"
                     onClick={() => handleAction({
-                      title: composerTool === 'media' ? 'Media upload' : 'Lab log entry',
-                      description: 'Prepared for backend integration.'
+                      title: communityContent.composer.tools.find((item) => item.key === composerTool)?.actionTitle,
+                      description: communityContent.composer.tools.find((item) => item.key === composerTool)?.actionDescription
                     })}
                   >
-                    {composerTool === 'media' ? 'Select files' : 'Add entry'}
+                    {communityContent.composer.tools.find((item) => item.key === composerTool)?.actionLabel}
                   </button>
                 </div>
               )}
             </Card>
 
             <div className="feed-tabs reveal-on-scroll">
-              <button
-                type="button"
-                className={tab === 'popular' ? 'active' : ''}
-                onClick={() => setTab('popular')}
-              >
-                <FiTrendingUp size={16} />
-                Popular
-              </button>
-              <button
-                type="button"
-                className={tab === 'new' ? 'active' : ''}
-                onClick={() => setTab('new')}
-              >
-                <FiPlus size={16} />
-                New
-              </button>
-              <button
-                type="button"
-                className={tab === 'saved' ? 'active' : ''}
-                onClick={() => setTab('saved')}
-              >
-                <FiBookmark size={16} />
-                Saved
-              </button>
-              <button
-                type="button"
-                className={filtersOpen ? 'active' : ''}
-                onClick={() => setFiltersOpen((prev) => !prev)}
-              >
-                <FiFilter size={16} />
-                Filters
-              </button>
+              {communityContent.tabs.map((tabItem) => {
+                const TabIcon = iconMap[tabItem.icon];
+                const isFilterTab = tabItem.key === 'filters';
+                const isActive = isFilterTab ? filtersOpen : tab === tabItem.key;
+                return (
+                  <button
+                    key={tabItem.key}
+                    type="button"
+                    className={isActive ? 'active' : ''}
+                    onClick={() => {
+                      if (isFilterTab) {
+                        setFiltersOpen((prev) => !prev);
+                      } else {
+                        setTab(tabItem.key);
+                      }
+                    }}
+                  >
+                    {TabIcon && <TabIcon size={16} />}
+                    {tabItem.label}
+                  </button>
+                );
+              })}
             </div>
 
             {(activeChannelId || activeTag) && (
@@ -415,7 +373,7 @@ const Community = () => {
                     type="button"
                     onClick={() => setActiveChannelId(null)}
                   >
-                    Channel: {overview.channels.find((channel) => channel.id === activeChannelId)?.name || 'Selected'}
+                    {communityContent.activeFilters.channelPrefix} {overview.channels.find((channel) => channel.id === activeChannelId)?.name || 'Selected'}
                     <FiX size={14} />
                   </button>
                 )}
@@ -424,7 +382,7 @@ const Community = () => {
                     type="button"
                     onClick={() => setActiveTag(null)}
                   >
-                    Tag: {activeTag}
+                    {communityContent.activeFilters.tagPrefix} {activeTag}
                     <FiX size={14} />
                   </button>
                 )}
@@ -433,14 +391,9 @@ const Community = () => {
 
             {filtersOpen && (
               <div className="filters-panel">
-                <h4>Feed filters</h4>
+                <h4>{communityContent.filters.title}</h4>
                 <div className="filters-grid">
-                  {[
-                    { key: 'questions', label: 'Questions' },
-                    { key: 'wins', label: 'Wins' },
-                    { key: 'labs', label: 'Lab logs' },
-                    { key: 'mentorship', label: 'Mentorship' }
-                  ].map((item) => (
+                  {communityContent.filters.options.map((item) => (
                     <label key={item.key}>
                       <input
                         type="checkbox"
@@ -454,11 +407,11 @@ const Community = () => {
                 <button
                   type="button"
                   onClick={() => handleAction({
-                    title: 'Filters saved',
-                    description: 'Your feed preferences are ready for backend integration.'
+                    title: communityContent.filters.savedTitle,
+                    description: communityContent.filters.savedDescription
                   })}
                 >
-                  Save filters
+                  {communityContent.filters.saveLabel}
                 </button>
               </div>
             )}
@@ -477,7 +430,7 @@ const Community = () => {
                   size="small"
                   onClick={() => setActionPanel(null)}
                 >
-                  Clear action
+                  {communityContent.actions.clearLabel}
                 </Button>
               </Card>
             )}
@@ -490,12 +443,12 @@ const Community = () => {
               )}
               {loading && (
                 <Card padding="large" className="post-card">
-                  <p>Loading community feed...</p>
+                  <p>{communityContent.feed.loading}</p>
                 </Card>
               )}
               {!loading && overview.posts.length === 0 && !error && (
                 <Card padding="large" className="post-card">
-                  <p>No posts yet for this view. Check back soon or start a conversation.</p>
+                  <p>{communityContent.feed.empty}</p>
                 </Card>
               )}
               {!loading && overview.posts.map((post) => (
@@ -546,12 +499,12 @@ const Community = () => {
                     <div className="reply-box">
                       <input
                         type="text"
-                        placeholder="Write a quick reply..."
+                        placeholder={communityContent.reply.placeholder}
                         value={replyDrafts[post.id] || ''}
                         onChange={(e) => handleReplyChange(post.id, e.target.value)}
                       />
                       <button type="button" onClick={() => handleSendReply(post.id)}>
-                        Send reply
+                        {communityContent.reply.buttonLabel}
                       </button>
                     </div>
                   )}
@@ -562,11 +515,11 @@ const Community = () => {
 
           <aside className="community-right reveal-on-scroll">
             <Card padding="large" className="sidebar-card">
-              <h3>{isCorporate ? 'Sponsor a Session' : 'Mentor Office Hours'}</h3>
+              <h3>{isCorporate ? communityContent.rightSidebar.corporate.title : communityContent.rightSidebar.student.title}</h3>
               <p>
                 {isCorporate
-                  ? 'Offer a workshop, mock interview, or skills review.'
-                  : 'Weekly live sessions with senior analysts.'}
+                  ? communityContent.rightSidebar.corporate.description
+                  : communityContent.rightSidebar.student.description}
               </p>
               <div className="mentor-item">
                 <div className="avatar-frame">
@@ -589,26 +542,30 @@ const Community = () => {
                 variant="ghost"
                 size="small"
                 onClick={() => handleAction({
-                  title: isCorporate ? 'Propose Session' : 'Join Session',
-                  description: 'Session preferences are ready for backend integration.'
+                  title: isCorporate
+                    ? communityContent.rightSidebar.corporate.actionTitle
+                    : communityContent.rightSidebar.student.actionTitle,
+                  description: isCorporate
+                    ? communityContent.rightSidebar.corporate.actionDescription
+                    : communityContent.rightSidebar.student.actionDescription
                 })}
               >
-                {isCorporate ? 'Propose Session' : 'Join Session'}
+                {isCorporate ? communityContent.rightSidebar.corporate.button : communityContent.rightSidebar.student.button}
               </Button>
             </Card>
 
             <Card padding="large" className="sidebar-card">
-              <h3>{overview.challenge?.title || (isCorporate ? 'Top Learner Highlights' : 'Challenge of the Week')}</h3>
+              <h3>{overview.challenge?.title || (isCorporate ? communityContent.rightSidebar.challenge.corporateTitle : communityContent.rightSidebar.challenge.studentTitle)}</h3>
               <p>{overview.challenge?.description}</p>
               <Button
                 variant="secondary"
                 size="small"
                 onClick={() => handleAction({
-                  title: isCorporate ? 'View Learners' : 'Start Challenge',
-                  description: 'Challenge details are ready for backend integration.'
+                  title: isCorporate ? communityContent.rightSidebar.challenge.corporateButton : communityContent.rightSidebar.challenge.studentButton,
+                  description: communityContent.rightSidebar.challenge.actionDescription
                 })}
               >
-                {isCorporate ? 'View Learners' : 'Start Challenge'}
+                {isCorporate ? communityContent.rightSidebar.challenge.corporateButton : communityContent.rightSidebar.challenge.studentButton}
               </Button>
             </Card>
 
@@ -626,7 +583,7 @@ const Community = () => {
                   size="small"
                   onClick={() => setActionPanel(null)}
                 >
-                  Clear action
+                  {communityContent.actions.clearLabel}
                 </Button>
               </Card>
             )}

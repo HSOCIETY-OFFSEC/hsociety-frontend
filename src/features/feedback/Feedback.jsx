@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FiAlertTriangle, FiCheckCircle, FiClock, FiMessageSquare, FiShield, FiStar } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
 import Card from '../../shared/components/ui/Card';
@@ -6,6 +6,7 @@ import Button from '../../shared/components/ui/Button';
 import { validateForm } from '../../core/validation/input.validator';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { submitFeedback } from './feedback.service';
+import feedbackContent from '../../data/feedback.json';
 import '../../styles/features/feedback.css';
 
 /**
@@ -27,6 +28,14 @@ const Feedback = () => {
   const { user } = useAuth();
 
   useScrollReveal();
+
+  const iconMap = useMemo(() => ({
+    FiAlertTriangle,
+    FiStar,
+    FiShield,
+    FiMessageSquare,
+    FiClock
+  }), []);
   
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -43,12 +52,10 @@ const Feedback = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submittedReceipt, setSubmittedReceipt] = useState(null);
 
-  const feedbackTypes = [
-    { value: 'bug', label: 'Bug Report', icon: FiAlertTriangle, description: 'Report a technical issue' },
-    { value: 'feature', label: 'Feature Request', icon: FiStar, description: 'Suggest a new feature' },
-    { value: 'security', label: 'Security Concern', icon: FiShield, description: 'Report a security issue' },
-    { value: 'general', label: 'General Feedback', icon: FiMessageSquare, description: 'Share your thoughts' }
-  ];
+  const feedbackTypes = feedbackContent.types.map((item) => ({
+    ...item,
+    icon: iconMap[item.icon]
+  }));
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -130,7 +137,7 @@ const Feedback = () => {
       // Scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      setFormErrors({ submit: 'Failed to submit feedback. Please try again.' });
+      setFormErrors({ submit: feedbackContent.errors.submit });
       console.error('Feedback submission failed:', error);
     } finally {
       setLoading(false);
@@ -142,10 +149,8 @@ const Feedback = () => {
         <div className="feedback-wrapper">
           {/* Header */}
           <div className="feedback-header reveal-on-scroll">
-            <h1 className="feedback-title">We Value Your Feedback</h1>
-            <p className="feedback-subtitle">
-              Help us improve by sharing your thoughts, reporting issues, or suggesting features
-            </p>
+            <h1 className="feedback-title">{feedbackContent.header.title}</h1>
+            <p className="feedback-subtitle">{feedbackContent.header.subtitle}</p>
           </div>
 
           {/* Success Message */}
@@ -155,20 +160,18 @@ const Feedback = () => {
                 <div className="success-icon-large">
                   <FiCheckCircle size={40} />
                 </div>
-                <h2>Thank You!</h2>
-                <p>
-                  Your feedback has been submitted successfully. We appreciate you taking the time
-                  to help us improve HSOCIETY.
-                </p>
+                <h2>{feedbackContent.success.title}</h2>
+                <p>{feedbackContent.success.message}</p>
                 {submittedReceipt?.contact?.allowContact && (
                   <p className="contact-note">
-                    We'll reach out to you at <strong>{submittedReceipt?.contact?.email || formData.email}</strong> if we need
+                    {feedbackContent.success.contactNote}{' '}
+                    <strong>{submittedReceipt?.contact?.email || formData.email}</strong> if we need
                     additional information.
                   </p>
                 )}
                 {submittedReceipt?.ticketNumber && (
                   <p className="contact-note">
-                    Ticket: <strong>{submittedReceipt.ticketNumber}</strong>
+                    {feedbackContent.success.ticketLabel} <strong>{submittedReceipt.ticketNumber}</strong>
                   </p>
                 )}
                 <Button
@@ -179,7 +182,7 @@ const Feedback = () => {
                   }}
                   style={{ marginTop: '1rem' }}
                 >
-                  Submit Another Feedback
+                  {feedbackContent.success.button}
                 </Button>
               </div>
             </Card>
@@ -201,7 +204,7 @@ const Feedback = () => {
               <form onSubmit={handleSubmit} className="feedback-form">
                 {/* Feedback Type Selection */}
                 <div className="form-section">
-                  <h3 className="section-label">What type of feedback?</h3>
+                  <h3 className="section-label">{feedbackContent.form.typeLabel}</h3>
                   <div className="type-grid">
                     {feedbackTypes.map(type => (
                       <label
@@ -232,17 +235,17 @@ const Feedback = () => {
 
                 {/* Contact Information */}
                 <div className="form-section">
-                  <h3 className="section-label">Contact Information</h3>
+                  <h3 className="section-label">{feedbackContent.form.contactLabel}</h3>
                   <div className="form-row">
                     <div className="form-group">
-                      <label htmlFor="name">Name *</label>
+                      <label htmlFor="name">{feedbackContent.form.nameLabel}</label>
                       <input
                         type="text"
                         id="name"
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        placeholder="Your name"
+                        placeholder={feedbackContent.form.namePlaceholder}
                         className={`form-input ${formErrors.name ? 'error' : ''}`}
                         required
                       />
@@ -252,14 +255,14 @@ const Feedback = () => {
                     </div>
 
                     <div className="form-group">
-                      <label htmlFor="email">Email *</label>
+                      <label htmlFor="email">{feedbackContent.form.emailLabel}</label>
                       <input
                         type="email"
                         id="email"
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        placeholder="your@email.com"
+                        placeholder={feedbackContent.form.emailPlaceholder}
                         className={`form-input ${formErrors.email ? 'error' : ''}`}
                         required
                       />
@@ -272,17 +275,17 @@ const Feedback = () => {
 
                 {/* Feedback Details */}
                 <div className="form-section">
-                  <h3 className="section-label">Feedback Details</h3>
+                  <h3 className="section-label">{feedbackContent.form.detailsLabel}</h3>
                   
                   <div className="form-group">
-                    <label htmlFor="subject">Subject *</label>
+                    <label htmlFor="subject">{feedbackContent.form.subjectLabel}</label>
                     <input
                       type="text"
                       id="subject"
                       name="subject"
                       value={formData.subject}
                       onChange={handleInputChange}
-                      placeholder="Brief summary of your feedback"
+                      placeholder={feedbackContent.form.subjectPlaceholder}
                       className={`form-input ${formErrors.subject ? 'error' : ''}`}
                       required
                     />
@@ -292,13 +295,13 @@ const Feedback = () => {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="message">Message *</label>
+                    <label htmlFor="message">{feedbackContent.form.messageLabel}</label>
                     <textarea
                       id="message"
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
-                      placeholder="Please provide detailed information about your feedback..."
+                      placeholder={feedbackContent.form.messagePlaceholder}
                       rows={8}
                       className={`form-input ${formErrors.message ? 'error' : ''}`}
                       required
@@ -307,12 +310,12 @@ const Feedback = () => {
                       <span className="field-error">{formErrors.message}</span>
                     )}
                     <span className="field-hint">
-                      Minimum 20 characters • {formData.message.length} / 20
+                      {feedbackContent.form.detailsHintPrefix} • {formData.message.length} / 20
                     </span>
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="priority">Priority Level</label>
+                    <label htmlFor="priority">{feedbackContent.form.priorityLabel}</label>
                     <select
                       id="priority"
                       name="priority"
@@ -320,10 +323,9 @@ const Feedback = () => {
                       onChange={handleInputChange}
                       className="form-input"
                     >
-                      <option value="low">Low - Minor issue or suggestion</option>
-                      <option value="normal">Normal - Standard feedback</option>
-                      <option value="high">High - Important issue</option>
-                      <option value="critical">Critical - Urgent security concern</option>
+                      {feedbackContent.form.priorityOptions.map((option) => (
+                        <option key={option.value} value={option.value}>{option.label}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -340,7 +342,7 @@ const Feedback = () => {
                         className="checkbox-input"
                       />
                       <span className="checkbox-text">
-                        Allow us to contact you about this feedback
+                        {feedbackContent.form.allowContact}
                       </span>
                     </label>
                   </div>
@@ -356,7 +358,7 @@ const Feedback = () => {
                     loading={loading}
                     disabled={loading}
                   >
-                    {loading ? 'Submitting...' : 'Submit Feedback'}
+                    {loading ? feedbackContent.form.submitting : feedbackContent.form.submit}
                   </Button>
                 </div>
               </form>
@@ -365,50 +367,27 @@ const Feedback = () => {
 
           {/* Info Cards */}
           <div className="info-section reveal-on-scroll">
-            <Card padding="medium" shadow="small">
-              <div className="info-card">
-                <span className="info-icon">
-                  <FiShield size={18} />
-                </span>
-                <div>
-                  <h4>Privacy & Security</h4>
-                  <p>
-                    Your feedback is confidential and will only be used to improve our services.
-                    For security concerns, we respond within 24 hours.
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            <Card padding="medium" shadow="small">
-              <div className="info-card">
-                <span className="info-icon">
-                  <FiClock size={18} />
-                </span>
-                <div>
-                  <h4>Response Time</h4>
-                  <p>
-                    We typically respond to feedback within 2-3 business days. Critical security
-                    issues are prioritized and addressed immediately.
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            <Card padding="medium" shadow="small">
-              <div className="info-card">
-                <span className="info-icon">
-                  <FiMessageSquare size={18} />
-                </span>
-                <div>
-                  <h4>Alternative Contact</h4>
-                  <p>
-                    Prefer email? You can also reach us directly at{' '}
-                    <a href="mailto:feedback@hsociety.com">feedback@hsociety.com</a>
-                  </p>
-                </div>
-              </div>
-            </Card>
+            {feedbackContent.infoCards.map((card) => {
+              const InfoIcon = iconMap[card.icon];
+              return (
+                <Card key={card.title} padding="medium" shadow="small">
+                  <div className="info-card">
+                    <span className="info-icon">
+                      {InfoIcon && <InfoIcon size={18} />}
+                    </span>
+                    <div>
+                      <h4>{card.title}</h4>
+                      <p>
+                        {card.description}{' '}
+                        {card.link && (
+                          <a href={`mailto:${card.link}`}>{card.link}</a>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
     </div>

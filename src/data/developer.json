@@ -1,0 +1,34 @@
+{
+  "hero": {
+    "kicker": "Meet the Developer",
+    "title": "Building secure, fast, and focused products.",
+    "subtitle": "This page highlights the engineering approach that powers HSOCIETY OffSec.",
+    "button": "Reach Out",
+    "route": "/feedback"
+  },
+  "stack": {
+    "title": "Technical Stack",
+    "subtitle": "Modern, composable tooling built for speed and clarity.",
+    "items": [
+      { "title": "Web", "detail": "React, Vite, Tailwind-free custom CSS", "icon": "FiCode" },
+      { "title": "Ops", "detail": "Docker, GitHub Actions, IaC pipelines", "icon": "FiTool" },
+      { "title": "Security", "detail": "OWASP, MITRE, offensive validation", "icon": "FiShield" }
+    ]
+  },
+  "contributions": {
+    "title": "Engineering Contributions",
+    "subtitle": "Focused on reliability, automation, and security outcomes.",
+    "items": [
+      { "title": "Tooling", "detail": "Automated recon and evidence capture.", "icon": "FiCpu" },
+      { "title": "Reporting", "detail": "Templates that translate technical risk.", "icon": "FiGitBranch" },
+      { "title": "Community", "detail": "Mentorship and open-source contributions.", "icon": "FiGithub" }
+    ]
+  },
+  "cta": {
+    "title": "Want to collaborate?",
+    "subtitle": "We welcome partnerships, talks, and research contributions.",
+    "button": "Start a Conversation",
+    "route": "/feedback",
+    "contact": "ops@hsociety.africa"
+  }
+}

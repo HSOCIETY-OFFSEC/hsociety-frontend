@@ -1,0 +1,9 @@
+{
+  "code": "404",
+  "title": "Page Not Found",
+  "message": "The page you requested does not exist or has moved.",
+  "actions": [
+    { "label": "Go Home", "route": "/", "variant": "primary", "icon": "FiCompass" },
+    { "label": "Go Back", "route": "back", "variant": "ghost", "icon": "FiArrowLeft" }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "hero": {
+    "kicker": "Mission",
+    "title": "Build offensive security talent and deliver verified penetration testing.",
+    "description": "HSOCIETY is a cycle-based offensive security platform. We train beginners, integrate them into a professional community, deploy them into supervised real-world engagements, and convert them into trusted penetration testers."
+  },
+  "cycle": {
+    "title": "The 6-Phase Security Cycle",
+    "subtitle": "A structured loop that produces both skilled professionals and real security outcomes.",
+    "phases": [
+      "Paid Training Entry",
+      "Community Integration",
+      "Supervised Real Engagements",
+      "Skill Refresh & Specialization",
+      "Professional Pentesting",
+      "Cycle Repeats"
+    ]
+  },
+  "experience": {
+    "title": "Why Real Experience Matters",
+    "subtitle": "Professional penetration testing is learned by executing real work under supervision, not by theory alone.",
+    "cards": [
+      {
+        "title": "Operational exposure",
+        "description": "Students learn scoping, evidence collection, and reporting in real environments."
+      },
+      {
+        "title": "Accountable delivery",
+        "description": "Every engagement is reviewed by senior operators before findings are delivered."
+      },
+      {
+        "title": "Career credibility",
+        "description": "Graduates build professional portfolios tied to verified, supervised outcomes."
+      }
+    ]
+  },
+  "principle": {
+    "title": "Execution Over Marketing",
+    "subtitle": "We measure impact by outcomes: real skills built, real vulnerabilities found, real fixes delivered.",
+    "bullets": [
+      "Every engagement is scoped, authorized, and documented with reproducible evidence.",
+      "Training is tied directly to live operational work, not abstract labs.",
+      "Companies receive clear reporting, remediation guidance, and optional retesting."
+    ]
+  }
+}

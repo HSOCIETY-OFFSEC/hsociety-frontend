@@ -1,30 +1,36 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FiCheckCircle, FiClipboard, FiSearch, FiShield, FiTarget, FiTool } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
+import methodologyContent from '../../data/methodology.json';
 import '../../styles/features/methodology.css';
 
 const Methodology = () => {
   useScrollReveal();
 
-  const phases = [
-    { title: 'Scoping', icon: FiClipboard, detail: 'Define assets, risks, and constraints.' },
-    { title: 'Recon', icon: FiSearch, detail: 'Enumerate external and internal attack surface.' },
-    { title: 'Exploitation', icon: FiTarget, detail: 'Validate real-world impact safely.' },
-    { title: 'Hardening', icon: FiShield, detail: 'Prioritize fixes and verify remediation.' },
-    { title: 'Tooling', icon: FiTool, detail: 'Custom tooling and automated evidence capture.' },
-    { title: 'Reporting', icon: FiCheckCircle, detail: 'Board-ready narratives and technical proof.' }
-  ];
+  const iconMap = useMemo(() => ({
+    FiClipboard,
+    FiSearch,
+    FiTarget,
+    FiShield,
+    FiTool,
+    FiCheckCircle
+  }), []);
+
+  const phases = methodologyContent.phases.map((phase) => ({
+    ...phase,
+    icon: iconMap[phase.icon]
+  }));
 
   return (
     <div className="methodology-page">
         <header className="methodology-hero reveal-on-scroll">
-          <h1>Testing Methodology</h1>
-          <p>Repeatable, evidence-driven engagement flow aligned to OWASP and PTES.</p>
+          <h1>{methodologyContent.hero.title}</h1>
+          <p>{methodologyContent.hero.subtitle}</p>
           <div className="methodology-meta">
-            <div className="meta-chip">Scope in 48h</div>
-            <div className="meta-chip">Evidence-backed findings</div>
-            <div className="meta-chip">Retest included</div>
+            {methodologyContent.hero.chips.map((chip) => (
+              <div key={chip} className="meta-chip">{chip}</div>
+            ))}
           </div>
         </header>
 

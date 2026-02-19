@@ -1,0 +1,64 @@
+{
+  "header": {
+    "title": "We Value Your Feedback",
+    "subtitle": "Help us improve by sharing your thoughts, reporting issues, or suggesting features"
+  },
+  "types": [
+    { "value": "bug", "label": "Bug Report", "description": "Report a technical issue", "icon": "FiAlertTriangle" },
+    { "value": "feature", "label": "Feature Request", "description": "Suggest a new feature", "icon": "FiStar" },
+    { "value": "security", "label": "Security Concern", "description": "Report a security issue", "icon": "FiShield" },
+    { "value": "general", "label": "General Feedback", "description": "Share your thoughts", "icon": "FiMessageSquare" }
+  ],
+  "success": {
+    "title": "Thank You!",
+    "message": "Your feedback has been submitted successfully. We appreciate you taking the time to help us improve HSOCIETY.",
+    "contactNote": "We'll reach out to you at",
+    "ticketLabel": "Ticket:",
+    "button": "Submit Another Feedback"
+  },
+  "form": {
+    "typeLabel": "What type of feedback?",
+    "contactLabel": "Contact Information",
+    "detailsLabel": "Feedback Details",
+    "nameLabel": "Name *",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email *",
+    "emailPlaceholder": "your@email.com",
+    "subjectLabel": "Subject *",
+    "subjectPlaceholder": "Brief summary of your feedback",
+    "messageLabel": "Message *",
+    "messagePlaceholder": "Please provide detailed information about your feedback...",
+    "priorityLabel": "Priority Level",
+    "priorityOptions": [
+      { "value": "low", "label": "Low - Minor issue or suggestion" },
+      { "value": "normal", "label": "Normal - Standard feedback" },
+      { "value": "high", "label": "High - Important issue" },
+      { "value": "critical", "label": "Critical - Urgent security concern" }
+    ],
+    "allowContact": "Allow us to contact you about this feedback",
+    "submit": "Submit Feedback",
+    "submitting": "Submitting...",
+    "detailsHintPrefix": "Minimum 20 characters"
+  },
+  "errors": {
+    "submit": "Failed to submit feedback. Please try again."
+  },
+  "infoCards": [
+    {
+      "title": "Privacy & Security",
+      "description": "Your feedback is confidential and will only be used to improve our services. For security concerns, we respond within 24 hours.",
+      "icon": "FiShield"
+    },
+    {
+      "title": "Response Time",
+      "description": "We typically respond to feedback within 2-3 business days. Critical security issues are prioritized and addressed immediately.",
+      "icon": "FiClock"
+    },
+    {
+      "title": "Alternative Contact",
+      "description": "Prefer email? You can also reach us directly at",
+      "link": "feedback@hsociety.com",
+      "icon": "FiMessageSquare"
+    }
+  ]
+}

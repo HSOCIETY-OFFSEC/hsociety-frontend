@@ -1,0 +1,161 @@
+{
+  "hero": {
+    "kicker": "HSOCIETY Community",
+    "title": "Where future defenders meet.",
+    "subtitle": "Ask questions, share wins, and build your cybersecurity path with peers and mentors.",
+    "cta": {
+      "student": {
+        "title": "Start a Study Group",
+        "subtitle": "Find peers for weekly practice and accountability."
+      },
+      "corporate": {
+        "title": "Host an Office Hour",
+        "subtitle": "Support junior talent with live Q&A and review sessions."
+      }
+    }
+  },
+  "stats": {
+    "learnersLabel": "learners",
+    "questionsLabel": "questions",
+    "answeredLabel": "answered"
+  },
+  "sidebar": {
+    "channelsTitle": "Channels",
+    "student": {
+      "title": "Student Starter Pack",
+      "description": "Guided paths, beginner labs, and weekly milestones.",
+      "actions": [
+        {
+          "label": "Learning Roadmaps",
+          "icon": "FiBookOpen",
+          "actionTitle": "Learning Roadmaps",
+          "actionDescription": "Preview curated roadmaps for your track."
+        },
+        {
+          "label": "Beginner Labs",
+          "icon": "FiShield",
+          "actionTitle": "Beginner Labs",
+          "actionDescription": "Choose a starter lab to run next."
+        },
+        {
+          "label": "Find Study Buddy",
+          "icon": "FiUsers",
+          "actionTitle": "Find Study Buddy",
+          "actionDescription": "Set your availability and topic focus."
+        }
+      ]
+    },
+    "corporate": {
+      "title": "Corporate Corner",
+      "description": "Share internship openings, sponsor labs, and offer mentorship.",
+      "actions": [
+        {
+          "label": "Post Internships",
+          "icon": "FiBriefcase",
+          "actionTitle": "Post Internships",
+          "actionDescription": "Draft an internship listing for the community."
+        },
+        {
+          "label": "Sponsor Lab Time",
+          "icon": "FiShield",
+          "actionTitle": "Sponsor Lab Time",
+          "actionDescription": "Outline lab sponsorship details and availability."
+        },
+        {
+          "label": "Mentor Circle",
+          "icon": "FiUsers",
+          "actionTitle": "Mentor Circle",
+          "actionDescription": "Create a mentor circle session outline."
+        }
+      ]
+    },
+    "trendingTagsTitle": "Trending Tags"
+  },
+  "composer": {
+    "studentPlaceholder": "Ask a question or share a win...",
+    "corporatePlaceholder": "Share an internship, office hours, or security insight...",
+    "postLabel": "Post",
+    "postingLabel": "Posting...",
+    "tools": [
+      {
+        "key": "media",
+        "label": "Media",
+        "icon": "FiImage",
+        "panelTitle": "Attach media",
+        "panelDescription": "Upload screenshots or diagrams to support your post.",
+        "actionTitle": "Media upload",
+        "actionDescription": "Prepared for backend integration.",
+        "actionLabel": "Select files"
+      },
+      {
+        "key": "labs",
+        "label": "Lab Logs",
+        "icon": "FiShield",
+        "panelTitle": "Add lab log",
+        "panelDescription": "Capture lab environment, tools used, and results.",
+        "actionTitle": "Lab log entry",
+        "actionDescription": "Prepared for backend integration.",
+        "actionLabel": "Add entry"
+      }
+    ]
+  },
+  "tabs": [
+    { "key": "popular", "label": "Popular", "icon": "FiTrendingUp" },
+    { "key": "new", "label": "New", "icon": "FiPlus" },
+    { "key": "saved", "label": "Saved", "icon": "FiBookmark" },
+    { "key": "filters", "label": "Filters", "icon": "FiFilter" }
+  ],
+  "filters": {
+    "title": "Feed filters",
+    "options": [
+      { "key": "questions", "label": "Questions" },
+      { "key": "wins", "label": "Wins" },
+      { "key": "labs", "label": "Lab logs" },
+      { "key": "mentorship", "label": "Mentorship" }
+    ],
+    "saveLabel": "Save filters",
+    "savedTitle": "Filters saved",
+    "savedDescription": "Your feed preferences are ready for backend integration."
+  },
+  "activeFilters": {
+    "channelPrefix": "Channel:",
+    "tagPrefix": "Tag:"
+  },
+  "actions": {
+    "clearLabel": "Clear action",
+    "replyQueuedTitle": "Reply queued",
+    "replyQueuedDescription": "Your response is ready for backend integration."
+  },
+  "feed": {
+    "loading": "Loading community feed...",
+    "empty": "No posts yet for this view. Check back soon or start a conversation.",
+    "errorFallback": "Failed to load community data."
+  },
+  "reply": {
+    "placeholder": "Write a quick reply...",
+    "buttonLabel": "Send reply"
+  },
+  "rightSidebar": {
+    "student": {
+      "title": "Mentor Office Hours",
+      "description": "Weekly live sessions with senior analysts.",
+      "button": "Join Session",
+      "actionTitle": "Join Session",
+      "actionDescription": "Session preferences are ready for backend integration."
+    },
+    "corporate": {
+      "title": "Sponsor a Session",
+      "description": "Offer a workshop, mock interview, or skills review.",
+      "button": "Propose Session",
+      "actionTitle": "Propose Session",
+      "actionDescription": "Session preferences are ready for backend integration."
+    },
+    "challenge": {
+      "studentTitle": "Challenge of the Week",
+      "corporateTitle": "Top Learner Highlights",
+      "studentButton": "Start Challenge",
+      "corporateButton": "View Learners",
+      "actionDescription": "Challenge details are ready for backend integration."
+    }
+  }
+}

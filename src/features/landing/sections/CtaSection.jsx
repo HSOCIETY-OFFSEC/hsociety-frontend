@@ -4,8 +4,9 @@ import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
 import '../../../styles/features/landing/cta.css';
 
-const CtaSection = () => {
+const CtaSection = ({ content }) => {
   const navigate = useNavigate();
+  const { left, right } = content;
 
   return (
     <section className="cta-section reveal-on-scroll">
@@ -13,32 +14,28 @@ const CtaSection = () => {
         <Card padding="large" className="cta-card">
           <div className="cta-content">
             <div className="cta-panel">
-              <h2 className="cta-title">Start Your Offensive Security Journey</h2>
-              <p className="cta-description">
-                Join the paid training cycle and move from beginner to professional penetration tester.
-              </p>
+              <h2 className="cta-title">{left.title}</h2>
+              <p className="cta-description">{left.description}</p>
               <Button
-                variant="primary"
+                variant={left.variant}
                 size="large"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate(left.route)}
               >
-                Register
+                {left.button}
               </Button>
             </div>
 
             <div className="cta-divider" aria-hidden="true" />
 
             <div className="cta-panel">
-              <h2 className="cta-title">Secure Your Organization</h2>
-              <p className="cta-description">
-                Request a supervised penetration test with clear reporting and remediation guidance.
-              </p>
+              <h2 className="cta-title">{right.title}</h2>
+              <p className="cta-description">{right.description}</p>
               <Button
-                variant="ghost"
+                variant={right.variant}
                 size="large"
-                onClick={() => navigate('/corporate/pentest')}
+                onClick={() => navigate(right.route)}
               >
-                Request Pentest
+                {right.button}
               </Button>
             </div>
           </div>
