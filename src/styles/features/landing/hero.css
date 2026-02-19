@@ -298,6 +298,7 @@
     justify-self: center;
     max-width: 640px;
     width: 100%;
+    margin: 0 auto;
   }
 }
 
@@ -338,6 +339,7 @@
   position: relative;
   max-width: 560px;
   justify-self: end;
+  margin: 0 auto;
 }
 
 .hero-card {
@@ -349,6 +351,8 @@
   animation: float 8s ease-in-out infinite;
   padding: 2.25rem !important;
   min-height: 420px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .hero-card::after {
@@ -429,11 +433,14 @@
 }
 
 .terminal-line {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.6rem;
+  row-gap: 0.2rem;
+  align-items: start;
+  margin-bottom: 0.6rem;
   color: #a7f3d0;
+  word-break: break-word;
 }
 
 .terminal-line.command {
@@ -445,6 +452,7 @@
   color: #34d399;
   font-weight: 700;
   text-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+  white-space: nowrap;
 }
 
 .terminal-line.success {
@@ -462,6 +470,7 @@
 .icon {
   font-size: 1rem;
   display: inline-flex;
+  align-self: start;
 }
 
 .terminal-arrow {
@@ -504,4 +513,42 @@
 @keyframes blink {
   0%, 50% { opacity: 1; }
   51%, 100% { opacity: 0; }
+}
+
+@media (max-width: 680px) {
+  .hero-container {
+    justify-items: center;
+  }
+
+  .hero-visual {
+    width: 100%;
+    max-width: 100%;
+    justify-self: center;
+    margin: 0 auto;
+  }
+
+  .hero-card {
+    padding: 1.5rem !important;
+    min-height: auto;
+  }
+
+  .terminal {
+    min-height: 260px;
+  }
+
+  .terminal-body {
+    padding: 1.25rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .terminal-line {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.35rem 0.5rem;
+  }
+
+  .terminal-line .prompt {
+    min-width: 100%;
+  }
 }
