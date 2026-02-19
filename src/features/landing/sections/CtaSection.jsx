@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../../../shared/components/common/Logo';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
 import '../../../styles/features/landing/cta.css';
@@ -13,28 +12,33 @@ const CtaSection = () => {
       <div className="cta-container">
         <Card padding="large" className="cta-card">
           <div className="cta-content">
-            <div className="cta-logo">
-              <Logo size="large" />
-            </div>
-            <h2 className="cta-title">Ready to Secure Your Systems?</h2>
-            <p className="cta-description">
-              Get started with a free consultation and discover your security vulnerabilities
-              before attackers do.
-            </p>
-            <div className="cta-buttons">
-              <Button 
-                variant="primary" 
+            <div className="cta-panel">
+              <h2 className="cta-title">Start Your Offensive Security Journey</h2>
+              <p className="cta-description">
+                Join the paid training cycle and move from beginner to professional penetration tester.
+              </p>
+              <Button
+                variant="primary"
                 size="large"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/register')}
+              >
+                Register
+              </Button>
+            </div>
+
+            <div className="cta-divider" aria-hidden="true" />
+
+            <div className="cta-panel">
+              <h2 className="cta-title">Secure Your Organization</h2>
+              <p className="cta-description">
+                Request a supervised penetration test with clear reporting and remediation guidance.
+              </p>
+              <Button
+                variant="ghost"
+                size="large"
+                onClick={() => navigate('/corporate/pentest')}
               >
                 Request Pentest
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="large"
-                onClick={() => navigate('/feedback')}
-              >
-                Contact Us
               </Button>
             </div>
           </div>
