@@ -30,7 +30,8 @@ export const NAV_LINKS = {
     pentester: [
       { path: '/pentester', label: 'Assignments', icon: FiShield },
       { path: '/pentest', label: 'Pentest', icon: FiBarChart2 },
-      { path: '/community', label: 'Community', icon: FiMessageSquare }
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     admin: [
       { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
@@ -43,7 +44,8 @@ export const NAV_LINKS = {
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
-      { path: '/about', label: 'About Us', icon: FiUsers }
+      { path: '/about', label: 'About Us', icon: FiUsers },
+      { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },
 
@@ -80,7 +82,8 @@ export const NAV_LINKS = {
       { path: '/pentester', label: 'Assignments', icon: FiBarChart2 },
       { path: '/pentest', label: 'Pentest', icon: FiShield },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
+      { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     admin: [
       { path: '/', label: 'Home', icon: FiShield },
@@ -94,7 +97,8 @@ export const NAV_LINKS = {
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
-      { path: '/about', label: 'About Us', icon: FiUsers }
+      { path: '/about', label: 'About Us', icon: FiUsers },
+      { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },
 

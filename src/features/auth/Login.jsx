@@ -17,7 +17,7 @@ import '../../styles/core/auth.css';
  * 2. If 2FA enabled, prompt for code
  */
 
-const Login = () => {
+const Login = ({ mode = 'default' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
@@ -30,6 +30,19 @@ const Login = () => {
   const [pendingUser, setPendingUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const resolveRouteForRole = (role) => {
+    if (role === 'admin') return '/mr-robot';
+    if (role === 'pentester') return '/pentester';
+    if (role === 'student') return '/student-dashboard';
+    return '/corporate-dashboard';
+  };
+
+  const enforceRole = (role) => {
+    if (mode === 'pentester' && role !== 'pentester') {
+      throw new Error('This login is for pentesters only.');
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -49,9 +62,10 @@ const Login = () => {
         return;
       }
 
-      await login(response.user, response.token, response.refreshToken);
       const role = response.user?.role;
-      navigate(role === 'student' ? '/student-dashboard' : '/corporate-dashboard');
+      enforceRole(role);
+      await login(response.user, response.token, response.refreshToken);
+      navigate(resolveRouteForRole(role));
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {
@@ -76,9 +90,10 @@ const Login = () => {
       }
 
       const user = response.user || pendingUser;
-      await login(user, response.token, response.refreshToken);
       const role = user?.role;
-      navigate(role === 'student' ? '/student-dashboard' : '/corporate-dashboard');
+      enforceRole(role);
+      await login(user, response.token, response.refreshToken);
+      navigate(resolveRouteForRole(role));
     } catch (err) {
       setError(err.message || 'Invalid 2FA code. Please try again.');
     } finally {
@@ -104,7 +119,7 @@ const Login = () => {
 
         <Card className="auth-card">
           <div className="auth-header">
-            <h1>Secure Login</h1>
+            <h1>{mode === 'pentester' ? 'Pentester Login' : 'Secure Login'}</h1>
             <p className="auth-subtitle">
               {step === 1 && 'Enter your email and password'}
               {step === 2 && 'Enter your 2FA authentication code'}

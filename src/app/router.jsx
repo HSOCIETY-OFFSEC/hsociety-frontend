@@ -25,6 +25,7 @@ const StudentLearning = React.lazy(() => import('../features/student/StudentLear
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
 const AdminDashboard = React.lazy(() => import('../features/admin/AdminDashboard'));
 const PentesterDashboard = React.lazy(() => import('../features/pentester/PentesterDashboard'));
+const AccountSettings = React.lazy(() => import('../features/account/AccountSettings'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
@@ -52,7 +53,7 @@ const RoleRoute = ({ children, allowedRoles }) => {
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (!role) return <PageLoader message="Loading your profile..." durationMs={0} />;
   if (!allowedRoles.includes(role)) {
-    if (allowedRoles.includes('corporate') && role !== 'student') {
+    if (allowedRoles.includes('corporate') && (role === 'pentester' || role === 'client')) {
       return children;
     }
     if (role === 'admin') return <Navigate to="/mr-robot" replace />;
@@ -99,6 +100,14 @@ const AppRouter = () => {
               element={
                 <PublicRoute>
                   <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="pentester-login"
+              element={
+                <PublicRoute>
+                  <Login mode="pentester" />
                 </PublicRoute>
               }
             />
@@ -179,6 +188,14 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentLesson />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester', 'corporate']}>
+                  <AccountSettings />
                 </RoleRoute>
               }
             />
