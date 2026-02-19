@@ -9,4 +9,5 @@ export { default as TrustSection } from './TrustSection';
 export { default as PathwaysSection } from './PathwaysSection';
 export { default as CycleSection } from './CycleSection';
 export { default as CtaSection } from './CtaSection';
+export { default as FaqSection } from './FaqSection';
 export { default as FooterSection } from './FooterSection';

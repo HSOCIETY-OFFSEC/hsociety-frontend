@@ -12,6 +12,7 @@ import {
   PathwaysSection,
   CycleSection,
   CtaSection,
+  FaqSection,
   FooterSection
 } from './sections';
 import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa';
@@ -43,13 +44,6 @@ const Landing = () => {
     }
   ];
 
-  // Stats
-  const stats = [
-    { value: '500+', label: 'Vulnerabilities Found' },
-    { value: '50+', label: 'Clients Secured' },
-    { value: '100%', label: 'Success Rate' },
-    { value: '24/7', label: 'Support Available' }
-  ];
 
   // Why HSOCIETY: UVP-focused
   const whyChooseUs = [
@@ -106,12 +100,6 @@ const Landing = () => {
     { title: 'Proof-Driven Reporting', description: 'Every finding includes evidence, impact, and fix-ready steps.' }
   ];
 
-  // Pathways
-  const pathways = [
-    { title: 'Learners', description: 'Structured modules, challenges, and mentorship.', cta: 'Start Learning', path: '/student-dashboard' },
-    { title: 'Corporate Teams', description: 'Offensive security services tailored to real-world risk.', cta: 'Request Pentest', path: '/login' }
-  ];
-
   // Cycle steps
   const cycleSteps = [
     { title: 'Recon', description: 'Map assets, attack surface, and risk hotspots.' },
@@ -124,16 +112,17 @@ const Landing = () => {
   return (
     <div className="landing-page">
       <HeroSection />
-      <StatsSection stats={stats} />
+      <StatsSection />
       <ServicesSection services={services} />
       <WhySection items={whyChooseUs} />
       <ProcessSection steps={engagementSteps} />
       <DeliverablesSection deliverables={deliverables} />
       <ModulesSection modules={learningModules} />
       <TrustSection signals={trustSignals} />
-      <PathwaysSection pathways={pathways} />
+      <PathwaysSection />
       <CycleSection steps={cycleSteps} />
       <CtaSection />
+      <FaqSection />
       <FooterSection />
     </div>
   );
