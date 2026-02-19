@@ -12,8 +12,6 @@ import {
 } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
-import brandImageBlack from '../../../assets/brand-images/brand-image-black.png';
-import brandImageWhite from '../../../assets/brand-images/brand-image-white.png';
 import '../../../styles/features/landing/hero.css';
 
 const HeroSection = ({ content }) => {
@@ -48,32 +46,17 @@ const HeroSection = ({ content }) => {
           </div>
 
           <div className="hero-cta">
-            <Card padding="medium" className="hero-cta-card">
-              <div className="hero-cta-media">
-                <img src={brandImageBlack} alt="" loading="lazy" />
-              </div>
+            {ctas.map((cta, index) => (
               <Button
-                variant={ctas[0]?.variant}
+                key={cta.label}
+                variant={cta.variant}
                 size="large"
-                onClick={() => navigate(ctas[0]?.route)}
+                onClick={() => navigate(cta.route)}
               >
-                {ctas[0]?.label}
-                <FiArrowUpRight size={18} />
+                {cta.label}
+                {index === 0 ? <FiArrowUpRight size={18} /> : <FiArrowRight size={18} />}
               </Button>
-            </Card>
-            <Card padding="medium" className="hero-cta-card">
-              <div className="hero-cta-media light">
-                <img src={brandImageWhite} alt="" loading="lazy" />
-              </div>
-              <Button
-                variant={ctas[1]?.variant}
-                size="large"
-                onClick={() => navigate(ctas[1]?.route)}
-              >
-                {ctas[1]?.label}
-                <FiArrowRight size={18} />
-              </Button>
-            </Card>
+            ))}
           </div>
 
           <div className="hero-proof">
