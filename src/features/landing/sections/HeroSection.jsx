@@ -29,32 +29,30 @@ const HeroSection = () => {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="badge-dot"></span>
-            Zero-Trust Offensive Operations
+            Offensive Security Training + Delivery
           </div>
           
           <h1 className="hero-title">
-            <span>REAL HACKING.</span>
-            <br />
-            <span className="hero-title-accent">REAL SECURITY </span>
+            Build Real Offensive Security Talent. Deliver Real Penetration Testing.
           </h1>
           
           <p className="hero-description">
-            Professional penetration testing and security audits that go beyond compliance.
-            We find vulnerabilities before the bad actors do.
+            HSOCIETY is a cycle-based cybersecurity platform that trains beginners, integrates them into a community,
+            deploys them into supervised real-world engagements, and converts them into professional penetration testers.
           </p>
 
           <div className="hero-highlights">
             <div className="hero-highlight">
               <FiCheckCircle size={16} />
-              <span>Executive-ready reporting in 7-14 days</span>
+              <span>Paid training designed for complete beginners</span>
             </div>
             <div className="hero-highlight">
               <FiShield size={16} />
-              <span>Risk reduction mapped to CVSS and MITRE</span>
+              <span>Supervised real-world engagements with reporting</span>
             </div>
             <div className="hero-highlight">
               <FiZap size={16} />
-              <span>Critical findings escalated within 24 hours</span>
+              <span>Professional pathway from student to pentester</span>
             </div>
           </div>
 
@@ -62,17 +60,17 @@ const HeroSection = () => {
             <Button 
               variant="primary" 
               size="large"
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/register')}
             >
-              Request Pentest
+              Start Learning Offensive Security
               <FiArrowUpRight size={18} />
             </Button>
             <Button 
               variant="secondary" 
               size="large"
-              onClick={() => navigate('/feedback')}
+              onClick={() => navigate('/corporate/pentest')}
             >
-              Learn More
+              Request a Penetration Test
               <FiArrowRight size={18} />
             </Button>
           </div>
@@ -97,19 +95,19 @@ const HeroSection = () => {
               <span className="trust-icon">
                 <FiShield size={18} />
               </span>
-              <span className="trust-text">ISO 27001 Compliant</span>
+              <span className="trust-text">Two clear paths: Students + Companies</span>
             </div>
             <div className="trust-item">
               <span className="trust-icon">
                 <FiCheckCircle size={18} />
               </span>
-              <span className="trust-text">OWASP Certified</span>
+              <span className="trust-text">Supervised by senior offensive operators</span>
             </div>
             <div className="trust-item">
               <span className="trust-icon">
                 <FiLock size={18} />
               </span>
-              <span className="trust-text">100% Confidential</span>
+              <span className="trust-text">Engagements delivered with verified evidence</span>
             </div>
           </div>
         </div>
