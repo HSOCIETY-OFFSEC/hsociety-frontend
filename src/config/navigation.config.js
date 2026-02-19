@@ -16,6 +16,7 @@ import {
   FiLayers,
   FiTerminal
 } from 'react-icons/fi';
+import { FiCpu } from 'react-icons/fi';
 
 export const NAV_LINKS = {
   /** Authenticated workspace nav (sidebar) */
@@ -24,6 +25,16 @@ export const NAV_LINKS = {
       { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
       { path: '/pentest', label: 'Pentest', icon: FiShield },
       { path: '/audits', label: 'Audits', icon: FiFileText },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+    ],
+    pentester: [
+      { path: '/pentester', label: 'Assignments', icon: FiShield },
+      { path: '/pentest', label: 'Pentest', icon: FiBarChart2 },
+      { path: '/community', label: 'Community', icon: FiMessageSquare }
+    ],
+    admin: [
+      { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
     ],
     student: [
@@ -64,6 +75,19 @@ export const NAV_LINKS = {
       { path: '/team', label: 'Meet the Team', icon: FiUsers },
       { path: '/developer', label: 'Meet the Developer', icon: FiCode }
     ],
+    pentester: [
+      { path: '/', label: 'Home', icon: FiShield },
+      { path: '/pentester', label: 'Assignments', icon: FiBarChart2 },
+      { path: '/pentest', label: 'Pentest', icon: FiShield },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+    ],
+    admin: [
+      { path: '/', label: 'Home', icon: FiShield },
+      { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+    ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
@@ -92,7 +116,10 @@ export const dedupeLinks = (links) =>
     return acc;
   }, []);
 
-const normalizeRole = (role) => (role === 'client' ? 'corporate' : role);
+const normalizeRole = (role) => {
+  if (role === 'client') return 'corporate';
+  return role;
+};
 
 /** Get mobile nav links based on auth state and role */
 export const getMobileLinks = (isAuthenticated, role) => {

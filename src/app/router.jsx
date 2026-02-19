@@ -23,6 +23,8 @@ const Community = React.lazy(() => import('../features/community/Community'));
 const StudentDashboard = React.lazy(() => import('../features/student/StudentDashboard'));
 const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
+const AdminDashboard = React.lazy(() => import('../features/admin/AdminDashboard'));
+const PentesterDashboard = React.lazy(() => import('../features/pentester/PentesterDashboard'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
@@ -53,6 +55,8 @@ const RoleRoute = ({ children, allowedRoles }) => {
     if (allowedRoles.includes('corporate') && role !== 'student') {
       return children;
     }
+    if (role === 'admin') return <Navigate to="/mr-robot" replace />;
+    if (role === 'pentester') return <Navigate to="/pentester" replace />;
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
   }
   return children;
@@ -66,6 +70,8 @@ const PublicRoute = ({ children }) => {
   if (isLoading) return <PageLoader message="Preparing your workspace..." durationMs={0} />;
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   if (isAuthenticated) {
+    if (role === 'admin') return <Navigate to="/mr-robot" replace />;
+    if (role === 'pentester') return <Navigate to="/pentester" replace />;
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
   }
   return children;
@@ -111,7 +117,7 @@ const AppRouter = () => {
             <Route
               path="corporate-dashboard"
               element={
-                <RoleRoute allowedRoles={['corporate']}>
+                <RoleRoute allowedRoles={['corporate', 'pentester']}>
                   <Dashboard />
                 </RoleRoute>
               }
@@ -131,8 +137,24 @@ const AppRouter = () => {
             <Route
               path="pentest"
               element={
-                <RoleRoute allowedRoles={['corporate']}>
+                <RoleRoute allowedRoles={['corporate', 'pentester']}>
                   <Pentest />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentester"
+              element={
+                <RoleRoute allowedRoles={['pentester']}>
+                  <PentesterDashboard />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="mr-robot"
+              element={
+                <RoleRoute allowedRoles={['admin']}>
+                  <AdminDashboard />
                 </RoleRoute>
               }
             />

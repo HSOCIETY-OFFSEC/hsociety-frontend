@@ -17,6 +17,10 @@ const Sidebar = () => {
   const path = location.pathname || '';
   const routeRole = path.startsWith('/student')
     ? 'student'
+    : path.startsWith('/mr-robot')
+    ? 'admin'
+    : path.startsWith('/pentester')
+    ? 'pentester'
     : path.startsWith('/corporate-dashboard') || path.startsWith('/pentest') || path.startsWith('/audits')
     ? 'corporate'
     : null;
