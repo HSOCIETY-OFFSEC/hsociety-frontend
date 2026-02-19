@@ -33,3 +33,26 @@
   color: var(--text-secondary);
   line-height: 1.6;
 }
+
+.pathway-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+  display: grid;
+  gap: 0.5rem;
+  line-height: 1.6;
+}
+
+.pathway-list li {
+  margin: 0;
+}
+
+@media (max-width: 820px) {
+  .pathways-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pathway-card button {
+    width: 100%;
+  }
+}
