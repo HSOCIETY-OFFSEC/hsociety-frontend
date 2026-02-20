@@ -30,6 +30,12 @@ const StudentDashboard = () => {
   });
   const [error, setError] = useState('');
   const [bootcampSaving, setBootcampSaving] = useState(false);
+  const [showBootcampModal, setShowBootcampModal] = useState(false);
+  const [bootcampForm, setBootcampForm] = useState({
+    experienceLevel: 'beginner',
+    goal: '',
+    availability: '3-5',
+  });
 
   useEffect(() => {
     const loadStudentData = async () => {
@@ -67,12 +73,18 @@ const StudentDashboard = () => {
 
   const handleBootcampRegister = async () => {
     setBootcampSaving(true);
-    const response = await registerBootcamp();
+    const response = await registerBootcamp({
+      experienceLevel: bootcampForm.experienceLevel,
+      goal: bootcampForm.goal,
+      availability: bootcampForm.availability,
+    });
     if (response.success) {
       setData((prev) => ({
         ...prev,
         bootcampStatus: response.data?.bootcampStatus || 'enrolled'
       }));
+      setShowBootcampModal(false);
+      setBootcampForm((prev) => ({ ...prev, goal: '' }));
     } else {
       setError(response.error || 'Failed to register for bootcamp.');
     }
@@ -138,7 +150,7 @@ const StudentDashboard = () => {
                     <Button
                       variant="primary"
                       size="small"
-                      onClick={handleBootcampRegister}
+                      onClick={() => setShowBootcampModal(true)}
                       disabled={bootcampSaving || data.bootcampStatus !== 'not_enrolled'}
                     >
                       {data.bootcampStatus === 'completed'
@@ -255,6 +267,79 @@ const StudentDashboard = () => {
               </Card>
             </section>
         </>
+
+        {showBootcampModal && (
+          <div className="student-modal-backdrop" role="dialog" aria-modal="true">
+            <div className="student-modal-card">
+              <div className="student-modal-header">
+                <h3>Bootcamp Registration</h3>
+                <button
+                  type="button"
+                  className="student-modal-close"
+                  onClick={() => setShowBootcampModal(false)}
+                  aria-label="Close"
+                >
+                  ×
+                </button>
+              </div>
+              <p className="student-modal-subtitle">
+                Share a few details so we can place you in the right cohort.
+              </p>
+              <div className="student-modal-form">
+                <label className="student-modal-field">
+                  <span>Experience level</span>
+                  <select
+                    value={bootcampForm.experienceLevel}
+                    onChange={(e) =>
+                      setBootcampForm((prev) => ({ ...prev, experienceLevel: e.target.value }))
+                    }
+                  >
+                    <option value="beginner">Beginner</option>
+                    <option value="some">Some experience</option>
+                    <option value="advanced">Advanced</option>
+                  </select>
+                </label>
+                <label className="student-modal-field">
+                  <span>Weekly availability</span>
+                  <select
+                    value={bootcampForm.availability}
+                    onChange={(e) =>
+                      setBootcampForm((prev) => ({ ...prev, availability: e.target.value }))
+                    }
+                  >
+                    <option value="3-5">3-5 hours</option>
+                    <option value="6-10">6-10 hours</option>
+                    <option value="10+">10+ hours</option>
+                  </select>
+                </label>
+                <label className="student-modal-field">
+                  <span>Primary goal</span>
+                  <textarea
+                    rows="3"
+                    placeholder="What do you want to achieve in this bootcamp?"
+                    value={bootcampForm.goal}
+                    onChange={(e) =>
+                      setBootcampForm((prev) => ({ ...prev, goal: e.target.value }))
+                    }
+                  />
+                </label>
+              </div>
+              <div className="student-modal-actions">
+                <Button variant="ghost" size="small" onClick={() => setShowBootcampModal(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  size="small"
+                  onClick={handleBootcampRegister}
+                  disabled={bootcampSaving || !bootcampForm.goal.trim()}
+                >
+                  {bootcampSaving ? 'Registering...' : 'Submit Registration'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

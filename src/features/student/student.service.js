@@ -26,8 +26,9 @@ export const getStudentOverview = async () => {
   };
 };
 
-export const registerBootcamp = async () => {
-  const response = await apiClient.post(API_ENDPOINTS.STUDENT.BOOTCAMP, {});
+export const registerBootcamp = async (application = null) => {
+  const payload = application ? { application } : {};
+  const response = await apiClient.post(API_ENDPOINTS.STUDENT.BOOTCAMP, payload);
   if (response.success) {
     return { success: true, data: response.data };
   }
