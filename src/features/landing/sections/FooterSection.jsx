@@ -4,19 +4,17 @@ import {
   FiClipboard,
   FiCode,
   FiFileText,
-  FiGithub,
   FiGlobe,
   FiLayers,
-  FiLinkedin,
   FiMessageSquare,
   FiPhone,
   FiShield,
   FiTarget,
   FiTerminal,
-  FiTwitter,
   FiUsers,
   FiZap
 } from 'react-icons/fi';
+import { FaGithub, FaLinkedinIn, FaWhatsapp, FaXTwitter, FaYoutube } from 'react-icons/fa6';
 import Logo from '../../../shared/components/common/Logo';
 import '../../../styles/features/landing/footer.css';
 
@@ -160,14 +158,20 @@ const FooterSection = () => (
         <p>© 2026 HSOCIETY. All rights reserved.</p>
         <p>Execution over marketing. Proof over promises.</p>
         <div className="footer-socials">
-          <a href="#linkedin" aria-label="LinkedIn">
-            <FiLinkedin size={18} />
+          <a href="#youtube" aria-label="YouTube">
+            <FaYoutube size={18} />
           </a>
-          <a href="#twitter" aria-label="Twitter">
-            <FiTwitter size={18} />
+          <a href="#x" aria-label="X">
+            <FaXTwitter size={18} />
           </a>
           <a href="#github" aria-label="GitHub">
-            <FiGithub size={18} />
+            <FaGithub size={18} />
+          </a>
+          <a href="#linkedin" aria-label="LinkedIn">
+            <FaLinkedinIn size={18} />
+          </a>
+          <a href="#whatsapp" aria-label="WhatsApp">
+            <FaWhatsapp size={18} />
           </a>
         </div>
       </div>

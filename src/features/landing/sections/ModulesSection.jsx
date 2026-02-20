@@ -21,6 +21,11 @@ const ModulesSection = ({ modules = [] }) => (
       <div className="modules-grid">
         {modules.map((module) => (
           <Card key={module.title} padding="large" className="module-card reveal-on-scroll">
+            {module.image && (
+              <div className="module-media">
+                <img src={module.image} alt={module.title} loading="lazy" decoding="async" />
+              </div>
+            )}
             <div className="module-meta">
               <span className="module-level">{module.level}</span>
               <span className="module-duration">{module.duration}</span>

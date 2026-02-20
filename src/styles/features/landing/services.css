@@ -44,7 +44,7 @@
 .service-card {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.1rem;
   border: 1px solid var(--border-color);
   background: color-mix(in srgb, var(--card-bg) 92%, transparent);
   position: relative;
@@ -104,7 +104,7 @@
 .service-icon {
   width: 52px;
   height: 52px;
-  margin: 0 0 0.9rem;
+  margin: 0 0 0.4rem;
   border-radius: 14px;
   background: var(--primary-color-alpha);
   display: inline-flex;
@@ -123,27 +123,27 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.5rem;
+  margin: 0;
 }
 
 .service-description {
   font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin: 0 0 0.5rem;
+  margin: 0;
 }
 
 .service-features {
   list-style: none;
   padding: 0;
-  margin: 0 0 0.5rem;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .service-features li {
-  margin: 0 0 0.2rem;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 0.75rem;

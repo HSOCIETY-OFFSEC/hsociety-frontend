@@ -67,22 +67,26 @@
     {
       "icon": "FaGraduationCap",
       "title": "Hands-On Learning",
-      "description": "Beginner-friendly training with real-world exercises supervised by experts. Execution over theory."
+      "description": "Beginner-friendly training with real-world exercises supervised by experts. Execution over theory.",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80"
     },
     {
       "icon": "FaUsers",
       "title": "Community & Mentorship",
-      "description": "Join an active cybersecurity community where collaboration, guidance, and continuous skill growth are central."
+      "description": "Join an active cybersecurity community where collaboration, guidance, and continuous skill growth are central.",
+      "image": "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1000&q=80"
     },
     {
       "icon": "FaShieldAlt",
       "title": "Real Engagements",
-      "description": "Participate in supervised penetration tests for actual companies to gain professional experience and credibility."
+      "description": "Participate in supervised penetration tests for actual companies to gain professional experience and credibility.",
+      "image": "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=1000&q=80"
     },
     {
       "icon": "FaRocket",
       "title": "Career-Ready Pathway",
-      "description": "Move from learner to professional penetration tester with continuous skill refresh, specialization, and paid deployments."
+      "description": "Move from learner to professional penetration tester with continuous skill refresh, specialization, and paid deployments.",
+      "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981d?auto=format&fit=crop&w=1000&q=80"
     }
   ],
   "process": [
@@ -138,37 +142,44 @@
       "title": "Foundation: Hacker Mindset",
       "description": "Linux, networking, and tooling fundamentals with guided labs.",
       "level": "Starter",
-      "duration": "2 weeks"
+      "duration": "2 weeks",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80"
     },
     {
       "title": "Web App Exploitation",
       "description": "OWASP Top 10, API testing, and real bug chains in sandboxes.",
       "level": "Intermediate",
-      "duration": "4 weeks"
+      "duration": "4 weeks",
+      "image": "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=1000&q=80"
     },
     {
       "title": "Cloud & Infrastructure",
       "description": "IAM attacks, misconfigurations, and lateral movement drills.",
       "level": "Advanced",
-      "duration": "3 weeks"
+      "duration": "3 weeks",
+      "image": "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1000&q=80"
     },
     {
       "title": "Red Team Labs",
       "description": "End-to-end simulations with reporting and remediation.",
       "level": "Elite",
-      "duration": "4 weeks"
+      "duration": "4 weeks",
+      "image": "https://images.unsplash.com/photo-1555949963-aa79dcee981d?auto=format&fit=crop&w=1000&q=80"
     }
   ],
   "trust": [
     {
+      "icon": "FiShield",
       "title": "African-Centric Threat Modeling",
       "description": "We map regional attack patterns and compliance realities."
     },
     {
+      "icon": "FiCheckCircle",
       "title": "Affordable, High-Value Engagements",
       "description": "Premium expertise without the global-enterprise price tag."
     },
     {
+      "icon": "FiFileText",
       "title": "Proof-Driven Reporting",
       "description": "Every finding includes evidence, impact, and fix-ready steps."
     }

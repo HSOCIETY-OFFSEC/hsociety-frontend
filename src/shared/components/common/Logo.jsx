@@ -46,7 +46,7 @@ const Logo = ({
       width: 'auto'
     },
     xlarge: {
-      height: '96px',
+      height: '1000px',
       width: 'auto'
     }
   };

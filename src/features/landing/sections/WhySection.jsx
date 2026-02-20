@@ -19,6 +19,11 @@ const WhySection = ({ items = [] }) => (
       <div className="why-grid">
         {items.map((item) => (
           <div key={item.title} className="why-item reveal-on-scroll">
+            {item.image && (
+              <div className="why-media">
+                <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
+              </div>
+            )}
             <div className="why-icon">
               <item.icon size={28} />
             </div>

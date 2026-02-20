@@ -78,11 +78,12 @@ const HeroSection = ({ content }) => {
             ))}
           </div>
         </div>
+{/**====================================== */}
 
         <div className="hero-visual">
           <Logo size="xlarge" className="hero-logo-minimal" />
         </div>
-      </div>
+      </div>  
     </section>
   );
 };

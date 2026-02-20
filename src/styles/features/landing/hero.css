@@ -150,6 +150,7 @@
   width: fit-content;
   position: relative;
   overflow: hidden;
+  animation: badgeFloat 6s ease-in-out infinite;
 }
 
 .hero-badge::after {
@@ -177,7 +178,8 @@
   line-height: 1.1;
   color: var(--text-primary);
   margin: 0;
-  animation: fadeInUp 0.6s ease 0.1s backwards;
+  text-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+  animation: fadeInUp 0.6s ease 0.1s backwards, heroTitleGlow 6s ease-in-out infinite;
 }
 
 .hero-title-accent {
@@ -203,7 +205,7 @@
   color: var(--text-secondary);
   max-width: 540px;
   margin: 0;
-  animation: fadeInUp 0.6s ease 0.2s backwards;
+  animation: fadeInUp 0.6s ease 0.2s backwards, heroTextFloat 8s ease-in-out infinite;
 }
 
 .hero-highlights {
@@ -340,18 +342,39 @@
   max-width: 560px;
   justify-self: end;
   margin: 0 auto;
+  perspective: 1200px;
 }
 
 .hero-logo-minimal {
   width: 100%;
   display: flex;
   justify-content: center;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.hero-logo-minimal::before {
+  content: '';
+  position: absolute;
+  width: clamp(220px, 30vw, 420px);
+  height: clamp(220px, 30vw, 420px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.32), transparent 70%);
+  filter: blur(18px);
+  opacity: 0.7;
+  transform: translateZ(-40px);
+  animation: heroHalo 8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .hero-logo-minimal .logo-image {
-  height: clamp(140px, 22vw, 260px);
+  height: clamp(260px, 34vw, 440px);
   width: auto;
-  filter: drop-shadow(0 18px 35px rgba(2, 6, 23, 0.35));
+  filter: drop-shadow(0 30px 55px rgba(2, 6, 23, 0.45));
+  transform: perspective(900px) rotateY(-14deg) rotateX(8deg);
+  animation: heroLogoFloat 7s ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform, filter;
 }
 
 @media (max-width: 680px) {
@@ -367,6 +390,39 @@
   }
 
   .hero-logo-minimal .logo-image {
-    height: clamp(120px, 28vw, 200px);
+    height: clamp(210px, 55vw, 320px);
+    transform: perspective(700px) rotateY(-10deg) rotateX(6deg);
   }
+}
+
+@keyframes heroLogoFloat {
+  0%, 100% {
+    transform: perspective(900px) rotateY(-14deg) rotateX(8deg) translateY(0);
+  }
+  50% {
+    transform: perspective(900px) rotateY(-4deg) rotateX(12deg) translateY(-10px);
+  }
+}
+
+@keyframes heroTitleGlow {
+  0%, 100% {
+    text-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+  }
+  50% {
+    text-shadow: 0 22px 55px rgba(16, 185, 129, 0.35);
+  }
+}
+
+@keyframes heroTextFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes heroHalo {
+  0%, 100% { transform: translateZ(-40px) scale(0.98); opacity: 0.55; }
+  50% { transform: translateZ(-20px) scale(1.08); opacity: 0.9; }
 }

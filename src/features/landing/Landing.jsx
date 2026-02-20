@@ -17,8 +17,28 @@ import {
   FaqSection,
   FooterSection
 } from './sections';
-import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa';
-import { FiShield, FiFileText, FiTarget, FiClipboard, FiSearch, FiLayers, FiCheckCircle, FiTerminal, FiLock, FiMessageSquare } from 'react-icons/fi';
+
+import { 
+  FaGraduationCap, 
+  FaUsers, 
+  FaShieldAlt, 
+  FaRocket 
+} from 'react-icons/fa';
+
+
+import { 
+  FiShield,
+  FiFileText, 
+  FiTarget, 
+  FiClipboard, 
+  FiSearch, 
+  FiLayers, 
+  FiCheckCircle,
+  FiTerminal, 
+  FiLock, 
+  FiMessageSquare 
+} from 'react-icons/fi';
+
 import '../../styles/features/landing.css';
 
 const Landing = () => {
@@ -64,7 +84,10 @@ const Landing = () => {
 
   const learningModules = landingContent.modules;
 
-  const trustSignals = landingContent.trust;
+  const trustSignals = landingContent.trust.map((item) => ({
+    ...item,
+    icon: item.icon ? iconMap[item.icon] : null
+  }));
 
   const cycleSteps = landingContent.cycle;
 

@@ -64,6 +64,7 @@
   justify-content: center;
   align-items: center;
   min-height: 360px;
+  perspective: 1200px;
 }
 
 .cycle-ring {
@@ -84,6 +85,16 @@
   border: 1px dashed color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
+.cycle-ring::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  filter: blur(1px);
+  animation: orbitGlow 6s ease-in-out infinite;
+}
+
 .cycle-node {
   position: absolute;
   width: 96px;
@@ -99,7 +110,8 @@
   font-weight: 600;
   color: var(--text-primary);
   box-shadow: 0 12px 25px -20px rgba(15, 23, 42, 0.7);
-  animation: cyclePulse 3.5s ease-in-out infinite;
+  animation: cyclePulse 3.5s ease-in-out infinite, cycleNodeFloat 7s ease-in-out infinite;
+  transform-style: preserve-3d;
 }
 
 .cycle-node span {
@@ -112,6 +124,11 @@
 .cycle-node-3 { bottom: 40px; right: 0; }
 .cycle-node-4 { bottom: -20px; left: 112px; }
 .cycle-node-5 { top: 60px; left: -20px; }
+
+.cycle-node-2 { animation-delay: 0.4s, 0.8s; }
+.cycle-node-3 { animation-delay: 0.8s, 1.2s; }
+.cycle-node-4 { animation-delay: 1.2s, 1.6s; }
+.cycle-node-5 { animation-delay: 1.6s, 2s; }
 
 .cycle-list {
   display: flex;
@@ -126,6 +143,7 @@
   border-radius: 16px;
   border: 1px solid var(--border-color);
   background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .cycle-index {
@@ -150,6 +168,21 @@
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+.cycle-item:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+}
+
+@keyframes orbitGlow {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes cycleNodeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 @media (max-width: 980px) {

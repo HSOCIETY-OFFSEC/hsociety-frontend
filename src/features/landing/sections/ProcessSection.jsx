@@ -17,19 +17,21 @@ const ProcessSection = ({ steps = [] }) => (
         </p>
       </div>
 
-      <div className="process-grid">
-        {steps.map((step) => (
-          <Card key={step.title} padding="large" className="process-card reveal-on-scroll">
-            <div className="process-header">
-              <div className="process-icon">
-                <step.icon size={26} />
+      <div className="process-carousel">
+        <div className="process-grid">
+          {steps.map((step) => (
+            <Card key={step.title} padding="large" className="process-card reveal-on-scroll">
+              <div className="process-header">
+                <div className="process-icon">
+                  <step.icon size={26} />
+                </div>
+                <div className="process-meta">{step.meta}</div>
               </div>
-              <div className="process-meta">{step.meta}</div>
-            </div>
-            <h3 className="process-title">{step.title}</h3>
-            <p className="process-description">{step.description}</p>
-          </Card>
-        ))}
+              <h3 className="process-title">{step.title}</h3>
+              <p className="process-description">{step.description}</p>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   </section>
