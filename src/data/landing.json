@@ -10,12 +10,12 @@
     ],
     "ctas": [
       {
-        "label": "Start Learning Offensive Security",
+        "label": "Learn OffSec   ",
         "route": "/register",
         "variant": "primary"
       },
       {
-        "label": "Request a Penetration Test",
+        "label": "Request a Penetration Tests     ",
         "route": "/corporate/pentest",
         "variant": "secondary"
       }

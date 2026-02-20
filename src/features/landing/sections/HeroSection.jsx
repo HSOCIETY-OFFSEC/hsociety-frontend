@@ -64,7 +64,7 @@ const HeroSection = ({ content }) => {
               </div>
             ))}
           </div>
-
+ 
           <div className="trust-indicators">
             {trust.map((item, index) => (
               <div key={item} className="trust-item">
@@ -75,7 +75,7 @@ const HeroSection = ({ content }) => {
                 </span>
                 <span className="trust-text">{item}</span>
               </div>
-            ))}
+            ))} 
           </div>
         </div>
 {/**====================================== */}

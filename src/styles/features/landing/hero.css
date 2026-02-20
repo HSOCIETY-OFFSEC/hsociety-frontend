@@ -92,7 +92,7 @@
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.4fr;
   gap: 4rem;
   align-items: center;
   overflow: hidden;
@@ -339,7 +339,7 @@
 .hero-visual {
   animation: fadeInUp 0.8s ease 0.2s backwards;
   position: relative;
-  max-width: 560px;
+  max-width: none;
   justify-self: end;
   margin: 0 auto;
   perspective: 1200px;
@@ -368,8 +368,8 @@
 }
 
 .hero-logo-minimal .logo-image {
-  height: clamp(260px, 34vw, 440px);
-  width: auto;
+  height: auto;
+  width: clamp(420px, 60vw, 900px);
   filter: drop-shadow(0 30px 55px rgba(2, 6, 23, 0.45));
   transform: perspective(900px) rotateY(-14deg) rotateX(8deg);
   animation: heroLogoFloat 7s ease-in-out infinite;

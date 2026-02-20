@@ -32,24 +32,24 @@ const Logo = ({
     : '/hsociety-logo-white.png';
   
   // Size configurations
-  const sizeMap = {
-    small: {
-      height: '32px',
-      width: 'auto'
-    },
-    medium: {
-      height: '48px',
-      width: 'auto'
-    },
-    large: {
-      height: '64px',
-      width: 'auto'
-    },
-    xlarge: {
-      height: '1000px',
-      width: 'auto'
-    }
-  };
+ const sizeMap = {
+  small: {
+    height: '40px',
+    width: 'auto'
+  },
+  medium: {
+    height: '60px',
+    width: 'auto'
+  },
+  large: {
+    height: '90px',
+    width: 'auto'
+  },
+  xlarge: {
+    height: 'auto',
+    width: '100%'
+  }
+};
 
   const logoStyle = {
     ...sizeMap[size],
