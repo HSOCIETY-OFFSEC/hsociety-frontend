@@ -20,7 +20,16 @@ export const updateProfile = async (updates) => {
   return { success: false, error: response.error || 'Failed to update profile' };
 };
 
+export const updateAvatar = async (avatarUrl) => {
+  const response = await apiClient.put(API_ENDPOINTS.PROFILE.AVATAR, { avatarUrl });
+  if (response.success) {
+    return { success: true, data: response.data };
+  }
+  return { success: false, error: response.error || 'Failed to update avatar' };
+};
+
 export default {
   deleteAccount,
   updateProfile,
+  updateAvatar,
 };

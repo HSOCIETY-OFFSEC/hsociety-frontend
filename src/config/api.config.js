@@ -160,6 +160,11 @@ export const API_ENDPOINTS = {
     USERS: '/admin/users',
     REPORTS: '/admin/reports',
     SETTINGS: '/admin/settings'
+  },
+
+  // Public
+  PUBLIC: {
+    LANDING_STATS: '/public/landing-stats'
   }
 };
 

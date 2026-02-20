@@ -10,19 +10,14 @@ export const normalizeLearningPathItem = (item = {}) => ({
   progress: Number(item.progress || 0)
 });
 
-export const normalizeChallenge = (item = {}) => ({
+export const normalizeModuleOverview = (item = {}) => ({
   id: String(item.id || ''),
-  title: item.title || 'Untitled challenge',
-  level: item.level || 'Easy',
-  time: item.time || '',
-  icon: item.icon || 'target'
-});
-
-export const normalizeMentor = (item = {}) => ({
-  id: String(item.id || ''),
-  name: item.name || 'Mentor',
-  focus: item.focus || '',
-  status: item.status || 'Unavailable'
+  title: item.title || 'Untitled module',
+  roomsTotal: Number(item.roomsTotal || 0),
+  roomsCompleted: Number(item.roomsCompleted || 0),
+  ctf: item.ctf || '',
+  badge: item.badge || '',
+  progress: Number(item.progress || 0)
 });
 
 export const normalizeSnapshotItem = (item = {}) => ({
@@ -34,15 +29,13 @@ export const normalizeSnapshotItem = (item = {}) => ({
 
 export const normalizeStudentOverview = (overview = {}) => ({
   learningPath: (overview.learningPath || []).map(normalizeLearningPathItem),
-  challenges: (overview.challenges || []).map(normalizeChallenge),
-  mentors: (overview.mentors || []).map(normalizeMentor),
+  modules: (overview.modules || []).map(normalizeModuleOverview),
   snapshot: (overview.snapshot || []).map(normalizeSnapshotItem)
 });
 
 export default {
   normalizeLearningPathItem,
-  normalizeChallenge,
-  normalizeMentor,
+  normalizeModuleOverview,
   normalizeSnapshotItem,
   normalizeStudentOverview
 };

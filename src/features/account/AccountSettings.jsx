@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FiAlertTriangle, FiTrash2 } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
-import { deleteAccount, updateProfile } from './account.service';
+import { deleteAccount, updateAvatar, updateProfile } from './account.service';
 import '../../styles/features/account.css';
 
 const AccountSettings = () => {
@@ -12,10 +12,63 @@ const AccountSettings = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [profileSaving, setProfileSaving] = useState(false);
+  const [avatarSaving, setAvatarSaving] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState(user?.avatarUrl || '');
+  const [avatarFileName, setAvatarFileName] = useState('');
   const [profile, setProfile] = useState({
     name: user?.name || '',
     organization: user?.organization || '',
   });
+
+  const initials = useMemo(() => {
+    const name = profile.name || user?.email || 'User';
+    return name
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join('');
+  }, [profile.name, user?.email]);
+
+  const handleProfileSave = async () => {
+    setError('');
+    setProfileSaving(true);
+    const response = await updateProfile(profile);
+    if (response.success) {
+      updateUser(response.data);
+    } else {
+      setError(response.error || 'Failed to update profile');
+    }
+    setProfileSaving(false);
+  };
+
+  const handleAvatarFile = (file) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAvatarPreview(reader.result || '');
+      setAvatarFileName(file.name);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAvatarSave = async () => {
+    if (!avatarPreview) return;
+    setError('');
+    setAvatarSaving(true);
+    const response = await updateAvatar(avatarPreview);
+    if (response.success) {
+      updateUser(response.data);
+    } else {
+      setError(response.error || 'Failed to update avatar');
+    }
+    setAvatarSaving(false);
+  };
 
   const handleDelete = async () => {
     setError('');
@@ -41,7 +94,45 @@ const AccountSettings = () => {
         <p>Manage your profile and access.</p>
       </div>
 
+      {error && <div className="account-error">{error}</div>}
+
       <Card padding="large" className="account-card">
+        <div className="account-avatar">
+          <div className="account-avatar-preview">
+            {avatarPreview ? (
+              <img src={avatarPreview} alt="Profile avatar" />
+            ) : (
+              <span>{initials}</span>
+            )}
+          </div>
+          <div className="account-avatar-actions">
+            <div>
+              <span className="account-label">Profile Photo</span>
+              <p className="account-avatar-meta">
+                {avatarFileName || user?.avatarUrl ? 'Custom image selected.' : 'Upload a photo.'}
+              </p>
+            </div>
+            <div className="account-avatar-buttons">
+              <label className="account-upload">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleAvatarFile(e.target.files?.[0])}
+                />
+                Choose Image
+              </label>
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={handleAvatarSave}
+                disabled={avatarSaving || !avatarPreview}
+              >
+                {avatarSaving ? 'Saving...' : 'Save Photo'}
+              </Button>
+            </div>
+          </div>
+        </div>
+
         <div className="account-info">
           <div>
             <span className="account-label">Name</span>
@@ -91,8 +182,6 @@ const AccountSettings = () => {
           </div>
         </div>
 
-        {error && <div className="account-error">{error}</div>}
-
         <div className="account-delete-controls">
           <input
             className="account-input"
@@ -117,14 +206,3 @@ const AccountSettings = () => {
 };
 
 export default AccountSettings;
-  const handleProfileSave = async () => {
-    setError('');
-    setProfileSaving(true);
-    const response = await updateProfile(profile);
-    if (response.success) {
-      updateUser(response.data);
-    } else {
-      setError(response.error || 'Failed to update profile');
-    }
-    setProfileSaving(false);
-  };

@@ -199,6 +199,14 @@ const AppRouter = () => {
                 </RoleRoute>
               }
             />
+            <Route
+              path="community"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester', 'corporate', 'admin']}>
+                  <Community />
+                </RoleRoute>
+              }
+            />
           </Route>
 
           {/* Public pages - about, team, blog, etc. */}
@@ -207,7 +215,6 @@ const AppRouter = () => {
             <Route path="about" element={<About />} />
             <Route path="team" element={<Team />} />
             <Route path="developer" element={<Developer />} />
-            <Route path="community" element={<Community />} />
             <Route path="careers" element={<Careers />} />
             <Route path="methodology" element={<Methodology />} />
             <Route path="case-studies" element={<CaseStudies />} />

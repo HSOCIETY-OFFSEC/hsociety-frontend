@@ -6,7 +6,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import { getStudentCourse } from './course.service';
-import { deriveProfileFromCourseState } from '../profile/profile.service';
+import { deriveProfileFromCourseState, syncProfileProgress } from '../profile/profile.service';
 import { QuizPanel } from '../quizzes/QuizPanel';
 import '../../../styles/features/student-learning.css';
 
@@ -172,6 +172,16 @@ export const CourseLearning = () => {
     () => deriveProfileFromCourseState(course, progressState),
     [course, progressState]
   );
+
+  useEffect(() => {
+    if (!course) return;
+    syncProfileProgress({
+      courseId: course.id,
+      progressState,
+      derived: profileSnapshot,
+      updatedAt: new Date().toISOString(),
+    });
+  }, [course, progressState, profileSnapshot]);
 
   const handleContinueLearning = () => {
     if (typeof document === 'undefined') return;

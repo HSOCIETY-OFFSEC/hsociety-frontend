@@ -7,10 +7,7 @@ import {
   FiCode,
   FiCompass,
   FiFlag,
-  FiLock,
-  FiMessageSquare,
-  FiShield,
-  FiTarget
+  FiShield
 } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Card from '../../shared/components/ui/Card';
@@ -25,8 +22,7 @@ const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     learningPath: [],
-    challenges: [],
-    mentors: [],
+    modules: [],
     snapshot: []
   });
   const [error, setError] = useState('');
@@ -52,19 +48,12 @@ const StudentDashboard = () => {
   }, []);
 
   const iconMap = {
-    target: FiTarget,
     shield: FiShield,
     flag: FiFlag,
     check: FiCheckCircle,
     clock: FiClock,
-    lock: FiLock,
     code: FiCode
   };
-
-  const mentorAvatars = [
-    'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
-  ];
 
   return (
     <div className="student-page">
@@ -72,7 +61,7 @@ const StudentDashboard = () => {
           <div>
             <p className="student-kicker">Student Dashboard</p>
             <h1>Build skills with real-world practice.</h1>
-            <p>Track your learning path, complete labs, and connect with mentors.</p>
+            <p>Track your learning path, complete course rooms, and level up module by module.</p>
           </div>
           <Button
             variant="primary"
@@ -137,68 +126,24 @@ const StudentDashboard = () => {
 
                 <Card padding="large" className="student-card reveal-on-scroll">
                   <div className="student-card-header">
-                    <FiTarget size={20} />
-                    <h3>Practice Labs</h3>
+                    <FiShield size={20} />
+                    <h3>Modules & Rooms</h3>
                   </div>
-                  <div className="student-labs">
-                    {data.challenges.map((challenge) => {
-                      const Icon = iconMap[challenge.icon] || FiTarget;
-                      return (
-                        <div key={challenge.id} className="lab-item">
-                          <div className="lab-icon">
-                            <Icon size={20} />
-                          </div>
-                          <div>
-                            <h4>{challenge.title}</h4>
-                            <span>
-                              {challenge.level} · {challenge.time}
-                            </span>
-                          </div>
-                          <Button variant="ghost" size="small">
-                            Launch
-                          </Button>
+                  <div className="student-modules">
+                    {data.modules.map((module) => (
+                      <div key={module.id} className="module-item">
+                        <div className="module-info">
+                          <h4>{module.title}</h4>
+                          <span>
+                            {module.roomsCompleted}/{module.roomsTotal} rooms · {module.progress}%
+                          </span>
                         </div>
-                      );
-                    })}
-                  </div>
-                </Card>
-
-                <Card padding="large" className="student-card reveal-on-scroll">
-                  <div className="student-card-header">
-                    <FiMessageSquare size={20} />
-                    <h3>Mentor Support</h3>
-                  </div>
-                  <div className="mentor-list">
-                    {data.mentors.map((mentor, index) => (
-                      <div key={mentor.id} className="mentor-row">
-                        <div className="mentor-avatar">
-                          <img
-                            src={mentorAvatars[index % mentorAvatars.length]}
-                            alt={mentor.name}
-                            loading="lazy"
-                            onError={(e) => {
-                              e.currentTarget.style.opacity = '0';
-                            }}
-                          />
-                          <div className="mentor-fallback" aria-hidden="true"></div>
+                        <div className="module-progress">
+                          <div style={{ width: `${module.progress}%` }} />
                         </div>
-                        <div>
-                          <h4>{mentor.name}</h4>
-                          <span>{mentor.focus}</span>
-                        </div>
-                        <span
-                          className={`mentor-status ${
-                            mentor.status === 'Available' ? 'online' : 'busy'
-                          }`}
-                        >
-                          {mentor.status}
-                        </span>
                       </div>
                     ))}
                   </div>
-                  <Button variant="secondary" size="small">
-                    Book a Session
-                  </Button>
                 </Card>
               </div>
             )}

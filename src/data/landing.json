@@ -24,6 +24,11 @@
       "Two clear paths: Students + Companies",
       "Supervised by senior offensive operators",
       "Engagements delivered with verified evidence"
+    ],
+    "proof": [
+      { "key": "validatedFindings", "value": "0+", "label": "validated findings" },
+      { "key": "remediationSuccess", "value": "0%", "label": "remediation success" },
+      { "key": "countriesSupported", "value": "0", "label": "countries supported" }
     ]
   },
   "stats": {
@@ -31,11 +36,11 @@
     "title": "Measured training. Verified delivery.",
     "subtitle": "We track outcomes across training, community growth, and real-world security work.",
     "items": [
-      { "value": "0+", "label": "Learners Trained" },
-      { "value": "0+", "label": "Community Members" },
-      { "value": "0+", "label": "Engagements Completed" },
-      { "value": "0+", "label": "Vulnerabilities Identified" },
-      { "value": "0+", "label": "Paid Pentests Delivered" }
+      { "key": "learnersTrained", "value": "0+", "label": "Learners Trained" },
+      { "key": "communityMembers", "value": "0+", "label": "Community Members" },
+      { "key": "engagementsCompleted", "value": "0+", "label": "Engagements Completed" },
+      { "key": "vulnerabilitiesIdentified", "value": "0+", "label": "Vulnerabilities Identified" },
+      { "key": "paidPentestsDelivered", "value": "0+", "label": "Paid Pentests Delivered" }
     ]
   },
   "services": [

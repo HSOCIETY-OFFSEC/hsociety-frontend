@@ -43,8 +43,6 @@ export const NAV_LINKS = {
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
-      { path: '/about', label: 'About Us', icon: FiUsers },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },
@@ -55,7 +53,6 @@ export const NAV_LINKS = {
     { path: '/about', label: 'About Us', icon: FiUsers },
     { path: '/team', label: 'Meet the Team', icon: FiUsers },
     { path: '/developer', label: 'Meet the Developer', icon: FiCode },
-    { path: '/community', label: 'Community', icon: FiMessageSquare },
     { path: '/student-dashboard', label: 'Student Dashboard', icon: FiBookOpen },
     { path: '/careers', label: 'Careers', icon: FiBriefcase },
     { path: '/methodology', label: 'Methodology', icon: FiShield },
@@ -96,8 +93,6 @@ export const NAV_LINKS = {
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
-      { path: '/about', label: 'About Us', icon: FiUsers },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },
@@ -106,7 +101,6 @@ export const NAV_LINKS = {
   desktopPublic: [
     { path: '/', label: 'Home', icon: FiShield },
     { path: '/about', label: 'About', icon: FiUsers },
-    { path: '/community', label: 'Community', icon: FiMessageSquare },
     { path: '/careers', label: 'Careers', icon: FiBriefcase }
   ]
 };
