@@ -93,7 +93,8 @@ export const API_ENDPOINTS = {
     COURSES: '/student/courses',
     COURSE_PROGRESS: '/student/course/progress',
     QUIZ: '/student/quiz',
-    PROFILE: '/student/profile'
+    PROFILE: '/student/profile',
+    BOOTCAMP: '/student/bootcamp'
   },
 
   // Penetration Testing

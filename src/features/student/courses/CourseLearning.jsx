@@ -293,7 +293,7 @@ export const CourseLearning = () => {
       <Card padding="large" className="course-header-card reveal-on-scroll">
         <div className="course-header-main">
           <div>
-            <p className="course-kicker">Learning Path · Gamified</p>
+            <p className="course-kicker">Bootcamp Resources</p>
             <h2 className="course-title">
               {course.title}
               <span className="course-title-accent">
@@ -301,8 +301,8 @@ export const CourseLearning = () => {
               </span>
             </h2>
             <p className="course-subtitle">
-              Track your progress across modules, unlock CTFs, earn badges, and level up as a
-              hacker.
+              Follow the HSOCIETY bootcamp modules and track what you&apos;ve covered during live
+              sessions and self-study.
             </p>
           </div>
           <div className="course-mini-stats">
@@ -324,7 +324,7 @@ export const CourseLearning = () => {
         <div className="course-header-actions">
           <Button variant="primary" size="large" onClick={handleContinueLearning}>
             <FiCompass size={18} />
-            Continue Learning
+            Jump to Resources
           </Button>
         </div>
 
@@ -465,7 +465,7 @@ export const CourseLearning = () => {
                           }}
                         >
                           <FiPlayCircle size={14} />
-                          Open lesson
+                          View resources
                         </Button>
                         <Button
                           variant="ghost"
@@ -488,17 +488,17 @@ export const CourseLearning = () => {
                 <div className="course-ctf-main">
                   <span className={`course-ctf-pill ${allRoomsCompleted ? 'unlocked' : 'locked'}`}>
                     {allRoomsCompleted ? (
-                      <>
-                        <FiTarget size={14} />
-                        CTF unlocked
-                      </>
-                    ) : (
-                      <>
-                        <FiLock size={14} />
-                        Complete rooms to unlock CTF
-                      </>
-                    )}
-                  </span>
+                    <>
+                      <FiTarget size={14} />
+                      Practical exercise unlocked
+                    </>
+                  ) : (
+                    <>
+                      <FiLock size={14} />
+                      Complete rooms to unlock exercise
+                    </>
+                  )}
+                </span>
                   <h4>{module.ctf}</h4>
                 </div>
                 <Button
@@ -510,7 +510,7 @@ export const CourseLearning = () => {
                     handleCtfComplete(module.moduleId);
                   }}
                 >
-                  {moduleProgress.ctfCompleted ? 'CTF Completed' : 'Launch CTF'}
+                  {moduleProgress.ctfCompleted ? 'Exercise Completed' : 'Start Exercise'}
                 </Button>
               </div>
 
@@ -527,7 +527,7 @@ export const CourseLearning = () => {
                     handleQuizForModule(module.moduleId);
                   }}
                 >
-                  Module Quiz
+                  Module Check-in
                 </Button>
               </div>
             </Card>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiBookOpen, FiClock, FiPlayCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiBookOpen, FiClock } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
@@ -17,26 +17,6 @@ import '../../styles/features/student-lesson.css';
  * for a specific room within a module.
  */
 
-const LESSON_VIDEOS = {
-  1: 'https://www.youtube.com/embed/2Tofun0j0d0', // The Hacker Mindset
-  2: 'https://www.youtube.com/embed/9s8E0Q5p8vU', // How to Learn Hacking Effectively
-  3: 'https://www.youtube.com/embed/qiQR5rTSshw', // Networking Basics
-  4: 'https://www.youtube.com/embed/WwyKkFZ2s6M',
-  5: 'https://www.youtube.com/embed/3QhU9jd03a0',
-  6: 'https://www.youtube.com/embed/IVquJh3DXUA', // Linux Basics
-  7: 'https://www.youtube.com/embed/4RPtJ9UyHS0',
-  8: 'https://www.youtube.com/embed/6YbBmqUnoQM',
-  9: 'https://www.youtube.com/embed/KnQ5Ew9-IhU',
-  10: 'https://www.youtube.com/embed/zN8YNNHcaZc',
-  11: 'https://www.youtube.com/embed/lncZgZ2tyDU',
-  12: 'https://www.youtube.com/embed/ENrzD9HAZK4',
-  13: 'https://www.youtube.com/embed/HXV3zeQKqGY',
-  14: 'https://www.youtube.com/embed/Pb3opF6lC7E',
-  15: 'https://www.youtube.com/embed/gwQgSN8M4Pc',
-  16: 'https://www.youtube.com/embed/Pg5j7zGZmRk',
-  17: 'https://www.youtube.com/embed/2-btG-1fIrM',
-  18: 'https://www.youtube.com/embed/PsUhAh_N4rE'
-};
 
 const StudentLesson = () => {
   useScrollReveal();
@@ -143,8 +123,6 @@ const StudentLesson = () => {
     );
   }
 
-  const videoUrl = LESSON_VIDEOS[room.roomId] || LESSON_VIDEOS[module.moduleId] || null;
-
   return (
     <div className="student-page lesson-page">
       <header className="student-hero reveal-on-scroll">
@@ -167,71 +145,51 @@ const StudentLesson = () => {
             <div className="lesson-meta">
               <span className="lesson-meta-chip">
                 <FiBookOpen size={14} />
-                Theory + Practical Focus
+                Resource Pack
               </span>
               <span className="lesson-meta-chip subtle">
                 <FiClock size={14} />
-                ~25–40 minutes
+                Live session guided
               </span>
             </div>
 
-            {videoUrl && (
-              <div className="lesson-video-wrapper">
-                <div className="lesson-video-aspect">
-                  <iframe
-                    src={videoUrl}
-                    title={room.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-            )}
-
             <div className="lesson-content">
-              <h2>What you&apos;ll learn</h2>
+              <h2>What you&apos;ll cover</h2>
               <p>
-                This lesson is designed to give you a clear, practitioner-level understanding of{' '}
-                <strong>{room.title}</strong> within the context of{' '}
-                <strong>{module.title}</strong>. You&apos;ll move from high-level concepts to
-                concrete attacker and defender workflows, using the same mindset HSOCIETY uses in
-                real-world operations.
+                This room provides structured resources for <strong>{room.title}</strong> within{' '}
+                <strong>{module.title}</strong>. We use these materials during live cohort sessions
+                and guided workshops rather than teaching directly on the platform.
               </p>
 
-              <h3>Reading track</h3>
+              <h3>Resource track</h3>
               <ul>
                 <li>
-                  Core concepts and terminology you must know before attempting any labs or CTFs.
+                  Core reading list and notes shared by the instructors for this room.
                 </li>
                 <li>
-                  Realistic attacker workflows: how an adversary would apply <strong>{room.title}</strong> during a kill-chain.
+                  Practical walkthrough outlines used during live cohort calls.
                 </li>
                 <li>
-                  Defender perspective: signals, logs, and controls that detect or block these techniques.
+                  External references, tools, and cheat sheets for self-study.
                 </li>
               </ul>
 
-              <h3>Hands-on mental models</h3>
+              <h3>Hands-on prep</h3>
               <p>
-                As you read, pause to map every idea to a mental model. Ask yourself:
+                Before the live session, review the notes and prepare questions. During the call we
+                walk through the applied workflow together.
               </p>
               <ul>
-                <li>Where does this live in the OSI model / system stack?</li>
-                <li>What assumptions does the target system make that an attacker can break?</li>
-                <li>How would I explain this concept to a non-technical teammate?</li>
+                <li>Identify the tools and environments needed for the workshop.</li>
+                <li>What would be the attacker&apos;s first move here?</li>
+                <li>What evidence would a defender look for?</li>
               </ul>
 
-              <h3>Next steps</h3>
+              <h3>Next actions</h3>
               <p>
-                Once you&apos;ve watched the video and worked through the reading, go back to the{' '}
-                <strong>Learning Path</strong> and:
+                Mark this room as complete after your live session or once you finish the provided
+                resources.
               </p>
-              <ol>
-                <li>Mark this room as completed when you can explain the concepts without notes.</li>
-                <li>Attempt the quiz for this room.</li>
-                <li>Use the CTF attached to this module to pressure-test your understanding.</li>
-              </ol>
 
               <Button
                 variant="primary"
@@ -239,8 +197,7 @@ const StudentLesson = () => {
                 className="lesson-cta-button"
                 onClick={handleBack}
               >
-                <FiPlayCircle size={18} />
-                Back to modules &amp; quizzes
+                Back to modules &amp; resources
               </Button>
             </div>
           </Card>
@@ -251,4 +208,3 @@ const StudentLesson = () => {
 };
 
 export default StudentLesson;
-

@@ -26,6 +26,15 @@ export const getStudentOverview = async () => {
   };
 };
 
+export const registerBootcamp = async () => {
+  const response = await apiClient.post(API_ENDPOINTS.STUDENT.BOOTCAMP, {});
+  if (response.success) {
+    return { success: true, data: response.data };
+  }
+  return { success: false, error: response.error || 'Failed to register for bootcamp' };
+};
+
 export default {
-  getStudentOverview
+  getStudentOverview,
+  registerBootcamp
 };

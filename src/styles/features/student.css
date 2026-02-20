@@ -109,6 +109,46 @@
   margin-bottom: 1.5rem;
 }
 
+.bootcamp-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bootcamp-status p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.bootcamp-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  width: fit-content;
+}
+
+.bootcamp-pill.status-not_enrolled {
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.bootcamp-pill.status-enrolled {
+  color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.bootcamp-pill.status-completed {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.12);
+}
+
 .student-path {
   display: flex;
   flex-direction: column;
@@ -189,6 +229,34 @@
 .module-progress div {
   height: 100%;
   background: linear-gradient(90deg, #3b82f6, #10b981);
+}
+
+.community-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.community-stat {
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  text-align: center;
+}
+
+.community-stat .label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.community-stat strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.2rem;
 }
 
 .lab-item {
@@ -356,6 +424,10 @@
   }
 
   .snapshot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .community-stats {
     grid-template-columns: 1fr;
   }
 }

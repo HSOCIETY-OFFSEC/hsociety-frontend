@@ -7,13 +7,14 @@ import {
   FiCode,
   FiCompass,
   FiFlag,
+  FiMessageSquare,
   FiShield
 } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
-import { getStudentOverview } from './student.service';
+import { getStudentOverview, registerBootcamp } from './student.service';
 import '../../styles/features/student.css';
 
 const StudentDashboard = () => {
@@ -23,9 +24,12 @@ const StudentDashboard = () => {
   const [data, setData] = useState({
     learningPath: [],
     modules: [],
-    snapshot: []
+    snapshot: [],
+    bootcampStatus: 'not_enrolled',
+    communityStats: { questions: 0, answered: 0, channels: 0 }
   });
   const [error, setError] = useState('');
+  const [bootcampSaving, setBootcampSaving] = useState(false);
 
   useEffect(() => {
     const loadStudentData = async () => {
@@ -53,6 +57,26 @@ const StudentDashboard = () => {
     check: FiCheckCircle,
     clock: FiClock,
     code: FiCode
+  };
+
+  const bootcampLabels = {
+    not_enrolled: 'Not enrolled',
+    enrolled: 'Enrolled',
+    completed: 'Completed'
+  };
+
+  const handleBootcampRegister = async () => {
+    setBootcampSaving(true);
+    const response = await registerBootcamp();
+    if (response.success) {
+      setData((prev) => ({
+        ...prev,
+        bootcampStatus: response.data?.bootcampStatus || 'enrolled'
+      }));
+    } else {
+      setError(response.error || 'Failed to register for bootcamp.');
+    }
+    setBootcampSaving(false);
   };
 
   return (
@@ -101,6 +125,36 @@ const StudentDashboard = () => {
                 <Card padding="large" className="student-card reveal-on-scroll">
                   <div className="student-card-header">
                     <FiBookOpen size={20} />
+                    <h3>Bootcamp Status</h3>
+                  </div>
+                  <div className="bootcamp-status">
+                    <span className={`bootcamp-pill status-${data.bootcampStatus}`}>
+                      {bootcampLabels[data.bootcampStatus] || 'Not enrolled'}
+                    </span>
+                    <p>
+                      Enroll in the Ethical Hacking Bootcamp to access the HSOCIETY learning
+                      resources and join cohort sessions.
+                    </p>
+                    <Button
+                      variant="primary"
+                      size="small"
+                      onClick={handleBootcampRegister}
+                      disabled={bootcampSaving || data.bootcampStatus !== 'not_enrolled'}
+                    >
+                      {data.bootcampStatus === 'completed'
+                        ? 'Bootcamp Completed'
+                        : data.bootcampStatus === 'enrolled'
+                        ? 'Enrolled'
+                        : bootcampSaving
+                        ? 'Registering...'
+                        : 'Register for Bootcamp'}
+                    </Button>
+                  </div>
+                </Card>
+
+                <Card padding="large" className="student-card reveal-on-scroll">
+                  <div className="student-card-header">
+                    <FiBookOpen size={20} />
                     <h3>Learning Path Overview</h3>
                   </div>
                   <div className="student-path">
@@ -144,6 +198,30 @@ const StudentDashboard = () => {
                       </div>
                     ))}
                   </div>
+                </Card>
+
+                <Card padding="large" className="student-card reveal-on-scroll">
+                  <div className="student-card-header">
+                    <FiMessageSquare size={20} />
+                    <h3>Community Pulse</h3>
+                  </div>
+                  <div className="community-stats">
+                    <div className="community-stat">
+                      <span className="label">Questions</span>
+                      <strong>{data.communityStats.questions}</strong>
+                    </div>
+                    <div className="community-stat">
+                      <span className="label">Answered</span>
+                      <strong>{data.communityStats.answered}</strong>
+                    </div>
+                    <div className="community-stat">
+                      <span className="label">Channels</span>
+                      <strong>{data.communityStats.channels}</strong>
+                    </div>
+                  </div>
+                  <Button variant="secondary" size="small" onClick={() => navigate('/community')}>
+                    Open Community
+                  </Button>
                 </Card>
               </div>
             )}

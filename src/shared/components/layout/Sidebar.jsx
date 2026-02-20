@@ -26,6 +26,11 @@ const Sidebar = () => {
     : null;
   const resolvedRole = routeRole || role || 'student';
   const links = getSidebarLinks(true, resolvedRole);
+  const isStudent = resolvedRole === 'student';
+  const feedbackLink = links.find((link) => link.path === '/feedback');
+  const mainLinks = isStudent && feedbackLink
+    ? links.filter((link) => link.path !== '/feedback')
+    : links;
 
   const isActive = (path) => location.pathname === path;
 
@@ -43,7 +48,7 @@ const Sidebar = () => {
         <div>
           <p className="app-sidebar-section-title">Navigation</p>
           <div className="app-sidebar-links">
-            {links.map((link) => (
+            {mainLinks.map((link) => (
               <button
                 key={link.path}
                 type="button"
@@ -60,6 +65,18 @@ const Sidebar = () => {
         </div>
 
         <div className="app-sidebar-footer">
+          {isStudent && feedbackLink && (
+            <button
+              type="button"
+              className={`app-sidebar-link ${isActive(feedbackLink.path) ? 'active' : ''}`}
+              onClick={() => navigate(feedbackLink.path)}
+            >
+              <span style={{ display: 'inline-flex' }}>
+                <feedbackLink.icon size={18} />
+              </span>
+              <span>{feedbackLink.label}</span>
+            </button>
+          )}
           <ThemeToggle />
         </div>
       </div>

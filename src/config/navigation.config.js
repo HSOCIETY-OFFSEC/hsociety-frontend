@@ -43,6 +43,7 @@ export const NAV_LINKS = {
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },
@@ -93,6 +94,7 @@ export const NAV_LINKS = {
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },

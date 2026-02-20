@@ -57,7 +57,8 @@ const AdminDashboard = () => {
         name: user.name || '',
         email: user.email || '',
         organization: user.organization || '',
-        role: user.role || 'student'
+        role: user.role || 'student',
+        bootcampStatus: user.bootcampStatus || 'not_enrolled'
       }
     }));
   };
@@ -178,6 +179,7 @@ const AdminDashboard = () => {
             <span>Email</span>
             <span>Organization</span>
             <span>Role</span>
+            <span>Bootcamp</span>
             <span>Actions</span>
           </div>
 
@@ -235,6 +237,25 @@ const AdminDashboard = () => {
                   ) : (
                     <span className={`admin-role role-${user.role || 'student'}`}>
                       {user.role || 'student'}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <select
+                      className="admin-select"
+                      value={draft.bootcampStatus || 'not_enrolled'}
+                      onChange={(e) => updateDraft(user.id, 'bootcampStatus', e.target.value)}
+                    >
+                      {['not_enrolled', 'enrolled', 'completed'].map((status) => (
+                        <option key={status} value={status}>
+                          {status.replace('_', ' ')}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span className="admin-role">
+                      {(user.bootcampStatus || 'not_enrolled').replace('_', ' ')}
                     </span>
                   )}
                 </div>
