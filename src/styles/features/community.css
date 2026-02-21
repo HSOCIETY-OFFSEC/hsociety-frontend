@@ -75,11 +75,11 @@
   max-width: 1240px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 260px 1fr 280px;
+  grid-template-columns: 260px 1fr;
   gap: 1.5rem;
   padding: 0 1.5rem;
   align-items: start;
-  grid-template-areas: "left feed right";
+  grid-template-areas: "left feed";
 }
 
 .community-sidebar {
@@ -96,14 +96,10 @@
   grid-area: feed;
 }
 
-.community-right {
-  grid-area: right;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  position: sticky;
-  top: 96px;
-  align-self: start;
+.community-modules {
+  max-width: 1240px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.5rem;
 }
 
 .sidebar-card h3 {
@@ -893,12 +889,10 @@ Post button CSS
     grid-template-columns: 1fr;
     grid-template-areas:
       "feed"
-      "left"
-      "right";
+      "left";
   }
 
-  .community-sidebar,
-  .community-right {
+  .community-sidebar {
     display: grid;
     gap: 1.5rem;
     position: static;

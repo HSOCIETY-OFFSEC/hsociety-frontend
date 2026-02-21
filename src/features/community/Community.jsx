@@ -665,25 +665,25 @@ const Community = () => {
               <p className="chat-hint">Max 500 characters. Images under 200KB.</p>
             </Card>
           </main>
-
-          <aside className="community-right reveal-on-scroll">
-            <Card padding="large" className="sidebar-card">
-              <h3>{isCorporate ? communityContent.rightSidebar.corporate.title : communityContent.rightSidebar.student.title}</h3>
-              <p>
-                {isCorporate
-                  ? communityContent.rightSidebar.corporate.description
-                  : communityContent.rightSidebar.student.description}
-              </p>
-              <Button
-                variant="ghost"
-                size="small"
-                onClick={() => {}}
-              >
-                {isCorporate ? communityContent.rightSidebar.corporate.button : communityContent.rightSidebar.student.button}
-              </Button>
-            </Card>
-          </aside>
         </div>
+
+        <section className="community-modules reveal-on-scroll">
+          <Card padding="large" className="sidebar-card">
+            <h3>{isCorporate ? communityContent.rightSidebar.corporate.title : communityContent.rightSidebar.student.title}</h3>
+            <p>
+              {isCorporate
+                ? communityContent.rightSidebar.corporate.description
+                : communityContent.rightSidebar.student.description}
+            </p>
+            <Button
+              variant="ghost"
+              size="small"
+              onClick={() => {}}
+            >
+              {isCorporate ? communityContent.rightSidebar.corporate.button : communityContent.rightSidebar.student.button}
+            </Button>
+          </Card>
+        </section>
       </div>
   );
 };
