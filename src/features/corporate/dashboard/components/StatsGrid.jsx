@@ -6,26 +6,22 @@ const statConfig = [
   {
     key: 'activePentests',
     label: 'Active Pentests',
-    icon: FiShield,
-    color: '#10b981'
+    icon: FiShield
   },
   {
     key: 'completedAudits',
     label: 'Completed Audits',
-    icon: FiFileText,
-    color: '#3b82f6'
+    icon: FiFileText
   },
   {
     key: 'pendingReports',
     label: 'Pending Reports',
-    icon: FiFileText,
-    color: '#f59e0b'
+    icon: FiFileText
   },
   {
     key: 'vulnerabilitiesFound',
     label: 'Vulnerabilities Found',
-    icon: FiAlertTriangle,
-    color: '#ef4444'
+    icon: FiAlertTriangle
   }
 ];
 
@@ -34,16 +30,13 @@ const StatsGrid = ({ stats = {} }) => (
     {statConfig.map((stat) => (
       <Card
         key={stat.key}
-        hover3d={true}
-        padding="large"
-        shadow="medium"
+        hover3d={false}
+        padding="medium"
+        shadow="small"
         className="reveal-on-scroll dramatic-card"
       >
         <div className="stat-card">
-          <div
-            className="stat-icon"
-            style={{ background: `${stat.color}20`, color: stat.color }}
-          >
+          <div className="stat-icon">
             <stat.icon size={24} />
           </div>
           <div className="stat-content">

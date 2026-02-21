@@ -144,50 +144,51 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <div className="admin-hero">
-        <div>
-          <p className="admin-kicker">HSOCIETY CONTROL NODE</p>
-          <h1>Mr. Robot</h1>
-          <p className="admin-subtitle">
-            Manage users, promote pentesters, and keep the operation secure.
-          </p>
-        </div>
-        <div className="admin-badges">
-          <div className="admin-badge">
-            <FiUsers size={18} />
-            <div>
-              <span>Total Users</span>
-              <strong>{stats.total}</strong>
+      <div className="dashboard-shell">
+        <div className="admin-hero dashboard-shell-header">
+          <div>
+            <p className="admin-kicker dashboard-shell-kicker">HSOCIETY CONTROL NODE</p>
+            <h1 className="dashboard-shell-title">Mr. Robot</h1>
+            <p className="admin-subtitle dashboard-shell-subtitle">
+              Manage users, promote pentesters, and keep the operation secure.
+            </p>
+          </div>
+          <div className="admin-badges dashboard-shell-actions">
+            <div className="admin-badge">
+              <FiUsers size={18} />
+              <div>
+                <span>Total Users</span>
+                <strong>{stats.total}</strong>
+              </div>
+            </div>
+            <div className="admin-badge">
+              <FiShield size={18} />
+              <div>
+                <span>Pentesters</span>
+                <strong>{stats.pentester}</strong>
+              </div>
             </div>
           </div>
-          <div className="admin-badge">
-            <FiShield size={18} />
-            <div>
-              <span>Pentesters</span>
-              <strong>{stats.pentester}</strong>
-            </div>
-          </div>
         </div>
-      </div>
 
-      {error && <div className="admin-alert">{error}</div>}
+        {error && <div className="admin-alert">{error}</div>}
 
-      <Card className="admin-card" padding="large">
-        <div className="admin-table">
-          <div className="admin-row admin-row-header">
-            <span>Name</span>
-            <span>Email</span>
-            <span>Organization</span>
-            <span>Role</span>
-            <span>Bootcamp</span>
-            <span>Actions</span>
-          </div>
+        <Card className="admin-card" padding="medium">
+          <div className="admin-table">
+            <div className="admin-row admin-row-header">
+              <span>Name</span>
+              <span>Email</span>
+              <span>Organization</span>
+              <span>Role</span>
+              <span>Bootcamp</span>
+              <span>Actions</span>
+            </div>
 
-          {users.map((user) => {
-            const isEditing = editingId === user.id;
-            const draft = drafts[user.id] || {};
-            return (
-              <div key={user.id} className="admin-row">
+            {users.map((user) => {
+              const isEditing = editingId === user.id;
+              const draft = drafts[user.id] || {};
+              return (
+                <div key={user.id} className="admin-row">
                 <div>
                   {isEditing ? (
                     <input
@@ -285,28 +286,28 @@ const AdminDashboard = () => {
                 </div>
               </div>
             );
-          })}
-        </div>
-      </Card>
-
-      <Card className="admin-card" padding="large">
-        <div className="admin-section-header">
-          <h2>Pentest Management</h2>
-          <p>Assign pentesters and update engagement status.</p>
-        </div>
-        <div className="admin-table">
-          <div className="admin-row admin-row-header admin-row-pentests">
-            <span>Target</span>
-            <span>Status</span>
-            <span>Assigned To</span>
-            <span>Report</span>
-            <span>Actions</span>
+            })}
           </div>
-          {pentests.map((pentest) => {
-            const pentestId = pentest._id || pentest.id;
-            const draft = pentestEdits[pentestId] || {};
-            return (
-              <div key={pentestId} className="admin-row admin-row-pentests">
+        </Card>
+
+        <Card className="admin-card" padding="medium">
+          <div className="admin-section-header">
+            <h2>Pentest Management</h2>
+            <p>Assign pentesters and update engagement status.</p>
+          </div>
+          <div className="admin-table">
+            <div className="admin-row admin-row-header admin-row-pentests">
+              <span>Target</span>
+              <span>Status</span>
+              <span>Assigned To</span>
+              <span>Report</span>
+              <span>Actions</span>
+            </div>
+            {pentests.map((pentest) => {
+              const pentestId = pentest._id || pentest.id;
+              const draft = pentestEdits[pentestId] || {};
+              return (
+                <div key={pentestId} className="admin-row admin-row-pentests">
                 <span>{pentest.title || pentest.metadata?.target?.identifier || 'Untitled'}</span>
                 <select
                   className="admin-select"
@@ -358,9 +359,10 @@ const AdminDashboard = () => {
                 </div>
               </div>
             );
-          })}
-        </div>
-      </Card>
+            })}
+          </div>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -204,6 +204,59 @@
   padding: 1.5rem 1rem;
 }
 
+/* ========================================
+   DASHBOARD SHELL
+   ======================================== */
+
+.dashboard-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.dashboard-shell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-shell-title {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dashboard-shell-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.dashboard-shell-kicker {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-tertiary);
+}
+
+.dashboard-shell-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .workspace-topbar {
   position: sticky;
   top: 0;
@@ -389,6 +442,16 @@
   .workspace-profile-button {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .dashboard-shell-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-shell-actions {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
 

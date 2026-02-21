@@ -4,8 +4,7 @@
 
 .student-page {
   min-height: 100vh;
-  background: radial-gradient(900px 420px at 80% -10%, rgba(59, 130, 246, 0.18), transparent 60%),
-    var(--bg-primary);
+  background: var(--bg-primary);
   padding: 2rem 1.5rem 4rem;
 }
 
@@ -20,12 +19,14 @@
 }
 
 .student-hero {
-  max-width: 1200px;
-  margin: 0 auto 2.5rem;
-  padding: 2.5rem 2rem;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 64, 175, 0.75));
-  color: #ffffff;
+  width: 100%;
+  margin: 0 0 1.5rem;
+  padding: 1.5rem 1.5rem;
+  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -44,14 +45,14 @@
   display: inline-flex;
   padding: 0.25rem;
   border-radius: 999px;
-  background: color-mix(in srgb, rgba(15, 23, 42, 0.8) 95%, transparent);
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
 }
 
 .student-tab {
   border: none;
   background: transparent;
-  color: rgba(248, 250, 252, 0.7);
+  color: var(--text-secondary);
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -64,8 +65,8 @@
 }
 
 .student-tab.active {
-  background: rgba(15, 23, 42, 0.96);
-  color: #f9fafb;
+  background: var(--card-bg);
+  color: var(--text-primary);
 }
 
 .student-kicker {
@@ -73,26 +74,26 @@
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-tertiary);
 }
 
 .student-hero h1 {
   margin: 0 0 0.5rem;
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
 }
 
 .student-hero p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.85);
-  line-height: 1.7;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 .student-grid {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.75rem;
+  gap: 1rem;
   align-items: start;
   align-content: start;
 }
@@ -100,7 +101,7 @@
 .student-card {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   min-width: 0;
   min-height: 0;
   height: auto;
@@ -111,7 +112,7 @@
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -143,21 +144,21 @@
 }
 
 .bootcamp-pill.status-not_enrolled {
-  color: #f59e0b;
-  border-color: rgba(245, 158, 11, 0.5);
-  background: rgba(245, 158, 11, 0.12);
+  color: var(--text-tertiary);
+  border-color: var(--border-color);
+  background: var(--bg-tertiary);
 }
 
 .bootcamp-pill.status-enrolled {
-  color: #3b82f6;
-  border-color: rgba(59, 130, 246, 0.5);
-  background: rgba(59, 130, 246, 0.1);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+  background: var(--bg-tertiary);
 }
 
 .bootcamp-pill.status-completed {
-  color: #10b981;
-  border-color: rgba(16, 185, 129, 0.5);
-  background: rgba(16, 185, 129, 0.12);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--bg-tertiary);
 }
 
 .student-path {
@@ -183,21 +184,21 @@
   font-weight: 600;
 }
 
-.path-status.done { color: #10b981; }
-.path-status.in-progress { color: #3b82f6; }
-.path-status.next { color: #f59e0b; }
+.path-status.done { color: var(--text-primary); }
+.path-status.in-progress { color: var(--text-secondary); }
+.path-status.next { color: var(--text-tertiary); }
 
 .path-bar {
   width: 100%;
   height: 8px;
   border-radius: 999px;
-  background: var(--input-bg);
+  background: var(--bg-tertiary);
   overflow: hidden;
 }
 
 .path-bar div {
   height: 100%;
-  background: linear-gradient(90deg, #10b981, #3b82f6);
+  background: color-mix(in srgb, var(--text-primary) 70%, transparent);
 }
 
 .student-labs {
@@ -216,7 +217,7 @@
   padding: 0.85rem 0.9rem;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  background: var(--bg-secondary);
 }
 
 .module-info h4 {
@@ -232,14 +233,14 @@
   width: 100%;
   height: 8px;
   border-radius: 999px;
-  background: var(--input-bg);
+  background: var(--bg-tertiary);
   overflow: hidden;
   margin-top: 0.6rem;
 }
 
 .module-progress div {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #10b981);
+  background: color-mix(in srgb, var(--text-primary) 70%, transparent);
 }
 
 .community-stats {
@@ -252,7 +253,7 @@
   padding: 0.75rem;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  background: var(--bg-secondary);
   text-align: center;
 }
 
@@ -273,7 +274,7 @@
 .student-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.6);
+  background: rgba(15, 23, 42, 0.55);
   display: grid;
   place-items: center;
   z-index: var(--z-modal, 60);
@@ -286,7 +287,7 @@
   border: 1px solid var(--border-color);
   background: var(--card-bg);
   padding: 1.5rem;
-  box-shadow: 0 20px 40px -30px rgba(15, 23, 42, 0.7);
+  box-shadow: var(--shadow-lg);
 }
 
 .student-modal-header {
@@ -360,7 +361,7 @@
   padding: 0.75rem;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  background: var(--bg-secondary);
 }
 
 .lab-item h4 {
@@ -376,7 +377,7 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--card-bg));
   color: var(--primary-color);
   display: inline-flex;
   align-items: center;
@@ -403,7 +404,7 @@
   overflow: hidden;
   position: relative;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  background: var(--bg-secondary);
   margin-right: 0.75rem;
   flex-shrink: 0;
 }
@@ -462,8 +463,8 @@
 }
 
 .student-bottom {
-  max-width: 1200px;
-  margin: 2rem auto 0;
+  max-width: 100%;
+  margin: 1.5rem 0 0;
 }
 
 .snapshot-grid {
@@ -480,7 +481,7 @@
   padding: 0.75rem;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 95%, transparent);
+  background: var(--bg-secondary);
 }
 
 .snapshot-item h4 {
@@ -517,7 +518,7 @@
   }
 
   .student-hero {
-    padding: 2rem 1.5rem;
+    padding: 1.75rem 1.5rem;
   }
 
   .student-hero-actions {

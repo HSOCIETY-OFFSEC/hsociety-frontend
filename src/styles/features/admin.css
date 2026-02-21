@@ -1,12 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap');
-
 .admin-dashboard {
   min-height: calc(100vh - 120px);
-  padding: 2.5rem 1.5rem 4rem;
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 55%),
-    linear-gradient(160deg, #050505 0%, #0b0b0d 50%, #0f0f12 100%);
-  color: #f5f5f5;
-  font-family: 'Space Grotesk', sans-serif;
+  padding: 2rem 1.25rem 3rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
 }
 
 .admin-hero {
@@ -15,15 +12,15 @@
   gap: 2rem;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 .admin-kicker {
-  font-family: 'Space Mono', monospace;
+  font-family: inherit;
   font-size: 0.85rem;
   letter-spacing: 0.2rem;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-tertiary);
   margin-bottom: 0.75rem;
 }
 
@@ -35,14 +32,14 @@
 
 .admin-subtitle {
   max-width: 480px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
   font-size: 1rem;
   line-height: 1.6;
 }
 
 .admin-badges {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -50,10 +47,11 @@
   display: flex;
   gap: 0.75rem;
   align-items: center;
-  padding: 0.9rem 1.2rem;
+  padding: 0.75rem 1rem;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
   min-width: 160px;
 }
 
@@ -62,7 +60,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--text-tertiary);
 }
 
 .admin-badge strong {
@@ -70,19 +68,19 @@
 }
 
 .admin-alert {
-  background: rgba(255, 75, 75, 0.15);
-  border: 1px solid rgba(255, 75, 75, 0.35);
+  background: color-mix(in srgb, #ef4444 12%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, #ef4444 35%, var(--border-color));
   padding: 0.9rem 1.2rem;
   border-radius: 12px;
   margin-bottom: 1.5rem;
-  color: #ffb3b3;
+  color: color-mix(in srgb, #ef4444 70%, var(--text-primary));
 }
 
 .admin-card {
-  background: rgba(10, 10, 12, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-  margin-bottom: 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.25rem;
 }
 
 .admin-table {
@@ -93,19 +91,19 @@
 .admin-row {
   display: grid;
   grid-template-columns: 1.2fr 1.6fr 1.2fr 0.8fr 1.2fr;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: center;
-  padding: 0.85rem 1rem;
+  padding: 0.7rem 0.9rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.85);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
 }
 
 .admin-row-header {
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.12rem;
   font-size: 0.75rem;
@@ -117,10 +115,10 @@
   width: 100%;
   padding: 0.5rem 0.7rem;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(0, 0, 0, 0.45);
-  color: #f5f5f5;
-  font-family: 'Space Mono', monospace;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: inherit;
   font-size: 0.85rem;
 }
 
@@ -140,22 +138,22 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08rem;
-  background: rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--border-color) 50%, var(--card-bg));
 }
 
 .admin-role.role-admin {
-  background: rgba(255, 100, 0, 0.25);
-  color: #ffb06b;
+  background: color-mix(in srgb, var(--border-color) 55%, var(--card-bg));
+  color: var(--text-primary);
 }
 
 .admin-role.role-pentester {
-  background: rgba(0, 180, 255, 0.2);
-  color: #8fd7ff;
+  background: color-mix(in srgb, var(--border-color) 45%, var(--card-bg));
+  color: var(--text-secondary);
 }
 
 .admin-role.role-student {
-  background: rgba(70, 255, 140, 0.15);
-  color: #8bffc2;
+  background: color-mix(in srgb, var(--border-color) 40%, var(--card-bg));
+  color: var(--text-tertiary);
 }
 
 .admin-row-pentests {
@@ -175,7 +173,7 @@
 }
 
 .admin-section-header p {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -183,7 +181,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
   font-size: 0.85rem;
 }
 
@@ -203,7 +201,7 @@
 
 @media (max-width: 768px) {
   .admin-dashboard {
-    padding: 2rem 1rem 3rem;
+    padding: 1.75rem 1rem 2.5rem;
   }
 
   .admin-row {

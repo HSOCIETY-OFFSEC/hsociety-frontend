@@ -6,21 +6,17 @@ const QuickActions = ({ actions = [], onAction }) => (
   <div className="section reveal-on-scroll dramatic-section">
     <h2 className="section-title">Quick Actions</h2>
     <div className="quick-actions-grid">
-      {actions.map((action, index) => (
+      {actions.map((action) => (
         <Card
           key={action.title}
-          hover3d={true}
+          hover3d={false}
           onClick={() => onAction(action)}
-          padding="large"
-          shadow="medium"
+          padding="medium"
+          shadow="small"
           className="quick-action-card reveal-on-scroll dramatic-card"
-          style={{ animationDelay: `${0.1 + index * 0.1}s` }}
         >
           <div className="quick-action-content">
-            <div
-              className="quick-action-icon"
-              style={{ background: `${action.color}20`, color: action.color }}
-            >
+            <div className="quick-action-icon">
               <action.icon size={28} />
             </div>
             <h3 className="quick-action-title">{action.title}</h3>

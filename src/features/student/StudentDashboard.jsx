@@ -93,24 +93,29 @@ const StudentDashboard = () => {
 
   return (
     <div className="student-page">
-        <header className="student-hero reveal-on-scroll">
+      <div className="dashboard-shell">
+        <header className="student-hero dashboard-shell-header reveal-on-scroll">
           <div>
-            <p className="student-kicker">Student Dashboard</p>
-            <h1>Build skills with real-world practice.</h1>
-            <p>Track your learning path, complete course rooms, and level up module by module.</p>
+            <p className="student-kicker dashboard-shell-kicker">Student Dashboard</p>
+            <h1 className="dashboard-shell-title">Build skills with real-world practice.</h1>
+            <p className="dashboard-shell-subtitle">
+              Track your learning path, complete course rooms, and level up module by module.
+            </p>
           </div>
-          <Button
-            variant="primary"
-            size="large"
-            onClick={() => navigate('/student-learning')}
-          >
-            <FiCompass size={18} />
-            Go to Learning Path
-          </Button>
+          <div className="dashboard-shell-actions">
+            <Button
+              variant="primary"
+              size="large"
+              onClick={() => navigate('/student-learning')}
+            >
+              <FiCompass size={18} />
+              Go to Learning Path
+            </Button>
+          </div>
         </header>
 
         {error && (
-          <Card padding="large" className="student-card reveal-on-scroll">
+          <Card padding="medium" className="student-card reveal-on-scroll">
             <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
           </Card>
         )}
@@ -119,7 +124,7 @@ const StudentDashboard = () => {
             {loading ? (
               <div className="student-grid">
                 {[1, 2, 3].map((item) => (
-                  <Card key={item} padding="large" className="student-card">
+                  <Card key={item} padding="medium" className="student-card">
                     <Skeleton className="skeleton-line" style={{ width: '40%' }} />
                     <Skeleton
                       className="skeleton-line"
@@ -134,7 +139,7 @@ const StudentDashboard = () => {
               </div>
             ) : (
               <div className="student-grid">
-                <Card padding="large" className="student-card reveal-on-scroll">
+                <Card padding="medium" className="student-card reveal-on-scroll">
                   <div className="student-card-header">
                     <FiBookOpen size={20} />
                     <h3>Bootcamp Status</h3>
@@ -164,7 +169,7 @@ const StudentDashboard = () => {
                   </div>
                 </Card>
 
-                <Card padding="large" className="student-card reveal-on-scroll">
+                <Card padding="medium" className="student-card reveal-on-scroll">
                   <div className="student-card-header">
                     <FiBookOpen size={20} />
                     <h3>Learning Path Overview</h3>
@@ -190,7 +195,7 @@ const StudentDashboard = () => {
                   </div>
                 </Card>
 
-                <Card padding="large" className="student-card reveal-on-scroll">
+                <Card padding="medium" className="student-card reveal-on-scroll">
                   <div className="student-card-header">
                     <FiShield size={20} />
                     <h3>Modules & Rooms</h3>
@@ -212,7 +217,7 @@ const StudentDashboard = () => {
                   </div>
                 </Card>
 
-                <Card padding="large" className="student-card reveal-on-scroll">
+                <Card padding="medium" className="student-card reveal-on-scroll">
                   <div className="student-card-header">
                     <FiMessageSquare size={20} />
                     <h3>Community Pulse</h3>
@@ -239,7 +244,7 @@ const StudentDashboard = () => {
             )}
 
             <section className="student-bottom reveal-on-scroll">
-              <Card padding="large" className="student-card">
+              <Card padding="medium" className="student-card">
                 <div className="student-card-header">
                   <FiShield size={20} />
                   <h3>Progress Snapshot</h3>
@@ -340,6 +345,7 @@ const StudentDashboard = () => {
             </div>
           </div>
         )}
+      </div>
     </div>
   );
 };

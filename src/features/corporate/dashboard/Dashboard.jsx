@@ -64,31 +64,28 @@ const Dashboard = () => {
       title: 'Request Pentest',
       description: 'Schedule a new penetration testing engagement',
       icon: FiShield,
-      path: '/pentest',
-      color: '#10b981'
+      path: '/pentest'
     },
     {
       title: 'View Audits',
       description: 'Access your security audit reports',
       icon: FiFileText,
-      path: '/audits',
-      color: '#3b82f6'
+      path: '/audits'
     },
     {
       title: 'Submit Feedback',
       description: 'Share your experience or report issues',
       icon: FiMessageSquare,
-      path: '/feedback',
-      color: '#f59e0b'
+      path: '/feedback'
     }
   ];
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'completed': return '#10b981';
-      case 'in-progress': return '#3b82f6';
-      case 'pending': return '#f59e0b';
-      default: return '#6b7280';
+      case 'completed': return 'var(--text-primary)';
+      case 'in-progress': return 'var(--text-secondary)';
+      case 'pending': return 'var(--text-tertiary)';
+      default: return 'var(--text-tertiary)';
     }
   };
 
@@ -104,7 +101,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="dashboard-container">
-          <div className="dashboard-wrapper">
+          <div className="dashboard-wrapper dashboard-shell">
             <div className="dashboard-header">
               <div>
                 <Skeleton className="skeleton-line" style={{ width: '220px' }} />
@@ -174,15 +171,15 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard-container">
-        <div className="dashboard-wrapper">
+      <div className="dashboard-container">
+        <div className="dashboard-wrapper dashboard-shell">
           {/* Header */}
-          <div className="dashboard-header reveal-on-scroll dramatic-header">
+          <div className="dashboard-header dashboard-shell-header reveal-on-scroll dramatic-header">
             <div>
-              <h1 className="dashboard-title">
+              <h1 className="dashboard-title dashboard-shell-title">
                 Welcome back, {user?.name || 'User'}!
               </h1>
-              <p className="dashboard-subtitle">
+              <p className="dashboard-subtitle dashboard-shell-subtitle">
                 Here's your security overview and recent activity
               </p>
             </div>

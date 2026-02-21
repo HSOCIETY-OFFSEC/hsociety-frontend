@@ -46,11 +46,7 @@ const ActivityList = ({ activities = [], onViewAll, getStatusColor, getStatusLab
               <div className="activity-status">
                 <span
                   className="status-badge"
-                  style={{
-                    background: `${getStatusColor(activity.status)}20`,
-                    color: getStatusColor(activity.status),
-                    border: `1px solid ${getStatusColor(activity.status)}50`
-                  }}
+                  style={{ '--status-color': getStatusColor(activity.status) }}
                 >
                   {getStatusLabel(activity.status)}
                 </span>
