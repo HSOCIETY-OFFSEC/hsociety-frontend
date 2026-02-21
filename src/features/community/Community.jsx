@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { FiCheckCircle, FiHash, FiMessageSquare, FiSend, FiUsers } from 'react-icons/fi';
+import { FiCheckCircle, FiHash, FiHeart, FiMessageSquare, FiSend, FiUsers, FiX } from 'react-icons/fi';
 import { FiBookOpen, FiBriefcase, FiImage, FiPlus, FiShield, FiTrendingUp } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { useAuth } from '../../core/auth/AuthContext';
@@ -7,14 +7,18 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import BinaryLoader from '../../shared/components/ui/BinaryLoader';
 import {
+  addComment,
   disconnectCommunitySocket,
   getCommunityMessages,
   getCommunityOverview,
   joinRoom,
   leaveRoom,
+  likeMessage,
+  onCommentAdded,
+  onMessageLiked,
   onReceiveMessage,
   onTyping,
-  sendMessage,
+  sendMessageWithImage,
   sendTyping
 } from './community.service';
 import communityContent from '../../data/community.json';
@@ -22,6 +26,7 @@ import '../../styles/features/community.css';
 
 const GROUP_WINDOW_MS = 5 * 60 * 1000;
 const MAX_MESSAGES = 200;
+const MAX_IMAGE_SIZE = 200 * 1024;
 
 const Community = () => {
   useScrollReveal();
@@ -37,6 +42,10 @@ const Community = () => {
   const [typingByRoom, setTypingByRoom] = useState({});
   const [chatLoading, setChatLoading] = useState(true);
   const [messageInput, setMessageInput] = useState('');
+  const [imagePreview, setImagePreview] = useState('');
+  const [imageError, setImageError] = useState('');
+  const [commentDrafts, setCommentDrafts] = useState({});
+  const [commentOpen, setCommentOpen] = useState({});
   const [error, setError] = useState('');
   const [activeChannelId, setActiveChannelId] = useState('general');
   const [activeTag, setActiveTag] = useState(null);
@@ -45,6 +54,8 @@ const Community = () => {
   const typingTimeoutRef = useRef(null);
   const isTypingRef = useRef(false);
   const activeRoomRef = useRef(activeChannelId);
+  const fileInputRef = useRef(null);
+  const currentUserId = user?.id || user?._id || '';
 
   useEffect(() => {
     activeRoomRef.current = activeChannelId;
@@ -74,6 +85,16 @@ const Community = () => {
       const current = prev[room] || [];
       if (current.some((item) => item.id === message.id)) return prev;
       const next = [...current, message].slice(-MAX_MESSAGES);
+      return { ...prev, [room]: next };
+    });
+  };
+
+  const updateMessageInRoom = (room, messageId, updater) => {
+    setMessagesByRoom((prev) => {
+      const current = prev[room] || [];
+      const next = current.map((message) => (
+        message.id === messageId ? updater(message) : message
+      ));
       return { ...prev, [room]: next };
     });
   };
@@ -131,9 +152,28 @@ const Community = () => {
       });
     });
 
+    const unsubscribeLikes = onMessageLiked((payload) => {
+      if (!payload?.room || !payload?.messageId) return;
+      updateMessageInRoom(payload.room, payload.messageId, (message) => ({
+        ...message,
+        likes: payload.likes,
+        likedBy: payload.likedBy || []
+      }));
+    });
+
+    const unsubscribeComments = onCommentAdded((payload) => {
+      if (!payload?.room || !payload?.messageId || !payload?.comment) return;
+      updateMessageInRoom(payload.room, payload.messageId, (message) => ({
+        ...message,
+        comments: [...(message.comments || []), payload.comment]
+      }));
+    });
+
     return () => {
       unsubscribeMessage();
       unsubscribeTyping();
+      unsubscribeLikes();
+      unsubscribeComments();
       disconnectCommunitySocket();
     };
   }, []);
@@ -175,9 +215,19 @@ const Community = () => {
 
   const handleSendMessage = () => {
     const trimmed = messageInput.trim();
-    if (!trimmed || trimmed.length > 500) return;
-    sendMessage({ room: activeChannelId || 'general', content: trimmed });
+    if (!trimmed && !imagePreview) return;
+    if (trimmed.length > 500) return;
+
+    sendMessageWithImage({
+      room: activeChannelId || 'general',
+      content: trimmed,
+      imageUrl: imagePreview || ''
+    });
+
     setMessageInput('');
+    setImagePreview('');
+    setImageError('');
+
     if (isTypingRef.current) {
       sendTyping({ room: activeChannelId || 'general', isTyping: false });
       isTypingRef.current = false;
@@ -214,6 +264,77 @@ const Community = () => {
       sendTyping({ room, isTyping: false });
       isTypingRef.current = false;
     }
+  };
+
+  const handleImageSelect = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setImageError('Only image files are supported.');
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      setImageError('Image must be under 200KB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(String(reader.result || ''));
+      setImageError('');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearImage = () => {
+    setImagePreview('');
+    setImageError('');
+  };
+
+  const handleToggleLike = (message) => {
+    if (!message?.id) return;
+
+    const likedBy = new Set(message.likedBy || []);
+    const alreadyLiked = currentUserId && likedBy.has(currentUserId);
+    const nextLikedBy = new Set(likedBy);
+    if (alreadyLiked) {
+      nextLikedBy.delete(currentUserId);
+    } else if (currentUserId) {
+      nextLikedBy.add(currentUserId);
+    }
+
+    updateMessageInRoom(message.room, message.id, (current) => ({
+      ...current,
+      likes: Math.max(0, (current.likes || 0) + (alreadyLiked ? -1 : 1)),
+      likedBy: Array.from(nextLikedBy)
+    }));
+
+    likeMessage({ messageId: message.id });
+  };
+
+  const handleToggleComment = (messageId) => {
+    setCommentOpen((prev) => ({ ...prev, [messageId]: !prev[messageId] }));
+  };
+
+  const handleCommentChange = (messageId, value) => {
+    setCommentDrafts((prev) => ({ ...prev, [messageId]: value }));
+  };
+
+  const handleSendComment = (messageId) => {
+    const draft = String(commentDrafts[messageId] || '').trim();
+    if (!draft || draft.length > 300) return;
+    addComment({ messageId, content: draft });
+    setCommentDrafts((prev) => ({ ...prev, [messageId]: '' }));
+    setCommentOpen((prev) => ({ ...prev, [messageId]: false }));
   };
 
   const roomId = activeChannelId || 'general';
@@ -417,9 +538,66 @@ const Community = () => {
                           </span>
                         </div>
                         <div className="chat-group-messages">
-                          {group.messages.map((message) => (
-                            <p key={message.id}>{message.content}</p>
-                          ))}
+                          {group.messages.map((message) => {
+                            const likedBy = message.likedBy || [];
+                            const isLiked = currentUserId && likedBy.includes(currentUserId);
+                            return (
+                              <div key={message.id} className="chat-message-item">
+                                {message.content && <p>{message.content}</p>}
+                                {message.imageUrl && (
+                                  <div className="chat-image">
+                                    <img src={message.imageUrl} alt="Shared" loading="lazy" />
+                                  </div>
+                                )}
+                                <div className="chat-message-actions">
+                                  <button
+                                    type="button"
+                                    className={isLiked ? 'liked' : ''}
+                                    onClick={() => handleToggleLike(message)}
+                                  >
+                                    <FiHeart size={14} /> {message.likes || 0}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleComment(message.id)}
+                                  >
+                                    <FiMessageSquare size={14} /> {(message.comments || []).length}
+                                  </button>
+                                </div>
+                                {commentOpen[message.id] && (
+                                  <div className="chat-comment-box">
+                                    <input
+                                      type="text"
+                                      value={commentDrafts[message.id] || ''}
+                                      onChange={(e) => handleCommentChange(message.id, e.target.value)}
+                                      placeholder="Write a comment..."
+                                      maxLength={300}
+                                    />
+                                    <button type="button" onClick={() => handleSendComment(message.id)}>
+                                      Comment
+                                    </button>
+                                  </div>
+                                )}
+                                {(message.comments || []).length > 0 && (
+                                  <div className="chat-comments">
+                                    {(message.comments || []).map((comment) => (
+                                      <div key={comment.id || comment.createdAt} className="chat-comment">
+                                        <div className="chat-comment-meta">
+                                          <span>{comment.username || 'Community Member'}</span>
+                                          <span>
+                                            {comment.createdAt
+                                              ? new Date(comment.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                              : ''}
+                                          </span>
+                                        </div>
+                                        <p>{comment.content}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
@@ -436,27 +614,55 @@ const Community = () => {
                 </div>
               )}
 
+              {imageError && (
+                <div className="chat-alert">
+                  <p>{imageError}</p>
+                </div>
+              )}
+
+              {imagePreview && (
+                <div className="chat-attachment-preview">
+                  <img src={imagePreview} alt="Attachment preview" />
+                  <button type="button" className="remove-attachment" onClick={clearImage}>
+                    <FiX size={14} />
+                  </button>
+                </div>
+              )}
+
               <div className="chat-composer">
-                <input
-                  type="text"
-                  value={messageInput}
-                  onChange={(e) => handleMessageChange(e.target.value)}
-                  onBlur={handleInputBlur}
-                  placeholder="Type your message..."
-                  maxLength={500}
-                />
+                <div className="chat-composer-input">
+                  <input
+                    type="text"
+                    value={messageInput}
+                    onChange={(e) => handleMessageChange(e.target.value)}
+                    onBlur={handleInputBlur}
+                    placeholder="Type your message..."
+                    maxLength={500}
+                  />
+                  <button type="button" className="chat-upload" onClick={handleImageSelect}>
+                    <FiImage size={16} />
+                    Add Image
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="chat-file-input"
+                  />
+                </div>
                 <Button
                   className="chat-send"
                   variant="secondary"
                   size="small"
                   onClick={handleSendMessage}
-                  disabled={!messageInput.trim() || messageInput.trim().length > 500}
+                  disabled={(!messageInput.trim() && !imagePreview) || messageInput.trim().length > 500}
                 >
                   <FiSend size={16} />
                   Send
                 </Button>
               </div>
-              <p className="chat-hint">Max 500 characters. Messages are shared instantly.</p>
+              <p className="chat-hint">Max 500 characters. Images under 200KB.</p>
             </Card>
           </main>
 

@@ -151,9 +151,24 @@ export const sendMessage = ({ room = 'general', content }) => {
   socket.emit('sendMessage', { room, content });
 };
 
+export const sendMessageWithImage = ({ room = 'general', content, imageUrl }) => {
+  const socket = connectSocket();
+  socket.emit('sendMessage', { room, content, imageUrl });
+};
+
 export const sendTyping = ({ room = 'general', isTyping }) => {
   const socket = connectSocket();
   socket.emit('typing', { room, isTyping: Boolean(isTyping) });
+};
+
+export const likeMessage = ({ messageId }) => {
+  const socket = connectSocket();
+  socket.emit('likeMessage', { messageId });
+};
+
+export const addComment = ({ messageId, content }) => {
+  const socket = connectSocket();
+  socket.emit('addComment', { messageId, content });
 };
 
 export const onReceiveMessage = (callback) => {
@@ -166,6 +181,18 @@ export const onTyping = (callback) => {
   const socket = connectSocket();
   socket.on('typing', callback);
   return () => socket.off('typing', callback);
+};
+
+export const onMessageLiked = (callback) => {
+  const socket = connectSocket();
+  socket.on('messageLiked', callback);
+  return () => socket.off('messageLiked', callback);
+};
+
+export const onCommentAdded = (callback) => {
+  const socket = connectSocket();
+  socket.on('commentAdded', callback);
+  return () => socket.off('commentAdded', callback);
 };
 
 export const disconnectCommunitySocket = () => {
@@ -235,9 +262,14 @@ export default {
   joinRoom,
   leaveRoom,
   sendMessage,
+  sendMessageWithImage,
   sendTyping,
+  likeMessage,
+  addComment,
   onReceiveMessage,
   onTyping,
+  onMessageLiked,
+  onCommentAdded,
   disconnectCommunitySocket,
   createCommunityPost,
   reactToPost,
