@@ -7,6 +7,7 @@ import WorkspaceLayout from '../shared/components/layout/WorkspaceLayout';
 import AuthLayout from '../shared/components/layout/AuthLayout';
 import LandingLayout from '../shared/components/layout/LandingLayout';
 import PublicLayout from '../shared/components/layout/PublicLayout';
+import RouteEffects from '../shared/components/layout/RouteEffects';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
@@ -86,6 +87,7 @@ const LoadingFallback = () => <PageLoader message="Loading secure interface..." 
 const AppRouter = () => {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <RouteEffects />
       <React.Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Landing - full-width marketing layout */}

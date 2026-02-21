@@ -22,7 +22,7 @@ const Blog = () => {
     {
       title: 'Learning Path: First 90 Days in Cybersecurity',
       date: 'Nov 20, 2025',
-      summary: 'Weekly goals and labs for beginners.'
+      summary: 'Weekly goals and modules for beginners.'
     }
   ];
 

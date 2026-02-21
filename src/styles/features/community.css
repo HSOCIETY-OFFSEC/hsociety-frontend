@@ -154,20 +154,28 @@
 
 .tag-list button {
   border: 1px solid var(--border-color);
-  background: transparent;
+  background: linear-gradient(130deg, rgba(252, 211, 77, 0.22), rgba(22, 163, 74, 0.18));
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+.tag-list button:nth-child(2) {
+  background: linear-gradient(130deg, rgba(239, 68, 68, 0.18), rgba(253, 224, 71, 0.2));
+  border-color: color-mix(in srgb, #ef4444 35%, var(--border-color));
+}
+
 .tag-list button:hover,
 .tag-list button.active {
-  color: var(--primary-color);
+  color: #0f172a;
   border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
-  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  background: linear-gradient(130deg, rgba(252, 211, 77, 0.35), rgba(22, 163, 74, 0.25));
 }
 
 .community-feed {

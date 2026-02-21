@@ -85,8 +85,6 @@ export const API_ENDPOINTS = {
   STUDENT: {
     OVERVIEW: '/student/overview',
     LEARNING_PATH: '/student/learning-path',
-    CHALLENGES: '/student/challenges',
-    MENTORS: '/student/mentors',
     SNAPSHOT: '/student/snapshot',
     // Future course learning system (gamified)
     COURSE: '/student/course',
@@ -135,9 +133,7 @@ export const API_ENDPOINTS = {
     POST_REACT: '/community/posts/:id/react',
     POST_SAVE: '/community/posts/:id/save',
     CHANNELS: '/community/channels',
-    TAGS: '/community/tags',
-    MENTORS: '/community/mentors',
-    CHALLENGES: '/community/challenges'
+    TAGS: '/community/tags'
   },
 
   // File Upload

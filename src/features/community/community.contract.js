@@ -14,7 +14,7 @@ export const buildCreatePostDTO = ({ content, role }) => ({
   }
 });
 
-export const normalizeCommunityOverview = (data = {}, role = 'student') => ({
+export const normalizeCommunityOverview = (data = {}) => ({
   stats: data.stats || {
     learners: 12000,
     questions: 4000,
@@ -27,21 +27,8 @@ export const normalizeCommunityOverview = (data = {}, role = 'student') => ({
     { id: 'blue-team', name: 'Blue Team' },
     { id: 'red-team', name: 'Red Team' }
   ],
-  tags: data.tags || ['#career-switch', '#ctf', '#web-security', '#blue-team', '#owasp', '#interview-prep'],
-  posts: data.posts || [],
-  mentor: data.mentor || {
-    id: 'ria',
-    name: 'Ria N.',
-    role: 'Blue Team Lead',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'
-  },
-  challenge: data.challenge || {
-    id: 'weekly',
-    title: role === 'corporate' ? 'Top Learner Highlights' : 'Challenge of the Week',
-    description: role === 'corporate'
-      ? 'See the most active learners and award mentorship credits.'
-      : 'Break down a real-world phishing sample and map it to MITRE.'
-  }
+  tags: data.tags || ['#OffSecAfrica', '#EthicalHackingAfrica'],
+  posts: data.posts || []
 });
 
 export const normalizePosts = (posts = []) =>

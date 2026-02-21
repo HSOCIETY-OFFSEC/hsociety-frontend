@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from '../../../shared/components/common/Logo';
+import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
 import '../../../styles/features/landing/why.css';
 
 const WhySection = ({ items = [] }) => (
@@ -21,7 +22,13 @@ const WhySection = ({ items = [] }) => (
           <div key={item.title} className="why-item reveal-on-scroll">
             {item.image && (
               <div className="why-media">
-                <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
+                <ImageWithLoader
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                  loaderMessage="Loading highlight..."
+                />
               </div>
             )}
             <div className="why-icon">

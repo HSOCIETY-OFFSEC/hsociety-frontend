@@ -2,6 +2,7 @@ import React from 'react';
 import { FiTerminal } from 'react-icons/fi';
 import Logo from '../../../shared/components/common/Logo';
 import Card from '../../../shared/components/ui/Card';
+import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
 import '../../../styles/features/landing/modules.css';
 
 const ModulesSection = ({ modules = [] }) => (
@@ -23,7 +24,13 @@ const ModulesSection = ({ modules = [] }) => (
           <Card key={module.title} padding="large" className="module-card reveal-on-scroll">
             {module.image && (
               <div className="module-media">
-                <img src={module.image} alt={module.title} loading="lazy" decoding="async" />
+                <ImageWithLoader
+                  src={module.image}
+                  alt={module.title}
+                  loading="lazy"
+                  decoding="async"
+                  loaderMessage="Loading module preview..."
+                />
               </div>
             )}
             <div className="module-meta">
@@ -34,7 +41,7 @@ const ModulesSection = ({ modules = [] }) => (
             <p className="module-description">{module.description}</p>
             <div className="module-footer">
               <FiTerminal size={16} />
-              <span>Interactive labs + CTFs</span>
+              <span>Interactive modules + guided practice</span>
             </div>
           </Card>
         ))}

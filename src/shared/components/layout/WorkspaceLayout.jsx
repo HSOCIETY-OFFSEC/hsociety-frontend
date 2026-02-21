@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FiChevronDown, FiLogOut, FiMenu, FiUser, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
+import { getAvatarStyle } from '../../utils/avatar';
 import '../../../styles/shared/layout.css';
 
 /**
@@ -49,6 +50,11 @@ const WorkspaceLayout = () => {
       .join('');
   }, [user?.email, user?.name]);
 
+  const avatarStyle = useMemo(
+    () => getAvatarStyle(user?.email || user?.name || 'user'),
+    [user?.email, user?.name]
+  );
+
   useEffect(() => {
     if (!menuOpen) return undefined;
     const handleClick = (event) => {
@@ -74,7 +80,7 @@ const WorkspaceLayout = () => {
               aria-haspopup="menu"
               aria-expanded={menuOpen}
             >
-              <span className="workspace-avatar">
+              <span className="workspace-avatar" style={user?.avatarUrl ? undefined : avatarStyle}>
                 {user?.avatarUrl ? (
                   <img src={user.avatarUrl} alt="Profile" />
                 ) : (

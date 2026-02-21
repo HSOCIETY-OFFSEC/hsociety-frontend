@@ -5,6 +5,7 @@ import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
+import ImageWithLoader from '../../shared/components/ui/ImageWithLoader';
 import teamContent from '../../data/team.json';
 import '../../styles/features/team.css';
 
@@ -57,13 +58,11 @@ const Team = () => {
           {leadership.map((member, index) => (
             <Card key={index} padding="large" className="team-card">
               <div className="profile-frame">
-                <img
+                <ImageWithLoader
                   src={member.image}
                   alt={member.name}
                   loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.style.opacity = '0';
-                  }}
+                  loaderMessage="Loading profile..."
                 />
                 <div className="profile-fallback" aria-hidden="true"></div>
               </div>

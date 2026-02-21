@@ -5,6 +5,7 @@ import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { useAuth } from '../../core/auth/AuthContext';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
+import BinaryLoader from '../../shared/components/ui/BinaryLoader';
 import {
   createCommunityPost,
   getCommunityOverview,
@@ -23,9 +24,7 @@ const Community = () => {
     stats: { learners: 0, questions: 0, answered: 0 },
     channels: [],
     tags: [],
-    posts: [],
-    mentor: null,
-    challenge: null
+    posts: []
   });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -37,8 +36,7 @@ const Community = () => {
   const [filters, setFilters] = useState({
     questions: true,
     wins: true,
-    labs: true,
-    mentorship: true
+    modules: true
   });
   const [composerTool, setComposerTool] = useState(null);
   const [replyOpenId, setReplyOpenId] = useState(null);
@@ -443,7 +441,7 @@ const Community = () => {
               )}
               {loading && (
                 <Card padding="large" className="post-card">
-                  <p>{communityContent.feed.loading}</p>
+                  <BinaryLoader size="sm" message={communityContent.feed.loading} />
                 </Card>
               )}
               {!loading && overview.posts.length === 0 && !error && (
@@ -521,23 +519,6 @@ const Community = () => {
                   ? communityContent.rightSidebar.corporate.description
                   : communityContent.rightSidebar.student.description}
               </p>
-              <div className="mentor-item">
-                <div className="avatar-frame">
-                  <img
-                    src={overview.mentor?.avatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'}
-                    alt={overview.mentor?.name || 'Mentor'}
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.style.opacity = '0';
-                    }}
-                  />
-                  <div className="avatar-fallback" aria-hidden="true"></div>
-                </div>
-                <div>
-                  <h4>{overview.mentor?.name || 'Mentor'}</h4>
-                  <span>{overview.mentor?.role || 'Security Mentor'}</span>
-                </div>
-              </div>
               <Button
                 variant="ghost"
                 size="small"
@@ -551,21 +532,6 @@ const Community = () => {
                 })}
               >
                 {isCorporate ? communityContent.rightSidebar.corporate.button : communityContent.rightSidebar.student.button}
-              </Button>
-            </Card>
-
-            <Card padding="large" className="sidebar-card">
-              <h3>{overview.challenge?.title || (isCorporate ? communityContent.rightSidebar.challenge.corporateTitle : communityContent.rightSidebar.challenge.studentTitle)}</h3>
-              <p>{overview.challenge?.description}</p>
-              <Button
-                variant="secondary"
-                size="small"
-                onClick={() => handleAction({
-                  title: isCorporate ? communityContent.rightSidebar.challenge.corporateButton : communityContent.rightSidebar.challenge.studentButton,
-                  description: communityContent.rightSidebar.challenge.actionDescription
-                })}
-              >
-                {isCorporate ? communityContent.rightSidebar.challenge.corporateButton : communityContent.rightSidebar.challenge.studentButton}
               </Button>
             </Card>
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../common/Logo';
+import BinaryLoader from './BinaryLoader';
 
 /**
  * Page Loader
@@ -33,8 +34,9 @@ const PageLoader = ({
     <div className="page-loader" role="status" aria-live="polite">
       <div className="page-loader-inner">
         <Logo size="large" className="page-loader-logo" />
+        <BinaryLoader size="md" message={message} />
         <div className="page-loader-bar" />
-        <p className="page-loader-text">{message}</p>
+        <p className="page-loader-text">Establishing secure link...</p>
       </div>
     </div>
   );

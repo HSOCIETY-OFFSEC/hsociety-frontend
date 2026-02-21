@@ -21,7 +21,7 @@ const Careers = () => {
       location: 'Remote - Africa',
       type: 'Internship',
       level: 'Student',
-      focus: 'Recon, tooling, lab research.'
+      focus: 'Recon, tooling, module development.'
     },
     {
       title: 'Red Team Operator',
@@ -38,15 +38,15 @@ const Careers = () => {
           <div>
             <p className="careers-kicker">Careers</p>
             <h1>Build offensive security from Africa, for the world.</h1>
-            <p>Join teams that ship real work, mentor the next generation, and build resilience.</p>
+            <p>Join teams that ship real work, grow real talent, and build resilience.</p>
             <div className="careers-hero-meta">
               <div>
                 <span className="meta-value">Remote-first</span>
                 <span className="meta-label">across Africa</span>
               </div>
               <div>
-                <span className="meta-value">Mentorship</span>
-                <span className="meta-label">weekly office hours</span>
+                <span className="meta-value">Training</span>
+                <span className="meta-label">module delivery</span>
               </div>
               <div>
                 <span className="meta-value">Impact</span>

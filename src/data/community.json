@@ -2,7 +2,7 @@
   "hero": {
     "kicker": "HSOCIETY Community",
     "title": "Where future defenders meet.",
-    "subtitle": "Ask questions, share wins, and build your cybersecurity path with peers and mentors.",
+    "subtitle": "Ask questions, share wins, and build your cybersecurity path with peers across Africa.",
     "cta": {
       "student": {
         "title": "Start a Study Group",
@@ -23,7 +23,7 @@
     "channelsTitle": "Channels",
     "student": {
       "title": "Student Starter Pack",
-      "description": "Guided paths, beginner labs, and weekly milestones.",
+      "description": "Guided paths, starter modules, and weekly milestones.",
       "actions": [
         {
           "label": "Learning Roadmaps",
@@ -32,10 +32,10 @@
           "actionDescription": "Preview curated roadmaps for your track."
         },
         {
-          "label": "Beginner Labs",
+          "label": "Starter Modules",
           "icon": "FiShield",
-          "actionTitle": "Beginner Labs",
-          "actionDescription": "Choose a starter lab to run next."
+          "actionTitle": "Starter Modules",
+          "actionDescription": "Choose a starter module to complete next."
         },
         {
           "label": "Find Study Buddy",
@@ -47,7 +47,7 @@
     },
     "corporate": {
       "title": "Corporate Corner",
-      "description": "Share internship openings, sponsor labs, and offer mentorship.",
+      "description": "Share internship openings, sponsor modules, and support cohort growth.",
       "actions": [
         {
           "label": "Post Internships",
@@ -56,16 +56,10 @@
           "actionDescription": "Draft an internship listing for the community."
         },
         {
-          "label": "Sponsor Lab Time",
+          "label": "Sponsor Modules",
           "icon": "FiShield",
-          "actionTitle": "Sponsor Lab Time",
-          "actionDescription": "Outline lab sponsorship details and availability."
-        },
-        {
-          "label": "Mentor Circle",
-          "icon": "FiUsers",
-          "actionTitle": "Mentor Circle",
-          "actionDescription": "Create a mentor circle session outline."
+          "actionTitle": "Sponsor Modules",
+          "actionDescription": "Outline module sponsorship details and availability."
         }
       ]
     },
@@ -88,12 +82,12 @@
         "actionLabel": "Select files"
       },
       {
-        "key": "labs",
-        "label": "Lab Logs",
+        "key": "modules",
+        "label": "Module Notes",
         "icon": "FiShield",
-        "panelTitle": "Add lab log",
-        "panelDescription": "Capture lab environment, tools used, and results.",
-        "actionTitle": "Lab log entry",
+        "panelTitle": "Add module note",
+        "panelDescription": "Capture module progress, tools used, and results.",
+        "actionTitle": "Module note",
         "actionDescription": "Prepared for backend integration.",
         "actionLabel": "Add entry"
       }
@@ -110,8 +104,7 @@
     "options": [
       { "key": "questions", "label": "Questions" },
       { "key": "wins", "label": "Wins" },
-      { "key": "labs", "label": "Lab logs" },
-      { "key": "mentorship", "label": "Mentorship" }
+      { "key": "modules", "label": "Modules" }
     ],
     "saveLabel": "Save filters",
     "savedTitle": "Filters saved",
@@ -137,25 +130,18 @@
   },
   "rightSidebar": {
     "student": {
-      "title": "Mentor Office Hours",
-      "description": "Weekly live sessions with senior analysts.",
-      "button": "Join Session",
-      "actionTitle": "Join Session",
-      "actionDescription": "Session preferences are ready for backend integration."
+      "title": "Featured Modules",
+      "description": "Kickstart your journey with curated OffSec and Ethical Hacking modules.",
+      "button": "Explore Modules",
+      "actionTitle": "Explore Modules",
+      "actionDescription": "Module discovery is ready for backend integration."
     },
     "corporate": {
-      "title": "Sponsor a Session",
-      "description": "Offer a workshop, mock interview, or skills review.",
-      "button": "Propose Session",
-      "actionTitle": "Propose Session",
-      "actionDescription": "Session preferences are ready for backend integration."
-    },
-    "challenge": {
-      "studentTitle": "Challenge of the Week",
-      "corporateTitle": "Top Learner Highlights",
-      "studentButton": "Start Challenge",
-      "corporateButton": "View Learners",
-      "actionDescription": "Challenge details are ready for backend integration."
+      "title": "Support Modules",
+      "description": "Sponsor modules that upskill the next generation of defenders.",
+      "button": "Sponsor Modules",
+      "actionTitle": "Sponsor Modules",
+      "actionDescription": "Module sponsorship is ready for backend integration."
     }
   }
 }

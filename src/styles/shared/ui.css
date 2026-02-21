@@ -379,6 +379,153 @@ select {
   color: var(--text-tertiary);
 }
 
+/* ========================================
+   BINARY LOADER
+   ======================================== */
+
+.binary-loader {
+  display: grid;
+  gap: 0.5rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.binary-circle {
+  --loader-size: 120px;
+  --ring-width: 6px;
+  position: relative;
+  width: var(--loader-size);
+  height: var(--loader-size);
+  margin: 0 auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.binary-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 90deg, rgba(31, 191, 143, 0) 0deg, rgba(31, 191, 143, 0.9) 120deg, rgba(31, 191, 143, 0.1) 240deg, rgba(31, 191, 143, 0) 360deg);
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-width)), #000 calc(100% - var(--ring-width)));
+  animation: binary-spin 1.2s linear infinite;
+  box-shadow: 0 0 25px rgba(31, 191, 143, 0.35);
+}
+
+.binary-orbit {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 40%, transparent);
+  display: grid;
+  place-items: center;
+  animation: binary-orbit 2.4s linear infinite;
+}
+
+.binary-orbit span {
+  font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--primary-color) 70%, #ffffff);
+  opacity: 0.85;
+  padding: 0 0.5rem;
+  background: color-mix(in srgb, var(--bg-primary) 85%, transparent);
+  border-radius: 999px;
+}
+
+.binary-loader .binary-message {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.binary-loader-sm .binary-circle {
+  --loader-size: 86px;
+  --ring-width: 5px;
+}
+
+.binary-loader-sm .binary-message {
+  font-size: 0.65rem;
+}
+
+.binary-loader-lg .binary-circle {
+  --loader-size: 150px;
+  --ring-width: 7px;
+}
+
+.binary-loader-lg .binary-message {
+  font-size: 0.8rem;
+}
+
+@keyframes binary-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes binary-orbit {
+  to { transform: rotate(-360deg); }
+}
+
+/* ========================================
+   IMAGE LOADER
+   ======================================== */
+
+.image-with-loader {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--input-bg) 85%, transparent);
+  width: 100%;
+  height: 100%;
+}
+
+.image-with-loader img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.image-with-loader.is-loaded img {
+  opacity: 1;
+}
+
+.image-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(140deg, rgba(15, 23, 42, 0.2), rgba(2, 44, 34, 0.2));
+  z-index: 1;
+}
+
+/* ========================================
+   ROUTE LOADER
+   ======================================== */
+
+.route-loader-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(900px 420px at 15% 10%, rgba(31, 191, 143, 0.18), transparent 60%),
+    color-mix(in srgb, var(--bg-primary) 92%, transparent);
+  z-index: var(--z-loader, 9999);
+  pointer-events: none;
+  animation: route-fade 0.6s ease;
+}
+
+@keyframes route-fade {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
 @keyframes loader-sweep {
   0% { transform: translateX(-100%); }
   60% { transform: translateX(100%); }
@@ -426,7 +573,9 @@ select {
 
 @media (prefers-reduced-motion: reduce) {
   .page-loader-bar::after,
-  .skeleton::after {
+  .skeleton::after,
+  .binary-ring,
+  .binary-orbit {
     animation: none;
   }
 }

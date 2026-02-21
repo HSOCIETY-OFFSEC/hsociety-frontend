@@ -19,7 +19,7 @@ const mockPostsByFeed = {
       body: 'I know basics of networking and Linux. Any friendly CTF to build confidence?',
       likes: 42,
       replies: 8,
-      tags: ['#ctf', '#career-switch'],
+      tags: ['#OffSecAfrica', '#EthicalHackingAfrica'],
       avatar: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80'
     },
     {
@@ -31,7 +31,7 @@ const mockPostsByFeed = {
       body: 'Any frameworks or analogies that help in presentations?',
       likes: 28,
       replies: 6,
-      tags: ['#owasp', '#interview-prep'],
+      tags: ['#OffSecAfrica', '#EthicalHackingAfrica'],
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
     }
   ],
@@ -42,10 +42,10 @@ const mockPostsByFeed = {
       role: 'SOC Intern',
       time: '1h ago',
       title: 'Resources for learning web pentesting in 60 days?',
-      body: 'Looking for a structured path with labs and real-world practice.',
+      body: 'Looking for a structured path with modules and real-world practice.',
       likes: 3,
       replies: 1,
-      tags: ['#web-security', '#career-switch'],
+      tags: ['#OffSecAfrica', '#EthicalHackingAfrica'],
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80'
     }
   ],

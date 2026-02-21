@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FiChevronDown, FiLogOut, FiMenu, FiShield, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
+import { getAvatarStyle } from '../../utils/avatar';
 
 /**
  * Navbar Component
@@ -28,6 +29,11 @@ const Navbar = ({ sticky = true }) => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [viewportMode, setViewportMode] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= 768 ? 'mobile' : 'desktop'
+  );
+
+  const avatarStyle = useMemo(
+    () => getAvatarStyle(user?.email || user?.name || 'user'),
+    [user?.email, user?.name]
   );
 
   const handleLogout = async () => {
@@ -166,7 +172,8 @@ const Navbar = ({ sticky = true }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: 600,
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  ...(user?.avatarUrl ? {} : avatarStyle)
                 }}>
                   {user?.avatarUrl ? (
                     <img
