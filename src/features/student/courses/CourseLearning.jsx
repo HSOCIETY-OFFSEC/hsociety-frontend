@@ -290,7 +290,7 @@ export const CourseLearning = () => {
     const { xp, levelInfo, unlockedBadges, hasCertificate, certificationName } = profileSnapshot;
 
     return (
-      <Card padding="large" className="course-header-card reveal-on-scroll">
+      <Card padding="medium" shadow="small" className="course-header-card reveal-on-scroll">
         <div className="course-header-main">
           <div>
             <p className="course-kicker">Bootcamp Resources</p>
@@ -392,7 +392,8 @@ export const CourseLearning = () => {
             <Card
               key={module.moduleId}
               id={state === 'active' ? 'active-course-module' : undefined}
-              padding="large"
+              padding="medium"
+              shadow="small"
               className={`course-module-card reveal-on-scroll state-${state} ${
                 activeModuleId === module.moduleId ? 'is-active' : ''
               }`}
@@ -540,9 +541,9 @@ export const CourseLearning = () => {
   if (loading) {
     return (
       <div className="course-learning">
-        <div className="course-layout">
+        <div className="course-layout dashboard-shell">
           <div className="course-layout-main">
-            <Card padding="large" className="course-header-card">
+            <Card padding="medium" className="course-header-card">
               <Skeleton className="skeleton-line" style={{ width: '40%' }} />
               <Skeleton className="skeleton-line" style={{ width: '65%', marginTop: '0.75rem' }} />
               <Skeleton
@@ -552,7 +553,7 @@ export const CourseLearning = () => {
             </Card>
             <div className="course-modules-grid">
               {[1, 2].map((key) => (
-                <Card key={key} padding="large" className="course-module-card">
+                <Card key={key} padding="medium" className="course-module-card">
                   <Skeleton className="skeleton-line" style={{ width: '60%' }} />
                   <Skeleton
                     className="skeleton-line"
@@ -574,9 +575,9 @@ export const CourseLearning = () => {
   if (error) {
     return (
       <div className="course-learning">
-        <div className="course-layout">
+        <div className="course-layout dashboard-shell">
           <div className="course-layout-main">
-            <Card padding="large" className="course-header-card">
+            <Card padding="medium" className="course-header-card">
               <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
             </Card>
           </div>
@@ -587,7 +588,7 @@ export const CourseLearning = () => {
 
   return (
     <div className="course-learning">
-      <div className="course-layout">
+      <div className="course-layout dashboard-shell">
         <div className="course-layout-main">
           {renderOverallHeader()}
           {renderModules()}
