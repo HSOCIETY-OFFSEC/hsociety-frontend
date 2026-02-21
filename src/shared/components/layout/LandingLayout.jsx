@@ -11,7 +11,7 @@ import '../../../styles/shared/layout.css';
 const LandingLayout = () => {
   return (
     <div className="landing-layout">
-      <Navbar sticky={false} />
+      <Navbar sticky={true} />
       <main className="landing-main">
         <Outlet />
       </main>

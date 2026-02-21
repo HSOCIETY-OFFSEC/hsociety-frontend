@@ -67,8 +67,8 @@ const Navbar = ({ sticky = true }) => {
 
   return (
     <nav style={{
-      position: sticky ? 'sticky' : 'relative',
-      top: sticky ? 0 : 'auto',
+      position: 'sticky',
+      top: 0,
       zIndex: 'var(--z-sticky)',
       background: 'var(--card-bg)',
       borderBottom: '1px solid var(--border-color)',
@@ -165,9 +165,18 @@ const Navbar = ({ sticky = true }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontWeight: 600
+                  fontWeight: 600,
+                  overflow: 'hidden'
                 }}>
-                  {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                  {user?.avatarUrl ? (
+                    <img
+                      src={user.avatarUrl}
+                      alt="Profile"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  ) : (
+                    user.name ? user.name.charAt(0).toUpperCase() : 'U'
+                  )}
                 </span>
                 <span>{user.name || user.email}</span>
                 <span style={{ display: 'inline-flex' }}>
