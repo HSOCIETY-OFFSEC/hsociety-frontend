@@ -16,6 +16,23 @@ const WorkspaceLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const pathname = location.pathname || '';
+  const workspaceTitle = useMemo(() => {
+    const titleMap = [
+      { path: '/student-dashboard', title: 'Student Dashboard' },
+      { path: '/student-learning', title: 'Learning Path' },
+      { path: '/student-learning/module', title: 'Lesson' },
+      { path: '/corporate-dashboard', title: 'Corporate Dashboard' },
+      { path: '/audits', title: 'Audits' },
+      { path: '/pentest', title: 'Pentest' },
+      { path: '/pentester', title: 'Pentester Dashboard' },
+      { path: '/mr-robot', title: 'Admin Dashboard' },
+      { path: '/community', title: 'Community' },
+      { path: '/settings', title: 'Account Settings' }
+    ];
+    const match = titleMap.find((entry) => pathname.startsWith(entry.path));
+    return match?.title || 'Workspace';
+  }, [pathname]);
 
   useEffect(() => {
     setSidebarOpen(false);
@@ -48,7 +65,7 @@ const WorkspaceLayout = () => {
 
       <header className="workspace-topbar">
         <div className="workspace-topbar-content">
-          <div className="workspace-topbar-title">Workspace</div>
+          <div className="workspace-topbar-title">{workspaceTitle}</div>
           <div className="workspace-topbar-actions" ref={menuRef}>
             <button
               type="button"
