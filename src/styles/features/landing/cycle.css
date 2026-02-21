@@ -196,3 +196,15 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (prefers-reduced-motion: reduce), (max-width: 900px) {
+  .cycle-ring,
+  .cycle-ring::after,
+  .cycle-node {
+    animation: none !important;
+  }
+
+  .cycle-ring::after {
+    filter: none;
+  }
+}

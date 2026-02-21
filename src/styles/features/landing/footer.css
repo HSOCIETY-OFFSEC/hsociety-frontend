@@ -239,3 +239,9 @@
   0%, 100% { transform: translateX(-40%); opacity: 0.15; }
   50% { transform: translateX(40%); opacity: 0.4; }
 }
+
+@media (prefers-reduced-motion: reduce), (max-width: 900px) {
+  .landing-footer::after {
+    animation: none;
+  }
+}

@@ -55,7 +55,7 @@
 
 .landing-layout::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   background-image: url('../../assets/circuit-hero.svg');
   background-repeat: repeat;
@@ -209,11 +209,27 @@
    ======================================== */
 
 .dashboard-shell {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  padding: 0 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1200px) {
+  .dashboard-shell {
+    padding: 0 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .dashboard-shell {
+    max-width: 1600px;
+  }
 }
 
 .dashboard-shell-header {
@@ -318,6 +334,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce), (max-width: 900px) {
+  .workspace-topbar {
+    backdrop-filter: none;
+  }
 }
 
 .workspace-avatar {

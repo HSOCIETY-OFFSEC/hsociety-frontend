@@ -24,12 +24,14 @@ const HeroSection = ({ content }) => {
       </div>
       <div className="hero-container">
         <div className="hero-content">
-          <div className="hero-badge">
-            <span className="badge-dot"></span>
-            {badge}
+          <div className="hero-top-row">
+            <div className="hero-badge">
+              <span className="badge-dot"></span>
+              {badge}
+            </div>
+            
+            <h1 className="hero-title">{title}</h1>
           </div>
-          
-          <h1 className="hero-title">{title}</h1>
           
           <p className="hero-description">{description}</p>
 
@@ -78,7 +80,6 @@ const HeroSection = ({ content }) => {
             ))} 
           </div>
         </div>
-{/**====================================== */}
 
         <div className="hero-visual">
           <Logo size="xlarge" className="hero-logo-minimal" />

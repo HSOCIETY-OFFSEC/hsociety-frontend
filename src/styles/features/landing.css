@@ -118,6 +118,12 @@
   transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
+@media (prefers-reduced-motion: reduce), (max-width: 900px) {
+  .landing-nav {
+    backdrop-filter: none;
+  }
+}
+
 .nav-mobile-panel button:hover {
   color: var(--primary-color);
   border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
