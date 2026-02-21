@@ -1,49 +1,54 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { FiBookmark, FiCheckCircle, FiHash, FiHeart, FiMessageSquare, FiSend, FiStar, FiX } from 'react-icons/fi';
-import { FiBookOpen, FiBriefcase, FiFilter, FiImage, FiPlus, FiShield, FiTrendingUp, FiUsers } from 'react-icons/fi';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { FiCheckCircle, FiHash, FiMessageSquare, FiSend, FiUsers } from 'react-icons/fi';
+import { FiBookOpen, FiBriefcase, FiImage, FiPlus, FiShield, FiTrendingUp } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { useAuth } from '../../core/auth/AuthContext';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import BinaryLoader from '../../shared/components/ui/BinaryLoader';
 import {
-  createCommunityPost,
+  disconnectCommunitySocket,
+  getCommunityMessages,
   getCommunityOverview,
-  normalizeFeedPosts,
-  reactToPost,
-  savePost
+  joinRoom,
+  leaveRoom,
+  onReceiveMessage,
+  onTyping,
+  sendMessage,
+  sendTyping
 } from './community.service';
 import communityContent from '../../data/community.json';
 import '../../styles/features/community.css';
 
+const GROUP_WINDOW_MS = 5 * 60 * 1000;
+const MAX_MESSAGES = 200;
+
 const Community = () => {
   useScrollReveal();
   const { user } = useAuth();
-  const [tab, setTab] = useState('popular');
   const [overview, setOverview] = useState({
     stats: { learners: 0, questions: 0, answered: 0 },
     channels: [],
-    tags: [],
-    posts: []
+    tags: []
   });
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [postInput, setPostInput] = useState('');
+  const [messagesByRoom, setMessagesByRoom] = useState({});
+  const [unreadByRoom, setUnreadByRoom] = useState({});
+  const [typingByRoom, setTypingByRoom] = useState({});
+  const [chatLoading, setChatLoading] = useState(true);
+  const [messageInput, setMessageInput] = useState('');
   const [error, setError] = useState('');
-  const [activeChannelId, setActiveChannelId] = useState(null);
+  const [activeChannelId, setActiveChannelId] = useState('general');
   const [activeTag, setActiveTag] = useState(null);
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const [filters, setFilters] = useState({
-    questions: true,
-    wins: true,
-    modules: true
-  });
-  const [composerTool, setComposerTool] = useState(null);
-  const [replyOpenId, setReplyOpenId] = useState(null);
-  const [replyDrafts, setReplyDrafts] = useState({});
-  const [actionPanel, setActionPanel] = useState(null);
   const role = user?.role || 'student';
   const isCorporate = role === 'corporate';
+  const typingTimeoutRef = useRef(null);
+  const isTypingRef = useRef(false);
+  const activeRoomRef = useRef(activeChannelId);
+
+  useEffect(() => {
+    activeRoomRef.current = activeChannelId;
+  }, [activeChannelId]);
 
   const iconMap = useMemo(() => ({
     FiBookOpen,
@@ -52,28 +57,41 @@ const Community = () => {
     FiUsers,
     FiImage,
     FiTrendingUp,
-    FiPlus,
-    FiBookmark,
-    FiFilter
+    FiPlus
   }), []);
 
   const cta = useMemo(() => (
     isCorporate ? communityContent.hero.cta.corporate : communityContent.hero.cta.student
   ), [isCorporate]);
 
+  const resolveRoomName = (roomId) => {
+    if (roomId === 'general') return 'General';
+    return overview.channels.find((channel) => channel.id === roomId)?.name || 'Community Chat';
+  };
+
+  const addMessageToRoom = (room, message) => {
+    setMessagesByRoom((prev) => {
+      const current = prev[room] || [];
+      if (current.some((item) => item.id === message.id)) return prev;
+      const next = [...current, message].slice(-MAX_MESSAGES);
+      return { ...prev, [room]: next };
+    });
+  };
+
   useEffect(() => {
     let mounted = true;
     const loadOverview = async () => {
       setLoading(true);
       setError('');
-      const response = await getCommunityOverview({ role, feed: tab });
+      const response = await getCommunityOverview({ role, feed: 'popular' });
       if (!mounted) return;
       if (!response.success) {
         setError(response.error || communityContent.feed.errorFallback);
       } else {
         setOverview({
-          ...response.data,
-          posts: normalizeFeedPosts(response.data.posts || [])
+          stats: response.data.stats || { learners: 0, questions: 0, answered: 0 },
+          channels: response.data.channels || [],
+          tags: response.data.tags || []
         });
       }
       setLoading(false);
@@ -83,86 +101,152 @@ const Community = () => {
     return () => {
       mounted = false;
     };
-  }, [role, tab]);
+  }, [role]);
 
-  const handleCreatePost = async () => {
-    if (!postInput.trim() || submitting) return;
-    setSubmitting(true);
-    setError('');
-    const response = await createCommunityPost({ content: postInput, role });
-    if (!response.success) {
-      setError(response.error || 'Failed to create post.');
-      setSubmitting(false);
-      return;
-    }
+  useEffect(() => {
+    const unsubscribeMessage = onReceiveMessage((message) => {
+      if (!message?.room) return;
+      addMessageToRoom(message.room, message);
 
-    const normalized = normalizeFeedPosts([response.data])[0];
-    setOverview((prev) => ({
-      ...prev,
-      posts: [normalized, ...prev.posts]
-    }));
-    setPostInput('');
-    setSubmitting(false);
-  };
+      if (message.room !== activeRoomRef.current) {
+        setUnreadByRoom((prev) => ({
+          ...prev,
+          [message.room]: (prev[message.room] || 0) + 1
+        }));
+      }
+    });
 
-  const handleLikePost = async (postId) => {
-    setOverview((prev) => ({
-      ...prev,
-      posts: prev.posts.map((post) =>
-        post.id === postId ? { ...post, likes: post.likes + 1 } : post
-      )
-    }));
-    await reactToPost({ postId, reaction: 'like' });
-  };
+    const unsubscribeTyping = onTyping((payload) => {
+      const room = payload?.room;
+      if (!room) return;
+      setTypingByRoom((prev) => {
+        const current = new Map(Object.entries(prev[room] || {}));
+        if (payload?.isTyping) {
+          current.set(payload.userId || payload.username, payload.username || 'Community Member');
+        } else {
+          current.delete(payload.userId || payload.username);
+        }
+        const roomTyping = Object.fromEntries(current.entries());
+        return { ...prev, [room]: roomTyping };
+      });
+    });
 
-  const handleSavePost = async (postId, currentlySaved) => {
-    setOverview((prev) => ({
-      ...prev,
-      posts: prev.posts.map((post) =>
-        post.id === postId ? { ...post, isSaved: !currentlySaved } : post
-      )
-    }));
-    await savePost({ postId, saved: !currentlySaved });
-  };
+    return () => {
+      unsubscribeMessage();
+      unsubscribeTyping();
+      disconnectCommunitySocket();
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    const room = activeChannelId || 'general';
+
+    const bootstrapChat = async () => {
+      setChatLoading(true);
+      const response = await getCommunityMessages({ room, limit: 50 });
+      if (!mounted) return;
+      if (response.success) {
+        const ordered = (response.data?.messages || []).slice().reverse();
+        setMessagesByRoom((prev) => ({ ...prev, [room]: ordered }));
+      } else {
+        setError(response.error || 'Failed to load chat history.');
+      }
+      setChatLoading(false);
+      setUnreadByRoom((prev) => ({ ...prev, [room]: 0 }));
+    };
+
+    bootstrapChat();
+    joinRoom(room);
+
+    return () => {
+      mounted = false;
+      leaveRoom(room);
+    };
+  }, [activeChannelId]);
 
   const handleChannelClick = (channel) => {
-    setActiveChannelId((prev) => (prev === channel.id ? null : channel.id));
+    setActiveChannelId(channel.id);
   };
 
   const handleTagClick = (tag) => {
     setActiveTag((prev) => (prev === tag ? null : tag));
   };
 
-  const handleFilterToggle = (key) => {
-    setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
+  const handleSendMessage = () => {
+    const trimmed = messageInput.trim();
+    if (!trimmed || trimmed.length > 500) return;
+    sendMessage({ room: activeChannelId || 'general', content: trimmed });
+    setMessageInput('');
+    if (isTypingRef.current) {
+      sendTyping({ room: activeChannelId || 'general', isTyping: false });
+      isTypingRef.current = false;
+    }
   };
 
-  const handleComposerTool = (tool) => {
-    setComposerTool((prev) => (prev === tool ? null : tool));
+  const handleMessageChange = (value) => {
+    setMessageInput(value);
+    const room = activeChannelId || 'general';
+    const isTyping = value.trim().length > 0;
+
+    if (isTyping && !isTypingRef.current) {
+      sendTyping({ room, isTyping: true });
+      isTypingRef.current = true;
+    }
+
+    if (!isTyping && isTypingRef.current) {
+      sendTyping({ room, isTyping: false });
+      isTypingRef.current = false;
+    }
+
+    if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    if (isTyping) {
+      typingTimeoutRef.current = setTimeout(() => {
+        sendTyping({ room, isTyping: false });
+        isTypingRef.current = false;
+      }, 1200);
+    }
   };
 
-  const handleReplyToggle = (postId) => {
-    setReplyOpenId((prev) => (prev === postId ? null : postId));
+  const handleInputBlur = () => {
+    const room = activeChannelId || 'general';
+    if (isTypingRef.current) {
+      sendTyping({ room, isTyping: false });
+      isTypingRef.current = false;
+    }
   };
 
-  const handleReplyChange = (postId, value) => {
-    setReplyDrafts((prev) => ({ ...prev, [postId]: value }));
-  };
+  const roomId = activeChannelId || 'general';
+  const currentMessages = messagesByRoom[roomId] || [];
+  const typingUsers = Object.values(typingByRoom[roomId] || {}).filter(Boolean);
 
-  const handleSendReply = (postId) => {
-    const draft = replyDrafts[postId]?.trim();
-    if (!draft) return;
-    setReplyDrafts((prev) => ({ ...prev, [postId]: '' }));
-    setReplyOpenId(null);
-    setActionPanel({
-      title: communityContent.actions.replyQueuedTitle,
-      description: communityContent.actions.replyQueuedDescription
+  const groupedMessages = useMemo(() => {
+    const groups = [];
+    let currentGroup = null;
+
+    currentMessages.forEach((message) => {
+      const timestamp = message.createdAt ? new Date(message.createdAt).getTime() : 0;
+      const sameUser = currentGroup && currentGroup.userId === message.userId;
+      const closeInTime = currentGroup && Math.abs(timestamp - currentGroup.lastTimestamp) <= GROUP_WINDOW_MS;
+
+      if (currentGroup && sameUser && closeInTime) {
+        currentGroup.messages.push(message);
+        currentGroup.lastTimestamp = timestamp;
+      } else {
+        currentGroup = {
+          id: message.id,
+          userId: message.userId,
+          username: message.username,
+          timestamp,
+          lastTimestamp: timestamp,
+          messages: [message]
+        };
+        groups.push(currentGroup);
+      }
     });
-  };
 
-  const handleAction = (action) => {
-    setActionPanel(action);
-  };
+    return groups;
+  }, [currentMessages]);
 
   return (
     <div className="community-page">
@@ -178,10 +262,7 @@ const Community = () => {
             <Button
               variant="primary"
               size="large"
-              onClick={() => handleAction({
-                title: cta.title,
-                description: cta.subtitle
-              })}
+              onClick={() => {}}
             >
               {isCorporate ? <FiBriefcase size={18} /> : <FiBookOpen size={18} />}
               {cta.title}
@@ -208,6 +289,17 @@ const Community = () => {
             <Card padding="large" className="sidebar-card">
               <h3>{communityContent.sidebar.channelsTitle}</h3>
               <div className="sidebar-list">
+                <button
+                  type="button"
+                  className={activeChannelId === 'general' ? 'active' : ''}
+                  onClick={() => setActiveChannelId('general')}
+                >
+                  <FiHash size={16} />
+                  General
+                  {unreadByRoom.general > 0 && (
+                    <span className="room-badge">{unreadByRoom.general}</span>
+                  )}
+                </button>
                 {overview.channels.map((channel) => (
                   <button
                     key={channel.id}
@@ -216,6 +308,9 @@ const Community = () => {
                     onClick={() => handleChannelClick(channel)}
                   >
                     <FiHash size={16} /> {channel.name}
+                    {unreadByRoom[channel.id] > 0 && (
+                      <span className="room-badge">{unreadByRoom[channel.id]}</span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -235,10 +330,7 @@ const Community = () => {
                     <button
                       key={action.label}
                       type="button"
-                      onClick={() => handleAction({
-                        title: action.actionTitle,
-                        description: action.actionDescription
-                      })}
+                      onClick={() => {}}
                     >
                       {ActionIcon && <ActionIcon size={16} />} {action.label}
                     </button>
@@ -265,114 +357,14 @@ const Community = () => {
           </aside>
 
           <main className="community-feed">
-            <Card padding="large" className="post-creator reveal-on-scroll">
-              <div className="post-creator-header">
-                <div className="avatar-frame">
-                  <img
-                    src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80"
-                    alt="HSOCIETY member"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.style.opacity = '0';
-                    }}
-                  />
-                  <div className="avatar-fallback" aria-hidden="true"></div>
-                </div>
-                <input
-                  type="text"
-                  value={postInput}
-                  onChange={(e) => setPostInput(e.target.value)}
-                  placeholder={isCorporate
-                    ? communityContent.composer.corporatePlaceholder
-                    : communityContent.composer.studentPlaceholder}
-                />
-              </div>
-              <div className="post-creator-actions">
-                <div className="post-creator-tools">
-                  {communityContent.composer.tools.map((tool) => {
-                    const ToolIcon = iconMap[tool.icon];
-                    return (
-                      <button
-                        key={tool.key}
-                        type="button"
-                        className={composerTool === tool.key ? 'active' : ''}
-                        onClick={() => handleComposerTool(tool.key)}
-                      >
-                        {ToolIcon && <ToolIcon size={16} />} {tool.label}
-                      </button>
-                    );
-                  })}
-                </div>
-                <Button
-                  className='post-btn'
-                  variant="secondary"
-                  size="small"
-                  onClick={handleCreatePost}
-                  disabled={submitting || !postInput.trim()}
-                >
-                  <FiSend size={16} />
-                  {submitting ? communityContent.composer.postingLabel : communityContent.composer.postLabel}
-                </Button>
-              </div>
-              {composerTool && (
-                <div className="composer-panel">
-                  {(() => {
-                    const tool = communityContent.composer.tools.find((item) => item.key === composerTool);
-                    if (!tool) return null;
-                    return (
-                      <>
-                        <h4>{tool.panelTitle}</h4>
-                        <p>{tool.panelDescription}</p>
-                      </>
-                    );
-                  })()}
-                  <button
-                    type="button"
-                    onClick={() => handleAction({
-                      title: communityContent.composer.tools.find((item) => item.key === composerTool)?.actionTitle,
-                      description: communityContent.composer.tools.find((item) => item.key === composerTool)?.actionDescription
-                    })}
-                  >
-                    {communityContent.composer.tools.find((item) => item.key === composerTool)?.actionLabel}
-                  </button>
-                </div>
-              )}
-            </Card>
-
-            <div className="feed-tabs reveal-on-scroll">
-              {communityContent.tabs.map((tabItem) => {
-                const TabIcon = iconMap[tabItem.icon];
-                const isFilterTab = tabItem.key === 'filters';
-                const isActive = isFilterTab ? filtersOpen : tab === tabItem.key;
-                return (
-                  <button
-                    key={tabItem.key}
-                    type="button"
-                    className={isActive ? 'active' : ''}
-                    onClick={() => {
-                      if (isFilterTab) {
-                        setFiltersOpen((prev) => !prev);
-                      } else {
-                        setTab(tabItem.key);
-                      }
-                    }}
-                  >
-                    {TabIcon && <TabIcon size={16} />}
-                    {tabItem.label}
-                  </button>
-                );
-              })}
-            </div>
-
             {(activeChannelId || activeTag) && (
               <div className="active-filters">
                 {activeChannelId && (
                   <button
                     type="button"
-                    onClick={() => setActiveChannelId(null)}
+                    onClick={() => setActiveChannelId('general')}
                   >
-                    {communityContent.activeFilters.channelPrefix} {overview.channels.find((channel) => channel.id === activeChannelId)?.name || 'Selected'}
-                    <FiX size={14} />
+                    {communityContent.activeFilters.channelPrefix} {resolveRoomName(activeChannelId)}
                   </button>
                 )}
                 {activeTag && (
@@ -381,134 +373,91 @@ const Community = () => {
                     onClick={() => setActiveTag(null)}
                   >
                     {communityContent.activeFilters.tagPrefix} {activeTag}
-                    <FiX size={14} />
                   </button>
                 )}
               </div>
             )}
 
-            {filtersOpen && (
-              <div className="filters-panel">
-                <h4>{communityContent.filters.title}</h4>
-                <div className="filters-grid">
-                  {communityContent.filters.options.map((item) => (
-                    <label key={item.key}>
-                      <input
-                        type="checkbox"
-                        checked={filters[item.key]}
-                        onChange={() => handleFilterToggle(item.key)}
-                      />
-                      <span>{item.label}</span>
-                    </label>
+            <Card padding="large" className="chat-panel reveal-on-scroll">
+              <div className="chat-header">
+                <div>
+                  <p className="chat-kicker">Live Room</p>
+                  <h3>{resolveRoomName(activeChannelId)}</h3>
+                </div>
+                <span className="chat-badge">Secure Socket</span>
+              </div>
+
+              {error && (
+                <div className="chat-alert">
+                  <p>{error}</p>
+                </div>
+              )}
+
+              {chatLoading || loading ? (
+                <div className="chat-loading">
+                  <BinaryLoader size="sm" message={communityContent.feed.loading} />
+                </div>
+              ) : (
+                <div className="chat-messages">
+                  {groupedMessages.length === 0 && (
+                    <p className="chat-empty">No messages yet. Start the conversation.</p>
+                  )}
+                  {groupedMessages.map((group) => (
+                    <div key={group.id} className="chat-group">
+                      <div className="chat-avatar">
+                        {group.username?.charAt(0)?.toUpperCase() || 'C'}
+                      </div>
+                      <div className="chat-body">
+                        <div className="chat-meta">
+                          <span className="chat-author">{group.username || 'Community Member'}</span>
+                          <span className="chat-time">
+                            {group.timestamp
+                              ? new Date(group.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                              : ''}
+                          </span>
+                        </div>
+                        <div className="chat-group-messages">
+                          {group.messages.map((message) => (
+                            <p key={message.id}>{message.content}</p>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => handleAction({
-                    title: communityContent.filters.savedTitle,
-                    description: communityContent.filters.savedDescription
-                  })}
-                >
-                  {communityContent.filters.saveLabel}
-                </button>
-              </div>
-            )}
+              )}
 
-            {actionPanel && (
-              <Card padding="large" className="action-panel-inline">
-                <div className="action-panel-header">
-                  <h3>{actionPanel.title}</h3>
-                  <button type="button" onClick={() => setActionPanel(null)}>
-                    <FiX size={16} />
-                  </button>
+              {typingUsers.length > 0 && (
+                <div className="chat-typing">
+                  <span className="typing-dot"></span>
+                  <span className="typing-text">
+                    {typingUsers.slice(0, 2).join(', ')}{typingUsers.length > 2 ? ' and others' : ''} typing...
+                  </span>
                 </div>
-                <p>{actionPanel.description}</p>
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => setActionPanel(null)}
-                >
-                  {communityContent.actions.clearLabel}
-                </Button>
-              </Card>
-            )}
+              )}
 
-            <div className="post-list">
-              {error && (
-                <Card padding="large" className="post-card">
-                  <p>{error}</p>
-                </Card>
-              )}
-              {loading && (
-                <Card padding="large" className="post-card">
-                  <BinaryLoader size="sm" message={communityContent.feed.loading} />
-                </Card>
-              )}
-              {!loading && overview.posts.length === 0 && !error && (
-                <Card padding="large" className="post-card">
-                  <p>{communityContent.feed.empty}</p>
-                </Card>
-              )}
-              {!loading && overview.posts.map((post) => (
-                <Card key={post.id} padding="large" className="post-card reveal-on-scroll">
-                  <div className="post-header">
-                    <div className="avatar-frame">
-                      <img
-                        src={post.avatar}
-                        alt={post.author}
-                        loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.style.opacity = '0';
-                        }}
-                      />
-                      <div className="avatar-fallback" aria-hidden="true"></div>
-                    </div>
-                    <div>
-                      <h4>{post.author}</h4>
-                      <span>{post.role} · {post.time}</span>
-                    </div>
-                  </div>
-                  <h3>{post.title}</h3>
-                  <p>{post.body}</p>
-                  <div className="post-tags">
-                    {post.tags.map((tag) => (
-                      <button
-                        key={tag}
-                        type="button"
-                        className={activeTag === tag ? 'active' : ''}
-                        onClick={() => handleTagClick(tag)}
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="post-actions">
-                    <button type="button" onClick={() => handleLikePost(post.id)}>
-                      <FiHeart size={16} /> {post.likes}
-                    </button>
-                    <button type="button" onClick={() => handleReplyToggle(post.id)}>
-                      <FiMessageSquare size={16} /> {post.replies}
-                    </button>
-                    <button type="button" onClick={() => handleSavePost(post.id, post.isSaved)}>
-                      <FiStar size={16} /> {post.isSaved ? 'Saved' : 'Save'}
-                    </button>
-                  </div>
-                  {replyOpenId === post.id && (
-                    <div className="reply-box">
-                      <input
-                        type="text"
-                        placeholder={communityContent.reply.placeholder}
-                        value={replyDrafts[post.id] || ''}
-                        onChange={(e) => handleReplyChange(post.id, e.target.value)}
-                      />
-                      <button type="button" onClick={() => handleSendReply(post.id)}>
-                        {communityContent.reply.buttonLabel}
-                      </button>
-                    </div>
-                  )}
-                </Card>
-              ))}
-            </div>
+              <div className="chat-composer">
+                <input
+                  type="text"
+                  value={messageInput}
+                  onChange={(e) => handleMessageChange(e.target.value)}
+                  onBlur={handleInputBlur}
+                  placeholder="Type your message..."
+                  maxLength={500}
+                />
+                <Button
+                  className="chat-send"
+                  variant="secondary"
+                  size="small"
+                  onClick={handleSendMessage}
+                  disabled={!messageInput.trim() || messageInput.trim().length > 500}
+                >
+                  <FiSend size={16} />
+                  Send
+                </Button>
+              </div>
+              <p className="chat-hint">Max 500 characters. Messages are shared instantly.</p>
+            </Card>
           </main>
 
           <aside className="community-right reveal-on-scroll">
@@ -522,37 +471,11 @@ const Community = () => {
               <Button
                 variant="ghost"
                 size="small"
-                onClick={() => handleAction({
-                  title: isCorporate
-                    ? communityContent.rightSidebar.corporate.actionTitle
-                    : communityContent.rightSidebar.student.actionTitle,
-                  description: isCorporate
-                    ? communityContent.rightSidebar.corporate.actionDescription
-                    : communityContent.rightSidebar.student.actionDescription
-                })}
+                onClick={() => {}}
               >
                 {isCorporate ? communityContent.rightSidebar.corporate.button : communityContent.rightSidebar.student.button}
               </Button>
             </Card>
-
-            {actionPanel && (
-              <Card padding="large" className="sidebar-card action-panel">
-                <div className="action-panel-header">
-                  <h3>{actionPanel.title}</h3>
-                  <button type="button" onClick={() => setActionPanel(null)}>
-                    <FiX size={16} />
-                  </button>
-                </div>
-                <p>{actionPanel.description}</p>
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => setActionPanel(null)}
-                >
-                  {communityContent.actions.clearLabel}
-                </Button>
-              </Card>
-            )}
           </aside>
         </div>
       </div>

@@ -129,6 +129,7 @@ export const API_ENDPOINTS = {
   COMMUNITY: {
     OVERVIEW: '/community/overview',
     POSTS: '/community/posts',
+    MESSAGES: '/community/messages',
     POST_BY_ID: '/community/posts/:id',
     POST_REACT: '/community/posts/:id/react',
     POST_SAVE: '/community/posts/:id/save',

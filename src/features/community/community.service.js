@@ -7,6 +7,9 @@ import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
 import { buildEndpoint } from '../../config/api.config';
 import { buildCreatePostDTO, normalizeCommunityOverview, normalizePosts } from './community.contract';
+import { io } from 'socket.io-client';
+import { envConfig } from '../../config/env.config';
+import { sessionManager } from '../../core/auth/session.manager';
 
 const mockPostsByFeed = {
   popular: [
@@ -57,6 +60,43 @@ const getMockOverview = (role, feed) => {
   return normalizeCommunityOverview({ posts }, role);
 };
 
+const resolveSocketBaseURL = () => {
+  const baseURL = envConfig.api.baseURL;
+  if (!baseURL || baseURL.startsWith('/')) {
+    return typeof window !== 'undefined' ? window.location.origin : '';
+  }
+
+  try {
+    const parsed = new URL(baseURL);
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch (_err) {
+    return baseURL;
+  }
+};
+
+let socketInstance = null;
+
+const getSocket = () => {
+  if (!socketInstance) {
+    socketInstance = io(resolveSocketBaseURL(), {
+      autoConnect: false,
+      auth: {
+        token: sessionManager.getToken()
+      }
+    });
+  }
+  return socketInstance;
+};
+
+const connectSocket = () => {
+  const socket = getSocket();
+  socket.auth = { token: sessionManager.getToken() };
+  if (!socket.connected) {
+    socket.connect();
+  }
+  return socket;
+};
+
 export const getCommunityOverview = async ({ role = 'student', feed = 'popular' } = {}) => {
   const response = await apiClient.get(`${API_ENDPOINTS.COMMUNITY.OVERVIEW}?role=${role}&feed=${feed}`);
   if (response.success) {
@@ -78,6 +118,60 @@ export const getCommunityOverview = async ({ role = 'student', feed = 'popular' 
     success: false,
     error: response.error || 'Failed to load community overview'
   };
+};
+
+export const getCommunityMessages = async ({ room = 'general', limit = 50 } = {}) => {
+  const query = `?room=${encodeURIComponent(room)}&limit=${encodeURIComponent(limit)}`;
+  const response = await apiClient.get(`${API_ENDPOINTS.COMMUNITY.MESSAGES}${query}`);
+  if (response.success) {
+    return {
+      success: true,
+      data: response.data
+    };
+  }
+
+  return {
+    success: false,
+    error: response.error || 'Failed to load community messages'
+  };
+};
+
+export const joinRoom = (room = 'general') => {
+  const socket = connectSocket();
+  socket.emit('joinRoom', room);
+};
+
+export const leaveRoom = (room = 'general') => {
+  const socket = connectSocket();
+  socket.emit('leaveRoom', room);
+};
+
+export const sendMessage = ({ room = 'general', content }) => {
+  const socket = connectSocket();
+  socket.emit('sendMessage', { room, content });
+};
+
+export const sendTyping = ({ room = 'general', isTyping }) => {
+  const socket = connectSocket();
+  socket.emit('typing', { room, isTyping: Boolean(isTyping) });
+};
+
+export const onReceiveMessage = (callback) => {
+  const socket = connectSocket();
+  socket.on('receiveMessage', callback);
+  return () => socket.off('receiveMessage', callback);
+};
+
+export const onTyping = (callback) => {
+  const socket = connectSocket();
+  socket.on('typing', callback);
+  return () => socket.off('typing', callback);
+};
+
+export const disconnectCommunitySocket = () => {
+  if (socketInstance) {
+    socketInstance.disconnect();
+  }
 };
 
 export const createCommunityPost = async ({ content, role }) => {
@@ -137,6 +231,14 @@ export const normalizeFeedPosts = (posts) => normalizePosts(posts);
 
 export default {
   getCommunityOverview,
+  getCommunityMessages,
+  joinRoom,
+  leaveRoom,
+  sendMessage,
+  sendTyping,
+  onReceiveMessage,
+  onTyping,
+  disconnectCommunitySocket,
   createCommunityPost,
   reactToPost,
   savePost,
