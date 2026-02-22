@@ -237,8 +237,11 @@ const AppRouter = () => {
           </Route>
 
           {/* Public pages - about, team, blog, etc. */}
-          <Route element={<PublicLayout />}>
-            <Route path="feedback" element={<Feedback />} />
+          <Route element={<PublicLayout />}> 
+
+          {/**AN error occured in tis line uncomment the feed back route when you are done with codex improvements  */}
+            {/* <Route path="feedback" element={<Feedback />} />
+   */}
             <Route path="about" element={<About />} />
             <Route path="team" element={<Team />} />
             <Route path="developer" element={<Developer />} />
