@@ -1,12 +1,12 @@
 import React from 'react';
-import { FiAlertTriangle, FiFileText, FiShield } from 'react-icons/fi';
+import { FiAlertTriangle, FiFileText, FiShield, FiTool } from 'react-icons/fi';
 import Card from '../../../../shared/components/ui/Card';
 import { getRelativeTime } from '../../../../utils/helpers';
 
 const iconMap = {
-  pentest: FiShield,
-  audit: FiFileText,
-  report: FiAlertTriangle
+  engagement: FiShield,
+  report: FiFileText,
+  remediation: FiTool
 };
 
 const ActivityList = ({ activities = [], onViewAll, getStatusColor, getStatusLabel }) => (

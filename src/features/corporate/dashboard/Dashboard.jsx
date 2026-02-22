@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiFileText, FiMessageSquare, FiShield } from 'react-icons/fi';
+import { FiFileText, FiLayers, FiShield, FiTool } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import Card from '../../../shared/components/ui/Card';
@@ -61,42 +61,41 @@ const Dashboard = () => {
 
   const quickActions = [
     {
-      title: 'Request Pentest',
-      description: 'Schedule a new penetration testing engagement',
+      title: 'Request Engagement',
+      description: 'Start a new penetration testing engagement with our delivery team.',
       icon: FiShield,
-      path: '/pentest'
+      path: '/engagements'
     },
     {
-      title: 'View Audits',
-      description: 'Access your security audit reports',
+      title: 'Download Reports',
+      description: 'Get the latest finalized and draft reports for every engagement.',
       icon: FiFileText,
-      path: '/audits'
+      path: '/reports'
     },
     {
-      title: 'Submit Feedback',
-      description: 'Share your experience or report issues',
-      icon: FiMessageSquare,
-      path: '/feedback'
+      title: 'Track Remediation',
+      description: 'Review remediation progress and open vulnerabilities in one place.',
+      icon: FiTool,
+      path: '/remediation'
+    },
+    {
+      title: 'Manage Assets',
+      description: 'Update domains, IP ranges, applications, and cloud environments.',
+      icon: FiLayers,
+      path: '/assets'
     }
   ];
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'completed': return 'var(--text-primary)';
-      case 'in-progress': return 'var(--text-secondary)';
-      case 'pending': return 'var(--text-tertiary)';
-      default: return 'var(--text-tertiary)';
-    }
+  const statusMap = {
+    recon: { label: 'Recon', color: 'var(--primary-color)' },
+    exploitation: { label: 'Exploitation', color: 'var(--text-secondary)' },
+    reporting: { label: 'Reporting', color: 'var(--text-primary)' },
+    retest: { label: 'Retest', color: 'var(--text-secondary)' },
+    completed: { label: 'Completed', color: 'var(--text-primary)' }
   };
 
-  const getStatusLabel = (status) => {
-    switch (status) {
-      case 'completed': return 'Completed';
-      case 'in-progress': return 'In Progress';
-      case 'pending': return 'Pending';
-      default: return 'Unknown';
-    }
-  };
+  const getStatusColor = (status) => statusMap[status]?.color || 'var(--text-tertiary)';
+  const getStatusLabel = (status) => statusMap[status]?.label || 'Pending';
 
   if (loading) {
     return (
@@ -195,7 +194,7 @@ const Dashboard = () => {
           <QuickActions actions={quickActions} onAction={(action) => navigate(action.path)} />
           <ActivityList
             activities={recentActivities}
-            onViewAll={() => navigate('/audits')}
+            onViewAll={() => navigate('/engagements')}
             getStatusColor={getStatusColor}
             getStatusLabel={getStatusLabel}
           />

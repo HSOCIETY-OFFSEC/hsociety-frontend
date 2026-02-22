@@ -24,11 +24,14 @@ const WorkspaceLayout = () => {
       { path: '/student-learning', title: 'Learning Path' },
       { path: '/student-learning/module', title: 'Lesson' },
       { path: '/corporate-dashboard', title: 'Corporate Dashboard' },
-      { path: '/audits', title: 'Audits' },
+      { path: '/engagements', title: 'Engagements' },
+      { path: '/reports', title: 'Reports' },
+      { path: '/remediation', title: 'Remediation' },
+      { path: '/assets', title: 'Assets' },
+      { path: '/billing', title: 'Billing' },
       { path: '/pentest', title: 'Pentest' },
       { path: '/pentester', title: 'Pentester Dashboard' },
       { path: '/mr-robot', title: 'Admin Dashboard' },
-      { path: '/community', title: 'Community' },
       { path: '/settings', title: 'Account Settings' }
     ];
     const match = titleMap.find((entry) => pathname.startsWith(entry.path));

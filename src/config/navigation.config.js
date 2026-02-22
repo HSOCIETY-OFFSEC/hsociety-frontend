@@ -7,9 +7,11 @@
 import {
   FiBarChart2,
   FiBriefcase,
+  FiCreditCard,
   FiFileText,
   FiMessageSquare,
   FiShield,
+  FiTool,
   FiUsers,
   FiCode,
   FiBookOpen,
@@ -23,27 +25,25 @@ export const NAV_LINKS = {
   workspace: {
     corporate: [
       { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
-      { path: '/pentest', label: 'Pentest', icon: FiShield },
-      { path: '/audits', label: 'Audits', icon: FiFileText },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+      { path: '/engagements', label: 'Engagements', icon: FiShield },
+      { path: '/reports', label: 'Reports', icon: FiFileText },
+      { path: '/remediation', label: 'Remediation', icon: FiTool },
+      { path: '/assets', label: 'Assets', icon: FiLayers },
+      { path: '/billing', label: 'Billing', icon: FiCreditCard }
     ],
     pentester: [
       { path: '/pentester', label: 'Assignments', icon: FiShield },
       { path: '/pentest', label: 'Pentest', icon: FiBarChart2 },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     admin: [
       { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+      { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },
@@ -58,8 +58,7 @@ export const NAV_LINKS = {
     { path: '/careers', label: 'Careers', icon: FiBriefcase },
     { path: '/methodology', label: 'Methodology', icon: FiShield },
     { path: '/case-studies', label: 'Case Studies', icon: FiFileText },
-    { path: '/blog', label: 'Field Notes', icon: FiMessageSquare },
-    { path: '/feedback', label: 'Contact', icon: FiMessageSquare }
+    { path: '/blog', label: 'Field Notes', icon: FiMessageSquare }
   ],
 
   /** Desktop quick links when authenticated */
@@ -67,10 +66,11 @@ export const NAV_LINKS = {
     corporate: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
-      { path: '/pentest', label: 'Pentest', icon: FiShield },
-      { path: '/audits', label: 'Audits', icon: FiFileText },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
+      { path: '/engagements', label: 'Engagements', icon: FiShield },
+      { path: '/reports', label: 'Reports', icon: FiFileText },
+      { path: '/remediation', label: 'Remediation', icon: FiTool },
+      { path: '/assets', label: 'Assets', icon: FiLayers },
+      { path: '/billing', label: 'Billing', icon: FiCreditCard },
       { path: '/about', label: 'About Us', icon: FiUsers },
       { path: '/team', label: 'Meet the Team', icon: FiUsers },
       { path: '/developer', label: 'Meet the Developer', icon: FiCode }
@@ -79,22 +79,17 @@ export const NAV_LINKS = {
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/pentester', label: 'Assignments', icon: FiBarChart2 },
       { path: '/pentest', label: 'Pentest', icon: FiShield },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     admin: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare }
+      { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/feedback', label: 'Feedback', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },

@@ -67,10 +67,6 @@ const FooterSection = () => (
             <FiShield size={16} />
             Penetration Testing
           </a>
-          <a href="/audits">
-            <FiFileText size={16} />
-            Security Audits
-          </a>
           <a href="/pentest">
             <FiTarget size={16} />
             Red Team Ops
@@ -91,10 +87,6 @@ const FooterSection = () => (
             <FiUsers size={16} />
             Meet the Team
           </a>
-          <a href="/community">
-            <FiMessageSquare size={16} />
-            Community
-          </a>
           <a href="/student-dashboard">
             <FiTerminal size={16} />
             Student Dashboard
@@ -110,10 +102,6 @@ const FooterSection = () => (
           <a href="/careers">
             <FiClipboard size={16} />
             Careers & Opportunities
-          </a>
-          <a href="/community">
-            <FiZap size={16} />
-            Community
           </a>
         </div>
 

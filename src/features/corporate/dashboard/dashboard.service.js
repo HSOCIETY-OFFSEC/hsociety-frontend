@@ -12,37 +12,45 @@ import {
 } from './dashboard.contract';
 
 const mockStats = {
-  activePentests: 3,
-  completedAudits: 12,
-  pendingReports: 2,
-  vulnerabilitiesFound: 47,
-  remediationRate: 68
+  activeEngagements: 4,
+  completedEngagements: 18,
+  pendingReports: 3,
+  vulnerabilitiesFound: 62,
+  remediationProgress: 72
 };
 
 const mockRecentActivity = [
   {
     id: '1',
-    type: 'pentest',
-    title: 'Web Application Pentest',
-    status: 'in-progress',
+    type: 'engagement',
+    title: 'Enterprise Web Application',
+    status: 'exploitation',
     date: Date.now() - (2 * 24 * 60 * 60 * 1000),
     icon: 'shield'
   },
   {
     id: '2',
-    type: 'audit',
-    title: 'Security Audit Report',
-    status: 'completed',
-    date: Date.now() - (5 * 24 * 60 * 60 * 1000),
+    type: 'report',
+    title: 'Secure API Report',
+    status: 'reporting',
+    date: Date.now() - (4 * 24 * 60 * 60 * 1000),
     icon: 'file'
   },
   {
     id: '3',
-    type: 'report',
-    title: 'Vulnerability Assessment',
-    status: 'pending',
-    date: Date.now() - (7 * 24 * 60 * 60 * 1000),
-    icon: 'alert'
+    type: 'engagement',
+    title: 'Cloud Infrastructure',
+    status: 'recon',
+    date: Date.now() - (6 * 24 * 60 * 60 * 1000),
+    icon: 'target'
+  },
+  {
+    id: '4',
+    type: 'remediation',
+    title: 'Remediation Playbook',
+    status: 'completed',
+    date: Date.now() - (9 * 24 * 60 * 60 * 1000),
+    icon: 'tool'
   }
 ];
 

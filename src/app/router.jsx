@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
-import AppLayout from '../shared/components/layout/AppLayout';
 import WorkspaceLayout from '../shared/components/layout/WorkspaceLayout';
 import AuthLayout from '../shared/components/layout/AuthLayout';
 import LandingLayout from '../shared/components/layout/LandingLayout';
@@ -13,14 +12,16 @@ import RouteEffects from '../shared/components/layout/RouteEffects';
 const Login = React.lazy(() => import('../features/auth/Login'));
 const Register = React.lazy(() => import('../features/auth/Register'));
 const Dashboard = React.lazy(() => import('../features/corporate/dashboard/Dashboard'));
-const Audits = React.lazy(() => import('../features/corporate/audits/Audits'));
 const Pentest = React.lazy(() => import('../features/corporate/pentest/Pentest'));
-const Feedback = React.lazy(() => import('../features/feedback/Feedback'));
+const Engagements = React.lazy(() => import('../features/corporate/engagements/Engagements'));
+const Reports = React.lazy(() => import('../features/corporate/reports/Reports'));
+const Remediation = React.lazy(() => import('../features/corporate/remediation/Remediation'));
+const Assets = React.lazy(() => import('../features/corporate/assets/Assets'));
+const Billing = React.lazy(() => import('../features/corporate/billing/Billing'));
 const Landing = React.lazy(() => import('../features/landing/Landing'));
 const About = React.lazy(() => import('../features/about/About'));
 const Team = React.lazy(() => import('../features/team/Team'));
 const Developer = React.lazy(() => import('../features/developer/Developer'));
-const Community = React.lazy(() => import('../features/community/Community'));
 const StudentDashboard = React.lazy(() => import('../features/student/StudentDashboard'));
 const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
@@ -138,17 +139,49 @@ const AppRouter = () => {
               element={<Navigate to="/corporate-dashboard" replace />}
             />
             <Route
-              path="audits"
+              path="engagements"
               element={
                 <RoleRoute allowedRoles={['corporate']}>
-                  <Audits />
+                  <Engagements />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="reports"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Reports />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="remediation"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Remediation />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="assets"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Assets />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="billing"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <Billing />
                 </RoleRoute>
               }
             />
             <Route
               path="pentest"
               element={
-                <RoleRoute allowedRoles={['corporate', 'pentester']}>
+                <RoleRoute allowedRoles={['pentester']}>
                   <Pentest />
                 </RoleRoute>
               }
@@ -198,14 +231,6 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student', 'pentester', 'corporate']}>
                   <AccountSettings />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="community"
-              element={
-                <RoleRoute allowedRoles={['student', 'pentester', 'corporate', 'admin']}>
-                  <Community />
                 </RoleRoute>
               }
             />

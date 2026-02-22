@@ -107,15 +107,37 @@ export const API_ENDPOINTS = {
     REPORTS: '/pentest/:id/reports'
   },
 
-  // Audits
-  AUDITS: {
-    LIST: '/audits',
-    CREATE: '/audits',
-    GET: '/audits/:id',
-    UPDATE: '/audits/:id',
-    DELETE: '/audits/:id',
-    DOWNLOAD: '/audits/:id/download',
-    HISTORY: '/audits/:id/history'
+  // Engagements
+  ENGAGEMENTS: {
+    LIST: '/engagements',
+    REQUEST: '/engagements/request'
+  },
+
+  // Reports
+  REPORTS: {
+    LIST: '/reports',
+    DOWNLOAD: '/reports/:id/download'
+  },
+
+  // Remediation
+  REMEDIATION: {
+    SUMMARY: '/remediation/summary',
+    REPORTS: '/remediation/reports'
+  },
+
+  // Assets
+  ASSETS: {
+    LIST: '/assets',
+    CREATE: '/assets',
+    UPDATE: '/assets/:id',
+    DELETE: '/assets/:id'
+  },
+
+  // Billing
+  BILLING: {
+    INVOICES: '/billing/invoices',
+    AGREEMENTS: '/billing/agreements',
+    DOWNLOAD: '/billing/invoices/:id/download'
   },
 
   // Feedback

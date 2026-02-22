@@ -21,17 +21,16 @@ const Sidebar = () => {
     ? 'admin'
     : path.startsWith('/pentester')
     ? 'pentester'
-    : path.startsWith('/corporate-dashboard') || path.startsWith('/pentest') || path.startsWith('/audits')
+    : path.startsWith('/corporate-dashboard') ||
+      path.startsWith('/engagements') ||
+      path.startsWith('/reports') ||
+      path.startsWith('/remediation') ||
+      path.startsWith('/assets') ||
+      path.startsWith('/billing')
     ? 'corporate'
     : null;
   const resolvedRole = routeRole || role || 'student';
   const links = getSidebarLinks(true, resolvedRole);
-  const isStudent = resolvedRole === 'student';
-  const feedbackLink = links.find((link) => link.path === '/feedback');
-  const mainLinks = isStudent && feedbackLink
-    ? links.filter((link) => link.path !== '/feedback')
-    : links;
-
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -48,7 +47,7 @@ const Sidebar = () => {
         <div>
           <p className="app-sidebar-section-title">Navigation</p>
           <div className="app-sidebar-links">
-            {mainLinks.map((link) => (
+            {links.map((link) => (
               <button
                 key={link.path}
                 type="button"
@@ -65,18 +64,6 @@ const Sidebar = () => {
         </div>
 
         <div className="app-sidebar-footer">
-          {isStudent && feedbackLink && (
-            <button
-              type="button"
-              className={`app-sidebar-link ${isActive(feedbackLink.path) ? 'active' : ''}`}
-              onClick={() => navigate(feedbackLink.path)}
-            >
-              <span style={{ display: 'inline-flex' }}>
-                <feedbackLink.icon size={18} />
-              </span>
-              <span>{feedbackLink.label}</span>
-            </button>
-          )}
           <ThemeToggle />
         </div>
       </div>

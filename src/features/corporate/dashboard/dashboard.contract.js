@@ -4,11 +4,11 @@
  */
 
 export const normalizeDashboardStats = (stats = {}) => ({
-  activePentests: Number(stats.activePentests || 0),
-  completedAudits: Number(stats.completedAudits || 0),
+  activeEngagements: Number(stats.activeEngagements || 0),
+  completedEngagements: Number(stats.completedEngagements || 0),
   pendingReports: Number(stats.pendingReports || 0),
   vulnerabilitiesFound: Number(stats.vulnerabilitiesFound || 0),
-  remediationRate: Number(stats.remediationRate || 0)
+  remediationProgress: Number(stats.remediationProgress || 0)
 });
 
 export const normalizeActivityItem = (activity = {}) => ({

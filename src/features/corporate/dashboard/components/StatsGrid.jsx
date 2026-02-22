@@ -1,17 +1,17 @@
 import React from 'react';
-import { FiAlertTriangle, FiFileText, FiShield } from 'react-icons/fi';
+import { FiAlertTriangle, FiActivity, FiCheckCircle, FiFileText, FiShield } from 'react-icons/fi';
 import Card from '../../../../shared/components/ui/Card';
 
 const statConfig = [
   {
-    key: 'activePentests',
-    label: 'Active Pentests',
+    key: 'activeEngagements',
+    label: 'Active Engagements',
     icon: FiShield
   },
   {
-    key: 'completedAudits',
-    label: 'Completed Audits',
-    icon: FiFileText
+    key: 'completedEngagements',
+    label: 'Completed Engagements',
+    icon: FiCheckCircle
   },
   {
     key: 'pendingReports',
@@ -22,6 +22,12 @@ const statConfig = [
     key: 'vulnerabilitiesFound',
     label: 'Vulnerabilities Found',
     icon: FiAlertTriangle
+  },
+  {
+    key: 'remediationProgress',
+    label: 'Remediation Progress (%)',
+    icon: FiActivity,
+    suffix: '%'
   }
 ];
 
@@ -41,7 +47,10 @@ const StatsGrid = ({ stats = {} }) => (
           </div>
           <div className="stat-content">
             <p className="stat-label">{stat.label}</p>
-            <h2 className="stat-value">{stats[stat.key] ?? 0}</h2>
+            <h2 className="stat-value">
+              {stats[stat.key] ?? 0}
+              {stat.suffix || ''}
+            </h2>
           </div>
         </div>
       </Card>

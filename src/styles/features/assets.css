@@ -1,0 +1,125 @@
+.assets-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0 3rem;
+}
+
+.assets-header h1 {
+  margin: 0;
+}
+
+.assets-kicker {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.assets-form-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+}
+
+.assets-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.assets-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.assets-form input,
+.assets-form textarea,
+.assets-form select {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.assets-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.assets-form-error {
+  grid-column: 1 / -1;
+  color: #b91c1c;
+  margin: 0;
+}
+
+.assets-form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1rem;
+}
+
+.assets-loading,
+.assets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.assets-group-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.assets-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.assets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.assets-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.assets-item p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.assets-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.assets-actions button {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.assets-empty {
+  margin: 0;
+  color: var(--text-tertiary);
+}
