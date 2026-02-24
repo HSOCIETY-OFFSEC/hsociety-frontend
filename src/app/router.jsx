@@ -238,7 +238,6 @@ const AppRouter = () => {
 
           {/* Public pages - about, team, blog, etc. */}
           <Route element={<PublicLayout />}>
-            <Route path="feedback" element={<Feedback />} />
             <Route path="about" element={<About />} />
             <Route path="team" element={<Team />} />
             <Route path="developer" element={<Developer />} />

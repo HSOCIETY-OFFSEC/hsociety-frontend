@@ -27,24 +27,16 @@ export const normalizeSnapshotItem = (item = {}) => ({
   icon: item.icon || 'check'
 });
 
-export const normalizeCommunityStats = (stats = {}) => ({
-  questions: Number(stats.questions || 0),
-  answered: Number(stats.answered || 0),
-  channels: Number(stats.channels || 0),
-});
-
 export const normalizeStudentOverview = (overview = {}) => ({
   learningPath: (overview.learningPath || []).map(normalizeLearningPathItem),
   modules: (overview.modules || []).map(normalizeModuleOverview),
   snapshot: (overview.snapshot || []).map(normalizeSnapshotItem),
-  bootcampStatus: overview.bootcampStatus || 'not_enrolled',
-  communityStats: normalizeCommunityStats(overview.communityStats || {})
+  bootcampStatus: overview.bootcampStatus || 'not_enrolled'
 });
 
 export default {
   normalizeLearningPathItem,
   normalizeModuleOverview,
   normalizeSnapshotItem,
-  normalizeCommunityStats,
   normalizeStudentOverview
 };

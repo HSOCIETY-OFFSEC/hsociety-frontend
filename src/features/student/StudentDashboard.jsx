@@ -7,7 +7,6 @@ import {
   FiCode,
   FiCompass,
   FiFlag,
-  FiMessageSquare,
   FiShield
 } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
@@ -25,8 +24,7 @@ const StudentDashboard = () => {
     learningPath: [],
     modules: [],
     snapshot: [],
-    bootcampStatus: 'not_enrolled',
-    communityStats: { questions: 0, answered: 0, channels: 0 }
+    bootcampStatus: 'not_enrolled'
   });
   const [error, setError] = useState('');
   const [bootcampSaving, setBootcampSaving] = useState(false);
@@ -217,29 +215,6 @@ const StudentDashboard = () => {
                   </div>
                 </Card>
 
-                <Card padding="medium" className="student-card reveal-on-scroll">
-                  <div className="student-card-header">
-                    <FiMessageSquare size={20} />
-                    <h3>Community Pulse</h3>
-                  </div>
-                  <div className="community-stats">
-                    <div className="community-stat">
-                      <span className="label">Questions</span>
-                      <strong>{data.communityStats.questions}</strong>
-                    </div>
-                    <div className="community-stat">
-                      <span className="label">Answered</span>
-                      <strong>{data.communityStats.answered}</strong>
-                    </div>
-                    <div className="community-stat">
-                      <span className="label">Channels</span>
-                      <strong>{data.communityStats.channels}</strong>
-                    </div>
-                  </div>
-                  <Button variant="secondary" size="small" onClick={() => navigate('/community')}>
-                    Open Community
-                  </Button>
-                </Card>
               </div>
             )}
 

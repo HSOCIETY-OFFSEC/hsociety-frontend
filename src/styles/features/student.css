@@ -292,34 +292,6 @@
   background: color-mix(in srgb, var(--text-primary) 70%, transparent);
 }
 
-.community-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 0.9rem;
-}
-
-.community-stat {
-  padding: 0.75rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  text-align: center;
-}
-
-.community-stat .label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.community-stat strong {
-  display: block;
-  margin-top: 0.35rem;
-  font-size: 1.2rem;
-}
-
 .student-modal-backdrop {
   position: fixed;
   inset: 0;
