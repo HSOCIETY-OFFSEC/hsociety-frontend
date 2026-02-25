@@ -92,7 +92,13 @@ export const API_ENDPOINTS = {
     COURSE_PROGRESS: '/student/course/progress',
     QUIZ: '/student/quiz',
     PROFILE: '/student/profile',
-    BOOTCAMP: '/student/bootcamp'
+    BOOTCAMP: '/student/bootcamp',
+    ENROLL_TRAINING: '/student/enroll-training',
+    COMPLETE_MODULE: '/student/modules/:moduleId/complete',
+    JOIN_COMMUNITY: '/student/community/join',
+    SUPERVISED_ENGAGEMENTS: '/student/engagements/supervised',
+    SKILL_REFRESH: '/student/skill-refresh',
+    DEPLOYMENT: '/student/deployment'
   },
 
   // Penetration Testing
@@ -179,7 +185,12 @@ export const API_ENDPOINTS = {
   ADMIN: {
     USERS: '/admin/users',
     REPORTS: '/admin/reports',
-    SETTINGS: '/admin/settings'
+    SETTINGS: '/admin/settings',
+    ANALYTICS: '/admin/analytics',
+    PENTESTS: '/admin/pentests',
+    ASSIGN_ENGAGEMENT: '/admin/pentests/:id/assign',
+    APPROVE_PAYMENT: '/admin/pentests/:id/approve-payment',
+    CASE_STUDIES: '/admin/case-studies'
   },
 
   // Public

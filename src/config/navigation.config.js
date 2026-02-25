@@ -29,21 +29,25 @@ export const NAV_LINKS = {
       { path: '/reports', label: 'Reports', icon: FiFileText },
       { path: '/remediation', label: 'Remediation', icon: FiTool },
       { path: '/assets', label: 'Assets', icon: FiLayers },
-      { path: '/billing', label: 'Billing', icon: FiCreditCard }
+      { path: '/billing', label: 'Billing', icon: FiCreditCard },
+      { path: '/community', label: 'Community', icon: FiMessageSquare }
     ],
     pentester: [
       { path: '/pentester', label: 'Assignments', icon: FiShield },
       { path: '/pentest', label: 'Pentest', icon: FiBarChart2 },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     admin: [
       { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },

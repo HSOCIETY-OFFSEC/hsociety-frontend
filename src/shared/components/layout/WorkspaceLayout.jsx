@@ -31,6 +31,7 @@ const WorkspaceLayout = () => {
       { path: '/billing', title: 'Billing' },
       { path: '/pentest', title: 'Pentest' },
       { path: '/pentester', title: 'Pentester Dashboard' },
+      { path: '/community', title: 'Community' },
       { path: '/mr-robot', title: 'Admin Dashboard' },
       { path: '/settings', title: 'Account Settings' }
     ];

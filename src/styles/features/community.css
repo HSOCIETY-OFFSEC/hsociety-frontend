@@ -1,0 +1,119 @@
+.community-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.community-header {
+  align-items: flex-end;
+}
+
+.community-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.community-grid {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.community-channels h3,
+.community-chat h3 {
+  margin-top: 0;
+}
+
+.community-channel-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.community-channel-list button {
+  text-align: left;
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  color: var(--text-primary);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  display: grid;
+  gap: 0.15rem;
+  cursor: pointer;
+}
+
+.community-channel-list button span {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.community-channel-list button.active {
+  border-color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--surface-color));
+}
+
+.community-chat {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.community-messages {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.75rem;
+  max-height: 420px;
+  overflow: auto;
+  display: grid;
+  gap: 0.6rem;
+  background: var(--surface-color);
+}
+
+.community-message {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.community-message:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.community-message div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.community-message small {
+  color: var(--text-secondary);
+}
+
+.community-message p {
+  margin: 0.25rem 0 0;
+}
+
+.community-compose {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+}
+
+.community-compose input {
+  border: 1px solid var(--border-color);
+  background: var(--surface-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  padding: 0.6rem 0.8rem;
+}
+
+.community-error {
+  margin: 0;
+  color: #d1495b;
+}
+
+@media (max-width: 900px) {
+  .community-grid {
+    grid-template-columns: 1fr;
+  }
+}
