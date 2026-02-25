@@ -7,6 +7,8 @@ import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
 import { getAvatarStyle } from '../../utils/avatar';
 
+const NAV_COLLAPSE_WIDTH = 1024;
+
 /**
  * Navbar Component
  * Location: src/shared/components/layout/Navbar.jsx
@@ -28,7 +30,7 @@ const Navbar = ({ sticky = true }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [viewportMode, setViewportMode] = useState(() =>
-    typeof window !== 'undefined' && window.innerWidth <= 768 ? 'mobile' : 'desktop'
+    typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
   );
 
   const avatarStyle = useMemo(
@@ -44,7 +46,7 @@ const Navbar = ({ sticky = true }) => {
     if (typeof window === 'undefined') return undefined;
 
     const handleResize = () => {
-      const nextMode = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+      const nextMode = window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop';
       setViewportMode((prevMode) => {
         if (prevMode !== nextMode) {
           setMobileMenuOpen(false);
@@ -104,6 +106,7 @@ const Navbar = ({ sticky = true }) => {
               key={link.path}
               type="button"
               onClick={() => navigate(link.path)}
+              className="desktop-nav-link"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -389,9 +392,53 @@ const Navbar = ({ sticky = true }) => {
 
       {/* Mobile Responsive Styles */}
       <style>{`
-        @media (max-width: 768px) {
+        nav .container {
+          max-width: 100%;
+          overflow: hidden;
+        }
+        .navbar-logo {
+          min-width: 0;
+          flex-shrink: 0;
+        }
+        .desktop-nav {
+          flex: 1 1 auto;
+          min-width: 0;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          row-gap: 0.4rem;
+          overflow: hidden;
+        }
+        .desktop-nav-link {
+          white-space: nowrap;
+          flex: 0 1 auto;
+        }
+        .navbar-right {
+          flex-shrink: 0;
+          min-width: 0;
+        }
+        .mobile-menu {
+          max-height: calc(100vh - 84px);
+          overflow-y: auto;
+          overscroll-behavior: contain;
+        }
+        @media (max-width: 1200px) {
+          nav .container {
+            gap: 1rem !important;
+          }
+          .desktop-nav {
+            justify-content: flex-start;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            scrollbar-width: thin;
+            padding-bottom: 0.25rem;
+          }
+        }
+        @media (max-width: ${NAV_COLLAPSE_WIDTH}px) {
           nav .container {
             height: auto !important;
+            min-height: 72px;
             padding-top: 0.75rem !important;
             padding-bottom: 0.75rem !important;
             gap: 0.75rem !important;
@@ -399,20 +446,29 @@ const Navbar = ({ sticky = true }) => {
             align-items: center !important;
             flex-wrap: nowrap !important;
           }
+          .navbar-logo {
+            flex: 1 1 auto;
+          }
+          .navbar-right {
+            margin-left: auto;
+            gap: 0.5rem;
+            flex: 0 0 auto;
+          }
+          .mobile-menu-button {
+            position: relative;
+            z-index: 2;
+          }
           .desktop-nav {
             display: none !important;
           }
           .desktop-user-menu {
             display: none !important;
           }
-          .navbar-logo {
-            flex: 0 0 auto;
+        }
+        @media (max-width: 768px) {
+          nav .container {
             display: flex;
             align-items: center;
-          }
-          .navbar-right {
-            margin-left: auto;
-            gap: 0.5rem;
           }
         }
         @media (max-width: 420px) {
@@ -426,6 +482,7 @@ const Navbar = ({ sticky = true }) => {
         @media (max-width: 640px) {
           .mobile-menu {
             padding-bottom: 1.5rem !important;
+            max-height: calc(100vh - 76px);
           }
           .mobile-menu-button {
             min-width: 44px;
