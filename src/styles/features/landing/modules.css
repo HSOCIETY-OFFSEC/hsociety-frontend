@@ -47,10 +47,12 @@
 
 .module-media {
   width: 100%;
+  margin-bottom: 15px;
   aspect-ratio: 16 / 10;
   border-radius: 14px;
   overflow: hidden;
   position: relative;
+
 }
 
 .module-media::after {
@@ -94,18 +96,20 @@
 }
 
 .module-title {
-  margin: 0;
+  margin-bottom: 2px;
   font-size: 1.2rem;
   color: var(--text-primary);
 }
 
 .module-description {
-  margin: 0;
+  margin-bottom: 2px;
   color: var(--text-secondary);
   line-height: 1.6;
 }
 
+
 .module-footer {
+  margin-top: 2px;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
