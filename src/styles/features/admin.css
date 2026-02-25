@@ -81,6 +81,7 @@
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   margin-bottom: 1.25rem;
+  width: 100%;
 }
 
 .admin-table {
@@ -204,11 +205,22 @@
     padding: 1.75rem 1rem 2.5rem;
   }
 
+  .admin-card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .admin-row {
     grid-template-columns: 1fr;
   }
 
   .admin-row-header {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-dashboard {
+    padding: 1.5rem 0.85rem 2.25rem;
   }
 }

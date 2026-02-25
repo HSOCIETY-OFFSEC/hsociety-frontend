@@ -538,6 +538,24 @@
   }
 }
 
+@media (max-width: 768px) {
+  .student-page {
+    padding: 1.75rem 1rem 3rem;
+  }
+
+  .student-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-grid > .student-card:only-child {
+    max-width: 100%;
+  }
+
+  .snapshot-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (min-width: 900px) {
   .student-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -590,5 +608,11 @@
 
   .community-stats {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-hero {
+    padding: 1.5rem 1.25rem;
   }
 }

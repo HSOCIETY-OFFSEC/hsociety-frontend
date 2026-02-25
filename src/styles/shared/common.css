@@ -114,6 +114,10 @@ body {
   overflow-x: hidden;
 }
 
+body.workspace-lock-scroll {
+  overflow: hidden;
+}
+
 code, pre, .mono {
   font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
 }

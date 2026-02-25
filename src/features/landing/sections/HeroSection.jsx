@@ -79,6 +79,9 @@ const HeroSection = ({ content }) => {
             ))}
           </div>
 
+{/* Removed complimentary components to improve page layout 
+====================================================================
+*/}
           {/* Proof stats
           {proof?.length > 0 && (
             <div className="hero-proof">

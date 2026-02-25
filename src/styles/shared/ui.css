@@ -188,6 +188,14 @@
   transform: scale(0.99);
 }
 
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
 /* ========================================
    FORM ELEMENTS
    ======================================== */

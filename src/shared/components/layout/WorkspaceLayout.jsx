@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { FiChevronDown, FiLogOut, FiMenu, FiUser, FiX } from 'react-icons/fi';
+import { FiChevronDown, FiHome, FiLogOut, FiMenu, FiUser, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
 import { getAvatarStyle } from '../../utils/avatar';
@@ -44,6 +44,11 @@ const WorkspaceLayout = () => {
     setMenuOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    document.body.classList.toggle('workspace-lock-scroll', sidebarOpen);
+    return () => document.body.classList.remove('workspace-lock-scroll');
+  }, [sidebarOpen]);
+
   const userInitials = useMemo(() => {
     const name = user?.name || user?.email || 'User';
     return name
@@ -75,7 +80,18 @@ const WorkspaceLayout = () => {
 
       <header className="workspace-topbar">
         <div className="workspace-topbar-content">
-          <div className="workspace-topbar-title">{workspaceTitle}</div>
+          <div className="workspace-topbar-left">
+            <button
+              type="button"
+              className="workspace-home-button"
+              onClick={() => navigate('/')}
+              aria-label="Go to home"
+            >
+              <FiHome size={16} />
+              <span>Home</span>
+            </button>
+            <div className="workspace-topbar-title">{workspaceTitle}</div>
+          </div>
           <div className="workspace-topbar-actions" ref={menuRef}>
             <button
               type="button"
