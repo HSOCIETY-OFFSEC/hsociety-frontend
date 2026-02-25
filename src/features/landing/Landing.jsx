@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
 import { getLandingStats } from './landing.service';
+import LiveThreatMiniMap from '../live-map/LiveThreatMiniMap';
 import {
   HeroSection,
   StatsSection,
@@ -156,6 +157,7 @@ const Landing = () => {
     <div className="landing-page">
       <HeroSection content={heroContent} />
       <StatsSection content={statsContent} />
+      <LiveThreatMiniMap />
       <ServicesSection services={services} />
       <WhySection items={whyChooseUs} />
       <ProcessSection steps={engagementSteps} />

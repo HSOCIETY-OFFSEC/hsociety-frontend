@@ -28,6 +28,7 @@ const StudentLesson = React.lazy(() => import('../features/student/StudentLesson
 const AdminDashboard = React.lazy(() => import('../features/admin/AdminDashboard'));
 const PentesterDashboard = React.lazy(() => import('../features/pentester/PentesterDashboard'));
 const CommunityHub = React.lazy(() => import('../features/community/CommunityHub'));
+const LiveMapPage = React.lazy(() => import('../features/live-map/LiveMapPage'));
 const AccountSettings = React.lazy(() => import('../features/account/AccountSettings'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
@@ -95,6 +96,7 @@ const AppRouter = () => {
           {/* Landing - full-width marketing layout */}
           <Route element={<LandingLayout />}>
             <Route index element={<Landing />} />
+            <Route path="live-map" element={<LiveMapPage />} />
           </Route>
 
           {/* Auth pages - login, register */}
