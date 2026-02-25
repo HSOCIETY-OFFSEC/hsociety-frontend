@@ -123,14 +123,14 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0;
+  margin-top: 2px;
 }
 
 .service-description {
   font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin: 0;
+  margin-top: 2px;
 }
 
 .service-features {
@@ -143,7 +143,8 @@
 }
 
 .service-features li {
-  margin: 0;
+  margin-top: 2px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 0.75rem;
