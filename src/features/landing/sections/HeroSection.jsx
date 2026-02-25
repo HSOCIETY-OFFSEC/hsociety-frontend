@@ -40,9 +40,9 @@ const HeroSection = ({ content }) => {
 
           {/* Title */}
           <h1 className="hero-title">
-            Train Offensive.<br />
-            <span className="hero-title-accent">Deliver Real</span>{' '}
-            Pentests.
+            Train like A Hacker.<br />
+            <span className="hero-title-accent">Prepare</span>{' '}
+            for  Hackers
           </h1>
 
           {/* Description */}
@@ -52,7 +52,7 @@ const HeroSection = ({ content }) => {
             of professional red teamers.
           </p>
 
-          {/* Highlights */}
+          {/* Highlights
           <ul className="hero-highlights">
             {highlights.map((item) => (
               <li key={item} className="hero-highlight">
@@ -60,7 +60,7 @@ const HeroSection = ({ content }) => {
                 <span>{item}</span>
               </li>
             ))}
-          </ul>
+          </ul> */}
 
           {/* CTAs */}
           <div className="hero-cta">
@@ -79,7 +79,7 @@ const HeroSection = ({ content }) => {
             ))}
           </div>
 
-          {/* Proof stats */}
+          {/* Proof stats
           {proof?.length > 0 && (
             <div className="hero-proof">
               {proof.map((item) => (
@@ -89,10 +89,10 @@ const HeroSection = ({ content }) => {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
 
           {/* Trust */}
-          <div className="trust-indicators">
+          {/* <div className="trust-indicators">
             {trust.map((item, index) => (
               <div key={item} className="trust-item">
                 <span className="trust-icon">
@@ -104,6 +104,7 @@ const HeroSection = ({ content }) => {
               </div>
             ))}
           </div>
+           */}
         </div>
 
         {/* ── RIGHT: Logo visual ── */}

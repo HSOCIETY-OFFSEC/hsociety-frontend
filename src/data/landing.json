@@ -10,7 +10,7 @@
     ],
     "ctas": [
       {
-        "label": "Learn OffSec   ",
+        "label": "Become A Hacker  ",
         "route": "/register",
         "variant": "primary"
       },

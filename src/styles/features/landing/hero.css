@@ -117,18 +117,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 7rem 4rem 4rem;
+  justify-content: flex-start;   /* ← was center, now starts at top */
+  padding: 0 2rem 2rem;          /* ← removed top padding entirely */
+  margin-top:  100px;
   flex: 0 0 42%;
   overflow: hidden;
 }
 
-/* Logo wrap */
 .hero-logo-wrap {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;       /* ← was center */
   justify-content: center;
+  width: 100%;
+  padding-top: 0;                /* ensure no extra push */
 }
 
 .hero-logo-halo {
@@ -413,13 +415,16 @@
 
   .hero-visual-panel {
     flex: none;
-    padding: 5rem 2rem 2.5rem;
+    padding: 5rem 2rem 2rem;     /* restore some top padding on mobile/tablet */
+    justify-content: center;     /* re-center on small screens */
+    align-items: center;
   }
 
-  .hero-content-panel {
-    padding: 3rem 2rem 2rem;
+  .hero-logo-wrap {
+    align-items: center;         /* re-center on small screens */
   }
 }
+
 
 @media (max-width: 640px) {
   .hero-visual-panel {
