@@ -133,8 +133,6 @@
   flex-shrink: 0;
   overflow: hidden;
   background: var(--card-bg); /* placeholder bg while loading */
-  position: relative;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
 }
 
 .service-card-image img {
@@ -144,14 +142,6 @@
   object-position: center;
   display: block;
   transition: transform 0.5s ease;
-}
-
-.service-card-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(10, 14, 22, 0) 35%, rgba(10, 14, 22, 0.35));
-  pointer-events: none;
 }
 
 .service-card:hover .service-card-image img {
@@ -377,4 +367,4 @@
   .service-card-image {
     height: 200px;
   }
-}
+}  
