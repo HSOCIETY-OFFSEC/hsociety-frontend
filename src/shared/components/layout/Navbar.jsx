@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   FiBookOpen,
@@ -8,6 +8,7 @@ import {
   FiLayers,
   FiLogOut,
   FiMenu,
+  FiMoreHorizontal,
   FiShield,
   FiTerminal,
   FiX
@@ -41,6 +42,8 @@ const Navbar = ({ sticky = true }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [studentLearnOpen, setStudentLearnOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const moreMenuRef = useRef(null);
   const [viewportMode, setViewportMode] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
   );
@@ -96,6 +99,9 @@ const Navbar = ({ sticky = true }) => {
     if (!isStudent) return desktopBasicLinks;
     return desktopBasicLinks.filter((link) => !hiddenStudentNavPaths.has(link.path));
   }, [desktopBasicLinks, hiddenStudentNavPaths, isStudent]);
+  const maxDesktopLinks = isAuthenticated ? (isStudent ? 2 : 4) : 4;
+  const visibleDesktopLinks = desktopLinks.slice(0, maxDesktopLinks);
+  const overflowDesktopLinks = desktopLinks.slice(maxDesktopLinks);
 
   const isActive = (path) => location.pathname === path;
 
@@ -104,7 +110,18 @@ const Navbar = ({ sticky = true }) => {
     setMobileMenuOpen(false);
     setUserMenuOpen(false);
     setStudentLearnOpen(false);
+    setMoreMenuOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!moreMenuOpen) return undefined;
+    const handleOutsideClick = (event) => {
+      if (!moreMenuRef.current || moreMenuRef.current.contains(event.target)) return;
+      setMoreMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [moreMenuOpen]);
 
   return (
     <nav style={{
@@ -134,7 +151,7 @@ const Navbar = ({ sticky = true }) => {
           alignItems: 'center',
           gap: '0.4rem'
         }}>
-          {desktopLinks.map((link) => (
+          {visibleDesktopLinks.map((link) => (
             <button
               key={link.path}
               type="button"
@@ -159,6 +176,38 @@ const Navbar = ({ sticky = true }) => {
               <span>{link.label}</span>
             </button>
           ))}
+
+          {overflowDesktopLinks.length > 0 && (
+            <div className="navbar-more-dropdown" ref={moreMenuRef}>
+              <button
+                type="button"
+                onClick={() => setMoreMenuOpen((prev) => !prev)}
+                className="desktop-nav-link navbar-more-trigger"
+              >
+                <FiMoreHorizontal size={16} />
+                <span>More</span>
+                <FiChevronDown size={14} />
+              </button>
+              {moreMenuOpen && (
+                <div className="navbar-more-menu">
+                  {overflowDesktopLinks.map((link) => (
+                    <button
+                      key={link.path}
+                      type="button"
+                      onClick={() => {
+                        navigate(link.path);
+                        setMoreMenuOpen(false);
+                      }}
+                      className={`navbar-more-item ${isActive(link.path) ? 'active' : ''}`}
+                    >
+                      <link.icon size={16} />
+                      <span>{link.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {isStudent && (
             <div className="student-learn-dropdown">
@@ -490,7 +539,7 @@ const Navbar = ({ sticky = true }) => {
       <style>{`
         nav .container {
           max-width: 100%;
-          overflow: hidden;
+          overflow: visible;
         }
         .navbar-logo {
           min-width: 0;
@@ -504,7 +553,7 @@ const Navbar = ({ sticky = true }) => {
           align-items: center;
           justify-content: center;
           row-gap: 0.4rem;
-          overflow: hidden;
+          overflow: visible;
         }
         .desktop-nav-link {
           white-space: nowrap;
@@ -512,6 +561,55 @@ const Navbar = ({ sticky = true }) => {
         }
         .student-learn-dropdown {
           position: relative;
+        }
+        .navbar-more-dropdown {
+          position: relative;
+        }
+        .navbar-more-trigger {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          min-height: 44px;
+          padding: 0.5rem 0.8rem;
+          border-radius: 9px;
+          border: 1px solid var(--border-color);
+          background: var(--input-bg);
+          color: var(--text-primary);
+          cursor: pointer;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+        .navbar-more-menu {
+          position: absolute;
+          top: calc(100% + 0.5rem);
+          left: 0;
+          min-width: 210px;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 12px;
+          box-shadow: var(--shadow-lg);
+          padding: 0.5rem;
+          z-index: 1000;
+        }
+        .navbar-more-item {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.65rem 0.75rem;
+          border: none;
+          border-radius: 8px;
+          background: transparent;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          font-weight: 600;
+          cursor: pointer;
+          text-align: left;
+        }
+        .navbar-more-item.active,
+        .navbar-more-item:hover {
+          background: var(--primary-color-alpha);
+          color: var(--primary-color);
         }
         .student-learn-trigger {
           display: inline-flex;
