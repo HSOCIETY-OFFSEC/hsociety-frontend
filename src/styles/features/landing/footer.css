@@ -146,6 +146,20 @@
   background: var(--primary-color-hover);
 }
 
+.footer-newsletter-status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.footer-newsletter-status.success {
+  color: var(--primary-color);
+}
+
+.footer-newsletter-status.error {
+  color: var(--text-danger, #ef4444);
+}
+
 .footer-privacy {
   font-size: 0.85rem;
   color: var(--text-tertiary);

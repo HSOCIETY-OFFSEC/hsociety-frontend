@@ -45,15 +45,15 @@ export const NAV_LINKS = {
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     student: [
-      { path: '/', label: 'Home', icon: FiShield },
-      { path: '/student-dashboard', label: 'Overview', icon: FiBookOpen },
-      { path: '/student-learning', label: 'Learn', icon: FiTerminal },
-      { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
-      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
-      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers },
-      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/settings', label: 'Settings', icon: FiUsers }
+      { path: '/', label: 'Home', icon: FiShield, group: 'default' },
+      { path: '/student-dashboard', label: 'Overview', icon: FiBookOpen, group: 'bootcamp' },
+      { path: '/student-learning', label: 'Learn', icon: FiTerminal, group: 'bootcamp' },
+      { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'bootcamp' },
+      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle, group: 'bootcamp' },
+      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers, group: 'bootcamp' },
+      { path: '/student-payments', label: 'Payments', icon: FiCreditCard, group: 'bootcamp' },
+      { path: '/community', label: 'Community', icon: FiMessageSquare, group: 'default' },
+      { path: '/settings', label: 'Settings', icon: FiUsers, group: 'default' }
     ]
   },
 
@@ -97,12 +97,12 @@ export const NAV_LINKS = {
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
-      { path: '/student-dashboard', label: 'Overview', icon: FiBookOpen },
-      { path: '/student-learning', label: 'Learn', icon: FiTerminal },
-      { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
-      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
-      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers },
-      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
+      { path: '/student-dashboard', label: 'Overview', icon: FiBookOpen, group: 'bootcamp' },
+      { path: '/student-learning', label: 'Learn', icon: FiTerminal, group: 'bootcamp' },
+      { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'bootcamp' },
+      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle, group: 'bootcamp' },
+      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers, group: 'bootcamp' },
+      { path: '/student-payments', label: 'Payments', icon: FiCreditCard, group: 'bootcamp' },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },

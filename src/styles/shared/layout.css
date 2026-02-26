@@ -188,6 +188,21 @@
   font-weight: 600;
 }
 
+.bootcamp-dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid rgba(248, 250, 252, 0.1);
+}
+
+.bootcamp-dropdown-menu .app-sidebar-link {
+  border-radius: 10px;
+  padding-left: 0.8rem;
+  font-size: 0.85rem;
+}
+
 @media (min-width: 900px) {
   .workspace-layout .app-sidebar {
     transform: translateX(0);

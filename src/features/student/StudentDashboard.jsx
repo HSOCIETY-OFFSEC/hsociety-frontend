@@ -26,7 +26,8 @@ const StudentDashboard = () => {
     learningPath: [],
     modules: [],
     snapshot: [],
-    bootcampStatus: 'not_enrolled'
+    bootcampStatus: 'not_enrolled',
+    bootcampPaymentStatus: 'unpaid'
   });
   const [error, setError] = useState('');
   const [bootcampSaving, setBootcampSaving] = useState(false);
@@ -95,6 +96,9 @@ const StudentDashboard = () => {
     }
     setBootcampSaving(false);
   };
+
+  const hasBootcamp = data.bootcampStatus !== 'not_enrolled';
+  const hasPaidAccess = data.bootcampPaymentStatus === 'paid';
 
   return (
     <div className="student-page">
@@ -174,53 +178,93 @@ const StudentDashboard = () => {
                   </div>
                 </Card>
 
-                <Card padding="medium" className="student-card reveal-on-scroll">
-                  <div className="student-card-header">
-                    <FiBookOpen size={20} />
-                    <h3>Learning Path Overview</h3>
-                  </div>
-                  <div className="student-path">
-                    {data.learningPath.map((item) => (
-                      <div key={item.id} className="path-item">
-                        <div className="path-info">
-                          <span>{item.title}</span>
-                          <span className={`path-status ${item.status}`}>
-                            {item.status === 'done'
-                              ? 'Completed'
-                              : item.status === 'in-progress'
-                              ? 'In Progress'
-                              : 'Next Up'}
-                          </span>
-                        </div>
-                        <div className="path-bar">
-                          <div style={{ width: `${item.progress}%` }} />
-                        </div>
+                {hasBootcamp ? (
+                  <>
+                    <Card padding="medium" className="student-card reveal-on-scroll">
+                      <div className="student-card-header">
+                        <FiBookOpen size={20} />
+                        <h3>Learning Path Overview</h3>
                       </div>
-                    ))}
-                  </div>
-                </Card>
+                      <div className="student-path">
+                        {data.learningPath.map((item) => (
+                          <div key={item.id} className="path-item">
+                            <div className="path-info">
+                              <span>{item.title}</span>
+                              <span className={`path-status ${item.status}`}>
+                                {item.status === 'done'
+                                  ? 'Completed'
+                                  : item.status === 'in-progress'
+                                  ? 'In Progress'
+                                  : 'Next Up'}
+                              </span>
+                            </div>
+                            <div className="path-bar">
+                              <div style={{ width: `${item.progress}%` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </Card>
 
-                <Card padding="medium" className="student-card reveal-on-scroll">
-                  <div className="student-card-header">
-                    <FiShield size={20} />
-                    <h3>Modules & Rooms</h3>
-                  </div>
-                  <div className="student-modules">
-                    {data.modules.map((module) => (
-                      <div key={module.id} className="module-item">
-                        <div className="module-info">
-                          <h4>{module.title}</h4>
-                          <span>
-                            {module.roomsCompleted}/{module.roomsTotal} rooms · {module.progress}%
-                          </span>
-                        </div>
-                        <div className="module-progress">
-                          <div style={{ width: `${module.progress}%` }} />
-                        </div>
+                    <Card padding="medium" className="student-card reveal-on-scroll">
+                      <div className="student-card-header">
+                        <FiShield size={20} />
+                        <h3>Modules & Rooms</h3>
                       </div>
-                    ))}
-                  </div>
-                </Card>
+                      <div className="student-modules">
+                        {data.modules.map((module) => (
+                          <div key={module.id} className="module-item">
+                            <div className="module-info">
+                              <h4>{module.title}</h4>
+                              <span>
+                                {module.roomsCompleted}/{module.roomsTotal} rooms · {module.progress}%
+                              </span>
+                            </div>
+                            <div className="module-progress">
+                              <div style={{ width: `${module.progress}%` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </Card>
+                    {hasBootcamp && !hasPaidAccess && (
+                      <Card padding="medium" className="student-card reveal-on-scroll">
+                        <div className="student-card-header">
+                          <FiShield size={20} />
+                          <h3>Access Denied</h3>
+                        </div>
+                        <p>
+                          Bootcamp payment is required before you can read learning materials and
+                          resources.
+                        </p>
+                        <Button
+                          variant="secondary"
+                          size="small"
+                          onClick={() => navigate('/student-payments')}
+                        >
+                          Complete Payment
+                        </Button>
+                      </Card>
+                    )}
+                  </>
+                ) : (
+                  <Card padding="medium" className="student-card reveal-on-scroll">
+                    <div className="student-card-header">
+                      <FiBookOpen size={20} />
+                      <h3>Bootcamp Required</h3>
+                    </div>
+                    <p>
+                      Register for the HSOCIETY Bootcamp to unlock the learning path and modules.
+                    </p>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      onClick={() => navigate('/student-bootcamp')}
+                    >
+                      Register for Bootcamp
+                    </Button>
+                  </Card>
+                )}
 
                 <Card padding="medium" className="student-card reveal-on-scroll">
                   <div className="student-card-header">

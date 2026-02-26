@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getSidebarLinks } from '../../../config/navigation.config';
+import { FiChevronDown, FiLayers } from 'react-icons/fi';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
 
@@ -32,6 +33,31 @@ const Sidebar = () => {
   const resolvedRole = routeRole || role || 'student';
   const links = getSidebarLinks(true, resolvedRole);
   const isActive = (path) => location.pathname === path;
+  const [bootcampOpen, setBootcampOpen] = useState(false);
+
+  const bootcampLinks = useMemo(
+    () => links.filter((link) => link.group === 'bootcamp'),
+    [links]
+  );
+
+  const defaultLinks = useMemo(
+    () => links.filter((link) => link.group !== 'bootcamp'),
+    [links]
+  );
+
+  const renderLink = (link) => (
+    <button
+      key={link.path}
+      type="button"
+      className={`app-sidebar-link ${isActive(link.path) ? 'active' : ''}`}
+      onClick={() => navigate(link.path)}
+    >
+      <span style={{ display: 'inline-flex' }}>
+        <link.icon size={18} />
+      </span>
+      <span>{link.label}</span>
+    </button>
+  );
 
   return (
     <aside className="app-sidebar" aria-label="Sidebar navigation">
@@ -47,19 +73,39 @@ const Sidebar = () => {
         <div>
           <p className="app-sidebar-section-title">Navigation</p>
           <div className="app-sidebar-links">
-            {links.map((link) => (
-              <button
-                key={link.path}
-                type="button"
-                className={`app-sidebar-link ${isActive(link.path) ? 'active' : ''}`}
-                onClick={() => navigate(link.path)}
-              >
-                <span style={{ display: 'inline-flex' }}>
-                  <link.icon size={18} />
-                </span>
-                <span>{link.label}</span>
-              </button>
-            ))}
+            {defaultLinks.map(renderLink)}
+            {bootcampLinks.length > 0 && (
+              <div className={`bootcamp-dropdown ${bootcampOpen ? 'open' : ''}`}>
+                <button
+                  type="button"
+                  className={`app-sidebar-link ${bootcampOpen ? 'active' : ''}`}
+                  onClick={() => setBootcampOpen((prev) => !prev)}
+                >
+                  <span style={{ display: 'inline-flex' }}>
+                    <FiLayers size={18} />
+                  </span>
+                  <span>Bootcamp</span>
+                  <FiChevronDown size={16} style={{ marginLeft: 'auto', transition: 'transform 0.2s ease', transform: bootcampOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}/>
+                </button>
+                {bootcampOpen && (
+                  <div className="bootcamp-dropdown-menu">
+                    {bootcampLinks.map((link) => (
+                      <button
+                        key={link.path}
+                        type="button"
+                        className={`app-sidebar-link ${isActive(link.path) ? 'active' : ''}`}
+                        onClick={() => navigate(link.path)}
+                      >
+                        <span style={{ display: 'inline-flex' }}>
+                          <link.icon size={18} />
+                        </span>
+                        <span>{link.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 

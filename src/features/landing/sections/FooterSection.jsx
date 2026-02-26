@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FiBarChart2,
   FiClipboard,
@@ -17,9 +17,48 @@ import {
 import { FaGithub, FaLinkedinIn, FaWhatsapp, FaXTwitter, FaYoutube } from 'react-icons/fa6';
 import Logo from '../../../shared/components/common/Logo';
 import '../../../styles/features/landing/footer.css';
+import { subscribeNewsletter } from '../landing.service';
 
-const FooterSection = () => (
-  <footer className="landing-footer reveal-on-scroll">
+const FooterSection = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async (event) => {
+    event.preventDefault();
+    setStatus(null);
+
+    const trimmedEmail = typeof email === 'string' ? email.trim() : '';
+    if (!trimmedEmail) {
+      setStatus({ type: 'error', message: 'Please provide an email address.' });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await subscribeNewsletter({ email: trimmedEmail, source: 'landing' });
+      if (!response.success) {
+        setStatus({
+          type: 'error',
+          message: response.error || 'Could not subscribe at the moment.'
+        });
+        return;
+      }
+
+      setStatus({ type: 'success', message: response.data?.message || 'Subscribed successfully.' });
+      setEmail('');
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: err?.message || 'Could not subscribe at the moment.'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <footer className="landing-footer reveal-on-scroll">
     <div className="footer-container">
       <div className="footer-top">
         <div className="footer-brand">
@@ -46,16 +85,32 @@ const FooterSection = () => (
         <div className="footer-newsletter">
           <h4>Get the Offensive Brief</h4>
           <p>Monthly tactics, case studies, and critical advisories.</p>
-          <div className="footer-newsletter-form">
+          <form className="footer-newsletter-form" onSubmit={handleSubscribe}>
             <input
               type="email"
               placeholder="you@company.com"
               aria-label="Email address"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              disabled={loading}
             />
-            <button type="button" className="footer-newsletter-button">
-              Subscribe
+            <button
+              type="submit"
+              className="footer-newsletter-button"
+              disabled={loading}
+            >
+              {loading ? 'Subscribing...' : 'Subscribe'}
             </button>
-          </div>
+          </form>
+          {status && (
+            <p
+              className={`footer-newsletter-status ${status.type}`}
+              role="status"
+              aria-live="polite"
+            >
+              {status.message}
+            </p>
+          )}
           <p className="footer-privacy">No spam. Unsubscribe anytime.</p>
         </div>
       </div>

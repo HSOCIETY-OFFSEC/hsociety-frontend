@@ -326,6 +326,33 @@
   min-width: 200px;
 }
 
+.hero-socials {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.hero-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 250, 252, 0.2);
+  color: var(--text-secondary, rgba(248, 250, 252, 0.7));
+  background: rgba(248, 250, 252, 0.05);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hero-social-link:hover {
+  border-color: var(--primary-color, #10b981);
+  color: var(--text-primary, #ffffff);
+  background: rgba(16, 185, 129, 0.18);
+}
+
 /* Proof stats */
 .hero-proof {
   display: flex;

@@ -16,3 +16,17 @@ export const getLandingStats = async () => {
     data: response.data
   };
 };
+
+export const subscribeNewsletter = async (payload = {}) => {
+  const response = await apiClient.post(API_ENDPOINTS.PUBLIC.SUBSCRIBE, payload);
+  if (!response.success) {
+    return {
+      success: false,
+      error: response.error || 'Unable to subscribe'
+    };
+  }
+  return {
+    success: true,
+    data: response.data
+  };
+};

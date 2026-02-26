@@ -198,7 +198,8 @@ export const API_ENDPOINTS = {
 
   // Public
   PUBLIC: {
-    LANDING_STATS: '/public/landing-stats'
+    LANDING_STATS: '/public/landing-stats',
+    SUBSCRIBE: '/public/subscribe'
   }
 };
 

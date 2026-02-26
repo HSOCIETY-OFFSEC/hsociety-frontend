@@ -1,9 +1,31 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowUpRight, FiArrowRight, FiShield, FiCheckCircle, FiLock, FiTerminal } from 'react-icons/fi';
+import {
+  FiArrowUpRight,
+  FiArrowRight,
+  FiShield,
+  FiCheckCircle,
+  FiLock,
+  FiTerminal
+} from 'react-icons/fi';
+import {
+  FaGithub,
+  FaLinkedinIn,
+  FaWhatsapp,
+  FaXTwitter,
+  FaYoutube
+} from 'react-icons/fa6';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
 import '../../../styles/features/landing/hero.css';
+
+const SOCIAL_LINKS = [
+  { href: '#youtube', label: 'YouTube', icon: FaYoutube },
+  { href: '#x', label: 'X', icon: FaXTwitter },
+  { href: '#github', label: 'GitHub', icon: FaGithub },
+  { href: '#linkedin', label: 'LinkedIn', icon: FaLinkedinIn },
+  { href: '#whatsapp', label: 'WhatsApp', icon: FaWhatsapp }
+];
 
 const HeroSection = ({ content }) => {
   const navigate = useNavigate();
@@ -77,6 +99,25 @@ const HeroSection = ({ content }) => {
                   : <FiArrowRight size={17} />}
               </Button>
             ))}
+          </div>
+
+          <div className="hero-socials">
+            {SOCIAL_LINKS.map((link) => {
+              const Icon = link.icon;
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.label}
+                  className="hero-social-link"
+                >
+                  <Icon size={18} />
+                  <span>{link.label}</span>
+                </a>
+              );
+            })}
           </div>
 
 {/* Removed complimentary components to improve page layout 
