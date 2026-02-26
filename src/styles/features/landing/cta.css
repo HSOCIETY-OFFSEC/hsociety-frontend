@@ -12,8 +12,13 @@
 }
 
 .cta-card {
-  background: linear-gradient(135deg, #0f172a 0%, #0b3b2d 45%, #0f2d27 100%) !important;
-  border: none !important;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--bg-secondary) 88%, var(--primary-color) 8%) 0%,
+    color-mix(in srgb, var(--bg-tertiary) 88%, var(--primary-color) 6%) 45%,
+    color-mix(in srgb, var(--bg-secondary) 88%, var(--primary-color) 6%) 100%
+  );
+  border: 1px solid var(--border-color);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -29,13 +34,13 @@
 .cta-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .cta-description {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
 }
@@ -52,13 +57,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #050505;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--card-bg) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
 }
 
 .cta-media.light {
-  background: #f8fafc;
-  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, #ffffff 15%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 85%, transparent);
+}
+
+.cta-media.dark {
+  background: color-mix(in srgb, var(--bg-secondary) 78%, #000000 22%);
+  border: 1px solid color-mix(in srgb, var(--border-color) 85%, transparent);
 }
 
 .cta-media img {
@@ -71,7 +81,7 @@
 .cta-divider {
   width: 1px;
   height: 100%;
-  background: rgba(255, 255, 255, 0.2);
+  background: color-mix(in srgb, var(--border-color) 80%, transparent);
 }
 
 @media (max-width: 900px) {

@@ -48,19 +48,22 @@
       "icon": "FiShield",
       "title": "Penetration Testing",
       "description": "Comprehensive security assessments to identify vulnerabilities before attackers do.",
-      "features": ["Web Applications", "Mobile Apps", "Network Infrastructure", "API Security"]
+      "features": ["Web Applications", "Mobile Apps", "Network Infrastructure", "API Security"],
+      "imageKey": "terminal"
     },
     {
       "icon": "FiFileText",
       "title": "Security Audits",
       "description": "In-depth analysis and reporting of your security posture with actionable remediation steps.",
-      "features": ["Compliance Checks", "Risk Assessment", "Detailed Reports", "Remediation Support"]
+      "features": ["Compliance Checks", "Risk Assessment", "Detailed Reports", "Remediation Support"],
+      "imageKey": "binary"
     },
     {
       "icon": "FiTarget",
       "title": "Red Team Operations",
       "description": "Simulated attacks to test defenses, uncover gaps, and strengthen incident response.",
-      "features": ["Social Engineering", "Physical Security", "Threat Simulation", "Custom Scenarios"]
+      "features": ["Social Engineering", "Physical Security", "Threat Simulation", "Custom Scenarios"],
+      "imageKey": "hacker"
     }
   ],
   "why": [

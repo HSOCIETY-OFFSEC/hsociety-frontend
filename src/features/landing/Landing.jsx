@@ -39,6 +39,10 @@ import {
   FiMessageSquare 
 } from 'react-icons/fi';
 
+import terminalWallpaper from '../../assets/brand-images/terminalwallpaper.png';
+import greenBinaryWallpaper from '../../assets/backgrounds/greenbinarywallaper.png';
+import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.png';
+
 import '../../styles/features/landing.css';
 
 const Landing = () => {
@@ -62,9 +66,16 @@ const Landing = () => {
     FaRocket
   };
 
+  const imageMap = {
+    terminal: terminalWallpaper,
+    binary: greenBinaryWallpaper,
+    hacker: hackerLaptop
+  };
+
   const services = landingContent.services.map((item) => ({
     ...item,
-    icon: iconMap[item.icon]
+    icon: iconMap[item.icon],
+    image: item.imageKey ? imageMap[item.imageKey] : item.image
   }));
 
   const whyChooseUs = landingContent.why.map((item) => ({
@@ -153,22 +164,41 @@ const Landing = () => {
   }, [statsData]);
 
   return (
-    <div className="landing-page">
-      <HeroSection content={heroContent} />
-      <WhySection items={whyChooseUs} />
-      <StatsSection content={statsContent} />
-      <ServicesSection services={services} />
-      <ProcessSection steps={engagementSteps} />
-      <DeliverablesSection deliverables={deliverables} />
-      <ModulesSection modules={learningModules} />
-      <TrustSection signals={trustSignals} />
-      <PathwaysSection content={landingContent.pathways} />
-      <CycleSection steps={cycleSteps} />
-      <CtaSection content={landingContent.cta} />
-      <FaqSection content={landingContent.faq} />
-      <FooterSection />
-    </div>
-  );
+  <div className="landing-page">
+    {/* 1. Hook */}
+    <HeroSection content={heroContent} />
+
+    {/* 2. Immediate credibility */}
+    <StatsSection content={statsContent} />
+    <TrustSection signals={trustSignals} />
+
+    {/* 3. Problem & differentiation */}
+    <WhySection items={whyChooseUs} />
+
+    {/* 4. What you actually offer */}
+    <ServicesSection services={services} />
+
+    {/* 5. How it works (reduce friction) */}
+    <ProcessSection steps={engagementSteps} />
+
+    {/* 6. What they get at the end */}
+    <DeliverablesSection deliverables={deliverables} />
+
+    {/* 7. Learning depth / system strength */}
+    <ModulesSection modules={learningModules} />
+    <PathwaysSection content={landingContent.pathways} />
+    <CycleSection steps={cycleSteps} />
+
+    {/* 8. Objections handling */}
+    <FaqSection content={landingContent.faq} />
+
+    {/* 9. Final conversion push */}
+    <CtaSection content={landingContent.cta} />
+
+    {/* 10. Closure */}
+    <FooterSection />
+  </div>
+);
 };
 
 export default Landing;

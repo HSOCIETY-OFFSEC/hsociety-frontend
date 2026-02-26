@@ -2,8 +2,6 @@
    CYCLE SECTION — 3D ORBIT
    ======================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap');
-
 .cycle-section {
   padding: 7rem 2rem;
   background:
@@ -176,7 +174,6 @@
 }
 
 .orbit-node-label {
-  font-family: 'Rajdhani', sans-serif;
   font-size: 0.68rem;
   font-weight: 600;
   color: var(--text-primary, #e2e8f0);
@@ -187,7 +184,6 @@
 }
 
 .orbit-node-index {
-  font-family: 'Fira Code', monospace;
   font-size: 0.58rem;
   color: rgba(16, 185, 129, 0.5);
   letter-spacing: 0.08em;
@@ -250,7 +246,6 @@
 }
 
 .orbit-core-label {
-  font-family: 'Fira Code', monospace;
   font-size: 0.6rem;
   font-weight: 600;
   color: #10b981;
@@ -314,14 +309,12 @@
 }
 
 .cycle-detail-num {
-  font-family: 'Fira Code', monospace;
   font-size: 0.8rem;
   color: #10b981;
   font-weight: 600;
 }
 
 .cycle-detail-tag {
-  font-family: 'Fira Code', monospace;
   font-size: 0.62rem;
   color: rgba(16, 185, 129, 0.55);
   letter-spacing: 0.14em;
@@ -329,7 +322,6 @@
 }
 
 .cycle-detail-title {
-  font-family: 'Rajdhani', sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--text-primary, #e2e8f0);
@@ -338,7 +330,6 @@
 }
 
 .cycle-detail-desc {
-  font-family: 'Rajdhani', sans-serif;
   font-size: 1rem;
   color: var(--text-secondary, rgba(226, 232, 240, 0.6));
   line-height: 1.65;
@@ -404,7 +395,6 @@
   justify-content: center;
   background: color-mix(in srgb, #10b981 12%, transparent);
   border: 1px solid rgba(16, 185, 129, 0.22);
-  font-family: 'Fira Code', monospace;
   font-size: 0.72rem;
   font-weight: 600;
   color: #10b981;
@@ -427,7 +417,6 @@
 
 .cycle-item-content h3 {
   margin: 0;
-  font-family: 'Rajdhani', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary, #e2e8f0);
