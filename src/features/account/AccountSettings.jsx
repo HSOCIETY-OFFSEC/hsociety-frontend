@@ -3,6 +3,7 @@ import { FiAlertTriangle, FiTrash2 } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
+import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { deleteAccount, updateAvatar, updateProfile } from './account.service';
 import '../../styles/features/account.css';
 
@@ -20,15 +21,10 @@ const AccountSettings = () => {
     organization: user?.organization || '',
   });
 
-  const initials = useMemo(() => {
-    const name = profile.name || user?.email || 'User';
-    return name
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join('');
-  }, [profile.name, user?.email]);
+  const identiconFallback = useMemo(
+    () => getGithubAvatarDataUri(profile.name || user?.email || 'User'),
+    [profile.name, user?.email]
+  );
 
   const handleProfileSave = async () => {
     setError('');
@@ -99,11 +95,15 @@ const AccountSettings = () => {
       <Card padding="large" className="account-card">
         <div className="account-avatar">
           <div className="account-avatar-preview">
-            {avatarPreview ? (
-              <img src={avatarPreview} alt="Profile avatar" />
-            ) : (
-              <span>{initials}</span>
-            )}
+            <img
+              src={avatarPreview || identiconFallback}
+              alt="Profile avatar"
+              onError={(e) => {
+                if (e.currentTarget.src !== identiconFallback) {
+                  e.currentTarget.src = identiconFallback;
+                }
+              }}
+            />
           </div>
           <div className="account-avatar-actions">
             <div>

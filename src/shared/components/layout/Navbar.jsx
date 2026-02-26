@@ -16,7 +16,7 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
-import { getAvatarStyle } from '../../utils/avatar';
+import { getGithubAvatarDataUri } from '../../utils/avatar';
 
 const NAV_COLLAPSE_WIDTH = 1024;
 
@@ -45,10 +45,11 @@ const Navbar = ({ sticky = true }) => {
     typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
   );
 
-  const avatarStyle = useMemo(
-    () => getAvatarStyle(user?.email || user?.name || 'user'),
+  const avatarFallback = useMemo(
+    () => getGithubAvatarDataUri(user?.email || user?.name || 'user'),
     [user?.email, user?.name]
   );
+  const avatarSrc = user?.avatarUrl || avatarFallback;
 
   const handleLogout = async () => {
     await logout();
@@ -236,18 +237,18 @@ const Navbar = ({ sticky = true }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: 600,
-                  overflow: 'hidden',
-                  ...(user?.avatarUrl ? {} : avatarStyle)
+                  overflow: 'hidden'
                 }}>
-                  {user?.avatarUrl ? (
-                    <img
-                      src={user.avatarUrl}
-                      alt="Profile"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
-                  ) : (
-                    user.name ? user.name.charAt(0).toUpperCase() : 'U'
-                  )}
+                  <img
+                    src={avatarSrc}
+                    alt="Profile"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    onError={(e) => {
+                      if (e.currentTarget.src !== avatarFallback) {
+                        e.currentTarget.src = avatarFallback;
+                      }
+                    }}
+                  />
                 </span>
                 <span>{user.name || user.email}</span>
                 <span style={{ display: 'inline-flex' }}>

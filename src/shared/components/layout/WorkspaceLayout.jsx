@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { FiChevronDown, FiHome, FiLogOut, FiMenu, FiUser, FiX } from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
-import { getAvatarStyle } from '../../utils/avatar';
+import { getGithubAvatarDataUri } from '../../utils/avatar';
 import '../../../styles/shared/layout.css';
 
 /**
@@ -49,20 +49,11 @@ const WorkspaceLayout = () => {
     return () => document.body.classList.remove('workspace-lock-scroll');
   }, [sidebarOpen]);
 
-  const userInitials = useMemo(() => {
-    const name = user?.name || user?.email || 'User';
-    return name
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join('');
-  }, [user?.email, user?.name]);
-
-  const avatarStyle = useMemo(
-    () => getAvatarStyle(user?.email || user?.name || 'user'),
+  const avatarFallback = useMemo(
+    () => getGithubAvatarDataUri(user?.email || user?.name || 'user'),
     [user?.email, user?.name]
   );
+  const avatarSrc = user?.avatarUrl || avatarFallback;
 
   useEffect(() => {
     if (!menuOpen) return undefined;
@@ -100,12 +91,16 @@ const WorkspaceLayout = () => {
               aria-haspopup="menu"
               aria-expanded={menuOpen}
             >
-              <span className="workspace-avatar" style={user?.avatarUrl ? undefined : avatarStyle}>
-                {user?.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="Profile" />
-                ) : (
-                  <span>{userInitials}</span>
-                )}
+              <span className="workspace-avatar">
+                <img
+                  src={avatarSrc}
+                  alt="Profile"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== avatarFallback) {
+                      e.currentTarget.src = avatarFallback;
+                    }
+                  }}
+                />
               </span>
               <span className="workspace-profile-name">{user?.name || user?.email || 'User'}</span>
               <FiChevronDown size={16} />
