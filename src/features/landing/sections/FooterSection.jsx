@@ -220,6 +220,7 @@ const FooterSection = () => {
       </div>
     </div>
   </footer>
-);
+  );
+};
 
 export default FooterSection;

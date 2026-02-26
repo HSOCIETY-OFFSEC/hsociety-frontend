@@ -11,60 +11,12 @@
   min-height: 100vh;
   display: flex;
   align-items: stretch;
-  background: var(--bg-primary);
+  background:
+    linear-gradient(180deg, rgba(1, 5, 12, 0.88), rgba(1, 5, 12, 0.72)),
+    var(--bg-primary);
 }
 
 /* ── Background image layers ── */
-.hero-video-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: #020608;
-}
-
-.hero-video-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(3, 7, 18, 0.92) 0%, rgba(3, 7, 18, 0.7) 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.hero-bg-layer {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transform: scale(1.06);
-  animation: heroBgCycle 24s ease-in-out infinite, heroBgZoom 18s ease-in-out infinite;
-  filter: saturate(0.5) brightness(0.45) contrast(1.1);
-  z-index: 0;
-}
-
-.hero-bg-layer.layer-1 {
-  background-image: url("https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=2200&q=80");
-  animation-delay: 0s;
-}
-.hero-bg-layer.layer-2 {
-  background-image: url("https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=2200&q=80");
-  animation-delay: 8s;
-}
-.hero-bg-layer.layer-3 {
-  background-image: url("https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=2200&q=80");
-  animation-delay: 16s;
-}
-
-@keyframes heroBgCycle {
-  0%, 28%, 100% { opacity: 0; }
-  8%, 22%       { opacity: 1; }
-}
-@keyframes heroBgZoom {
-  0%, 100% { transform: scale(1.06); }
-  50%      { transform: scale(1.01); }
-}
-
 /* ── Grid scanline overlay ── */
 .hero-grid-overlay {
   position: absolute;
@@ -318,12 +270,20 @@
 .hero-cta {
   display: flex;
   gap: 0.9rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
   animation: fadeInUp 0.55s 0.25s ease backwards;
 }
 
 .hero-cta button {
   min-width: 200px;
+  flex: 0 1 auto;
+}
+
+@media (max-width: 900px) {
+  .hero-cta {
+    flex-wrap: wrap;
+  }
 }
 
 .hero-socials {
@@ -336,13 +296,14 @@
 .hero-social-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.4rem 0.75rem;
-  border-radius: 999px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
   border: 1px solid rgba(248, 250, 252, 0.2);
   color: var(--text-secondary, rgba(248, 250, 252, 0.7));
   background: rgba(248, 250, 252, 0.05);
-  font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
 }
@@ -351,6 +312,11 @@
   border-color: var(--primary-color, #10b981);
   color: var(--text-primary, #ffffff);
   background: rgba(16, 185, 129, 0.18);
+}
+
+.hero-social-link svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* Proof stats */
@@ -418,14 +384,6 @@
 /* ═══════════════════════════════════════
    THEME OVERRIDES
    ═══════════════════════════════════════ */
-[data-theme="light"] .hero-section {
-  background: var(--bg-primary);
-}
-
-[data-theme="light"] .hero-video-bg::after {
-  background: linear-gradient(135deg, rgba(255,255,255,0.88), rgba(240,244,248,0.82));
-}
-
 [data-theme="light"] .hero-grid-overlay {
   background-image:
     linear-gradient(rgba(16, 185, 129, 0.07) 1px, transparent 1px),

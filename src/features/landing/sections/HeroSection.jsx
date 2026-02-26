@@ -33,13 +33,6 @@ const HeroSection = ({ content }) => {
 
   return (
     <section className="hero-section">
-      {/* Background layers */}
-      <div className="hero-video-bg" aria-hidden="true">
-        <span className="hero-bg-layer layer-1" />
-        <span className="hero-bg-layer layer-2" />
-        <span className="hero-bg-layer layer-3" />
-      </div>
-
       {/* Grid overlay */}
       <div className="hero-grid-overlay" aria-hidden="true" />
 
@@ -114,7 +107,6 @@ const HeroSection = ({ content }) => {
                   className="hero-social-link"
                 >
                   <Icon size={18} />
-                  <span>{link.label}</span>
                 </a>
               );
             })}

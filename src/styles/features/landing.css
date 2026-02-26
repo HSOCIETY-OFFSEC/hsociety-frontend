@@ -9,9 +9,22 @@
 
 .landing-page {
   min-height: 100vh;
-  background: radial-gradient(1200px 600px at 10% -10%, rgba(31, 191, 143, 0.12), transparent 60%),
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(31, 191, 143, 0.12), transparent 60%),
     radial-gradient(900px 500px at 110% 10%, rgba(45, 212, 191, 0.12), transparent 65%),
     var(--bg-primary);
+  background-size:
+    auto,
+    auto,
+    auto;
+  background-repeat:
+    no-repeat,
+    no-repeat,
+    repeat;
+  background-position:
+    center,
+    center,
+    center;
   overflow-x: hidden;
   overflow-y: visible;
   position: relative;
