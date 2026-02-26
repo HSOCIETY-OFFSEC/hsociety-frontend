@@ -155,9 +155,9 @@ const Landing = () => {
   return (
     <div className="landing-page">
       <HeroSection content={heroContent} />
+      <WhySection items={whyChooseUs} />
       <StatsSection content={statsContent} />
       <ServicesSection services={services} />
-      <WhySection items={whyChooseUs} />
       <ProcessSection steps={engagementSteps} />
       <DeliverablesSection deliverables={deliverables} />
       <ModulesSection modules={learningModules} />
