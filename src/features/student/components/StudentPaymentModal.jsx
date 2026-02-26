@@ -1,36 +1,56 @@
 import React, { useState } from 'react';
 import Button from '../../../shared/components/ui/Button';
+import { initializeBootcampPayment, submitBootcampBtcPayment } from '../student.service';
 import '../../../styles/features/billing.css';
 
+const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
+
 const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment' }) => {
-  const [form, setForm] = useState({
-    name: '',
-    card: '',
-    expiry: '',
-    cvc: ''
-  });
+  const [method, setMethod] = useState('momo');
+  const [txHash, setTxHash] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (field, value) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
+  const methodOptions = [
+    { id: 'momo', label: 'MOMO (Mobile Money)', description: 'Pay with Mobile Money' },
+    { id: 'telcel', label: 'TELCEL', description: 'Telcel mobile money' },
+    { id: 'bank', label: 'Bank', description: 'Bank transfer or bank account' },
+    { id: 'btc', label: 'BTC', description: 'Bitcoin transfer' },
+  ];
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
-
-    if (!form.name.trim() || !form.card.trim() || !form.expiry.trim() || !form.cvc.trim()) {
-      setError('Please complete all payment fields.');
-      return;
-    }
-
     setSubmitting(true);
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      onSuccess?.();
+      if (method === 'btc') {
+        if (!txHash.trim()) {
+          setError('Please add the BTC transaction hash.');
+          setSubmitting(false);
+          return;
+        }
+        const response = await submitBootcampBtcPayment({ txHash: txHash.trim() });
+        if (!response.success) {
+          throw new Error(response.error || 'BTC payment submission failed.');
+        }
+        onSuccess?.(response.data);
+        return;
+      }
+
+      const response = await initializeBootcampPayment({ method });
+      if (!response.success) {
+        throw new Error(response.error || 'Payment initialization failed.');
+      }
+
+      const authorizationUrl = response.data?.authorizationUrl;
+      if (!authorizationUrl) {
+        throw new Error('Payment authorization URL missing.');
+      }
+
+      window.location.href = authorizationUrl;
     } catch (err) {
-      setError('Payment could not be processed. Please try again.');
+      setError(err.message || 'Payment could not be processed. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -50,44 +70,41 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
         </header>
         <div className="payment-modal-body">
           <form className="payment-modal-form" onSubmit={handleSubmit}>
-            <label className="payment-modal-field">
-              <span>Cardholder name</span>
-              <input
-                type="text"
-                value={form.name}
-                onChange={(e) => handleChange('name', e.target.value)}
-                placeholder="Full name"
-              />
-            </label>
-            <label className="payment-modal-field">
-              <span>Card number</span>
-              <input
-                type="text"
-                value={form.card}
-                onChange={(e) => handleChange('card', e.target.value)}
-                placeholder="4242 4242 4242 4242"
-              />
-            </label>
-            <div className="payment-modal-row">
-              <label className="payment-modal-field">
-                <span>Expiry</span>
-                <input
-                  type="text"
-                  value={form.expiry}
-                  onChange={(e) => handleChange('expiry', e.target.value)}
-                  placeholder="MM/YY"
-                />
-              </label>
-              <label className="payment-modal-field">
-                <span>CVC</span>
-                <input
-                  type="text"
-                  value={form.cvc}
-                  onChange={(e) => handleChange('cvc', e.target.value)}
-                  placeholder="123"
-                />
-              </label>
+            <div className="payment-method-grid">
+              {methodOptions.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={`payment-method-card ${method === option.id ? 'active' : ''}`}
+                  onClick={() => setMethod(option.id)}
+                >
+                  <strong>{option.label}</strong>
+                  <span>{option.description}</span>
+                </button>
+              ))}
             </div>
+
+            {method === 'btc' && (
+              <div className="payment-btc-panel">
+                <p>
+                  Send 150 GHS equivalent in BTC to the wallet below, then paste the transaction
+                  hash. BTC submissions are reviewed before access is unlocked.
+                </p>
+                <div className="payment-btc-wallet">
+                  <span>BTC Wallet</span>
+                  <strong>{BTC_WALLET_ADDRESS}</strong>
+                </div>
+                <label className="payment-modal-field">
+                  <span>Transaction hash</span>
+                  <input
+                    type="text"
+                    value={txHash}
+                    onChange={(e) => setTxHash(e.target.value)}
+                    placeholder="Paste transaction hash"
+                  />
+                </label>
+              </div>
+            )}
 
             {error && <p className="payment-modal-error">{error}</p>}
 
@@ -96,7 +113,7 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
                 Cancel
               </Button>
               <Button variant="primary" size="small" type="submit" disabled={submitting}>
-                {submitting ? 'Processing...' : 'Complete Payment'}
+                {submitting ? 'Processing...' : method === 'btc' ? 'Submit BTC Payment' : 'Pay with Paystack'}
               </Button>
             </div>
           </form>

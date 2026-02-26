@@ -595,6 +595,23 @@ export const CourseLearning = () => {
                   {hasAccess ? 'Module Check-in' : 'Access Denied'}
                 </Button>
               </div>
+
+              {!hasAccess && (
+                <div className="course-lock-overlay" onClick={(e) => {
+                  e.stopPropagation();
+                  triggerAccessModal();
+                }}>
+                  <div className="course-lock-overlay-card">
+                    <span>Access Denied</span>
+                    <Button variant="primary" size="small" onClick={(e) => {
+                      e.stopPropagation();
+                      triggerAccessModal();
+                    }}>
+                      Complete Payment
+                    </Button>
+                  </div>
+                </div>
+              )}
             </Card>
           );
         })}
@@ -713,7 +730,7 @@ export const CourseLearning = () => {
         <StudentPaymentModal
           onClose={() => setShowPaymentModal(false)}
           onSuccess={() => {
-            updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
             setShowPaymentModal(false);
           }}
         />

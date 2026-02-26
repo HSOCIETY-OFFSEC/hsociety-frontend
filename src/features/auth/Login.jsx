@@ -9,6 +9,27 @@ import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/core/auth.css';
 
+const QUICK_LOGINS = [
+  {
+    role: 'corporate',
+    label: 'Corporate (test-corp)',
+    email: 'test-corp@hsociety.local',
+    password: 'Test123!'
+  },
+  {
+    role: 'pentester',
+    label: 'Pentester (test-pen)',
+    email: 'test-pen@hsociety.local',
+    password: 'Test123!'
+  },
+  {
+    role: 'student',
+    label: 'Student (test-stu)',
+    email: 'test-stu@hsociety.local',
+    password: 'Test123!'
+  }
+];
+
 /**
  * Login Component
  *
@@ -110,6 +131,12 @@ const Login = ({ mode = 'default' }) => {
     setError('');
   };
 
+  const handleQuickLogin = (login) => {
+    setError('');
+    setEmail(login.email);
+    setPassword(login.password);
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-wrapper">
@@ -175,6 +202,26 @@ const Login = ({ mode = 'default' }) => {
                 {loading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
+          )}
+
+          {step === 1 && (
+            <div className="auth-quick-logins">
+              <p>Select a role to pre-fill credentials</p>
+              <div className="auth-quick-grid">
+                {QUICK_LOGINS.filter((entry) => mode !== 'pentester' || entry.role === 'pentester').map(
+                  (entry) => (
+                    <button
+                      key={entry.role}
+                      type="button"
+                      className="auth-quick-item"
+                      onClick={() => handleQuickLogin(entry)}
+                    >
+                      {entry.label}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
           )}
 
           {step === 2 && (

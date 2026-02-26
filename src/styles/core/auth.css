@@ -221,6 +221,50 @@
   color: var(--text-tertiary);
 }
 
+/* Quick login helpers */
+.auth-quick-logins {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.auth-quick-logins p {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.auth-quick-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.auth-quick-item {
+  padding: 0.6rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-quick-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.auth-quick-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
 /* OTP/2FA specific input */
 .otp-input {
   font-size: 1.5rem;

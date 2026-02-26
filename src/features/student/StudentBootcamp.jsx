@@ -32,7 +32,8 @@ const StudentBootcamp = () => {
     if (response.success) {
       updateUser({
         bootcampRegistered: true,
-        bootcampStatus: response.data?.bootcampStatus || 'enrolled'
+        bootcampStatus: response.data?.bootcampStatus || 'enrolled',
+        bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'unpaid'
       });
       setForm((prev) => ({ ...prev, goal: '' }));
     } else {
@@ -144,7 +145,7 @@ const StudentBootcamp = () => {
         <StudentPaymentModal
           onClose={() => setShowPaymentModal(false)}
           onSuccess={() => {
-            updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
             setShowPaymentModal(false);
           }}
         />

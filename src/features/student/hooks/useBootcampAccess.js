@@ -8,6 +8,7 @@ export const useBootcampAccess = () => {
 
   return useMemo(() => {
     const bootcampStatus = normalizeStatus(user?.bootcampStatus || user?.bootcamp?.status);
+    const paymentStatus = normalizeStatus(user?.bootcampPaymentStatus || user?.paymentStatus);
 
     const isRegistered = Boolean(
       user?.bootcampRegistered ||
@@ -19,8 +20,7 @@ export const useBootcampAccess = () => {
     const isPaid = Boolean(
       user?.bootcampPaid ||
       user?.bootcampAccess ||
-      user?.paymentStatus === 'paid' ||
-      user?.bootcampPaymentStatus === 'paid'
+      paymentStatus === 'paid'
     );
 
     return {
@@ -35,7 +35,8 @@ export const useBootcampAccess = () => {
     user?.bootcampPaid,
     user?.bootcampAccess,
     user?.paymentStatus,
-    user?.bootcampPaymentStatus
+    user?.bootcampPaymentStatus,
+    user?.paymentStatus
   ]);
 };
 

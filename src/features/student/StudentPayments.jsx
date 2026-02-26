@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiCreditCard, FiShield } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
@@ -8,13 +8,16 @@ import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
 import '../../styles/features/student.css';
+import { verifyBootcampPayment } from './student.service';
 
 const StudentPayments = () => {
   const { updateUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isRegistered, isPaid } = useBootcampAccess();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
 
   const handleOpenPayment = () => {
     if (!isRegistered) {
@@ -23,6 +26,32 @@ const StudentPayments = () => {
     }
     setShowPaymentModal(true);
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const reference = params.get('reference');
+    const status = params.get('status');
+    if (!reference) return;
+
+    const verify = async () => {
+      setStatusMessage('Verifying payment...');
+      const response = await verifyBootcampPayment(reference);
+      if (!response.success) {
+        setStatusMessage(response.error || 'Unable to verify payment.');
+        return;
+      }
+      updateUser({
+        bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'paid',
+        bootcampStatus: response.data?.bootcampStatus || 'enrolled',
+        bootcampPaidAt: response.data?.bootcampPaidAt,
+      });
+      setStatusMessage(
+        status === 'success' ? 'Payment verified. Access unlocked.' : 'Payment verified.'
+      );
+    };
+
+    verify();
+  }, [location.search, updateUser]);
 
   return (
     <div className="student-page">
@@ -38,6 +67,11 @@ const StudentPayments = () => {
         </header>
 
         <div className="student-grid">
+          {statusMessage && (
+            <Card padding="medium" className="student-card reveal-on-scroll">
+              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{statusMessage}</p>
+            </Card>
+          )}
           <Card padding="medium" className="student-card reveal-on-scroll">
             <div className="student-card-header">
               <FiCreditCard size={20} />
@@ -71,7 +105,7 @@ const StudentPayments = () => {
         <StudentPaymentModal
           onClose={() => setShowPaymentModal(false)}
           onSuccess={() => {
-            updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
             setShowPaymentModal(false);
           }}
         />

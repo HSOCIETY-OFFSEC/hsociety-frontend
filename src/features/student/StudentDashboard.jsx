@@ -85,7 +85,8 @@ const StudentDashboard = () => {
       }));
       updateUser({
         bootcampRegistered: true,
-        bootcampStatus: response.data?.bootcampStatus || 'enrolled'
+        bootcampStatus: response.data?.bootcampStatus || 'enrolled',
+        bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'unpaid'
       });
       setShowBootcampModal(false);
       setBootcampForm((prev) => ({ ...prev, goal: '' }));

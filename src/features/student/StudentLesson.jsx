@@ -178,7 +178,7 @@ const StudentLesson = () => {
           <StudentPaymentModal
             onClose={() => setShowPaymentModal(false)}
             onSuccess={() => {
-              updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+              updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
               setShowPaymentModal(false);
             }}
           />
@@ -282,7 +282,7 @@ const StudentLesson = () => {
         <StudentPaymentModal
           onClose={() => setShowPaymentModal(false)}
           onSuccess={() => {
-            updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
             setShowPaymentModal(false);
           }}
         />

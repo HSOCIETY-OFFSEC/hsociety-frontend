@@ -35,6 +35,24 @@ export const registerBootcamp = async (application = null) => {
   return { success: false, error: response.error || 'Failed to register for bootcamp' };
 };
 
+export const initializeBootcampPayment = async (payload = {}) => {
+  const response = await apiClient.post(API_ENDPOINTS.STUDENT.BOOTCAMP_PAYMENT_INIT, payload);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: response.error || 'Failed to start payment', status: response.status };
+};
+
+export const verifyBootcampPayment = async (reference) => {
+  const response = await apiClient.get(`${API_ENDPOINTS.STUDENT.BOOTCAMP_PAYMENT_VERIFY}?reference=${encodeURIComponent(reference)}`);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: response.error || 'Failed to verify payment', status: response.status };
+};
+
+export const submitBootcampBtcPayment = async (payload = {}) => {
+  const response = await apiClient.post(API_ENDPOINTS.STUDENT.BOOTCAMP_PAYMENT_BTC, payload);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: response.error || 'Failed to submit BTC payment', status: response.status };
+};
+
 export const enrollTraining = async (payload = {}) => {
   const response = await apiClient.post(API_ENDPOINTS.STUDENT.ENROLL_TRAINING, payload);
   if (response.success) return { success: true, data: response.data };
@@ -81,4 +99,7 @@ export default {
   getSupervisedEngagements,
   refreshStudentSkills,
   deployStudentProfessional,
+  initializeBootcampPayment,
+  verifyBootcampPayment,
+  submitBootcampBtcPayment,
 };
