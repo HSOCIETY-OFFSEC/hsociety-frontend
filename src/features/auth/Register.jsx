@@ -54,18 +54,35 @@ const Register = () => {
 
   return (
     <div className="auth-container">
-        <div className="auth-wrapper">
-          <div className="auth-logo">
-            <Logo size="large" />
-          </div>
-
-          <Card className="auth-card">
-            <div className="auth-header">
-              <h1>Create Account</h1>
-              <p className="auth-subtitle">
-                Register as a corporate team or student and get started.
-              </p>
+      <div className="auth-split">
+        <section className="auth-panel auth-panel--hero">
+          <div className="auth-hero-content">
+            <div className="auth-hero-badge">
+              <Logo size="small" />
+              <span>HSOCIETY Secure Portal</span>
             </div>
+            <h1 className="auth-hero-title">Create Your Account</h1>
+            <p className="auth-hero-subtitle">
+              Join a structured offensive security cycle with real-world engagement
+              opportunities and community-driven learning.
+            </p>
+            <div className="auth-hero-list">
+              <div className="auth-hero-item">Beginner-friendly training tracks</div>
+              <div className="auth-hero-item">Supervised real engagement delivery</div>
+              <div className="auth-hero-item">Actionable reports and remediation</div>
+            </div>
+          </div>
+        </section>
+
+        <section className="auth-panel auth-panel--form">
+          <div className="auth-wrapper">
+            <Card className="auth-card">
+              <div className="auth-header">
+                <h1>Create Account</h1>
+                <p className="auth-subtitle">
+                  Register as a corporate team or student and get started.
+                </p>
+              </div>
 
             {error && (
               <div className="auth-error">
@@ -187,29 +204,31 @@ const Register = () => {
               </Button>
             </form>
 
-            <div className="auth-footer">
+              <div className="auth-footer">
+                <p>
+                  Already have an account?{' '}
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="auth-link-inline"
+                    disabled={loading}
+                  >
+                    Login
+                  </button>
+                </p>
+              </div>
+            </Card>
+
+            <div className="auth-notice">
               <p>
-                Already have an account?{' '}
-                <button
-                  onClick={() => navigate('/login')}
-                  className="auth-link-inline"
-                  disabled={loading}
-                >
-                  Login
-                </button>
+                <span className="notice-icon">
+                  <FiLock size={16} />
+                </span>
+                Your registration data is encrypted in transit.
               </p>
             </div>
-          </Card>
-
-          <div className="auth-notice">
-            <p>
-              <span className="notice-icon">
-                <FiLock size={16} />
-              </span>
-              Your registration data is encrypted in transit.
-            </p>
           </div>
-        </div>
+        </section>
+      </div>
     </div>
   );
 };

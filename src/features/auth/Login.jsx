@@ -137,21 +137,41 @@ const Login = ({ mode = 'default' }) => {
     setPassword(login.password);
   };
 
+  const heroTitle = mode === 'pentester' ? 'Pentester Access' : 'Secure Access';
+  const heroSubtitle =
+    mode === 'pentester'
+      ? 'Signed access for offensive operators. Verified sessions. Controlled scope.'
+      : 'Role-based access to training, engagements, and reporting in one secure workspace.';
+
   return (
     <div className="auth-container">
-      <div className="auth-wrapper">
-        <div className="auth-logo">
-          <Logo size="large" />
-        </div>
-
-        <Card className="auth-card">
-          <div className="auth-header">
-            <h1>{mode === 'pentester' ? 'Pentester Login' : 'Secure Login'}</h1>
-            <p className="auth-subtitle">
-              {step === 1 && 'Enter your email and password'}
-              {step === 2 && 'Enter your 2FA authentication code'}
-            </p>
+      <div className="auth-split">
+        <section className="auth-panel auth-panel--hero">
+          <div className="auth-hero-content">
+            <div className="auth-hero-badge">
+              <Logo size="small" />
+              <span>HSOCIETY Secure Portal</span>
+            </div>
+            <h1 className="auth-hero-title">{heroTitle}</h1>
+            <p className="auth-hero-subtitle">{heroSubtitle}</p>
+            <div className="auth-hero-list">
+              <div className="auth-hero-item">2FA-ready sessions by default</div>
+              <div className="auth-hero-item">Role-based dashboards & workflows</div>
+              <div className="auth-hero-item">Encrypted data in transit</div>
+            </div>
           </div>
+        </section>
+
+        <section className="auth-panel auth-panel--form">
+          <div className="auth-wrapper">
+            <Card className="auth-card">
+              <div className="auth-header">
+                <h1>{mode === 'pentester' ? 'Pentester Login' : 'Secure Login'}</h1>
+                <p className="auth-subtitle">
+                  {step === 1 && 'Enter your email and password'}
+                  {step === 2 && 'Enter your 2FA authentication code'}
+                </p>
+              </div>
 
           {error && (
             <div className="auth-error">
@@ -264,28 +284,30 @@ const Login = ({ mode = 'default' }) => {
             </form>
           )}
 
-          <div className="auth-footer">
-            <p>
-              Don't have an account?{' '}
-              <button
-                onClick={() => navigate('/register')}
-                className="auth-link-inline"
-                disabled={loading}
-              >
-                Register here
-              </button>
-            </p>
-          </div>
-        </Card>
+              <div className="auth-footer">
+                <p>
+                  Don't have an account?{' '}
+                  <button
+                    onClick={() => navigate('/register')}
+                    className="auth-link-inline"
+                    disabled={loading}
+                  >
+                    Register here
+                  </button>
+                </p>
+              </div>
+            </Card>
 
-        <div className="auth-notice">
-          <p>
-            <span className="notice-icon">
-              <FiLock size={16} />
-            </span>
-            Your security is our priority. All communications are encrypted.
-          </p>
-        </div>
+            <div className="auth-notice">
+              <p>
+                <span className="notice-icon">
+                  <FiLock size={16} />
+                </span>
+                Your security is our priority. All communications are encrypted.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
