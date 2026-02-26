@@ -3,10 +3,10 @@ import { FiBookOpen, FiCreditCard, FiUsers } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
-import { registerBootcamp } from './student.service';
+import { registerBootcamp } from '../dashboards/student/student.service';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import '../../styles/features/student.css';
+import '../dashboards/student/styles/student.css';
 
 const StudentBootcamp = () => {
   const { updateUser } = useAuth();

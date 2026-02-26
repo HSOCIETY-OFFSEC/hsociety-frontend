@@ -7,7 +7,7 @@ import StudentPaymentModal from './components/StudentPaymentModal';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
-import '../../styles/features/student.css';
+import '../dashboards/student/styles/student.css';
 
 const StudentQuizMaterial = () => {
   const navigate = useNavigate();

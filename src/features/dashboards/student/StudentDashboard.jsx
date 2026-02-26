@@ -9,13 +9,13 @@ import {
   FiFlag,
   FiShield
 } from 'react-icons/fi';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import Card from '../../shared/components/ui/Card';
-import Button from '../../shared/components/ui/Button';
-import Skeleton from '../../shared/components/ui/Skeleton';
+import useScrollReveal from '../../../shared/hooks/useScrollReveal';
+import Card from '../../../shared/components/ui/Card';
+import Button from '../../../shared/components/ui/Button';
+import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getStudentOverview, registerBootcamp } from './student.service';
-import { useAuth } from '../../core/auth/AuthContext';
-import '../../styles/features/student.css';
+import { useAuth } from '../../../core/auth/AuthContext';
+import './styles/student.css';
 
 const StudentDashboard = () => {
   useScrollReveal();

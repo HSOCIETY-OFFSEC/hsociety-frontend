@@ -1,9 +1,9 @@
 /**
  * Admin service
- * Location: src/features/admin/admin.service.js
+ * Location: src/features/dashboards/admin/admin.service.js
  */
-import { API_ENDPOINTS, buildEndpoint } from '../../config/api.config';
-import { apiClient } from '../../shared/services/api.client';
+import { API_ENDPOINTS, buildEndpoint } from '../../../config/api.config';
+import { apiClient } from '../../../shared/services/api.client';
 
 export const getUsers = async () => {
   const response = await apiClient.get(API_ENDPOINTS.ADMIN.USERS);

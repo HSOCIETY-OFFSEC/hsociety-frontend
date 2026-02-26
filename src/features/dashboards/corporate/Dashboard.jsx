@@ -10,11 +10,11 @@ import StatsGrid from './components/StatsGrid';
 import QuickActions from './components/QuickActions';
 import ActivityList from './components/ActivityList';
 import SecurityNotice from './components/SecurityNotice';
-import '../../../styles/features/dashboard.css';
+import './styles/dashboard.css';
 
 /**
  * Dashboard Component
- * Location: src/features/corporate/dashboard/Dashboard.jsx
+ * Location: src/features/dashboards/corporate/Dashboard.jsx
  * 
  * Features:
  * - User overview and stats

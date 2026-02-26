@@ -7,8 +7,8 @@ import { useAuth } from '../../core/auth/AuthContext';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import '../../styles/features/student.css';
-import { verifyBootcampPayment } from './student.service';
+import '../dashboards/student/styles/student.css';
+import { verifyBootcampPayment } from '../dashboards/student/student.service';
 
 const StudentPayments = () => {
   const { updateUser } = useAuth();

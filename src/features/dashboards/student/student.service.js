@@ -1,10 +1,10 @@
 /**
  * Student Dashboard Service
- * Location: src/features/student/student.service.js
+ * Location: src/features/dashboards/student/student.service.js
  */
 
-import { API_ENDPOINTS, buildEndpoint } from '../../config/api.config';
-import { apiClient } from '../../shared/services/api.client';
+import { API_ENDPOINTS, buildEndpoint } from '../../../config/api.config';
+import { apiClient } from '../../../shared/services/api.client';
 import { normalizeStudentOverview } from './student.contract';
 
 /**

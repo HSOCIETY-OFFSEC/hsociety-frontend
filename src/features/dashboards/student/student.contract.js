@@ -1,6 +1,6 @@
 /**
  * Student contract
- * Location: src/features/student/student.contract.js
+ * Location: src/features/dashboards/student/student.contract.js
  */
 
 export const normalizeLearningPathItem = (item = {}) => ({

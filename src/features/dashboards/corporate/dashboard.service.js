@@ -1,6 +1,6 @@
 /**
  * Dashboard Service
- * Location: src/features/dashboard/dashboard.service.js
+ * Location: src/features/dashboards/corporate/dashboard.service.js
  */
 
 import { apiClient } from '../../../shared/services/api.client';

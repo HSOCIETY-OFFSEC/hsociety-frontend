@@ -6,12 +6,12 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
 import { getStudentCourse } from './courses/course.service';
-import { getStudentOverview } from './student.service';
+import { getStudentOverview } from '../dashboards/student/student.service';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
 import { useAuth } from '../../core/auth/AuthContext';
-import '../../styles/features/student.css';
+import '../dashboards/student/styles/student.css';
 import '../../styles/features/student-lesson.css';
 
 const StudentLesson = () => {

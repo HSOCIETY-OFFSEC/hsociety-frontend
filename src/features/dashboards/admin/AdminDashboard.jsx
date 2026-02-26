@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FiEdit2, FiSave, FiShield, FiUsers } from 'react-icons/fi';
-import Card from '../../shared/components/ui/Card';
-import Button from '../../shared/components/ui/Button';
-import PageLoader from '../../shared/components/ui/PageLoader';
+import Card from '../../../shared/components/ui/Card';
+import Button from '../../../shared/components/ui/Button';
+import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, getPentests, updatePentest } from './admin.service';
-import '../../styles/features/admin.css';
+import './styles/admin.css';
 
 const ROLE_OPTIONS = [
   { value: 'student', label: 'Student' },

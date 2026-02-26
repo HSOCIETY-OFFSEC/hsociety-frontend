@@ -1,6 +1,6 @@
 /**
  * Dashboard contract
- * Location: src/features/dashboard/dashboard.contract.js
+ * Location: src/features/dashboards/corporate/dashboard.contract.js
  */
 
 export const normalizeDashboardStats = (stats = {}) => ({

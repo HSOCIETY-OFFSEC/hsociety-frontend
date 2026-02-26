@@ -5,7 +5,7 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { CourseLearning } from './courses/CourseLearning';
 import { getStudentCourse } from './courses/course.service';
-import { getStudentOverview } from './student.service';
+import { getStudentOverview } from '../dashboards/student/student.service';
 import { useAuth } from '../../core/auth/AuthContext';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
