@@ -6,7 +6,7 @@ import { useAuth } from '../../core/auth/AuthContext';
 import { registerBootcamp } from '../dashboards/student/student.service';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import '../dashboards/student/styles/student.css';
+import '../../styles/student/student.css';
 
 const StudentBootcamp = () => {
   const { updateUser } = useAuth();

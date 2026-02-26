@@ -12,7 +12,11 @@ import StudentRoleBlocker from '../features/student/components/StudentRoleBlocke
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
 const Register = React.lazy(() => import('../features/auth/Register'));
-const Dashboard = React.lazy(() => import('../features/dashboards/corporate/Dashboard'));
+const loadDashboard = (key) =>
+  React.lazy(() =>
+    import('../features/dashboards').then((module) => ({ default: module[key] }))
+  );
+const Dashboard = loadDashboard('CorporateDashboard');
 const Pentest = React.lazy(() => import('../features/corporate/pentest/Pentest'));
 const Engagements = React.lazy(() => import('../features/corporate/engagements/Engagements'));
 const Reports = React.lazy(() => import('../features/corporate/reports/Reports'));
@@ -23,15 +27,15 @@ const Landing = React.lazy(() => import('../features/landing/Landing'));
 const About = React.lazy(() => import('../features/about/About'));
 const Team = React.lazy(() => import('../features/team/Team'));
 const Developer = React.lazy(() => import('../features/developer/Developer'));
-const StudentDashboard = React.lazy(() => import('../features/dashboards/student/StudentDashboard'));
+const StudentDashboard = loadDashboard('StudentDashboard');
 const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
 const StudentResources = React.lazy(() => import('../features/student/StudentResources'));
 const StudentQuizMaterial = React.lazy(() => import('../features/student/StudentQuizMaterial'));
 const StudentBootcamp = React.lazy(() => import('../features/student/StudentBootcamp'));
 const StudentPayments = React.lazy(() => import('../features/student/StudentPayments'));
-const AdminDashboard = React.lazy(() => import('../features/dashboards/admin/AdminDashboard'));
-const PentesterDashboard = React.lazy(() => import('../features/dashboards/pentester/PentesterDashboard'));
+const AdminDashboard = loadDashboard('AdminDashboard');
+const PentesterDashboard = loadDashboard('PentesterDashboard');
 const CommunityHub = React.lazy(() => import('../features/community/CommunityHub'));
 const AccountSettings = React.lazy(() => import('../features/account/AccountSettings'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));

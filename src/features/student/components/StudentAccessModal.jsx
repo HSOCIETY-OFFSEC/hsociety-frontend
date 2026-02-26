@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../../../shared/components/ui/Button';
-import '../../dashboards/student/styles/student.css';
+import '../../../styles/student/student.css';
 
 const StudentAccessModal = ({
   title = 'Access Restricted',
