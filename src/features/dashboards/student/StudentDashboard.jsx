@@ -15,7 +15,8 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getStudentOverview, registerBootcamp } from './student.service';
 import { useAuth } from '../../../core/auth/AuthContext';
-import '../../../styles/student/student.css';
+import '../../../styles/student/base.css';
+import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/student-dashboard.css';
 
 const StudentDashboard = () => {

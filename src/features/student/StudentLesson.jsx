@@ -11,7 +11,9 @@ import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
 import { useAuth } from '../../core/auth/AuthContext';
-import '../../styles/student/student.css';
+import '../../styles/student/base.css';
+import '../../styles/student/components.css';
+import '../../styles/student/pages/lesson.css';
 import '../../styles/features/student-lesson.css';
 
 const StudentLesson = () => {

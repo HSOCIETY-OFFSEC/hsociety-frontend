@@ -7,7 +7,9 @@ import { useAuth } from '../../core/auth/AuthContext';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import '../../styles/student/student.css';
+import '../../styles/student/base.css';
+import '../../styles/student/components.css';
+import '../../styles/student/pages/payments.css';
 import { verifyBootcampPayment } from '../dashboards/student/student.service';
 
 const StudentPayments = () => {
