@@ -6,6 +6,10 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
 import { getStudentCourse } from './courses/course.service';
+import useBootcampAccess from './hooks/useBootcampAccess';
+import StudentAccessModal from './components/StudentAccessModal';
+import StudentPaymentModal from './components/StudentPaymentModal';
+import { useAuth } from '../../core/auth/AuthContext';
 import '../../styles/features/student.css';
 import '../../styles/features/student-lesson.css';
 
@@ -21,6 +25,10 @@ import '../../styles/features/student-lesson.css';
 const StudentLesson = () => {
   useScrollReveal();
   const navigate = useNavigate();
+  const { updateUser } = useAuth();
+  const { isRegistered, isPaid, hasAccess } = useBootcampAccess();
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const { moduleId: moduleIdParam, roomId: roomIdParam } = useParams();
 
   const moduleId = Number(moduleIdParam);
@@ -31,6 +39,25 @@ const StudentLesson = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (!isRegistered) {
+      setShowRegisterModal(true);
+      setShowPaymentModal(false);
+      return;
+    }
+    if (!isPaid) {
+      setShowPaymentModal(true);
+      setShowRegisterModal(false);
+      return;
+    }
+    setShowRegisterModal(false);
+    setShowPaymentModal(false);
+  }, [isRegistered, isPaid]);
+
+  useEffect(() => {
+    if (!hasAccess) {
+      setLoading(false);
+      return;
+    }
     const load = async () => {
       setLoading(true);
       setError('');
@@ -49,7 +76,7 @@ const StudentLesson = () => {
     };
 
     load();
-  }, []);
+  }, [hasAccess]);
 
   const handleBack = () => {
     navigate('/student-learning');
@@ -119,6 +146,43 @@ const StudentLesson = () => {
             Back to Learning Path
           </Button>
         </header>
+      </div>
+    );
+  }
+
+  if (!hasAccess) {
+    return (
+      <div className="student-page lesson-page">
+        <header className="student-hero reveal-on-scroll">
+          <div>
+            <p className="student-kicker">Learning Path</p>
+            <h1>Access denied.</h1>
+            <p>Complete bootcamp registration and payment to unlock this lesson.</p>
+          </div>
+          <Button variant="primary" size="large" onClick={() => navigate('/student-bootcamp')}>
+            Register for Bootcamp
+          </Button>
+        </header>
+
+        {showRegisterModal && (
+          <StudentAccessModal
+            title="Bootcamp registration required"
+            description="Register for the bootcamp before you can access course materials."
+            primaryLabel="Go to Bootcamp"
+            onPrimary={() => navigate('/student-bootcamp')}
+            onClose={() => setShowRegisterModal(false)}
+          />
+        )}
+
+        {showPaymentModal && !showRegisterModal && (
+          <StudentPaymentModal
+            onClose={() => setShowPaymentModal(false)}
+            onSuccess={() => {
+              updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+              setShowPaymentModal(false);
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -203,6 +267,26 @@ const StudentLesson = () => {
           </Card>
         </div>
       </section>
+
+      {showRegisterModal && (
+        <StudentAccessModal
+          title="Bootcamp registration required"
+          description="Register for the bootcamp before you can access course materials."
+          primaryLabel="Go to Bootcamp"
+          onPrimary={() => navigate('/student-bootcamp')}
+          onClose={() => setShowRegisterModal(false)}
+        />
+      )}
+
+      {showPaymentModal && !showRegisterModal && (
+        <StudentPaymentModal
+          onClose={() => setShowPaymentModal(false)}
+          onSuccess={() => {
+            updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+            setShowPaymentModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };

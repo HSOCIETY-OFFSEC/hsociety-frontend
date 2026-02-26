@@ -10,6 +10,7 @@ import {
   FiCreditCard,
   FiFileText,
   FiMessageSquare,
+  FiCheckCircle,
   FiShield,
   FiTool,
   FiUsers,
@@ -24,7 +25,7 @@ export const NAV_LINKS = {
   /** Authenticated workspace nav (sidebar) */
   workspace: {
     corporate: [
-      { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
+      { path: '/corporate-dashboard', label: 'Overview', icon: FiBarChart2 },
       { path: '/engagements', label: 'Engagements', icon: FiShield },
       { path: '/reports', label: 'Reports', icon: FiFileText },
       { path: '/remediation', label: 'Remediation', icon: FiTool },
@@ -45,8 +46,12 @@ export const NAV_LINKS = {
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
-      { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
+      { path: '/student-dashboard', label: 'Overview', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
+      { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
+      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
+      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers },
+      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
@@ -69,7 +74,7 @@ export const NAV_LINKS = {
   desktopAuth: {
     corporate: [
       { path: '/', label: 'Home', icon: FiShield },
-      { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
+      { path: '/corporate-dashboard', label: 'Overview', icon: FiBarChart2 },
       { path: '/engagements', label: 'Engagements', icon: FiShield },
       { path: '/reports', label: 'Reports', icon: FiFileText },
       { path: '/remediation', label: 'Remediation', icon: FiTool },
@@ -92,8 +97,12 @@ export const NAV_LINKS = {
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
-      { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen },
+      { path: '/student-dashboard', label: 'Overview', icon: FiBookOpen },
       { path: '/student-learning', label: 'Learn', icon: FiTerminal },
+      { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
+      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
+      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers },
+      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ]
   },

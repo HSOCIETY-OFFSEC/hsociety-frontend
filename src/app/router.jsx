@@ -7,6 +7,7 @@ import AuthLayout from '../shared/components/layout/AuthLayout';
 import LandingLayout from '../shared/components/layout/LandingLayout';
 import PublicLayout from '../shared/components/layout/PublicLayout';
 import RouteEffects from '../shared/components/layout/RouteEffects';
+import StudentRoleBlocker from '../features/student/components/StudentRoleBlocker';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
@@ -25,6 +26,10 @@ const Developer = React.lazy(() => import('../features/developer/Developer'));
 const StudentDashboard = React.lazy(() => import('../features/student/StudentDashboard'));
 const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
+const StudentResources = React.lazy(() => import('../features/student/StudentResources'));
+const StudentQuizMaterial = React.lazy(() => import('../features/student/StudentQuizMaterial'));
+const StudentBootcamp = React.lazy(() => import('../features/student/StudentBootcamp'));
+const StudentPayments = React.lazy(() => import('../features/student/StudentPayments'));
 const AdminDashboard = React.lazy(() => import('../features/admin/AdminDashboard'));
 const PentesterDashboard = React.lazy(() => import('../features/pentester/PentesterDashboard'));
 const CommunityHub = React.lazy(() => import('../features/community/CommunityHub'));
@@ -59,6 +64,7 @@ const RoleRoute = ({ children, allowedRoles }) => {
     if (allowedRoles.includes('corporate') && (role === 'pentester' || role === 'client')) {
       return children;
     }
+    if (role === 'student') return <StudentRoleBlocker />;
     if (role === 'admin') return <Navigate to="/mr-robot" replace />;
     if (role === 'pentester') return <Navigate to="/pentester" replace />;
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
@@ -224,6 +230,38 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentLearning />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-resources"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentResources />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-quiz-material"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentQuizMaterial />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-bootcamp"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentBootcamp />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-payments"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentPayments />
                 </RoleRoute>
               }
             />

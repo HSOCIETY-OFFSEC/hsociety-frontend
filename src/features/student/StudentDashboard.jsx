@@ -14,11 +14,13 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
 import { getStudentOverview, registerBootcamp } from './student.service';
+import { useAuth } from '../../core/auth/AuthContext';
 import '../../styles/features/student.css';
 
 const StudentDashboard = () => {
   useScrollReveal();
   const navigate = useNavigate();
+  const { updateUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     learningPath: [],
@@ -81,6 +83,10 @@ const StudentDashboard = () => {
         ...prev,
         bootcampStatus: response.data?.bootcampStatus || 'enrolled'
       }));
+      updateUser({
+        bootcampRegistered: true,
+        bootcampStatus: response.data?.bootcampStatus || 'enrolled'
+      });
       setShowBootcampModal(false);
       setBootcampForm((prev) => ({ ...prev, goal: '' }));
     } else {
@@ -213,6 +219,19 @@ const StudentDashboard = () => {
                       </div>
                     ))}
                   </div>
+                </Card>
+
+                <Card padding="medium" className="student-card reveal-on-scroll">
+                  <div className="student-card-header">
+                    <FiBookOpen size={20} />
+                    <h3>Resources Hub</h3>
+                  </div>
+                  <p>
+                    Access curated reading bundles, lab tooling, and the bootcamp resource pack.
+                  </p>
+                  <Button variant="secondary" size="small" onClick={() => navigate('/student-resources')}>
+                    Open Resources
+                  </Button>
                 </Card>
 
               </div>

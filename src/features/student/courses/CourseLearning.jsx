@@ -8,6 +8,10 @@ import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import { getStudentCourse } from './course.service';
 import { deriveProfileFromCourseState, syncProfileProgress } from '../profile/profile.service';
 import { QuizPanel } from '../quizzes/QuizPanel';
+import useBootcampAccess from '../hooks/useBootcampAccess';
+import StudentAccessModal from '../components/StudentAccessModal';
+import StudentPaymentModal from '../components/StudentPaymentModal';
+import { useAuth } from '../../../core/auth/AuthContext';
 import '../../../styles/features/student-learning.css';
 
 /**
@@ -124,6 +128,10 @@ const getModuleState = (course, progressState, moduleId) => {
 export const CourseLearning = () => {
   useScrollReveal();
   const navigate = useNavigate();
+  const { updateUser } = useAuth();
+  const { isRegistered, isPaid, hasAccess } = useBootcampAccess();
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState(null);
@@ -133,8 +141,35 @@ export const CourseLearning = () => {
   const [activeModuleId, setActiveModuleId] = useState(null);
 
   const [quizContext, setQuizContext] = useState(null);
+  const triggerAccessModal = () => {
+    if (!isRegistered) {
+      setShowRegisterModal(true);
+      return;
+    }
+    setShowPaymentModal(true);
+  };
 
   useEffect(() => {
+    if (!isRegistered) {
+      setShowRegisterModal(true);
+      setShowPaymentModal(false);
+      return;
+    }
+    if (!isPaid) {
+      setShowPaymentModal(true);
+      setShowRegisterModal(false);
+      return;
+    }
+    setShowRegisterModal(false);
+    setShowPaymentModal(false);
+  }, [isRegistered, isPaid]);
+
+  useEffect(() => {
+    if (!isRegistered) {
+      setLoading(false);
+      return;
+    }
+
     const loadCourse = async () => {
       setLoading(true);
       setError('');
@@ -161,7 +196,7 @@ export const CourseLearning = () => {
     };
 
     loadCourse();
-  }, []);
+  }, [isRegistered]);
 
   const courseProgress = useMemo(
     () => computeCourseProgress(course, progressState),
@@ -184,6 +219,10 @@ export const CourseLearning = () => {
   }, [course, progressState, profileSnapshot]);
 
   const handleContinueLearning = () => {
+    if (!hasAccess) {
+      triggerAccessModal();
+      return;
+    }
     if (typeof document === 'undefined') return;
     const activeCard = document.getElementById('active-course-module');
     if (activeCard && typeof activeCard.scrollIntoView === 'function') {
@@ -193,6 +232,10 @@ export const CourseLearning = () => {
 
   const handleToggleRoomComplete = (moduleId, roomId) => {
     if (!course) return;
+    if (!hasAccess) {
+      triggerAccessModal();
+      return;
+    }
 
     const state = getModuleState(course, progressState, moduleId);
     if (state === 'locked') return;
@@ -218,6 +261,10 @@ export const CourseLearning = () => {
 
   const handleCtfComplete = (moduleId) => {
     if (!course) return;
+    if (!hasAccess) {
+      triggerAccessModal();
+      return;
+    }
 
     const module = course.modules.find((m) => m.moduleId === moduleId);
     const moduleProgress = progressState.modules[moduleId] || { rooms: {}, ctfCompleted: false };
@@ -239,11 +286,19 @@ export const CourseLearning = () => {
   };
 
   const handleOpenLesson = (moduleId, roomId) => {
+    if (!hasAccess) {
+      triggerAccessModal();
+      return;
+    }
     navigate(`/student-learning/module/${moduleId}/room/${roomId}`);
   };
 
   const handleQuizForRoom = (moduleId, roomId) => {
     if (!course) return;
+    if (!hasAccess) {
+      triggerAccessModal();
+      return;
+    }
     const module = course.modules.find((m) => m.moduleId === moduleId);
     const room = module?.rooms.find((r) => r.roomId === roomId);
     if (!room) return;
@@ -261,6 +316,10 @@ export const CourseLearning = () => {
 
   const handleQuizForModule = (moduleId) => {
     if (!course) return;
+    if (!hasAccess) {
+      triggerAccessModal();
+      return;
+    }
     const module = course.modules.find((m) => m.moduleId === moduleId);
     if (!module) return;
 
@@ -324,7 +383,7 @@ export const CourseLearning = () => {
         <div className="course-header-actions">
           <Button variant="primary" size="large" onClick={handleContinueLearning}>
             <FiCompass size={18} />
-            Jump to Resources
+            {hasAccess ? 'Jump to Resources' : 'Access Denied'}
           </Button>
         </div>
 
@@ -459,25 +518,25 @@ export const CourseLearning = () => {
                         <Button
                           variant="primary"
                           size="small"
-                          disabled={disabled}
+                          disabled={disabled || !hasAccess}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleOpenLesson(module.moduleId, room.roomId);
                           }}
                         >
                           <FiPlayCircle size={14} />
-                          View resources
+                          {hasAccess ? 'View resources' : 'Access Denied'}
                         </Button>
                         <Button
                           variant="ghost"
                           size="small"
-                          disabled={disabled}
+                          disabled={disabled || !hasAccess}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleQuizForRoom(module.moduleId, room.roomId);
                           }}
                         >
-                          Quiz
+                          {hasAccess ? 'Quiz' : 'Access Denied'}
                         </Button>
                       </div>
                     </div>
@@ -505,13 +564,17 @@ export const CourseLearning = () => {
                 <Button
                   variant={moduleProgress.ctfCompleted ? 'secondary' : 'primary'}
                   size="small"
-                  disabled={!allRoomsCompleted}
+                  disabled={!allRoomsCompleted || !hasAccess}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleCtfComplete(module.moduleId);
                   }}
                 >
-                  {moduleProgress.ctfCompleted ? 'Exercise Completed' : 'Start Exercise'}
+                  {hasAccess
+                    ? moduleProgress.ctfCompleted
+                      ? 'Exercise Completed'
+                      : 'Start Exercise'
+                    : 'Access Denied'}
                 </Button>
               </div>
 
@@ -523,12 +586,13 @@ export const CourseLearning = () => {
                 <Button
                   variant="ghost"
                   size="small"
+                  disabled={!hasAccess}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleQuizForModule(module.moduleId);
                   }}
                 >
-                  Module Check-in
+                  {hasAccess ? 'Module Check-in' : 'Access Denied'}
                 </Button>
               </div>
             </Card>
@@ -586,6 +650,37 @@ export const CourseLearning = () => {
     );
   }
 
+  if (!isRegistered) {
+    return (
+      <div className="course-learning">
+        <div className="course-layout dashboard-shell">
+          <div className="course-layout-main">
+            <Card padding="medium" className="course-header-card">
+              <p className="course-kicker">Bootcamp Access</p>
+              <h2 className="course-title">Register for the bootcamp to unlock the course.</h2>
+              <p className="course-subtitle">
+                The course modules unlock once your bootcamp registration is confirmed.
+              </p>
+              <Button variant="primary" size="large" onClick={() => navigate('/student-bootcamp')}>
+                Register for Bootcamp
+              </Button>
+            </Card>
+          </div>
+        </div>
+
+        {showRegisterModal && (
+          <StudentAccessModal
+            title="Bootcamp registration required"
+            description="Register for the bootcamp before you can access course materials."
+            primaryLabel="Go to Bootcamp"
+            onPrimary={() => navigate('/student-bootcamp')}
+            onClose={() => setShowRegisterModal(false)}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="course-learning">
       <div className="course-layout dashboard-shell">
@@ -601,6 +696,26 @@ export const CourseLearning = () => {
           title={quizContext.title}
           onClose={() => setQuizContext(null)}
           onComplete={handleQuizComplete}
+        />
+      )}
+
+      {showRegisterModal && (
+        <StudentAccessModal
+          title="Bootcamp registration required"
+          description="Register for the bootcamp before you can access course materials."
+          primaryLabel="Go to Bootcamp"
+          onPrimary={() => navigate('/student-bootcamp')}
+          onClose={() => setShowRegisterModal(false)}
+        />
+      )}
+
+      {showPaymentModal && !showRegisterModal && (
+        <StudentPaymentModal
+          onClose={() => setShowPaymentModal(false)}
+          onSuccess={() => {
+            updateUser({ bootcampPaid: true, bootcampStatus: 'enrolled' });
+            setShowPaymentModal(false);
+          }}
         />
       )}
     </div>

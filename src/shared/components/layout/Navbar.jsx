@@ -1,6 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiChevronDown, FiLogOut, FiMenu, FiShield, FiX } from 'react-icons/fi';
+import {
+  FiBookOpen,
+  FiCheckCircle,
+  FiChevronDown,
+  FiCreditCard,
+  FiLayers,
+  FiLogOut,
+  FiMenu,
+  FiShield,
+  FiTerminal,
+  FiX
+} from 'react-icons/fi';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
@@ -29,6 +40,7 @@ const Navbar = ({ sticky = true }) => {
   const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [studentLearnOpen, setStudentLearnOpen] = useState(false);
   const [viewportMode, setViewportMode] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
   );
@@ -62,8 +74,27 @@ const Navbar = ({ sticky = true }) => {
   }, []);
 
   const role = user?.role === 'client' ? 'corporate' : user?.role;
+  const isStudent = role === 'student';
   const mobileLinks = getMobileLinks(isAuthenticated, role);
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
+  const studentLearnLinks = useMemo(
+    () => [
+      { path: '/student-learning', label: 'Learning Path', icon: FiTerminal },
+      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
+      { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
+      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers },
+      { path: '/student-payments', label: 'Payments', icon: FiCreditCard }
+    ],
+    []
+  );
+  const hiddenStudentNavPaths = useMemo(
+    () => new Set(studentLearnLinks.map((link) => link.path)),
+    [studentLearnLinks]
+  );
+  const desktopLinks = useMemo(() => {
+    if (!isStudent) return desktopBasicLinks;
+    return desktopBasicLinks.filter((link) => !hiddenStudentNavPaths.has(link.path));
+  }, [desktopBasicLinks, hiddenStudentNavPaths, isStudent]);
 
   const isActive = (path) => location.pathname === path;
 
@@ -71,6 +102,7 @@ const Navbar = ({ sticky = true }) => {
     // Always reset transient nav UI when route changes.
     setMobileMenuOpen(false);
     setUserMenuOpen(false);
+    setStudentLearnOpen(false);
   }, [location.pathname]);
 
   return (
@@ -101,7 +133,7 @@ const Navbar = ({ sticky = true }) => {
           alignItems: 'center',
           gap: '0.4rem'
         }}>
-          {desktopBasicLinks.map((link) => (
+          {desktopLinks.map((link) => (
             <button
               key={link.path}
               type="button"
@@ -126,6 +158,35 @@ const Navbar = ({ sticky = true }) => {
               <span>{link.label}</span>
             </button>
           ))}
+
+          {isStudent && (
+            <div className="student-learn-dropdown">
+              <button
+                type="button"
+                onClick={() => setStudentLearnOpen((prev) => !prev)}
+                className="desktop-nav-link student-learn-trigger"
+              >
+                <FiTerminal size={16} />
+                <span>Learn</span>
+                <FiChevronDown size={14} />
+              </button>
+              {studentLearnOpen && (
+                <div className="student-learn-menu">
+                  {studentLearnLinks.map((link) => (
+                    <button
+                      key={link.path}
+                      type="button"
+                      onClick={() => navigate(link.path)}
+                      className={`student-learn-item ${isActive(link.path) ? 'active' : ''}`}
+                    >
+                      <link.icon size={16} />
+                      <span>{link.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Right Section */}
@@ -300,7 +361,7 @@ const Navbar = ({ sticky = true }) => {
           background: 'var(--card-bg)'
         }} className="mobile-menu">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {mobileLinks.map(link => (
+            {(isStudent ? mobileLinks.filter((link) => !hiddenStudentNavPaths.has(link.path)) : mobileLinks).map(link => (
               <button
                 key={link.path}
                 onClick={() => {
@@ -329,6 +390,40 @@ const Navbar = ({ sticky = true }) => {
                 <span>{link.label}</span>
               </button>
             ))}
+
+            {isStudent && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {studentLearnLinks.map((link) => (
+                  <button
+                    key={link.path}
+                    onClick={() => {
+                      navigate(link.path);
+                      setMobileMenuOpen(false);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      padding: '0.875rem 1rem',
+                      background: isActive(link.path) ? 'var(--primary-color-alpha)' : 'transparent',
+                      color: isActive(link.path) ? 'var(--primary-color)' : 'var(--text-primary)',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '1rem',
+                      fontWeight: isActive(link.path) ? 600 : 500,
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <span style={{ fontSize: '1.25rem', display: 'inline-flex' }}>
+                      <link.icon size={18} />
+                    </span>
+                    <span>{link.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div style={{
               height: '1px',
@@ -413,6 +508,55 @@ const Navbar = ({ sticky = true }) => {
         .desktop-nav-link {
           white-space: nowrap;
           flex: 0 1 auto;
+        }
+        .student-learn-dropdown {
+          position: relative;
+        }
+        .student-learn-trigger {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          min-height: 44px;
+          padding: 0.5rem 0.8rem;
+          border-radius: 9px;
+          border: 1px solid var(--border-color);
+          background: var(--input-bg);
+          color: var(--text-primary);
+          cursor: pointer;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+        .student-learn-menu {
+          position: absolute;
+          top: calc(100% + 0.5rem);
+          left: 0;
+          min-width: 210px;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 12px;
+          box-shadow: var(--shadow-lg);
+          padding: 0.5rem;
+          z-index: 1000;
+        }
+        .student-learn-item {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.65rem 0.75rem;
+          border: none;
+          border-radius: 8px;
+          background: transparent;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          font-weight: 600;
+          cursor: pointer;
+          text-align: left;
+        }
+        .student-learn-item.active,
+        .student-learn-item:hover {
+          background: var(--primary-color-alpha);
+          color: var(--primary-color);
         }
         .navbar-right {
           flex-shrink: 0;
