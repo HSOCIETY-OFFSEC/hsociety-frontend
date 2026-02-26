@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
 import { getLandingStats } from './landing.service';
@@ -45,8 +46,9 @@ import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.pn
 
 import '../../styles/features/landing.css';
 
-const Landing = () => {
+const Landing = ({ scrollToId = null }) => {
   useScrollReveal();
+  const location = useLocation();
   const [statsData, setStatsData] = useState(null);
 
   const iconMap = {
@@ -120,6 +122,30 @@ const Landing = () => {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const targetId = scrollToId || (location.hash ? location.hash.slice(1) : null);
+    if (!targetId) return undefined;
+
+    let cancelled = false;
+    const scrollToTarget = () => {
+      if (cancelled) return;
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    const rafId = window.requestAnimationFrame(scrollToTarget);
+    const timeoutId = window.setTimeout(scrollToTarget, 300);
+
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [location.hash, scrollToId]);
 
   const formatStatValue = (value, fallback, options = {}) => {
       if (value === null || value === undefined || Number.isNaN(value)) return fallback;

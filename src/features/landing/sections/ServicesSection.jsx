@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Logo from '../../../shared/components/common/Logo';
 import Button from '../../../shared/components/ui/Button';
@@ -6,6 +7,7 @@ import Card from '../../../shared/components/ui/Card';
 import '../../../styles/features/landing/services.css';
 
 const ServicesSection = ({ services = [] }) => {
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const touchStartX = useRef(null);
@@ -35,7 +37,7 @@ const ServicesSection = ({ services = [] }) => {
   };
 
   return (
-    <section className="services-section reveal-on-scroll">
+    <section className="services-section reveal-on-scroll" id="services">
       <div className="section-container">
 
         <div className="section-header-center">
@@ -121,6 +123,7 @@ const ServicesSection = ({ services = [] }) => {
                         size="small"
                         fullWidth
                         style={{ marginTop: 'auto' }}
+                        onClick={() => navigate('/services')}
                       >
                         Learn More{' '}
                         <FiArrowRight className="service-btn-arrow" size={16} />

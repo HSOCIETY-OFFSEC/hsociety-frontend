@@ -24,6 +24,7 @@ const Remediation = React.lazy(() => import('../features/corporate/remediation/R
 const Assets = React.lazy(() => import('../features/corporate/assets/Assets'));
 const Billing = React.lazy(() => import('../features/corporate/billing/Billing'));
 const Landing = React.lazy(() => import('../features/landing/Landing'));
+const Services = React.lazy(() => import('../features/services/Services'));
 const About = React.lazy(() => import('../features/about/About'));
 const Team = React.lazy(() => import('../features/team/Team'));
 const Developer = React.lazy(() => import('../features/developer/Developer'));
@@ -289,6 +290,7 @@ const AppRouter = () => {
 
           {/* Public pages - about, team, blog, etc. */}
           <Route element={<PublicLayout />}>
+            <Route path="services" element={<Services />} />
             <Route path="about" element={<About />} />
             <Route path="team" element={<Team />} />
             <Route path="developer" element={<Developer />} />

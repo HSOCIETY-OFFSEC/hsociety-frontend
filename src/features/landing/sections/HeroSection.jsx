@@ -27,6 +27,20 @@ const SOCIAL_LINKS = [
   { href: '#whatsapp', label: 'WhatsApp', icon: FaWhatsapp }
 ];
 
+/**
+ * Splits a string into individual animated word spans.
+ * Each word gets a .title-word wrapper and .title-word-inner child
+ * so CSS can do a clip + slide-up reveal per word.
+ */
+const AnimatedWords = ({ text, className = '' }) =>
+  text.split(' ').map((word, i) => (
+    <span key={i} className="title-word">
+      <span className={`title-word-inner ${className}`}>{word}</span>
+      {/* preserve whitespace between words */}
+      {i < text.split(' ').length - 1 && '\u00A0'}
+    </span>
+  ));
+
 const HeroSection = ({ content }) => {
   const navigate = useNavigate();
   const { badge, highlights, ctas, trust, proof } = content;
@@ -53,11 +67,19 @@ const HeroSection = ({ content }) => {
             Real Attacks. Real Security.
           </p>
 
-          {/* Title */}
+          {/* Title — word-by-word animated reveal */}
           <h1 className="hero-title">
-            Train like A Hacker.<br />
-            <span className="hero-title-accent">Prepare</span>{' '}
-            for  Hackers
+            {/* Line 1: "Train like A Hacker." */}
+            <AnimatedWords text="Train like A Hacker." />
+            <br />
+            {/* Line 2: "Prepare" (accent) + " for Hackers" */}
+            <span className="title-word">
+              <span className="title-word-inner">
+                <span className="hero-title-accent">Prepare</span>
+              </span>
+            </span>
+            {'\u00A0'}
+            <AnimatedWords text="for  Hackers" />
           </h1>
 
           {/* Description */}
@@ -66,16 +88,6 @@ const HeroSection = ({ content }) => {
             supervised, real-world penetration tests — building the next generation
             of professional red teamers.
           </p>
-
-          {/* Highlights
-          <ul className="hero-highlights">
-            {highlights.map((item) => (
-              <li key={item} className="hero-highlight">
-                <FiCheckCircle size={14} />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul> */}
 
           {/* CTAs */}
           <div className="hero-cta">
@@ -112,35 +124,6 @@ const HeroSection = ({ content }) => {
             })}
           </div>
 
-{/* Removed complimentary components to improve page layout 
-====================================================================
-*/}
-          {/* Proof stats
-          {proof?.length > 0 && (
-            <div className="hero-proof">
-              {proof.map((item) => (
-                <div key={item.label} className="hero-proof-item">
-                  <span className="proof-value">{item.value}</span>
-                  <span className="proof-label">{item.label}</span>
-                </div>
-              ))}
-            </div>
-          )} */}
-
-          {/* Trust */}
-          {/* <div className="trust-indicators">
-            {trust.map((item, index) => (
-              <div key={item} className="trust-item">
-                <span className="trust-icon">
-                  {index === 0 && <FiShield size={14} />}
-                  {index === 1 && <FiCheckCircle size={14} />}
-                  {index === 2 && <FiLock size={14} />}
-                </span>
-                <span className="trust-text">{item}</span>
-              </div>
-            ))}
-          </div>
-           */}
         </div>
 
         {/* ── RIGHT: Logo visual ── */}

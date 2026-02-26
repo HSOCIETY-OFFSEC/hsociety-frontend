@@ -60,6 +60,7 @@ export const NAV_LINKS = {
   /** Public pages */
   public: [
     { path: '/', label: 'Home', icon: FiShield },
+    { path: '/services', label: 'Services', icon: FiTool },
     { path: '/about', label: 'About Us', icon: FiUsers },
     { path: '/team', label: 'Meet the Team', icon: FiUsers },
     { path: '/developer', label: 'Meet the Developer', icon: FiCode },
@@ -110,6 +111,7 @@ export const NAV_LINKS = {
   /** Desktop quick links when not authenticated */
   desktopPublic: [
     { path: '/', label: 'Home', icon: FiShield },
+    { path: '/services', label: 'Services', icon: FiTool },
     { path: '/about', label: 'About', icon: FiUsers },
     { path: '/careers', label: 'Careers', icon: FiBriefcase }
   ]
