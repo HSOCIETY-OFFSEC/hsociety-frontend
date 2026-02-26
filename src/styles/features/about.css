@@ -1,32 +1,52 @@
-/**
- * About Page Styles
- */
+/* ============================================================
+   ABOUT PAGE
+   Theme: Editorial-Brutalist — manifesto tone, stark indexes,
+   asymmetric layout, premium dark/light-aware
+   ============================================================ */
 
+/* ── Page Shell ─────────────────────────────────────────────── */
 .about-page {
   min-height: 100vh;
-  background: radial-gradient(900px 420px at 10% -5%, rgba(45, 212, 191, 0.14), transparent 60%),
-    var(--bg-primary);
+  background: var(--bg-primary);
   color: var(--text-primary);
-  padding-bottom: 4rem;
+  padding-bottom: 6rem;
   position: relative;
   overflow: hidden;
 }
 
+/* Subtle circuit texture */
 .about-page::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image: url('../../assets/circuit-hero.svg');
   background-repeat: repeat;
-  background-size: 520px auto;
-  opacity: 0.06;
+  background-size: 480px auto;
+  opacity: 0.055;
   pointer-events: none;
   z-index: 0;
 }
 
-[data-theme="light"] .about-page::before {
-  opacity: 0.04;
-  filter: brightness(0.7);
+[data-theme='light'] .about-page::before {
+  opacity: 0.035;
+  filter: brightness(0.6);
+}
+
+/* Atmospheric top glow */
+.about-page::after {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: -10%;
+  width: 70%;
+  height: 600px;
+  background: radial-gradient(
+    ellipse at 30% 30%,
+    color-mix(in srgb, var(--text-primary) 4%, transparent),
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .about-page > * {
@@ -39,143 +59,384 @@
   min-height: 44px;
 }
 
-/* ── Hero ───────────────────────────────────────────────── */
+/* ── Hero ───────────────────────────────────────────────────── */
 .about-hero {
-  padding: 6rem 2rem 3.5rem;
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  padding: 7rem 2rem 5rem;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
 }
 
-.about-hero-content {
-  max-width: 880px;
+.about-hero-inner {
+  max-width: 1000px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: end;
+}
+
+.about-hero-text {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.35rem;
 }
 
-.about-hero-content h1 {
-  margin: 0;
-  font-size: clamp(2.2rem, 4vw, 3.2rem);
-  line-height: 1.2;
-}
-
-.about-hero-content p {
-  margin: 0;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-size: 1.05rem;
-}
-
+/* Kicker */
 .about-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.25rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.7rem;
   color: var(--text-tertiary);
 }
 
-/* ── Shared Sections ─────────────────────────────────────── */
-.about-section {
-  padding: 4.5rem 2rem;
+.about-kicker-line {
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--border-color);
+  flex-shrink: 0;
 }
 
-.about-section-header {
-  max-width: 780px;
-  margin: 0 auto 2.5rem;
-  text-align: center;
+/* Hero title */
+.about-hero-title {
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--text-primary);
 }
 
-.about-section-header h2 {
-  margin: 0 0 0.75rem;
-  font-size: 2.1rem;
-}
-
-.about-section-header p {
+/* Hero description */
+.about-hero-desc {
   margin: 0;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.75;
+  font-size: 1rem;
+  max-width: 580px;
 }
 
-/* ── Cycle ──────────────────────────────────────────────── */
-.about-cycle-list {
-  max-width: 860px;
+/* Large decorative index number */
+.about-hero-accent {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.25rem;
+  user-select: none;
+  pointer-events: none;
+}
+
+.about-hero-index {
+  font-size: clamp(5rem, 9vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text-primary) 12%, transparent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ── Shared Section Layout ──────────────────────────────────── */
+.about-section {
+  padding: 5rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 0;
-  list-style: none;
+}
+
+.about-section:last-child {
+  border-bottom: none;
+}
+
+/* Section head — number + rule + copy */
+.about-section-head {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: 80px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+.about-section-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding-top: 0.35rem;
+}
+
+.about-section-num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2rem;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.about-section-rule {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: var(--border-color);
+  flex-shrink: 0;
+}
+
+.about-section-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.about-section-copy h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.about-section-copy p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 540px;
+}
+
+/* ── Cycle List ─────────────────────────────────────────────── */
+.about-cycle-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  padding-left: 80px; /* align with content column */
 }
 
 .about-cycle-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  border-radius: 16px;
+  gap: 1.1rem;
+  padding: 1.1rem 1.4rem;
+  border-radius: 10px;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  background: var(--card-bg);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-cycle-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: color-mix(in srgb, var(--text-primary) 20%, transparent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.about-cycle-item:hover {
+  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
+  background: var(--bg-secondary);
+  transform: translateX(3px);
+}
+
+.about-cycle-item:hover::before {
+  opacity: 1;
 }
 
 .cycle-index {
-  font-weight: 700;
-  color: var(--primary-color);
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1rem;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  width: 22px;
 }
 
 .cycle-title {
   font-weight: 600;
+  font-size: 0.92rem;
   color: var(--text-primary);
+  flex: 1;
+  line-height: 1.4;
 }
 
-/* ── Experience ─────────────────────────────────────────── */
+.cycle-arrow {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.about-cycle-item:hover .cycle-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Experience Cards ───────────────────────────────────────── */
 .about-points-grid {
-  max-width: 960px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-left: 80px; /* align with content column */
 }
 
 .about-point-card {
-  padding: 1.5rem;
-  border-radius: 16px;
+  padding: 1.6rem 1.5rem;
+  border-radius: 12px;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  background: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+  /* Staggered animation delay via CSS var */
+  animation-delay: calc(var(--card-index, 0) * 80ms);
+}
+
+.about-point-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--text-primary) 18%, transparent),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.about-point-card:hover {
+  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--text-primary) 5%, transparent);
+  transform: translateY(-2px);
+}
+
+.about-point-card:hover::after {
+  opacity: 1;
+}
+
+.about-point-num {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15rem;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.25rem;
 }
 
 .about-point-card h3 {
-  margin: 0 0 0.6rem;
-  font-size: 1.1rem;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .about-point-card p {
   margin: 0;
   color: var(--text-secondary);
-  line-height: 1.6;
+  font-size: 0.875rem;
+  line-height: 1.65;
 }
 
-/* ── Principle ──────────────────────────────────────────── */
-.about-principle-section {
-  padding-bottom: 5rem;
-}
-
+/* ── Principle List ─────────────────────────────────────────── */
 .about-principle-list {
-  max-width: 780px;
-  margin: 0 auto;
-  padding-left: 1.1rem;
-  display: grid;
-  gap: 0.75rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.about-principle-list li {
+  list-style: none;
   margin: 0;
+  padding: 0;
+  padding-left: 80px; /* align with content column */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-/* ── Responsive ─────────────────────────────────────────── */
+.about-principle-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.15s ease;
+  border-radius: 4px;
+  padding-left: 0.5rem;
+  margin-left: -0.5rem;
+}
+
+.about-principle-item:first-child {
+  border-top: 1px solid var(--border-color);
+}
+
+.about-principle-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+}
+
+.principle-marker {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12rem;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  width: 22px;
+}
+
+.principle-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+
+/* Large tablet */
+@media (max-width: 1024px) {
+  .about-section {
+    padding: 4rem 1.75rem;
+  }
+
+  .about-points-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablet portrait */
 @media (max-width: 900px) {
+  .about-hero {
+    padding: 6rem 1.75rem 4rem;
+  }
+
+  .about-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .about-hero-accent {
+    display: none;
+  }
+
   .about-cycle-list {
     grid-template-columns: 1fr;
   }
@@ -185,16 +446,107 @@
   }
 }
 
-@media (max-width: 640px) {
+/* Mobile landscape */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 3.5rem 1.5rem;
+    max-width: 100%;
+  }
+
+  .about-section-head {
+    grid-template-columns: 56px 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .about-section-rule {
+    height: 36px;
+  }
+
+  .about-cycle-list,
+  .about-points-grid,
+  .about-principle-list {
+    padding-left: 0;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
   .about-hero {
-    padding: 5rem 1.5rem 3rem;
+    padding: 5rem 1.25rem 3.5rem;
+  }
+
+  .about-hero-title {
+    font-size: 2.1rem;
   }
 
   .about-section {
-    padding: 3.5rem 1.5rem;
+    padding: 3rem 1.25rem;
   }
 
-  .about-section-header h2 {
-    font-size: 1.8rem;
+  .about-section-head {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .about-section-meta {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .about-section-rule {
+    width: 32px;
+    height: 1px;
+    background: var(--border-color);
+  }
+
+  .about-section-copy h2 {
+    font-size: 1.5rem;
+  }
+
+  .about-cycle-item {
+    padding: 0.95rem 1.1rem;
+  }
+
+  .about-point-card {
+    padding: 1.25rem;
+  }
+
+  .about-principle-item {
+    gap: 1rem;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  .about-hero {
+    padding: 4.5rem 1rem 3rem;
+  }
+
+  .about-section {
+    padding: 2.5rem 1rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .about-cycle-item,
+  .about-point-card,
+  .about-principle-item {
+    transition: none !important;
+  }
+
+  .about-cycle-item:hover {
+    transform: none;
+  }
+
+  .about-point-card:hover {
+    transform: none;
+  }
+
+  .cycle-arrow {
+    transition: none !important;
   }
 }

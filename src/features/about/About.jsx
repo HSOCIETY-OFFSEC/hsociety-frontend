@@ -10,55 +10,114 @@ const About = () => {
 
   return (
     <div className="about-page">
+
+      {/* ── Hero ─────────────────────────────────────────────── */}
       <header className="about-hero reveal-on-scroll">
-        <div className="about-hero-content">
-          <p className="about-kicker">{hero.kicker}</p>
-          <h1>{hero.title}</h1>
-          <p>{hero.description}</p>
+        <div className="about-hero-inner">
+          <div className="about-hero-text">
+            <p className="about-kicker">
+              <span className="about-kicker-line" aria-hidden="true" />
+              {hero.kicker}
+            </p>
+            <h1 className="about-hero-title">{hero.title}</h1>
+            <p className="about-hero-desc">{hero.description}</p>
+          </div>
+          <div className="about-hero-accent" aria-hidden="true">
+            <span className="about-hero-index">00</span>
+          </div>
         </div>
       </header>
 
-      <section className="about-section about-cycle-section reveal-on-scroll">
-        <div className="about-section-header">
-          <h2>{cycle.title}</h2>
-          <p>{cycle.subtitle}</p>
+      {/* ── Cycle / Phases ───────────────────────────────────── */}
+      <section
+        className="about-section about-cycle-section reveal-on-scroll"
+        aria-labelledby="cycle-heading"
+      >
+        <div className="about-section-head">
+          <div className="about-section-meta">
+            <span className="about-section-num" aria-hidden="true">01</span>
+            <span className="about-section-rule" aria-hidden="true" />
+          </div>
+          <div className="about-section-copy">
+            <h2 id="cycle-heading">{cycle.title}</h2>
+            <p>{cycle.subtitle}</p>
+          </div>
         </div>
-        <ol className="about-cycle-list">
+
+        <ol className="about-cycle-list" aria-label="Security cycle phases">
           {cycle.phases.map((phase, index) => (
             <li key={phase} className="about-cycle-item">
-              <span className="cycle-index">0{index + 1}</span>
+              <span className="cycle-index" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
               <span className="cycle-title">{phase}</span>
+              <span className="cycle-arrow" aria-hidden="true">→</span>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="about-section reveal-on-scroll">
-        <div className="about-section-header">
-          <h2>{experience.title}</h2>
-          <p>{experience.subtitle}</p>
+      {/* ── Experience / Cards ───────────────────────────────── */}
+      <section
+        className="about-section about-experience-section reveal-on-scroll"
+        aria-labelledby="experience-heading"
+      >
+        <div className="about-section-head">
+          <div className="about-section-meta">
+            <span className="about-section-num" aria-hidden="true">02</span>
+            <span className="about-section-rule" aria-hidden="true" />
+          </div>
+          <div className="about-section-copy">
+            <h2 id="experience-heading">{experience.title}</h2>
+            <p>{experience.subtitle}</p>
+          </div>
         </div>
+
         <div className="about-points-grid">
-          {experience.cards.map((card) => (
-            <div key={card.title} className="about-point-card">
+          {experience.cards.map((card, i) => (
+            <article
+              key={card.title}
+              className="about-point-card"
+              style={{ '--card-index': i }}
+            >
+              <span className="about-point-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
               <h3>{card.title}</h3>
               <p>{card.description}</p>
-            </div>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="about-section about-principle-section reveal-on-scroll">
-        <div className="about-section-header">
-          <h2>{principle.title}</h2>
-          <p>{principle.subtitle}</p>
+      {/* ── Principles ───────────────────────────────────────── */}
+      <section
+        className="about-section about-principle-section reveal-on-scroll"
+        aria-labelledby="principle-heading"
+      >
+        <div className="about-section-head">
+          <div className="about-section-meta">
+            <span className="about-section-num" aria-hidden="true">03</span>
+            <span className="about-section-rule" aria-hidden="true" />
+          </div>
+          <div className="about-section-copy">
+            <h2 id="principle-heading">{principle.title}</h2>
+            <p>{principle.subtitle}</p>
+          </div>
         </div>
-        <ul className="about-principle-list">
-          {principle.bullets.map((item) => (
-            <li key={item}>{item}</li>
+
+        <ul className="about-principle-list" aria-label="Core principles">
+          {principle.bullets.map((item, i) => (
+            <li key={item} className="about-principle-item">
+              <span className="principle-marker" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="principle-text">{item}</span>
+            </li>
           ))}
         </ul>
       </section>
+
     </div>
   );
 };
