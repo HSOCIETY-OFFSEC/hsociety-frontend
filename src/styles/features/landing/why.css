@@ -11,12 +11,16 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.25rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* ---- Card ---- */
+
 .why-item {
+  display: flex;
+  flex-direction: column;
   text-align: left;
-  padding-bottom: 1.5rem;
-  padding-bottom: 1.5rem; 
   border-radius: 18px;
   border: 1px solid var(--border-color);
   background: color-mix(in srgb, var(--card-bg) 92%, transparent);
@@ -39,28 +43,29 @@
 .why-item:hover {
   transform: translateY(-6px);
   border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
-  box-shadow: 0 24px 40px -30px rgba(15, 23, 42, 0.6);
-} 
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.2);
+}
 
 .why-item:hover::after {
   opacity: 1;
 }
 
+/* ---- Media (flush to card top) ---- */
+
 .why-media {
   width: 100%;
   aspect-ratio: 16 / 10;
-  border-radius: 14px;
+  border-radius: 18px 18px 0 0;
   overflow: hidden;
-  margin-bottom: 1.25rem;
   position: relative;
+  flex-shrink: 0;
 }
 
 .why-media::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(3, 7, 18, 0.1), rgba(3, 7, 18, 0.55));
-  opacity: 0.5;
+  background: linear-gradient(180deg, rgba(3, 7, 18, 0.05) 0%, rgba(3, 7, 18, 0.45) 100%);
   pointer-events: none;
 }
 
@@ -75,8 +80,9 @@
 
 .why-item:hover .why-media img {
   transform: scale(1.08);
-
 }
+
+/* ---- Icon, Title, Description are direct children — padded via margin ---- */
 
 .why-icon {
   width: 52px;
@@ -87,7 +93,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.9rem;
+  margin: 1.5rem 1.5rem 1rem;
+  flex-shrink: 0;
   transition: transform 0.3s ease;
 }
 
@@ -96,18 +103,22 @@
 }
 
 .why-title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.75rem;
+  margin: 0 1.5rem 0.6rem;
+  line-height: 1.3;
 }
 
 .why-description {
-  font-size: 0.95rem;
+  font-size: 0.925rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 0;
+  line-height: 1.65;
+  margin: 0 1.5rem 1.75rem;
+  flex-grow: 1;
 }
+
+/* ---- Responsive ---- */
 
 @media (max-width: 1024px) {
   .why-grid {
@@ -116,7 +127,12 @@
 }
 
 @media (max-width: 680px) {
+  .why-section {
+    padding: 4rem 1.25rem;
+  }
+
   .why-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
