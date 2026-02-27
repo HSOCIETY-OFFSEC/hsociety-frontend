@@ -215,6 +215,26 @@ const Navbar = ({ sticky = true }) => {
             <ThemeToggle />
           </span>
 
+          {/* Auth Actions (Desktop, Public) */}
+          {!isAuthenticated && viewportMode === 'desktop' && (
+            <div className="navbar-right-actions">
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="navbar-auth-button"
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/register')}
+                className="navbar-auth-button navbar-auth-primary"
+              >
+                Register
+              </button>
+            </div>
+          )}
+
           {/* User Menu (Desktop) */}
           {isAuthenticated && user && (
             <div className="desktop-user-menu">
@@ -332,18 +352,32 @@ const Navbar = ({ sticky = true }) => {
                 <span>Logout</span>
               </button>
             ) : (
-              <button
-                onClick={() => {
-                  navigate('/login');
-                  setMobileMenuOpen(false);
-                }}
-                className="mobile-menu-login"
-              >
-                <span className="mobile-menu-icon">
-                  <FiShield size={18} />
-                </span>
-                <span>Login</span>
-              </button>
+              <>
+                <button
+                  onClick={() => {
+                    navigate('/login');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="mobile-menu-login"
+                >
+                  <span className="mobile-menu-icon">
+                    <FiShield size={18} />
+                  </span>
+                  <span>Login</span>
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('/register');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="mobile-menu-register"
+                >
+                  <span className="mobile-menu-icon">
+                    <FiShield size={18} />
+                  </span>
+                  <span>Register</span>
+                </button>
+              </>
             )}
           </div>
         </div>

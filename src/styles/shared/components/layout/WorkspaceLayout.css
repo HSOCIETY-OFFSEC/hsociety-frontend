@@ -49,6 +49,81 @@
   min-width: 0;
 }
 
+.workspace-community-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.workspace-community-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.workspace-community-link:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--text-primary) 20%, var(--border-color));
+}
+
+.workspace-community-link.active {
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
+}
+
+.workspace-community-dropdown {
+  position: relative;
+}
+
+.workspace-community-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 200px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem;
+  display: grid;
+  gap: 0.35rem;
+  z-index: 20;
+}
+
+.workspace-community-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.workspace-community-item:hover,
+.workspace-community-item.active {
+  background: var(--input-bg);
+  color: var(--text-primary);
+}
+
 .workspace-home-button {
   display: inline-flex;
   align-items: center;
@@ -86,6 +161,66 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.workspace-community-tools {
+  position: relative;
+}
+
+.workspace-community-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.workspace-community-tool-btn:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--text-primary) 20%, var(--border-color));
+}
+
+.workspace-community-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 200px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem;
+  display: grid;
+  gap: 0.35rem;
+  z-index: 20;
+}
+
+.workspace-community-menu button {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.6rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.workspace-community-menu button:hover {
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .workspace-profile-button {
@@ -212,6 +347,23 @@
   transform: translateX(0);
 }
 
+.workspace-layout.no-sidebar {
+  padding-left: 0 !important;
+}
+
+.workspace-layout.no-sidebar .workspace-main {
+  padding: 0;
+}
+
+.workspace-layout.no-sidebar .workspace-topbar {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.workspace-layout.no-sidebar .workspace-topbar-title {
+  font-weight: 700;
+}
+
 @media (min-width: 900px) {
   .workspace-layout {
     padding-left: var(--sidebar-width);
@@ -255,6 +407,18 @@
 
   .workspace-main {
     padding-top: calc(1.5rem + var(--workspace-topbar-height));
+  }
+
+  .workspace-layout.no-sidebar .workspace-main {
+    padding-top: calc(1.5rem + var(--workspace-topbar-height));
+  }
+}
+
+@media (max-width: 900px) {
+  .workspace-community-nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    max-width: 60vw;
   }
 }
 

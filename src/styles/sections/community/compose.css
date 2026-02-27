@@ -1,0 +1,123 @@
+/* ============================================================
+   COMMUNITY COMPOSE
+   ============================================================ */
+
+.community-compose {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem 1rem;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+  background: var(--bg-primary);
+}
+
+.community-compose-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.community-compose-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.community-compose-inner {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0 0.5rem 0 1rem;
+  transition: border-color 0.2s ease;
+  min-width: 0;
+}
+
+.community-compose-inner:focus-within {
+  border-color: color-mix(in srgb, var(--text-primary) 30%, var(--border-color));
+}
+
+.community-compose-inner input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.6rem 0;
+  min-width: 0;
+}
+
+.community-compose-inner input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.community-send-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.community-send-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.community-send-btn:not(:disabled):hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+.community-send-btn:not(:disabled):active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 480px) {
+  .community-compose {
+    padding: 0.75rem 0.875rem 0.875rem;
+    gap: 0.5rem;
+  }
+
+  .community-compose-avatar {
+    display: none;
+  }
+
+  .community-compose-inner input {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .community-compose {
+    padding: 0.6rem 0.75rem 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-send-btn {
+    transition: none !important;
+  }
+}

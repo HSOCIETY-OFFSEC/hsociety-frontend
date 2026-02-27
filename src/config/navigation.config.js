@@ -63,14 +63,7 @@ export const NAV_LINKS = {
   public: [
     { path: '/', label: 'Home', icon: FiShield },
     { path: '/services', label: 'Services', icon: FiTool },
-    { path: '/about', label: 'About Us', icon: FiUsers },
-    { path: '/team', label: 'Meet the Team', icon: FiUsers },
-    { path: '/developer', label: 'Meet the Developer', icon: FiCode },
-    { path: '/student-dashboard', label: 'Student Dashboard', icon: FiBookOpen },
-    { path: '/careers', label: 'Careers', icon: FiBriefcase },
-    { path: '/methodology', label: 'Methodology', icon: FiShield },
-    { path: '/case-studies', label: 'Case Studies', icon: FiFileText },
-    { path: '/blog', label: 'Field Notes', icon: FiMessageSquare }
+    { path: '/about', label: 'About', icon: FiUsers }
   ],
 
   /** Desktop quick links when authenticated */

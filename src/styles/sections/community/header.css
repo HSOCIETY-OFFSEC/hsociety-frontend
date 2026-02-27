@@ -1,0 +1,196 @@
+/* ============================================================
+   COMMUNITY HEADER
+   ============================================================ */
+
+.community-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem 1.75rem 0.75rem;
+  background: var(--bg-primary);
+}
+
+.community-header-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.community-header-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.community-header-kicker {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.22rem;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin: 0 0 0.25rem;
+}
+
+.community-header-title h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.community-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-secondary);
+  justify-content: center;
+}
+
+.community-header-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.community-header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.community-header-user img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.community-header-user-name {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.community-header-user-role {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  text-transform: capitalize;
+}
+
+.community-channel-tabs {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.community-channel-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.community-channel-tab:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--text-primary) 30%, var(--border-color));
+}
+
+.community-channel-tab.active {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
+}
+
+@media (max-width: 1024px) {
+  .community-header-top {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .community-header-meta {
+    justify-content: flex-start;
+  }
+
+  .community-header-user {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .community-header {
+    padding: 1.25rem 1rem 0.75rem;
+  }
+
+  .community-header-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .community-header-title h1 {
+    font-size: 1.2rem;
+  }
+
+  .community-header-meta {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+
+  .community-header-stat {
+    font-size: 0.8rem;
+  }
+
+  .community-header-user {
+    gap: 0.6rem;
+  }
+
+  .community-header-user img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .community-channel-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.25rem;
+  }
+
+  .community-channel-tab {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .community-header {
+    padding: 1rem 0.85rem 0.6rem;
+  }
+
+  .community-header-meta {
+    gap: 0.5rem;
+  }
+
+  .community-header-user-name {
+    font-size: 0.82rem;
+  }
+
+  .community-header-user-role {
+    font-size: 0.68rem;
+  }
+}

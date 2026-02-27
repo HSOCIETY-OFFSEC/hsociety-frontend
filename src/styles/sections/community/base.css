@@ -1,0 +1,52 @@
+/* ============================================================
+   COMMUNITY HUB BASE
+   ============================================================ */
+
+.community-root {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--workspace-topbar-height));
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+  overflow: hidden;
+}
+
+.community-chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+.community-conn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+}
+
+.community-conn-badge.live {
+  color: #10b981;
+  background: color-mix(in srgb, #10b981 10%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, #10b981 28%, var(--border-color));
+}
+
+.community-conn-badge.away {
+  color: var(--text-tertiary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+  .community-root {
+    min-height: calc(100vh - var(--workspace-topbar-height));
+  }
+}
