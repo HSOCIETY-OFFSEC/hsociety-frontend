@@ -200,7 +200,6 @@
   color: var(--primary-color, #10b981);
   opacity: 0;
   animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
-  /* Subtle cursor blink on the kicker */
   position: relative;
 }
 
@@ -228,16 +227,13 @@
   margin: 0;
   letter-spacing: -0.02em;
   text-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-  /* Title animates in as a whole but each .title-word is staggered */
   opacity: 1;
 }
 
-/* Wrapper for each word — injected via JS or manually in JSX */
 .title-word {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  /* slight extra line-height so descenders don't clip */
   line-height: 1.15;
 }
 
@@ -268,7 +264,6 @@
   }
 }
 
-/* Accent word glitch flicker after reveal */
 .hero-title-accent {
   color: var(--primary-color, #10b981);
   position: relative;
@@ -363,7 +358,6 @@
 }
 
 /* CTAs */
-
 .hero-cta {
   display: flex;
   flex-direction: row;
@@ -378,7 +372,6 @@
   min-width: 160px;
   flex: 0 0 auto;
   white-space: nowrap;
-  /* Subtle hover lift */
   transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
               box-shadow 0.22s ease;
 }
@@ -541,38 +534,51 @@
    ═══════════════════════════════════════ */
 @media (max-width: 1023px) {
   .hero-container {
-    flex-direction: column-reverse;
+    flex-direction: column;
+    width: 100%;
   }
 
   .hero-visual-panel {
-    flex: none;
-    padding: 5rem 2rem 2rem;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .hero-logo-wrap {
-    align-items: center;
-  }
-}
-
-
-@media (max-width: 640px) {
-  .hero-visual-panel {
-    padding: 5.5rem 1.5rem 2rem;
+    display: none;
   }
 
   .hero-content-panel {
-    padding: 2rem 1.5rem 3.5rem;
+    width: 100%;
+    padding: 6rem 2rem 4rem;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    width: 100vw;
+    min-height: 100svh;
+  }
+
+  .hero-container {
+    width: 100%;
+    min-height: 100svh;
+  }
+
+  .hero-content-panel {
+    width: 100%;
+    padding: 5rem 1.25rem 3rem;
     gap: 1.25rem;
+    box-sizing: border-box;
   }
 
   .hero-title {
-    font-size: 2.2rem;
+    font-size: clamp(1.9rem, 8vw, 2.4rem);
+  }
+
+  .hero-description {
+    max-width: 100%;
+    font-size: 0.95rem;
   }
 
   .hero-cta {
     flex-direction: column;
+    width: 100%;
   }
 
   .hero-cta button {
@@ -582,6 +588,15 @@
 
   .hero-proof {
     gap: 1.5rem;
+  }
+
+  .hero-highlights {
+    width: 100%;
+  }
+
+  .hero-highlight {
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
