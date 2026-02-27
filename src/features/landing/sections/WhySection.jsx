@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../../../shared/components/common/Logo';
 import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
-import '../../../styles/features/landing/why.css';
+import '../../../styles/landing/why.css';
 
 const WhySection = ({ items = [] }) => (
   <section className="why-section reveal-on-scroll">

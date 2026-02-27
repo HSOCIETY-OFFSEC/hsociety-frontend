@@ -1,0 +1,16 @@
+/**
+ * Logo Styles
+ * Location: src/styles/shared/components/common/Logo.css
+ */
+
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-image {
+  display: block;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}

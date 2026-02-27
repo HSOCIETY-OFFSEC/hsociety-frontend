@@ -4,7 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getReports } from './reports.service';
-import '../../../styles/features/reports.css';
+import '../../../styles/corporate/pages/reports.css';
 
 const Reports = () => {
   const [reports, setReports] = useState([]);

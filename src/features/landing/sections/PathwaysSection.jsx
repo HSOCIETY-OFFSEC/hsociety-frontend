@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
-import '../../../styles/features/landing/pathways.css';
+import '../../../styles/landing/pathways.css';
 
 // Replace these with your actual image imports
 import studentImg from '../../../assets/brand-images/brand-image-black.png';

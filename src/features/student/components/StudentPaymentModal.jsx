@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../../shared/components/ui/Button';
 import { initializeBootcampPayment, submitBootcampBtcPayment } from '../../dashboards/student/student.service';
-import '../../../styles/features/billing.css';
+import '../../../styles/shared/components/billing/PaymentModal.css';
 
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
 

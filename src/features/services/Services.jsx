@@ -21,7 +21,7 @@ import Card from '../../shared/components/ui/Card';
 import terminalWallpaper from '../../assets/brand-images/terminalwallpaper.png';
 import greenBinaryWallpaper from '../../assets/backgrounds/greenbinarywallaper.png';
 import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.png';
-import '../../styles/features/services.css';
+import '../../styles/sections/services/index.css';
 
 const Services = () => {
   const navigate = useNavigate();

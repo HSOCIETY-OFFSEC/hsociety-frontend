@@ -16,7 +16,7 @@ import {
 } from 'react-icons/fi';
 import { FaGithub, FaLinkedinIn, FaWhatsapp, FaXTwitter, FaYoutube } from 'react-icons/fa6';
 import Logo from '../../../shared/components/common/Logo';
-import '../../../styles/features/landing/footer.css';
+import '../../../styles/landing/footer.css';
 import { subscribeNewsletter } from '../landing.service';
 
 const FooterSection = () => {

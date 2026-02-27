@@ -44,7 +44,7 @@ import terminalWallpaper from '../../assets/brand-images/terminalwallpaper.png';
 import greenBinaryWallpaper from '../../assets/backgrounds/greenbinarywallaper.png';
 import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.png';
 
-import '../../styles/features/landing.css';
+import '../../styles/landing/index.css';
 
 const Landing = ({ scrollToId = null }) => {
   useScrollReveal();

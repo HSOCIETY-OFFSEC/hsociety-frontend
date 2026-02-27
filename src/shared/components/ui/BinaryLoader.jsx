@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../../styles/shared/components/ui/BinaryLoader.css';
 
 const BINARY_SEQUENCE = '01010111 01110011 01110101 01101001 01110100 01110011 00110110';
 

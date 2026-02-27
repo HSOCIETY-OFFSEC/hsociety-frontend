@@ -4,7 +4,8 @@ import { FiChevronDown, FiHome, FiLogOut, FiMenu, FiUser, FiX } from 'react-icon
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
-import '../../../styles/shared/layout.css';
+import '../../../styles/shared/components/layout/AppShell.css';
+import '../../../styles/shared/components/layout/WorkspaceLayout.css';
 
 /**
  * Workspace Layout

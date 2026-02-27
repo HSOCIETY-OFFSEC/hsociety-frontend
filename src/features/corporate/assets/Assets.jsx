@@ -4,7 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getAssets } from './assets.service';
-import '../../../styles/features/assets.css';
+import '../../../styles/corporate/pages/assets.css';
 
 const assetTypes = ['Domain', 'IP Range', 'Application', 'Cloud Environment'];
 

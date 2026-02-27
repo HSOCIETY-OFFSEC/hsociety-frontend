@@ -1,0 +1,95 @@
+/**
+ * Binary Loader Styles
+ * Location: src/styles/shared/components/ui/BinaryLoader.css
+ */
+
+.binary-loader {
+  display: grid;
+  gap: 0.5rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.binary-circle {
+  --loader-size: 120px;
+  --ring-width: 6px;
+  position: relative;
+  width: var(--loader-size);
+  height: var(--loader-size);
+  margin: 0 auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.binary-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 90deg, rgba(31, 191, 143, 0) 0deg, rgba(31, 191, 143, 0.9) 120deg, rgba(31, 191, 143, 0.1) 240deg, rgba(31, 191, 143, 0) 360deg);
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-width)), #000 calc(100% - var(--ring-width)));
+  animation: binary-spin 1.2s linear infinite;
+  box-shadow: 0 0 25px rgba(31, 191, 143, 0.35);
+}
+
+.binary-orbit {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 40%, transparent);
+  display: grid;
+  place-items: center;
+  animation: binary-orbit 2.4s linear infinite;
+}
+
+.binary-orbit span {
+  font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--primary-color) 70%, #ffffff);
+  opacity: 0.85;
+  padding: 0 0.5rem;
+  background: color-mix(in srgb, var(--bg-primary) 85%, transparent);
+  border-radius: 999px;
+}
+
+.binary-loader .binary-message {
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.binary-loader-sm .binary-circle {
+  --loader-size: 86px;
+  --ring-width: 5px;
+}
+
+.binary-loader-sm .binary-message {
+  font-size: 0.65rem;
+}
+
+.binary-loader-lg .binary-circle {
+  --loader-size: 150px;
+  --ring-width: 7px;
+}
+
+.binary-loader-lg .binary-message {
+  font-size: 0.8rem;
+}
+
+@keyframes binary-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes binary-orbit {
+  to { transform: rotate(-360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .binary-ring,
+  .binary-orbit {
+    animation: none;
+  }
+}

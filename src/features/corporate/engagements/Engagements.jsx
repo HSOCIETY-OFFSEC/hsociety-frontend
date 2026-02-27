@@ -5,7 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getEngagements } from './engagements.service';
 import PaymentModal from '../billing/components/PaymentModal';
-import '../../../styles/features/engagements.css';
+import '../../../styles/corporate/pages/engagements.css';
 
 const statusMap = {
   recon: { label: 'Recon', className: 'status-recon' },

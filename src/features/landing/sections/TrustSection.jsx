@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../../../shared/components/common/Logo';
 import Card from '../../../shared/components/ui/Card';
-import '../../../styles/features/landing/trust.css';
+import '../../../styles/landing/trust.css';
 
 const TrustSection = ({ signals = [] }) => (
   <section className="trust-section reveal-on-scroll">

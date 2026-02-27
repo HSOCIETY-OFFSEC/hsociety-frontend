@@ -4,7 +4,7 @@ import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
 import brandImageBlack from '../../../assets/brand-images/brand-image-black.png';
 import brandImageWhite from '../../../assets/brand-images/brand-image-white.png';
-import '../../../styles/features/landing/cta.css';
+import '../../../styles/landing/cta.css';
 
 const CtaSection = ({ content }) => {
   const navigate = useNavigate();

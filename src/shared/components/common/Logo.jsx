@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../../../app/providers';
+import '../../../styles/shared/components/common/Logo.css';
 
 /**
  * Logo Component
@@ -71,11 +72,6 @@ const Logo = ({
     <div 
       className={`logo-container ${className}`}
       onClick={handleClick}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
     >
       <img
         src={logoSrc}

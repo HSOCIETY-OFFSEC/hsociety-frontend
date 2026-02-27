@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/features/landing/stats.css';
+import '../../../styles/landing/stats.css';
 
 const StatsSection = ({ content }) => (
   <section className="stats-section reveal-on-scroll">

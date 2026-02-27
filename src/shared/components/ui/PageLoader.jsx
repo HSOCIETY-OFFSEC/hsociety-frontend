@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../common/Logo';
 import BinaryLoader from './BinaryLoader';
+import '../../../styles/shared/components/ui/PageLoader.css';
 
 /**
  * Page Loader

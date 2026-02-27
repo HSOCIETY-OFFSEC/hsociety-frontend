@@ -1,0 +1,65 @@
+/**
+ * Page Loader Styles
+ * Location: src/styles/shared/components/ui/PageLoader.css
+ */
+
+.page-loader {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(800px 400px at 10% 0%, rgba(31, 191, 143, 0.14), transparent 60%),
+    var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.page-loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.page-loader-logo {
+  filter: drop-shadow(0 18px 30px var(--accent-glow));
+}
+
+.page-loader-bar {
+  width: 180px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(31, 191, 143, 0.2), rgba(31, 191, 143, 0.9), rgba(31, 191, 143, 0.2));
+  position: relative;
+  overflow: hidden;
+}
+
+.page-loader-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  transform: translateX(-100%);
+  animation: loader-sweep 1.2s ease-in-out infinite;
+}
+
+.page-loader-text {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+@keyframes loader-sweep {
+  0% { transform: translateX(-100%); }
+  60% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loader-bar::after {
+    animation: none;
+  }
+}

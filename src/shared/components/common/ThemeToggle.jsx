@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import { useTheme } from '../../../app/providers';
+import '../../../styles/shared/components/common/ThemeToggle.css';
 
 /**
  * Theme Toggle

@@ -1,0 +1,37 @@
+/**
+ * Image With Loader Styles
+ * Location: src/styles/shared/components/ui/ImageWithLoader.css
+ */
+
+.image-with-loader {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--input-bg) 85%, transparent);
+  width: 100%;
+  height: 100%;
+}
+
+.image-with-loader img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.image-with-loader.is-loaded img {
+  opacity: 1;
+}
+
+.image-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(140deg, rgba(15, 23, 42, 0.2), rgba(2, 44, 34, 0.2));
+  z-index: 1;
+}

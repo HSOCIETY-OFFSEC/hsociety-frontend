@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../../../styles/shared/components/ui/Card.css';
 
 /**
  * Card Component

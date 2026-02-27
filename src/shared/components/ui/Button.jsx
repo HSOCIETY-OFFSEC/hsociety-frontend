@@ -1,3 +1,5 @@
+import '../../../styles/shared/components/ui/Button.css';
+
 /**
  * Button Component
  * Location: src/shared/components/ui/Button.jsx

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import BinaryLoader from './BinaryLoader';
+import '../../../styles/shared/components/ui/ImageWithLoader.css';
 
 const ImageWithLoader = ({
   src,

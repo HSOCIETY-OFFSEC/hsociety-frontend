@@ -1,0 +1,22 @@
+/**
+ * Route Effects Styles
+ * Location: src/styles/shared/components/layout/RouteEffects.css
+ */
+
+.route-loader-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(900px 420px at 15% 10%, rgba(31, 191, 143, 0.18), transparent 60%),
+    color-mix(in srgb, var(--bg-primary) 92%, transparent);
+  z-index: var(--z-loader, 9999);
+  pointer-events: none;
+  animation: route-fade 0.6s ease;
+}
+
+@keyframes route-fade {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 1; }
+}

@@ -7,6 +7,7 @@ import AppRouter from './router';
 import '../styles/shared/common.css';
 import '../styles/shared/layout.css';
 import '../styles/shared/ui.css';
+import '../styles/shared/components/layout/AppShell.css';
 
 /**
  * Main App Component

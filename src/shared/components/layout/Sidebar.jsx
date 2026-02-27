@@ -5,6 +5,7 @@ import { getSidebarLinks } from '../../../config/navigation.config';
 import { FiChevronDown, FiLayers } from 'react-icons/fi';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
+import '../../../styles/shared/components/layout/Sidebar.css';
 
 /**
  * Sidebar Component (large screens only via CSS)

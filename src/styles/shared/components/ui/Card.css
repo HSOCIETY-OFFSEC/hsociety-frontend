@@ -1,0 +1,28 @@
+/**
+ * Card Styles
+ * Location: src/styles/shared/components/ui/Card.css
+ */
+
+.card {
+  /* Base card styles handled in component */
+}
+
+.card-3d {
+  transform-style: preserve-3d;
+}
+
+.card-clickable {
+  user-select: none;
+}
+
+.card-clickable:active {
+  transform: scale(0.99);
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+}

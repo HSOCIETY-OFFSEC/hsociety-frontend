@@ -5,7 +5,7 @@ import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { deleteAccount, updateAvatar, updateProfile } from './account.service';
-import '../../styles/features/account.css';
+import '../../styles/sections/account/index.css';
 
 const AccountSettings = () => {
   const { user, logout, updateUser } = useAuth();

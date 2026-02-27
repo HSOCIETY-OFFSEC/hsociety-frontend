@@ -7,7 +7,6 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  padding: 0;
   min-height: 100vh;
   display: flex;
   align-items: stretch;

@@ -10,7 +10,7 @@ import { useAuth } from '../../core/auth/AuthContext';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import '../../styles/features/student-learning.css';
+import '../../styles/student/pages/learning.css';
 
 const StudentLearning = () => {
   const navigate = useNavigate();

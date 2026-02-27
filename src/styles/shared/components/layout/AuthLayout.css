@@ -1,0 +1,13 @@
+/**
+ * Auth Layout Styles
+ * Location: src/styles/shared/components/layout/AuthLayout.css
+ */
+
+.auth-layout .auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 72px);
+  padding: 2rem 1rem;
+}

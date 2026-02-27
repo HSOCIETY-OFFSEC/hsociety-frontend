@@ -1,0 +1,10 @@
+/**
+ * App Layout Styles
+ * Location: src/styles/shared/components/layout/AppLayout.css
+ */
+
+.app-layout .app-main {
+  flex: 1;
+  padding: 1.5rem 1rem;
+  padding-top: 1.5rem;
+}

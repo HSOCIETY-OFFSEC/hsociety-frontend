@@ -1,0 +1,9 @@
+/**
+ * Public Layout Styles
+ * Location: src/styles/shared/components/layout/PublicLayout.css
+ */
+
+.public-layout .public-main {
+  flex: 1;
+  padding: 1.5rem 1rem;
+}

@@ -3,7 +3,7 @@ import { FiTerminal } from 'react-icons/fi';
 import Logo from '../../../shared/components/common/Logo';
 import Card from '../../../shared/components/ui/Card';
 import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
-import '../../../styles/features/landing/modules.css';
+import '../../../styles/landing/modules.css';
 
 const ModulesSection = ({ modules = [] }) => (
   <section className="modules-section reveal-on-scroll">

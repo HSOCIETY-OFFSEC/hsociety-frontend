@@ -1,0 +1,33 @@
+/**
+ * App Shell Styles
+ * Location: src/styles/shared/components/layout/AppShell.css
+ */
+
+:root {
+  --sidebar-width: 260px;
+  --workspace-topbar-height: 64px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  position: relative;
+  z-index: 0;
+}
+
+.app-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(135deg, rgba(1, 5, 12, 0.9), rgba(1, 5, 12, 0.4));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-theme="light"] .app-shell::before {
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(241, 245, 249, 0.06));
+  opacity: 0.12;
+}

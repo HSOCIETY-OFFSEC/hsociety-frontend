@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import BinaryLoader from '../ui/BinaryLoader';
+import '../../../styles/shared/components/layout/RouteEffects.css';
 
 const RouteEffects = ({ durationMs = 520 }) => {
   const location = useLocation();

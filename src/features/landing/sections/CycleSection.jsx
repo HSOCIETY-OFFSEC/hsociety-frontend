@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, animate } from 'framer-motion';
 import Logo from '../../../shared/components/common/Logo';
-import '../../../styles/features/landing/cycle.css';
+import '../../../styles/landing/cycle.css';
 
 /* ─────────────────────────────────────────
    Step icons (inline SVG fallback shapes)

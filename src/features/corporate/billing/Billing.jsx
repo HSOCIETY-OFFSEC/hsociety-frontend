@@ -5,7 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import PaymentModal from './components/PaymentModal';
 import { getAgreements, getInvoices } from './billing.service';
-import '../../../styles/features/billing.css';
+import '../../../styles/corporate/pages/billing.css';
 
 const Billing = () => {
   const [invoices, setInvoices] = useState([]);

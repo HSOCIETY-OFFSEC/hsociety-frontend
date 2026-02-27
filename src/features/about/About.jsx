@@ -1,7 +1,7 @@
 import React from 'react';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import aboutContent from '../../data/about.json';
-import '../../styles/features/about.css';
+import '../../styles/sections/about/index.css';
 
 const About = () => {
   useScrollReveal();

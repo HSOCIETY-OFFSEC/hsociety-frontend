@@ -3,7 +3,7 @@ import { FiHash, FiMessageSquare, FiSend, FiUsers, FiWifi } from 'react-icons/fi
 import { useAuth } from '../../core/auth/AuthContext';
 import Button from '../../shared/components/ui/Button';
 import { createCommunitySocket, getCommunityMessages, getCommunityOverview } from './community.service';
-import '../../styles/features/community.css';
+import '../../styles/sections/community/index.css';
 
 const CommunityHub = () => {
   const { user } = useAuth();

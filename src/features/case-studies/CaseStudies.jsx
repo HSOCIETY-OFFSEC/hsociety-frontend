@@ -3,7 +3,7 @@ import { FiBarChart2, FiCheckCircle, FiShield } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import '../../styles/features/case-studies.css';
+import '../../styles/sections/case-studies/index.css';
 
 const CaseStudies = () => {
   useScrollReveal();

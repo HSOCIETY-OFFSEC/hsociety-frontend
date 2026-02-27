@@ -2,7 +2,7 @@ import React from 'react';
 import { FiActivity, FiCheck, FiShield } from 'react-icons/fi';
 import Logo from '../../../shared/components/common/Logo';
 import Card from '../../../shared/components/ui/Card';
-import '../../../styles/features/landing/deliverables.css';
+import '../../../styles/landing/deliverables.css';
 
 const DeliverablesSection = ({ deliverables = [] }) => (
   <section className="deliverables-section reveal-on-scroll">

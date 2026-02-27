@@ -1,0 +1,15 @@
+/**
+ * Page Layout Styles
+ * Location: src/styles/shared/components/layout/PageLayout.css
+ */
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  width: 100%;
+}

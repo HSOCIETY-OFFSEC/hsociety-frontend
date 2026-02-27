@@ -7,7 +7,7 @@ import { validateForm } from '../../core/validation/input.validator';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { submitFeedback } from './feedback.service';
 import feedbackContent from '../../data/feedback.json';
-import '../../styles/features/feedback.css';
+import '../../styles/sections/feedback/index.css';
 
 /**
  * Feedback Component

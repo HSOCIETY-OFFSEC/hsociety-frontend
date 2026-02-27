@@ -4,7 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getRemediationReports, getRemediationSummary } from './remediation.service';
-import '../../../styles/features/remediation.css';
+import '../../../styles/corporate/pages/remediation.css';
 
 const Remediation = () => {
   const [summary, setSummary] = useState(null);

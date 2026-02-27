@@ -17,7 +17,7 @@ import {
 } from 'react-icons/fa6';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
-import '../../../styles/features/landing/hero.css';
+import '../../../styles/landing/hero.css';
 
 const SOCIAL_LINKS = [
   { href: '#youtube', label: 'YouTube', icon: FaYoutube },

@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../../../shared/components/common/Logo';
 import Card from '../../../shared/components/ui/Card';
-import '../../../styles/features/landing/process.css';
+import '../../../styles/landing/process.css';
 
 const ProcessSection = ({ steps = [] }) => (
   <section className="process-section reveal-on-scroll">

@@ -12,7 +12,7 @@ import useBootcampAccess from '../hooks/useBootcampAccess';
 import StudentAccessModal from '../components/StudentAccessModal';
 import StudentPaymentModal from '../components/StudentPaymentModal';
 import { useAuth } from '../../../core/auth/AuthContext';
-import '../../../styles/features/student-learning.css';
+import '../../../styles/student/pages/learning.css';
 
 /**
  * CourseLearning

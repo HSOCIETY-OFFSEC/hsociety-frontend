@@ -3,7 +3,7 @@ import { FiArrowUpRight, FiBriefcase, FiClock, FiCompass, FiFlag, FiMapPin } fro
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
-import '../../styles/features/careers.css';
+import '../../styles/sections/careers/index.css';
 
 const Careers = () => {
   useScrollReveal();

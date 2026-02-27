@@ -3,7 +3,7 @@ import { FiCheckCircle, FiClipboard, FiSearch, FiShield, FiTarget, FiTool } from
 import Card from '../../shared/components/ui/Card';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import methodologyContent from '../../data/methodology.json';
-import '../../styles/features/methodology.css';
+import '../../styles/sections/methodology/index.css';
 
 const Methodology = () => {
   useScrollReveal();

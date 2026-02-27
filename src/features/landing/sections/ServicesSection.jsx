@@ -4,7 +4,7 @@ import { FiArrowRight, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icon
 import Logo from '../../../shared/components/common/Logo';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
-import '../../../styles/features/landing/services.css';
+import '../../../styles/landing/services.css';
 
 const ServicesSection = ({ services = [] }) => {
   const navigate = useNavigate();

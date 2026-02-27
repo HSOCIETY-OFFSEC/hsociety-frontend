@@ -14,7 +14,6 @@ import { useAuth } from '../../core/auth/AuthContext';
 import '../../styles/student/base.css';
 import '../../styles/student/components.css';
 import '../../styles/student/pages/lesson.css';
-import '../../styles/features/student-lesson.css';
 
 const StudentLesson = () => {
   useScrollReveal();
