@@ -1,30 +1,30 @@
 /* ============================================================
-   COMMUNITY MESSAGES
+   COMMUNITY MESSAGES FEED
    ============================================================ */
-
-.community-error {
-  margin: 0.75rem 1.25rem 0;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  color: color-mix(in srgb, #ef4444 80%, var(--text-primary));
-  background: color-mix(in srgb, #ef4444 8%, var(--card-bg));
-  border: 1px solid color-mix(in srgb, #ef4444 25%, var(--border-color));
-  flex-shrink: 0;
-}
 
 .community-messages {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 1rem 1.25rem 0.75rem;
+  padding: 0.875rem 1.25rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
+  min-height: 0; /* critical: allows flex child to shrink inside flex column */
 }
 
+.community-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.community-messages::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+/* ── Empty / loading state ──────────────────────────────────── */
 .community-msg-state {
   display: flex;
   flex-direction: column;
@@ -34,18 +34,20 @@
   gap: 0.75rem;
   color: var(--text-tertiary);
   padding: 3rem 1rem;
-  margin: auto;
+  margin: auto 0;
+  text-align: center;
 }
 
 .community-msg-state p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .community-msg-state svg {
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
+/* ── Loading dots ───────────────────────────────────────────── */
 .community-loading-dots {
   display: flex;
   gap: 0.35rem;
@@ -64,36 +66,43 @@
 
 @keyframes community-dot-bounce {
   0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-  40% { transform: translateY(-6px); opacity: 1; }
+  40% { transform: translateY(-5px); opacity: 1; }
 }
 
+/* ── Message row ────────────────────────────────────────────── */
 .community-message {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.25rem 0;
+  align-items: flex-end;
+  gap: 0.6rem;
+  padding: 0.08rem 0;
+}
+
+.community-message:not(.grouped) {
+  margin-top: 0.65rem;
 }
 
 .community-message.grouped {
-  margin-top: 0.1rem;
+  padding-top: 0.04rem;
 }
 
+/* Flip for own messages */
 .community-message.own {
   flex-direction: row-reverse;
 }
 
+/* ── Avatar ─────────────────────────────────────────────────── */
 .community-msg-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: var(--bg-tertiary);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-top: 0.15rem;
   overflow: hidden;
+  align-self: flex-end;
 }
 
 .community-msg-avatar img {
@@ -103,20 +112,17 @@
   display: block;
 }
 
-.community-message.own .community-msg-avatar {
-  background: color-mix(in srgb, var(--text-primary) 10%, var(--bg-tertiary));
-}
-
 .community-msg-avatar-spacer {
-  width: 36px;
+  width: 32px;
   flex-shrink: 0;
 }
 
+/* ── Message body ───────────────────────────────────────────── */
 .community-msg-body {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  max-width: 72%;
+  gap: 0.18rem;
+  max-width: 68%;
   min-width: 0;
 }
 
@@ -124,10 +130,12 @@
   align-items: flex-end;
 }
 
+/* Author + timestamp */
 .community-msg-meta {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  padding: 0 0.45rem;
 }
 
 .community-message.own .community-msg-meta {
@@ -135,84 +143,97 @@
 }
 
 .community-msg-author {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
 }
 
 .community-msg-time {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: var(--text-tertiary);
   white-space: nowrap;
 }
 
+/* ── Bubble ─────────────────────────────────────────────────── */
 .community-msg-bubble {
   display: inline-block;
   max-width: 100%;
 }
 
+/* Incoming bubble */
 .community-msg-bubble p {
   margin: 0;
-  padding: 0.6rem 0.9rem;
-  border-radius: 18px;
-  font-size: 0.9rem;
-  line-height: 1.55;
+  padding: 0.58rem 0.9rem;
+  border-radius: 18px 18px 18px 4px;
+  font-size: 0.875rem;
+  line-height: 1.5;
   word-break: break-word;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  border-bottom-left-radius: 4px;
 }
 
+/* Own bubble — accent tinted */
 .community-message.own .community-msg-bubble p {
-  background: color-mix(in srgb, var(--text-primary) 10%, var(--card-bg));
-  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 4px;
+  background: color-mix(in srgb, var(--primary-color, #00ff99) 11%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 24%, var(--border-color));
+  border-radius: 18px 18px 4px 18px;
 }
 
-.community-message.grouped:not(.own) .community-msg-bubble p {
-  border-top-left-radius: 4px;
+/* Grouped — flatten the side closest to avatar */
+.community-message:not(.own).grouped .community-msg-bubble p {
+  border-radius: 4px 18px 18px 4px;
 }
 
-.community-message.grouped.own .community-msg-bubble p {
-  border-top-right-radius: 4px;
+.community-message.own.grouped .community-msg-bubble p {
+  border-radius: 18px 4px 4px 18px;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .community-msg-body {
+    max-width: 72%;
+  }
 }
 
 @media (max-width: 768px) {
   .community-msg-body {
-    max-width: 82%;
+    max-width: 80%;
   }
 }
 
 @media (max-width: 480px) {
   .community-messages {
-    padding: 0.75rem 0.875rem 0.5rem;
+    padding: 0.75rem 0.875rem 0.6rem;
   }
 
   .community-msg-body {
-    max-width: 88%;
+    max-width: 86%;
   }
 
   .community-msg-bubble p {
-    font-size: 0.875rem;
-    padding: 0.55rem 0.8rem;
+    font-size: 0.85rem;
+    padding: 0.52rem 0.8rem;
   }
 
   .community-msg-avatar {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
   }
 
   .community-msg-avatar-spacer {
-    width: 30px;
+    width: 28px;
+  }
+
+  .community-msg-author {
+    font-size: 0.74rem;
   }
 }
 
 @media (max-width: 360px) {
   .community-msg-body {
-    max-width: 92%;
+    max-width: 90%;
   }
 }
 

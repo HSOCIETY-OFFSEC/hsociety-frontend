@@ -1,28 +1,33 @@
 /* ============================================================
-   COMMUNITY COMPOSE
+   COMMUNITY COMPOSE BAR
    ============================================================ */
 
 .community-compose {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.85rem 1.25rem 1rem;
+  padding: 0.7rem 1.25rem 0.875rem;
   border-top: 1px solid var(--border-color);
   flex-shrink: 0;
   background: var(--bg-primary);
 }
 
+/* ── Sender avatar ──────────────────────────────────────────── */
 .community-compose-avatar {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: var(--bg-tertiary);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
 }
 
 .community-compose-avatar img {
@@ -32,21 +37,27 @@
   display: block;
 }
 
+.community-compose-avatar[data-initials]::after {
+  content: attr(data-initials);
+}
+
+/* ── Input pill ─────────────────────────────────────────────── */
 .community-compose-inner {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 999px;
-  padding: 0 0.5rem 0 1rem;
-  transition: border-color 0.2s ease;
+  padding: 0 0.4rem 0 1rem;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
   min-width: 0;
 }
 
 .community-compose-inner:focus-within {
-  border-color: color-mix(in srgb, var(--text-primary) 30%, var(--border-color));
+  border-color: color-mix(in srgb, var(--text-primary) 26%, var(--border-color));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--text-primary) 5%, transparent);
 }
 
 .community-compose-inner input {
@@ -65,9 +76,21 @@
   color: var(--text-tertiary);
 }
 
+/* ── Character counter ──────────────────────────────────────── */
+.community-compose-counter {
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.community-compose-counter.warn  { color: #f59e0b; }
+.community-compose-counter.danger { color: #ef4444; }
+
+/* ── Send button ────────────────────────────────────────────── */
 .community-send-btn {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   background: var(--text-primary);
@@ -77,27 +100,30 @@
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  transition: opacity 0.2s ease, transform 0.15s ease;
+  transition: opacity 0.18s ease, transform 0.15s ease;
 }
 
 .community-send-btn:disabled {
-  opacity: 0.3;
+  opacity: 0.22;
   cursor: not-allowed;
-  transform: none;
+  transform: none !important;
 }
 
-.community-send-btn:not(:disabled):hover {
-  opacity: 0.85;
-  transform: scale(1.05);
+@media (hover: hover) {
+  .community-send-btn:not(:disabled):hover {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
 }
 
 .community-send-btn:not(:disabled):active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 480px) {
   .community-compose {
-    padding: 0.75rem 0.875rem 0.875rem;
+    padding: 0.6rem 0.875rem 0.8rem;
     gap: 0.5rem;
   }
 
@@ -106,18 +132,19 @@
   }
 
   .community-compose-inner input {
-    font-size: 1rem;
+    font-size: 1rem; /* prevents iOS auto-zoom on focus */
   }
 }
 
 @media (max-width: 360px) {
   .community-compose {
-    padding: 0.6rem 0.75rem 0.75rem;
+    padding: 0.55rem 0.75rem 0.7rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .community-send-btn {
-    transition: none !important;
+    transition: opacity 0.18s ease !important;
+    transform: none !important;
   }
 }

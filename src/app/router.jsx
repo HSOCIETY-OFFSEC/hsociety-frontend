@@ -147,6 +147,16 @@ const AppRouter = () => {
             />
           </Route>
 
+          {/* Community (standalone layout) */}
+          <Route
+            path="community"
+            element={
+              <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                <CommunityHub />
+              </RoleRoute>
+            }
+          />
+
           {/* Workspace pages - dashboard and student learning */}
           <Route element={<WorkspaceLayout />}>
             <Route
@@ -246,14 +256,6 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['pentester']}>
                   <PentesterDashboard />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="community"
-              element={
-                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
-                  <CommunityHub />
                 </RoleRoute>
               }
             />

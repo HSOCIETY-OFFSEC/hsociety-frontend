@@ -110,173 +110,175 @@ const WorkspaceLayout = () => {
     >
       {!isCommunity && <Sidebar />}
 
-      <header className="workspace-topbar">
-        <div className="workspace-topbar-content">
-          <div className="workspace-topbar-left">
-            <button
-              type="button"
-              className="workspace-home-button"
-              onClick={() => navigate('/')}
-              aria-label="Go to home"
-            >
-              <FiHome size={16} />
-              <span>Home</span>
-            </button>
-            <div className="workspace-topbar-title">{workspaceTitle}</div>
+      {!isCommunity && (
+        <header className="workspace-topbar">
+          <div className="workspace-topbar-content">
+            <div className="workspace-topbar-left">
+              <button
+                type="button"
+                className="workspace-home-button"
+                onClick={() => navigate('/')}
+                aria-label="Go to home"
+              >
+                <FiHome size={16} />
+                <span>Home</span>
+              </button>
+              <div className="workspace-topbar-title">{workspaceTitle}</div>
 
-            {isCommunity && (
-              <nav className="workspace-community-nav" aria-label="Workspace navigation">
-                {defaultLinks.map((link) => (
+              {isCommunity && (
+                <nav className="workspace-community-nav" aria-label="Workspace navigation">
+                  {defaultLinks.map((link) => (
+                    <button
+                      key={link.path}
+                      type="button"
+                      className={`workspace-community-link ${pathname === link.path ? 'active' : ''}`}
+                      onClick={() => navigate(link.path)}
+                    >
+                      <link.icon size={16} />
+                      <span>{link.label}</span>
+                    </button>
+                  ))}
+
+                  {bootcampLinks.length > 0 && (
+                    <div className={`workspace-community-dropdown ${bootcampOpen ? 'open' : ''}`}>
+                      <button
+                        type="button"
+                        className={`workspace-community-link ${bootcampOpen ? 'active' : ''}`}
+                        onClick={() => setBootcampOpen((prev) => !prev)}
+                      >
+                        <FiLayers size={16} />
+                        <span>Bootcamp</span>
+                        <FiChevronDown size={14} />
+                      </button>
+                      {bootcampOpen && (
+                        <div className="workspace-community-menu">
+                          {bootcampLinks.map((link) => (
+                            <button
+                              key={link.path}
+                              type="button"
+                              className={`workspace-community-item ${pathname === link.path ? 'active' : ''}`}
+                              onClick={() => {
+                                setBootcampOpen(false);
+                                navigate(link.path);
+                              }}
+                            >
+                              <link.icon size={16} />
+                              <span>{link.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </nav>
+              )}
+            </div>
+            <div className="workspace-topbar-actions">
+              {isCommunity && (
+                <div className="workspace-community-tools" ref={communityMenuRef}>
                   <button
-                    key={link.path}
                     type="button"
-                    className={`workspace-community-link ${pathname === link.path ? 'active' : ''}`}
-                    onClick={() => navigate(link.path)}
+                    className="workspace-community-tool-btn"
+                    onClick={() => setCommunityMenuOpen((prev) => !prev)}
+                    aria-haspopup="menu"
+                    aria-expanded={communityMenuOpen}
                   >
-                    <link.icon size={16} />
-                    <span>{link.label}</span>
+                    <FiBarChart2 size={16} />
+                    <span>Community</span>
+                    <FiChevronDown size={14} />
                   </button>
-                ))}
-
-                {bootcampLinks.length > 0 && (
-                  <div className={`workspace-community-dropdown ${bootcampOpen ? 'open' : ''}`}>
-                    <button
-                      type="button"
-                      className={`workspace-community-link ${bootcampOpen ? 'active' : ''}`}
-                      onClick={() => setBootcampOpen((prev) => !prev)}
-                    >
-                      <FiLayers size={16} />
-                      <span>Bootcamp</span>
-                      <FiChevronDown size={14} />
-                    </button>
-                    {bootcampOpen && (
-                      <div className="workspace-community-menu">
-                        {bootcampLinks.map((link) => (
-                          <button
-                            key={link.path}
-                            type="button"
-                            className={`workspace-community-item ${pathname === link.path ? 'active' : ''}`}
-                            onClick={() => {
-                              setBootcampOpen(false);
-                              navigate(link.path);
-                            }}
-                          >
-                            <link.icon size={16} />
-                            <span>{link.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </nav>
-            )}
-          </div>
-          <div className="workspace-topbar-actions">
-            {isCommunity && (
-              <div className="workspace-community-tools" ref={communityMenuRef}>
-                <button
-                  type="button"
-                  className="workspace-community-tool-btn"
-                  onClick={() => setCommunityMenuOpen((prev) => !prev)}
-                  aria-haspopup="menu"
-                  aria-expanded={communityMenuOpen}
-                >
-                  <FiBarChart2 size={16} />
-                  <span>Community</span>
-                  <FiChevronDown size={14} />
-                </button>
-                {communityMenuOpen && (
-                  <div className="workspace-community-menu" role="menu">
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={() => {
-                        setCommunityMenuOpen(false);
-                        navigate('/community#stats');
-                      }}
-                    >
-                      <FiBarChart2 size={16} />
-                      Stats
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={() => {
-                        setCommunityMenuOpen(false);
-                        navigate('/settings');
-                      }}
-                    >
-                      <FiUser size={16} />
-                      Account Settings
-                    </button>
-                  </div>
-                )}
+                  {communityMenuOpen && (
+                    <div className="workspace-community-menu" role="menu">
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => {
+                          setCommunityMenuOpen(false);
+                          navigate('/community#stats');
+                        }}
+                      >
+                        <FiBarChart2 size={16} />
+                        Stats
+                      </button>
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => {
+                          setCommunityMenuOpen(false);
+                          navigate('/settings');
+                        }}
+                      >
+                        <FiUser size={16} />
+                        Account Settings
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+              {isCommunity && <ThemeToggle />}
+              <div ref={menuRef}>
+              <button
+                type="button"
+                className="workspace-profile-button"
+                onClick={() => setMenuOpen((prev) => !prev)}
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+              >
+                <span className="workspace-avatar">
+                  <img
+                    src={avatarSrc}
+                    alt="Profile"
+                    onError={(e) => {
+                      if (e.currentTarget.src !== avatarFallback) {
+                        e.currentTarget.src = avatarFallback;
+                      }
+                    }}
+                  />
+                </span>
+                <span className="workspace-profile-name">{user?.name || user?.email || 'User'}</span>
+                <FiChevronDown size={16} />
+              </button>
+              {menuOpen && (
+                <div className="workspace-profile-menu" role="menu">
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate('/settings');
+                    }}
+                  >
+                    <FiUser size={16} />
+                    Profile
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate('/settings');
+                    }}
+                  >
+                    Account Settings
+                  </button>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={async () => {
+                      setMenuOpen(false);
+                      await logout();
+                    }}
+                  >
+                    <FiLogOut size={16} />
+                    Log out
+                  </button>
+                </div>
+              )}
               </div>
-            )}
-            {isCommunity && <ThemeToggle />}
-            <div ref={menuRef}>
-            <button
-              type="button"
-              className="workspace-profile-button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              aria-haspopup="menu"
-              aria-expanded={menuOpen}
-            >
-              <span className="workspace-avatar">
-                <img
-                  src={avatarSrc}
-                  alt="Profile"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== avatarFallback) {
-                      e.currentTarget.src = avatarFallback;
-                    }
-                  }}
-                />
-              </span>
-              <span className="workspace-profile-name">{user?.name || user?.email || 'User'}</span>
-              <FiChevronDown size={16} />
-            </button>
-            {menuOpen && (
-              <div className="workspace-profile-menu" role="menu">
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    navigate('/settings');
-                  }}
-                >
-                  <FiUser size={16} />
-                  Profile
-                </button>
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    navigate('/settings');
-                  }}
-                >
-                  Account Settings
-                </button>
-                <button
-                  type="button"
-                  role="menuitem"
-                  onClick={async () => {
-                    setMenuOpen(false);
-                    await logout();
-                  }}
-                >
-                  <FiLogOut size={16} />
-                  Log out
-                </button>
-              </div>
-            )}
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {!isCommunity && (
         <>
