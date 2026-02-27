@@ -19,7 +19,10 @@ const AccountSettings = () => {
   const [profile, setProfile] = useState({
     name: user?.name || '',
     organization: user?.organization || '',
+    hackerHandle: user?.hackerHandle || '',
+    bio: user?.bio || '',
   });
+  const isPentester = user?.role === 'pentester';
 
   const identiconFallback = useMemo(
     () => getGithubAvatarDataUri(profile.name || user?.email || 'User'),
@@ -129,7 +132,7 @@ const AccountSettings = () => {
         </div>
 
         <div className="account-info">
-          <div>
+          <div className="account-field">
             <span className="account-label">Name</span>
             <input
               className="account-input"
@@ -138,7 +141,7 @@ const AccountSettings = () => {
               placeholder="Your name"
             />
           </div>
-          <div>
+          <div className="account-field">
             <span className="account-label">Organization</span>
             <input
               className="account-input"
@@ -147,11 +150,38 @@ const AccountSettings = () => {
               placeholder="Company or school"
             />
           </div>
-          <div>
+          {isPentester && (
+            <>
+              <div className="account-field">
+                <span className="account-label">Hacker handle</span>
+                <div className="account-handle-row">
+                  <span className="account-handle-prefix">@</span>
+                  <input
+                    className="account-input"
+                    value={profile.hackerHandle}
+                    onChange={(e) =>
+                      setProfile((prev) => ({ ...prev, hackerHandle: e.target.value }))
+                    }
+                    placeholder="ghost"
+                  />
+                </div>
+              </div>
+              <div className="account-field account-field-wide">
+                <span className="account-label">Description</span>
+                <textarea
+                  className="account-textarea"
+                  value={profile.bio}
+                  onChange={(e) => setProfile((prev) => ({ ...prev, bio: e.target.value }))}
+                  placeholder="Summarize your focus, strengths, or what you bring to engagements."
+                />
+              </div>
+            </>
+          )}
+          <div className="account-field">
             <span className="account-label">Email</span>
             <strong>{user?.email || '—'}</strong>
           </div>
-          <div>
+          <div className="account-field">
             <span className="account-label">Role</span>
             <strong>{user?.role || '—'}</strong>
           </div>

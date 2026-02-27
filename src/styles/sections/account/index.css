@@ -98,6 +98,39 @@
   gap: 1.5rem;
 }
 
+.account-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.account-field-wide {
+  grid-column: 1 / -1;
+}
+
+.account-handle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.account-handle-prefix {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.account-textarea {
+  min-height: 120px;
+  resize: vertical;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
 .account-actions {
   margin-top: 1.5rem;
 }
