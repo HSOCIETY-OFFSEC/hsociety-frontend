@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import {
   createCommunitySocket,
@@ -24,10 +24,10 @@ const CommunityHub = () => {
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
   const [connected, setConnected] = useState(false);
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const role = useMemo(() => {
     if (user?.role === 'client') return 'corporate';
@@ -130,20 +130,10 @@ const CommunityHub = () => {
     setDraft('');
   };
 
-  /* ── Room change (closes drawer on mobile) ── */
+  /* ── Room change ── */
   const handleRoomChange = (newRoom) => {
     setRoom(newRoom);
-    setMobileSidebarOpen(false);
   };
-
-  /* ── Close drawer on Escape ── */
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape' && mobileSidebarOpen) setMobileSidebarOpen(false);
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [mobileSidebarOpen]);
 
   const activeChannels = overview.channels?.length
     ? overview.channels
@@ -159,29 +149,10 @@ const CommunityHub = () => {
   return (
     <div className="community-root">
 
-      {/* ── Left Sidebar / Mobile Drawer ── */}
+      {/* ── Left Sidebar / Mobile Top Nav ── */}
       <CommunitySidebar
-        activeChannels={activeChannels}
-        room={room}
-        onRoomChange={handleRoomChange}
-        overviewStats={overview.stats}
-        connected={connected}
-        user={user}
         role={role}
-        open={mobileSidebarOpen}
-        onClose={() => setMobileSidebarOpen(false)}
       />
-
-      {/* ── Backdrop — only rendered when drawer is open ──
-          Using inline visibility so it doesn't interfere with the grid
-          and never causes a blank overlay when closed.             ── */}
-      {mobileSidebarOpen && (
-        <div
-          className="community-backdrop"
-          onClick={() => setMobileSidebarOpen(false)}
-          aria-hidden="true"
-        />
-      )}
 
       {/* ── Main feed column ── */}
       <main className="community-main" aria-label={`#${room} channel`}>
@@ -190,10 +161,6 @@ const CommunityHub = () => {
           room={room}
           onRoomChange={handleRoomChange}
           overviewStats={overview.stats}
-          connected={connected}
-          user={user}
-          role={role}
-          onMenuOpen={() => setMobileSidebarOpen(true)}
         />
 
         <CommunityMessageList
@@ -251,7 +218,12 @@ const CommunityHub = () => {
         </div>
 
         {user && (
-          <div className="community-aside-user">
+          <button
+            type="button"
+            className="community-aside-user"
+            onClick={() => navigate('/settings')}
+            aria-label="Open account settings"
+          >
             <img
               src={
                 user?.avatarUrl ||
@@ -271,25 +243,9 @@ const CommunityHub = () => {
               <span className="community-aside-user-role">{role}</span>
             </div>
             <span className={`community-status-dot ${connected ? 'online' : 'offline'}`} />
-          </div>
+          </button>
         )}
       </aside>
-
-      {/* ── Mobile bottom tab bar (≤768px) ── */}
-      <nav className="community-mobile-tabs" aria-label="Channels">
-        {activeChannels.slice(0, 4).map((ch) => (
-          <button
-            key={ch.id}
-            type="button"
-            className={`community-mobile-tab ${room === ch.id ? 'active' : ''}`}
-            onClick={() => handleRoomChange(ch.id)}
-            aria-current={room === ch.id ? 'true' : undefined}
-          >
-            <span className="community-mobile-tab-hash">#</span>
-            <span className="community-mobile-tab-name">{ch.name || ch.id}</span>
-          </button>
-        ))}
-      </nav>
 
     </div>
   );

@@ -1,16 +1,23 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiSend } from 'react-icons/fi';
 import { getDisplayName, getUserAvatar } from '../../utils/community.utils';
 
 const MAX = 1000;
 
 const CommunityCompose = ({ user, room, draft, onDraftChange, onSend }) => {
+  const navigate = useNavigate();
   const charsLeft = MAX - draft.length;
   const nearLimit = charsLeft < 80;
 
   return (
     <div className="community-compose" role="form" aria-label="Send a message">
-      <div className="community-compose-avatar" aria-hidden="true">
+      <button
+        type="button"
+        className="community-compose-avatar"
+        onClick={() => navigate('/settings')}
+        aria-label="Open account settings"
+      >
         <img
           src={getUserAvatar(user)}
           alt={getDisplayName(user?.name || user?.username)}
@@ -22,7 +29,7 @@ const CommunityCompose = ({ user, room, draft, onDraftChange, onSend }) => {
             );
           }}
         />
-      </div>
+      </button>
 
       <div className="community-compose-inner">
         <input

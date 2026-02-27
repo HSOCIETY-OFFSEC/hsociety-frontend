@@ -28,6 +28,13 @@
   font-weight: 800;
   color: var(--text-secondary);
   letter-spacing: 0.04em;
+  padding: 0;
+  cursor: pointer;
+  appearance: none;
+}
+
+.community-compose-avatar:hover {
+  border-color: color-mix(in srgb, var(--text-primary) 25%, var(--border-color));
 }
 
 .community-compose-avatar img {
