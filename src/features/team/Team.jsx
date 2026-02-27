@@ -64,7 +64,6 @@ const Team = () => {
                   loading="lazy"
                   loaderMessage="Loading profile..."
                 />
-                <div className="profile-fallback" aria-hidden="true"></div>
               </div>
               <div className="team-card-icon">
                 <member.icon size={26} />

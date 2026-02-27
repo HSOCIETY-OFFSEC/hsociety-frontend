@@ -104,7 +104,7 @@
   object-fit: cover;
   display: block;
   transition: opacity 0.2s ease;
-  margin: 13333.5rem;
+  margin: 0;
 }
 
 .profile-fallback {
