@@ -40,9 +40,7 @@ const Register = () => {
     try {
       const payload = buildRegisterDTO(form);
       const response = await registerUser(payload);
-      if (!response.success) {
-        throw new Error(response.error || 'Registration failed');
-      }
+      if (!response.success) throw new Error(response.error || 'Registration failed');
       navigate('/login', { state: { email: payload.credentials.email } });
     } catch (err) {
       console.error('Registration failed:', err);
@@ -55,6 +53,7 @@ const Register = () => {
   return (
     <div className="auth-container">
       <div className="auth-split">
+        {/* ── Hero Panel ── */}
         <section className="auth-panel auth-panel--hero">
           <div className="auth-hero-content">
             <div className="auth-hero-badge">
@@ -74,6 +73,7 @@ const Register = () => {
           </div>
         </section>
 
+        {/* ── Form Panel ── */}
         <section className="auth-panel auth-panel--form">
           <div className="auth-wrapper">
             <Card className="auth-card">
@@ -84,125 +84,133 @@ const Register = () => {
                 </p>
               </div>
 
-            {error && (
-              <div className="auth-error">
-                <span className="error-icon">
-                  <FiAlertTriangle size={16} />
-                </span>
-                {error}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="auth-form">
-              <div className="form-group">
-                <label>Account Type</label>
-                <div className="auth-toggle">
-                  <button
-                    type="button"
-                    className={form.accountType === 'corporate' ? 'active' : ''}
-                    onClick={() => updateField('accountType', 'corporate')}
-                    disabled={loading}
-                  >
-                    Corporate
-                  </button>
-                  <button
-                    type="button"
-                    className={form.accountType === 'student' ? 'active' : ''}
-                    onClick={() => updateField('accountType', 'student')}
-                    disabled={loading}
-                  >
-                    Student
-                  </button>
+              {error && (
+                <div className="auth-error">
+                  <span className="error-icon">
+                    <FiAlertTriangle size={16} />
+                  </span>
+                  {error}
                 </div>
-              </div>
+              )}
 
-              <div className="form-group">
-                <label htmlFor="register-name">Full Name</label>
-                <input
-                  id="register-name"
-                  type="text"
-                  className="form-input"
-                  value={form.name}
-                  onChange={(e) => updateField('name', e.target.value)}
-                  placeholder="Jane Doe"
-                  disabled={loading}
-                />
-              </div>
+              <form onSubmit={handleSubmit} className="auth-form">
+                {/* Account Type */}
+                <div className="form-group">
+                  <label>Account Type</label>
+                  <div className="auth-toggle">
+                    <button
+                      type="button"
+                      className={form.accountType === 'corporate' ? 'active' : ''}
+                      onClick={() => updateField('accountType', 'corporate')}
+                      disabled={loading}
+                    >
+                      Corporate
+                    </button>
+                    <button
+                      type="button"
+                      className={form.accountType === 'student' ? 'active' : ''}
+                      onClick={() => updateField('accountType', 'student')}
+                      disabled={loading}
+                    >
+                      Student
+                    </button>
+                  </div>
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="register-email">Email Address</label>
-                <input
-                  id="register-email"
-                  type="email"
-                  className="form-input"
-                  value={form.email}
-                  onChange={(e) => updateField('email', e.target.value)}
-                  placeholder="you@example.com"
-                  disabled={loading}
-                />
-              </div>
+                {/* Two-column row on wider screens */}
+                <div className="auth-form-row">
+                  <div className="form-group">
+                    <label htmlFor="register-name">Full Name</label>
+                    <input
+                      id="register-name"
+                      type="text"
+                      className="form-input"
+                      value={form.name}
+                      onChange={(e) => updateField('name', e.target.value)}
+                      placeholder="Jane Doe"
+                      disabled={loading}
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="register-org">
-                  {form.accountType === 'student' ? 'School / Program' : 'Company'}
+                  <div className="form-group">
+                    <label htmlFor="register-org">
+                      {form.accountType === 'student' ? 'School / Program' : 'Company'}
+                    </label>
+                    <input
+                      id="register-org"
+                      type="text"
+                      className="form-input"
+                      value={form.companyOrSchool}
+                      onChange={(e) => updateField('companyOrSchool', e.target.value)}
+                      placeholder={
+                        form.accountType === 'student' ? 'University name' : 'Company name'
+                      }
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="register-email">Email Address</label>
+                  <input
+                    id="register-email"
+                    type="email"
+                    className="form-input"
+                    value={form.email}
+                    onChange={(e) => updateField('email', e.target.value)}
+                    placeholder="you@example.com"
+                    disabled={loading}
+                  />
+                </div>
+
+                <div className="auth-form-row">
+                  <div className="form-group">
+                    <label htmlFor="register-password">Password</label>
+                    <input
+                      id="register-password"
+                      type="password"
+                      className="form-input"
+                      value={form.password}
+                      onChange={(e) => updateField('password', e.target.value)}
+                      placeholder="Min. 8 characters"
+                      disabled={loading}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="register-confirm-password">Confirm Password</label>
+                    <input
+                      id="register-confirm-password"
+                      type="password"
+                      className="form-input"
+                      value={form.confirmPassword}
+                      onChange={(e) => updateField('confirmPassword', e.target.value)}
+                      placeholder="Re-enter password"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <label className="auth-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={form.agree}
+                    onChange={(e) => updateField('agree', e.target.checked)}
+                    disabled={loading}
+                  />
+                  <span>I agree to the Terms and Privacy Policy</span>
                 </label>
-                <input
-                  id="register-org"
-                  type="text"
-                  className="form-input"
-                  value={form.companyOrSchool}
-                  onChange={(e) => updateField('companyOrSchool', e.target.value)}
-                  placeholder={form.accountType === 'student' ? 'University name' : 'Company name'}
-                  disabled={loading}
-                />
-              </div>
 
-              <div className="form-group">
-                <label htmlFor="register-password">Password</label>
-                <input
-                  id="register-password"
-                  type="password"
-                  className="form-input"
-                  value={form.password}
-                  onChange={(e) => updateField('password', e.target.value)}
-                  placeholder="At least 8 characters"
+                <Button
+                  type="submit"
+                  variant="primary"
+                  fullWidth
+                  loading={loading}
                   disabled={loading}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="register-confirm-password">Confirm Password</label>
-                <input
-                  id="register-confirm-password"
-                  type="password"
-                  className="form-input"
-                  value={form.confirmPassword}
-                  onChange={(e) => updateField('confirmPassword', e.target.value)}
-                  placeholder="Re-enter password"
-                  disabled={loading}
-                />
-              </div>
-
-              <label className="auth-checkbox">
-                <input
-                  type="checkbox"
-                  checked={form.agree}
-                  onChange={(e) => updateField('agree', e.target.checked)}
-                  disabled={loading}
-                />
-                <span>I agree to the Terms and Privacy Policy</span>
-              </label>
-
-              <Button
-                type="submit"
-                variant="primary"
-                fullWidth
-                loading={loading}
-                disabled={loading}
-              >
-                {loading ? 'Creating account...' : 'Create Account'}
-              </Button>
-            </form>
+                >
+                  {loading ? 'Creating account...' : 'Create Account'}
+                </Button>
+              </form>
 
               <div className="auth-footer">
                 <p>
@@ -221,7 +229,7 @@ const Register = () => {
             <div className="auth-notice">
               <p>
                 <span className="notice-icon">
-                  <FiLock size={16} />
+                  <FiLock size={14} />
                 </span>
                 Your registration data is encrypted in transit.
               </p>
