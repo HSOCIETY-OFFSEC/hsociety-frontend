@@ -23,6 +23,7 @@ flowchart TD
   F --> J[Complete Payment /student-payments]
   F --> K[Community /community]
   F --> L[Account Settings /settings]
+  F --> AQ[Quiz Material /student-quiz-material]
   F --> M[Logout]
 
   %% Bootcamp Registration
@@ -56,7 +57,7 @@ flowchart TD
   Y --> AD[Course Learning Section]
   AD --> AE[View resources per room]
   AD --> AF[Take room quiz]
-  AD --> AG[Start practical exercise (CTF) after rooms]
+  AD --> AG[Start practical exercise CTF after rooms]
   AD --> AH[Module check-in quiz]
 
   %% Lesson Page
@@ -71,7 +72,7 @@ flowchart TD
   AM -- Yes --> AN[Open playbooks / readings / tooling]
 
   %% Quiz Material
-  AQ[Quiz Material /student-quiz-material] --> AR{Paid?}
+  AQ --> AR{Paid?}
   AR -- No --> J
   AR -- Yes --> AS[Start check-ins / skill validation]
 
