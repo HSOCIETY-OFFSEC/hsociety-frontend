@@ -103,7 +103,8 @@ const Orbit3D = ({ steps, activeIdx, onHover }) => {
                 key={i}
                 x1={pos.x} y1={pos.y}
                 x2={next.x} y2={next.y}
-                stroke="rgba(16,185,129,0.15)"
+                stroke="var(--primary-color)"
+                strokeOpacity="0.18"
                 strokeWidth="1"
                 strokeDasharray="4 6"
               />

@@ -5,8 +5,8 @@
 .cycle-section {
   padding: 7rem 2rem;
   background:
-    radial-gradient(ellipse 800px 500px at 10% 0%, rgba(16, 185, 129, 0.09), transparent 60%),
-    radial-gradient(ellipse 600px 400px at 90% 100%, rgba(6, 182, 212, 0.06), transparent 55%),
+    radial-gradient(ellipse 800px 500px at 10% 0%, color-mix(in srgb, var(--primary-color) 9%, transparent), transparent 60%),
+    radial-gradient(ellipse 600px 400px at 90% 100%, color-mix(in srgb, var(--primary-color) 6%, transparent), transparent 55%),
     var(--bg-secondary);
   overflow: hidden;
 }
@@ -50,7 +50,7 @@
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.18), transparent 68%);
+  background: radial-gradient(circle, var(--primary-color-alpha), transparent 68%);
   filter: blur(30px);
   pointer-events: none;
   animation: orbitGlowPulse 6s ease-in-out infinite;
@@ -83,17 +83,17 @@
   width: 330px;
   height: 330px;
   margin: -165px 0 0 -165px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
   box-shadow:
-    0 0 0 1px rgba(16, 185, 129, 0.06),
-    inset 0 0 60px rgba(16, 185, 129, 0.04);
+    0 0 0 1px color-mix(in srgb, var(--primary-color) 8%, transparent),
+    inset 0 0 60px color-mix(in srgb, var(--primary-color) 6%, transparent);
 }
 
 .orbit-ring-inner {
   width: 240px;
   height: 240px;
   margin: -120px 0 0 -120px;
-  border: 1px dashed rgba(16, 185, 129, 0.12);
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 14%, transparent);
 }
 
 /* ── SVG connector lines ── */
@@ -126,7 +126,7 @@
   height: 100%;
   border-radius: 16px;
   background: color-mix(in srgb, var(--card-bg, #0f1117) 95%, transparent);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,7 +134,7 @@
   gap: 0.25rem;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(16, 185, 129, 0.06),
+    0 0 0 1px color-mix(in srgb, var(--primary-color) 8%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
   backdrop-filter: blur(8px);
@@ -146,7 +146,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), transparent 55%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary-color) 10%, transparent), transparent 55%);
   opacity: 0;
   transition: opacity 0.25s;
   border-radius: inherit;
@@ -154,11 +154,11 @@
 
 .orbit-node--active .orbit-node-inner,
 .orbit-node:hover .orbit-node-inner {
-  border-color: rgba(16, 185, 129, 0.55);
+  border-color: color-mix(in srgb, var(--primary-color) 60%, transparent);
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(16, 185, 129, 0.25),
-    0 0 24px rgba(16, 185, 129, 0.18);
+    0 0 0 1px color-mix(in srgb, var(--primary-color) 30%, transparent),
+    0 0 24px color-mix(in srgb, var(--primary-color) 22%, transparent);
 }
 
 .orbit-node--active .orbit-node-inner::before,
@@ -168,9 +168,9 @@
 
 .orbit-node-icon {
   font-size: 1.1rem;
-  color: #10b981;
+  color: var(--primary-color);
   line-height: 1;
-  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--primary-color) 60%, transparent));
 }
 
 .orbit-node-label {
@@ -185,7 +185,7 @@
 
 .orbit-node-index {
   font-size: 0.58rem;
-  color: rgba(16, 185, 129, 0.5);
+  color: color-mix(in srgb, var(--primary-color) 55%, transparent);
   letter-spacing: 0.08em;
 }
 
@@ -197,7 +197,7 @@
   transform: translateX(-50%);
   width: 40px;
   height: 6px;
-  background: rgba(16, 185, 129, 0.25);
+  background: color-mix(in srgb, var(--primary-color) 28%, transparent);
   border-radius: 50%;
   filter: blur(4px);
   pointer-events: none;
@@ -221,7 +221,7 @@
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 40%, transparent);
   animation: coreRingPulse 3s ease-in-out infinite;
 }
 
@@ -234,21 +234,21 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, rgba(16, 185, 129, 0.35), rgba(16, 185, 129, 0.08) 55%, transparent);
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--primary-color) 40%, transparent), color-mix(in srgb, var(--primary-color) 10%, transparent) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 0 0 8px rgba(16, 185, 129, 0.06),
-    0 0 30px rgba(16, 185, 129, 0.2),
+    0 0 0 8px color-mix(in srgb, var(--primary-color) 8%, transparent),
+    0 0 30px color-mix(in srgb, var(--primary-color) 22%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .orbit-core-label {
   font-size: 0.6rem;
   font-weight: 600;
-  color: #10b981;
+  color: var(--primary-color);
   letter-spacing: 0.18em;
 }
 
@@ -260,7 +260,7 @@
   transform: translateX(-50%);
   width: 260px;
   height: 24px;
-  background: radial-gradient(ellipse, rgba(16, 185, 129, 0.15), transparent 70%);
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--primary-color) 18%, transparent), transparent 70%);
   filter: blur(6px);
   pointer-events: none;
 }
@@ -278,12 +278,12 @@
 .cycle-detail-card {
   padding: 1.5rem;
   border-radius: 14px;
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
   background:
-    linear-gradient(135deg, rgba(16, 185, 129, 0.06), transparent 60%),
+    linear-gradient(135deg, color-mix(in srgb, var(--primary-color) 8%, transparent), transparent 60%),
     color-mix(in srgb, var(--card-bg, #0f1117) 95%, transparent);
   box-shadow:
-    0 0 0 1px rgba(16, 185, 129, 0.08),
+    0 0 0 1px color-mix(in srgb, var(--primary-color) 10%, transparent),
     0 16px 40px -12px rgba(0, 0, 0, 0.5);
   margin-bottom: 0.25rem;
   position: relative;
@@ -297,7 +297,7 @@
   left: 0;
   width: 3px;
   height: 100%;
-  background: linear-gradient(180deg, #10b981, transparent);
+  background: linear-gradient(180deg, var(--primary-color), transparent);
   border-radius: 0 2px 2px 0;
 }
 
@@ -310,13 +310,13 @@
 
 .cycle-detail-num {
   font-size: 0.8rem;
-  color: #10b981;
+  color: var(--primary-color);
   font-weight: 600;
 }
 
 .cycle-detail-tag {
   font-size: 0.62rem;
-  color: rgba(16, 185, 129, 0.55);
+  color: color-mix(in srgb, var(--primary-color) 55%, transparent);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -365,13 +365,13 @@
   top: 0;
   bottom: 0;
   width: 0;
-  background: rgba(16, 185, 129, 0.06);
+  background: color-mix(in srgb, var(--primary-color) 8%, transparent);
   transition: width 0.25s ease;
 }
 
 .cycle-item:hover,
 .cycle-item--active {
-  border-color: rgba(16, 185, 129, 0.35);
+  border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
   background: color-mix(in srgb, var(--card-bg, #0f1117) 88%, transparent);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -382,7 +382,7 @@
 }
 
 .cycle-item--active {
-  border-color: rgba(16, 185, 129, 0.5);
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
 }
 
 .cycle-index {
@@ -393,19 +393,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: color-mix(in srgb, #10b981 12%, transparent);
-  border: 1px solid rgba(16, 185, 129, 0.22);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 24%, transparent);
   font-size: 0.72rem;
   font-weight: 600;
-  color: #10b981;
+  color: var(--primary-color);
   letter-spacing: 0.04em;
   position: relative;
   z-index: 1;
 }
 
 .cycle-item--active .cycle-index {
-  background: color-mix(in srgb, #10b981 20%, transparent);
-  border-color: rgba(16, 185, 129, 0.45);
+  background: color-mix(in srgb, var(--primary-color) 20%, transparent);
+  border-color: color-mix(in srgb, var(--primary-color) 48%, transparent);
 }
 
 .cycle-item-content {
@@ -427,12 +427,12 @@
 }
 
 .cycle-item--active .cycle-item-content h3 {
-  color: #a7f3d0;
+  color: color-mix(in srgb, var(--primary-color) 70%, var(--text-primary));
 }
 
 .cycle-item-arrow {
   flex-shrink: 0;
-  color: rgba(16, 185, 129, 0.4);
+  color: color-mix(in srgb, var(--primary-color) 45%, transparent);
   font-size: 1.2rem;
   line-height: 1;
   position: relative;
@@ -442,7 +442,7 @@
 
 .cycle-item:hover .cycle-item-arrow,
 .cycle-item--active .cycle-item-arrow {
-  color: #10b981;
+  color: var(--primary-color);
   transform: translateX(3px);
 }
 
