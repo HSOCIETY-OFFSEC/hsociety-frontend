@@ -66,8 +66,8 @@
 [data-theme="black"] {
   --bg-primary: #000000;
   --bg-secondary: #050505;
-  --bg-tertiary: #0b0b0b;
-  --card-bg: #050505;
+  --bg-tertiary: #000000;
+  --card-bg: #000000;
   --border-color: #121212;
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
@@ -125,11 +125,19 @@ body {
   overflow-x: hidden;
 }
 
-[data-theme="dark"] body,
-[data-theme="black"] body {
+[data-theme="dark"] body {
+  background-color: var(--bg-primary);
   background-image: linear-gradient(135deg, rgba(5, 15, 25, 0.9), rgba(5, 15, 25, 0.8));
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+[data-theme="black"] body {
+  background-color: var(--bg-primary);
+  background-image: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 body.workspace-lock-scroll {
