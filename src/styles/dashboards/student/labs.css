@@ -1,0 +1,46 @@
+/* ── Labs ───────────────────────────────────────────────────── */
+.student-labs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lab-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.8rem 0.95rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  transition: border-color 0.15s ease;
+}
+
+.lab-item:hover {
+  border-color: color-mix(in srgb, var(--text-primary) 15%, var(--border-color));
+}
+
+.lab-item h4 {
+  margin: 0 0 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.lab-item span {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.lab-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

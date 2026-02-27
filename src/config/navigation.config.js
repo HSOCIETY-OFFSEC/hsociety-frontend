@@ -34,8 +34,10 @@ export const NAV_LINKS = {
       { path: '/community', label: 'Community', icon: FiMessageSquare }
     ],
     pentester: [
-      { path: '/pentester', label: 'Assignments', icon: FiShield },
-      { path: '/pentest', label: 'Pentest', icon: FiBarChart2 },
+      { path: '/pentester', label: 'Overview', icon: FiBarChart2 },
+      { path: '/pentester/engagements', label: 'Engagements', icon: FiShield },
+      { path: '/pentester/reports', label: 'Reports', icon: FiFileText },
+      { path: '/pentester/profiles', label: 'Pentester Profiles', icon: FiUsers },
       { path: '/community', label: 'Community', icon: FiMessageSquare },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
@@ -87,8 +89,10 @@ export const NAV_LINKS = {
     ],
     pentester: [
       { path: '/', label: 'Home', icon: FiShield },
-      { path: '/pentester', label: 'Assignments', icon: FiBarChart2 },
-      { path: '/pentest', label: 'Pentest', icon: FiShield },
+      { path: '/pentester', label: 'Overview', icon: FiBarChart2 },
+      { path: '/pentester/engagements', label: 'Engagements', icon: FiShield },
+      { path: '/pentester/reports', label: 'Reports', icon: FiFileText },
+      { path: '/pentester/profiles', label: 'Pentester Profiles', icon: FiUsers },
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     admin: [

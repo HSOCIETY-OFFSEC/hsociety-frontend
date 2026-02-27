@@ -17,7 +17,7 @@ import { getStudentOverview, registerBootcamp } from './student.service';
 import { useAuth } from '../../../core/auth/AuthContext';
 import '../../../styles/student/base.css';
 import '../../../styles/student/components.css';
-import '../../../styles/dashboards/student/student-dashboard.css';
+import '../../../styles/dashboards/student/index.css';
 
 const StudentDashboard = () => {
   useScrollReveal();

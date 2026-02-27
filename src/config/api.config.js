@@ -113,7 +113,13 @@ export const API_ENDPOINTS = {
     DELETE: '/pentest/:id',
     SUBMIT: '/pentest/:id/submit',
     CANCEL: '/pentest/:id/cancel',
-    REPORTS: '/pentest/:id/reports'
+    REPORTS: '/pentest/:id/reports',
+    REPORT_UPDATE: '/pentest/:id/reports/:reportId'
+  },
+
+  // Pentester
+  PENTESTER: {
+    PROFILES: '/pentesters'
   },
 
   // Engagements

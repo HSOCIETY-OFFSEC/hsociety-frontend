@@ -1,0 +1,16 @@
+/**
+ * Admin Dashboard Styles
+ * Location: src/styles/dashboards/admin/index.css
+ */
+
+@import './base.css';
+@import './hero.css';
+@import './badges.css';
+@import './alert.css';
+@import './cards.css';
+@import './table.css';
+@import './forms.css';
+@import './roles.css';
+@import './actions.css';
+@import './section.css';
+@import './responsive.css';

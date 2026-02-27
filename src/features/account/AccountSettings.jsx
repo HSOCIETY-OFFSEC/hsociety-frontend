@@ -85,11 +85,6 @@ const AccountSettings = () => {
 
   return (
     <div className="account-settings">
-      <div className="account-header">
-        <h1>Account Settings</h1>
-        <p>Manage your profile and access.</p>
-      </div>
-
       {error && <div className="account-error">{error}</div>}
 
       <Card padding="large" className="account-card">

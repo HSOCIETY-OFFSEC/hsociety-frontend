@@ -1,0 +1,18 @@
+/**
+ * Student Dashboard Styles
+ * Location: src/styles/dashboards/student/index.css
+ */
+
+@import './base.css';
+@import './shell.css';
+@import './hero.css';
+@import './grid.css';
+@import './bootcamp.css';
+@import './path.css';
+@import './modules.css';
+@import './labs.css';
+@import './mentors.css';
+@import './snapshot.css';
+@import './modal.css';
+@import './skeleton.css';
+@import './responsive.css';

@@ -4,7 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, getPentests, updatePentest } from './admin.service';
-import '../../../styles/dashboards/admin/admin.css';
+import '../../../styles/dashboards/admin/index.css';
 
 const ROLE_OPTIONS = [
   { value: 'student', label: 'Student' },

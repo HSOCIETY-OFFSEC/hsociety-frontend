@@ -1,0 +1,8 @@
+/* ── Page Shell ─────────────────────────────────────────────── */
+.student-page {
+  min-height: calc(100vh - 72px);
+  padding: 2rem 1.5rem 4rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+}

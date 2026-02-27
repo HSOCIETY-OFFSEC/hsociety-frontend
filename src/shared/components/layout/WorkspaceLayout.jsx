@@ -30,8 +30,11 @@ const WorkspaceLayout = () => {
       { path: '/remediation', title: 'Remediation' },
       { path: '/assets', title: 'Assets' },
       { path: '/billing', title: 'Billing' },
-      { path: '/pentest', title: 'Pentest' },
-      { path: '/pentester', title: 'Pentester Dashboard' },
+      { path: '/pentester/engagements', title: 'Engagements' },
+      { path: '/pentester/reports', title: 'Reports' },
+      { path: '/pentester/profiles', title: 'Pentester Profiles' },
+      { path: '/pentester', title: 'Pentester Overview' },
+      { path: '/pentest', title: 'Engagements' },
       { path: '/community', title: 'Community' },
       { path: '/mr-robot', title: 'Admin Dashboard' },
       { path: '/settings', title: 'Account Settings' }

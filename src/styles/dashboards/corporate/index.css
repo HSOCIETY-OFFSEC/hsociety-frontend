@@ -1,0 +1,13 @@
+/**
+ * Corporate Dashboard Styles
+ * Location: src/styles/dashboards/corporate/index.css
+ */
+
+@import './base.css';
+@import './stats.css';
+@import './sections.css';
+@import './quick-actions.css';
+@import './activity.css';
+@import './security.css';
+@import './loading.css';
+@import './responsive.css';

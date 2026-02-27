@@ -1,0 +1,119 @@
+/* ── Responsive ─────────────────────────────────────────────── */
+
+@media (max-width: 1200px) {
+  .snapshot-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .student-page {
+    padding: 1.75rem 1.25rem 3.5rem;
+  }
+
+  .student-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .student-page {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .dashboard-shell-header {
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .dashboard-shell-actions {
+    width: 100%;
+  }
+
+  .dashboard-shell-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .student-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  .snapshot-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .student-page {
+    padding: 1.25rem 0.875rem 2.5rem;
+  }
+
+  .dashboard-shell-title {
+    font-size: 1.75rem;
+  }
+
+  .snapshot-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .student-modal-card {
+    padding: 1.25rem;
+  }
+
+  .student-modal-actions {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .student-modal-actions > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .student-modal-field select,
+  .student-modal-field textarea {
+    font-size: 1rem;
+  }
+
+  .mentor-row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .student-page {
+    padding: 1rem 0.75rem 2rem;
+  }
+
+  .snapshot-item {
+    padding: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-card,
+  .snapshot-item,
+  .module-item,
+  .lab-item {
+    transition: none !important;
+  }
+
+  .student-card:hover,
+  .snapshot-item:hover {
+    transform: none;
+  }
+
+  .path-bar div,
+  .module-progress div {
+    transition: none !important;
+  }
+
+  @keyframes skeleton-pulse {
+    0%, 100% { opacity: 1; }
+  }
+}

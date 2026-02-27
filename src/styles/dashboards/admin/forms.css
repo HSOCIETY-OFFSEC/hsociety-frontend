@@ -1,0 +1,31 @@
+/* ── Form Controls ──────────────────────────────────────────── */
+.admin-input,
+.admin-select {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.88rem;
+}
+
+.admin-input:focus,
+.admin-select:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--text-primary) 30%, var(--border-color));
+}
+
+.admin-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.admin-checkbox input {
+  width: 18px;
+  height: 18px;
+}

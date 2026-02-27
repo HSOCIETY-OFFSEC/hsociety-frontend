@@ -1,0 +1,15 @@
+/* ── Loading State ───────────────────────────────────────────── */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  gap: 1rem;
+}
+
+.loading-state p {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+  margin: 0;
+}

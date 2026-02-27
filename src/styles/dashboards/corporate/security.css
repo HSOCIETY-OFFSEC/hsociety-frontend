@@ -1,0 +1,12 @@
+/* ── Security Notice ─────────────────────────────────────────── */
+.security-notice {
+  background: color-mix(in srgb, var(--text-primary) 3%, var(--card-bg)) !important;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 14%, var(--border-color)) !important;
+  border-radius: 12px;
+}
+
+.security-notice.dramatic-card {
+  position: static;
+  overflow: visible;
+  animation: none;
+}

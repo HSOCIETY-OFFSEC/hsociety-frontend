@@ -17,7 +17,6 @@ const loadDashboard = (key) =>
     import('../features/dashboards').then((module) => ({ default: module[key] }))
   );
 const Dashboard = loadDashboard('CorporateDashboard');
-const Pentest = React.lazy(() => import('../features/corporate/pentest/Pentest'));
 const Engagements = React.lazy(() => import('../features/corporate/engagements/Engagements'));
 const Reports = React.lazy(() => import('../features/corporate/reports/Reports'));
 const Remediation = React.lazy(() => import('../features/corporate/remediation/Remediation'));
@@ -37,6 +36,18 @@ const StudentBootcamp = React.lazy(() => import('../features/student/StudentBoot
 const StudentPayments = React.lazy(() => import('../features/student/StudentPayments'));
 const AdminDashboard = loadDashboard('AdminDashboard');
 const PentesterDashboard = loadDashboard('PentesterDashboard');
+const PentesterEngagements = React.lazy(() =>
+  import('../features/dashboards/pentester/PentesterEngagements')
+);
+const PentesterEngagementDetails = React.lazy(() =>
+  import('../features/dashboards/pentester/PentesterEngagementDetails')
+);
+const PentesterReports = React.lazy(() =>
+  import('../features/dashboards/pentester/PentesterReports')
+);
+const PentesterProfiles = React.lazy(() =>
+  import('../features/dashboards/pentester/PentesterProfiles')
+);
 const CommunityHub = React.lazy(() => import('../features/community/CommunityHub'));
 const AccountSettings = React.lazy(() => import('../features/account/AccountSettings'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
@@ -194,7 +205,39 @@ const AppRouter = () => {
               path="pentest"
               element={
                 <RoleRoute allowedRoles={['pentester']}>
-                  <Pentest />
+                  <PentesterEngagements />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentester/engagements"
+              element={
+                <RoleRoute allowedRoles={['pentester']}>
+                  <PentesterEngagements />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentester/engagements/:id"
+              element={
+                <RoleRoute allowedRoles={['pentester']}>
+                  <PentesterEngagementDetails />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentester/reports"
+              element={
+                <RoleRoute allowedRoles={['pentester']}>
+                  <PentesterReports />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="pentester/profiles"
+              element={
+                <RoleRoute allowedRoles={['pentester']}>
+                  <PentesterProfiles />
                 </RoleRoute>
               }
             />

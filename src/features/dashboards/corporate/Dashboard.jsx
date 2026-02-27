@@ -10,7 +10,7 @@ import StatsGrid from './components/StatsGrid';
 import QuickActions from './components/QuickActions';
 import ActivityList from './components/ActivityList';
 import SecurityNotice from './components/SecurityNotice';
-import '../../../styles/dashboards/corporate/dashboard.css';
+import '../../../styles/dashboards/corporate/index.css';
 
 /**
  * Dashboard Component
