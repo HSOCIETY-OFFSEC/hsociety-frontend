@@ -1,6 +1,3 @@
-# Student User Flow (UI-Based)
-
-```mermaid
 flowchart TD
   %% Legend
   %% [Process]  {Decision}  ((Start/End))
@@ -39,7 +36,7 @@ flowchart TD
   R --> S{Method?}
   S -- BTC --> T[Submit BTC tx hash]
   S -- MOMO/TELCEL/Bank --> U[Redirect to Paystack]
-  T --> V[Payment Pending/Verified]
+  T --> V[Payment Pending or Verified]
   U --> V
 
   %% Learning Path
@@ -51,38 +48,37 @@ flowchart TD
   Y --> Z{Previous module complete?}
   Z -- No --> AA[Show status message]
   Z -- Yes --> AB[Open first room]
-  AB --> AC[Lesson /student-learning/module/:moduleId/room/:roomId]
+  AB --> AC[Lesson page]
 
-  %% Course Learning (within Learning Path)
+  %% Course Learning Section
   Y --> AD[Course Learning Section]
   AD --> AE[View resources per room]
   AD --> AF[Take room quiz]
-  AD --> AG[Start practical exercise CTF after rooms]
+  AD --> AG[Start practical exercise CTF]
   AD --> AH[Module check-in quiz]
 
   %% Lesson Page
   AC --> AI[Back to Learning Path]
   AC --> AJ[Switch room within module]
   AC --> AK[Switch module if previous complete]
-  AC --> AL[Mark room complete (local)]
+  AC --> AL[Mark room complete local]
 
   %% Resources
   H --> AM{Paid?}
   AM -- No --> J
-  AM -- Yes --> AN[Open playbooks / readings / tooling]
+  AM -- Yes --> AN[Open playbooks readings tooling]
 
   %% Quiz Material
   AQ --> AR{Paid?}
   AR -- No --> J
-  AR -- Yes --> AS[Start check-ins / skill validation]
+  AR -- Yes --> AS[Start check-ins skill validation]
 
-  %% Community & Settings
+  %% Community and Settings
   K --> AT[Community hub]
-  L --> AU[Profile / Account Settings]
+  L --> AU[Profile and Account Settings]
 
   %% Role Blocking
-  AV[Attempt non-student route] --> AW[Access Restricted Modal]
+  AV[Attempt non student route] --> AW[Access Restricted Modal]
   AW --> F
 
   M --> End((End))
-```
