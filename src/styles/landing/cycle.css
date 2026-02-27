@@ -245,11 +245,15 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.orbit-core-label {
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: var(--primary-color);
-  letter-spacing: 0.18em;
+.orbit-core-logo {
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 6px 12px color-mix(in srgb, var(--primary-color) 30%, transparent));
+}
+
+.orbit-core-logo .logo-image {
+  width: 100%;
+  height: 100%;
 }
 
 /* Ground shadow ellipse */

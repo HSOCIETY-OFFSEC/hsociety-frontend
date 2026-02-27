@@ -150,7 +150,7 @@ const Orbit3D = ({ steps, activeIdx, onHover }) => {
         <div className="orbit-core">
           <div className="orbit-core-ring" />
           <div className="orbit-core-inner">
-            <span className="orbit-core-label">CYCLE</span>
+            <Logo size="small" className="orbit-core-logo" />
           </div>
         </div>
 
