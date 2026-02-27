@@ -221,19 +221,6 @@ const StudentDashboard = () => {
                   </Card>
                 )}
 
-                <Card padding="medium" className="student-card reveal-on-scroll">
-                  <div className="student-card-header">
-                    <FiBookOpen size={20} />
-                    <h3>Resources Hub</h3>
-                  </div>
-                  <p>
-                    Access curated reading bundles, lab tooling, and the bootcamp resource pack.
-                  </p>
-                  <Button variant="secondary" size="small" onClick={() => navigate('/student-resources')}>
-                    Open Resources
-                  </Button>
-                </Card>
-
               </div>
             )}
 
