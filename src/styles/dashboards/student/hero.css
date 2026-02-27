@@ -1,9 +1,61 @@
 /* ── Student Hero ───────────────────────────────────────────── */
 .student-hero {
-  /* inherits dashboard-shell-header */
+  position: relative;
+  overflow: hidden;
+  padding: 1.75rem 1.75rem;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--primary-color) 10%, var(--card-bg)) 0%,
+      var(--card-bg) 60%
+    );
+  border: 1px solid color-mix(in srgb, var(--primary-color) 20%, var(--border-color));
+  box-shadow: var(--shadow-md);
+}
+
+.student-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      600px 180px at 12% 0%,
+      color-mix(in srgb, var(--primary-color) 20%, transparent),
+      transparent 70%
+    );
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.student-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--text-primary) 6%, transparent),
+    transparent
+  );
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.student-hero > div:first-child {
+  flex: 1;
+  min-width: 260px;
 }
 
 .student-kicker {
-  /* inherits dashboard-shell-kicker */
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
+  color: var(--text-tertiary);
 }
-  
+
+.student-hero .dashboard-shell-title,
+.student-hero .dashboard-shell-subtitle,
+.student-hero .dashboard-shell-actions {
+  position: relative;
+  z-index: 1;
+}

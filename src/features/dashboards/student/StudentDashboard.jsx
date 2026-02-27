@@ -110,7 +110,7 @@ const StudentDashboard = () => {
             <p className="student-kicker dashboard-shell-kicker">Student Dashboard</p>
             <h1 className="dashboard-shell-title">Build skills with real-world practice.</h1>
             <p className="dashboard-shell-subtitle">
-              Track your learning path, complete course rooms, and level up module by module.
+              Track your progress, access resources, and stay on top of your bootcamp journey.
             </p>
           </div>
           <div className="dashboard-shell-actions">
@@ -182,53 +182,6 @@ const StudentDashboard = () => {
 
                 {hasBootcamp ? (
                   <>
-                    <Card padding="medium" className="student-card reveal-on-scroll">
-                      <div className="student-card-header">
-                        <FiBookOpen size={20} />
-                        <h3>Learning Path Overview</h3>
-                      </div>
-                      <div className="student-path">
-                        {data.learningPath.map((item) => (
-                          <div key={item.id} className="path-item">
-                            <div className="path-info">
-                              <span>{item.title}</span>
-                              <span className={`path-status ${item.status}`}>
-                                {item.status === 'done'
-                                  ? 'Completed'
-                                  : item.status === 'in-progress'
-                                  ? 'In Progress'
-                                  : 'Next Up'}
-                              </span>
-                            </div>
-                            <div className="path-bar">
-                              <div style={{ width: `${item.progress}%` }} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Card>
-
-                    <Card padding="medium" className="student-card reveal-on-scroll">
-                      <div className="student-card-header">
-                        <FiShield size={20} />
-                        <h3>Modules & Rooms</h3>
-                      </div>
-                      <div className="student-modules">
-                        {data.modules.map((module) => (
-                          <div key={module.id} className="module-item">
-                            <div className="module-info">
-                              <h4>{module.title}</h4>
-                              <span>
-                                {module.roomsCompleted}/{module.roomsTotal} rooms · {module.progress}%
-                              </span>
-                            </div>
-                            <div className="module-progress">
-                              <div style={{ width: `${module.progress}%` }} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </Card>
                     {hasBootcamp && !hasPaidAccess && (
                       <Card padding="medium" className="student-card reveal-on-scroll">
                         <div className="student-card-header">
