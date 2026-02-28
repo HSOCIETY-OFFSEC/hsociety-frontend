@@ -1,6 +1,7 @@
 import React from 'react';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import aboutContent from '../../data/about.json';
+import SocialLinks from '../../shared/components/common/SocialLinks';
 import '../../styles/sections/about/index.css';
 
 const About = () => {
@@ -165,6 +166,20 @@ const About = () => {
             <span className="doctrine-marker" aria-hidden="true">[ DOCTRINE ]</span>
             <p>Execution over marketing.<br />Real experience over theory.</p>
           </blockquote>
+        </div>
+      </section>
+
+      <section className="about-section about-social-section reveal-on-scroll" aria-label="Social links">
+        <div className="about-section-label">
+          <span className="section-code" aria-hidden="true">SYS::04</span>
+          <span className="section-rule" aria-hidden="true" />
+        </div>
+        <div className="about-section-body">
+          <div className="about-section-intro">
+            <h2>Connect with HSOCIETY</h2>
+            <p>Follow the latest research, community updates, and training launches.</p>
+          </div>
+          <SocialLinks className="about-social-links" />
         </div>
       </section>
 

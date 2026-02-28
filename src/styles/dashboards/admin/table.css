@@ -30,6 +30,24 @@
   grid-template-columns: 1.6fr 0.9fr 1fr 0.6fr 1.2fr;
 }
 
+.admin-row-users {
+  grid-template-columns: 1.2fr 1.6fr 1.2fr 0.8fr 0.9fr 0.7fr 1.2fr;
+}
+
+.admin-table-compact {
+  margin-top: 1rem;
+}
+
+.admin-row-moderation {
+  grid-template-columns: 2fr 0.8fr 0.9fr 0.6fr 1.2fr;
+}
+
+.admin-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .admin-row span {
   min-width: 0;
   overflow: hidden;

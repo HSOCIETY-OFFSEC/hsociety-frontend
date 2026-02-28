@@ -10,6 +10,7 @@ import CommunityHeader from './components/header/CommunityHeader';
 import CommunityMessageList from './components/messages/CommunityMessageList';
 import CommunityCompose from './components/compose/CommunityCompose';
 import CommunitySidebar from './components/sidebar/CommunitySidebar';
+import SocialLinks from '../../shared/components/common/SocialLinks';
 import { getUserAvatar } from './utils/community.utils';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import '../../styles/sections/community/base.css';
@@ -334,6 +335,11 @@ const CommunityHub = () => {
               </button>
             ))}
           </div>
+        </div>
+
+        <div className="community-aside-card">
+          <h2 className="community-aside-title">Follow HSOCIETY</h2>
+          <SocialLinks className="community-aside-social" />
         </div>
 
         {user && (

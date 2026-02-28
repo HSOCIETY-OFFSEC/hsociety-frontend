@@ -17,6 +17,7 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
+import SocialLinks from '../common/SocialLinks';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
 import '../../../styles/shared/components/layout/Navbar.css';
 
@@ -218,6 +219,7 @@ const Navbar = ({ sticky = true }) => {
           {/* Auth Actions (Desktop, Public) */}
           {!isAuthenticated && viewportMode === 'desktop' && (
             <div className="navbar-right-actions">
+              <SocialLinks className="navbar-socials" size={16} />
               <button
                 type="button"
                 onClick={() => navigate('/login')}
@@ -271,6 +273,15 @@ const Navbar = ({ sticky = true }) => {
                       {user.email}
                     </p>
                   </div>
+                  <button
+                    onClick={() => navigate('/settings')}
+                    className="navbar-user-logout"
+                  >
+                    <span className="navbar-user-icon">
+                      <FiShield size={16} />
+                    </span>
+                    <span>Account Settings</span>
+                  </button>
 
                   <button
                     onClick={handleLogout}
@@ -377,6 +388,7 @@ const Navbar = ({ sticky = true }) => {
                   </span>
                   <span>Register</span>
                 </button>
+                <SocialLinks className="mobile-menu-socials" size={18} />
               </>
             )}
           </div>

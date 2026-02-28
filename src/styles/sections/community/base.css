@@ -50,6 +50,10 @@
   padding: 1rem 1.1rem;
 }
 
+.community-aside-social {
+  gap: 0.5rem;
+}
+
 .community-aside-title {
   font-size: 0.95rem;
   font-weight: 800;

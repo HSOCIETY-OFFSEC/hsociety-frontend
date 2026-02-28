@@ -63,6 +63,79 @@ export const getAnalytics = async () => {
   return { success: false, error: response.error || 'Failed to load analytics' };
 };
 
+export const getAdminOverview = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.ADMIN.OVERVIEW);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to load admin overview' };
+};
+
+export const getCommunityConfig = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.ADMIN.COMMUNITY_CONFIG);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to load community config' };
+};
+
+export const updateCommunityConfig = async (payload) => {
+  const response = await apiClient.patch(API_ENDPOINTS.ADMIN.COMMUNITY_CONFIG, payload);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to update community config' };
+};
+
+export const getAdminCommunityMessages = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.ADMIN.COMMUNITY_MESSAGES);
+  if (response.success) return { success: true, data: response.data || [] };
+  return { success: false, error: response.error || 'Failed to load messages' };
+};
+
+export const updateAdminCommunityMessage = async (messageId, updates) => {
+  const response = await apiClient.patch(`${API_ENDPOINTS.ADMIN.COMMUNITY_MESSAGES}/${messageId}`, updates);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: response.error || 'Failed to update message' };
+};
+
+export const deleteAdminCommunityMessage = async (messageId) => {
+  const response = await apiClient.delete(`${API_ENDPOINTS.ADMIN.COMMUNITY_MESSAGES}/${messageId}`);
+  if (response.success) return { success: true };
+  return { success: false, error: response.error || 'Failed to delete message' };
+};
+
+export const getAdminCommunityPosts = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.ADMIN.COMMUNITY_POSTS);
+  if (response.success) return { success: true, data: response.data || [] };
+  return { success: false, error: response.error || 'Failed to load posts' };
+};
+
+export const updateAdminCommunityPost = async (postId, updates) => {
+  const response = await apiClient.patch(`${API_ENDPOINTS.ADMIN.COMMUNITY_POSTS}/${postId}`, updates);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: response.error || 'Failed to update post' };
+};
+
+export const deleteAdminCommunityPost = async (postId) => {
+  const response = await apiClient.delete(`${API_ENDPOINTS.ADMIN.COMMUNITY_POSTS}/${postId}`);
+  if (response.success) return { success: true };
+  return { success: false, error: response.error || 'Failed to delete post' };
+};
+
+export const muteUser = async (userId, minutes) => {
+  const endpoint = buildEndpoint(API_ENDPOINTS.ADMIN.USER_MUTE, { id: userId });
+  const response = await apiClient.patch(endpoint, { minutes });
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: response.error || 'Failed to update mute status' };
+};
+
+export const getAdminContent = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.ADMIN.CONTENT);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to load content' };
+};
+
+export const updateAdminContent = async (payload) => {
+  const response = await apiClient.patch(API_ENDPOINTS.ADMIN.CONTENT, payload);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to update content' };
+};
+
 export default {
   getUsers,
   updateUser,
@@ -72,4 +145,16 @@ export default {
   approvePayment,
   publishCaseStudy,
   getAnalytics,
+  getAdminOverview,
+  getCommunityConfig,
+  updateCommunityConfig,
+  getAdminCommunityMessages,
+  updateAdminCommunityMessage,
+  deleteAdminCommunityMessage,
+  getAdminCommunityPosts,
+  updateAdminCommunityPost,
+  deleteAdminCommunityPost,
+  muteUser,
+  getAdminContent,
+  updateAdminContent,
 };

@@ -33,26 +33,44 @@ const CommunityMessageList = ({
           <p>No messages yet. Say hello!</p>
         </div>
       ) : (
-        messages.map((message, i) => {
-          const own = isOwn(message);
-          const prevMsg = messages[i - 1];
-          const grouped =
-            prevMsg &&
-            prevMsg.username === message.username &&
-            new Date(message.createdAt) - new Date(prevMsg.createdAt) < 120000;
+        (() => {
+          const pinned = messages.filter((msg) => msg.pinned);
+          const normal = messages.filter((msg) => !msg.pinned);
+
+          const renderList = (list) =>
+            list.map((message, i) => {
+              const own = isOwn(message);
+              const prevMsg = list[i - 1];
+              const grouped =
+                prevMsg &&
+                prevMsg.username === message.username &&
+                new Date(message.createdAt) - new Date(prevMsg.createdAt) < 120000;
+
+              return (
+                <CommunityMessage
+                  key={message.id || `${message.username}-${message.createdAt}-${i}`}
+                  message={message}
+                  own={own}
+                  grouped={grouped}
+                  onLike={onLike}
+                  onAddComment={onAddComment}
+                  currentUserId={currentUserId}
+                />
+              );
+            });
 
           return (
-            <CommunityMessage
-              key={message.id || `${message.username}-${message.createdAt}-${i}`}
-              message={message}
-              own={own}
-              grouped={grouped}
-              onLike={onLike}
-              onAddComment={onAddComment}
-              currentUserId={currentUserId}
-            />
+            <>
+              {pinned.length > 0 && (
+                <div className="community-pinned">
+                  <div className="community-pinned-header">Pinned</div>
+                  {renderList(pinned)}
+                </div>
+              )}
+              {renderList(normal)}
+            </>
           );
-        })
+        })()
       )}
 
       {error && (

@@ -12,7 +12,7 @@ export const SOCIAL_LINKS = [
   { key: 'x', label: 'X', href: 'https://x.com', icon: FaXTwitter },
   { key: 'github', label: 'GitHub', href: 'https://github.com', icon: FaGithub },
   { key: 'linkedin', label: 'LinkedIn', href: 'https://linkedin.com', icon: FaLinkedinIn },
-  { key: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me', icon: FaWhatsapp },
+  { key: 'whatsapp', label: 'WhatsApp', href: 'https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5', icon: FaWhatsapp },
   { key: 'telegram', label: 'Telegram', href: 'https://t.me', icon: FaTelegram }
 ];
 

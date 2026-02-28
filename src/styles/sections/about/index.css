@@ -500,6 +500,16 @@
   letter-spacing: -0.01em;
 }
 
+/* ── Social Links ─────────────────────────────────────────── */
+.about-social-section .about-section-body {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.about-social-links {
+  margin-top: 0.5rem;
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 
 /* Large tablet */

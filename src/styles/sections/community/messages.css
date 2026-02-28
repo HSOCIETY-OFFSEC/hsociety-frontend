@@ -85,6 +85,22 @@
   padding-top: 0.04rem;
 }
 
+.community-pinned {
+  margin-bottom: 0.85rem;
+  padding: 0.4rem 0.6rem 0.6rem;
+  border-radius: 12px;
+  border: 1px dashed var(--border-color);
+  background: color-mix(in srgb, var(--primary-color, #00ff99) 6%, transparent);
+}
+
+.community-pinned-header {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.4rem;
+}
+
 /* Flip for own messages */
 .community-message.own {
   flex-direction: row-reverse;
@@ -176,6 +192,16 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-tertiary);
+}
+
+.community-msg-pin {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary-color, #00ff99);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #00ff99) 40%, transparent);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
 }
 .community-msg-time {
   font-size: 0.68rem;

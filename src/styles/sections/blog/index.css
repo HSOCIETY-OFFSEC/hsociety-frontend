@@ -73,6 +73,29 @@
   color: var(--text-tertiary);
 }
 
+.blog-social {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.blog-social p {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+}
+
+.blog-social-links {
+  justify-content: flex-end;
+}
+
 .blog-grid {
   max-width: 1100px;
   margin: 0 auto;

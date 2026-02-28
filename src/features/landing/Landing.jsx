@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
-import { getCommunityProfiles, getLandingStats } from './landing.service';
+import { getCommunityProfiles, getLandingContent, getLandingStats } from './landing.service';
 import {
   HeroSection,
   StatsSection,
@@ -56,6 +56,7 @@ const Landing = ({ scrollToId = null }) => {
   const location = useLocation();
   const [statsData, setStatsData] = useState(null);
   const [communityProfiles, setCommunityProfiles] = useState([]);
+  const [landingOverrides, setLandingOverrides] = useState({});
 
   const iconMap = {
     FiShield,
@@ -122,9 +123,10 @@ const Landing = ({ scrollToId = null }) => {
     let isMounted = true;
 
     const loadStats = async () => {
-      const [statsResponse, profilesResponse] = await Promise.all([
+      const [statsResponse, profilesResponse, contentResponse] = await Promise.all([
         getLandingStats(),
-        getCommunityProfiles(6)
+        getCommunityProfiles(6),
+        getLandingContent()
       ]);
       if (!isMounted) return;
 
@@ -133,6 +135,9 @@ const Landing = ({ scrollToId = null }) => {
       }
       if (profilesResponse.success) {
         setCommunityProfiles(profilesResponse.data?.profiles || []);
+      }
+      if (contentResponse.success) {
+        setLandingOverrides(contentResponse.data?.landing || {});
       }
     };
 
@@ -205,9 +210,18 @@ const Landing = ({ scrollToId = null }) => {
 
     return {
       ...landingContent.hero,
+      title: landingOverrides.heroTitle || '',
+      description: landingOverrides.heroDescription || landingContent.hero.description,
+      ctas: landingContent.hero.ctas.map((cta, index) => ({
+        ...cta,
+        label:
+          index === 0
+            ? landingOverrides.ctaPrimary || cta.label
+            : landingOverrides.ctaSecondary || cta.label,
+      })),
       proof
     };
-  }, [statsData]);
+  }, [statsData, landingOverrides]);
 
   const profileFallbacks = landingContent.communityProfiles?.profiles || [];
   const profileContent = useMemo(() => {
@@ -234,14 +248,15 @@ const Landing = ({ scrollToId = null }) => {
     <ProcessSection steps={engagementSteps} />
 
     {/* 6. Community proof */}
-    <CommunityProfilesSection
-      title={landingContent.communityProfiles?.title || 'Community wins in the open'}
-      subtitle={
+      <CommunityProfilesSection
+        title={landingContent.communityProfiles?.title || 'Community wins in the open'}
+        subtitle={
+        landingOverrides.communitySubtitle ||
         landingContent.communityProfiles?.subtitle ||
         'Meet offensive learners already sharing findings, feedback, and collaboration.'
-      }
-      profiles={profileContent}
-    />
+        }
+        profiles={profileContent}
+      />
 
     {/* 6. What they get at the end */}
     <DeliverablesSection deliverables={deliverables} />

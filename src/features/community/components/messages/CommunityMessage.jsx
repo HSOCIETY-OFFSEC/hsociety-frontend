@@ -70,6 +70,7 @@ const CommunityMessage = ({
             {message?.hackerHandle && (
               <span className="community-msg-handle">@{message.hackerHandle}</span>
             )}
+            {message?.pinned && <span className="community-msg-pin">Pinned</span>}
             {message?.userRole && <span className="community-msg-role">{message.userRole}</span>}
             <time
               className="community-msg-time"

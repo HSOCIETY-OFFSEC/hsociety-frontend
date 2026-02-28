@@ -315,6 +315,48 @@
   to   { width: 100%; opacity: 0.55; }
 }
 
+.hero-word-accent {
+  color: var(--primary-color, #10b981);
+  position: relative;
+  display: inline-block;
+  animation: hackerFlicker 1.8s steps(1, end) infinite, hackerGlitch 2.6s steps(1, end) infinite;
+}
+
+.hero-word-accent::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color, #10b981), transparent);
+  opacity: 0.4;
+}
+
+@keyframes hackerFlicker {
+  0%, 100% { opacity: 1; }
+  4% { opacity: 0.35; }
+  6% { opacity: 1; }
+  10% { opacity: 0.15; }
+  12% { opacity: 1; }
+  34% { opacity: 0.5; }
+  36% { opacity: 1; }
+  54% { opacity: 0.2; }
+  56% { opacity: 1; }
+  78% { opacity: 0.4; }
+  80% { opacity: 1; }
+}
+
+@keyframes hackerGlitch {
+  0%, 82%, 100% { text-shadow: none; transform: translate(0, 0); }
+  83% { text-shadow: 3px 0 rgba(255, 50, 50, 0.75), -3px 0 rgba(50, 200, 255, 0.75); transform: translate(2px, -1px); }
+  84% { text-shadow: none; transform: translate(-2px, 1px); }
+  85% { text-shadow: -4px 0 rgba(255, 50, 50, 0.7), 4px 0 rgba(50, 200, 255, 0.7); transform: translate(3px, 0); }
+  86% { text-shadow: none; transform: translate(0, 0); }
+  87% { text-shadow: 5px 0 rgba(255, 50, 50, 0.8), -5px 0 rgba(50, 200, 255, 0.8); transform: translate(-3px, 1px); }
+  88% { text-shadow: none; transform: translate(0, 0); }
+}
+
 /* Description */
 .hero-description {
   font-size: 1.05rem;

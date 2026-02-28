@@ -4,6 +4,7 @@ import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
+import SocialLinks from '../../shared/components/common/SocialLinks';
 import '../../styles/sections/contact/index.css';
 
 const Contact = () => {
@@ -72,6 +73,12 @@ const Contact = () => {
           <p>Remote-first across Africa</p>
           <span>Serving teams across the continent.</span>
         </Card>
+      </section>
+
+      <section className="contact-social reveal-on-scroll" aria-label="Social links">
+        <h2>Follow the community</h2>
+        <p>Live updates, training drops, and community highlights.</p>
+        <SocialLinks className="contact-social-links" />
       </section>
     </div>
   );

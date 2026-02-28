@@ -76,6 +76,25 @@
   margin: 0 auto;
 }
 
+.contact-social {
+  margin: 3rem auto 0;
+  max-width: 960px;
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  text-align: center;
+}
+
+.contact-social p {
+  color: var(--text-secondary);
+  margin: 0.5rem 0 1.25rem;
+}
+
+.contact-social-links {
+  justify-content: center;
+}
+
 .contact-card {
   border-radius: 16px;
   border: 1px solid var(--border-color);

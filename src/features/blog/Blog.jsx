@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiBookOpen, FiCalendar, FiChevronRight } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
+import SocialLinks from '../../shared/components/common/SocialLinks';
+import { apiClient } from '../../shared/services/api.client';
+import { API_ENDPOINTS } from '../../config/api.config';
 import '../../styles/sections/blog/index.css';
 
 const Blog = () => {
   useScrollReveal();
 
-  const posts = [
+  const fallbackPosts = [
     {
       title: 'Field Notes: Breaking Down Token Replay',
       date: 'Jan 14, 2026',
@@ -25,6 +28,22 @@ const Blog = () => {
       summary: 'Weekly goals and modules for beginners.'
     }
   ];
+  const [posts, setPosts] = useState(fallbackPosts);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      const response = await apiClient.get(API_ENDPOINTS.PUBLIC.BLOG_POSTS);
+      if (!mounted) return;
+      if (response.success && Array.isArray(response.data?.posts) && response.data.posts.length) {
+        setPosts(response.data.posts);
+      }
+    };
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <div className="blog-page">
@@ -53,6 +72,14 @@ const Blog = () => {
             Subscribe
           </Button>
         </header>
+
+        <section className="blog-social reveal-on-scroll" aria-label="Social links">
+          <div>
+            <h2>Follow HSOCIETY</h2>
+            <p>Signals, research drops, and community wins — in real time.</p>
+          </div>
+          <SocialLinks className="blog-social-links" />
+        </section>
 
         <section className="blog-grid reveal-on-scroll">
           {posts.map((post) => (

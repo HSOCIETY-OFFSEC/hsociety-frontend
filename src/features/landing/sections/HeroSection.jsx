@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FiArrowUpRight,
@@ -17,18 +17,45 @@ import '../../../styles/landing/hero.css';
  * so CSS can do a clip + slide-up reveal per word.
  */
 const AnimatedWords = ({ text, className = '' }) =>
-  text.split(' ').map((word, i) => (
-    <span key={i} className="title-word">
-      <span className={`title-word-inner ${className}`}>{word}</span>
-      {/* preserve whitespace between words */}
-      {i < text.split(' ').length - 1 && '\u00A0'}
-    </span>
-  ));
+  text.split(' ').map((word, i) => {
+    const clean = word.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    const highlight = clean === 'hacker' || clean === 'hackers';
+    return (
+      <span key={i} className="title-word">
+        <span className={`title-word-inner ${className} ${highlight ? 'hero-word-accent' : ''}`}>
+          {word}
+        </span>
+        {/* preserve whitespace between words */}
+        {i < text.split(' ').length - 1 && '\u00A0'}
+      </span>
+    );
+  });
 
 const HeroSection = ({ content }) => {
   const navigate = useNavigate();
   const { requestPentest, requestPentestModal } = useRequestPentest();
-  const { badge, ctas } = content;
+  const { badge, ctas, title, description } = content;
+  const defaultTitles = [
+    'Train like a Hacker.|Prepare for Hackers',
+    'Train like a Hacker.|Become a Hacker'
+  ];
+  const [titleIndex, setTitleIndex] = useState(0);
+
+  useEffect(() => {
+    const hasOverride = Boolean(title && String(title).trim());
+    if (hasOverride) return undefined;
+    const timer = window.setInterval(() => {
+      setTitleIndex((prev) => (prev + 1) % defaultTitles.length);
+    }, 4500);
+    return () => window.clearInterval(timer);
+  }, [title]);
+
+  const resolvedTitle = useMemo(() => {
+    if (title && String(title).trim()) return title;
+    return defaultTitles[titleIndex];
+  }, [title, titleIndex]);
+
+  const [titleLine1, titleLine2] = String(resolvedTitle || '').split('|');
 
   return (
     <section className="hero-section">
@@ -54,24 +81,19 @@ const HeroSection = ({ content }) => {
 
           {/* Title — word-by-word animated reveal */}
           <h1 className="hero-title">
-            {/* Line 1: "Train like A Hacker." */}
-            <AnimatedWords text="Train like A Hacker." />
-            <br />
-            {/* Line 2: "Prepare" (accent) + " for Hackers" */}
-            <span className="title-word">
-              <span className="title-word-inner">
-                <span className="hero-title-accent">Prepare</span>
-              </span>
-            </span>
-            {'\u00A0'}
-            <AnimatedWords text="for  Hackers" />
+            <AnimatedWords text={titleLine1 || title || 'Train like a Hacker.'} />
+            {titleLine2 && (
+              <>
+                <br />
+                <AnimatedWords text={titleLine2} />
+              </>
+            )}
           </h1>
 
           {/* Description */}
           <p className="hero-description">
-            HSOCIETY trains beginners in offensive security and deploys them into
-            supervised, real-world penetration tests — building the next generation
-            of professional red teamers.
+            {description ||
+              'HSOCIETY trains beginners in offensive security and deploys them into supervised, real-world penetration tests — building the next generation of professional red teamers.'}
           </p>
 
           {/* CTAs */}

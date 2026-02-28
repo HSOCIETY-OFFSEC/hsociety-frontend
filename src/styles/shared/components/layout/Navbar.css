@@ -40,6 +40,10 @@
   flex-shrink: 0;
 }
 
+.navbar-socials {
+  gap: 0.4rem;
+}
+
 .navbar-auth-button {
   display: inline-flex;
   align-items: center;
@@ -436,6 +440,10 @@
   font-weight: 600;
   cursor: pointer;
   text-align: left;
+}
+
+.mobile-menu-socials {
+  margin-top: 0.75rem;
 }
 
 @media (max-width: 1200px) {

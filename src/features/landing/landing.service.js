@@ -38,3 +38,11 @@ export const getCommunityProfiles = async (limit = 6) => {
   }
   return { success: true, data: response.data };
 };
+
+export const getLandingContent = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.PUBLIC.LANDING_CONTENT);
+  if (!response.success) {
+    return { success: false, error: response.error || 'Failed to load landing content' };
+  }
+  return { success: true, data: response.data };
+};

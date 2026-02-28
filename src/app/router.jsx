@@ -37,7 +37,13 @@ const StudentResources = React.lazy(() => import('../features/student/StudentRes
 const StudentQuizMaterial = React.lazy(() => import('../features/student/StudentQuizMaterial'));
 const StudentBootcamp = React.lazy(() => import('../features/student/StudentBootcamp'));
 const StudentPayments = React.lazy(() => import('../features/student/StudentPayments'));
-const AdminDashboard = loadDashboard('AdminDashboard');
+const AdminLayout = React.lazy(() => import('../features/dashboards/admin/AdminLayout'));
+const AdminOverview = React.lazy(() => import('../features/dashboards/admin/AdminOverview'));
+const AdminUsers = React.lazy(() => import('../features/dashboards/admin/AdminUsers'));
+const AdminPentests = React.lazy(() => import('../features/dashboards/admin/AdminPentests'));
+const AdminCommunity = React.lazy(() => import('../features/dashboards/admin/AdminCommunity'));
+const AdminOperations = React.lazy(() => import('../features/dashboards/admin/AdminOperations'));
+const AdminContent = React.lazy(() => import('../features/dashboards/admin/AdminContent'));
 const PentesterDashboard = loadDashboard('PentesterDashboard');
 const PentesterEngagements = React.lazy(() =>
   import('../features/dashboards/pentester/PentesterEngagements')
@@ -283,10 +289,17 @@ const AppRouter = () => {
               path="mr-robot"
               element={
                 <RoleRoute allowedRoles={['admin']}>
-                  <AdminDashboard />
+                  <AdminLayout />
                 </RoleRoute>
               }
-            />
+            >
+              <Route index element={<AdminOverview />} />
+              <Route path="community" element={<AdminCommunity />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="pentests" element={<AdminPentests />} />
+              <Route path="content" element={<AdminContent />} />
+              <Route path="operations" element={<AdminOperations />} />
+            </Route>
             <Route
               path="student-dashboard"
               element={
@@ -346,7 +359,7 @@ const AppRouter = () => {
             <Route
               path="settings"
               element={
-                <RoleRoute allowedRoles={['student', 'pentester', 'corporate']}>
+                <RoleRoute allowedRoles={['student', 'pentester', 'corporate', 'admin']}>
                   <AccountSettings />
                 </RoleRoute>
               }

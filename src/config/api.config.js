@@ -201,14 +201,22 @@ export const API_ENDPOINTS = {
     PENTESTS: '/admin/pentests',
     ASSIGN_ENGAGEMENT: '/admin/pentests/:id/assign',
     APPROVE_PAYMENT: '/admin/pentests/:id/approve-payment',
-    CASE_STUDIES: '/admin/case-studies'
+    CASE_STUDIES: '/admin/case-studies',
+    OVERVIEW: '/admin/overview',
+    COMMUNITY_CONFIG: '/admin/community/config',
+    COMMUNITY_MESSAGES: '/admin/community/messages',
+    COMMUNITY_POSTS: '/admin/community/posts',
+    USER_MUTE: '/admin/users/:id/mute',
+    CONTENT: '/admin/content'
   },
 
   // Public
   PUBLIC: {
     LANDING_STATS: '/public/landing-stats',
     SUBSCRIBE: '/public/subscribe',
-    COMMUNITY_PROFILES: '/public/community-profiles'
+    COMMUNITY_PROFILES: '/public/community-profiles',
+    LANDING_CONTENT: '/public/content/landing',
+    BLOG_POSTS: '/public/blog-posts'
   }
 };
 
