@@ -4,6 +4,7 @@ import { ThemeProvider } from './providers';
 import AppRouter from './router';
 import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
 import FloatingUpdateButton from '../shared/components/ui/FloatingUpdateButton';
+import { runSecurityScan } from '../core/security-tests/scan.runner';
 
 // Import global styles
 import '../styles/shared/common.css';
@@ -26,6 +27,15 @@ import '../styles/shared/components/layout/AppShell.css';
  */
 
 const App = () => {
+  React.useEffect(() => {
+    runSecurityScan();
+    const interval = window.setInterval(() => {
+      runSecurityScan();
+    }, 10 * 60 * 1000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
   return (
     <ThemeProvider>
       <AuthProvider>

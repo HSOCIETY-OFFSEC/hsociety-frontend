@@ -311,7 +311,7 @@ export const updateProfile = async (updates) => {
       throw new Error('Invalid email format');
     }
 
-    const response = await apiClient.patch('/auth/profile', updates);
+    const response = await apiClient.put(API_ENDPOINTS.PROFILE.UPDATE, updates);
 
     if (!response.success) {
       return { success: false, message: response.error || 'Profile update failed' };

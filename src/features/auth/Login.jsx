@@ -199,6 +199,7 @@ const Login = ({ mode = 'default' }) => {
                         autoFocus
                         disabled={loading}
                         className="form-input"
+                        autoComplete="username"
                       />
                     </div>
                     <div className="form-group">
@@ -212,6 +213,7 @@ const Login = ({ mode = 'default' }) => {
                         required
                         disabled={loading}
                         className="form-input"
+                        autoComplete="current-password"
                       />
                     </div>
                     <Button

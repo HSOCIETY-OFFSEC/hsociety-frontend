@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { FiCreditCard, FiHash, FiRadio, FiServer, FiSmartphone } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
 import { initializeBootcampPayment, submitBootcampBtcPayment } from '../../dashboards/student/student.service';
+import { PAYMENT_METHODS } from '../../../config/payment-methods.config';
 import '../../../styles/shared/components/billing/PaymentModal.css';
 
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
@@ -11,12 +13,13 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const methodOptions = [
-    { id: 'momo', label: 'MOMO (Mobile Money)', description: 'Pay with Mobile Money' },
-    { id: 'telcel', label: 'TELCEL', description: 'Telcel mobile money' },
-    { id: 'bank', label: 'Bank', description: 'Bank transfer or bank account' },
-    { id: 'btc', label: 'BTC', description: 'Bitcoin transfer' },
-  ];
+  const iconMap = {
+    smartphone: FiSmartphone,
+    radio: FiRadio,
+    sim: FiServer,
+    bank: FiCreditCard,
+    btc: FiHash,
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -71,17 +74,23 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
         <div className="payment-modal-body">
           <form className="payment-modal-form" onSubmit={handleSubmit}>
             <div className="payment-method-grid">
-              {methodOptions.map((option) => (
+              {PAYMENT_METHODS.map((option) => {
+                const Icon = iconMap[option.icon] || FiCreditCard;
+                return (
                 <button
                   key={option.id}
                   type="button"
                   className={`payment-method-card ${method === option.id ? 'active' : ''}`}
                   onClick={() => setMethod(option.id)}
                 >
+                  <span className="payment-method-icon" aria-hidden="true">
+                    <Icon size={16} />
+                  </span>
                   <strong>{option.label}</strong>
                   <span>{option.description}</span>
                 </button>
-              ))}
+                );
+              })}
             </div>
 
             {method === 'btc' && (

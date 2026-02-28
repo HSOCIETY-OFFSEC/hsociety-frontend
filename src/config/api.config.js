@@ -10,6 +10,25 @@
  */
 
 import { envConfig } from './env.config';
+import { ENDPOINT_OVERRIDES } from './endpoints.custom.config';
+
+const deepFreeze = (value) => {
+  if (!value || typeof value !== 'object' || Object.isFrozen(value)) return value;
+  Object.freeze(value);
+  Object.getOwnPropertyNames(value).forEach((key) => deepFreeze(value[key]));
+  return value;
+};
+
+const mergeOverrides = (baseConfig, overrides = {}) => {
+  const merged = { ...baseConfig };
+  Object.keys(overrides || {}).forEach((sectionKey) => {
+    if (!merged[sectionKey] || typeof merged[sectionKey] !== 'object') return;
+    const sectionOverrides = overrides[sectionKey];
+    if (!sectionOverrides || typeof sectionOverrides !== 'object') return;
+    merged[sectionKey] = { ...merged[sectionKey], ...sectionOverrides };
+  });
+  return merged;
+};
 
 /**
  * API Base Configuration
@@ -34,7 +53,7 @@ export const API_CONFIG = {
 /**
  * API Endpoints
  */
-export const API_ENDPOINTS = {
+const DEFAULT_API_ENDPOINTS = {
   // Authentication
   AUTH: {
     LOGIN: '/auth/login',
@@ -207,7 +226,9 @@ export const API_ENDPOINTS = {
     COMMUNITY_MESSAGES: '/admin/community/messages',
     COMMUNITY_POSTS: '/admin/community/posts',
     USER_MUTE: '/admin/users/:id/mute',
-    CONTENT: '/admin/content'
+    CONTENT: '/admin/content',
+    SECURITY_EVENTS: '/admin/security/events',
+    SECURITY_SUMMARY: '/admin/security/summary',
   },
 
   // Public
@@ -216,9 +237,12 @@ export const API_ENDPOINTS = {
     SUBSCRIBE: '/public/subscribe',
     COMMUNITY_PROFILES: '/public/community-profiles',
     LANDING_CONTENT: '/public/content/landing',
-    BLOG_POSTS: '/public/blog-posts'
+    BLOG_POSTS: '/public/blog-posts',
+    SECURITY_EVENT: '/public/security-events',
   }
 };
+
+export const API_ENDPOINTS = deepFreeze(mergeOverrides(DEFAULT_API_ENDPOINTS, ENDPOINT_OVERRIDES));
 
 /**
  * Build endpoint URL with parameters

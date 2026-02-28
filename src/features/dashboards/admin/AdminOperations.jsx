@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiActivity, FiClipboard, FiShield, FiUsers } from 'react-icons/fi';
+import { FiActivity, FiClipboard, FiShield, FiUsers, FiWifi } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
@@ -63,6 +63,17 @@ const AdminOperations = () => {
             <Button variant="primary" size="small" onClick={() => navigate('/mr-robot/content')}>
               <FiClipboard size={14} />
               Open Content Manager
+            </Button>
+          </Card>
+
+          <Card className="admin-card" padding="medium">
+            <div className="admin-section-header">
+              <h2>Security</h2>
+              <p>View IP activity and SOC telemetry.</p>
+            </div>
+            <Button variant="primary" size="small" onClick={() => navigate('/mr-robot/security')}>
+              <FiWifi size={14} />
+              Open Mini SOC
             </Button>
           </Card>
         </div>

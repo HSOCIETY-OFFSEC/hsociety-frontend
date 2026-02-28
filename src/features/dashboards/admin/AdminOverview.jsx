@@ -174,6 +174,9 @@ const AdminOverview = () => {
             <Button variant="secondary" size="small" onClick={() => navigate('/mr-robot/pentests')}>
               Pentests
             </Button>
+            <Button variant="secondary" size="small" onClick={() => navigate('/mr-robot/security')}>
+              Security
+            </Button>
           </div>
         </Card>
       </div>

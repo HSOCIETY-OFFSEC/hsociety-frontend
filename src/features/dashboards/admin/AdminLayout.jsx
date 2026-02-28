@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { FiActivity, FiClipboard, FiHome, FiSettings, FiShield, FiUsers } from 'react-icons/fi';
+import { FiActivity, FiClipboard, FiHome, FiSettings, FiShield, FiUsers, FiWifi } from 'react-icons/fi';
 import '../../../styles/dashboards/admin/index.css';
 
 const navItems = [
@@ -8,6 +8,7 @@ const navItems = [
   { to: '/mr-robot/community', label: 'Manage Community', icon: FiActivity },
   { to: '/mr-robot/users', label: 'Manage Users', icon: FiUsers },
   { to: '/mr-robot/pentests', label: 'Manage Pentests', icon: FiShield },
+  { to: '/mr-robot/security', label: 'Security (Mini SOC)', icon: FiWifi },
   { to: '/mr-robot/content', label: 'Manage Content', icon: FiClipboard },
   { to: '/mr-robot/operations', label: 'Management Hub', icon: FiClipboard },
   { to: '/settings', label: 'Account Settings', icon: FiSettings },

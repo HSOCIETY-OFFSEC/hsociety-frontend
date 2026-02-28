@@ -136,6 +136,18 @@ export const updateAdminContent = async (payload) => {
   return { success: false, error: response.error || 'Failed to update content' };
 };
 
+export const getSecurityEvents = async (limit = 120) => {
+  const response = await apiClient.get(`${API_ENDPOINTS.ADMIN.SECURITY_EVENTS}?limit=${limit}`);
+  if (response.success) return { success: true, data: response.data || { items: [], total: 0 } };
+  return { success: false, error: response.error || 'Failed to load security events' };
+};
+
+export const getSecuritySummary = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.ADMIN.SECURITY_SUMMARY);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to load security summary' };
+};
+
 export default {
   getUsers,
   updateUser,
@@ -157,4 +169,6 @@ export default {
   muteUser,
   getAdminContent,
   updateAdminContent,
+  getSecurityEvents,
+  getSecuritySummary,
 };

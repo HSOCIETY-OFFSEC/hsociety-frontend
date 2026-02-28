@@ -93,6 +93,17 @@
   font-size: 0.85rem;
 }
 
+.payment-method-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--primary-color, #16a34a) 18%, transparent);
+  color: var(--text-primary);
+}
+
 .payment-method-card strong {
   color: var(--text-primary);
   font-size: 0.95rem;

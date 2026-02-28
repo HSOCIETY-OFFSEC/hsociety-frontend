@@ -23,6 +23,7 @@ const Reports = React.lazy(() => import('../features/corporate/reports/Reports')
 const Remediation = React.lazy(() => import('../features/corporate/remediation/Remediation'));
 const Assets = React.lazy(() => import('../features/corporate/assets/Assets'));
 const Billing = React.lazy(() => import('../features/corporate/billing/Billing'));
+const CorporatePentest = React.lazy(() => import('../features/corporate/pentest/Pentest'));
 const Landing = React.lazy(() => import('../features/landing/Landing'));
 const Services = React.lazy(() => import('../features/services/Services'));
 const About = React.lazy(() => import('../features/about/About'));
@@ -44,6 +45,7 @@ const AdminPentests = React.lazy(() => import('../features/dashboards/admin/Admi
 const AdminCommunity = React.lazy(() => import('../features/dashboards/admin/AdminCommunity'));
 const AdminOperations = React.lazy(() => import('../features/dashboards/admin/AdminOperations'));
 const AdminContent = React.lazy(() => import('../features/dashboards/admin/AdminContent'));
+const AdminSecurity = React.lazy(() => import('../features/dashboards/admin/AdminSecurity'));
 const PentesterDashboard = loadDashboard('PentesterDashboard');
 const PentesterEngagements = React.lazy(() =>
   import('../features/dashboards/pentester/PentesterEngagements')
@@ -238,6 +240,14 @@ const AppRouter = () => {
               }
             />
             <Route
+              path="corporate/pentest"
+              element={
+                <RoleRoute allowedRoles={['corporate']}>
+                  <CorporatePentest />
+                </RoleRoute>
+              }
+            />
+            <Route
               path="pentest"
               element={
                 <RoleRoute allowedRoles={['pentester']}>
@@ -299,6 +309,7 @@ const AppRouter = () => {
               <Route path="pentests" element={<AdminPentests />} />
               <Route path="content" element={<AdminContent />} />
               <Route path="operations" element={<AdminOperations />} />
+              <Route path="security" element={<AdminSecurity />} />
             </Route>
             <Route
               path="student-dashboard"

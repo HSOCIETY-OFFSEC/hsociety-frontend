@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { sessionManager } from './session.manager';
 import { setupAutoLogout } from '../inactivity/autoLogout';
 import { refreshToken as refreshAuthToken, logout as logoutRequest } from './auth.service';
+import { envConfig } from '../../config/env.config';
+import { trackSecurityEvent } from '../security-tests/security-events.service';
 
 /**
  * Authentication Context
@@ -75,12 +77,16 @@ export const AuthProvider = ({ children }) => {
 
     // Setup new auto logout monitor
     const cleanup = setupAutoLogout({
-      timeout: 15 * 60 * 1000, // 15 minutes (TODO: Make configurable)
+      timeout: envConfig.auth.inactivityTimeout,
       onTimeout: async () => {
         console.log('Session timed out due to inactivity');
+        trackSecurityEvent({
+          eventType: 'session_timeout',
+          action: 'auto_logout',
+        });
         await logout(true);
       },
-      events: ['mousedown', 'keydown', 'scroll', 'touchstart', 'click']
+      events: ['mousedown', 'keydown', 'scroll', 'touchstart', 'click', 'mousemove']
     });
 
     setAutoLogoutCleanup(() => cleanup);
@@ -109,6 +115,11 @@ export const AuthProvider = ({ children }) => {
 
       // Setup auto logout monitoring
       setupInactivityMonitor();
+      trackSecurityEvent({
+        eventType: 'auth_activity',
+        action: 'login_success',
+        path: typeof window !== 'undefined' ? window.location.pathname : '',
+      });
 
       return { success: true };
     } catch (error) {
@@ -143,6 +154,12 @@ export const AuthProvider = ({ children }) => {
         // Store message for login page to display
         sessionStorage.setItem('logout-reason', 'inactivity');
       }
+
+      trackSecurityEvent({
+        eventType: 'auth_activity',
+        action: isAutoLogout ? 'logout_inactivity' : 'logout_manual',
+        path: typeof window !== 'undefined' ? window.location.pathname : '',
+      });
 
       // Redirect to login
       if (typeof window !== 'undefined') {

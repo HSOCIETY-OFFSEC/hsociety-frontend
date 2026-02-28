@@ -37,6 +37,7 @@ const WorkspaceLayout = () => {
       { path: '/remediation', title: 'Remediation' },
       { path: '/assets', title: 'Assets' },
       { path: '/billing', title: 'Billing' },
+      { path: '/corporate/pentest', title: 'Request Pentest' },
       { path: '/pentester/engagements', title: 'Engagements' },
       { path: '/pentester/reports', title: 'Reports' },
       { path: '/pentester/profiles', title: 'Pentester Profiles' },
@@ -104,14 +105,14 @@ const WorkspaceLayout = () => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [communityMenuOpen]);
 
+  const showSidebar = !isCommunity && role !== 'admin';
   return (
     <div
-      className={`workspace-layout app-shell ${sidebarOpen ? 'sidebar-open' : ''} ${isCommunity ? 'no-sidebar' : ''}`}
+      className={`workspace-layout app-shell ${sidebarOpen ? 'sidebar-open' : ''} ${showSidebar ? '' : 'no-sidebar'}`}
     >
-      {!isCommunity && <Sidebar />}
+      {showSidebar && <Sidebar />}
 
-      {!isCommunity && (
-        <header className="workspace-topbar">
+      <header className="workspace-topbar">
           <div className="workspace-topbar-content">
             <div className="workspace-topbar-left">
               <button
@@ -278,7 +279,6 @@ const WorkspaceLayout = () => {
             </div>
           </div>
         </header>
-      )}
 
       {!isCommunity && (
         <>
