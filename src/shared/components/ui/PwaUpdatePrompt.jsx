@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { registerSW } from 'virtual:pwa-register';
 import Button from './Button';
 import '../../../styles/shared/components/ui/PwaUpdatePrompt.css';
@@ -12,19 +12,27 @@ import '../../../styles/shared/components/ui/PwaUpdatePrompt.css';
 
 const PwaUpdatePrompt = () => {
   const [needRefresh, setNeedRefresh] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
   const updateSWRef = useRef(null);
   const registrationRef = useRef(null);
+
+  const checkForUpdates = useCallback(async () => {
+    setIsChecking(true);
+    try {
+      if (registrationRef.current) {
+        await registrationRef.current.update();
+        return true;
+      }
+      return false;
+    } finally {
+      setIsChecking(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
 
     let updateIntervalId = null;
-
-    const checkForUpdates = () => {
-      if (registrationRef.current) {
-        registrationRef.current.update();
-      }
-    };
 
     updateSWRef.current = registerSW({
       immediate: true,
@@ -53,7 +61,17 @@ const PwaUpdatePrompt = () => {
         window.clearInterval(updateIntervalId);
       }
     };
-  }, []);
+  }, [checkForUpdates]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    window.__hsocietyCheckForUpdates = checkForUpdates;
+    window.__hsocietyIsCheckingUpdates = () => isChecking;
+    return () => {
+      delete window.__hsocietyCheckForUpdates;
+      delete window.__hsocietyIsCheckingUpdates;
+    };
+  }, [checkForUpdates, isChecking]);
 
   const handleUpdate = () => {
     if (updateSWRef.current) {
