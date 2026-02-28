@@ -5,25 +5,11 @@ import {
   FiArrowRight,
   FiTerminal
 } from 'react-icons/fi';
-import {
-  FaGithub,
-  FaLinkedinIn,
-  FaWhatsapp,
-  FaXTwitter,
-  FaYoutube
-} from 'react-icons/fa6';
+import { getSocialLinks } from '../../../config/social.config';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import '../../../styles/landing/hero.css';
-
-const SOCIAL_LINKS = [
-  { href: '#youtube', label: 'YouTube', icon: FaYoutube },
-  { href: '#x', label: 'X', icon: FaXTwitter },
-  { href: '#github', label: 'GitHub', icon: FaGithub },
-  { href: '#linkedin', label: 'LinkedIn', icon: FaLinkedinIn },
-  { href: '#whatsapp', label: 'WhatsApp', icon: FaWhatsapp }
-];
 
 /**
  * Splits a string into individual animated word spans.
@@ -111,12 +97,12 @@ const HeroSection = ({ content }) => {
             ))}
           </div>
 
-          <div className="hero-socials">
-            {SOCIAL_LINKS.map((link) => {
+        <div className="hero-socials">
+            {getSocialLinks().map((link) => {
               const Icon = link.icon;
               return (
                 <a
-                  key={link.label}
+                  key={link.key}
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"

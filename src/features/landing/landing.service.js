@@ -30,3 +30,11 @@ export const subscribeNewsletter = async (payload = {}) => {
     data: response.data
   };
 };
+
+export const getCommunityProfiles = async (limit = 6) => {
+  const response = await apiClient.get(`${API_ENDPOINTS.PUBLIC.COMMUNITY_PROFILES}?limit=${limit}`);
+  if (!response.success) {
+    return { success: false, error: response.error || 'Failed to load community profiles' };
+  }
+  return { success: true, data: response.data };
+};

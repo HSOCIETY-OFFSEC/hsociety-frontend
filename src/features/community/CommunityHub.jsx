@@ -100,7 +100,31 @@ const CommunityHub = () => {
       setMessages((prev) =>
         prev.map((item) =>
           item.id === payload.messageId
-            ? { ...item, comments: [...(item.comments || []), payload.comment] }
+            ? {
+                ...item,
+                comments: (() => {
+                  const existing = item.comments || [];
+                  const incoming = payload.comment;
+                  if (existing.some((c) => c.id && c.id === incoming.id)) return existing;
+
+                  // Replace optimistic comment if it matches current user + content.
+                  if (incoming.userId && incoming.content) {
+                    const tempIndex = existing.findIndex(
+                      (c) =>
+                        String(c.id || '').startsWith('temp-') &&
+                        c.userId === incoming.userId &&
+                        c.content === incoming.content
+                    );
+                    if (tempIndex >= 0) {
+                      const next = [...existing];
+                      next[tempIndex] = incoming;
+                      return next;
+                    }
+                  }
+
+                  return [...existing, incoming];
+                })(),
+              }
             : item
         )
       );
@@ -196,6 +220,8 @@ const CommunityHub = () => {
   }, [activeChannels, room]);
 
   const isOwn = (msg) => msg.userId === user?.id || msg.username === user?.username;
+  const currentUserId = user?.id;
+  const currentUsername = user?.name || user?.username || 'You';
   const currentUserAvatar = getUserAvatar(user);
   const currentUserAvatarFallback = getGithubAvatarDataUri(
     user?.email || user?.name || user?.username || 'user'
@@ -228,11 +254,9 @@ const CommunityHub = () => {
           error={error}
           isOwn={isOwn}
           containerRef={scrollRef}
-          onLike={(messageId) => socketRef.current?.emit('likeMessage', { messageId })}
-          onAddComment={(messageId, content) =>
-            socketRef.current?.emit('addComment', { messageId, content })
-          }
-          currentUserId={user?.id}
+          onLike={handleLike}
+          onAddComment={handleAddComment}
+          currentUserId={currentUserId}
         />
 
         {user && (
@@ -354,3 +378,44 @@ const CommunityHub = () => {
 };
 
 export default CommunityHub;
+  const handleLike = (messageId) => {
+    if (!messageId) return;
+    if (currentUserId) {
+      setMessages((prev) =>
+        prev.map((item) => {
+          if (item.id !== messageId) return item;
+          const likedBy = Array.isArray(item.likedBy) ? [...item.likedBy] : [];
+          const alreadyLiked = likedBy.includes(currentUserId);
+          const nextLikedBy = alreadyLiked
+            ? likedBy.filter((id) => id !== currentUserId)
+            : [...likedBy, currentUserId];
+          const nextLikes = Math.max(0, Number(item.likes || 0) + (alreadyLiked ? -1 : 1));
+          return { ...item, likes: nextLikes, likedBy: nextLikedBy };
+        })
+      );
+    }
+
+    socketRef.current?.emit('likeMessage', { messageId });
+  };
+
+  const handleAddComment = (messageId, content) => {
+    if (!messageId || !content) return;
+    if (currentUserId) {
+      const tempComment = {
+        id: `temp-${Date.now()}`,
+        userId: currentUserId,
+        username: currentUsername,
+        content,
+        createdAt: new Date().toISOString(),
+      };
+      setMessages((prev) =>
+        prev.map((item) =>
+          item.id === messageId
+            ? { ...item, comments: [...(item.comments || []), tempComment] }
+            : item
+        )
+      );
+    }
+
+    socketRef.current?.emit('addComment', { messageId, content });
+  };

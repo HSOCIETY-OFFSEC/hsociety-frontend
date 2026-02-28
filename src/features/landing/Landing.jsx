@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
-import { getLandingStats } from './landing.service';
+import { getCommunityProfiles, getLandingStats } from './landing.service';
 import {
   HeroSection,
   StatsSection,
@@ -12,6 +12,7 @@ import {
   DeliverablesSection,
   ModulesSection,
   TrustSection,
+  CommunityProfilesSection,
   PathwaysSection,
   CycleSection,
   CtaSection,
@@ -43,6 +44,10 @@ import {
 import terminalWallpaper from '../../assets/brand-images/terminalwallpaper.png';
 import greenBinaryWallpaper from '../../assets/backgrounds/greenbinarywallaper.png';
 import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.png';
+import handsOnLearningImage from '../../assets/why-choos-hsociety-images/hands-on-learning.png';
+import communityEngagementsImage from '../../assets/why-choos-hsociety-images/community-engagments.png';
+import supervisedPentestsImage from '../../assets/why-choos-hsociety-images/supervised-pentests.png';
+import careerReadyPathwayImage from '../../assets/why-choos-hsociety-images/career-ready-pathway.png';
 
 import '../../styles/landing/index.css';
 
@@ -50,6 +55,7 @@ const Landing = ({ scrollToId = null }) => {
   useScrollReveal();
   const location = useLocation();
   const [statsData, setStatsData] = useState(null);
+  const [communityProfiles, setCommunityProfiles] = useState([]);
 
   const iconMap = {
     FiShield,
@@ -74,6 +80,13 @@ const Landing = ({ scrollToId = null }) => {
     hacker: hackerLaptop
   };
 
+  const whyImageMap = {
+    'Hands-On Learning': handsOnLearningImage,
+    'Community & Collaboration': communityEngagementsImage,
+    'Real Engagements': supervisedPentestsImage,
+    'Career-Ready Pathway': careerReadyPathwayImage
+  };
+
   const services = landingContent.services.map((item) => ({
     ...item,
     icon: iconMap[item.icon],
@@ -82,7 +95,8 @@ const Landing = ({ scrollToId = null }) => {
 
   const whyChooseUs = landingContent.why.map((item) => ({
     ...item,
-    icon: iconMap[item.icon]
+    icon: iconMap[item.icon],
+    image: whyImageMap[item.title] || item.image
   }));
 
   const engagementSteps = landingContent.process.map((item) => ({
@@ -108,11 +122,17 @@ const Landing = ({ scrollToId = null }) => {
     let isMounted = true;
 
     const loadStats = async () => {
-      const response = await getLandingStats();
+      const [statsResponse, profilesResponse] = await Promise.all([
+        getLandingStats(),
+        getCommunityProfiles(6)
+      ]);
       if (!isMounted) return;
 
-      if (response.success) {
-        setStatsData(response.data);
+      if (statsResponse.success) {
+        setStatsData(statsResponse.data);
+      }
+      if (profilesResponse.success) {
+        setCommunityProfiles(profilesResponse.data?.profiles || []);
       }
     };
 
@@ -189,6 +209,12 @@ const Landing = ({ scrollToId = null }) => {
     };
   }, [statsData]);
 
+  const profileFallbacks = landingContent.communityProfiles?.profiles || [];
+  const profileContent = useMemo(() => {
+    if (communityProfiles.length) return communityProfiles;
+    return profileFallbacks;
+  }, [communityProfiles, profileFallbacks]);
+
   return (
   <div className="landing-page">
     {/* 1. Hook */}
@@ -206,6 +232,16 @@ const Landing = ({ scrollToId = null }) => {
 
     {/* 5. How it works (reduce friction) */}
     <ProcessSection steps={engagementSteps} />
+
+    {/* 6. Community proof */}
+    <CommunityProfilesSection
+      title={landingContent.communityProfiles?.title || 'Community wins in the open'}
+      subtitle={
+        landingContent.communityProfiles?.subtitle ||
+        'Meet offensive learners already sharing findings, feedback, and collaboration.'
+      }
+      profiles={profileContent}
+    />
 
     {/* 6. What they get at the end */}
     <DeliverablesSection deliverables={deliverables} />

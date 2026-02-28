@@ -52,6 +52,7 @@ const PentesterProfiles = React.lazy(() =>
   import('../features/dashboards/pentester/PentesterProfiles')
 );
 const CommunityHub = React.lazy(() => import('../features/community/CommunityHub'));
+const CommunityProfile = React.lazy(() => import('../features/community/CommunityProfile'));
 const AccountSettings = React.lazy(() => import('../features/account/AccountSettings'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
@@ -164,6 +165,14 @@ const AppRouter = () => {
             element={
               <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
                 <CommunityHub />
+              </RoleRoute>
+            }
+          />
+          <Route
+            path="community/profile/:handle"
+            element={
+              <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                <CommunityProfile />
               </RoleRoute>
             }
           />

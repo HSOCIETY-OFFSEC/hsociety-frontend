@@ -172,7 +172,8 @@ export const API_ENDPOINTS = {
     POST_SAVE: '/community/posts/:id/save',
     CHANNELS: '/community/channels',
     TAGS: '/community/tags',
-    UPLOAD: '/community/uploads'
+    UPLOAD: '/community/uploads',
+    PROFILE: '/community/profile/:handle'
   },
 
   // File Upload
@@ -206,7 +207,8 @@ export const API_ENDPOINTS = {
   // Public
   PUBLIC: {
     LANDING_STATS: '/public/landing-stats',
-    SUBSCRIBE: '/public/subscribe'
+    SUBSCRIBE: '/public/subscribe',
+    COMMUNITY_PROFILES: '/public/community-profiles'
   }
 };
 

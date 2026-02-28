@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FiHeart, FiMessageSquare, FiSend } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
 
 const CommunityMessage = ({
@@ -14,9 +15,16 @@ const CommunityMessage = ({
   const avatarSrc = getMessageAvatar(message);
   const [commentOpen, setCommentOpen] = useState(false);
   const [commentDraft, setCommentDraft] = useState('');
+  const navigate = useNavigate();
   const likes = Number(message?.likes || 0);
   const comments = message?.comments || [];
   const liked = currentUserId ? message?.likedBy?.includes(currentUserId) : false;
+  const profileTarget = message?.hackerHandle || message?.userId || '';
+
+  const handleOpenProfile = () => {
+    if (!profileTarget) return;
+    navigate(`/community/profile/${encodeURIComponent(profileTarget)}`);
+  };
 
   const handleSubmitComment = () => {
     const content = commentDraft.trim();
@@ -30,7 +38,12 @@ const CommunityMessage = ({
       className={`community-message ${own ? 'own' : ''} ${grouped ? 'grouped' : ''}`}
     >
       {!grouped ? (
-        <div className="community-msg-avatar" aria-hidden="true">
+        <button
+          type="button"
+          className="community-msg-avatar"
+          onClick={handleOpenProfile}
+          aria-label={`Open ${authorName} profile`}
+        >
           <img
             src={avatarSrc}
             alt={`${authorName} avatar`}
@@ -38,7 +51,7 @@ const CommunityMessage = ({
               e.currentTarget.src = getMessageAvatar({ username: authorName });
             }}
           />
-        </div>
+        </button>
       ) : (
         <div className="community-msg-avatar-spacer" aria-hidden="true" />
       )}
@@ -46,7 +59,18 @@ const CommunityMessage = ({
       <div className="community-msg-body">
         {!grouped && (
           <div className="community-msg-meta">
-            <span className="community-msg-author">{authorName}</span>
+            <button
+              type="button"
+              className="community-msg-author"
+              onClick={handleOpenProfile}
+              aria-label={`Open ${authorName} profile`}
+            >
+              {authorName}
+            </button>
+            {message?.hackerHandle && (
+              <span className="community-msg-handle">@{message.hackerHandle}</span>
+            )}
+            {message?.userRole && <span className="community-msg-role">{message.userRole}</span>}
             <time
               className="community-msg-time"
               dateTime={message?.createdAt}

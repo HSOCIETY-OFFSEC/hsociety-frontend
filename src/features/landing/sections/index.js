@@ -11,3 +11,4 @@ export { default as CycleSection } from './CycleSection';
 export { default as CtaSection } from './CtaSection';
 export { default as FaqSection } from './FaqSection';
 export { default as FooterSection } from './FooterSection';
+export { default as CommunityProfilesSection } from './CommunityProfilesSection';

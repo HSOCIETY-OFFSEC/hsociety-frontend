@@ -14,7 +14,7 @@ import {
   FiUsers,
   FiZap
 } from 'react-icons/fi';
-import { FaGithub, FaLinkedinIn, FaWhatsapp, FaXTwitter, FaYoutube } from 'react-icons/fa6';
+import { getSocialLinks } from '../../../config/social.config';
 import Logo from '../../../shared/components/common/Logo';
 import landingContent from '../../../data/landing.json';
 import { slugify } from '../../../shared/utils/slugify';
@@ -197,21 +197,14 @@ const FooterSection = () => {
         <p>© 2026 HSOCIETY. All rights reserved.</p>
         <p>Train Like A Hacker. Prepare For Hackers</p>
         <div className="footer-socials">
-          <a href="#youtube" aria-label="YouTube">
-            <FaYoutube size={18} />
-          </a>
-          <a href="#x" aria-label="X">
-            <FaXTwitter size={18} />
-          </a>
-          <a href="#github" aria-label="GitHub">
-            <FaGithub size={18} />
-          </a>
-          <a href="#linkedin" aria-label="LinkedIn">
-            <FaLinkedinIn size={18} />
-          </a>
-          <a href="#whatsapp" aria-label="WhatsApp">
-            <FaWhatsapp size={18} />
-          </a>
+          {getSocialLinks().map((link) => {
+            const Icon = link.icon;
+            return (
+              <a key={link.key} href={link.href} aria-label={link.label} target="_blank" rel="noreferrer">
+                <Icon size={18} />
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>
