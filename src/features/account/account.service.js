@@ -28,8 +28,17 @@ export const updateAvatar = async (avatarUrl) => {
   return { success: false, error: response.error || 'Failed to update avatar' };
 };
 
+export const removeAvatar = async () => {
+  const response = await apiClient.delete(API_ENDPOINTS.PROFILE.AVATAR);
+  if (response.success) {
+    return { success: true, data: response.data };
+  }
+  return { success: false, error: response.error || 'Failed to remove avatar' };
+};
+
 export default {
   deleteAccount,
   updateProfile,
   updateAvatar,
+  removeAvatar,
 };

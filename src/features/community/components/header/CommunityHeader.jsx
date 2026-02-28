@@ -1,11 +1,13 @@
 import React from 'react';
-import { FiHash, FiMessageSquare, FiUsers } from 'react-icons/fi';
+import { FiHash, FiMenu, FiMessageSquare, FiUsers, FiX } from 'react-icons/fi';
 
 const CommunityHeader = ({
   activeChannels = [],
   room,
   onRoomChange,
   overviewStats,
+  mobileNavOpen = false,
+  onToggleMobileNav,
 }) => {
   const learners = Number(overviewStats?.learners || 0).toLocaleString();
   const posts = Number(overviewStats?.questions || 0).toLocaleString();
@@ -13,6 +15,16 @@ const CommunityHeader = ({
   return (
     <header className="community-header">
       <div className="community-header-top">
+        <button
+          type="button"
+          className="community-feed-menu-btn"
+          onClick={onToggleMobileNav}
+          aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={mobileNavOpen}
+        >
+          {mobileNavOpen ? <FiX size={16} aria-hidden="true" /> : <FiMenu size={16} aria-hidden="true" />}
+        </button>
+
         <div className="community-header-title">
           <div>
             <p className="community-header-kicker">HSOCIETY</p>

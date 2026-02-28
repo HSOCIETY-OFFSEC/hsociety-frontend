@@ -171,16 +171,25 @@
   .community-header {
     padding: 0.7rem 0.9rem 0.6rem;
   }
-}
 
-@media (max-width: 600px) {
-  /* Hide user chip on small screens — shown in sidebar */
-  .community-header-user {
-    display: none;
+  .community-header-title h1 {
+    font-size: 1rem;
   }
 
   .community-header-meta {
-    gap: 0.5rem;
+    margin-left: auto;
+    gap: 0.45rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .community-header-meta {
+    display: none;
+  }
+
+  /* Hide user chip on small screens — shown in sidebar */
+  .community-header-user {
+    display: none;
   }
 
   .community-header-stat {

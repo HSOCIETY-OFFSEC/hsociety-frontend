@@ -17,22 +17,55 @@
 }
 
 .community-sidebar-brand {
-  padding: 1.25rem 1.25rem 0.75rem;
+  padding: 1.1rem 1rem 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.community-sidebar-brand-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 }
 
 .community-sidebar-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--primary-color, #00ff99) 30%, var(--bg-secondary));
+  min-height: 0;
+}
+
+.community-sidebar-logo .logo-image {
+  height: 32px !important;
+  width: auto !important;
+}
+
+.community-sidebar-brand-name {
+  font-size: 0.82rem;
+  letter-spacing: 0.08rem;
+  font-weight: 800;
   color: var(--text-primary);
-  display: flex;
+}
+
+.community-sidebar-close-btn {
+  display: none;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   border: 1px solid var(--border-color);
-  font-size: 1rem;
-  flex-shrink: 0;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.community-sidebar-close-btn:hover {
+  color: var(--text-primary);
 }
 
 .community-sidebar-section {
@@ -97,26 +130,31 @@
 
 @media (max-width: 768px) {
   .community-sidebar {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 15;
-    overflow-x: auto;
-    overflow-y: hidden;
-    flex-wrap: nowrap;
+    left: 0;
+    bottom: 0;
+    width: min(86vw, 320px);
+    background: var(--bg-primary);
+    z-index: 40;
+    border-right: 1px solid var(--border-color);
+    transform: translateX(-105%);
+    transition: transform 0.2s ease;
+    box-shadow: var(--shadow-lg);
+    pointer-events: none;
   }
 
-  .community-sidebar-brand {
-    padding: 0;
+  .community-sidebar.open {
+    transform: translateX(0);
+    pointer-events: auto;
   }
 
   .community-sidebar-section {
-    padding: 0;
+    padding: 0.35rem 0.9rem 0.9rem;
+  }
+
+  .community-sidebar-close-btn {
+    display: inline-flex;
   }
 
   .community-sidebar-section-title {
@@ -124,14 +162,12 @@
   }
 
   .community-sidebar-links {
-    flex-direction: row;
-    gap: 0.35rem;
-    flex-wrap: nowrap;
+    flex-direction: column;
+    gap: 0.25rem;
   }
 
   .community-sidebar-link {
-    padding: 0.45rem 0.65rem;
-    font-size: 0.82rem;
-    white-space: nowrap;
+    padding: 0.58rem 0.75rem;
+    font-size: 0.86rem;
   }
 }

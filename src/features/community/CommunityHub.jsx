@@ -10,6 +10,8 @@ import CommunityHeader from './components/header/CommunityHeader';
 import CommunityMessageList from './components/messages/CommunityMessageList';
 import CommunityCompose from './components/compose/CommunityCompose';
 import CommunitySidebar from './components/sidebar/CommunitySidebar';
+import { getUserAvatar } from './utils/community.utils';
+import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import '../../styles/sections/community/base.css';
 import '../../styles/sections/community/header.css';
 import '../../styles/sections/community/messages.css';
@@ -24,6 +26,7 @@ const CommunityHub = () => {
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
   const [connected, setConnected] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
   const location = useLocation();
@@ -122,6 +125,10 @@ const CommunityHub = () => {
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [location.hash]);
 
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [location.pathname, room]);
+
   /* ── Send ── */
   const sendMessage = () => {
     const content = draft.trim();
@@ -145,6 +152,10 @@ const CommunityHub = () => {
       ];
 
   const isOwn = (msg) => msg.userId === user?.id || msg.username === user?.username;
+  const currentUserAvatar = getUserAvatar(user);
+  const currentUserAvatarFallback = getGithubAvatarDataUri(
+    user?.email || user?.name || user?.username || 'user'
+  );
 
   return (
     <div className="community-root">
@@ -152,6 +163,8 @@ const CommunityHub = () => {
       {/* ── Left Sidebar / Mobile Top Nav ── */}
       <CommunitySidebar
         role={role}
+        mobileOpen={mobileNavOpen}
+        onCloseMobileNav={() => setMobileNavOpen(false)}
       />
 
       {/* ── Main feed column ── */}
@@ -161,6 +174,8 @@ const CommunityHub = () => {
           room={room}
           onRoomChange={handleRoomChange}
           overviewStats={overview.stats}
+          mobileNavOpen={mobileNavOpen}
+          onToggleMobileNav={() => setMobileNavOpen((prev) => !prev)}
         />
 
         <CommunityMessageList
@@ -170,6 +185,33 @@ const CommunityHub = () => {
           isOwn={isOwn}
           containerRef={scrollRef}
         />
+
+        {user && (
+          <button
+            type="button"
+            className="community-aside-user community-aside-user-mobile"
+            onClick={() => navigate('/settings')}
+            aria-label="Open account settings"
+          >
+            <img
+              src={currentUserAvatar}
+              alt={user?.username || 'User'}
+              className="community-aside-user-avatar"
+              onError={(e) => {
+                if (e.currentTarget.src !== currentUserAvatarFallback) {
+                  e.currentTarget.src = currentUserAvatarFallback;
+                }
+              }}
+            />
+            <div className="community-aside-user-info">
+              <span className="community-aside-user-name">
+                {user?.name || user?.username || 'User'}
+              </span>
+              <span className="community-aside-user-role">{role}</span>
+            </div>
+            <span className={`community-status-dot ${connected ? 'online' : 'offline'}`} />
+          </button>
+        )}
 
         <CommunityCompose
           user={user}
@@ -225,16 +267,14 @@ const CommunityHub = () => {
             aria-label="Open account settings"
           >
             <img
-              src={
-                user?.avatarUrl ||
-                user?.photoUrl ||
-                `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(
-                  user?.username || user?.email || 'u'
-                )}`
-              }
+              src={currentUserAvatar}
               alt={user?.username || 'User'}
               className="community-aside-user-avatar"
-              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              onError={(e) => {
+                if (e.currentTarget.src !== currentUserAvatarFallback) {
+                  e.currentTarget.src = currentUserAvatarFallback;
+                }
+              }}
             />
             <div className="community-aside-user-info">
               <span className="community-aside-user-name">
@@ -246,6 +286,15 @@ const CommunityHub = () => {
           </button>
         )}
       </aside>
+
+      {mobileNavOpen && (
+        <button
+          type="button"
+          className="community-mobile-nav-overlay"
+          onClick={() => setMobileNavOpen(false)}
+          aria-label="Close community navigation"
+        />
+      )}
 
     </div>
   );

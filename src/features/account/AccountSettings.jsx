@@ -4,7 +4,7 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
-import { deleteAccount, updateAvatar, updateProfile } from './account.service';
+import { deleteAccount, removeAvatar, updateAvatar, updateProfile } from './account.service';
 import '../../styles/sections/account/index.css';
 
 const AccountSettings = () => {
@@ -14,6 +14,7 @@ const AccountSettings = () => {
   const [error, setError] = useState('');
   const [profileSaving, setProfileSaving] = useState(false);
   const [avatarSaving, setAvatarSaving] = useState(false);
+  const [avatarRemoving, setAvatarRemoving] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatarUrl || '');
   const [avatarFileName, setAvatarFileName] = useState('');
   const [profile, setProfile] = useState({
@@ -67,6 +68,20 @@ const AccountSettings = () => {
       setError(response.error || 'Failed to update avatar');
     }
     setAvatarSaving(false);
+  };
+
+  const handleAvatarRemove = async () => {
+    setError('');
+    setAvatarRemoving(true);
+    const response = await removeAvatar();
+    if (response.success) {
+      updateUser(response.data);
+      setAvatarPreview('');
+      setAvatarFileName('');
+    } else {
+      setError(response.error || 'Failed to remove avatar');
+    }
+    setAvatarRemoving(false);
   };
 
   const handleDelete = async () => {
@@ -126,6 +141,14 @@ const AccountSettings = () => {
                 disabled={avatarSaving || !avatarPreview}
               >
                 {avatarSaving ? 'Saving...' : 'Save Photo'}
+              </Button>
+              <Button
+                variant="ghost"
+                size="small"
+                onClick={handleAvatarRemove}
+                disabled={avatarRemoving || (!avatarPreview && !user?.avatarUrl)}
+              >
+                {avatarRemoving ? 'Removing...' : 'Remove Photo'}
               </Button>
             </div>
           </div>

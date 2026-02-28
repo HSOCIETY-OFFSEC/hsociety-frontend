@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiUsers } from 'react-icons/fi';
+import { FiUsers, FiX } from 'react-icons/fi';
 import { getSidebarLinks } from '../../../../config/navigation.config';
+import Logo from '../../../../shared/components/common/Logo';
 import '../../../../styles/sections/community/sidebar.css';
 
 const CommunitySidebar = ({
   role,
+  mobileOpen = false,
+  onCloseMobileNav = () => {},
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,7 +37,10 @@ const CommunitySidebar = ({
       key={link.path}
       type="button"
       className={`community-sidebar-link ${isActive(link.path) ? 'active' : ''}`}
-      onClick={() => navigate(link.path)}
+      onClick={() => {
+        navigate(link.path);
+        onCloseMobileNav();
+      }}
     >
       <span className="community-sidebar-link-icon">
         <link.icon size={16} />
@@ -44,9 +50,28 @@ const CommunitySidebar = ({
   );
 
   return (
-    <aside className="community-sidebar" aria-label="Community navigation">
-      <div className="community-sidebar-brand" aria-hidden="true">
-        <div className="community-sidebar-logo">H</div>
+    <aside className={`community-sidebar ${mobileOpen ? 'open' : ''}`} aria-label="Community navigation">
+      <div className="community-sidebar-brand">
+        <button
+          type="button"
+          className="community-sidebar-brand-btn"
+          onClick={() => {
+            navigate('/community');
+            onCloseMobileNav();
+          }}
+          aria-label="Go to community home"
+        >
+          <Logo size="small" className="community-sidebar-logo" />
+          <span className="community-sidebar-brand-name">HSOCIETY</span>
+        </button>
+        <button
+          type="button"
+          className="community-sidebar-close-btn"
+          onClick={onCloseMobileNav}
+          aria-label="Close navigation"
+        >
+          <FiX size={16} aria-hidden="true" />
+        </button>
       </div>
 
       <div className="community-sidebar-section">
