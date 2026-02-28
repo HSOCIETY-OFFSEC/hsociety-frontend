@@ -3,63 +3,235 @@
  * Location: src/styles/shared/components/ui/PageLoader.css
  */
 
+/* ── Root overlay ── */
 .page-loader {
-  min-height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(800px 400px at 10% 0%, rgba(31, 191, 143, 0.14), transparent 60%),
-    var(--bg-primary);
-  color: var(--text-primary);
+  background:
+    radial-gradient(ellipse 900px 500px at 15% 0%, rgba(31, 191, 143, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 600px 400px at 85% 100%, rgba(31, 191, 143, 0.08) 0%, transparent 60%),
+    var(--bg-primary, #0a0e0c);
+  opacity: 0;
+  transform: scale(1.012);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
+.page-loader.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-loader.is-exiting {
+  opacity: 0;
+  transform: scale(0.985);
+}
+
+/* ── Ambient glow orbs ── */
+.pl-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.pl-orb-a {
+  width: 520px;
+  height: 520px;
+  top: -120px;
+  left: -80px;
+  background: radial-gradient(circle, rgba(31, 191, 143, 0.12), transparent 70%);
+  animation: pl-drift 8s ease-in-out infinite alternate;
+}
+
+.pl-orb-b {
+  width: 380px;
+  height: 380px;
+  bottom: -100px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(31, 191, 143, 0.07), transparent 70%);
+  animation: pl-drift 10s ease-in-out infinite alternate-reverse;
+}
+
+/* ── Card ── */
 .page-loader-inner {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  text-align: center;
-  padding: 2rem;
+  gap: 1rem;
+  padding: 2.5rem 2.75rem;
+  width: min(420px, 90vw);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(31, 191, 143, 0.12);
+  border-radius: 20px;
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 0 0 1px rgba(31, 191, 143, 0.05),
+    0 32px 80px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Logo / spinner ── */
+.pl-logo-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.pl-logo-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 90deg,
+    rgba(31, 191, 143, 0)   0deg,
+    rgba(31, 191, 143, 0.9) 120deg,
+    rgba(31, 191, 143, 0.1) 240deg,
+    rgba(31, 191, 143, 0)   360deg
+  );
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  animation: pl-spin 1.6s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(31, 191, 143, 0.5));
 }
 
 .page-loader-logo {
-  filter: drop-shadow(0 18px 30px var(--accent-glow));
+  width: 32px;
+  height: 32px;
+  color: rgba(31, 191, 143, 0.9);
+  filter: drop-shadow(0 0 6px rgba(31, 191, 143, 0.4));
 }
 
+/* ── Message ── */
+.page-loader-message {
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(31, 191, 143, 0.75);
+}
+
+/* ── Progress bar ── */
 .page-loader-bar {
-  width: 180px;
-  height: 4px;
+  width: 100%;
+  height: 3px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(31, 191, 143, 0.2), rgba(31, 191, 143, 0.9), rgba(31, 191, 143, 0.2));
-  position: relative;
+  background: rgba(255, 255, 255, 0.06);
   overflow: hidden;
 }
 
-.page-loader-bar::after {
-  content: '';
+.page-loader-bar-fill {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(31, 191, 143, 0.5), rgba(31, 191, 143, 1));
+  border-radius: 999px;
+  transition: width 0.12s linear;
+  box-shadow: 0 0 10px rgba(31, 191, 143, 0.6);
+  width: 0%;
+}
+
+.page-loader-bar-shimmer {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
-  transform: translateX(-100%);
-  animation: loader-sweep 1.2s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: pl-sweep 1.4s ease-in-out infinite;
 }
 
-.page-loader-text {
-  margin: 0;
-  font-size: 0.9rem;
-  letter-spacing: 0.16em;
+/* ── Status row ── */
+.pl-status-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pl-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: rgba(31, 191, 143, 0.9);
+  box-shadow: 0 0 8px rgba(31, 191, 143, 0.8);
+  animation: pl-pulse 1.6s ease-in-out infinite;
+}
+
+.pl-status-text {
+  flex: 1;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: rgba(255, 255, 255, 0.35);
 }
 
-@keyframes loader-sweep {
-  0% { transform: translateX(-100%); }
-  60% { transform: translateX(100%); }
-  100% { transform: translateX(100%); }
+.pl-pct {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(31, 191, 143, 0.6);
+  font-variant-numeric: tabular-nums;
 }
 
+/* ── Binary ticker ── */
+.pl-binary {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  width: 100%;
+}
+
+.pl-binary span {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: rgba(31, 191, 143, 0.28);
+  animation: pl-blink 3s ease-in-out infinite;
+}
+
+/* ── Keyframes ── */
+@keyframes pl-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pl-sweep {
+  0%         { transform: translateX(-100%); }
+  60%, 100%  { transform: translateX(200%); }
+}
+
+@keyframes pl-pulse {
+  0%, 100%  { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+@keyframes pl-drift {
+  to { transform: translate(30px, 20px); }
+}
+
+@keyframes pl-blink {
+  0%, 100% { opacity: 0.28; }
+  50%      { opacity: 0.65; }
+}
+
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  .page-loader-bar::after {
+  .pl-logo-ring,
+  .page-loader-bar-shimmer,
+  .pl-dot,
+  .pl-orb-a,
+  .pl-orb-b,
+  .pl-binary span {
     animation: none;
   }
 }
