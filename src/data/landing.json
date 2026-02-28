@@ -46,24 +46,51 @@
   "services": [
     {
       "icon": "FiShield",
-      "title": "Penetration Testing",
-      "description": "Comprehensive security assessments to identify vulnerabilities before attackers do.",
-      "features": ["Web Applications", "Mobile Apps", "Network Infrastructure", "API Security"],
+      "title": "Beginner Offensive Security Training",
+      "description": "Paid, beginner-friendly offensive security curriculum that immediately connects theory to real tools.",
+      "features": [
+        "OffSec fundamentals & ethical hacking",
+        "Tooling labs plus real scenarios",
+        "Mentored skill progression",
+        "Outcome: ready for supervised engagements"
+      ],
       "imageKey": "terminal"
     },
     {
       "icon": "FiFileText",
-      "title": "Security Audits",
-      "description": "In-depth analysis and reporting of your security posture with actionable remediation steps.",
-      "features": ["Compliance Checks", "Risk Assessment", "Detailed Reports", "Remediation Support"],
+      "title": "Community Integration & Mentorship",
+      "description": "Graduates join the HSOCIETY community for collaboration, mentorship, and team-based simulations.",
+      "features": [
+        "Peer collaboration & study groups",
+        "Mentorship from senior operators",
+        "Continuous learning tracks",
+        "Team simulations & live feedback"
+      ],
       "imageKey": "binary"
     },
     {
       "icon": "FiTarget",
-      "title": "Red Team Operations",
-      "description": "Simulated attacks to test defenses, uncover gaps, and strengthen incident response.",
-      "features": ["Social Engineering", "Physical Security", "Threat Simulation", "Custom Scenarios"],
+      "title": "Supervised Offensive Operations",
+      "description": "Members participate in supervised, real-world exercises that include early pentests for select clients.",
+      "features": [
+        "Strictly supervised real attacks",
+        "Learning-mode pentests (first engagements free)",
+        "Evidence-backed reporting",
+        "Designed for skill refresh and specialization"
+      ],
       "imageKey": "hacker"
+    },
+    {
+      "icon": "FiTerminal",
+      "title": "Professional Pentesting & Reporting",
+      "description": "Full-scale paid penetration tests with reporting, remediation guidance, and repeatable delivery.",
+      "features": [
+        "Enterprise-style pentesting engagements",
+        "Live reporting & remediation workshops",
+        "Retest validation",
+        "Continuous cycle improvement"
+      ],
+      "imageKey": "terminal"
     }
   ],
   "why": [

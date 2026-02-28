@@ -1,0 +1,97 @@
+/**
+ * Service Detail Styles
+ */
+
+.service-detail-page {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+  color: var(--text-primary);
+}
+
+.service-detail-hero {
+  padding: 4rem 1.5rem 3rem;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.service-detail-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.service-detail-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.24rem;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.service-detail-hero h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  color: var(--text-primary);
+}
+
+.service-detail-hero p {
+  max-width: 620px;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.service-detail-actions {
+  margin-top: 1.75rem;
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.service-detail-features {
+  padding: 3.5rem 1.5rem;
+}
+
+.service-detail-section-header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+}
+
+.service-detail-section-header p {
+  margin: 0.75rem 0 1.5rem;
+  color: var(--text-secondary);
+  max-width: 520px;
+}
+
+.service-detail-feature-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.service-detail-feature-card {
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--card-bg) 95%, transparent);
+  border: 1px solid var(--border-color);
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .service-detail-hero {
+    padding: 3rem 1rem 2rem;
+  }
+
+  .service-detail-actions {
+    flex-direction: column;
+  }
+}

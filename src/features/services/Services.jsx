@@ -18,6 +18,7 @@ import landingContent from '../../data/landing.json';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
+import useRequestPentest from '../../shared/hooks/useRequestPentest';
 import terminalWallpaper from '../../assets/brand-images/terminalwallpaper.png';
 import greenBinaryWallpaper from '../../assets/backgrounds/greenbinarywallaper.png';
 import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.png';
@@ -25,7 +26,14 @@ import '../../styles/sections/services/index.css';
 
 const Services = () => {
   const navigate = useNavigate();
+  const { requestPentest, requestPentestModal } = useRequestPentest();
   useScrollReveal();
+
+  const slugify = (value) =>
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)+/g, '');
 
   const iconMap = useMemo(
     () => ({
@@ -65,8 +73,19 @@ const Services = () => {
   const heroTrust = landingContent.hero?.trust || [];
   const cta = landingContent.cta;
 
+  const handleRoute = (route) => {
+    if (route === '/corporate/pentest') {
+      requestPentest();
+      return;
+    }
+    if (route) {
+      navigate(route);
+    }
+  };
+
   return (
     <div className="services-page">
+      {requestPentestModal}
       <header className="services-hero reveal-on-scroll">
         <div className="services-hero-inner">
           <div className="services-hero-text">
@@ -83,7 +102,7 @@ const Services = () => {
               <Button
                 variant="primary"
                 size="large"
-                onClick={() => navigate('/corporate/pentest')}
+                onClick={requestPentest}
               >
                 Request a Pentest
               </Button>
@@ -120,7 +139,20 @@ const Services = () => {
 
         <div className="services-grid">
           {services.map((service) => (
-            <Card key={service.title} padding="none" className="services-card">
+            <Card
+              key={service.title}
+              padding="none"
+              className="services-card services-card--link"
+              onClick={() => navigate(`/services/${slugify(service.title)}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  navigate(`/services/${slugify(service.title)}`);
+                }
+              }}
+            >
               {service.image && (
                 <div className="services-card-image">
                   <img src={service.image} alt={service.title} loading="lazy" />
@@ -155,7 +187,7 @@ const Services = () => {
             <Button
               variant={cta?.right?.variant || 'secondary'}
               size="large"
-              onClick={() => navigate(cta?.right?.route || '/corporate/pentest')}
+              onClick={() => handleRoute(cta?.right?.route || '/corporate/pentest')}
             >
               {cta?.right?.button || 'Request Pentest'}
             </Button>

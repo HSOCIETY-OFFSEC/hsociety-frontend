@@ -118,17 +118,17 @@ const FooterSection = () => {
       <div className="footer-content">
         <div className="footer-column">
           <h4>Services</h4>
-          <a href="/pentest">
+          <a href="/services/penetration-testing">
             <FiShield size={16} />
             Penetration Testing
           </a>
-          <a href="/pentest">
+          <a href="/services/security-audits">
             <FiTarget size={16} />
-            Red Team Ops
+            Security Audits
           </a>
-          <a href="/pentest">
+          <a href="/services/red-team-operations">
             <FiGlobe size={16} />
-            API & Cloud Testing
+            Red Team Operations
           </a>
         </div>
 

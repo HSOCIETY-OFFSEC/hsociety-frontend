@@ -226,6 +226,17 @@
   background: var(--primary-color);
 }
 
+.services-card--link {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.services-card--link:focus-visible,
+.services-card--link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
 .services-cta {
   width: min(1120px, 92vw);
   margin: 0 auto;

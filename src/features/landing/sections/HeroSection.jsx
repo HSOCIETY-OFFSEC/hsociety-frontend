@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   FiArrowUpRight,
   FiArrowRight,
-  FiShield,
-  FiCheckCircle,
-  FiLock,
   FiTerminal
 } from 'react-icons/fi';
 import {
@@ -17,6 +14,7 @@ import {
 } from 'react-icons/fa6';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
+import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import '../../../styles/landing/hero.css';
 
 const SOCIAL_LINKS = [
@@ -43,7 +41,8 @@ const AnimatedWords = ({ text, className = '' }) =>
 
 const HeroSection = ({ content }) => {
   const navigate = useNavigate();
-  const { badge, highlights, ctas, trust, proof } = content;
+  const { requestPentest, requestPentestModal } = useRequestPentest();
+  const { badge, ctas } = content;
 
   return (
     <section className="hero-section">
@@ -96,7 +95,13 @@ const HeroSection = ({ content }) => {
                 key={cta.label}
                 variant={cta.variant}
                 size="large"
-                onClick={() => navigate(cta.route)}
+                onClick={() => {
+                  if (cta.route === '/corporate/pentest') {
+                    requestPentest();
+                    return;
+                  }
+                  navigate(cta.route);
+                }}
               >
                 {cta.label}
                 {index === 0
@@ -133,8 +138,8 @@ const HeroSection = ({ content }) => {
             <Logo size="xlarge" className="hero-logo-minimal" />
           </div>
         </div>
-
       </div>
+      {requestPentestModal}
     </section>
   );
 };

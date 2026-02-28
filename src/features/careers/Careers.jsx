@@ -1,84 +1,64 @@
 import React from 'react';
-import { FiArrowUpRight, FiBriefcase, FiClock, FiCompass, FiFlag, FiMapPin } from 'react-icons/fi';
-import Card from '../../shared/components/ui/Card';
+import { FiCompass, FiMessageSquare } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../shared/components/ui/Button';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import '../../styles/sections/careers/index.css';
 
 const Careers = () => {
+  const navigate = useNavigate();
   useScrollReveal();
-
-  const roles = [
-    {
-      title: 'Junior Security Analyst',
-      location: 'Remote - Africa',
-      type: 'Full-time',
-      level: 'Entry',
-      focus: 'SOC, incident response, triage.'
-    },
-    {
-      title: 'Offensive Security Intern',
-      location: 'Remote - Africa',
-      type: 'Internship',
-      level: 'Student',
-      focus: 'Recon, tooling, module development.'
-    },
-    {
-      title: 'Red Team Operator',
-      location: 'Remote - Africa',
-      type: 'Contract',
-      level: 'Senior',
-      focus: 'Adversary simulation, opsec.'
-    }
-  ];
+  const heroCopy =
+    'We are pausing hiring for now while we focus on internal programs and training. Keep an eye on this page for future opportunities as we scale.';
 
   return (
     <div className="careers-page">
-        <header className="careers-hero reveal-on-scroll">
-          <div>
-            <p className="careers-kicker">Careers</p>
-            <h1>Build offensive security from Africa, for the world.</h1>
-            <p>Join teams that ship real work, grow real talent, and build resilience.</p>
-            <div className="careers-hero-meta">
-              <div>
-                <span className="meta-value">Remote-first</span>
-                <span className="meta-label">across Africa</span>
-              </div>
-              <div>
-                <span className="meta-value">Training</span>
-                <span className="meta-label">module delivery</span>
-              </div>
-              <div>
-                <span className="meta-value">Impact</span>
-                <span className="meta-label">critical infrastructure</span>
-              </div>
+      <header className="careers-hero reveal-on-scroll">
+        <div>
+          <p className="careers-kicker">Careers</p>
+          <h1>We aren’t hiring right now.</h1>
+          <p>{heroCopy}</p>
+          <div className="careers-hero-meta">
+            <div>
+              <span className="meta-value">Still curious?</span>
+              <span className="meta-label">Stay in touch</span>
+            </div>
+            <div>
+              <span className="meta-value">Future roles</span>
+              <span className="meta-label">will land here</span>
+            </div>
+            <div>
+              <span className="meta-value">Building</span>
+              <span className="meta-label">community first</span>
             </div>
           </div>
-          <Button variant="primary" size="large">
-            <FiCompass size={18} />
-            See Open Roles
-          </Button>
-        </header>
+        </div>
+        <Button
+          variant="primary"
+          size="large"
+          onClick={() => navigate('/contact')}
+        >
+          <FiMessageSquare size={18} />
+          Notify Me
+        </Button>
+      </header>
 
-        <section className="careers-grid reveal-on-scroll">
-          {roles.map((role) => (
-            <Card key={role.title} padding="large" className="careers-card">
-              <div className="careers-card-header">
-                <FiBriefcase size={20} />
-                <h3>{role.title}</h3>
-              </div>
-              <p>{role.focus}</p>
-              <div className="careers-meta">
-                <span><FiMapPin size={14} /> {role.location}</span>
-                <span><FiClock size={14} /> {role.type}</span>
-                <span><FiFlag size={14} /> {role.level}</span>
-              </div>
-              <Button variant="ghost" size="small">
-                Apply Now <FiArrowUpRight size={16} />
-              </Button>
-            </Card>
-          ))}
-        </section>
+      <section className="careers-grid reveal-on-scroll">
+        <div className="careers-status-card">
+          <h3>What’s next?</h3>
+          <p>
+            We are enhancing bootcamp programming and internal delivery before opening new roles.
+            Follow our updates or revisit this page later in 2026 to review new openings.
+          </p>
+        </div>
+        <div className="careers-status-card">
+          <h3>Want to stay informed?</h3>
+          <p>
+            The next batch of roles will include analysts, builders, and mentors. Drop us a note today and
+            we will reach out when the hiring window reopens.
+          </p>
+        </div>
+      </section>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiAlertTriangle, FiLock } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
@@ -10,10 +10,14 @@ import '../../styles/core/auth.css';
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const initialAccountType = query.get('accountType') === 'student' ? 'student' : 'corporate';
+  const wantsCorporate = query.get('accountType') === 'corporate';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
-    accountType: 'corporate',
+    accountType: initialAccountType,
     name: '',
     email: '',
     companyOrSchool: '',
@@ -108,14 +112,21 @@ const Register = () => {
                     </button>
                     <button
                       type="button"
-                      className={form.accountType === 'student' ? 'active' : ''}
-                      onClick={() => updateField('accountType', 'student')}
-                      disabled={loading}
-                    >
-                      Student
-                    </button>
-                  </div>
-                </div>
+                className={form.accountType === 'student' ? 'active' : ''}
+                onClick={() => updateField('accountType', 'student')}
+                disabled={loading}
+              >
+                Student
+              </button>
+            </div>
+          </div>
+
+          {wantsCorporate && (
+            <p className="auth-note">
+              We noticed you want access to corporate services. Make sure the “Corporate” tab
+              is active so your account can request pentests right away.
+            </p>
+          )}
 
                 {/* Two-column row on wider screens */}
                 <div className="auth-form-row">
@@ -127,7 +138,7 @@ const Register = () => {
                       className="form-input"
                       value={form.name}
                       onChange={(e) => updateField('name', e.target.value)}
-                      placeholder="Jane Doe"
+                      placeholder="Wunpini Andani"
                       disabled={loading}
                     />
                   </div>
