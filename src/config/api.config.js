@@ -171,7 +171,8 @@ export const API_ENDPOINTS = {
     POST_REACT: '/community/posts/:id/react',
     POST_SAVE: '/community/posts/:id/save',
     CHANNELS: '/community/channels',
-    TAGS: '/community/tags'
+    TAGS: '/community/tags',
+    UPLOAD: '/community/uploads'
   },
 
   // File Upload

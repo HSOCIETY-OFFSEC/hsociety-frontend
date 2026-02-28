@@ -24,7 +24,7 @@ const CommunityHub = () => {
   const [room, setRoom] = useState('general');
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
-  const [imageData, setImageData] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [imageError, setImageError] = useState('');
   const [error, setError] = useState('');
   const [connected, setConnected] = useState(false);
@@ -155,11 +155,11 @@ const CommunityHub = () => {
   /* ── Send ── */
   const sendMessage = () => {
     const content = draft.trim();
-    const imageUrl = imageData;
-    if ((!content && !imageUrl) || !socketRef.current) return;
-    socketRef.current.emit('sendMessage', { room, content, imageUrl });
+    const imagePayload = imageUrl;
+    if ((!content && !imagePayload) || !socketRef.current) return;
+    socketRef.current.emit('sendMessage', { room, content, imageUrl: imagePayload });
     setDraft('');
-    setImageData('');
+    setImageUrl('');
     setImageError('');
   };
 
@@ -268,8 +268,8 @@ const CommunityHub = () => {
           draft={draft}
           onDraftChange={setDraft}
           onSend={sendMessage}
-          imageData={imageData}
-          onImageChange={setImageData}
+          imageUrl={imageUrl}
+          onImageChange={setImageUrl}
           imageError={imageError}
           onImageError={setImageError}
         />

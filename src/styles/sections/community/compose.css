@@ -105,6 +105,11 @@
   transition: color 0.18s ease, background 0.18s ease;
 }
 
+.community-attach-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .community-attach-btn:hover {
   color: var(--text-primary);
   background: color-mix(in srgb, var(--text-primary) 8%, transparent);
@@ -156,6 +161,12 @@
   margin: 0;
   font-size: 0.75rem;
   color: #ef4444;
+}
+
+.community-compose-status {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
 }
 
 /* ── Character counter ──────────────────────────────────────── */

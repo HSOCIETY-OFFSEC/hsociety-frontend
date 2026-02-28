@@ -48,8 +48,17 @@ export const createCommunitySocket = () => {
   });
 };
 
+export const uploadCommunityImage = async (file) => {
+  const response = await apiClient.upload(API_ENDPOINTS.COMMUNITY.UPLOAD, file, 'file');
+  if (!response.success) {
+    return { success: false, error: response.error || 'Failed to upload image' };
+  }
+  return { success: true, data: response.data || {} };
+};
+
 export default {
   getCommunityOverview,
   getCommunityMessages,
   createCommunitySocket,
+  uploadCommunityImage,
 };

@@ -1,10 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiImage, FiSend, FiX } from 'react-icons/fi';
+import { uploadCommunityImage } from '../../community.service';
 import { getDisplayName, getUserAvatar } from '../../utils/community.utils';
 
 const MAX = 1000;
-const MAX_IMAGE_BYTES = 200 * 1024;
+const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 
 const CommunityCompose = ({
   user,
@@ -12,23 +13,24 @@ const CommunityCompose = ({
   draft,
   onDraftChange,
   onSend,
-  imageData,
+  imageUrl,
   onImageChange,
   imageError,
   onImageError,
 }) => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const [uploading, setUploading] = useState(false);
   const charsLeft = MAX - draft.length;
   const nearLimit = charsLeft < 80;
-  const canSend = Boolean(draft.trim() || imageData);
+  const canSend = Boolean(draft.trim() || imageUrl);
   const roomLabel = room?.startsWith('#') ? room.slice(1) : room || 'general';
 
   const handlePickImage = () => {
     if (fileInputRef.current) fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -39,21 +41,26 @@ const CommunityCompose = ({
     }
 
     if (file.size > MAX_IMAGE_BYTES) {
-      onImageError?.('Image is too large. Use a file under 200 KB.');
+      onImageError?.('Image is too large. Use a file under 2 MB.');
       event.target.value = '';
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result || '');
-      onImageChange?.(result);
+    try {
+      setUploading(true);
       onImageError?.('');
-    };
-    reader.onerror = () => {
-      onImageError?.('Failed to read image. Please try another file.');
-    };
-    reader.readAsDataURL(file);
+      const response = await uploadCommunityImage(file);
+      if (!response.success || !response.data?.url) {
+        onImageError?.(response.error || 'Failed to upload image.');
+        return;
+      }
+      onImageChange?.(response.data.url);
+    } catch (_err) {
+      onImageError?.('Failed to upload image. Please try again.');
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
   };
 
   return (
@@ -84,6 +91,7 @@ const CommunityCompose = ({
             className="community-attach-btn"
             onClick={handlePickImage}
             aria-label="Attach an image"
+            disabled={uploading}
           >
             <FiImage size={16} />
           </button>
@@ -123,16 +131,16 @@ const CommunityCompose = ({
             type="button"
             className="community-send-btn"
             onClick={onSend}
-            disabled={!canSend}
+            disabled={!canSend || uploading}
             aria-label="Send message"
           >
             <FiSend size={15} />
           </button>
         </div>
 
-        {imageData && (
+        {imageUrl && (
           <div className="community-compose-attachment" role="group" aria-label="Image attachment">
-            <img src={imageData} alt="Attachment preview" />
+            <img src={imageUrl} alt="Attachment preview" />
             <button
               type="button"
               className="community-attachment-remove"
@@ -147,6 +155,7 @@ const CommunityCompose = ({
           </div>
         )}
 
+        {uploading && <p className="community-compose-status">Uploading image…</p>}
         {imageError && <p className="community-compose-error">{imageError}</p>}
       </div>
     </div>
