@@ -195,7 +195,7 @@ const FooterSection = () => {
 
       <div className="footer-bottom">
         <p>© 2026 HSOCIETY. All rights reserved.</p>
-        <p>Execution over marketing. Proof over promises.</p>
+        <p>Train Like A Hacker. Prepare For Hackers</p>
         <div className="footer-socials">
           <a href="#youtube" aria-label="YouTube">
             <FaYoutube size={18} />
