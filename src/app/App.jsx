@@ -3,6 +3,7 @@ import { AuthProvider } from '../core/auth/AuthContext';
 import { ThemeProvider } from './providers';
 import AppRouter from './router';
 import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
+import FloatingUpdateButton from '../shared/components/ui/FloatingUpdateButton';
 
 // Import global styles
 import '../styles/shared/common.css';
@@ -31,6 +32,7 @@ const App = () => {
         <div className="app-shell">
           <AppRouter />
           <PwaUpdatePrompt />
+          <FloatingUpdateButton />
         </div>
       </AuthProvider>
     </ThemeProvider>

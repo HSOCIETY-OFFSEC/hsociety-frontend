@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FiBarChart2,
   FiClipboard,
@@ -25,38 +25,7 @@ const FooterSection = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [updateStatus, setUpdateStatus] = useState(null);
 
-  const buildInfo = useMemo(() => {
-    const buildId = import.meta.env.VITE_BUILD_ID || import.meta.env.MODE || 'unknown';
-    const buildTimeRaw = import.meta.env.VITE_BUILD_TIME || '';
-    let buildTimeLabel = 'unknown';
-    if (buildTimeRaw) {
-      const parsed = new Date(buildTimeRaw);
-      if (!Number.isNaN(parsed.getTime())) {
-        buildTimeLabel = parsed.toLocaleString();
-      } else {
-        buildTimeLabel = buildTimeRaw;
-      }
-    }
-    return { buildId, buildTimeLabel };
-  }, []);
-
-  const handleCheckUpdates = async () => {
-    if (typeof window === 'undefined') return;
-    const checker = window.__hsocietyCheckForUpdates;
-    if (typeof checker !== 'function') {
-      setUpdateStatus({ type: 'error', message: 'Update service not ready.' });
-      return;
-    }
-
-    setUpdateStatus({ type: 'checking', message: 'Checking for updates...' });
-    const updated = await checker();
-    setUpdateStatus({
-      type: updated ? 'success' : 'info',
-      message: updated ? 'Checked. If an update exists, a prompt will appear.' : 'Update service not ready.'
-    });
-  };
 
   const handleSubscribe = async (event) => {
     event.preventDefault();
@@ -228,24 +197,7 @@ const FooterSection = () => {
       <div className="footer-bottom">
         <p>© 2026 HSOCIETY. All rights reserved.</p>
         <p>Train Like A Hacker. Prepare For Hackers</p>
-        <div className="footer-build">
-          <span className="footer-build-label">Build</span>
-          <span className="footer-build-meta">
-            {buildInfo.buildId} · {buildInfo.buildTimeLabel}
-          </span>
-          <button
-            type="button"
-            className="footer-update-button"
-            onClick={handleCheckUpdates}
-          >
-            Check for updates
-          </button>
-          {updateStatus && (
-            <span className={`footer-update-status ${updateStatus.type}`}>
-              {updateStatus.message}
-            </span>
-          )}
-        </div>
+        <div className="footer-build" />
         <div className="footer-socials">
           {getSocialLinks().map((link) => {
             const Icon = link.icon;

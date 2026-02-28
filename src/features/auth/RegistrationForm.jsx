@@ -5,6 +5,8 @@ import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
 import { registerUser } from './register.service';
+import { login as loginRequest } from '../../core/auth/auth.service';
+import { useAuth } from '../../core/auth/AuthContext';
 import '../../styles/core/auth.css';
 
 const RegistrationForm = ({
@@ -14,6 +16,7 @@ const RegistrationForm = ({
   onSuccessRedirect = '/login'
 }) => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
@@ -30,6 +33,11 @@ const RegistrationForm = ({
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  const resolveDashboardRoute = (role) => {
+    if (role === 'student') return '/student-dashboard';
+    return '/corporate-dashboard';
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
@@ -44,10 +52,51 @@ const RegistrationForm = ({
       const payload = buildRegisterDTO(form);
       const response = await registerUser(payload);
       if (!response.success) throw new Error(response.error || 'Registration failed');
+
+      const successRoute =
+        onSuccessRedirect && onSuccessRedirect !== '/login'
+          ? onSuccessRedirect
+          : resolveDashboardRoute(payload.role);
+
+      if (response.isMock) {
+        const mockUser = response.data || {
+          id: `mock-${Date.now()}`,
+          email: payload.credentials.email,
+          role: payload.role,
+          name: payload.profile?.fullName
+        };
+        await login(mockUser, 'mock-token');
+        navigate(successRoute);
+        return;
+      }
+
+      if (response.data?.token) {
+        const userData = response.data.user || {
+          email: payload.credentials.email,
+          role: payload.role,
+          name: payload.profile?.fullName
+        };
+        await login(userData, response.data.token, response.data.refreshToken);
+        navigate(successRoute);
+        return;
+      }
+
+      const loginResponse = await loginRequest(
+        payload.credentials.email,
+        payload.credentials.password
+      );
+
+      if (loginResponse.success && !loginResponse.twoFactorRequired) {
+        const role = loginResponse.user?.role || payload.role;
+        await login(loginResponse.user, loginResponse.token, loginResponse.refreshToken);
+        navigate(resolveDashboardRoute(role));
+        return;
+      }
+
       navigate('/login', {
         state: {
           email: payload.credentials.email,
-          redirect: onSuccessRedirect
+          redirect: successRoute
         }
       });
     } catch (err) {
