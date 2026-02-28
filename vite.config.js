@@ -9,7 +9,8 @@ export default defineConfig({
     react(),
 
     VitePWA({
-      registerType: 'autoUpdate',
+      injectRegister: null,
+      registerType: 'prompt',
       includeAssets: [
         'hsociety-logo-black.png',
         'hsociety-logo-white.png'

@@ -1,0 +1,74 @@
+/* PWA Update Prompt */
+.pwa-update-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: var(--z-modal, 60);
+  pointer-events: none;
+}
+
+.pwa-update-card {
+  pointer-events: auto;
+  width: min(92vw, 560px);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  box-shadow: var(--shadow-lg);
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  gap: 1rem;
+  animation: pwa-update-rise 0.2s ease-out;
+}
+
+.pwa-update-content h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
+}
+
+.pwa-update-content p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.pwa-update-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  margin: 0 0 0.35rem;
+}
+
+.pwa-update-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+@keyframes pwa-update-rise {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .pwa-update-card {
+    padding: 1rem 1.1rem;
+  }
+
+  .pwa-update-actions {
+    justify-content: stretch;
+  }
+
+  .pwa-update-actions .button {
+    width: 100%;
+  }
+}
