@@ -10,7 +10,8 @@
   grid-template-rows: 1fr;
   grid-template-areas: "sidebar main aside";
   width: 100%;
-  height: calc(100vh - var(--workspace-topbar-height, 60px));
+  height: 100vh;
+  height: 100dvh;
   background: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
@@ -293,7 +294,8 @@
     grid-template-areas:
       "sidebar"
       "main";
-    height: calc(100vh - var(--workspace-topbar-height, 60px));
+    height: 100vh;
+    height: 100dvh;
   }
 
   .community-main {
@@ -314,7 +316,8 @@
 
 @media (max-height: 500px) and (max-width: 900px) {
   .community-root {
-    height: calc(100vh - var(--workspace-topbar-height, 60px));
+    height: 100vh;
+    height: 100dvh;
   }
 }
 
