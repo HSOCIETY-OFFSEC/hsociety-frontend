@@ -12,6 +12,7 @@ import StudentRoleBlocker from '../features/student/components/StudentRoleBlocke
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
 const Register = React.lazy(() => import('../features/auth/Register'));
+const CorporateRegister = React.lazy(() => import('../features/auth/CorporateRegister'));
 const loadDashboard = (key) =>
   React.lazy(() =>
     import('../features/dashboards').then((module) => ({ default: module[key] }))
@@ -144,6 +145,14 @@ const AppRouter = () => {
               element={
                 <PublicRoute>
                   <Register />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="register/corporate"
+              element={
+                <PublicRoute>
+                  <CorporateRegister />
                 </PublicRoute>
               }
             />

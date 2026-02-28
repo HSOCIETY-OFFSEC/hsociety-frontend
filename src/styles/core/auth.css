@@ -337,6 +337,16 @@
   }
 }
 
+.auth-account-label {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  width: fit-content;
+}
+
 /* ========================================
    QUICK LOGIN HELPERS
    ======================================== */

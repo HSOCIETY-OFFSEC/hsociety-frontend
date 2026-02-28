@@ -4,6 +4,7 @@ import { FiArrowRight, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icon
 import Logo from '../../../shared/components/common/Logo';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
+import { slugify } from '../../../shared/utils/slugify';
 import '../../../styles/landing/services.css';
 
 const ServicesSection = ({ services = [] }) => {
@@ -123,7 +124,7 @@ const ServicesSection = ({ services = [] }) => {
                         size="small"
                         fullWidth
                         style={{ marginTop: 'auto' }}
-                        onClick={() => navigate('/services')}
+                      onClick={() => navigate(`/services/${slugify(service.title)}`)}
                       >
                         Learn More{' '}
                         <FiArrowRight className="service-btn-arrow" size={16} />

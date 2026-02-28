@@ -16,6 +16,8 @@ import {
 } from 'react-icons/fi';
 import { FaGithub, FaLinkedinIn, FaWhatsapp, FaXTwitter, FaYoutube } from 'react-icons/fa6';
 import Logo from '../../../shared/components/common/Logo';
+import landingContent from '../../../data/landing.json';
+import { slugify } from '../../../shared/utils/slugify';
 import '../../../styles/landing/footer.css';
 import { subscribeNewsletter } from '../landing.service';
 
@@ -118,18 +120,12 @@ const FooterSection = () => {
       <div className="footer-content">
         <div className="footer-column">
           <h4>Services</h4>
-          <a href="/services/penetration-testing">
-            <FiShield size={16} />
-            Penetration Testing
-          </a>
-          <a href="/services/security-audits">
-            <FiTarget size={16} />
-            Security Audits
-          </a>
-          <a href="/services/red-team-operations">
-            <FiGlobe size={16} />
-            Red Team Operations
-          </a>
+          {landingContent.services.slice(0, 4).map((service) => (
+            <a key={service.title} href={`/services/${slugify(service.title)}`}>
+              <FiShield size={16} />
+              {service.title}
+            </a>
+          ))}
         </div>
 
         <div className="footer-column">
