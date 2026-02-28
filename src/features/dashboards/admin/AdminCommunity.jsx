@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FiPin, FiSave, FiTrash2 } from 'react-icons/fi';
+import { FiBookmark, FiSave, FiTrash2 } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
@@ -251,7 +251,7 @@ const AdminCommunity = () => {
                           }
                         }}
                       >
-                        <FiPin size={14} />
+                        <FiBookmark size={14} />
                         {message.pinned ? 'Unpin' : 'Pin'}
                       </Button>
                       <Button
@@ -298,7 +298,7 @@ const AdminCommunity = () => {
                           }
                         }}
                       >
-                        <FiPin size={14} />
+                        <FiBookmark size={14} />
                         {post.pinned ? 'Unpin' : 'Pin'}
                       </Button>
                       <Button
