@@ -13,16 +13,46 @@ import '../../../styles/shared/components/ui/PwaUpdatePrompt.css';
 const PwaUpdatePrompt = () => {
   const [needRefresh, setNeedRefresh] = useState(false);
   const updateSWRef = useRef(null);
+  const registrationRef = useRef(null);
 
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return;
+
+    let updateIntervalId = null;
+
+    const checkForUpdates = () => {
+      if (registrationRef.current) {
+        registrationRef.current.update();
+      }
+    };
 
     updateSWRef.current = registerSW({
       immediate: true,
       onNeedRefresh() {
         setNeedRefresh(true);
+      },
+      onRegisteredSW(_, registration) {
+        if (!registration) return;
+        registrationRef.current = registration;
+        checkForUpdates();
+        updateIntervalId = window.setInterval(checkForUpdates, 60 * 1000);
       }
     });
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkForUpdates();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (updateIntervalId) {
+        window.clearInterval(updateIntervalId);
+      }
+    };
   }, []);
 
   const handleUpdate = () => {
