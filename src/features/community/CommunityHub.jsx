@@ -24,6 +24,8 @@ const CommunityHub = () => {
   const [room, setRoom] = useState('general');
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
+  const [imageData, setImageData] = useState('');
+  const [imageError, setImageError] = useState('');
   const [error, setError] = useState('');
   const [connected, setConnected] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -36,6 +38,17 @@ const CommunityHub = () => {
     if (user?.role === 'client') return 'corporate';
     return user?.role || 'student';
   }, [user?.role]);
+
+  const normalizeRoomId = (value) => {
+    const raw = String(value || '').trim();
+    if (!raw) return 'general';
+    return raw.startsWith('#') ? raw.slice(1) : raw;
+  };
+
+  const displayRoom = (value) => {
+    const safe = normalizeRoomId(value);
+    return safe || 'general';
+  };
 
   /* ── Initial load + socket ── */
   useEffect(() => {
@@ -78,6 +91,16 @@ const CommunityHub = () => {
         prev.map((item) =>
           item.id === payload.messageId
             ? { ...item, likes: payload.likes, likedBy: payload.likedBy }
+            : item
+        )
+      );
+    });
+    socket.on('commentAdded', (payload) => {
+      if (payload.room !== room) return;
+      setMessages((prev) =>
+        prev.map((item) =>
+          item.id === payload.messageId
+            ? { ...item, comments: [...(item.comments || []), payload.comment] }
             : item
         )
       );
@@ -132,24 +155,45 @@ const CommunityHub = () => {
   /* ── Send ── */
   const sendMessage = () => {
     const content = draft.trim();
-    if (!content || !socketRef.current) return;
-    socketRef.current.emit('sendMessage', { room, content });
+    const imageUrl = imageData;
+    if ((!content && !imageUrl) || !socketRef.current) return;
+    socketRef.current.emit('sendMessage', { room, content, imageUrl });
     setDraft('');
+    setImageData('');
+    setImageError('');
   };
 
   /* ── Room change ── */
   const handleRoomChange = (newRoom) => {
-    setRoom(newRoom);
+    setRoom(normalizeRoomId(newRoom));
   };
 
-  const activeChannels = overview.channels?.length
-    ? overview.channels
-    : [
-        { id: 'general', name: 'General' },
-        { id: 'ctf', name: 'CTF Talk' },
-        { id: 'tools', name: 'Tools & Scripts' },
-        { id: 'offtopic', name: 'Off-Topic' },
-      ];
+  const activeChannels = useMemo(() => {
+    const source = overview.channels?.length
+      ? overview.channels
+      : [
+          { id: 'general', name: 'General' },
+          { id: 'ctf', name: 'CTF Talk' },
+          { id: 'tools', name: 'Tools & Scripts' },
+          { id: 'offtopic', name: 'Off-Topic' },
+        ];
+
+    return source
+      .map((channel) => ({
+        ...channel,
+        id: normalizeRoomId(channel.id || channel.name),
+        name: channel.name || displayRoom(channel.id || channel.name),
+      }))
+      .filter((channel) => channel.id);
+  }, [overview.channels]);
+
+  useEffect(() => {
+    if (!activeChannels.length) return;
+    const exists = activeChannels.some((channel) => channel.id === room);
+    if (!exists) {
+      setRoom(activeChannels[0].id);
+    }
+  }, [activeChannels, room]);
 
   const isOwn = (msg) => msg.userId === user?.id || msg.username === user?.username;
   const currentUserAvatar = getUserAvatar(user);
@@ -168,7 +212,7 @@ const CommunityHub = () => {
       />
 
       {/* ── Main feed column ── */}
-      <main className="community-main" aria-label={`#${room} channel`}>
+      <main className="community-main" aria-label={`#${displayRoom(room)} channel`}>
         <CommunityHeader
           activeChannels={activeChannels}
           room={room}
@@ -184,6 +228,11 @@ const CommunityHub = () => {
           error={error}
           isOwn={isOwn}
           containerRef={scrollRef}
+          onLike={(messageId) => socketRef.current?.emit('likeMessage', { messageId })}
+          onAddComment={(messageId, content) =>
+            socketRef.current?.emit('addComment', { messageId, content })
+          }
+          currentUserId={user?.id}
         />
 
         {user && (
@@ -219,6 +268,10 @@ const CommunityHub = () => {
           draft={draft}
           onDraftChange={setDraft}
           onSend={sendMessage}
+          imageData={imageData}
+          onImageChange={setImageData}
+          imageError={imageError}
+          onImageError={setImageError}
         />
       </main>
 

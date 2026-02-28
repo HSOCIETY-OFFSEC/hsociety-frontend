@@ -2,7 +2,16 @@ import React from 'react';
 import { FiMessageSquare } from 'react-icons/fi';
 import CommunityMessage from './CommunityMessage';
 
-const CommunityMessageList = ({ messages, loading, error, isOwn, containerRef }) => {
+const CommunityMessageList = ({
+  messages,
+  loading,
+  error,
+  isOwn,
+  containerRef,
+  onLike,
+  onAddComment,
+  currentUserId,
+}) => {
   return (
     <div
       className="community-messages"
@@ -38,6 +47,9 @@ const CommunityMessageList = ({ messages, loading, error, isOwn, containerRef })
               message={message}
               own={own}
               grouped={grouped}
+              onLike={onLike}
+              onAddComment={onAddComment}
+              currentUserId={currentUserId}
             />
           );
         })
