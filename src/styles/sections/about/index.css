@@ -7,51 +7,10 @@
 /* ── Page Shell ─────────────────────────────────────────────── */
 .about-page {
   min-height: 100vh;
-  background: var(--bg-primary);
   color: var(--text-primary);
   padding-bottom: 6rem;
   position: relative;
   overflow: hidden;
-}
-
-/* Subtle circuit texture */
-.about-page::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('../../assets/circuit-hero.svg');
-  background-repeat: repeat;
-  background-size: 480px auto;
-  opacity: 0.055;
-  pointer-events: none;
-  z-index: 0;
-}
-
-[data-theme='light'] .about-page::before {
-  opacity: 0.035;
-  filter: brightness(0.6);
-}
-
-/* Atmospheric top glow */
-.about-page::after {
-  content: '';
-  position: absolute;
-  top: -120px;
-  left: -10%;
-  width: 70%;
-  height: 600px;
-  background: radial-gradient(
-    ellipse at 30% 30%,
-    color-mix(in srgb, var(--text-primary) 4%, transparent),
-    transparent 65%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.about-page > * {
-  position: relative;
-  z-index: 1;
 }
 
 .about-page button,

@@ -146,7 +146,7 @@ const FooterSection = () => {
             <FiTerminal size={16} />
             Student Dashboard
           </a>
-          <a href="/feedback">
+          <a href="/contact">
             <FiMessageSquare size={16} />
             Contact
           </a>

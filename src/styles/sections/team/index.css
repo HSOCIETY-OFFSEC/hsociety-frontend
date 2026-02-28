@@ -4,8 +4,6 @@
 
 .team-page {
   min-height: 100vh;
-  background: radial-gradient(800px 400px at 90% -10%, rgba(16, 185, 129, 0.18), transparent 60%),
-    var(--bg-primary);
   padding-bottom: 4rem;
 }
 
@@ -16,7 +14,6 @@
 
 .team-hero {
   padding: 6rem 2rem 4rem;
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
 }
 
 .team-hero-content {

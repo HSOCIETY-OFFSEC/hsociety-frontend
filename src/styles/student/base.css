@@ -6,7 +6,6 @@
 /* ── Page Shell ─────────────────────────────────────────────── */
 .student-page {
   min-height: 100vh;
-  background: var(--bg-primary);
   padding: 2rem 1.5rem 4rem;
   color: var(--text-primary);
   font-family: inherit;

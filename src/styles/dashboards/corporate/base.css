@@ -3,7 +3,6 @@
   min-height: calc(100vh - 72px);
   padding: 2rem 1.5rem 4rem;
   width: 100%;
-  background: var(--bg-primary);
   color: var(--text-primary);
   font-family: inherit;
   box-sizing: border-box;

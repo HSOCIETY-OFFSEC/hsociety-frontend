@@ -27,6 +27,7 @@ const Services = React.lazy(() => import('../features/services/Services'));
 const About = React.lazy(() => import('../features/about/About'));
 const Team = React.lazy(() => import('../features/team/Team'));
 const Developer = React.lazy(() => import('../features/developer/Developer'));
+const Contact = React.lazy(() => import('../features/contact/Contact'));
 const StudentDashboard = loadDashboard('StudentDashboard');
 const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
@@ -339,6 +340,7 @@ const AppRouter = () => {
             <Route path="about" element={<About />} />
             <Route path="team" element={<Team />} />
             <Route path="developer" element={<Developer />} />
+            <Route path="contact" element={<Contact />} />
             <Route path="careers" element={<Careers />} />
             <Route path="methodology" element={<Methodology />} />
             <Route path="case-studies" element={<CaseStudies />} />
