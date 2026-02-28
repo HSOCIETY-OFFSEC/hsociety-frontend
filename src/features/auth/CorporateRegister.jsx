@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { FiShield } from 'react-icons/fi';
 import Logo from '../../shared/components/common/Logo';
+import ThemeToggle from '../../shared/components/common/ThemeToggle';
 import RegistrationForm from './RegistrationForm';
 import '../../styles/core/auth.css';
 
@@ -18,6 +19,9 @@ const CorporateRegister = () => {
             <div className="auth-hero-badge">
               <Logo size="small" />
               <span>HSOCIETY Corporate Access</span>
+            </div>
+            <div className="auth-hero-toggle">
+              <ThemeToggle />
             </div>
             <h1 className="auth-hero-title">Register as a Corporate Customer</h1>
             <p className="auth-hero-subtitle">
