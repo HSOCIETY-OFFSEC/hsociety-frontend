@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiAlertTriangle } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
+import PasswordInput from '../../shared/components/ui/PasswordInput';
+import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
 import { registerUser } from './register.service';
 import { login as loginRequest } from '../../core/auth/auth.service';
@@ -32,6 +34,10 @@ const RegistrationForm = ({
   const updateField = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
+
+  useEffect(() => {
+    if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [error]);
 
   const resolveDashboardRoute = (role) => {
     if (role === 'student') return '/student-dashboard';
@@ -81,10 +87,7 @@ const RegistrationForm = ({
         return;
       }
 
-      const loginResponse = await loginRequest(
-        payload.credentials.email,
-        payload.credentials.password
-      );
+      const loginResponse = await loginRequest(payload.credentials.email, payload.credentials.password);
 
       if (loginResponse.success && !loginResponse.twoFactorRequired) {
         const role = loginResponse.user?.role || payload.role;
@@ -205,22 +208,21 @@ const RegistrationForm = ({
 
         <div className="form-group">
           <label htmlFor="register-password">Password</label>
-          <input
+          <PasswordInput
             id="register-password"
-            type="password"
             className="form-input"
             value={form.password}
             onChange={(e) => updateField('password', e.target.value)}
             placeholder="Create a secure password"
             disabled={loading}
           />
+          <PasswordStrengthIndicator password={form.password} />
         </div>
 
         <div className="form-group">
           <label htmlFor="register-confirm-password">Confirm Password</label>
-          <input
+          <PasswordInput
             id="register-confirm-password"
-            type="password"
             className="form-input"
             value={form.confirmPassword}
             onChange={(e) => updateField('confirmPassword', e.target.value)}

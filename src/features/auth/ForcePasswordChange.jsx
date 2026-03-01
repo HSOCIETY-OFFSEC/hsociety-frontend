@@ -2,11 +2,13 @@
  * Force password change - for users with mustChangePassword (weak password)
  * SECURITY UPDATE IMPLEMENTED: Block access until strong password is set
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiLock } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
+import PasswordInput from '../../shared/components/ui/PasswordInput';
+import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
 import { useAuth } from '../../core/auth/AuthContext';
 import { validatePassword } from '../../core/validation/input.validator';
 import { apiClient } from '../../shared/services/api.client';
@@ -22,6 +24,10 @@ export default function ForcePasswordChange() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [error]);
 
   if (!passwordChangeToken) {
     navigate('/login', { replace: true, state: { message: 'Please log in again to set a new password.' } });
@@ -80,9 +86,8 @@ export default function ForcePasswordChange() {
               <form onSubmit={handleSubmit} className="auth-form">
                 <div className="form-group">
                   <label htmlFor="new-password">New password</label>
-                  <input
+                  <PasswordInput
                     id="new-password"
-                    type="password"
                     className="form-input"
                     autoComplete="new-password"
                     value={newPassword}
@@ -91,12 +96,12 @@ export default function ForcePasswordChange() {
                     required
                     disabled={loading}
                   />
+                  <PasswordStrengthIndicator password={newPassword} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="confirm-password">Confirm password</label>
-                  <input
+                  <PasswordInput
                     id="confirm-password"
-                    type="password"
                     className="form-input"
                     autoComplete="new-password"
                     value={confirmPassword}

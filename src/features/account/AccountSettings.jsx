@@ -1,7 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { FiAlertTriangle, FiLock, FiTrash2 } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
+import PasswordInput from '../../shared/components/ui/PasswordInput';
+import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { validatePassword } from '../../core/validation/input.validator';
@@ -29,6 +31,10 @@ const AccountSettings = () => {
     bio: user?.bio || '',
   });
   const isPentester = user?.role === 'pentester';
+
+  useEffect(() => {
+    if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [error]);
 
   const identiconFallback = useMemo(
     () => getGithubAvatarDataUri(profile.name || user?.email || 'User'),
@@ -261,8 +267,7 @@ const AccountSettings = () => {
         <div className="account-info account-password-fields">
           <div className="account-field">
             <span className="account-label">Current password</span>
-            <input
-              type="password"
+            <PasswordInput
               className="account-input"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
@@ -272,19 +277,18 @@ const AccountSettings = () => {
           </div>
           <div className="account-field">
             <span className="account-label">New password</span>
-            <input
-              type="password"
+            <PasswordInput
               className="account-input"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="••••••••"
               autoComplete="new-password"
             />
+            <PasswordStrengthIndicator password={newPassword} className="password-strength--account" />
           </div>
           <div className="account-field">
             <span className="account-label">Confirm new password</span>
-            <input
-              type="password"
+            <PasswordInput
               className="account-input"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}

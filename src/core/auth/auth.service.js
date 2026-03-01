@@ -8,13 +8,12 @@ import { apiClient } from '../../shared/services/api.client';
 import { validateEmail, validatePassword } from '../validation/input.validator';
 
 /**
- * Login with email and password; optional mobile OTP
+ * Login with email and password.
  * @param {string} email - User email
  * @param {string} password - User password
- * @param {Object} [otpOptions] - Optional { mobile, otp } for OTP verification
  * @returns {Promise<Object>} - { success, user, token, refreshToken, twoFactorRequired, twoFactorToken, mustChangePassword, passwordChangeToken, message }
  */
-export const login = async (email, password, otpOptions = null) => {
+export const login = async (email, password) => {
   try {
     if (!validateEmail(email)) {
       throw new Error('Invalid email format');
@@ -24,12 +23,7 @@ export const login = async (email, password, otpOptions = null) => {
       throw new Error('Password must be at least 6 characters');
     }
 
-    const body = { email, password };
-    if (otpOptions?.mobile && otpOptions?.otp) {
-      body.mobile = otpOptions.mobile;
-      body.otp = otpOptions.otp;
-    }
-    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, body);
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, { email, password });
 
     if (!response.success) {
       return {
