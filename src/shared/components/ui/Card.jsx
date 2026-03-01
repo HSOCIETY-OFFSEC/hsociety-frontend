@@ -140,8 +140,8 @@ const Card = ({
         />
       )}
 
-      {/* Card Content */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      {/* Card Content - flex column + gap so content is well spaced in all dashboards */}
+      <div className="card__content" style={{ position: 'relative', zIndex: 1 }}>
         {children}
       </div>
     </div>

@@ -7,6 +7,19 @@
   /* Base card styles handled in component */
 }
 
+/* Inner content wrapper: consistent spacing for content inside all cards */
+.card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.card__content > * {
+  min-width: 0;
+}
+
 .card-3d {
   transform-style: preserve-3d;
 }
