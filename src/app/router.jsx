@@ -67,6 +67,7 @@ const Methodology = React.lazy(() => import('../features/methodology/Methodology
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
 const Blog = React.lazy(() => import('../features/blog/Blog'));
 const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
+const ForcePasswordChange = React.lazy(() => import('../features/auth/ForcePasswordChange'));
 
 /**
  * Protected Route
@@ -165,6 +166,7 @@ const AppRouter = () => {
                 </PublicRoute>
               }
             />
+            <Route path="change-password" element={<ForcePasswordChange />} />
           </Route>
 
           {/* Community (standalone layout) */}

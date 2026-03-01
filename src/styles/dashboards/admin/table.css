@@ -1,4 +1,52 @@
 /* ── Table ──────────────────────────────────────────────────── */
+
+/* Wrapper for native <table> (e.g. Security page): horizontal scroll on small screens */
+.admin-table-wrap {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 0.5rem;
+}
+
+/* Native HTML table (Security Activity Feed) — override flex when .admin-table is on <table> */
+table.admin-table {
+  display: table;
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+table.admin-table th,
+table.admin-table td {
+  padding: 0.6rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 140px;
+  font-size: 0.85rem;
+}
+
+table.admin-table th {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+table.admin-table thead tr {
+  border-bottom: 2px solid var(--border-color);
+}
+
+table.admin-table tbody tr:hover {
+  background: color-mix(in srgb, var(--bg-secondary) 80%, transparent);
+}
+
+/* Flex-based row layout (other admin pages) */
 .admin-table {
   display: flex;
   flex-direction: column;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FiHeart, FiMessageSquare, FiSend } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
+import { sanitizeText } from '../../../../shared/utils/sanitize';
 
 const CommunityMessage = ({
   message,
@@ -82,7 +83,7 @@ const CommunityMessage = ({
           </div>
         )}
         <div className="community-msg-bubble">
-          {message?.content && <p>{message.content}</p>}
+          {message?.content && <p>{sanitizeText(message.content)}</p>}
           {message?.imageUrl && (
             <img
               className="community-msg-image"
@@ -135,7 +136,7 @@ const CommunityMessage = ({
                       {formatMessageTime(comment.createdAt)}
                     </time>
                   </div>
-                  <p className="community-msg-comment-body">{comment.content}</p>
+                  <p className="community-msg-comment-body">{sanitizeText(comment.content)}</p>
                 </div>
               ))
             )}

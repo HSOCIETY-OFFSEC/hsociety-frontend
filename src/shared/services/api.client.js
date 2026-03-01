@@ -118,9 +118,11 @@ class APIClient {
     const url = this.buildURL(endpoint);
     const headers = this.buildHeaders(options.headers);
 
+    // SECURITY UPDATE IMPLEMENTED: Send cookies (e.g. refresh_token) for same-origin/configured API
     const config = {
       method,
       headers,
+      credentials: 'include',
       ...options
     };
 

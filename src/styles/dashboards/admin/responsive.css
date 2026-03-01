@@ -47,6 +47,24 @@
   .admin-row-header {
     display: none;
   }
+
+  /* Security page: compact table cells and allow smaller min-width */
+  .admin-table-wrap {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    border-radius: 10px;
+  }
+
+  table.admin-table {
+    min-width: 560px;
+  }
+
+  table.admin-table th,
+  table.admin-table td {
+    max-width: 100px;
+    padding: 0.5rem 0.35rem;
+    font-size: 0.8rem;
+  }
 }
 
 @media (max-width: 480px) {

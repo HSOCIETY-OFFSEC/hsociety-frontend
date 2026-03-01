@@ -36,9 +36,22 @@ export const removeAvatar = async () => {
   return { success: false, error: response.error || 'Failed to remove avatar' };
 };
 
+// SECURITY UPDATE IMPLEMENTED: Change password (strong validation on backend)
+export const changePassword = async (currentPassword, newPassword) => {
+  const response = await apiClient.put(API_ENDPOINTS.PROFILE.PASSWORD, {
+    currentPassword,
+    newPassword,
+  });
+  if (response.success) {
+    return { success: true };
+  }
+  return { success: false, error: response.error || 'Failed to change password' };
+};
+
 export default {
   deleteAccount,
   updateProfile,
   updateAvatar,
   removeAvatar,
+  changePassword,
 };

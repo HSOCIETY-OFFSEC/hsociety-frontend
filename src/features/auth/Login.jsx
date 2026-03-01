@@ -4,31 +4,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import { login as loginRequest } from '../../core/auth/auth.service';
 import { verify2FA } from '../../core/auth/twofa.service';
+import { apiClient } from '../../shared/services/api.client';
+import { API_ENDPOINTS } from '../../config/api.config';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import '../../styles/core/auth.css';
-
-const QUICK_LOGINS = [
-  {
-    role: 'corporate',
-    label: 'Corporate (test-corp)',
-    email: 'test-corp@hsociety.local',
-    password: 'Test123!'
-  },
-  {
-    role: 'pentester',
-    label: 'Pentester (test-pen)',
-    email: 'test-pen@hsociety.local',
-    password: 'Test123!'
-  },
-  {
-    role: 'student',
-    label: 'Student (test-stu)',
-    email: 'test-stu@hsociety.local',
-    password: 'Test123!'
-  }
-];
 
 const HERO_ITEMS = [
   { icon: <FiShield size={14} />, text: '2FA-ready sessions' },
@@ -56,6 +37,11 @@ const Login = ({ mode = 'default' }) => {
   const [pendingUser, setPendingUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  // SECURITY UPDATE IMPLEMENTED: Optional mobile OTP for login
+  const [mobile, setMobile] = useState('');
+  const [otpCode, setOtpCode] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpSending, setOtpSending] = useState(false);
 
   const resolveRouteForRole = (role) => {
     if (role === 'admin') return '/mr-robot';
@@ -70,18 +56,47 @@ const Login = ({ mode = 'default' }) => {
     }
   };
 
+  const handleSendOtp = async () => {
+    if (!mobile.trim()) {
+      setError('Enter your mobile number');
+      return;
+    }
+    setError('');
+    setOtpSending(true);
+    try {
+      const res = await apiClient.post(API_ENDPOINTS.OTP.REQUEST, { mobile: mobile.trim(), context: 'login' });
+      if (res.success) {
+        setOtpSent(true);
+      } else {
+        setError(res.error || 'Failed to send OTP');
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to send OTP');
+    } finally {
+      setOtpSending(false);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      const response = await loginRequest(email, password);
+      const response = await loginRequest(email, password, mobile.trim() && otpCode ? { mobile: mobile.trim(), otp: otpCode } : undefined);
       if (!response.success) throw new Error(response.message || 'Login failed');
 
       if (response.twoFactorRequired) {
         setTwoFactorToken(response.twoFactorToken);
         setPendingUser(response.user || { email });
         setStep(2);
+        return;
+      }
+      // SECURITY UPDATE IMPLEMENTED: Force password change when backend returns mustChangePassword
+      if (response.mustChangePassword && response.passwordChangeToken) {
+        navigate('/change-password', {
+          replace: true,
+          state: { passwordChangeToken: response.passwordChangeToken, user: response.user },
+        });
         return;
       }
 
@@ -127,12 +142,6 @@ const Login = ({ mode = 'default' }) => {
     setTwoFactorToken(null);
     setPendingUser(null);
     setError('');
-  };
-
-  const handleQuickLogin = (entry) => {
-    setError('');
-    setEmail(entry.email);
-    setPassword(entry.password);
   };
 
   const heroTitle = mode === 'pentester' ? 'Pentester Access' : 'Secure Access';
@@ -216,6 +225,45 @@ const Login = ({ mode = 'default' }) => {
                         autoComplete="current-password"
                       />
                     </div>
+                    <div className="form-group">
+                      <label htmlFor="mobile">Mobile (optional, for OTP)</label>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <input
+                          type="tel"
+                          id="mobile"
+                          value={mobile}
+                          onChange={(e) => setMobile(e.target.value)}
+                          placeholder="+1234567890"
+                          disabled={loading}
+                          className="form-input"
+                          style={{ flex: 1 }}
+                        />
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          size="small"
+                          onClick={handleSendOtp}
+                          disabled={otpSending || !mobile.trim()}
+                        >
+                          {otpSending ? 'Sending…' : 'Send OTP'}
+                        </Button>
+                      </div>
+                    </div>
+                    {otpSent && (
+                      <div className="form-group">
+                        <label htmlFor="otp">OTP code</label>
+                        <input
+                          type="text"
+                          id="otp"
+                          value={otpCode}
+                          onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                          placeholder="000000"
+                          maxLength={6}
+                          disabled={loading}
+                          className="form-input"
+                        />
+                      </div>
+                    )}
                     <Button
                       type="submit"
                       variant="primary"
@@ -226,24 +274,6 @@ const Login = ({ mode = 'default' }) => {
                       {loading ? 'Signing in...' : 'Sign In'}
                     </Button>
                   </form>
-
-                  <div className="auth-quick-logins">
-                    <p>Select a role to pre-fill credentials</p>
-                    <div className="auth-quick-grid">
-                      {QUICK_LOGINS.filter(
-                        (entry) => mode !== 'pentester' || entry.role === 'pentester'
-                      ).map((entry) => (
-                        <button
-                          key={entry.role}
-                          type="button"
-                          className="auth-quick-item"
-                          onClick={() => handleQuickLogin(entry)}
-                        >
-                          {entry.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </>
               )}
 

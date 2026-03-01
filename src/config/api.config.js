@@ -90,7 +90,8 @@ const DEFAULT_API_ENDPOINTS = {
     GET: '/profile',
     UPDATE: '/profile',
     DELETE: '/profile',
-    AVATAR: '/profile/avatar'
+    AVATAR: '/profile/avatar',
+    PASSWORD: '/profile/password'
   },
 
   // Dashboard

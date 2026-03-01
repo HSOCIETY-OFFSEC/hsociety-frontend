@@ -45,6 +45,17 @@ export const AuthProvider = ({ children }) => {
       const session = sessionManager.getSession();
       
       if (session && session.token && session.user) {
+        // SECURITY UPDATE IMPLEMENTED: Block access until password meets strength (mustChangePassword)
+        if (session.user?.mustChangePassword) {
+          sessionManager.clearSession();
+          setUser(null);
+          setToken(null);
+          setIsAuthenticated(false);
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login?reason=password_required';
+          }
+          return;
+        }
         // Verify session is still valid
         const isValid = sessionManager.isSessionValid();
         

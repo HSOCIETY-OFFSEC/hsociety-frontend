@@ -8,12 +8,13 @@ import { apiClient } from '../../shared/services/api.client';
 import { validateEmail, validatePassword } from '../validation/input.validator';
 
 /**
- * Login with email and password
+ * Login with email and password; optional mobile OTP
  * @param {string} email - User email
  * @param {string} password - User password
- * @returns {Promise<Object>} - { success, user, token, refreshToken, twoFactorRequired, twoFactorToken, message }
+ * @param {Object} [otpOptions] - Optional { mobile, otp } for OTP verification
+ * @returns {Promise<Object>} - { success, user, token, refreshToken, twoFactorRequired, twoFactorToken, mustChangePassword, passwordChangeToken, message }
  */
-export const login = async (email, password) => {
+export const login = async (email, password, otpOptions = null) => {
   try {
     if (!validateEmail(email)) {
       throw new Error('Invalid email format');
@@ -23,10 +24,12 @@ export const login = async (email, password) => {
       throw new Error('Password must be at least 6 characters');
     }
 
-    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, {
-      email,
-      password
-    });
+    const body = { email, password };
+    if (otpOptions?.mobile && otpOptions?.otp) {
+      body.mobile = otpOptions.mobile;
+      body.otp = otpOptions.otp;
+    }
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, body);
 
     if (!response.success) {
       return {
@@ -44,6 +47,16 @@ export const login = async (email, password) => {
         twoFactorToken: data.twoFactorToken,
         user: data.user,
         message: 'Two-factor verification required'
+      };
+    }
+    // SECURITY UPDATE IMPLEMENTED: Force password change for weak passwords
+    if (data.mustChangePassword && data.passwordChangeToken) {
+      return {
+        success: true,
+        mustChangePassword: true,
+        passwordChangeToken: data.passwordChangeToken,
+        user: data.user,
+        message: 'Password update required'
       };
     }
 

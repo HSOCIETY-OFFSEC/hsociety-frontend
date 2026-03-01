@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { FiActivity, FiClipboard, FiHome, FiSettings, FiShield, FiUsers, FiWifi } from 'react-icons/fi';
+import { FiActivity, FiClipboard, FiHome, FiMenu, FiSettings, FiShield, FiUsers, FiWifi, FiX } from 'react-icons/fi';
 import '../../../styles/dashboards/admin/index.css';
 
 const navItems = [
@@ -15,13 +15,54 @@ const navItems = [
 ];
 
 const AdminLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setSidebarOpen(false);
+    document.body.classList.toggle('admin-sidebar-open', sidebarOpen);
+    return () => document.body.classList.remove('admin-sidebar-open');
+  }, [sidebarOpen]);
+
   return (
     <div className="admin-shell">
-      <aside className="admin-sidebar" aria-label="Admin navigation">
+      <header className="admin-mobile-header" aria-label="Admin mobile navigation">
+        <button
+          type="button"
+          className="admin-mobile-menu-btn"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open admin menu"
+        >
+          <FiMenu size={22} />
+          <span>Menu</span>
+        </button>
+        <span className="admin-mobile-header-title">Admin Console</span>
+      </header>
+
+      <div
+        className={`admin-sidebar-overlay ${sidebarOpen ? 'open' : ''}`}
+        onClick={() => setSidebarOpen(false)}
+        onKeyDown={(e) => e.key === 'Escape' && setSidebarOpen(false)}
+        aria-hidden="true"
+        role="presentation"
+      />
+
+      <aside
+        className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}
+        aria-label="Admin navigation"
+        aria-hidden={!sidebarOpen}
+      >
         <div className="admin-sidebar-brand">
           <span>HSOCIETY</span>
           <strong>Admin Console</strong>
         </div>
+        <button
+          type="button"
+          className="admin-sidebar-close"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close admin menu"
+        >
+          <FiX size={20} />
+        </button>
         <nav className="admin-sidebar-nav">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -33,6 +74,7 @@ const AdminLayout = () => {
                 className={({ isActive }) =>
                   `admin-sidebar-link ${isActive ? 'active' : ''}`
                 }
+                onClick={() => setSidebarOpen(false)}
               >
                 <Icon size={16} />
                 {item.label}

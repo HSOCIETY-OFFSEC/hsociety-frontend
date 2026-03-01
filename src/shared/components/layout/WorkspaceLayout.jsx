@@ -280,7 +280,7 @@ const WorkspaceLayout = () => {
           </div>
         </header>
 
-      {!isCommunity && (
+      {!isCommunity && showSidebar && (
         <>
           <button
             type="button"

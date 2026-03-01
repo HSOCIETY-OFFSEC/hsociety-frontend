@@ -149,20 +149,62 @@
   background: rgba(255, 90, 90, 0.05);
 }
 
-.account-danger-header {
+.account-danger-header,
+.account-section-header {
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.2rem;
 }
 
-.account-danger-header h2 {
+.account-danger-header h2,
+.account-section-header h2 {
   margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
-.account-danger-header p {
+.account-danger-header p,
+.account-section-header p {
   color: var(--text-secondary);
   margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.account-section-header svg {
+  flex-shrink: 0;
+  color: var(--primary-color);
+  margin-top: 0.15rem;
+}
+
+.account-password-card {
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+}
+
+.account-password-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.account-password-fields .account-field .account-input {
+  width: 100%;
+  max-width: 320px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9375rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.account-password-fields .account-field .account-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-alpha);
 }
 
 .account-delete-controls {

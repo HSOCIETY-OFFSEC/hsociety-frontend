@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { FiAlertTriangle, FiTrash2 } from 'react-icons/fi';
+import { FiAlertTriangle, FiLock, FiTrash2 } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
-import { deleteAccount, removeAvatar, updateAvatar, updateProfile } from './account.service';
+import { validatePassword } from '../../core/validation/input.validator';
+import { deleteAccount, removeAvatar, updateAvatar, updateProfile, changePassword as changePasswordService } from './account.service';
 import '../../styles/sections/account/index.css';
 
 const AccountSettings = () => {
@@ -17,6 +18,10 @@ const AccountSettings = () => {
   const [avatarRemoving, setAvatarRemoving] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatarUrl || '');
   const [avatarFileName, setAvatarFileName] = useState('');
+  const [passwordSaving, setPasswordSaving] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [profile, setProfile] = useState({
     name: user?.name || '',
     organization: user?.organization || '',
@@ -82,6 +87,30 @@ const AccountSettings = () => {
       setError(response.error || 'Failed to remove avatar');
     }
     setAvatarRemoving(false);
+  };
+
+  // SECURITY UPDATE IMPLEMENTED: Change password with strong validation
+  const handleChangePassword = async () => {
+    setError('');
+    const validation = validatePassword(newPassword);
+    if (!validation.isValid) {
+      setError(validation.errors[0]);
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError('New passwords do not match');
+      return;
+    }
+    setPasswordSaving(true);
+    const response = await changePasswordService(currentPassword, newPassword);
+    if (response.success) {
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } else {
+      setError(response.error || 'Failed to change password');
+    }
+    setPasswordSaving(false);
   };
 
   const handleDelete = async () => {
@@ -217,6 +246,61 @@ const AccountSettings = () => {
             disabled={profileSaving}
           >
             {profileSaving ? 'Saving...' : 'Save Profile'}
+          </Button>
+        </div>
+      </Card>
+
+      <Card padding="large" className="account-card account-password-card">
+        <div className="account-section-header">
+          <FiLock size={20} />
+          <div>
+            <h2>Change Password</h2>
+            <p>Use at least 8 characters with uppercase, lowercase, a number, and a special character.</p>
+          </div>
+        </div>
+        <div className="account-info account-password-fields">
+          <div className="account-field">
+            <span className="account-label">Current password</span>
+            <input
+              type="password"
+              className="account-input"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+          </div>
+          <div className="account-field">
+            <span className="account-label">New password</span>
+            <input
+              type="password"
+              className="account-input"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="new-password"
+            />
+          </div>
+          <div className="account-field">
+            <span className="account-label">Confirm new password</span>
+            <input
+              type="password"
+              className="account-input"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="new-password"
+            />
+          </div>
+        </div>
+        <div className="account-actions">
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={handleChangePassword}
+            disabled={passwordSaving || !currentPassword || !newPassword || !confirmPassword}
+          >
+            {passwordSaving ? 'Updating...' : 'Update Password'}
           </Button>
         </div>
       </Card>

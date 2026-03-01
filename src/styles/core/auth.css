@@ -41,6 +41,13 @@
   padding: 2rem 2rem;
 }
 
+/* Single column for change-password / minimal auth flows */
+.auth-split--single {
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
 .auth-panel {
   display: flex;
   flex-direction: column;
