@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Logo from '../../../shared/components/common/Logo';
@@ -10,6 +10,8 @@ import '../../../styles/landing/services.css';
 const ServicesSection = ({ services = [] }) => {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
+  const trackRef = useRef(null);
+  const slideRefs = useRef([]);
 
   const touchStartX = useRef(null);
   const touchEndX = useRef(null);
@@ -22,20 +24,44 @@ const ServicesSection = ({ services = [] }) => {
     touchStartX.current = e.changedTouches[0].clientX;
     touchEndX.current = null;
   };
-
   const onTouchMove = (e) => {
     touchEndX.current = e.changedTouches[0].clientX;
   };
-
   const onTouchEnd = () => {
     if (touchStartX.current === null || touchEndX.current === null) return;
     const delta = touchStartX.current - touchEndX.current;
-    if (Math.abs(delta) >= SWIPE_THRESHOLD) {
-      delta > 0 ? next() : prev();
-    }
+    if (Math.abs(delta) >= SWIPE_THRESHOLD) delta > 0 ? next() : prev();
     touchStartX.current = null;
     touchEndX.current = null;
   };
+
+  /* ── Dynamic track height ─────────────────────────────
+     Measure the active slide's card height and set the
+     track to match. This means the button is never
+     clipped regardless of screen size.
+  ──────────────────────────────────────────────────── */
+  const syncHeight = useCallback(() => {
+    const activeSlide = slideRefs.current[activeIndex];
+    const track = trackRef.current;
+    if (!activeSlide || !track) return;
+
+    // Temporarily make it visible so we can measure it
+    const card = activeSlide.querySelector('.service-card');
+    if (!card) return;
+
+    const height = card.scrollHeight;
+    track.style.height = `${height}px`;
+  }, [activeIndex]);
+
+  useEffect(() => {
+    syncHeight();
+    // Re-measure on resize (font loading, window resize, etc.)
+    const ro = new ResizeObserver(syncHeight);
+    if (slideRefs.current[activeIndex]) {
+      ro.observe(slideRefs.current[activeIndex]);
+    }
+    return () => ro.disconnect();
+  }, [activeIndex, syncHeight]);
 
   return (
     <section className="services-section reveal-on-scroll" id="services">
@@ -64,6 +90,7 @@ const ServicesSection = ({ services = [] }) => {
 
           <div
             className="carousel-track"
+            ref={trackRef}
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -73,6 +100,7 @@ const ServicesSection = ({ services = [] }) => {
               return (
                 <div
                   key={service.title}
+                  ref={(el) => (slideRefs.current[index] = el)}
                   className={[
                     'carousel-slide',
                     offset === 0 && 'is-active',
@@ -89,16 +117,13 @@ const ServicesSection = ({ services = [] }) => {
                     padding="none"
                     className={`service-card service-card-${index + 1}`}
                   >
-                    {/* Full-width image banner */}
                     {service.image && (
                       <div className="service-card-image">
                         <img src={service.image} alt={service.title} loading="lazy" />
                       </div>
                     )}
 
-                    {/* Card body — all text content lives here */}
                     <div className="service-card-body">
-
                       <div className="service-card-header">
                         <div className="service-icon">
                           <service.icon size={26} />
@@ -123,8 +148,8 @@ const ServicesSection = ({ services = [] }) => {
                         variant="card"
                         size="small"
                         fullWidth
-                        style={{ marginTop: 'auto' }}
-                      onClick={() => navigate(`/services/${slugify(service.title)}`)}
+                        className="service-learn-btn"
+                        onClick={() => navigate(`/services/${slugify(service.title)}`)}
                       >
                         Learn More{' '}
                         <FiArrowRight className="service-btn-arrow" size={16} />
@@ -146,7 +171,6 @@ const ServicesSection = ({ services = [] }) => {
 
         </div>
 
-        {/* Dot indicators */}
         <div className="carousel-dots">
           {services.map((_, i) => (
             <button
