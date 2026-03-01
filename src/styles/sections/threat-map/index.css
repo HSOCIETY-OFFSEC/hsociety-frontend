@@ -1,0 +1,333 @@
+/**
+ * Threat Map Page Styles
+ * Location: src/styles/sections/threat-map/index.css
+ */
+
+/* ========================================
+   PAGE SHELL
+   ======================================== */
+
+.threat-map-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle teal grid background */
+.threat-map-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(45, 212, 191, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========================================
+   HEADER SHELL
+   ======================================== */
+
+.threat-map-header {
+  position: relative;
+  z-index: 10;
+  padding: 2rem 2.5rem 1.75rem;
+  border-bottom: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-secondary) 92%, transparent);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+}
+
+/* Glowing teal top border accent */
+.threat-map-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-color) 30%,
+    rgba(45, 212, 191, 0.4) 60%,
+    transparent 100%
+  );
+}
+
+/* Ambient glow behind the header */
+.threat-map-header::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 10%;
+  width: 40%;
+  height: 120px;
+  background: radial-gradient(ellipse, rgba(45, 212, 191, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ========================================
+   HEADER INNER — eyebrow row
+   ======================================== */
+
+.threat-map-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+/* ========================================
+   EYEBROW  (logo + label + live dot)
+   ======================================== */
+
+.threat-map-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.threat-map-eyebrow-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-tertiary);
+}
+
+/* ========================================
+   LIVE / PAUSED STATUS
+   ======================================== */
+
+.threat-map-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.threat-map-status-dot.is-live {
+  background: var(--primary-color);
+  box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.5);
+  animation: status-pulse 1.8s ease-out infinite;
+}
+
+.threat-map-status-dot.is-paused {
+  background: var(--text-tertiary);
+  animation: none;
+}
+
+@keyframes status-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(45, 212, 191, 0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(45, 212, 191, 0); }
+  100% { box-shadow: 0 0 0 0   rgba(45, 212, 191, 0); }
+}
+
+.threat-map-status-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--primary-color);
+}
+
+/* ========================================
+   PAUSE / RESUME BUTTON
+   ======================================== */
+
+.threat-map-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.threat-map-pause-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 80%, transparent);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.threat-map-pause-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: var(--primary-color-alpha);
+  box-shadow: 0 0 12px -4px rgba(45, 212, 191, 0.3);
+}
+
+.threat-map-pause-btn.is-paused {
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+  color: var(--primary-color);
+  background: var(--primary-color-alpha);
+}
+
+/* ========================================
+   TITLE ROW
+   ======================================== */
+
+.threat-map-title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.threat-map-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.threat-map-title-accent {
+  color: var(--primary-color);
+  position: relative;
+}
+
+/* Underline glow on accent word */
+.threat-map-title-accent::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), transparent);
+  border-radius: 1px;
+  opacity: 0.6;
+}
+
+.threat-map-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
+  margin: 0;
+  max-width: 420px;
+  line-height: 1.65;
+  text-align: right;
+}
+
+/* ========================================
+   BODY — map + sidebar
+   ======================================== */
+
+.threat-map-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  min-height: 520px;
+}
+
+.threat-map-globe-wrap {
+  position: relative;
+  border-right: 1px solid var(--border-color);
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.threat-map-sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+/* ========================================
+   FOOTER DISCLAIMER
+   ======================================== */
+
+.threat-map-footer {
+  position: relative;
+  z-index: 2;
+  padding: 0.75rem 2.5rem;
+  border-top: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.threat-map-disclaimer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .threat-map-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 420px 1fr;
+  }
+
+  .threat-map-globe-wrap {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    min-height: 420px;
+  }
+
+  .threat-map-sidebar {
+    max-height: 360px;
+  }
+
+  .threat-map-subtitle {
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  .threat-map-header {
+    padding: 1.25rem 1rem 1.25rem;
+  }
+
+  .threat-map-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .threat-map-subtitle {
+    text-align: left;
+    font-size: 0.83rem;
+  }
+
+  .threat-map-body {
+    grid-template-rows: 300px 1fr;
+  }
+
+  .threat-map-globe-wrap {
+    min-height: 300px;
+  }
+
+  .threat-map-footer {
+    padding: 0.65rem 1rem;
+  }
+}

@@ -1,0 +1,292 @@
+/**
+ * Threat Log Styles
+ * Location: src/styles/sections/threat-map/log.css
+ */
+
+/* ========================================
+   LOG SHELL
+   ======================================== */
+
+.threat-log {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.threat-log-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.threat-log-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+}
+
+.threat-log-title-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  box-shadow: 0 0 6px var(--primary-color);
+  animation: log-dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes log-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+.threat-log-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.06em;
+}
+
+/* ========================================
+   EMPTY STATE
+   ======================================== */
+
+.threat-log-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  padding: 2rem;
+}
+
+.threat-log-empty-icon {
+  font-size: 1.8rem;
+  opacity: 0.3;
+  animation: hex-spin 4s linear infinite;
+}
+
+@keyframes hex-spin {
+  0%   { transform: rotate(0deg)   scale(1);    opacity: 0.3; }
+  50%  { transform: rotate(180deg) scale(1.15); opacity: 0.6; }
+  100% { transform: rotate(360deg) scale(1);    opacity: 0.3; }
+}
+
+/* ========================================
+   LIST
+   ======================================== */
+
+.threat-log-list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.threat-log-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.threat-log-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.threat-log-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+/* ========================================
+   LIST ITEM
+   ======================================== */
+
+.threat-log-item {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.2s ease;
+  cursor: default;
+}
+
+.threat-log-item:hover {
+  background: color-mix(in srgb, var(--primary-color-alpha) 60%, transparent);
+}
+
+/* Flash animation on newest entry */
+.threat-log-item.is-new {
+  animation: log-flash 0.5s ease-out forwards;
+}
+
+@keyframes log-flash {
+  0%   { background: color-mix(in srgb, var(--primary-color) 12%, transparent); }
+  100% { background: transparent; }
+}
+
+/* Left accent bar */
+.threat-log-accent {
+  width: 3px;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ========================================
+   ITEM BODY
+   ======================================== */
+
+.threat-log-item-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.7rem 1rem;
+  min-width: 0;
+}
+
+/* Top row */
+.threat-log-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.threat-log-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.threat-log-severity {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ========================================
+   ROUTE  src ──▶ dst
+   ======================================== */
+
+.threat-log-route {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  overflow: hidden;
+}
+
+.threat-log-city {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90px;
+}
+
+.threat-log-city--src {
+  color: var(--text-secondary);
+}
+
+.threat-log-city--dst {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.threat-log-arrow {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  letter-spacing: -0.04em;
+}
+
+/* ========================================
+   TIMESTAMP
+   ======================================== */
+
+.threat-log-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+/* ========================================
+   SEVERITY TINTS — subtle row bg per level
+   ======================================== */
+
+.threat-log-item.sev-critical:hover {
+  background: rgba(255, 45,  85,  0.06);
+}
+
+.threat-log-item.sev-high:hover {
+  background: rgba(255, 107, 0,   0.06);
+}
+
+.threat-log-item.sev-medium:hover {
+  background: rgba(255, 214, 10,  0.05);
+}
+
+.threat-log-item.sev-low:hover {
+  background: rgba(45,  212, 191, 0.06);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .threat-log {
+    max-height: 360px;
+  }
+}
+
+@media (max-width: 640px) {
+  .threat-log-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .threat-log-item-body {
+    padding: 0.6rem 0.85rem;
+  }
+
+  .threat-log-type {
+    font-size: 0.7rem;
+  }
+
+  .threat-log-city {
+    max-width: 70px;
+  }
+}

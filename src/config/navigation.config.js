@@ -17,7 +17,8 @@ import {
   FiCode,
   FiBookOpen,
   FiLayers,
-  FiTerminal
+  FiTerminal,
+  FiGlobe
 } from 'react-icons/fi';
 import { FiCpu } from 'react-icons/fi';
 
@@ -63,7 +64,8 @@ export const NAV_LINKS = {
   public: [
     { path: '/', label: 'Home', icon: FiShield },
     { path: '/services', label: 'Services', icon: FiTool },
-    { path: '/about', label: 'About', icon: FiUsers }
+    { path: '/about', label: 'About', icon: FiUsers },
+    { path: '/threat-map', label: 'Threat Map', icon: FiGlobe }
   ],
 
   /** Desktop quick links when authenticated */
@@ -78,7 +80,8 @@ export const NAV_LINKS = {
       { path: '/billing', label: 'Billing', icon: FiCreditCard },
       { path: '/about', label: 'About Us', icon: FiUsers },
       { path: '/team', label: 'Meet the Team', icon: FiUsers },
-      { path: '/developer', label: 'Meet the Developer', icon: FiCode }
+      { path: '/developer', label: 'Meet the Developer', icon: FiCode },
+      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe }
     ],
     pentester: [
       { path: '/', label: 'Home', icon: FiShield },
@@ -86,12 +89,14 @@ export const NAV_LINKS = {
       { path: '/pentester/engagements', label: 'Engagements', icon: FiShield },
       { path: '/pentester/reports', label: 'Reports', icon: FiFileText },
       { path: '/pentester/profiles', label: 'Pentester Profiles', icon: FiUsers },
-      { path: '/settings', label: 'Settings', icon: FiUsers }
+      { path: '/settings', label: 'Settings', icon: FiUsers },
+      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe }
     ],
     admin: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
-      { path: '/settings', label: 'Settings', icon: FiUsers }
+      { path: '/settings', label: 'Settings', icon: FiUsers },
+      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe }
     ],
     student: [
       { path: '/', label: 'Home', icon: FiShield },
@@ -101,7 +106,8 @@ export const NAV_LINKS = {
       { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle, group: 'bootcamp' },
       { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers, group: 'bootcamp' },
       { path: '/student-payments', label: 'Payments', icon: FiCreditCard, group: 'bootcamp' },
-      { path: '/settings', label: 'Settings', icon: FiUsers }
+      { path: '/settings', label: 'Settings', icon: FiUsers },
+      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe }
     ]
   },
 
@@ -110,7 +116,8 @@ export const NAV_LINKS = {
     { path: '/', label: 'Home', icon: FiShield },
     { path: '/services', label: 'Services', icon: FiTool },
     { path: '/about', label: 'About', icon: FiUsers },
-    { path: '/careers', label: 'Careers', icon: FiBriefcase }
+    { path: '/careers', label: 'Careers', icon: FiBriefcase },
+    { path: '/threat-map', label: 'Threat Map', icon: FiGlobe }
   ]
 };
 
