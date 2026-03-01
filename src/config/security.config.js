@@ -274,11 +274,13 @@ export const CSP_CONFIG = {
   
   directives: {
     'default-src': ["'self'"],
-    'script-src': ["'self'", "'unsafe-inline'"], // TODO: Remove unsafe-inline in production
-    'style-src': ["'self'", "'unsafe-inline'"],
+    'script-src': ["'self'", "'unsafe-inline'", 'https://js.paystack.co'], // TODO: Remove unsafe-inline in production
+    'script-src-elem': ["'self'", 'https://js.paystack.co'],
+    'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+    'style-src-elem': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
     'img-src': ["'self'", 'data:', 'https:'],
-    'font-src': ["'self'", 'data:'],
-    'connect-src': ["'self'", envConfig.api.baseURL],
+    'font-src': ["'self'", 'data:', 'https://fonts.gstatic.com'],
+    'connect-src': ["'self'", 'https:', 'wss:', 'https://localhost:*', 'https://hsociety-backend.onrender.com', envConfig.api.baseURL],
     'frame-src': ["'none'"],
     'object-src': ["'none'"],
     'base-uri': ["'self'"],
