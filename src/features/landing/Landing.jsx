@@ -41,9 +41,9 @@ import {
   FiMessageSquare 
 } from 'react-icons/fi';
 
-import terminalWallpaper from '../../assets/brand-images/terminalwallpaper.png';
-import greenBinaryWallpaper from '../../assets/backgrounds/greenbinarywallaper.png';
-import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.png';
+import terminalWallpaper from '../../assets/services_images/begginner_offsec_training.png';
+import greenBinaryWallpaper from '../../assets/services_images/community_integration.png';
+import hackerLaptop from '../../assets/services_images/Penetration_tests.png';
 import handsOnLearningImage from '../../assets/why-choos-hsociety-images/hands-on-learning.png';
 import communityEngagementsImage from '../../assets/why-choos-hsociety-images/community-engagments.png';
 import supervisedPentestsImage from '../../assets/why-choos-hsociety-images/supervised-pentests.png';

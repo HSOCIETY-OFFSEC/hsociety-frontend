@@ -20,9 +20,9 @@ import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import useRequestPentest from '../../shared/hooks/useRequestPentest';
 import { slugify } from '../../shared/utils/slugify';
-import terminalWallpaper from '../../assets/brand-images/terminalwallpaper.png';
-import greenBinaryWallpaper from '../../assets/backgrounds/greenbinarywallaper.png';
-import hackerLaptop from '../../assets/backgrounds/hacker_laptop_with_stckers.png';
+import terminalWallpaper from '../../assets/services_images/begginner_offsec_training.png';
+import greenBinaryWallpaper from '../../assets/services_images/community_integration.png';
+import hackerLaptop from '../../assets/services_images/Penetration_tests.png';
 import '../../styles/sections/services/index.css';
 
 const Services = () => {
