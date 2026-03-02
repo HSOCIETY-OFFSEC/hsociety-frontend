@@ -9,6 +9,12 @@
   gap: 8px;
 }
 
+/* Keep clear of the workspace FAB on dashboard layouts */
+.workspace-layout .floating-update {
+  right: 1.5rem;
+  bottom: 5rem;
+}
+
 .floating-update-status {
   font-size: 0.75rem;
   color: var(--text-secondary);
@@ -36,5 +42,10 @@
   .floating-update {
     right: 12px;
     bottom: 12px;
+  }
+
+  .workspace-layout .floating-update {
+    right: 1rem;
+    bottom: 5rem;
   }
 }

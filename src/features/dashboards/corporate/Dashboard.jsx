@@ -16,6 +16,10 @@ const Dashboard = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Debug: verify the corporate dashboard is mounting in the browser.
+    // This helps diagnose cases where only the nav + sidebar are visible.
+    // eslint-disable-next-line no-console
+    console.log('[CorporateDashboard] mounted');
     loadDashboardData();
   }, []);
 
@@ -100,6 +104,10 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
+      {/* Lightweight debug marker so it's obvious when the dashboard is rendering */}
+      <div className="dashboard-debug-banner">
+        Corporate dashboard workspace
+      </div>
       <div className="dashboard-wrapper dashboard-shell">
         <div className="dashboard-header dashboard-shell-header reveal-on-scroll dramatic-header">
           <div>

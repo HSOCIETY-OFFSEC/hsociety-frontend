@@ -55,3 +55,18 @@
   max-width: 460px;
   margin: 0;
 }
+
+/* Temporary debug banner to ensure the corporate dashboard area is visible */
+.dashboard-debug-banner {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--primary-color) 14%, var(--card-bg));
+  border: 1px dashed color-mix(in srgb, var(--primary-color) 45%, var(--border-color));
+}

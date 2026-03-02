@@ -36,7 +36,7 @@ const CommunityHub = () => {
   const navigate = useNavigate();
 
   const role = useMemo(() => {
-    if (user?.role === 'client') return 'corporate';
+    if (user?.role === 'client' || user?.role === 'admin') return 'corporate';
     return user?.role || 'student';
   }, [user?.role]);
 
@@ -84,7 +84,18 @@ const CommunityHub = () => {
     socket.on('disconnect', () => setConnected(false));
     socket.on('receiveMessage', (message) => {
       if (message.room !== room) return;
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev) => {
+        // If this is a server-confirmed version of an optimistic message, replace it.
+        if (message.tempId) {
+          const index = prev.findIndex((item) => item.id === message.tempId);
+          if (index >= 0) {
+            const next = [...prev];
+            next[index] = message;
+            return next;
+          }
+        }
+        return [...prev, message];
+      });
     });
     socket.on('messageLiked', (payload) => {
       if (payload.room !== room) return;
@@ -181,11 +192,88 @@ const CommunityHub = () => {
   const sendMessage = () => {
     const content = draft.trim();
     const imagePayload = imageUrl;
-    if ((!content && !imagePayload) || !socketRef.current) return;
-    socketRef.current.emit('sendMessage', { room, content, imageUrl: imagePayload });
+    const socket = socketRef.current;
+    if ((!content && !imagePayload) || !socket) return;
+
+    const tempId = `temp-${Date.now()}`;
+
+    // Optimistically add the message so the sender sees it immediately.
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: tempId,
+        tempId,
+        userId: user?.id || '',
+        username: currentUsername,
+        hackerHandle: user?.hackerHandle || '',
+        userRole: role,
+        userAvatar: currentUserAvatar,
+        room,
+        content,
+        imageUrl: imagePayload,
+        likes: 0,
+        likedBy: [],
+        pinned: false,
+        comments: [],
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+
+    socket.emit('sendMessage', { room, content, imageUrl: imagePayload, tempId });
+
     setDraft('');
     setImageUrl('');
     setImageError('');
+  };
+
+  const isOwn = (msg) => msg.userId === user?.id || msg.username === user?.username;
+  const currentUserId = user?.id;
+  const currentUsername = user?.name || user?.username || 'You';
+  const currentUserAvatar = getUserAvatar(user);
+  const currentUserAvatarFallback = getGithubAvatarDataUri(
+    user?.email || user?.name || user?.username || 'user'
+  );
+
+  const handleLike = (messageId) => {
+    if (!messageId) return;
+    if (currentUserId) {
+      setMessages((prev) =>
+        prev.map((item) => {
+          if (item.id !== messageId) return item;
+          const likedBy = Array.isArray(item.likedBy) ? [...item.likedBy] : [];
+          const alreadyLiked = likedBy.includes(currentUserId);
+          const nextLikedBy = alreadyLiked
+            ? likedBy.filter((id) => id !== currentUserId)
+            : [...likedBy, currentUserId];
+          const nextLikes = Math.max(0, Number(item.likes || 0) + (alreadyLiked ? -1 : 1));
+          return { ...item, likes: nextLikes, likedBy: nextLikedBy };
+        })
+      );
+    }
+
+    socketRef.current?.emit('likeMessage', { messageId });
+  };
+
+  const handleAddComment = (messageId, content) => {
+    if (!messageId || !content) return;
+    if (currentUserId) {
+      const tempComment = {
+        id: `temp-${Date.now()}`,
+        userId: currentUserId,
+        username: currentUsername,
+        content,
+        createdAt: new Date().toISOString(),
+      };
+      setMessages((prev) =>
+        prev.map((item) =>
+          item.id === messageId
+            ? { ...item, comments: [...(item.comments || []), tempComment] }
+            : item
+        )
+      );
+    }
+
+    socketRef.current?.emit('addComment', { messageId, content });
   };
 
   /* ── Room change ── */
@@ -219,14 +307,6 @@ const CommunityHub = () => {
       setRoom(activeChannels[0].id);
     }
   }, [activeChannels, room]);
-
-  const isOwn = (msg) => msg.userId === user?.id || msg.username === user?.username;
-  const currentUserId = user?.id;
-  const currentUsername = user?.name || user?.username || 'You';
-  const currentUserAvatar = getUserAvatar(user);
-  const currentUserAvatarFallback = getGithubAvatarDataUri(
-    user?.email || user?.name || user?.username || 'user'
-  );
 
   return (
     <div className="community-root">
@@ -384,44 +464,3 @@ const CommunityHub = () => {
 };
 
 export default CommunityHub;
-  const handleLike = (messageId) => {
-    if (!messageId) return;
-    if (currentUserId) {
-      setMessages((prev) =>
-        prev.map((item) => {
-          if (item.id !== messageId) return item;
-          const likedBy = Array.isArray(item.likedBy) ? [...item.likedBy] : [];
-          const alreadyLiked = likedBy.includes(currentUserId);
-          const nextLikedBy = alreadyLiked
-            ? likedBy.filter((id) => id !== currentUserId)
-            : [...likedBy, currentUserId];
-          const nextLikes = Math.max(0, Number(item.likes || 0) + (alreadyLiked ? -1 : 1));
-          return { ...item, likes: nextLikes, likedBy: nextLikedBy };
-        })
-      );
-    }
-
-    socketRef.current?.emit('likeMessage', { messageId });
-  };
-
-  const handleAddComment = (messageId, content) => {
-    if (!messageId || !content) return;
-    if (currentUserId) {
-      const tempComment = {
-        id: `temp-${Date.now()}`,
-        userId: currentUserId,
-        username: currentUsername,
-        content,
-        createdAt: new Date().toISOString(),
-      };
-      setMessages((prev) =>
-        prev.map((item) =>
-          item.id === messageId
-            ? { ...item, comments: [...(item.comments || []), tempComment] }
-            : item
-        )
-      );
-    }
-
-    socketRef.current?.emit('addComment', { messageId, content });
-  };
