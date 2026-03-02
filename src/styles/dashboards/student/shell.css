@@ -5,6 +5,7 @@
   gap: 1.25rem;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* ── Shell Header ───────────────────────────────────────────── */
@@ -14,9 +15,16 @@
   gap: 1.5rem;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+  width: 100%;
 }
 
+/* ── Kicker ─────────────────────────────────────────────────── */
 .dashboard-shell-kicker {
   display: inline-block;
   font-size: 0.7rem;
@@ -29,10 +37,12 @@
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background: var(--bg-secondary);
+  width: fit-content;
 }
 
+/* ── Title ──────────────────────────────────────────────────── */
 .dashboard-shell-title {
-  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  font-size: clamp(1.75rem, 3vw, 2.6rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -40,18 +50,115 @@
   margin: 0 0 0.5rem;
 }
 
+/* ── Subtitle ───────────────────────────────────────────────── */
 .dashboard-shell-subtitle {
   color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.65;
-  max-width: 460px;
+  max-width: 480px;
   margin: 0;
 }
 
+/* ── Actions ────────────────────────────────────────────────── */
 .dashboard-shell-actions {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
   align-items: flex-start;
   flex-shrink: 0;
+}
+
+.dashboard-shell-actions > * {
+  min-height: 44px;
+}
+
+/* ── Text block inside header ───────────────────────────────── */
+.dashboard-shell-header > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Tablet ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dashboard-shell-header {
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.35rem 1.35rem;
+    align-items: flex-start;
+  }
+
+  .dashboard-shell-title {
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    margin-bottom: 0.45rem;
+  }
+
+  .dashboard-shell-subtitle {
+    font-size: 0.92rem;
+    max-width: 100%;
+  }
+
+  .dashboard-shell-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .dashboard-shell-actions > * {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .dashboard-shell {
+    gap: 1rem;
+  }
+
+  .dashboard-shell-header {
+    padding: 1.25rem 1.1rem;
+    gap: 1rem;
+    border-radius: 14px;
+  }
+
+  .dashboard-shell-kicker {
+    font-size: 0.67rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .dashboard-shell-title {
+    font-size: 1.65rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .dashboard-shell-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .dashboard-shell-actions {
+    gap: 0.6rem;
+  }
+
+  .dashboard-shell-actions > * {
+    min-height: 50px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Small mobile ───────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .dashboard-shell-header {
+    padding: 1.1rem 1rem;
+    border-radius: 12px;
+  }
+
+  .dashboard-shell-title {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-shell-subtitle {
+    font-size: 0.875rem;
+  }
 }
