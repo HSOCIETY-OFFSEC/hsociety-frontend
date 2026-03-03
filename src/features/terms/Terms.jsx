@@ -153,7 +153,6 @@ const Terms = () => {
       </header>
 
       {sections.map((section, index) => {
-        const isLast = index === sections.length - 1;
         const icon =
           index % 5 === 0 ? FiClipboard :
           index % 5 === 1 ? FiUsers :
@@ -161,13 +160,20 @@ const Terms = () => {
           index % 5 === 3 ? FiAlertCircle :
           FiFileText;
         const Icon = icon;
+        const isGoverningLaw = String(section.title || '').toLowerCase().includes('governing law');
         return (
-          <section key={`${section.title}-${index}`} className={`terms-section${isLast ? ' terms-section--last' : ''}`}>
+          <section key={`${section.title}-${index}`} className="terms-section">
             <h2>
               <Icon size={18} />
               {section.title}
             </h2>
-            {section.body && <p>{section.body}</p>}
+            {section.body && (
+              <p>
+                {isGoverningLaw
+                  ? section.body.replace('[Insert Jurisdiction]', terms.jurisdiction || FALLBACK_TERMS.jurisdiction)
+                  : section.body}
+              </p>
+            )}
             {Array.isArray(section.bullets) && section.bullets.length > 0 && (
               <ul className="terms-list">
                 {section.bullets.map((bullet, bulletIndex) => (

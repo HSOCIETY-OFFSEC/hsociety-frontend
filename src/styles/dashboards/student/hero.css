@@ -20,7 +20,6 @@
   box-sizing: border-box;
   width: 100%;
 }
-
 /* Radial glow */
 .student-hero::before {
   content: '';
@@ -35,7 +34,6 @@
   opacity: 0.85;
   pointer-events: none;
 }
-
 /* Shimmer line */
 .student-hero::after {
   content: '';
@@ -50,7 +48,6 @@
   opacity: 0.4;
   pointer-events: none;
 }
-
 /* ── Text block ─────────────────────────────────────────────── */
 /* This is the div that wraps kicker + title + subtitle */
 .student-hero > div:first-child {
@@ -62,7 +59,6 @@
   flex-direction: column;
   gap: 0;
 }
-
 /* ── Kicker ─────────────────────────────────────────────────── */
 .student-kicker {
   background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
@@ -70,7 +66,6 @@
   color: var(--text-tertiary);
   margin-bottom: 1rem;
 }
-
 /* ── Title ──────────────────────────────────────────────────── */
 .student-hero .dashboard-shell-title {
   position: relative;
@@ -78,7 +73,6 @@
   margin-top: 1rem;
   line-height: 1.15;
 }
-
 /* ── Subtitle ───────────────────────────────────────────────── */
 .student-hero .dashboard-shell-subtitle {
   position: relative;
@@ -88,7 +82,6 @@
   color: var(--text-secondary);
   font-size: 0.97rem;
 }
-
 /* ── Actions inside hero ────────────────────────────────────── */
 .student-hero .dashboard-shell-actions {
   position: relative;
@@ -99,12 +92,10 @@
   flex-direction: column;
   gap: 0.75rem;
 }
-
 .student-hero .dashboard-shell-actions > * {
   min-height: 44px;
   white-space: nowrap;
 }
-
 /* ── Desktop large ──────────────────────────────────────────── */
 @media (min-width: 1200px) {
   .student-hero {
@@ -112,18 +103,15 @@
     gap: 2.5rem;
   }
 }
-
 @media (min-width: 900px) {
   .student-hero {
     padding: 2rem 2.25rem;
     gap: 2rem;
   }
-
   .student-hero > div:first-child {
     max-width: 580px;
   }
 }
-
 /* ── Tablet ─────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .student-hero {
@@ -133,96 +121,79 @@
     gap: 0;
     border-radius: 16px;
   }
-
   .student-hero > div:first-child {
     max-width: 100%;
     width: 100%;
     margin-bottom: 1.5rem;
   }
-
   .student-kicker {
     margin-bottom: 0.9rem;
   }
-
   .student-hero .dashboard-shell-title {
     margin-bottom: 0.75rem;
   }
-
   .student-hero .dashboard-shell-actions {
     width: 100%;
     align-self: stretch;
     flex-direction: column;
     gap: 0.65rem;
   }
-
   .student-hero .dashboard-shell-actions > * {
     width: 100%;
     justify-content: center;
     min-height: 48px;
   }
 }
-
 /* ── Mobile ─────────────────────────────────────────────────── */
 @media (max-width: 480px) {
   .student-hero {
     padding: 1.5rem 1.25rem;
     border-radius: 14px;
   }
-
   .student-hero > div:first-child {
     margin-bottom: 1.35rem;
   }
-
   .student-kicker {
     margin-bottom: 0.85rem;
     font-size: 0.65rem;
   }
-
   .student-hero .dashboard-shell-title {
     font-size: clamp(1.55rem, 5.5vw, 1.9rem);
     margin-bottom: 0.7rem;
   }
-
   .student-hero .dashboard-shell-subtitle {
     font-size: 0.9rem;
     line-height: 1.65;
   }
-
   .student-hero .dashboard-shell-actions > * {
     min-height: 50px;
     font-size: 0.95rem;
   }
 }
-
 /* ── Small mobile ───────────────────────────────────────────── */
 @media (max-width: 360px) {
   .student-hero {
     padding: 1.25rem 1rem;
     border-radius: 12px;
   }
-
   .student-hero > div:first-child {
     margin-bottom: 1.25rem;
   }
-
   .student-kicker {
     margin-bottom: 0.75rem;
   }
-
   .student-hero .dashboard-shell-title {
     font-size: 1.5rem;
     margin-bottom: 0.6rem;
   }
-
   .student-hero .dashboard-shell-subtitle {
     font-size: 0.875rem;
   }
 }
-
 /* ── Reduced motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .student-hero::before,
   .student-hero::after {
     display: none;
   }
-}
+} 
