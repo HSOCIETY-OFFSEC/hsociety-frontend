@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ThreatGlobeInteractive from './components/ThreatGlobeInteractive';
 import ThreatStats from './components/ThreatStats';
 import ThreatLog from './components/ThreatLog';
@@ -8,6 +8,7 @@ import '../../styles/sections/threat-map/index.css';
 const ThreatMap = () => {
   const [attacks, setAttacks] = useState([]);
   const [paused, setPaused] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleNewAttack = useCallback((attack) => {
     setAttacks((prev) => [attack, ...prev.slice(0, 49)]);
@@ -20,6 +21,20 @@ const ThreatMap = () => {
     },
     { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 }
   );
+
+  useEffect(() => {
+    document.body.classList.toggle('workspace-lock-scroll', expanded);
+    return () => document.body.classList.remove('workspace-lock-scroll');
+  }, [expanded]);
+
+  useEffect(() => {
+    if (!expanded) return undefined;
+    const handleKey = (event) => {
+      if (event.key === 'Escape') setExpanded(false);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [expanded]);
 
   return (
     <div className="threat-map-page">
@@ -39,6 +54,12 @@ const ThreatMap = () => {
               onClick={() => setPaused((p) => !p)}
             >
               {paused ? '▶ Resume' : '⏸ Pause'}
+            </button>
+            <button
+              className="threat-map-expand-btn"
+              onClick={() => setExpanded(true)}
+            >
+              Open Fullscreen
             </button>
           </div>
         </div>
@@ -71,6 +92,29 @@ const ThreatMap = () => {
           ⚠ Simulated data for demonstration purposes only. Not sourced from live threat intelligence feeds.
         </span>
       </footer>
+
+      {expanded && (
+        <div
+          className="threat-map-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Threat map expanded view"
+          onClick={() => setExpanded(false)}
+        >
+          <div className="threat-map-modal-card" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="threat-map-modal-close"
+              onClick={() => setExpanded(false)}
+            >
+              Close
+            </button>
+            <div className="threat-map-modal-frame">
+              <ThreatGlobeInteractive paused={paused} onNewAttack={handleNewAttack} />
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

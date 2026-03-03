@@ -20,6 +20,12 @@ const AdminContent = () => {
     communitySubtitle: ''
   });
   const [posts, setPosts] = useState([emptyPost]);
+  const [terms, setTerms] = useState({
+    effectiveDate: '',
+    lastUpdated: '',
+    jurisdiction: '',
+    sections: [{ title: '', body: '', bullets: [] }]
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -38,6 +44,19 @@ const AdminContent = () => {
         });
         const existing = data.blog?.posts || [];
         setPosts(existing.length ? existing : [emptyPost]);
+        const existingTerms = data.terms || {};
+        setTerms({
+          effectiveDate: existingTerms.effectiveDate || '',
+          lastUpdated: existingTerms.lastUpdated || '',
+          jurisdiction: existingTerms.jurisdiction || '',
+          sections: Array.isArray(existingTerms.sections) && existingTerms.sections.length
+            ? existingTerms.sections.map((section) => ({
+                title: section.title || '',
+                body: section.body || '',
+                bullets: Array.isArray(section.bullets) ? section.bullets : []
+              }))
+            : [{ title: '', body: '', bullets: [] }]
+        });
       } else {
         setError(response.error || 'Failed to load content');
       }
@@ -61,6 +80,29 @@ const AdminContent = () => {
     setPosts((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const updateTermsSection = (index, field, value) => {
+    setTerms((prev) => ({
+      ...prev,
+      sections: prev.sections.map((section, i) =>
+        i === index ? { ...section, [field]: value } : section
+      )
+    }));
+  };
+
+  const addTermsSection = () => {
+    setTerms((prev) => ({
+      ...prev,
+      sections: [...prev.sections, { title: '', body: '', bullets: [] }]
+    }));
+  };
+
+  const removeTermsSection = (index) => {
+    setTerms((prev) => ({
+      ...prev,
+      sections: prev.sections.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError('');
@@ -74,6 +116,18 @@ const AdminContent = () => {
             summary: String(post.summary || '').trim()
           }))
           .filter((post) => post.title && post.summary)
+      },
+      terms: {
+        effectiveDate: terms.effectiveDate,
+        lastUpdated: terms.lastUpdated,
+        jurisdiction: terms.jurisdiction,
+        sections: terms.sections.map((section) => ({
+          title: String(section.title || '').trim(),
+          body: String(section.body || '').trim(),
+          bullets: Array.isArray(section.bullets)
+            ? section.bullets.map((item) => String(item || '').trim()).filter(Boolean)
+            : []
+        }))
       }
     };
 
@@ -191,6 +245,85 @@ const AdminContent = () => {
             <Button variant="secondary" size="small" onClick={addPost}>
               <FiPlus size={14} />
               Add Post
+            </Button>
+          </div>
+        </Card>
+
+        <Card className="admin-card" padding="medium">
+          <div className="admin-section-header">
+            <h2>Terms & Conditions</h2>
+            <p>Update the public terms page content.</p>
+          </div>
+          <div className="admin-stats-form">
+            <label>
+              Effective Date
+              <input
+                className="admin-input"
+                value={terms.effectiveDate}
+                onChange={(e) => setTerms((prev) => ({ ...prev, effectiveDate: e.target.value }))}
+              />
+            </label>
+            <label>
+              Last Updated
+              <input
+                className="admin-input"
+                value={terms.lastUpdated}
+                onChange={(e) => setTerms((prev) => ({ ...prev, lastUpdated: e.target.value }))}
+              />
+            </label>
+            <label>
+              Jurisdiction
+              <input
+                className="admin-input"
+                value={terms.jurisdiction}
+                onChange={(e) => setTerms((prev) => ({ ...prev, jurisdiction: e.target.value }))}
+              />
+            </label>
+          </div>
+
+          <div className="admin-content-posts">
+            {terms.sections.map((section, index) => (
+              <div className="admin-content-post" key={`terms-section-${index}`}>
+                <input
+                  className="admin-input"
+                  placeholder="Section title"
+                  value={section.title}
+                  onChange={(e) => updateTermsSection(index, 'title', e.target.value)}
+                />
+                <textarea
+                  className="admin-textarea"
+                  rows={3}
+                  placeholder="Section body"
+                  value={section.body}
+                  onChange={(e) => updateTermsSection(index, 'body', e.target.value)}
+                />
+                <textarea
+                  className="admin-textarea"
+                  rows={3}
+                  placeholder="Bullets (one per line)"
+                  value={(section.bullets || []).join('\n')}
+                  onChange={(e) =>
+                    updateTermsSection(
+                      index,
+                      'bullets',
+                      e.target.value.split('\n').map((item) => item.trim()).filter(Boolean)
+                    )
+                  }
+                />
+                <Button
+                  variant="ghost"
+                  size="small"
+                  onClick={() => removeTermsSection(index)}
+                  disabled={terms.sections.length <= 1}
+                >
+                  <FiTrash2 size={14} />
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <Button variant="secondary" size="small" onClick={addTermsSection}>
+              <FiPlus size={14} />
+              Add Section
             </Button>
           </div>
         </Card>

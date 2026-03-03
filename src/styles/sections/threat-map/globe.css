@@ -14,6 +14,7 @@
   min-height: 480px;
   background: var(--bg-primary);
   overflow: hidden;
+  transform-origin: center;
 }
 
 /* ========================================
@@ -35,7 +36,6 @@
   opacity: 0.85;
 }
 
-/* Light theme — lighter map tint */
 :root:not([data-theme="dark"]):not([data-theme="black"]) .threat-globe-map-bg {
   filter: invert(0) sepia(1) saturate(0.2) hue-rotate(140deg) brightness(0.55);
   opacity: 0.18;

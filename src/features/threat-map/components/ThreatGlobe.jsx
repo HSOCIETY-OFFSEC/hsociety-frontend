@@ -79,7 +79,7 @@ function pointOnQuad(ax, ay, cx, cy, bx, by, t) {
 
 /* ─── Component ─────────────────────────────────────────── */
 
-const ThreatGlobe = ({ paused, onNewAttack }) => {
+const ThreatGlobe = ({ paused, onNewAttack, zoom = 0.45 }) => {
   const svgRef      = useRef(null);
   const wrapRef     = useRef(null);
   const dimsRef     = useRef({ W: 900, H: 500 });
@@ -246,8 +246,10 @@ const ThreatGlobe = ({ paused, onNewAttack }) => {
     return () => clearInterval(spawnRef.current);
   }, [paused, spawnAttack]);
 
+  const scale = 1 + Math.max(0, Math.min(zoom, 1)) * 0.6;
+
   return (
-    <div className="threat-globe-wrap" ref={wrapRef}>
+    <div className="threat-globe-wrap" ref={wrapRef} style={{ transform: `scale(${scale})` }}>
 
       {/* World map image underneath */}
       <div className="threat-globe-map-bg" />

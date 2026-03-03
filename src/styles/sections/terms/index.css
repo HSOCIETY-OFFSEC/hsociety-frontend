@@ -83,6 +83,19 @@
   line-height: 1.75;
 }
 
+.terms-list {
+  margin: 0.8rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.terms-list li {
+  margin: 0;
+}
+
 .terms-section--last {
   border-bottom: 1px solid var(--border-color);
 }

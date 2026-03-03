@@ -1,0 +1,82 @@
+/**
+ * Threat Globe Controls
+ * Location: src/styles/sections/threat-map/controls.css
+ */
+
+.threat-globe-interactive {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.threat-globe-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.threat-globe-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.55rem;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
+  box-shadow: var(--shadow-sm);
+  z-index: 6;
+  backdrop-filter: blur(10px);
+}
+
+.threat-globe-btn {
+  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
+  background: color-mix(in srgb, var(--bg-primary) 75%, transparent);
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.6rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+  text-transform: uppercase;
+}
+
+.threat-globe-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18);
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+}
+
+.threat-globe-btn.is-ghost {
+  background: transparent;
+  border-style: dashed;
+}
+
+.threat-globe-hint {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  z-index: 6;
+}
+
+@media (max-width: 768px) {
+  .threat-globe-controls {
+    top: 12px;
+    right: 12px;
+  }
+
+  .threat-globe-hint {
+    left: 12px;
+    bottom: 12px;
+  }
+}

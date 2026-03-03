@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Stars, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import '../../../styles/sections/threat-map/globe-3d.css';
@@ -142,10 +142,12 @@ const AttackLayer = ({ attacks, theme }) => {
   );
 };
 
-const GlobeScene = ({ paused, onNewAttack, theme }) => {
+const GlobeScene = ({ paused, onNewAttack, theme, autoRotate, cameraDistance, resetSeed }) => {
   const attacksRef = useRef([]);
   const [tick, setTick] = useState(0);
   const lastTickRef = useRef(0);
+  const controlsRef = useRef(null);
+  const { camera } = useThree();
 
   useEffect(() => {
     if (paused) return undefined;
@@ -183,6 +185,18 @@ const GlobeScene = ({ paused, onNewAttack, theme }) => {
     return () => clearInterval(interval);
   }, [onNewAttack, paused]);
 
+  useEffect(() => {
+    if (!camera || !Number.isFinite(cameraDistance)) return;
+    camera.position.set(0, 0, cameraDistance);
+    camera.updateProjectionMatrix();
+    controlsRef.current?.update();
+  }, [camera, cameraDistance]);
+
+  useEffect(() => {
+    if (!controlsRef.current) return;
+    controlsRef.current.reset();
+  }, [resetSeed]);
+
   useFrame(({ clock }) => {
     if (paused) return;
     const now = clock.elapsedTime;
@@ -207,7 +221,7 @@ const GlobeScene = ({ paused, onNewAttack, theme }) => {
   return (
     <>
       <ambientLight intensity={theme === 'light' ? 0.5 : 0.2} />
-      <directionalLight position={[5, 2, 5]} intensity={theme === 'light' ? 0.9 : 1.2} />
+      <directionalLight position={[4, 2, 5]} intensity={theme === 'light' ? 0.7 : 1.1} />
       <hemisphereLight
         intensity={theme === 'light' ? 0.35 : 0.45}
         color={theme === 'light' ? '#ffffff' : '#4dd4ff'}
@@ -215,16 +229,17 @@ const GlobeScene = ({ paused, onNewAttack, theme }) => {
       />
       <Earth theme={theme} />
       <AttackLayer attacks={attacks} theme={theme} />
-      <Stars radius={50} depth={30} count={3000} factor={2} fade />
+      <Stars radius={40} depth={24} count={1200} factor={1.6} fade />
       <OrbitControls
+        ref={controlsRef}
         enablePan={false}
         enableZoom
         minDistance={2.2}
-        maxDistance={4.2}
+        maxDistance={4.6}
         rotateSpeed={0.6}
         zoomSpeed={0.8}
-        autoRotate={!paused}
-        autoRotateSpeed={0.25}
+        autoRotate={!paused && autoRotate}
+        autoRotateSpeed={0.2}
         enableDamping
         dampingFactor={0.08}
       />
@@ -232,8 +247,14 @@ const GlobeScene = ({ paused, onNewAttack, theme }) => {
   );
 };
 
-const ThreatGlobe3D = ({ paused, onNewAttack }) => {
+const ThreatGlobe3D = ({ paused, onNewAttack, zoom = 0.45, autoRotate = true, resetSeed = 0 }) => {
   const [theme, setTheme] = useState('dark');
+  const cameraDistance = useMemo(() => {
+    const clamped = Math.min(Math.max(zoom, 0), 1);
+    const min = 2.2;
+    const max = 4.6;
+    return max - (max - min) * clamped;
+  }, [zoom]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -249,10 +270,17 @@ const ThreatGlobe3D = ({ paused, onNewAttack }) => {
       <Canvas
         className="threat-globe-3d-canvas"
         dpr={[1, 1.6]}
-        camera={{ position: [0, 0, 3.2], fov: 45 }}
+        camera={{ position: [0, 0, cameraDistance], fov: 45 }}
       >
-        <color attach="background" args={[theme === 'light' ? '#f4f7fb' : '#05070d']} />
-        <GlobeScene paused={paused} onNewAttack={onNewAttack} theme={theme} />
+        <color attach="background" args={[theme === 'light' ? '#eef2f6' : '#060a10']} />
+        <GlobeScene
+          paused={paused}
+          onNewAttack={onNewAttack}
+          theme={theme}
+          autoRotate={autoRotate}
+          cameraDistance={cameraDistance}
+          resetSeed={resetSeed}
+        />
       </Canvas>
     </div>
   );

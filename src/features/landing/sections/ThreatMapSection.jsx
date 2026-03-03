@@ -1,9 +1,24 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ThreatGlobeInteractive from '../../threat-map/components/ThreatGlobeInteractive';
 import '../../../styles/landing/threat-map-section.css';
 
 const ThreatMapSection = () => {
   const handleAttack = useCallback(() => {}, []);
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle('workspace-lock-scroll', expanded);
+    return () => document.body.classList.remove('workspace-lock-scroll');
+  }, [expanded]);
+
+  useEffect(() => {
+    if (!expanded) return undefined;
+    const handleKey = (event) => {
+      if (event.key === 'Escape') setExpanded(false);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [expanded]);
 
   return (
     <section className="landing-threatmap">
@@ -24,8 +39,41 @@ const ThreatMapSection = () => {
           <div className="landing-threatmap-caption">
             Simulated data • Not a live threat intelligence feed
           </div>
+          <button
+            type="button"
+            className="landing-threatmap-open"
+            onClick={() => setExpanded(true)}
+          >
+            Open Fullscreen Globe
+          </button>
         </div>
       </div>
+
+      {expanded && (
+        <div
+          className="landing-threatmap-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Threat map expanded view"
+          onClick={() => setExpanded(false)}
+        >
+          <div
+            className="landing-threatmap-modal-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="landing-threatmap-modal-close"
+              onClick={() => setExpanded(false)}
+            >
+              Close
+            </button>
+            <div className="landing-threatmap-modal-frame">
+              <ThreatGlobeInteractive paused={false} onNewAttack={handleAttack} />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

@@ -238,6 +238,7 @@ const DEFAULT_API_ENDPOINTS = {
     SUBSCRIBE: '/public/subscribe',
     COMMUNITY_PROFILES: '/public/community-profiles',
     LANDING_CONTENT: '/public/content/landing',
+    TERMS_CONTENT: '/public/content/terms',
     BLOG_POSTS: '/public/blog-posts',
     SECURITY_EVENT: '/public/security-events',
   }
