@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import ThreatGlobe from '../../threat-map/components/ThreatGlobe';
+import ThreatGlobeInteractive from '../../threat-map/components/ThreatGlobeInteractive';
 import '../../../styles/landing/threat-map-section.css';
 
 const ThreatMapSection = () => {
@@ -19,7 +19,7 @@ const ThreatMapSection = () => {
         <div className="landing-threatmap-visual" aria-hidden="true">
           <div className="landing-threatmap-frame">
             <div className="landing-threatmap-overlay" />
-            <ThreatGlobe paused={false} onNewAttack={handleAttack} />
+            <ThreatGlobeInteractive paused={false} onNewAttack={handleAttack} />
           </div>
           <div className="landing-threatmap-caption">
             Simulated data • Not a live threat intelligence feed

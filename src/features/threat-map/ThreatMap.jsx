@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import ThreatGlobe from './components/ThreatGlobe';
+import ThreatGlobeInteractive from './components/ThreatGlobeInteractive';
 import ThreatStats from './components/ThreatStats';
 import ThreatLog from './components/ThreatLog';
 import Logo from '../../shared/components/common/Logo';
@@ -58,7 +58,7 @@ const ThreatMap = () => {
       {/* Main content — map + log */}
       <div className="threat-map-body">
         <div className="threat-map-globe-wrap">
-          <ThreatGlobe paused={paused} onNewAttack={handleNewAttack} />
+          <ThreatGlobeInteractive paused={paused} onNewAttack={handleNewAttack} />
         </div>
         <aside className="threat-map-sidebar">
           <ThreatLog attacks={attacks} />
