@@ -16,15 +16,24 @@ import '../../../styles/landing/hero.css';
  * Each word gets a .title-word wrapper and .title-word-inner child
  * so CSS can do a clip + slide-up reveal per word.
  */
-const AnimatedWords = ({ text, className = '' }) =>
+const AnimatedWords = ({ text, className = '', seed = '' }) =>
   text.split(' ').map((word, i) => {
     const clean = word.replace(/[^a-zA-Z]/g, '').toLowerCase();
-    const highlight = clean === 'hacker' || clean === 'hackers';
+    const isHacker = clean === 'hacker' || clean === 'hackers';
     return (
-      <span key={i} className="title-word">
-        <span className={`title-word-inner ${className} ${highlight ? 'hero-word-accent' : ''}`}>
-          {word}
-        </span>
+      <span key={`${seed}-${i}`} className="title-word">
+        {isHacker ? (
+          <span
+            className={`title-word-inner hero-word-accent hero-typing-word ${className}`}
+            style={{ '--typing-ch': word.length }}
+          >
+            {word}
+          </span>
+        ) : (
+          <span className={`title-word-inner ${className}`}>
+            {word}
+          </span>
+        )}
         {/* preserve whitespace between words */}
         {i < text.split(' ').length - 1 && '\u00A0'}
       </span>
@@ -80,12 +89,12 @@ const HeroSection = ({ content }) => {
           </p>
 
           {/* Title — word-by-word animated reveal */}
-          <h1 className="hero-title">
-            <AnimatedWords text={titleLine1 || title || 'Train like a Hacker.'} />
+          <h1 className="hero-title" key={titleIndex}>
+            <AnimatedWords text={titleLine1 || title || 'Train like a Hacker.'} seed={titleIndex} />
             {titleLine2 && (
               <>
                 <br />
-                <AnimatedWords text={titleLine2} />
+                <AnimatedWords text={titleLine2} seed={`${titleIndex}-2`} />
               </>
             )}
           </h1>
