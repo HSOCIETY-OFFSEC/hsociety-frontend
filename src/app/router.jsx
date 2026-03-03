@@ -67,6 +67,7 @@ const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
 const Blog = React.lazy(() => import('../features/blog/Blog'));
+const Terms = React.lazy(() => import('../features/terms/Terms'));
 const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
 const ForcePasswordChange = React.lazy(() => import('../features/auth/ForcePasswordChange'));
 
@@ -390,10 +391,12 @@ const AppRouter = () => {
             <Route path="contact" element={<Contact />} />
             <Route path="careers" element={<Careers />} />
             <Route path="methodology" element={<Methodology />} />
-            <Route path="case-studies" element={<CaseStudies />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="threat-map" element={<ThreatMap />} />
-          </Route>
+          <Route path="case-studies" element={<CaseStudies />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="threat-map" element={<ThreatMap />} />
+          <Route path="terms" element={<Terms />} />
+          <Route path="terms-and-conditions" element={<Terms />} />
+        </Route>
 
           {/* 404 - minimal layout */}
           <Route path="*" element={<NotFound />} />

@@ -10,6 +10,9 @@ const CommunityMessageList = ({
   containerRef,
   onLike,
   onAddComment,
+  onReact,
+  reactionEmojis,
+  reactionLimit,
   currentUserId,
 }) => {
   return (
@@ -54,6 +57,9 @@ const CommunityMessageList = ({
                   grouped={grouped}
                   onLike={onLike}
                   onAddComment={onAddComment}
+                  onReact={onReact}
+                  reactionEmojis={reactionEmojis}
+                  reactionLimit={reactionLimit}
                   currentUserId={currentUserId}
                 />
               );

@@ -267,6 +267,18 @@ const Login = ({ mode = 'default' }) => {
                     Register here
                   </button>
                 </p>
+                <p>
+                  By signing in you agree to the{' '}
+                  <button
+                    type="button"
+                    className="auth-link-inline"
+                    onClick={() => navigate('/terms')}
+                    disabled={loading}
+                  >
+                    Terms & Conditions
+                  </button>
+                  .
+                </p>
               </div>
             </Card>
 

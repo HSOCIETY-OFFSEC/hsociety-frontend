@@ -1,0 +1,123 @@
+/* ========================================
+   LANDING THREAT MAP STRIP
+   ======================================== */
+
+.landing-threatmap {
+  position: relative;
+  padding: 5rem 0 6rem;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(16, 185, 129, 0.12), transparent 55%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-primary) 85%, var(--bg-secondary) 15%), var(--bg-primary));
+  overflow: hidden;
+}
+
+.landing-threatmap-inner {
+  width: min(1200px, 92vw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.landing-threatmap-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.landing-threatmap-kicker {
+  margin: 0;
+  font-family: 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--primary-color, #10b981);
+}
+
+.landing-threatmap-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.landing-threatmap-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 440px;
+}
+
+.landing-threatmap-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.landing-threatmap-frame {
+  position: relative;
+  width: 100%;
+  height: min(55vh, 520px);
+  min-height: 320px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--primary-color, #10b981) 25%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
+  box-shadow:
+    0 30px 70px rgba(2, 6, 23, 0.45),
+    0 0 0 1px rgba(16, 185, 129, 0.08) inset;
+  overflow: hidden;
+}
+
+.landing-threatmap-frame .threat-globe-wrap {
+  height: 100%;
+  min-height: 0;
+  background: transparent;
+}
+
+.landing-threatmap-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.15), transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.1), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+
+.landing-threatmap-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 1023px) {
+  .landing-threatmap-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-threatmap-subtitle {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-threatmap {
+    padding: 4rem 0 4.5rem;
+  }
+
+  .landing-threatmap-inner {
+    width: min(92vw, 560px);
+    gap: 2rem;
+  }
+
+  .landing-threatmap-frame {
+    height: 320px;
+  }
+}

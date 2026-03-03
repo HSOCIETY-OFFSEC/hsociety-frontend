@@ -17,6 +17,7 @@ import {
   CycleSection,
   CtaSection,
   FaqSection,
+  ThreatMapSection,
   FooterSection
 } from './sections';
 
@@ -271,6 +272,9 @@ const Landing = ({ scrollToId = null }) => {
 
     {/* 9. Final conversion push */}
     <CtaSection content={landingContent.cta} />
+
+    {/* 9.5 Threat map visual */}
+    <ThreatMapSection />
 
     {/* 10. Closure */}
     <FooterSection />

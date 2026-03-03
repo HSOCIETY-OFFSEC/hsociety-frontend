@@ -1,11 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiImage, FiSend, FiX } from 'react-icons/fi';
+import { FiImage, FiSend, FiSmile, FiX } from 'react-icons/fi';
 import { uploadCommunityImage } from '../../community.service';
 import { getDisplayName, getUserAvatar } from '../../utils/community.utils';
 
 const MAX = 1000;
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
+const EMOJIS = ['🔥', '🚀', '✅', '⚡', '🧠', '🎯', '🛡️', '🧪', '💡', '🛰️', '📡', '🌍', '💬', '👏', '😂', '🙌', '😮', '😎', '🤝', '❤️'];
 
 const CommunityCompose = ({
   user,
@@ -20,11 +21,24 @@ const CommunityCompose = ({
 }) => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const emojiRef = useRef(null);
   const [uploading, setUploading] = useState(false);
+  const [emojiOpen, setEmojiOpen] = useState(false);
   const charsLeft = MAX - draft.length;
   const nearLimit = charsLeft < 80;
   const canSend = Boolean(draft.trim() || imageUrl);
   const roomLabel = room?.startsWith('#') ? room.slice(1) : room || 'general';
+
+  useEffect(() => {
+    if (!emojiOpen) return undefined;
+    const handleClick = (event) => {
+      if (emojiRef.current && !emojiRef.current.contains(event.target)) {
+        setEmojiOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [emojiOpen]);
 
   const handlePickImage = () => {
     if (fileInputRef.current) fileInputRef.current.click();
@@ -95,6 +109,35 @@ const CommunityCompose = ({
           >
             <FiImage size={16} />
           </button>
+          <div className="community-emoji" ref={emojiRef}>
+            <button
+              type="button"
+              className={`community-emoji-btn ${emojiOpen ? 'active' : ''}`}
+              onClick={() => setEmojiOpen((prev) => !prev)}
+              aria-label="Insert emoji"
+              aria-expanded={emojiOpen}
+            >
+              <FiSmile size={16} />
+            </button>
+            {emojiOpen && (
+              <div className="community-emoji-panel" role="listbox" aria-label="Emoji picker">
+                {EMOJIS.map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    className="community-emoji-item"
+                    onClick={() => {
+                      onDraftChange(`${draft}${emoji}`);
+                      setEmojiOpen(false);
+                    }}
+                    aria-label={`Insert ${emoji}`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           <input
             ref={fileInputRef}
             type="file"

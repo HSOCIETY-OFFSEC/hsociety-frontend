@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FiShield } from 'react-icons/fi';
 import Logo from '../../shared/components/common/Logo';
 import ThemeToggle from '../../shared/components/common/ThemeToggle';
@@ -8,6 +8,7 @@ import '../../styles/core/auth.css';
 
 const CorporateRegister = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const query = new URLSearchParams(location.search);
   const redirectRoute = query.get('redirect') || '/login';
 
@@ -43,6 +44,19 @@ const CorporateRegister = () => {
               note="Corporate accounts power pentest requests, dashboards, and client tracking."
               onSuccessRedirect={redirectRoute}
             />
+            <div className="auth-footer">
+              <p>
+                By creating a corporate account you agree to the{' '}
+                <button
+                  type="button"
+                  className="auth-link-inline"
+                  onClick={() => navigate('/terms')}
+                >
+                  Terms & Conditions
+                </button>
+                .
+              </p>
+            </div>
           </div>
           <div className="auth-notice">
             <p>

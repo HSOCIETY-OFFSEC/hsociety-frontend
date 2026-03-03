@@ -9,6 +9,7 @@
 
 .threat-map-page {
   min-height: 100vh;
+  height: 100vh;
   background: var(--bg-primary);
   display: flex;
   flex-direction: column;
@@ -239,14 +240,15 @@
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 340px;
-  min-height: 520px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .threat-map-globe-wrap {
   position: relative;
   border-right: 1px solid var(--border-color);
   overflow: hidden;
-  min-height: 480px;
+  min-height: 0;
 }
 
 .threat-map-sidebar {
@@ -254,6 +256,7 @@
   flex-direction: column;
   overflow: hidden;
   background: var(--bg-secondary);
+  min-height: 0;
 }
 
 /* ========================================
@@ -296,6 +299,7 @@
 
   .threat-map-sidebar {
     max-height: 360px;
+    min-height: 0;
   }
 
   .threat-map-subtitle {

@@ -175,6 +175,10 @@ const FooterSection = () => {
             <FiTerminal size={16} />
             Student Dashboard
           </a>
+          <a href="/terms">
+            <FiFileText size={16} />
+            Terms & Conditions
+          </a>
         </div>
 
         <div className="footer-column">

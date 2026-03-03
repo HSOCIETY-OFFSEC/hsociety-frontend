@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FiHeart, FiMessageSquare, FiSend } from 'react-icons/fi';
+import React, { useEffect, useRef, useState } from 'react';
+import { FiHeart, FiMessageSquare, FiSend, FiSmile } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
 import { sanitizeText } from '../../../../shared/utils/sanitize';
@@ -10,17 +10,34 @@ const CommunityMessage = ({
   own,
   onLike,
   onAddComment,
+  onReact,
+  reactionEmojis = [],
+  reactionLimit = 3,
   currentUserId,
 }) => {
   const authorName = getDisplayName(message?.username || message?.user?.name || message?.user?.username);
   const avatarSrc = getMessageAvatar(message);
   const [commentOpen, setCommentOpen] = useState(false);
   const [commentDraft, setCommentDraft] = useState('');
+  const [reactionOpen, setReactionOpen] = useState(false);
+  const reactionRef = useRef(null);
   const navigate = useNavigate();
   const likes = Number(message?.likes || 0);
   const comments = message?.comments || [];
   const liked = currentUserId ? message?.likedBy?.includes(currentUserId) : false;
   const profileTarget = message?.hackerHandle || message?.userId || '';
+  const reactions = message?.reactions || {};
+
+  useEffect(() => {
+    if (!reactionOpen) return undefined;
+    const handleClick = (event) => {
+      if (reactionRef.current && !reactionRef.current.contains(event.target)) {
+        setReactionOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [reactionOpen]);
 
   const handleOpenProfile = () => {
     if (!profileTarget) return;
@@ -115,6 +132,74 @@ const CommunityMessage = ({
             <FiMessageSquare size={14} />
             <span>{comments.length}</span>
           </button>
+        </div>
+
+        <div className="community-msg-reactions" role="group" aria-label="Reactions">
+          {[
+            ...new Set([
+              ...Object.keys(reactions || {}),
+              ...(reactionEmojis || []),
+            ]),
+          ].map((emoji) => {
+            const data = reactions[emoji] || { count: 0, users: [] };
+            const reacted =
+              currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
+            return (
+              <button
+                key={emoji}
+                type="button"
+                className={`community-msg-reaction ${reacted ? 'active' : ''}`}
+                onClick={() => onReact?.(message.id, emoji)}
+                aria-pressed={reacted}
+                aria-label={`React with ${emoji}`}
+              >
+                <span className="community-msg-reaction-emoji">{emoji}</span>
+                {data.count > 0 && (
+                  <span className="community-msg-reaction-count">{data.count}</span>
+                )}
+              </button>
+            );
+          })}
+          <div className="community-msg-reaction-picker" ref={reactionRef}>
+            <button
+              type="button"
+              className={`community-msg-reaction-add ${reactionOpen ? 'active' : ''}`}
+              onClick={() => setReactionOpen((prev) => !prev)}
+              aria-label="Add reaction"
+              aria-expanded={reactionOpen}
+            >
+              <FiSmile size={14} />
+            </button>
+            {reactionOpen && (
+              <div className="community-msg-reaction-panel" role="listbox" aria-label="Emoji picker">
+                {(reactionEmojis || []).map((emoji) => {
+                  const data = reactions[emoji] || { count: 0, users: [] };
+                  const reacted =
+                    currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
+                  const userReactionCount = Object.values(reactions).filter((entry) =>
+                    Array.isArray(entry.users) && entry.users.includes(currentUserId)
+                  ).length;
+                  const blocked = !reacted && userReactionCount >= reactionLimit;
+                  return (
+                    <button
+                      key={emoji}
+                      type="button"
+                      className="community-msg-reaction-item"
+                      onClick={() => {
+                        if (blocked) return;
+                        onReact?.(message.id, emoji);
+                        setReactionOpen(false);
+                      }}
+                      disabled={blocked}
+                      aria-label={`React with ${emoji}`}
+                    >
+                      {emoji}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
 
         {commentOpen && (

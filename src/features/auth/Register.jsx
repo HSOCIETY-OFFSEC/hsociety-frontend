@@ -61,6 +61,17 @@ const Register = () => {
                   Login
                 </button>
               </p>
+              <p>
+                By creating an account you agree to the{' '}
+                <button
+                  type="button"
+                  className="auth-link-inline"
+                  onClick={() => navigate('/terms')}
+                >
+                  Terms & Conditions
+                </button>
+                .
+              </p>
             </div>
           </div>
           <div className="auth-notice">

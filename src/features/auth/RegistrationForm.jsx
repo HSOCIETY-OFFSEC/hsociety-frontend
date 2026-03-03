@@ -240,7 +240,15 @@ const RegistrationForm = ({
               disabled={loading}
             />
             <span>
-              I have read the <strong>HSOCIETY Terms</strong> and agree to the security policies.
+              I have read the{' '}
+              <button
+                type="button"
+                className="auth-link-inline"
+                onClick={() => navigate('/terms')}
+              >
+                HSOCIETY Terms & Conditions
+              </button>{' '}
+              and agree to the security policies.
             </span>
           </label>
         </div>

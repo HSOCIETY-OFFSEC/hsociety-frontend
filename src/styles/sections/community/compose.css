@@ -119,6 +119,65 @@
   display: none;
 }
 
+/* ── Emoji picker ─────────────────────────────────────────── */
+.community-emoji {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.community-emoji-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.community-emoji-btn:hover,
+.community-emoji-btn.active {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+}
+
+.community-emoji-panel {
+  position: absolute;
+  bottom: 44px;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.35);
+  z-index: 20;
+}
+
+.community-emoji-item {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.community-emoji-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+}
+
 /* ── Attachment preview ────────────────────────────────────── */
 .community-compose-attachment {
   display: inline-flex;

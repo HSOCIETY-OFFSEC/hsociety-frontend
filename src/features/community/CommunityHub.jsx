@@ -21,7 +21,7 @@ import '../../styles/sections/community/compose.css';
 const CommunityHub = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [overview, setOverview] = useState({ channels: [], stats: {}, posts: [] });
+  const [overview, setOverview] = useState({ channels: [], stats: {}, posts: [], reactionConfig: {} });
   const [room, setRoom] = useState('general');
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
@@ -141,6 +141,16 @@ const CommunityHub = () => {
         )
       );
     });
+    socket.on('messageReacted', (payload) => {
+      if (payload.room !== room) return;
+      setMessages((prev) =>
+        prev.map((item) =>
+          item.id === payload.messageId
+            ? { ...item, reactions: payload.reactions || {} }
+            : item
+        )
+      );
+    });
 
     return () => {
       mounted = false;
@@ -213,6 +223,7 @@ const CommunityHub = () => {
         imageUrl: imagePayload,
         likes: 0,
         likedBy: [],
+        reactions: {},
         pinned: false,
         comments: [],
         createdAt: new Date().toISOString(),
@@ -276,6 +287,40 @@ const CommunityHub = () => {
     socketRef.current?.emit('addComment', { messageId, content });
   };
 
+  const reactionLimit = Number(overview.reactionConfig?.maxPerUser || 3);
+  const fallbackReactions = ['🔥', '💯', '👏', '😂', '😮', '❤️'];
+  const handleReact = (messageId, emoji) => {
+    if (!messageId || !emoji || !currentUserId) return;
+    setMessages((prev) =>
+      prev.map((item) => {
+        if (item.id !== messageId) return item;
+        const reactions = item.reactions || {};
+        const current = reactions[emoji] || { count: 0, users: [] };
+        const users = Array.isArray(current.users) ? [...current.users] : [];
+        const alreadyReacted = users.includes(currentUserId);
+        const currentUserReactions = Object.values(reactions).filter((entry) =>
+          Array.isArray(entry.users) && entry.users.includes(currentUserId)
+        ).length;
+        if (!alreadyReacted && currentUserReactions >= reactionLimit) return item;
+        const nextUsers = alreadyReacted
+          ? users.filter((id) => id !== currentUserId)
+          : [...users, currentUserId];
+        const nextCount = Math.max(0, Number(current.count || 0) + (alreadyReacted ? -1 : 1));
+        return {
+          ...item,
+          reactions: {
+            ...reactions,
+            [emoji]: {
+              count: nextCount,
+              users: nextUsers,
+            },
+          },
+        };
+      })
+    );
+    socketRef.current?.emit('reactMessage', { messageId, emoji });
+  };
+
   /* ── Room change ── */
   const handleRoomChange = (newRoom) => {
     setRoom(normalizeRoomId(newRoom));
@@ -337,6 +382,14 @@ const CommunityHub = () => {
           containerRef={scrollRef}
           onLike={handleLike}
           onAddComment={handleAddComment}
+          onReact={handleReact}
+          reactionEmojis={(() => {
+            const channel = activeChannels.find((ch) => ch.id === room);
+            if (channel?.emojis?.length) return channel.emojis;
+            if (overview.reactionConfig?.emojis?.length) return overview.reactionConfig.emojis;
+            return fallbackReactions;
+          })()}
+          reactionLimit={reactionLimit}
           currentUserId={currentUserId}
         />
 

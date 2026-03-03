@@ -294,6 +294,113 @@
   color: var(--text-primary);
 }
 
+/* ── Emoji reactions ──────────────────────────────────────── */
+.community-msg-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0 0.2rem;
+  margin-top: 0.35rem;
+}
+
+.community-message.own .community-msg-reactions {
+  justify-content: flex-end;
+}
+
+.community-msg-reaction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.community-msg-reaction.active {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 35%, var(--border-color));
+}
+
+.community-msg-reaction:hover {
+  color: var(--text-primary);
+}
+
+.community-msg-reaction-emoji {
+  font-size: 0.95rem;
+}
+
+.community-msg-reaction-count {
+  font-weight: 700;
+}
+
+/* ── Reaction picker ──────────────────────────────────────── */
+.community-msg-reaction-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.community-msg-reaction-add {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px dashed var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.community-msg-reaction-add.active,
+.community-msg-reaction-add:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 35%, var(--border-color));
+}
+
+.community-msg-reaction-panel {
+  position: absolute;
+  bottom: 36px;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.35);
+  z-index: 20;
+}
+
+.community-msg-reaction-item {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.community-msg-reaction-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+}
+
+.community-msg-reaction-item:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 /* ── Comments ──────────────────────────────────────────────── */
 .community-msg-comments {
   margin-top: 0.4rem;
