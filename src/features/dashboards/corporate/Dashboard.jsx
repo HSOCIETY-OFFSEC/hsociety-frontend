@@ -109,7 +109,7 @@ const Dashboard = () => {
         Corporate dashboard workspace
       </div>
       <div className="dashboard-wrapper dashboard-shell">
-        <div className="dashboard-header dashboard-shell-header reveal-on-scroll dramatic-header">
+        <div className="dashboard-header dashboard-shell-header reveal-on-scroll dramatic-header corporate-hero">
           <div>
             <h1 className="dashboard-title dashboard-shell-title">
               Welcome back, {user?.name || 'Partner'}!

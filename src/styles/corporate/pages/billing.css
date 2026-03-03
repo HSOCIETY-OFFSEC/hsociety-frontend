@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 1rem 0 3rem;
+  --card-padding: 1.6rem;
 }
 
 .billing-header {
@@ -53,6 +54,7 @@
 .billing-table-card {
   border-radius: 16px;
   overflow: hidden;
+  --card-padding: 0;
 }
 
 .billing-table {
@@ -131,5 +133,15 @@
   .billing-row span:nth-child(4),
   .billing-row span:nth-child(5) {
     display: none;
+  }
+
+  .billing-page {
+    --card-padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .billing-page {
+    --card-padding: 1.1rem 1rem;
   }
 }

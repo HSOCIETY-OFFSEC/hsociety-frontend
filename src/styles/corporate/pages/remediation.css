@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 1rem 0 3rem;
+  --card-padding: 1.6rem;
 }
 
 .remediation-header {
@@ -97,4 +98,16 @@
 
 .remediation-report-meta small {
   color: var(--text-tertiary);
+}
+
+@media (max-width: 768px) {
+  .remediation-page {
+    --card-padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .remediation-page {
+    --card-padding: 1.1rem 1rem;
+  }
 }

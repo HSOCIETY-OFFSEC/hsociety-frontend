@@ -135,6 +135,27 @@ export const getDashboardOverview = async () => {
     };
   }
 
+  const [statsRes, activityRes] = await Promise.all([
+    getDashboardStats(),
+    getRecentActivity()
+  ]);
+
+  if (statsRes.success || activityRes.success) {
+    return {
+      success: true,
+      data: normalizeDashboardOverview({
+        stats: statsRes.success ? statsRes.data : {},
+        recentActivity: activityRes.success ? activityRes.data : [],
+        quickStats: {
+          avgResponseTime: '24 hours',
+          securityScore: statsRes.success ? Number(statsRes.data?.remediationProgress || 0) : 0,
+          lastScan: null
+        }
+      }),
+      isFallback: true
+    };
+  }
+
   if (import.meta.env.DEV) {
     return {
       success: true,

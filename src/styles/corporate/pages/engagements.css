@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 1rem 0 3rem;
+  --card-padding: 1.6rem;
 }
 
 .engagements-header {
@@ -185,5 +186,15 @@
 
   .engagement-dates {
     flex-direction: column;
+  }
+
+  .engagements-page {
+    --card-padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .engagements-page {
+    --card-padding: 1.1rem 1rem;
   }
 }

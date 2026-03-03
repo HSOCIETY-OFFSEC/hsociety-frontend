@@ -117,12 +117,16 @@ class APIClient {
   async request(method, endpoint, data = null, options = {}) {
     const url = this.buildURL(endpoint);
     const headers = this.buildHeaders(options.headers);
+    const controller = new AbortController();
+    const timeoutMs = Number(envConfig.api.timeout || 30000);
+    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
     // SECURITY UPDATE IMPLEMENTED: Send cookies (e.g. refresh_token) for same-origin/configured API
     const config = {
       method,
       headers,
       credentials: 'include',
+      signal: controller.signal,
       ...options
     };
 
@@ -135,6 +139,7 @@ class APIClient {
       console.log(`[API] ${method} ${endpoint}`);
 
       const response = await fetch(url, config);
+      window.clearTimeout(timeoutId);
       
       // Parse response
       let responseData;
@@ -164,6 +169,14 @@ class APIClient {
         status: response.status
       };
     } catch (error) {
+      window.clearTimeout(timeoutId);
+      if (error?.name === 'AbortError') {
+        return {
+          success: false,
+          error: 'Request timed out. Please try again.',
+          status: 0
+        };
+      }
       return this.handleError(error, endpoint);
     }
   }

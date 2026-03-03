@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 1rem;
   padding: 1rem 0 3rem;
+  --card-padding: 1.6rem;
 }
 
 .reports-header {
@@ -82,4 +83,16 @@
 .report-date {
   margin: 0;
   color: var(--text-tertiary);
+}
+
+@media (max-width: 768px) {
+  .reports-page {
+    --card-padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reports-page {
+    --card-padding: 1.1rem 1rem;
+  }
 }

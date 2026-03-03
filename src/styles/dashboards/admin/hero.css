@@ -2,9 +2,22 @@
 .admin-hero {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 2rem;
   align-items: flex-start;
   justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  padding: 1.9rem 2rem;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--primary-color) 6%, var(--card-bg)) 0%,
+      var(--card-bg) 65%
+    );
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, var(--border-color));
+  box-shadow: var(--shadow-md);
+  box-sizing: border-box;
 }
 
 .admin-kicker {
@@ -27,4 +40,41 @@
   line-height: 1.65;
   max-width: 480px;
   margin: 0;
+}
+
+@media (max-width: 900px) {
+  .admin-hero {
+    padding: 1.6rem 1.6rem;
+    gap: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem 1.4rem;
+    gap: 0;
+  }
+
+  .admin-hero > div:first-child {
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-hero {
+    padding: 1.35rem 1.15rem;
+    border-radius: 14px;
+  }
+
+  .admin-hero > div:first-child {
+    margin-bottom: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-hero {
+    box-shadow: var(--shadow-sm);
+  }
 }

@@ -12,7 +12,7 @@
 /* Keep clear of the workspace FAB on dashboard layouts */
 .workspace-layout .floating-update {
   right: 1.5rem;
-  bottom: 5rem;
+  bottom: 5.5rem;
 }
 
 .floating-update-status {
@@ -45,7 +45,9 @@
   }
 
   .workspace-layout .floating-update {
-    right: 1rem;
-    bottom: 5rem;
+    left: 1rem;
+    right: auto;
+    bottom: 1.25rem;
+    align-items: flex-start;
   }
 }
