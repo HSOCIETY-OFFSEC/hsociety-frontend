@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { FiCreditCard, FiHash, FiRadio, FiServer, FiSmartphone } from 'react-icons/fi';
+import { FiCreditCard } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
 import { initializeBootcampPayment, submitBootcampBtcPayment } from '../../dashboards/student/student.service';
 import { PAYMENT_METHODS } from '../../../config/payment-methods.config';
+import momoIcon from '../../../assets/icons/payment-icons/momo-icon.png';
+import telecelIcon from '../../../assets/icons/payment-icons/telecel-cash-logo.png';
+import btcIcon from '../../../assets/icons/payment-icons/Bitcoin-logo.png';
 import '../../../styles/shared/components/billing/PaymentModal.css';
 
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
@@ -14,11 +17,9 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
   const [submitting, setSubmitting] = useState(false);
 
   const iconMap = {
-    smartphone: FiSmartphone,
-    radio: FiRadio,
-    sim: FiServer,
-    bank: FiCreditCard,
-    btc: FiHash,
+    mtn: momoIcon,
+    telcel: telecelIcon,
+    btc: btcIcon,
   };
 
   const handleSubmit = async (event) => {
@@ -75,20 +76,24 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
           <form className="payment-modal-form" onSubmit={handleSubmit}>
             <div className="payment-method-grid">
               {PAYMENT_METHODS.map((option) => {
-                const Icon = iconMap[option.icon] || FiCreditCard;
+                const iconSrc = iconMap[option.id];
                 return (
-                <button
-                  key={option.id}
-                  type="button"
-                  className={`payment-method-card ${method === option.id ? 'active' : ''}`}
-                  onClick={() => setMethod(option.id)}
-                >
-                  <span className="payment-method-icon" aria-hidden="true">
-                    <Icon size={16} />
-                  </span>
-                  <strong>{option.label}</strong>
-                  <span>{option.description}</span>
-                </button>
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={`payment-method-card ${method === option.id ? 'active' : ''}`}
+                    onClick={() => setMethod(option.id)}
+                  >
+                    <span className="payment-method-icon" aria-hidden="true">
+                      {iconSrc ? (
+                        <img src={iconSrc} alt={`${option.label} icon`} />
+                      ) : (
+                        <FiCreditCard size={16} />
+                      )}
+                    </span>
+                    <strong>{option.label}</strong>
+                    <span>{option.description}</span>
+                  </button>
                 );
               })}
             </div>

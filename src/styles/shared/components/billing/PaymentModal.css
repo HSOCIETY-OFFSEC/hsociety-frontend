@@ -102,6 +102,14 @@
   justify-content: center;
   background: color-mix(in srgb, var(--primary-color, #16a34a) 18%, transparent);
   color: var(--text-primary);
+  overflow: hidden;
+}
+
+.payment-method-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .payment-method-card strong {

@@ -12,6 +12,7 @@ import {
   DeliverablesSection,
   ModulesSection,
   TrustSection,
+  PartnerCarouselSection,
   CommunityProfilesSection,
   PathwaysSection,
   CycleSection,
@@ -238,6 +239,7 @@ const Landing = ({ scrollToId = null }) => {
     {/* 2. Immediate credibility */}
     <StatsSection content={statsContent} />
     <TrustSection signals={trustSignals} />
+    <PartnerCarouselSection />
 
     {/* 3. Problem & differentiation */}
     <WhySection items={whyChooseUs} />

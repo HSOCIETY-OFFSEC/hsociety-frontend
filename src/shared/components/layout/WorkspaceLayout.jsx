@@ -124,7 +124,6 @@ const WorkspaceLayout = () => {
                 <FiHome size={16} />
                 <span>Home</span>
               </button>
-              <div className="workspace-topbar-title">{workspaceTitle}</div>
 
               {isCommunity && (
                 <nav className="workspace-community-nav" aria-label="Workspace navigation">
@@ -141,7 +140,10 @@ const WorkspaceLayout = () => {
                   ))}
 
                   {bootcampLinks.length > 0 && (
-                    <div className={`workspace-community-dropdown ${bootcampOpen ? 'open' : ''}`}>
+                    <div
+                      className={`workspace-community-dropdown ${bootcampOpen ? 'open' : ''}`}
+                      onMouseLeave={() => setBootcampOpen(false)}
+                    >
                       <button
                         type="button"
                         className={`workspace-community-link ${bootcampOpen ? 'active' : ''}`}
@@ -176,7 +178,11 @@ const WorkspaceLayout = () => {
             </div>
             <div className="workspace-topbar-actions">
               {isCommunity && (
-                <div className="workspace-community-tools" ref={communityMenuRef}>
+                <div
+                  className="workspace-community-tools"
+                  ref={communityMenuRef}
+                  onMouseLeave={() => setCommunityMenuOpen(false)}
+                >
                   <button
                     type="button"
                     className="workspace-community-tool-btn"
@@ -217,7 +223,7 @@ const WorkspaceLayout = () => {
                 </div>
               )}
               {isCommunity && <ThemeToggle />}
-              <div ref={menuRef}>
+              <div ref={menuRef} onMouseLeave={() => setMenuOpen(false)}>
               <button
                 type="button"
                 className="workspace-profile-button"

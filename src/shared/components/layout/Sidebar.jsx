@@ -76,7 +76,10 @@ const Sidebar = () => {
           <div className="app-sidebar-links">
             {defaultLinks.map(renderLink)}
             {bootcampLinks.length > 0 && (
-              <div className={`bootcamp-dropdown ${bootcampOpen ? 'open' : ''}`}>
+              <div
+                className={`bootcamp-dropdown ${bootcampOpen ? 'open' : ''}`}
+                onMouseLeave={() => setBootcampOpen(false)}
+              >
                 <button
                   type="button"
                   className={`app-sidebar-link ${bootcampOpen ? 'active' : ''}`}

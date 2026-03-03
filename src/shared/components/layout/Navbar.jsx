@@ -148,7 +148,11 @@ const Navbar = ({ sticky = true }) => {
           ))}
 
           {overflowDesktopLinks.length > 0 && (
-            <div className="navbar-more-dropdown" ref={moreMenuRef}>
+            <div
+              className="navbar-more-dropdown"
+              ref={moreMenuRef}
+              onMouseLeave={() => setMoreMenuOpen(false)}
+            >
               <button
                 type="button"
                 onClick={() => setMoreMenuOpen((prev) => !prev)}
@@ -180,7 +184,10 @@ const Navbar = ({ sticky = true }) => {
           )}
 
           {isStudent && (
-            <div className="student-learn-dropdown">
+            <div
+              className="student-learn-dropdown"
+              onMouseLeave={() => setStudentLearnOpen(false)}
+            >
               <button
                 type="button"
                 onClick={() => setStudentLearnOpen((prev) => !prev)}
@@ -239,7 +246,10 @@ const Navbar = ({ sticky = true }) => {
 
           {/* User Menu (Desktop) */}
           {isAuthenticated && user && (
-            <div className="desktop-user-menu">
+            <div
+              className="desktop-user-menu"
+              onMouseLeave={() => setUserMenuOpen(false)}
+            >
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="navbar-user-button"

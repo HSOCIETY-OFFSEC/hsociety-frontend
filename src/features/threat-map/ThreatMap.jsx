@@ -59,13 +59,13 @@ const ThreatMap = () => {
               className="threat-map-expand-btn"
               onClick={() => setExpanded(true)}
             >
-              Open Fullscreen
+              Fullscreen
             </button>
           </div>
         </div>
         <div className="threat-map-title-row">
           <h1 className="threat-map-title">
-            Global Cyber <span className="threat-map-title-accent">Threat Map</span>
+            Hacker <span className="threat-map-title-accent">Threat Map</span>
           </h1>
           <p className="threat-map-subtitle">
             Simulated real-time visualization of attack vectors, threat origins, and targets across the globe.

@@ -12,12 +12,6 @@ const deepFreeze = (value) => {
 
 export const PAYMENT_METHODS = deepFreeze([
   {
-    id: 'momo',
-    label: 'MOMO',
-    description: 'Mobile Money',
-    icon: 'smartphone',
-  },
-  {
     id: 'mtn',
     label: 'MTN MOMO',
     description: 'MTN Mobile Money wallet',
