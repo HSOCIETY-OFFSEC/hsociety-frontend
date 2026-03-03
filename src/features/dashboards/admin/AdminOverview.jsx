@@ -45,7 +45,7 @@ const AdminOverview = () => {
         <div className="admin-hero dashboard-shell-header">
           <div>
             <p className="admin-kicker dashboard-shell-kicker">HSOCIETY CONTROL NODE</p>
-            <h1 className="dashboard-shell-title">Admin Overview</h1>
+            <h1 className="dashboard-shell-title">MR ROBOT</h1>
             <p className="admin-subtitle dashboard-shell-subtitle">
               Monitor activity, manage teams, and keep operations aligned.
             </p>

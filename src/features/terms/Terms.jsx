@@ -5,9 +5,9 @@ import { getTermsContent } from './terms.service';
 import '../../styles/sections/terms/index.css';
 
 const FALLBACK_TERMS = {
-  effectiveDate: '[Insert Date]',
-  lastUpdated: '[Insert Date]',
-  jurisdiction: '[Insert Jurisdiction]',
+  effectiveDate: 'loading',
+  lastUpdated: 'loading',
+  jurisdiction: 'loading',
   sections: [
     {
       title: 'Introduction',
