@@ -63,6 +63,7 @@ export const NAV_LINKS = {
     { path: '/', label: 'Home', icon: FiShield },
     { path: '/courses', label: 'Courses', icon: FiBookOpen },
     { path: '/services', label: 'Services', icon: FiTool },
+    { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
     { path: '/about', label: 'About', icon: FiUsers },
     { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
     { path: '/terms', label: 'Terms', icon: FiFileText }
@@ -78,6 +79,7 @@ export const NAV_LINKS = {
       { path: '/remediation', label: 'Remediation', icon: FiTool },
       { path: '/assets', label: 'Assets', icon: FiLayers },
       { path: '/billing', label: 'Billing', icon: FiCreditCard },
+      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
       { path: '/about', label: 'About Us', icon: FiUsers },
       { path: '/team', label: 'Meet the Team', icon: FiUsers },
       { path: '/developer', label: 'Meet the Developer', icon: FiCode },
@@ -90,6 +92,7 @@ export const NAV_LINKS = {
       { path: '/pentester/engagements', label: 'Engagements', icon: FiShield },
       { path: '/pentester/reports', label: 'Reports', icon: FiFileText },
       { path: '/pentester/profiles', label: 'Pentester Profiles', icon: FiUsers },
+      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
       { path: '/settings', label: 'Settings', icon: FiUsers },
       { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
       { path: '/terms', label: 'Terms', icon: FiFileText }
@@ -97,6 +100,7 @@ export const NAV_LINKS = {
     admin: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
+      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
       { path: '/settings', label: 'Settings', icon: FiUsers },
       { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
       { path: '/terms', label: 'Terms', icon: FiFileText }
@@ -107,6 +111,7 @@ export const NAV_LINKS = {
       { path: '/student-learning', label: 'Overview', icon: FiTerminal, group: 'learn' },
       { path: '/student-bootcamps', label: 'Bootcamps', icon: FiLayers, group: 'learn' },
       { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'learn' },
+      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
       { path: '/settings', label: 'Settings', icon: FiUsers },
       { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
       { path: '/terms', label: 'Terms', icon: FiFileText }
@@ -118,6 +123,7 @@ export const NAV_LINKS = {
     { path: '/', label: 'Home', icon: FiShield },
     { path: '/courses', label: 'Courses', icon: FiBookOpen },
     { path: '/services', label: 'Services', icon: FiTool },
+    { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
     { path: '/about', label: 'About', icon: FiUsers },
     { path: '/careers', label: 'Careers', icon: FiBriefcase },
     { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },

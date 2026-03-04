@@ -2,7 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
+import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import { getCommunityProfiles, getLandingContent, getLandingStats } from './landing.service';
+
+/**Sections importation  */
+/**========================== */
 import {
   HeroSection,
   StatsSection,
@@ -11,6 +15,7 @@ import {
   ProcessSection,
   DeliverablesSection,
   ModulesSection,
+  LeaderboardSection,
   TrustSection,
   PartnerCarouselSection,
   CoursesSection,
@@ -23,6 +28,8 @@ import {
   FooterSection
 } from './sections';
 
+/**ICON importation */
+/**===================== */
 import { 
   FaGraduationCap, 
   FaUsers, 
@@ -30,7 +37,8 @@ import {
   FaRocket 
 } from 'react-icons/fa';
 
-
+/**ICON importation */
+/**===================== */
 import { 
   FiShield,
   FiFileText, 
@@ -44,6 +52,8 @@ import {
   FiMessageSquare 
 } from 'react-icons/fi';
 
+/**Image importation */
+/**=========================== */
 import terminalWallpaper from '../../assets/services_images/begginner_offsec_training.png';
 import greenBinaryWallpaper from '../../assets/services_images/community_integration.png';
 import hackerLaptop from '../../assets/services_images/Penetration_tests.png';
@@ -52,6 +62,7 @@ import communityEngagementsImage from '../../assets/why-choos-hsociety-images/co
 import supervisedPentestsImage from '../../assets/why-choos-hsociety-images/supervised-pentests.png';
 import careerReadyPathwayImage from '../../assets/why-choos-hsociety-images/career-ready-pathway.png';
 
+/**ROOT CSS importation */
 import '../../styles/landing/index.css';
 
 const Landing = ({ scrollToId = null }) => {
@@ -78,12 +89,15 @@ const Landing = ({ scrollToId = null }) => {
     FaRocket
   };
 
+  /**Image mapping variable */
   const imageMap = {
     terminal: terminalWallpaper,
     binary: greenBinaryWallpaper,
     hacker: hackerLaptop
   };
 
+  
+  /** Why section image map variable*/
   const whyImageMap = {
     'Hands-On Learning': handsOnLearningImage,
     'Community & Collaboration': communityEngagementsImage,
@@ -91,6 +105,7 @@ const Landing = ({ scrollToId = null }) => {
     'Career-Ready Pathway': careerReadyPathwayImage
   };
 
+  /**Services mapping var */
   const services = landingContent.services.map((item) => ({
     ...item,
     icon: iconMap[item.icon],
@@ -113,7 +128,13 @@ const Landing = ({ scrollToId = null }) => {
     icon: iconMap[item.icon]
   }));
 
-  const learningModules = landingContent.modules;
+  const learningModules = HACKER_PROTOCOL_PHASES.map((phase) => ({
+    title: `${phase.codename}: ${phase.title}`,
+    description: phase.description,
+    level: phase.roleTitle,
+    duration: `Phase ${phase.moduleId}`,
+    image: phase.emblem
+  }));
 
   const trustSignals = landingContent.trust.map((item) => ({
     ...item,
@@ -237,21 +258,26 @@ const Landing = ({ scrollToId = null }) => {
     {/* 1. Hook */}
     <HeroSection content={heroContent} />
 
-    {/* 2. Immediate credibility */}
-    <StatsSection content={statsContent} />
+    {/* 2 Courses Section  */}
+    <CoursesSection />
+
     <TrustSection signals={trustSignals} />
+
+    {/* 3. Immediate credibility */}
+    <StatsSection content={statsContent} />
+    
     <PartnerCarouselSection />
 
-    {/* 3. Problem & differentiation */}
+    {/* 4. Problem & differentiation */}
     <WhySection items={whyChooseUs} />
 
-    {/* 4. What you actually offer */}
+    {/* 5. What you actually offer */}
     <ServicesSection services={services} />
 
-    {/* 5. How it works (reduce friction) */}
+    {/* 6. How it works (reduce friction) */}
     <ProcessSection steps={engagementSteps} />
 
-    {/* 6. Community proof */}
+    {/* 7. Community proof */}
       <CommunityProfilesSection
         title={landingContent.communityProfiles?.title || 'Community wins in the open'}
         subtitle={
@@ -262,12 +288,14 @@ const Landing = ({ scrollToId = null }) => {
         profiles={profileContent}
       />
 
+    <LeaderboardSection />
+
     {/* 6. What they get at the end */}
     <DeliverablesSection deliverables={deliverables} />
 
     {/* 7. Learning depth / system strength */}
     <ModulesSection modules={learningModules} />
-    <CoursesSection />
+    
     <PathwaysSection content={landingContent.pathways} />
     <CycleSection steps={cycleSteps} />
 

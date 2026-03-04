@@ -87,8 +87,7 @@ const Navbar = ({ sticky = true }) => {
 
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   const isStudent = role === 'student';
-  const isLanding = location.pathname === '/';
-  const showLandingStats = isLanding && isAuthenticated && Boolean(user?.id);
+  const showUserStats = isAuthenticated && Boolean(user?.id);
   const mobileLinks = getMobileLinks(isAuthenticated, role);
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
@@ -136,7 +135,7 @@ const Navbar = ({ sticky = true }) => {
   useEffect(() => {
     let mounted = true;
     const loadCp = async () => {
-      if (!showLandingStats) {
+      if (!showUserStats) {
         if (mounted) setCpTotal(0);
         return;
       }
@@ -148,12 +147,12 @@ const Navbar = ({ sticky = true }) => {
     return () => {
       mounted = false;
     };
-  }, [showLandingStats, user?.id]);
+  }, [showUserStats, user?.id]);
 
   useEffect(() => {
     let mounted = true;
     const loadStreak = async () => {
-      if (!showLandingStats || !isStudent) {
+      if (!showUserStats || !isStudent) {
         if (mounted) setStreakDays(0);
         return;
       }
@@ -165,7 +164,7 @@ const Navbar = ({ sticky = true }) => {
     return () => {
       mounted = false;
     };
-  }, [showLandingStats, isStudent, user?.id]);
+  }, [showUserStats, isStudent, user?.id]);
 
   return (
     <nav className="navbar">
@@ -260,18 +259,16 @@ const Navbar = ({ sticky = true }) => {
 
         {/* Right Section */}
         <div className="navbar-right">
-          {showLandingStats && (
+          {showUserStats && (
             <div className="navbar-landing-stats">
               <div className="navbar-stat-chip" title="Compromised Points">
                 <img src={cpIcon} alt="CP" className="navbar-stat-icon" />
                 <span>{cpTotal} CP</span>
               </div>
-              {isStudent && (
-                <div className="navbar-stat-chip" title="Learning streak">
-                  <IoFlameOutline size={16} />
-                  <span>{streakDays}</span>
-                </div>
-              )}
+              <div className="navbar-stat-chip" title="Learning streak">
+                <IoFlameOutline size={16} />
+                <span>{streakDays} Streak</span>
+              </div>
             </div>
           )}
 

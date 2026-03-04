@@ -246,6 +246,7 @@ const DEFAULT_API_ENDPOINTS = {
     TEAM_CONTENT: '/public/content/team',
     BLOG_POSTS: '/public/blog-posts',
     SECURITY_EVENT: '/public/security-events',
+    LEADERBOARD: '/public/leaderboard',
   }
 };
 

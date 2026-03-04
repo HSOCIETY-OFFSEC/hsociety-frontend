@@ -175,6 +175,10 @@ const FooterSection = () => {
             <FiBarChart2 size={16} />
             Field Notes
           </a>
+          <a href="/leaderboard">
+            <FiBarChart2 size={16} />
+            Leaderboard
+          </a>
           <a href="/courses">
             <FiLayers size={16} />
             Courses

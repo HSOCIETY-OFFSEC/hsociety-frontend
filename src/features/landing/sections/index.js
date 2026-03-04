@@ -5,6 +5,7 @@ export { default as WhySection } from './WhySection';
 export { default as ProcessSection } from './ProcessSection';
 export { default as DeliverablesSection } from './DeliverablesSection';
 export { default as ModulesSection } from './ModulesSection';
+export { default as LeaderboardSection } from './LeaderboardSection';
 export { default as TrustSection } from './TrustSection';
 export { default as PartnerCarouselSection } from './PartnerCarouselSection';
 export { default as CoursesSection } from './CoursesSection';
