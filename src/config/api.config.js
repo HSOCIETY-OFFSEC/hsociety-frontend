@@ -243,6 +243,7 @@ const DEFAULT_API_ENDPOINTS = {
     COMMUNITY_PROFILES: '/public/community-profiles',
     LANDING_CONTENT: '/public/content/landing',
     TERMS_CONTENT: '/public/content/terms',
+    TEAM_CONTENT: '/public/content/team',
     BLOG_POSTS: '/public/blog-posts',
     SECURITY_EVENT: '/public/security-events',
   }

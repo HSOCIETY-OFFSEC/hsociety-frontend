@@ -9,10 +9,51 @@ import {
   sendAdminNotification,
   updateAdminContent,
 } from './admin.service';
+import defaultTeamContent from '../../../data/team.json';
 import '../../../styles/dashboards/admin/index.css';
 
 const emptyPost = { title: '', date: '', summary: '' };
 const emptyResource = { title: '', description: '', url: '', type: 'link' };
+const emptyTeamSocial = { platform: '', url: '' };
+const emptyTeamMember = {
+  name: '',
+  role: '',
+  focus: '',
+  icon: 'FiUsers',
+  image: '',
+  socials: [{ ...emptyTeamSocial }],
+};
+
+const ensureArray = (value, fallback = []) => (Array.isArray(value) ? value : fallback);
+
+const normalizeTeam = (incoming = {}) => ({
+  ...defaultTeamContent,
+  ...incoming,
+  hero: { ...defaultTeamContent.hero, ...(incoming.hero || {}) },
+  leadership: {
+    ...defaultTeamContent.leadership,
+    ...(incoming.leadership || {}),
+    members: ensureArray(
+      incoming.leadership?.members,
+      defaultTeamContent.leadership?.members || []
+    ).map((member) => ({
+      ...member,
+      icon: String(member?.icon || 'FiUsers'),
+      socials: ensureArray(member?.socials, []).length
+        ? ensureArray(member?.socials, []).map((social) => ({
+            platform: String(social?.platform || ''),
+            url: String(social?.url || ''),
+          }))
+        : [{ ...emptyTeamSocial }],
+    })),
+  },
+  groups: {
+    ...defaultTeamContent.groups,
+    ...(incoming.groups || {}),
+    items: ensureArray(incoming.groups?.items, defaultTeamContent.groups?.items || []),
+  },
+  cta: { ...defaultTeamContent.cta, ...(incoming.cta || {}) },
+});
 
 const AdminContent = () => {
   const [loading, setLoading] = useState(true);
@@ -35,6 +76,7 @@ const AdminContent = () => {
     jurisdiction: '',
     sections: [{ title: '', body: '', bullets: [] }],
   });
+  const [team, setTeam] = useState(() => normalizeTeam({}));
   const [meetingForm, setMeetingForm] = useState({ meetUrl: '', message: '', audience: 'students' });
   const [notificationForm, setNotificationForm] = useState({
     title: '',
@@ -83,6 +125,7 @@ const AdminContent = () => {
                 }))
               : [{ title: '', body: '', bullets: [] }],
         });
+        setTeam(normalizeTeam(data.team || {}));
       } else {
         setError(response.error || 'Failed to load content');
       }
@@ -132,6 +175,95 @@ const AdminContent = () => {
     setTerms((prev) => ({ ...prev, sections: prev.sections.filter((_, i) => i !== index) }));
   };
 
+  const updateTeamHero = (field, value) => {
+    setTeam((prev) => ({ ...prev, hero: { ...(prev.hero || {}), [field]: value } }));
+  };
+
+  const updateTeamLeadership = (field, value) => {
+    setTeam((prev) => ({
+      ...prev,
+      leadership: { ...(prev.leadership || {}), [field]: value },
+    }));
+  };
+
+  const updateTeamMember = (index, field, value) => {
+    setTeam((prev) => ({
+      ...prev,
+      leadership: {
+        ...(prev.leadership || {}),
+        members: ensureArray(prev.leadership?.members).map((member, memberIndex) =>
+          memberIndex === index ? { ...member, [field]: value } : member
+        ),
+      },
+    }));
+  };
+
+  const addTeamMember = () => {
+    setTeam((prev) => ({
+      ...prev,
+      leadership: {
+        ...(prev.leadership || {}),
+        members: [...ensureArray(prev.leadership?.members), { ...emptyTeamMember }],
+      },
+    }));
+  };
+
+  const removeTeamMember = (index) => {
+    setTeam((prev) => ({
+      ...prev,
+      leadership: {
+        ...(prev.leadership || {}),
+        members: ensureArray(prev.leadership?.members).filter((_, memberIndex) => memberIndex !== index),
+      },
+    }));
+  };
+
+  const updateTeamMemberSocial = (memberIndex, socialIndex, field, value) => {
+    setTeam((prev) => ({
+      ...prev,
+      leadership: {
+        ...(prev.leadership || {}),
+        members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) => {
+          if (currentMemberIndex !== memberIndex) return member;
+          return {
+            ...member,
+            socials: ensureArray(member.socials).map((social, currentSocialIndex) =>
+              currentSocialIndex === socialIndex ? { ...social, [field]: value } : social
+            ),
+          };
+        }),
+      },
+    }));
+  };
+
+  const addTeamMemberSocial = (memberIndex) => {
+    setTeam((prev) => ({
+      ...prev,
+      leadership: {
+        ...(prev.leadership || {}),
+        members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) =>
+          currentMemberIndex === memberIndex
+            ? { ...member, socials: [...ensureArray(member.socials), { ...emptyTeamSocial }] }
+            : member
+        ),
+      },
+    }));
+  };
+
+  const removeTeamMemberSocial = (memberIndex, socialIndex) => {
+    setTeam((prev) => ({
+      ...prev,
+      leadership: {
+        ...(prev.leadership || {}),
+        members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) => {
+          if (currentMemberIndex !== memberIndex) return member;
+          const socials = ensureArray(member.socials).filter((_, idx) => idx !== socialIndex);
+          return { ...member, socials: socials.length ? socials : [{ ...emptyTeamSocial }] };
+        }),
+      },
+    }));
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError('');
@@ -172,6 +304,51 @@ const AdminContent = () => {
         freeResourcesMessage: resourcesMessage,
         bootcampMeetingUrl: meetingForm.meetUrl,
         bootcampMeetingMessage: meetingForm.message,
+      },
+      team: {
+        hero: {
+          kicker: String(team.hero?.kicker || '').trim(),
+          title: String(team.hero?.title || '').trim(),
+          subtitle: String(team.hero?.subtitle || '').trim(),
+          button: String(team.hero?.button || '').trim(),
+          route: String(team.hero?.route || '').trim(),
+        },
+        leadership: {
+          title: String(team.leadership?.title || '').trim(),
+          subtitle: String(team.leadership?.subtitle || '').trim(),
+          members: ensureArray(team.leadership?.members)
+            .map((member) => ({
+              name: String(member?.name || '').trim(),
+              role: String(member?.role || '').trim(),
+              focus: String(member?.focus || '').trim(),
+              icon: String(member?.icon || '').trim(),
+              image: String(member?.image || '').trim(),
+              socials: ensureArray(member?.socials)
+                .map((social) => ({
+                  platform: String(social?.platform || '').trim(),
+                  url: String(social?.url || '').trim(),
+                }))
+                .filter((social) => social.platform && social.url),
+            }))
+            .filter((member) => member.name),
+        },
+        groups: {
+          title: String(team.groups?.title || '').trim(),
+          subtitle: String(team.groups?.subtitle || '').trim(),
+          items: ensureArray(team.groups?.items)
+            .map((item) => ({
+              title: String(item?.title || '').trim(),
+              description: String(item?.description || '').trim(),
+              icon: String(item?.icon || '').trim(),
+            }))
+            .filter((item) => item.title && item.description),
+        },
+        cta: {
+          title: String(team.cta?.title || '').trim(),
+          subtitle: String(team.cta?.subtitle || '').trim(),
+          button: String(team.cta?.button || '').trim(),
+          route: String(team.cta?.route || '').trim(),
+        },
       },
     };
 
@@ -465,6 +642,159 @@ const AdminContent = () => {
             <Button variant="secondary" size="small" onClick={addPost}>
               <FiPlus size={14} />
               Add Post
+            </Button>
+          </div>
+        </Card>
+
+        <Card className="admin-card" padding="medium">
+          <div className="admin-section-header">
+            <h2>Team Section</h2>
+            <p>Manage team hero and each member card, including social links.</p>
+          </div>
+
+          <div className="admin-stats-form">
+            <label>
+              Team Kicker
+              <input
+                className="admin-input"
+                value={team.hero?.kicker || ''}
+                onChange={(e) => updateTeamHero('kicker', e.target.value)}
+              />
+            </label>
+            <label>
+              Team Title
+              <input
+                className="admin-input"
+                value={team.hero?.title || ''}
+                onChange={(e) => updateTeamHero('title', e.target.value)}
+              />
+            </label>
+            <label>
+              Team Subtitle
+              <input
+                className="admin-input"
+                value={team.hero?.subtitle || ''}
+                onChange={(e) => updateTeamHero('subtitle', e.target.value)}
+              />
+            </label>
+            <label>
+              Team Button Text
+              <input
+                className="admin-input"
+                value={team.hero?.button || ''}
+                onChange={(e) => updateTeamHero('button', e.target.value)}
+              />
+            </label>
+            <label>
+              Team Button Route
+              <input
+                className="admin-input"
+                value={team.hero?.route || ''}
+                onChange={(e) => updateTeamHero('route', e.target.value)}
+              />
+            </label>
+            <label>
+              Leadership Title
+              <input
+                className="admin-input"
+                value={team.leadership?.title || ''}
+                onChange={(e) => updateTeamLeadership('title', e.target.value)}
+              />
+            </label>
+            <label>
+              Leadership Subtitle
+              <input
+                className="admin-input"
+                value={team.leadership?.subtitle || ''}
+                onChange={(e) => updateTeamLeadership('subtitle', e.target.value)}
+              />
+            </label>
+          </div>
+
+          <div className="admin-content-posts">
+            {ensureArray(team.leadership?.members).map((member, memberIndex) => (
+              <div className="admin-content-post" key={`team-member-${memberIndex}`}>
+                <input
+                  className="admin-input"
+                  placeholder="Member name"
+                  value={member.name || ''}
+                  onChange={(e) => updateTeamMember(memberIndex, 'name', e.target.value)}
+                />
+                <input
+                  className="admin-input"
+                  placeholder="Role"
+                  value={member.role || ''}
+                  onChange={(e) => updateTeamMember(memberIndex, 'role', e.target.value)}
+                />
+                <input
+                  className="admin-input"
+                  placeholder="Image path (e.g. /team-images/name.jpg)"
+                  value={member.image || ''}
+                  onChange={(e) => updateTeamMember(memberIndex, 'image', e.target.value)}
+                />
+                <input
+                  className="admin-input"
+                  placeholder="Icon (FiCrosshair, FiCpu, FiTarget...)"
+                  value={member.icon || ''}
+                  onChange={(e) => updateTeamMember(memberIndex, 'icon', e.target.value)}
+                />
+                <textarea
+                  className="admin-textarea"
+                  rows={2}
+                  placeholder="Focus"
+                  value={member.focus || ''}
+                  onChange={(e) => updateTeamMember(memberIndex, 'focus', e.target.value)}
+                />
+
+                {ensureArray(member.socials).map((social, socialIndex) => (
+                  <div key={`team-member-${memberIndex}-social-${socialIndex}`} className="admin-stats-form">
+                    <input
+                      className="admin-input"
+                      placeholder="Platform (LinkedIn, GitHub, X...)"
+                      value={social.platform || ''}
+                      onChange={(e) =>
+                        updateTeamMemberSocial(memberIndex, socialIndex, 'platform', e.target.value)
+                      }
+                    />
+                    <input
+                      className="admin-input"
+                      placeholder="Profile URL"
+                      value={social.url || ''}
+                      onChange={(e) =>
+                        updateTeamMemberSocial(memberIndex, socialIndex, 'url', e.target.value)
+                      }
+                    />
+                    <Button
+                      variant="ghost"
+                      size="small"
+                      onClick={() => removeTeamMemberSocial(memberIndex, socialIndex)}
+                    >
+                      <FiTrash2 size={14} />
+                      Remove Social
+                    </Button>
+                  </div>
+                ))}
+
+                <Button variant="ghost" size="small" onClick={() => addTeamMemberSocial(memberIndex)}>
+                  <FiPlus size={14} />
+                  Add Social
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="small"
+                  onClick={() => removeTeamMember(memberIndex)}
+                  disabled={ensureArray(team.leadership?.members).length <= 1}
+                >
+                  <FiTrash2 size={14} />
+                  Remove Member
+                </Button>
+              </div>
+            ))}
+
+            <Button variant="secondary" size="small" onClick={addTeamMember}>
+              <FiPlus size={14} />
+              Add Team Member
             </Button>
           </div>
         </Card>

@@ -15,21 +15,43 @@
         "role": "Systems Thinker, Offensive Security Strategist & Full-Stack Architect",
         "focus": "Building scalable tech ecosystems for Africa. Adversary simulation, enterprise security strategy, and React + Django platforms engineered for education, cybersecurity, and community-driven growth.",
         "icon": "FiCrosshair",
-        "image": "/team-images/wsuits6-profile.png"
+        "image": "/team-images/wsuits6-profile.png",
+        "socials": [
+          {
+            "platform": "LinkedIn",
+            "url": "https://linkedin.com"
+          },
+          {
+            "platform": "GitHub",
+            "url": "https://github.com"
+          }
+        ]
       },
       {
-        "name": "Shine",
+        "name": "Hamid",
         "role": "Principal Pentester",
         "focus": "Network Security Expert",
         "icon": "FiCpu",
-        "image": ""
+        "image": "/team-images/hamid.jpeg",
+        "socials": [
+          {
+            "platform": "X",
+            "url": "https://x.com"
+          }
+        ]
       },
       {
-        "name": "Non-Conformist",
+        "name": "Hamdia",
         "role": "Governance, Complaince and Risk Managment Officer (GRC)",
         "focus": "Covert access, privilege escalation, and opsec.",
         "icon": "FiTarget",
-        "image": ""
+        "image": "/team-images/hamdia.jpeg",
+        "socials": [
+          {
+            "platform": "LinkedIn",
+            "url": "https://linkedin.com"
+          }
+        ]
       }
     ]
   },

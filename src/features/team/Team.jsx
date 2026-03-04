@@ -1,17 +1,55 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiCpu, FiCrosshair, FiMessageSquare, FiShield, FiTarget, FiUsers } from 'react-icons/fi';
+import {
+  FaDiscord,
+  FaFacebookF,
+  FaGithub,
+  FaGlobe,
+  FaInstagram,
+  FaLinkedinIn,
+  FaTelegram,
+  FaXTwitter,
+  FaYoutube
+} from 'react-icons/fa6';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import ImageWithLoader from '../../shared/components/ui/ImageWithLoader';
 import teamContent from '../../data/team.json';
+import { getTeamContent } from './team.service';
 import '../../styles/sections/team/index.css';
+
+const ensureArray = (value, fallback = []) => (Array.isArray(value) ? value : fallback);
+
+const normalizeTeamContent = (base, incoming = {}) => ({
+  ...base,
+  ...incoming,
+  hero: { ...base.hero, ...(incoming.hero || {}) },
+  leadership: {
+    ...base.leadership,
+    ...(incoming.leadership || {}),
+    members: ensureArray(incoming.leadership?.members, base.leadership?.members || []).map((member) => ({
+      ...member,
+      socials: ensureArray(member?.socials, []).map((social) => ({
+        platform: String(social?.platform || '').trim(),
+        url: String(social?.url || '').trim(),
+      })),
+    })),
+  },
+  groups: {
+    ...base.groups,
+    ...(incoming.groups || {}),
+    items: ensureArray(incoming.groups?.items, base.groups?.items || []),
+  },
+  cta: { ...base.cta, ...(incoming.cta || {}) },
+});
 
 const Team = () => {
   const navigate = useNavigate();
   useScrollReveal();
+  const [content, setContent] = useState(teamContent);
 
   const iconMap = useMemo(() => ({
     FiCrosshair,
@@ -22,14 +60,45 @@ const Team = () => {
     FiMessageSquare
   }), []);
 
-  const leadership = teamContent.leadership.members.map((member) => ({
+  const socialIconMap = useMemo(
+    () => ({
+      linkedin: FaLinkedinIn,
+      github: FaGithub,
+      x: FaXTwitter,
+      twitter: FaXTwitter,
+      youtube: FaYoutube,
+      telegram: FaTelegram,
+      instagram: FaInstagram,
+      facebook: FaFacebookF,
+      discord: FaDiscord,
+      website: FaGlobe,
+      web: FaGlobe
+    }),
+    []
+  );
+
+  useEffect(() => {
+    let mounted = true;
+    const loadTeamContent = async () => {
+      const response = await getTeamContent();
+      if (!mounted || !response.success) return;
+      const managedTeam = response.data?.team || {};
+      setContent(normalizeTeamContent(teamContent, managedTeam));
+    };
+    loadTeamContent();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const leadership = ensureArray(content.leadership?.members).map((member) => ({
     ...member,
-    icon: iconMap[member.icon]
+    icon: iconMap[member.icon] || FiUsers
   }));
 
-  const teams = teamContent.groups.items.map((group) => ({
+  const teams = ensureArray(content.groups?.items).map((group) => ({
     ...group,
-    icon: iconMap[group.icon]
+    icon: iconMap[group.icon] || FiShield
   }));
 
   return (
@@ -38,12 +107,12 @@ const Team = () => {
         <div className="team-hero-content">
           <Logo size="large" />
           <div>
-            <p className="team-kicker">{teamContent.hero.kicker}</p>
-            <h1>{teamContent.hero.title}</h1>
-            <p>{teamContent.hero.subtitle}</p>
+            <p className="team-kicker">{content.hero?.kicker}</p>
+            <h1>{content.hero?.title}</h1>
+            <p>{content.hero?.subtitle}</p>
           </div>
-          <Button variant="primary" size="large" onClick={() => navigate(teamContent.hero.route)}>
-            {teamContent.hero.button}
+          <Button variant="primary" size="large" onClick={() => navigate(content.hero?.route || '/feedback')}>
+            {content.hero?.button || 'Work With Us'}
           </Button>
         </div>
       </header>
@@ -51,8 +120,8 @@ const Team = () => {
       <section className="team-leadership reveal-on-scroll">
         <div className="team-section-header">
           <Logo size="small" />
-          <h2>{teamContent.leadership.title}</h2>
-          <p>{teamContent.leadership.subtitle}</p>
+          <h2>{content.leadership?.title}</h2>
+          <p>{content.leadership?.subtitle}</p>
         </div>
         <div className="team-leadership-grid">
           {leadership.map((member, index) => (
@@ -71,6 +140,28 @@ const Team = () => {
               <h3>{member.name}</h3>
               <span>{member.role}</span>
               <p>{member.focus}</p>
+              {!!member.socials?.length && (
+                <div className="team-card-socials" aria-label={`${member.name} social links`}>
+                  {member.socials.map((social, socialIndex) => {
+                    if (!social?.url) return null;
+                    const key = String(social?.platform || '').trim().toLowerCase();
+                    const Icon = socialIconMap[key] || FaGlobe;
+                    return (
+                      <a
+                        key={`${key}-${socialIndex}`}
+                        href={social.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${member.name} on ${social.platform || 'social'}`}
+                        className="team-card-social-link"
+                      >
+                        <Icon size={14} />
+                        <span>{social.platform || 'Website'}</span>
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
             </Card>
           ))}
         </div>
@@ -79,8 +170,8 @@ const Team = () => {
       <section className="team-groups reveal-on-scroll">
         <div className="team-section-header">
           <Logo size="small" />
-          <h2>{teamContent.groups.title}</h2>
-          <p>{teamContent.groups.subtitle}</p>
+          <h2>{content.groups?.title}</h2>
+          <p>{content.groups?.subtitle}</p>
         </div>
         <div className="team-group-grid">
           {teams.map((group, index) => (
@@ -99,11 +190,11 @@ const Team = () => {
         <Card padding="large" className="team-cta-card">
           <div className="team-cta-content">
             <div>
-              <h3>{teamContent.cta.title}</h3>
-              <p>{teamContent.cta.subtitle}</p>
+              <h3>{content.cta?.title}</h3>
+              <p>{content.cta?.subtitle}</p>
             </div>
-            <Button variant="secondary" size="large" onClick={() => navigate(teamContent.cta.route)}>
-              {teamContent.cta.button}
+            <Button variant="secondary" size="large" onClick={() => navigate(content.cta?.route || '/feedback')}>
+              {content.cta?.button || 'Open Roles'}
             </Button>
           </div>
         </Card>

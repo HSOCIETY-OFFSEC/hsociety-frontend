@@ -73,7 +73,7 @@
 
 .team-leadership-grid,
 .team-group-grid {
-  margin: 0 auo;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
@@ -137,6 +137,32 @@
 .team-group-card p {
   margin: 0;
   color: var(--text-secondary);
+}
+
+.team-card-socials {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.team-card-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  text-decoration: none;
+  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  transition: all 0.2s ease;
+}
+
+.team-card-social-link:hover {
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
 }
 
 .team-card-icon {
