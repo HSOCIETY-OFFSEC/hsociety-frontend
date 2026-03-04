@@ -10,6 +10,7 @@ import {
   normalizeDashboardStats,
   normalizeRecentActivity
 } from './dashboard.contract';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 const mockStats = {
   activeEngagements: 4,
@@ -87,7 +88,7 @@ export const getDashboardStats = async () => {
 
   return {
     success: false,
-    error: response.error || 'Failed to fetch dashboard stats'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 
@@ -118,7 +119,7 @@ export const getRecentActivity = async (limit = 10) => {
 
   return {
     success: false,
-    error: response.error || 'Failed to fetch recent activity'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 
@@ -166,7 +167,7 @@ export const getDashboardOverview = async () => {
 
   return {
     success: false,
-    error: response.error || 'Failed to fetch dashboard overview'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 

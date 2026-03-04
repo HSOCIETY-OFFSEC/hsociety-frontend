@@ -5,6 +5,8 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getAdminOverview } from './admin.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 
 const AdminOverview = () => {
@@ -23,7 +25,7 @@ const AdminOverview = () => {
       if (response.success) {
         setOverview(response.data || {});
       } else {
-        setError(response.error || 'Failed to load admin overview');
+        setError(getPublicErrorMessage({ action: 'load', response }));
       }
       setLoading(false);
     };
@@ -68,7 +70,7 @@ const AdminOverview = () => {
           </div>
         </div>
 
-        {error && <div className="admin-alert">{error}</div>}
+        <PublicError message={error} className="admin-alert" />
 
         <div className="admin-overview-grid">
           <Card className="admin-card" padding="medium">

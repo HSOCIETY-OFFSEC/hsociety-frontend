@@ -7,6 +7,36 @@ import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
 import { validateEmail, validatePassword } from '../validation/input.validator';
 
+const getPublicAuthMessage = (action, responseOrError = null) => {
+  const status = responseOrError?.status;
+  if (status === 0) {
+    return 'Connection error. Please try again.';
+  }
+
+  switch (action) {
+    case 'login':
+      return 'Login failed. Please try again.';
+    case 'register':
+      return 'Registration failed. Please try again.';
+    case 'logout':
+      return 'Logout failed. Please try again.';
+    case 'request_reset':
+      return 'Password reset request failed. Please try again.';
+    case 'reset_password':
+      return 'Password reset failed. Please try again.';
+    case 'change_password':
+      return 'Password change failed. Please try again.';
+    case 'refresh':
+      return 'Session refresh failed. Please try again.';
+    case 'verify':
+      return 'Session verification failed. Please try again.';
+    case 'profile':
+      return 'Profile update failed. Please try again.';
+    default:
+      return 'Request failed. Please try again.';
+  }
+};
+
 /**
  * Login with email and password.
  * @param {string} email - User email
@@ -16,11 +46,11 @@ import { validateEmail, validatePassword } from '../validation/input.validator';
 export const login = async (identity, password) => {
   try {
     if (!identity || String(identity).trim().length < 2) {
-      throw new Error('Email or handle is required');
+      return { success: false, message: getPublicAuthMessage('login') };
     }
 
     if (!password || password.length < 6) {
-      throw new Error('Password must be at least 6 characters');
+      return { success: false, message: getPublicAuthMessage('login') };
     }
 
     const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, {
@@ -31,7 +61,7 @@ export const login = async (identity, password) => {
     if (!response.success) {
       return {
         success: false,
-        message: response.error || 'Login failed'
+        message: getPublicAuthMessage('login', response)
       };
     }
 
@@ -68,7 +98,7 @@ export const login = async (identity, password) => {
     console.error('[AUTH] Login failed:', error);
     return {
       success: false,
-      message: error.message || 'Login failed'
+      message: getPublicAuthMessage('login', error)
     };
   }
 };
@@ -83,16 +113,16 @@ export const register = async (userData) => {
     const { email, password, name } = userData;
 
     if (!validateEmail(email)) {
-      throw new Error('Invalid email format');
+      return { success: false, message: getPublicAuthMessage('register') };
     }
 
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.isValid) {
-      throw new Error(passwordValidation.errors[0]);
+      return { success: false, message: getPublicAuthMessage('register') };
     }
 
     if (!name || name.trim().length < 2) {
-      throw new Error('Name must be at least 2 characters');
+      return { success: false, message: getPublicAuthMessage('register') };
     }
 
     const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, {
@@ -104,7 +134,7 @@ export const register = async (userData) => {
     if (!response.success) {
       return {
         success: false,
-        message: response.error || 'Registration failed'
+        message: getPublicAuthMessage('register', response)
       };
     }
 
@@ -121,7 +151,7 @@ export const register = async (userData) => {
     console.error('[AUTH] Registration failed:', error);
     return {
       success: false,
-      message: error.message || 'Registration failed'
+      message: getPublicAuthMessage('register', error)
     };
   }
 };
@@ -134,7 +164,7 @@ export const register = async (userData) => {
 export const logout = async (token) => {
   try {
     if (!token) {
-      throw new Error('No token provided');
+      return { success: false, message: getPublicAuthMessage('logout') };
     }
 
     const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, {});
@@ -142,7 +172,7 @@ export const logout = async (token) => {
     if (!response.success) {
       return {
         success: false,
-        message: response.error || 'Logout failed'
+        message: getPublicAuthMessage('logout', response)
       };
     }
 
@@ -154,7 +184,7 @@ export const logout = async (token) => {
     console.error('[AUTH] Logout failed:', error);
     return {
       success: false,
-      message: error.message || 'Logout failed'
+      message: getPublicAuthMessage('logout', error)
     };
   }
 };
@@ -165,19 +195,19 @@ export const logout = async (token) => {
 export const requestPasswordReset = async (email) => {
   try {
     if (!validateEmail(email)) {
-      throw new Error('Invalid email format');
+      return { success: false, message: getPublicAuthMessage('request_reset') };
     }
 
     const response = await apiClient.post(API_ENDPOINTS.AUTH.PASSWORD_RESET_REQUEST, { email });
 
     if (!response.success) {
-      return { success: false, message: response.error || 'Failed to request password reset' };
+      return { success: false, message: getPublicAuthMessage('request_reset', response) };
     }
 
     return { success: true, message: 'Password reset instructions sent to your email' };
   } catch (error) {
     console.error('[AUTH] Password reset request failed:', error);
-    return { success: false, message: error.message || 'Failed to request password reset' };
+    return { success: false, message: getPublicAuthMessage('request_reset', error) };
   }
 };
 
@@ -187,12 +217,12 @@ export const requestPasswordReset = async (email) => {
 export const resetPassword = async (token, newPassword) => {
   try {
     if (!token) {
-      throw new Error('Reset token is required');
+      return { success: false, message: getPublicAuthMessage('reset_password') };
     }
 
     const passwordValidation = validatePassword(newPassword);
     if (!passwordValidation.isValid) {
-      throw new Error(passwordValidation.errors[0]);
+      return { success: false, message: getPublicAuthMessage('reset_password') };
     }
 
     const response = await apiClient.post(API_ENDPOINTS.AUTH.PASSWORD_RESET_CONFIRM, {
@@ -201,13 +231,13 @@ export const resetPassword = async (token, newPassword) => {
     });
 
     if (!response.success) {
-      return { success: false, message: response.error || 'Password reset failed' };
+      return { success: false, message: getPublicAuthMessage('reset_password', response) };
     }
 
     return { success: true, message: 'Password reset successful' };
   } catch (error) {
     console.error('[AUTH] Password reset failed:', error);
-    return { success: false, message: error.message || 'Password reset failed' };
+    return { success: false, message: getPublicAuthMessage('reset_password', error) };
   }
 };
 
@@ -217,16 +247,16 @@ export const resetPassword = async (token, newPassword) => {
 export const changePassword = async (currentPassword, newPassword) => {
   try {
     if (!currentPassword || !newPassword) {
-      throw new Error('Both current and new passwords are required');
+      return { success: false, message: getPublicAuthMessage('change_password') };
     }
 
     if (currentPassword === newPassword) {
-      throw new Error('New password must be different from current password');
+      return { success: false, message: getPublicAuthMessage('change_password') };
     }
 
     const passwordValidation = validatePassword(newPassword);
     if (!passwordValidation.isValid) {
-      throw new Error(passwordValidation.errors[0]);
+      return { success: false, message: getPublicAuthMessage('change_password') };
     }
 
     const response = await apiClient.post(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, {
@@ -235,13 +265,13 @@ export const changePassword = async (currentPassword, newPassword) => {
     });
 
     if (!response.success) {
-      return { success: false, message: response.error || 'Password change failed' };
+      return { success: false, message: getPublicAuthMessage('change_password', response) };
     }
 
     return { success: true, message: 'Password changed successfully' };
   } catch (error) {
     console.error('[AUTH] Password change failed:', error);
-    return { success: false, message: error.message || 'Password change failed' };
+    return { success: false, message: getPublicAuthMessage('change_password', error) };
   }
 };
 
@@ -252,13 +282,13 @@ export const changePassword = async (currentPassword, newPassword) => {
 export const refreshToken = async (refreshToken) => {
   try {
     if (!refreshToken) {
-      throw new Error('Refresh token is required');
+      return { success: false, message: getPublicAuthMessage('refresh') };
     }
 
     const response = await apiClient.post(API_ENDPOINTS.AUTH.REFRESH, { refreshToken });
 
     if (!response.success) {
-      return { success: false, message: response.error || 'Token refresh failed' };
+      return { success: false, message: getPublicAuthMessage('refresh', response) };
     }
 
     const data = response.data || {};
@@ -272,7 +302,7 @@ export const refreshToken = async (refreshToken) => {
     };
   } catch (error) {
     console.error('[AUTH] Token refresh failed:', error);
-    return { success: false, message: error.message || 'Token refresh failed' };
+    return { success: false, message: getPublicAuthMessage('refresh', error) };
   }
 };
 
@@ -284,13 +314,13 @@ export const verifyToken = async () => {
     const response = await apiClient.get(API_ENDPOINTS.AUTH.VERIFY);
 
     if (!response.success) {
-      return { success: false, message: response.error || 'Invalid token' };
+      return { success: false, message: getPublicAuthMessage('verify', response) };
     }
 
     return { success: true, user: response.data?.user, message: 'Token is valid' };
   } catch (error) {
     console.error('[AUTH] Token verification failed:', error);
-    return { success: false, message: error.message || 'Invalid token' };
+    return { success: false, message: getPublicAuthMessage('verify', error) };
   }
 };
 
@@ -302,13 +332,13 @@ export const getCurrentUser = async () => {
     const response = await apiClient.get(API_ENDPOINTS.AUTH.ME);
 
     if (!response.success) {
-      return { success: false, message: response.error || 'Failed to get user profile' };
+      return { success: false, message: getPublicAuthMessage('verify', response) };
     }
 
     return { success: true, user: response.data, message: 'Profile retrieved successfully' };
   } catch (error) {
     console.error('[AUTH] Failed to get user profile:', error);
-    return { success: false, message: error.message || 'Failed to get user profile' };
+    return { success: false, message: getPublicAuthMessage('verify', error) };
   }
 };
 
@@ -318,19 +348,19 @@ export const getCurrentUser = async () => {
 export const updateProfile = async (updates) => {
   try {
     if (updates.email && !validateEmail(updates.email)) {
-      throw new Error('Invalid email format');
+      return { success: false, message: getPublicAuthMessage('profile') };
     }
 
     const response = await apiClient.put(API_ENDPOINTS.PROFILE.UPDATE, updates);
 
     if (!response.success) {
-      return { success: false, message: response.error || 'Profile update failed' };
+      return { success: false, message: getPublicAuthMessage('profile', response) };
     }
 
     return { success: true, user: response.data, message: 'Profile updated successfully' };
   } catch (error) {
     console.error('[AUTH] Profile update failed:', error);
-    return { success: false, message: error.message || 'Profile update failed' };
+    return { success: false, message: getPublicAuthMessage('profile', error) };
   }
 };
 

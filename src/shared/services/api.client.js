@@ -17,6 +17,7 @@
 
 import { sessionManager } from '../../core/auth/session.manager';
 import { envConfig } from '../../config/env.config';
+import { getPublicErrorMessage } from '../utils/publicError';
 
 const API_BASE_URL = envConfig.api.baseURL;
 
@@ -83,7 +84,7 @@ class APIClient {
     if (!error.response) {
       return {
         success: false,
-        error: 'Network error. Please check your connection.',
+        error: getPublicErrorMessage({ response: { status: 0 } }),
         status: 0
       };
     }
@@ -105,7 +106,7 @@ class APIClient {
     // Other errors
     return {
       success: false,
-      error: data?.error || data?.message || 'An error occurred',
+      error: getPublicErrorMessage({ response: { status } }),
       status,
       data
     };

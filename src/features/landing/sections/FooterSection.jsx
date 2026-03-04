@@ -20,6 +20,7 @@ import landingContent from '../../../data/landing.json';
 import { slugify } from '../../../shared/utils/slugify';
 import '../../../styles/landing/footer.css';
 import { subscribeNewsletter } from '../landing.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 const FooterSection = () => {
   const [email, setEmail] = useState('');
@@ -43,7 +44,7 @@ const FooterSection = () => {
       if (!response.success) {
         setStatus({
           type: 'error',
-          message: response.error || 'Could not subscribe at the moment.'
+          message: getPublicErrorMessage({ action: 'submit', response })
         });
         return;
       }
@@ -53,7 +54,7 @@ const FooterSection = () => {
     } catch (err) {
       setStatus({
         type: 'error',
-        message: err?.message || 'Could not subscribe at the moment.'
+        message: getPublicErrorMessage({ action: 'submit', response: err })
       });
     } finally {
       setLoading(false);

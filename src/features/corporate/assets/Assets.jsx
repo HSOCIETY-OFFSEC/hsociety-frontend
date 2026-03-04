@@ -4,6 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getAssets } from './assets.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/corporate/pages/assets.css';
 
 const assetTypes = ['Domain', 'IP Range', 'Application', 'Cloud Environment'];
@@ -23,7 +24,7 @@ const Assets = () => {
     try {
       const response = await getAssets();
       if (!response.success) {
-        throw new Error(response.error || 'Failed to load assets');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setAssets(response.data);
     } catch (err) {

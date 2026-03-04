@@ -11,6 +11,7 @@ import '../../styles/student/base.css';
 import '../../styles/student/components.css';
 import '../../styles/student/pages/payments.css';
 import { verifyBootcampPayment } from '../dashboards/student/student.service';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 
 const StudentPayments = () => {
   const { updateUser } = useAuth();
@@ -39,7 +40,7 @@ const StudentPayments = () => {
       setStatusMessage('Verifying payment...');
       const response = await verifyBootcampPayment(reference);
       if (!response.success) {
-        setStatusMessage(response.error || 'Unable to verify payment.');
+        setStatusMessage(getPublicErrorMessage({ action: 'payment', response }));
         return;
       }
       updateUser({

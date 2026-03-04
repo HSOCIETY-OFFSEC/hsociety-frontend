@@ -5,6 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import PaymentModal from './components/PaymentModal';
 import { getAgreements, getInvoices } from './billing.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/corporate/pages/billing.css';
 
 const Billing = () => {
@@ -27,7 +28,7 @@ const Billing = () => {
     try {
       const response = await getInvoices();
       if (!response.success) {
-        throw new Error(response.error || 'Failed to load invoices');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setInvoices(response.data);
     } catch (err) {
@@ -44,7 +45,7 @@ const Billing = () => {
     try {
       const response = await getAgreements();
       if (!response.success) {
-        throw new Error(response.error || 'Failed to load agreements');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setAgreements(response.data);
     } catch (err) {

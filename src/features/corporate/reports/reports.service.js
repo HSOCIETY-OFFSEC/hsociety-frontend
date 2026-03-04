@@ -6,6 +6,7 @@
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../../config/api.config';
 import { normalizeReports } from './reports.contract';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 const mockReports = [
   {
@@ -54,7 +55,7 @@ export const getReports = async () => {
 
   return {
     success: false,
-    error: response.error || 'Failed to load reports'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 

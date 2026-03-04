@@ -3,6 +3,7 @@ import { FiBookOpen, FiExternalLink, FiInfo } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { getFreeResources } from './services/learn.service';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import '../../styles/student/base.css';
 import '../../styles/student/components.css';
 import '../../styles/student/pages/resources.css';
@@ -20,7 +21,7 @@ const StudentResources = () => {
       const response = await getFreeResources();
       if (!mounted) return;
       if (!response.success) {
-        setError(response.error || 'Unable to load free resources.');
+        setError(getPublicErrorMessage({ action: 'load', response }));
       } else {
         setResources(Array.isArray(response.data?.items) ? response.data.items : []);
         if (response.data?.message) {

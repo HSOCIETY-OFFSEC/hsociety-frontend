@@ -4,6 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { fetchQuizForScope, submitQuizAnswers } from './quiz.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 /**
  * QuizPanel
@@ -28,7 +29,7 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
         });
 
         if (!response.success) {
-          throw new Error(response.error || 'Failed to load quiz');
+          throw new Error(getPublicErrorMessage({ action: 'load', response }));
         }
 
         setQuiz(response.data);
@@ -56,7 +57,7 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
     try {
       const response = await submitQuizAnswers(quiz, answers);
       if (!response.success) {
-        throw new Error(response.error || 'Failed to submit quiz');
+        throw new Error(getPublicErrorMessage({ action: 'submit', response }));
       }
       setResult(response.data);
       if (onComplete) {
@@ -202,4 +203,3 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
 };
 
 export default QuizPanel;
-

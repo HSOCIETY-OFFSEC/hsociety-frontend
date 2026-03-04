@@ -6,6 +6,7 @@
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../../config/api.config';
 import { normalizeAssets } from './assets.contract';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 const mockAssets = [
   {
@@ -52,7 +53,7 @@ export const getAssets = async () => {
     };
   }
 
-  return { success: false, error: response.error || 'Failed to load assets' };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
 };
 
 export default {

@@ -8,6 +8,7 @@ import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
+import PublicError from '../../shared/components/ui/PublicError';
 import '../../styles/core/auth.css';
 
 const HERO_ITEMS = [
@@ -50,7 +51,7 @@ const Login = ({ mode = 'default' }) => {
 
   const enforceRole = (role) => {
     if (mode === 'pentester' && role !== 'pentester') {
-      throw new Error('This login is for pentesters only.');
+      throw new Error('Login failed');
     }
   };
 
@@ -58,9 +59,13 @@ const Login = ({ mode = 'default' }) => {
     e.preventDefault();
     setError('');
     setLoading(true);
+    const genericLoginError = 'Login failed. Please try again.';
     try {
       const response = await loginRequest(email, password);
-      if (!response.success) throw new Error(response.message || 'Login failed');
+      if (!response.success) {
+        setError(response.message || genericLoginError);
+        return;
+      }
 
       if (response.twoFactorRequired) {
         setTwoFactorToken(response.twoFactorToken);
@@ -82,7 +87,7 @@ const Login = ({ mode = 'default' }) => {
       await login(response.user, response.token, response.refreshToken);
       navigate(resolveRouteForRole(role));
     } catch (err) {
-      setError(err.message || 'Login failed. Please try again.');
+      setError(genericLoginError);
     } finally {
       setLoading(false);
     }
@@ -91,14 +96,18 @@ const Login = ({ mode = 'default' }) => {
   const handleVerify2FA = async (e) => {
     e.preventDefault();
     setError('');
+    const genericVerifyError = 'Verification failed. Please try again.';
     if (twoFACode.length !== 6) {
-      setError('2FA code must be 6 digits');
+      setError(genericVerifyError);
       return;
     }
     setLoading(true);
     try {
       const response = await verify2FA(twoFactorToken, twoFACode);
-      if (!response.success) throw new Error(response.message || 'Invalid 2FA code');
+      if (!response.success) {
+        setError(response.message || genericVerifyError);
+        return;
+      }
 
       const user = response.user || pendingUser;
       const role = user?.role;
@@ -106,7 +115,7 @@ const Login = ({ mode = 'default' }) => {
       await login(user, response.token, response.refreshToken);
       navigate(resolveRouteForRole(role));
     } catch (err) {
-      setError(err.message || 'Invalid 2FA code. Please try again.');
+      setError(genericVerifyError);
     } finally {
       setLoading(false);
     }
@@ -161,14 +170,7 @@ const Login = ({ mode = 'default' }) => {
                 </p>
               </div>
 
-              {error && (
-                <div className="auth-error">
-                  <span className="error-icon">
-                    <FiAlertTriangle size={16} />
-                  </span>
-                  {error}
-                </div>
-              )}
+              <PublicError message={error} icon={<FiAlertTriangle size={16} />} />
 
               {step === 1 && (
                 <>

@@ -3,13 +3,14 @@
  */
 import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 
 export const getProfile = async () => {
   const response = await apiClient.get(API_ENDPOINTS.PROFILE.GET);
   if (response.success) {
     return { success: true, data: response.data };
   }
-  return { success: false, error: response.error || 'Failed to load profile' };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
 };
 
 export const deleteAccount = async () => {
@@ -17,7 +18,7 @@ export const deleteAccount = async () => {
   if (response.success) {
     return { success: true };
   }
-  return { success: false, error: response.error || 'Failed to delete account' };
+  return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
 };
 
 export const updateProfile = async (updates) => {
@@ -25,7 +26,7 @@ export const updateProfile = async (updates) => {
   if (response.success) {
     return { success: true, data: response.data };
   }
-  return { success: false, error: response.error || 'Failed to update profile' };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
 };
 
 export const updateAvatar = async (avatarUrl) => {
@@ -33,7 +34,7 @@ export const updateAvatar = async (avatarUrl) => {
   if (response.success) {
     return { success: true, data: response.data };
   }
-  return { success: false, error: response.error || 'Failed to update avatar' };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
 };
 
 export const removeAvatar = async () => {
@@ -41,7 +42,7 @@ export const removeAvatar = async () => {
   if (response.success) {
     return { success: true, data: response.data };
   }
-  return { success: false, error: response.error || 'Failed to remove avatar' };
+  return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
 };
 
 // SECURITY UPDATE IMPLEMENTED: Change password (strong validation on backend)
@@ -53,7 +54,7 @@ export const changePassword = async (currentPassword, newPassword) => {
   if (response.success) {
     return { success: true };
   }
-  return { success: false, error: response.error || 'Failed to change password' };
+  return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
 };
 
 export default {

@@ -7,6 +7,7 @@ import { useAuth } from '../../core/auth/AuthContext';
 import { registerBootcamp } from '../dashboards/student/student.service';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentPaymentModal from './components/StudentPaymentModal';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import {
   HACKER_PROTOCOL_BOOTCAMP,
   HACKER_PROTOCOL_PHASES,
@@ -47,7 +48,7 @@ const StudentBootcamp = () => {
       });
       setShowPaymentModal(true);
     } else {
-      setError(response.error || 'Unable to enroll in bootcamp.');
+      setError(getPublicErrorMessage({ action: 'submit', response }));
     }
 
     setSaving(false);

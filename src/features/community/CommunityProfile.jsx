@@ -16,6 +16,7 @@ import { getCommunityProfile } from './community.service';
 import CommunitySidebar from './components/sidebar/CommunitySidebar';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { COMMUNITY_PROFILE_DATA } from '../../data/community/communityProfileData';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import '../../styles/sections/community/base.css';
 import '../../styles/sections/community/profile.css';
 
@@ -50,7 +51,7 @@ const CommunityProfile = () => {
         setXpSummary(response.data.xpSummary || null);
         setEmblems(response.data.emblems || null);
       } else {
-        setError(response.error || COMMUNITY_PROFILE_DATA.loadError);
+        setError(getPublicErrorMessage({ action: 'load', response }));
       }
       setLoading(false);
     };

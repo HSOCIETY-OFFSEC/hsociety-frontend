@@ -6,6 +6,7 @@ import Button from '../../shared/components/ui/Button';
 import { validateForm } from '../../core/validation/input.validator';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { submitFeedback } from './feedback.service';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import feedbackContent from '../../data/feedback.json';
 import '../../styles/sections/feedback/index.css';
 
@@ -110,7 +111,7 @@ const Feedback = () => {
       };
       const response = await submitFeedback(payload);
       if (!response.success) {
-        throw new Error(response.error || 'Failed to submit feedback.');
+        throw new Error(getPublicErrorMessage({ action: 'submit', response }));
       }
 
       setSubmittedReceipt({

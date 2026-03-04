@@ -9,6 +9,7 @@ import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStreng
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { validatePassword } from '../../core/validation/input.validator';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import AccountNotificationsList from './components/AccountNotificationsList';
 import { ACCOUNT_UI } from '../../data/account/accountUiData';
 import {
@@ -145,7 +146,7 @@ const AccountSettings = () => {
             : emblems.graduationUnlocked,
       });
     } else {
-      setError(response.error || 'Failed to update profile');
+      setError(getPublicErrorMessage({ action: 'save', response }));
     }
     setProfileSaving(false);
   };
@@ -173,7 +174,7 @@ const AccountSettings = () => {
     if (response.success) {
       updateUser(response.data);
     } else {
-      setError(response.error || 'Failed to update avatar');
+      setError(getPublicErrorMessage({ action: 'save', response }));
     }
     setAvatarSaving(false);
   };
@@ -187,7 +188,7 @@ const AccountSettings = () => {
       setAvatarPreview('');
       setAvatarFileName('');
     } else {
-      setError(response.error || 'Failed to remove avatar');
+      setError(getPublicErrorMessage({ action: 'submit', response }));
     }
     setAvatarRemoving(false);
   };
@@ -211,7 +212,7 @@ const AccountSettings = () => {
       setNewPassword('');
       setConfirmPassword('');
     } else {
-      setError(response.error || 'Failed to change password');
+      setError(getPublicErrorMessage({ action: 'submit', response }));
     }
     setPasswordSaving(false);
   };
@@ -228,7 +229,7 @@ const AccountSettings = () => {
     if (response.success) {
       await logout();
     } else {
-      setError(response.error || 'Failed to delete account');
+      setError(getPublicErrorMessage({ action: 'submit', response }));
     }
     setLoading(false);
   };

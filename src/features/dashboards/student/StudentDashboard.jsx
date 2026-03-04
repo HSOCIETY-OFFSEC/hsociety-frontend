@@ -19,6 +19,7 @@ import { listNotifications } from '../../student/services/notifications.service'
 import { STUDENT_DASHBOARD_UI } from '../../../data/student/studentDashboardUiData';
 import StudentXpSummaryCard from './components/StudentXpSummaryCard';
 import StudentRecentNotificationsCard from './components/StudentRecentNotificationsCard';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
@@ -50,7 +51,7 @@ const StudentDashboard = () => {
       try {
         const response = await getStudentOverview();
         if (!response.success) {
-          throw new Error(response.error || STUDENT_DASHBOARD_UI.page.loadError);
+          throw new Error(getPublicErrorMessage({ action: 'load', response }));
         }
         setData(response.data);
         const notificationsResponse = await listNotifications();
@@ -98,7 +99,7 @@ const StudentDashboard = () => {
       setShowBootcampModal(false);
       setBootcampForm((prev) => ({ ...prev, goal: '' }));
     } else {
-      setError(response.error || STUDENT_DASHBOARD_UI.page.registerError);
+      setError(getPublicErrorMessage({ action: 'submit', response }));
     }
     setBootcampSaving(false);
   };

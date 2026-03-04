@@ -58,7 +58,7 @@ export const requestOTP = async (identifier, purpose = 'login') => {
     console.error('[OTP] Request failed:', error);
     return {
       success: false,
-      message: error.message || 'Failed to send OTP',
+      message: 'Request failed. Please try again.',
       expiresAt: null
     };
   }
@@ -112,7 +112,7 @@ export const verifyOTP = async (identifier, otp, purpose = 'login') => {
     console.error('[OTP] Verification failed:', error);
     return {
       success: false,
-      message: error.message || 'OTP verification failed',
+      message: 'Verification failed. Please try again.',
       token: null,
       attemptsRemaining: MAX_ATTEMPTS - 1
     };
@@ -150,7 +150,7 @@ export const resendOTP = async (identifier, purpose = 'login') => {
     console.error('[OTP] Resend failed:', error);
     return {
       success: false,
-      message: error.message || 'Failed to resend OTP'
+      message: 'Request failed. Please try again.'
     };
   }
 };

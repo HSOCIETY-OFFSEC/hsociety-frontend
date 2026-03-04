@@ -4,6 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getReports } from './reports.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/corporate/pages/reports.css';
 
 const Reports = () => {
@@ -21,7 +22,7 @@ const Reports = () => {
     try {
       const response = await getReports();
       if (!response.success) {
-        throw new Error(response.error || 'Failed to load reports');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setReports(response.data);
     } catch (err) {

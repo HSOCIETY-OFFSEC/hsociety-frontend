@@ -5,6 +5,7 @@
 
 import { apiClient } from '../../shared/services/api.client';
 import { API_ENDPOINTS, buildEndpoint } from '../../config/api.config';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import { buildFeedbackDTO } from './feedback.contract';
 
 const mockHistory = [
@@ -80,7 +81,7 @@ export const submitFeedback = async (feedbackData) => {
 
   return {
     success: false,
-    error: response.error || 'Failed to submit feedback'
+    error: getPublicErrorMessage({ action: 'submit', response })
   };
 };
 
@@ -110,7 +111,7 @@ export const getFeedbackHistory = async (params = {}) => {
 
   return {
     success: false,
-    error: response.error || 'Failed to fetch feedback history'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 
@@ -148,7 +149,7 @@ export const getFeedbackDetails = async (feedbackId) => {
 
   return {
     success: false,
-    error: response.error || 'Failed to fetch feedback details'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 

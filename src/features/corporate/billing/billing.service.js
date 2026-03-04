@@ -9,6 +9,7 @@ import {
   normalizeAgreements,
   normalizeInvoices
 } from './billing.contract';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 const mockInvoices = [
   {
@@ -63,7 +64,7 @@ export const getInvoices = async () => {
     return { success: true, data: normalizeInvoices(mockInvoices), isMock: true };
   }
 
-  return { success: false, error: response.error || 'Failed to load invoices' };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
 };
 
 export const getAgreements = async () => {
@@ -77,7 +78,7 @@ export const getAgreements = async () => {
     return { success: true, data: normalizeAgreements(mockAgreements), isMock: true };
   }
 
-  return { success: false, error: response.error || 'Failed to load agreements' };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
 };
 
 export default {

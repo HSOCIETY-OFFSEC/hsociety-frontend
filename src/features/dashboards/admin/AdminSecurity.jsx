@@ -3,6 +3,8 @@ import { FiActivity, FiAlertTriangle, FiGlobe, FiLock } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getSecurityEvents, getSecuritySummary } from './admin.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 
 const AdminSecurity = () => {
@@ -19,8 +21,8 @@ const AdminSecurity = () => {
       const [eventsRes, summaryRes] = await Promise.all([getSecurityEvents(120), getSecuritySummary()]);
       if (!mounted) return;
 
-      if (!eventsRes.success) setError(eventsRes.error || 'Failed to load events');
-      if (!summaryRes.success) setError(summaryRes.error || 'Failed to load summary');
+      if (!eventsRes.success) setError(getPublicErrorMessage({ action: 'load', response: eventsRes }));
+      if (!summaryRes.success) setError(getPublicErrorMessage({ action: 'load', response: summaryRes }));
 
       setEvents(eventsRes.data?.items || []);
       setSummary(summaryRes.data || {});
@@ -50,7 +52,7 @@ const AdminSecurity = () => {
           </div>
         </div>
 
-        {error && <div className="admin-alert">{error}</div>}
+        <PublicError message={error} className="admin-alert" />
 
         <div className="admin-overview-grid">
           <Card className="admin-card" padding="medium">

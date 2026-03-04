@@ -9,6 +9,7 @@ import {
   sendAdminNotification,
   updateAdminContent,
 } from './admin.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import defaultTeamContent from '../../../data/team.json';
 import '../../../styles/dashboards/admin/index.css';
 
@@ -127,7 +128,7 @@ const AdminContent = () => {
         });
         setTeam(normalizeTeam(data.team || {}));
       } else {
-        setError(response.error || 'Failed to load content');
+        setError(getPublicErrorMessage({ action: 'load', response }));
       }
       setLoading(false);
     };
@@ -354,7 +355,7 @@ const AdminContent = () => {
 
     const response = await updateAdminContent(payload);
     if (!response.success) {
-      setError(response.error || 'Failed to save content');
+      setError(getPublicErrorMessage({ action: 'save', response }));
     } else {
       setStatus('Content saved.');
     }
@@ -371,7 +372,7 @@ const AdminContent = () => {
       type: 'admin_message',
     });
     if (!response.success) {
-      setError(response.error || 'Failed to send notification');
+      setError(getPublicErrorMessage({ action: 'submit', response }));
       return;
     }
     setStatus(`Notification sent to ${response.data?.sentCount || 0} users.`);
@@ -382,7 +383,7 @@ const AdminContent = () => {
     setStatus('');
     const response = await publishBootcampMeeting(meetingForm);
     if (!response.success) {
-      setError(response.error || 'Failed to publish meeting');
+      setError(getPublicErrorMessage({ action: 'submit', response }));
       return;
     }
     setStatus(`Meeting alert sent to ${response.data?.sentCount || 0} users.`);

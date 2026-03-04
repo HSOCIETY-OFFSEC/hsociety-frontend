@@ -6,6 +6,7 @@
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../../config/api.config';
 import { normalizeEngagements } from './engagements.contract';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 const mockActiveEngagements = [
   {
@@ -79,7 +80,7 @@ export const getEngagements = async () => {
 
   return {
     success: false,
-    error: response.error || 'Unable to load engagement data'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 
@@ -100,7 +101,7 @@ export const requestEngagement = async (details) => {
     };
   }
 
-  return { success: false, error: response.error || 'Failed to request engagement' };
+  return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
 };
 
 export default {

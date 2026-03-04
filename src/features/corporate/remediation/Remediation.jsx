@@ -4,6 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getRemediationReports, getRemediationSummary } from './remediation.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/corporate/pages/remediation.css';
 
 const Remediation = () => {
@@ -23,7 +24,7 @@ const Remediation = () => {
     try {
       const response = await getRemediationSummary();
       if (!response.success) {
-        throw new Error(response.error || 'Failed to load remediation summary');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setSummary(response.data);
     } catch (err) {
@@ -39,7 +40,7 @@ const Remediation = () => {
     try {
       const response = await getRemediationReports();
       if (!response.success) {
-        throw new Error(response.error || 'Failed to load remediation reports');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setReports(response.data);
     } catch (err) {

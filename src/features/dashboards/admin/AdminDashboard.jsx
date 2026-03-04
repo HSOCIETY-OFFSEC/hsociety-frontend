@@ -4,6 +4,8 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, getPentests, updatePentest } from './admin.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 
 const ROLE_OPTIONS = [
@@ -30,7 +32,7 @@ const AdminDashboard = () => {
     if (response.success) {
       setUsers(response.data || []);
     } else {
-      setError(response.error || 'Failed to load users');
+      setError(getPublicErrorMessage({ action: 'load', response }));
     }
     setLoading(false);
   };
@@ -40,7 +42,7 @@ const AdminDashboard = () => {
     if (response.success) {
       setPentests(response.data || []);
     } else {
-      setError(response.error || 'Failed to load pentests');
+      setError(getPublicErrorMessage({ action: 'load', response }));
     }
   };
 
@@ -77,7 +79,7 @@ const AdminDashboard = () => {
       setUsers((prev) => prev.map((u) => (u.id === userId ? response.data : u)));
       setEditingId(null);
     } else {
-      setError(response.error || 'Failed to update user');
+      setError(getPublicErrorMessage({ action: 'save', response }));
     }
     setSavingId(null);
   };
@@ -122,7 +124,7 @@ const AdminDashboard = () => {
     if (response.success) {
       setPentests((prev) => prev.map((p) => ((p._id || p.id) === pentestId ? response.data : p)));
     } else {
-      setError(response.error || 'Failed to update pentest');
+      setError(getPublicErrorMessage({ action: 'save', response }));
     }
     setPentestSavingId(null);
   };
@@ -172,7 +174,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {error && <div className="admin-alert">{error}</div>}
+        <PublicError message={error} className="admin-alert" />
 
         <Card className="admin-card" padding="medium">
           <div className="admin-table">

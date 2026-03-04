@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: 'Login failed. Please try again.' };
     }
   };
 
@@ -227,7 +227,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Token refresh error:', error);
       await logout();
-      return { success: false, error: error.message };
+      return { success: false, error: 'Session refresh failed. Please try again.' };
     }
   };
 

@@ -11,6 +11,7 @@ import { API_ENDPOINTS } from '../../../config/api.config';
 import { apiClient } from '../../../shared/services/api.client';
 import { normalizeCoursePayload } from './course.contract';
 import mockCoursePayload from './mockCourseData.json';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 /**
  * Get primary student course (single-track for now)
@@ -38,11 +39,10 @@ export const getStudentCourse = async () => {
 
   return {
     success: false,
-    error: response.error || 'Failed to fetch student course'
+    error: getPublicErrorMessage({ action: 'load', response })
   };
 };
 
 export default {
   getStudentCourse
 };
-

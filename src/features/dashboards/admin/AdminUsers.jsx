@@ -4,6 +4,8 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, muteUser } from './admin.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 
 const ROLE_OPTIONS = [
@@ -28,7 +30,7 @@ const AdminUsers = () => {
     if (response.success) {
       setUsers(response.data || []);
     } else {
-      setError(response.error || 'Failed to load users');
+      setError(getPublicErrorMessage({ action: 'load', response }));
     }
     setLoading(false);
   };
@@ -63,7 +65,7 @@ const AdminUsers = () => {
       setUsers((prev) => prev.map((u) => (u.id === userId ? response.data : u)));
       setEditingId(null);
     } else {
-      setError(response.error || 'Failed to update user');
+      setError(getPublicErrorMessage({ action: 'save', response }));
     }
     setSavingId(null);
   };
@@ -122,7 +124,7 @@ const AdminUsers = () => {
           </div>
         </div>
 
-        {error && <div className="admin-alert">{error}</div>}
+        <PublicError message={error} className="admin-alert" />
 
         <Card className="admin-card" padding="medium">
           <div className="admin-table">

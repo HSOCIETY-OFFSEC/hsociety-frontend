@@ -9,6 +9,7 @@ import {
   normalizeRemediationSummary,
   normalizeRemediationReports
 } from './remediation.contract';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 
 const mockSummary = {
   totalVulnerabilities: 128,
@@ -51,7 +52,7 @@ export const getRemediationSummary = async () => {
     };
   }
 
-  return { success: false, error: response.error || 'Failed to load remediation summary' };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
 };
 
 export const getRemediationReports = async () => {
@@ -72,7 +73,7 @@ export const getRemediationReports = async () => {
     };
   }
 
-  return { success: false, error: response.error || 'Failed to load remediation reports' };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
 };
 
 export default {

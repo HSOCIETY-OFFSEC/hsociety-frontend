@@ -6,6 +6,7 @@ import { PAYMENT_METHODS } from '../../../config/payment-methods.config';
 import momoIcon from '../../../assets/icons/payment-icons/momo-icon.png';
 import telecelIcon from '../../../assets/icons/payment-icons/telecel-cash-logo.png';
 import btcIcon from '../../../assets/icons/payment-icons/Bitcoin-logo.png';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/shared/components/billing/PaymentModal.css';
 
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
@@ -36,7 +37,7 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
         }
         const response = await submitBootcampBtcPayment({ txHash: txHash.trim() });
         if (!response.success) {
-          throw new Error(response.error || 'BTC payment submission failed.');
+          throw new Error(getPublicErrorMessage({ action: 'payment', response }));
         }
         onSuccess?.(response.data);
         return;
@@ -44,17 +45,17 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
 
       const response = await initializeBootcampPayment({ method });
       if (!response.success) {
-        throw new Error(response.error || 'Payment initialization failed.');
+        throw new Error(getPublicErrorMessage({ action: 'payment', response }));
       }
 
       const authorizationUrl = response.data?.authorizationUrl;
       if (!authorizationUrl) {
-        throw new Error('Payment authorization URL missing.');
+        throw new Error(getPublicErrorMessage({ action: 'payment' }));
       }
 
       window.location.href = authorizationUrl;
     } catch (err) {
-      setError(err.message || 'Payment could not be processed. Please try again.');
+      setError(err?.message || getPublicErrorMessage({ action: 'payment', response: err }));
     } finally {
       setSubmitting(false);
     }

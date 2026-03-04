@@ -31,13 +31,15 @@ export const registerUser = async (payload) => {
 
     return {
       success: false,
-      error: response.error || 'Registration request failed'
+      error: response.status === 0
+        ? 'Connection error. Please try again.'
+        : 'Registration failed. Please try again.'
     };
   } catch (error) {
     console.error('[REGISTER] Failed:', error);
     return {
       success: false,
-      error: error.message || 'Registration request failed'
+      error: 'Registration failed. Please try again.'
     };
   }
 };

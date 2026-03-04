@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
 import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import { getDashboardOverview } from './dashboard.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import SecurityStatusCard from './components/SecurityStatusCard';
 import PrimaryActionCard from './components/PrimaryActionCard';
 import ReportsList from './components/ReportsList';
@@ -31,7 +32,7 @@ const Dashboard = () => {
     try {
       const response = await getDashboardOverview();
       if (!response.success) {
-        throw new Error(response.error || 'Failed to load dashboard');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setOverview(response.data);
     } catch (error) {

@@ -9,6 +9,7 @@ import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
+import PublicError from '../../shared/components/ui/PublicError';
 import { useAuth } from '../../core/auth/AuthContext';
 import { validatePassword } from '../../core/validation/input.validator';
 import { apiClient } from '../../shared/services/api.client';
@@ -39,11 +40,11 @@ export default function ForcePasswordChange() {
     setError('');
     const validation = validatePassword(newPassword);
     if (!validation.isValid) {
-      setError(validation.errors[0]);
+      setError('Password update failed. Please try again.');
       return;
     }
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('Password update failed. Please try again.');
       return;
     }
     setLoading(true);
@@ -52,14 +53,14 @@ export default function ForcePasswordChange() {
         passwordChangeToken,
         newPassword,
       });
-      if (!response.success) throw new Error(response.error || 'Failed to update password');
+      if (!response.success) throw new Error('Password update failed');
       const data = response.data || {};
       await login(data.user, data.token, data.refreshToken);
       const role = data.user?.role;
       const target = role === 'admin' ? '/mr-robot' : role === 'pentester' ? '/pentester' : role === 'student' ? '/student-dashboard' : '/corporate-dashboard';
       navigate(target, { replace: true });
     } catch (err) {
-      setError(err.message || 'Failed to update password');
+      setError('Password update failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -77,12 +78,7 @@ export default function ForcePasswordChange() {
                   Your password must meet security requirements: at least 8 characters, one uppercase, one lowercase, one number, and one special character.
                 </p>
               </div>
-              {error && (
-                <div className="auth-error" role="alert">
-                  <span className="error-icon"><FiLock size={16} /></span>
-                  {error}
-                </div>
-              )}
+              <PublicError message={error} icon={<FiLock size={16} />} />
               <form onSubmit={handleSubmit} className="auth-form">
                 <div className="form-group">
                   <label htmlFor="new-password">New password</label>

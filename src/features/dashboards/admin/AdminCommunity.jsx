@@ -13,6 +13,8 @@ import {
   updateAdminCommunityPost,
   deleteAdminCommunityPost
 } from './admin.service';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 
 const channelsToText = (channels = []) =>
@@ -69,7 +71,7 @@ const AdminCommunity = () => {
           }
         });
       } else {
-        setError(response.error || 'Failed to load community config');
+        setError(getPublicErrorMessage({ action: 'load', response }));
       }
       setLoading(false);
     };
@@ -107,7 +109,7 @@ const AdminCommunity = () => {
     };
     const response = await updateCommunityConfig(payload);
     if (!response.success) {
-      setError(response.error || 'Failed to update community config');
+      setError(getPublicErrorMessage({ action: 'save', response }));
     }
     setSaving(false);
   };
@@ -127,7 +129,7 @@ const AdminCommunity = () => {
           </div>
         </div>
 
-        {error && <div className="admin-alert">{error}</div>}
+        <PublicError message={error} className="admin-alert" />
 
         <Card className="admin-card" padding="medium">
           <div className="admin-section-header">

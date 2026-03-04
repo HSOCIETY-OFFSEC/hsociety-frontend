@@ -6,6 +6,7 @@ import LeaderboardTable from '../../leaderboard/components/LeaderboardTable';
 import { getLeaderboard } from '../../leaderboard/leaderboard.service';
 import { extractLeaderboardEntries } from '../../leaderboard/leaderboard.utils';
 import { LEADERBOARD_FALLBACK } from '../../../data/leaderboard/leaderboardData';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/leaderboard/leaderboard.css';
 
 const LeaderboardSection = () => {
@@ -20,7 +21,7 @@ const LeaderboardSection = () => {
       const response = await getLeaderboard(8);
       if (!mounted) return;
       if (!response.success) {
-        setError(response.error || 'Leaderboard unavailable.');
+        setError(getPublicErrorMessage({ action: 'load', response }));
         setLoading(false);
         return;
       }

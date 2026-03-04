@@ -4,6 +4,7 @@ import { FiImage, FiSend, FiSmile, FiX } from 'react-icons/fi';
 import { uploadCommunityImage } from '../../community.service';
 import { getDisplayName, getUserAvatar } from '../../utils/community.utils';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
+import { getPublicErrorMessage } from '../../../../shared/utils/publicError';
 
 const MAX = COMMUNITY_UI.compose.maxChars;
 const MAX_IMAGE_BYTES = COMMUNITY_UI.compose.maxImageBytes;
@@ -66,7 +67,7 @@ const CommunityCompose = ({
       onImageError?.('');
       const response = await uploadCommunityImage(file);
       if (!response.success || !response.data?.url) {
-        onImageError?.(response.error || COMMUNITY_UI.compose.uploadFailedText);
+        onImageError?.(getPublicErrorMessage({ action: 'submit', response }));
         return;
       }
       onImageChange?.(response.data.url);

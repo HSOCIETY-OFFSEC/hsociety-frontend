@@ -5,6 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getEngagements } from './engagements.service';
 import PaymentModal from '../billing/components/PaymentModal';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/corporate/pages/engagements.css';
 
 const statusMap = {
@@ -32,7 +33,7 @@ const Engagements = () => {
     try {
       const response = await getEngagements();
       if (!response.success) {
-        throw new Error(response.error || 'Unable to load engagements');
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setActiveEngagements(response.data.active);
       setPastEngagements(response.data.past);

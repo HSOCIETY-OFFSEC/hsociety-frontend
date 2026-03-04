@@ -5,6 +5,8 @@ import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
+import PublicError from '../../shared/components/ui/PublicError';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
 import { registerUser } from './register.service';
 import { login as loginRequest } from '../../core/auth/auth.service';
@@ -47,9 +49,9 @@ const RegistrationForm = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
-    const validationError = validateRegisterForm(form);
-    if (validationError) {
-      setError(validationError);
+    const isValid = validateRegisterForm(form);
+    if (!isValid) {
+      setError('Registration failed. Please check your details.');
       return;
     }
 
@@ -57,7 +59,10 @@ const RegistrationForm = ({
     try {
       const payload = buildRegisterDTO(form);
       const response = await registerUser(payload);
-      if (!response.success) throw new Error(response.error || 'Registration failed');
+      if (!response.success) {
+        setError(getPublicErrorMessage({ action: 'submit', response }));
+        return;
+      }
 
       const successRoute =
         onSuccessRedirect && onSuccessRedirect !== '/login'
@@ -121,14 +126,7 @@ const RegistrationForm = ({
         </p>
       </div>
 
-      {error && (
-        <div className="auth-error">
-          <span className="error-icon">
-            <FiAlertTriangle size={16} />
-          </span>
-          {error}
-        </div>
-      )}
+      <PublicError message={error} icon={<FiAlertTriangle size={16} />} />
 
       {note && <p className="auth-note">{note}</p>}
 

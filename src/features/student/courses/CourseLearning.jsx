@@ -12,6 +12,7 @@ import useBootcampAccess from '../hooks/useBootcampAccess';
 import StudentAccessModal from '../components/StudentAccessModal';
 import StudentPaymentModal from '../components/StudentPaymentModal';
 import { useAuth } from '../../../core/auth/AuthContext';
+import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/student/pages/learning.css';
 
 /**
@@ -176,7 +177,7 @@ export const CourseLearning = () => {
       try {
         const response = await getStudentCourse();
         if (!response.success) {
-          throw new Error(response.error || 'Failed to load course');
+          throw new Error(getPublicErrorMessage({ action: 'load', response }));
         }
 
         const normalizedCourse = response.data;

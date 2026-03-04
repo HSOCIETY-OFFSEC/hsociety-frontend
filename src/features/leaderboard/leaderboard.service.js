@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 
 export const getLeaderboard = async (limit = 25) => {
   const endpoint = API_ENDPOINTS.PUBLIC?.LEADERBOARD || '/public/leaderboard';
@@ -7,7 +8,7 @@ export const getLeaderboard = async (limit = 25) => {
   if (!response.success) {
     return {
       success: false,
-      error: response.error || 'Failed to load leaderboard'
+      error: getPublicErrorMessage({ action: 'load', response })
     };
   }
   return { success: true, data: response.data };

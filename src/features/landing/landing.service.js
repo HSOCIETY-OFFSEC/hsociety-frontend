@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
+import { getPublicErrorMessage } from '../../shared/utils/publicError';
 
 export const getLandingStats = async () => {
   const response = await apiClient.get(API_ENDPOINTS.PUBLIC.LANDING_STATS);
@@ -7,7 +8,7 @@ export const getLandingStats = async () => {
   if (!response.success) {
     return {
       success: false,
-      error: response.error || 'Failed to load landing stats'
+      error: getPublicErrorMessage({ action: 'load', response })
     };
   }
 
@@ -22,7 +23,7 @@ export const subscribeNewsletter = async (payload = {}) => {
   if (!response.success) {
     return {
       success: false,
-      error: response.error || 'Unable to subscribe'
+      error: getPublicErrorMessage({ action: 'submit', response })
     };
   }
   return {
@@ -34,7 +35,7 @@ export const subscribeNewsletter = async (payload = {}) => {
 export const getCommunityProfiles = async (limit = 6) => {
   const response = await apiClient.get(`${API_ENDPOINTS.PUBLIC.COMMUNITY_PROFILES}?limit=${limit}`);
   if (!response.success) {
-    return { success: false, error: response.error || 'Failed to load community profiles' };
+    return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
   }
   return { success: true, data: response.data };
 };
@@ -42,7 +43,7 @@ export const getCommunityProfiles = async (limit = 6) => {
 export const getLandingContent = async () => {
   const response = await apiClient.get(API_ENDPOINTS.PUBLIC.LANDING_CONTENT);
   if (!response.success) {
-    return { success: false, error: response.error || 'Failed to load landing content' };
+    return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
   }
   return { success: true, data: response.data };
 };
