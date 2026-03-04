@@ -15,43 +15,21 @@
         "role": "Systems Thinker, Offensive Security Strategist & Full-Stack Architect",
         "focus": "Building scalable tech ecosystems for Africa. Adversary simulation, enterprise security strategy, and React + Django platforms engineered for education, cybersecurity, and community-driven growth.",
         "icon": "FiCrosshair",
-        "image": "/team-images/wsuits6-profile.png",
-        "socials": [
-          {
-            "platform": "LinkedIn",
-            "url": "https://linkedin.com"
-          },
-          {
-            "platform": "GitHub",
-            "url": "https://github.com"
-          }
-        ]
+        "image": "/team-images/wsuits6-profile.png"
       },
       {
-        "name": "Hamid",
-        "role": "Principal Pentester",
-        "focus": "Network Security Expert",
-        "icon": "FiCpu",
-        "image": "/team-images/hamid.jpeg",
-        "socials": [
-          {
-            "platform": "X",
-            "url": "https://x.com"
-          }
-        ]
-      },
-      {
-        "name": "Hamdia",
+        "name": "Non-Conformist",
         "role": "Governance, Complaince and Risk Managment Officer (GRC)",
         "focus": "Covert access, privilege escalation, and opsec.",
         "icon": "FiTarget",
-        "image": "/team-images/hamdia.jpeg",
-        "socials": [
-          {
-            "platform": "LinkedIn",
-            "url": "https://linkedin.com"
-          }
-        ]
+        "image": "/team-images/hamid.jpeg"
+      },
+      {
+        "name": "Alhassan Hamdia ",
+        "role": "Frontend Developer | Community Lead",
+        "focus": "Student Leader Entrepreneur Wikimedia Enthusiast",
+        "icon": "FiCpu",
+        "image": "/team-images/hamdia.jpeg"
       }
     ]
   },

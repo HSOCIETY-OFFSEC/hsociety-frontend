@@ -242,6 +242,33 @@
   min-width: 0;
 }
 
+.navbar-landing-stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.navbar-stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.navbar-stat-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
 .desktop-user-menu {
   position: relative;
 }
@@ -510,6 +537,15 @@
     flex: 0 0 auto;
   }
 
+  .navbar-landing-stats {
+    gap: 0.4rem;
+  }
+
+  .navbar-stat-chip {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
   .mobile-menu-button {
     position: relative;
     z-index: 2;
@@ -538,6 +574,11 @@
 
   .navbar-right {
     gap: 0.4rem;
+  }
+
+  .navbar-stat-chip {
+    padding: 0.25rem 0.45rem;
+    font-size: 0.75rem;
   }
 }
 

@@ -13,12 +13,16 @@ import {
   FiTerminal,
   FiX
 } from 'react-icons/fi';
+import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
+import { getProfile } from '../../../features/account/account.service';
+import { getStudentXpSummary } from '../../../features/student/services/learn.service';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
 import SocialLinks from '../common/SocialLinks';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
+import cpIcon from '../../../assets/icons/CP/cp-icon.png';
 import '../../../styles/shared/components/layout/Navbar.css';
 
 const NAV_COLLAPSE_WIDTH = 1024;
@@ -45,6 +49,8 @@ const Navbar = ({ sticky = true }) => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [studentLearnOpen, setStudentLearnOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [streakDays, setStreakDays] = useState(0);
+  const [cpTotal, setCpTotal] = useState(0);
   const moreMenuRef = useRef(null);
   const [viewportMode, setViewportMode] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
@@ -81,6 +87,8 @@ const Navbar = ({ sticky = true }) => {
 
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   const isStudent = role === 'student';
+  const isLanding = location.pathname === '/';
+  const showLandingStats = isLanding && isAuthenticated && Boolean(user?.id);
   const mobileLinks = getMobileLinks(isAuthenticated, role);
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
@@ -124,6 +132,40 @@ const Navbar = ({ sticky = true }) => {
     document.addEventListener('mousedown', handleOutsideClick);
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [moreMenuOpen]);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadCp = async () => {
+      if (!showLandingStats) {
+        if (mounted) setCpTotal(0);
+        return;
+      }
+      const response = await getProfile();
+      if (!mounted || !response.success) return;
+      setCpTotal(Number(response.data?.xpSummary?.totalXp || 0));
+    };
+    loadCp();
+    return () => {
+      mounted = false;
+    };
+  }, [showLandingStats, user?.id]);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadStreak = async () => {
+      if (!showLandingStats || !isStudent) {
+        if (mounted) setStreakDays(0);
+        return;
+      }
+      const response = await getStudentXpSummary();
+      if (!mounted || !response.success) return;
+      setStreakDays(Number(response.data?.streakDays || 0));
+    };
+    loadStreak();
+    return () => {
+      mounted = false;
+    };
+  }, [showLandingStats, isStudent, user?.id]);
 
   return (
     <nav className="navbar">
@@ -218,6 +260,21 @@ const Navbar = ({ sticky = true }) => {
 
         {/* Right Section */}
         <div className="navbar-right">
+          {showLandingStats && (
+            <div className="navbar-landing-stats">
+              <div className="navbar-stat-chip" title="Compromised Points">
+                <img src={cpIcon} alt="CP" className="navbar-stat-icon" />
+                <span>{cpTotal} CP</span>
+              </div>
+              {isStudent && (
+                <div className="navbar-stat-chip" title="Learning streak">
+                  <IoFlameOutline size={16} />
+                  <span>{streakDays}</span>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Theme Toggle */}
           <span className="navbar-theme">
             <ThemeToggle />
