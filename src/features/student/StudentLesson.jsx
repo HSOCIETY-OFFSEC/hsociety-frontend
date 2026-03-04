@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiBookOpen, FiClock } from 'react-icons/fi';
+import { FiArrowLeft, FiBookOpen, FiClock, FiShield } from 'react-icons/fi';
 import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
@@ -11,6 +11,11 @@ import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
 import { useAuth } from '../../core/auth/AuthContext';
+import { QuizPanel } from './quizzes/QuizPanel';
+import {
+  getHackerProtocolModule,
+  getHackerProtocolRoom,
+} from '../../data/bootcamps/hackerProtocolData';
 import '../../styles/student/base.css';
 import '../../styles/student/components.css';
 import '../../styles/student/pages/lesson.css';
@@ -32,11 +37,12 @@ const StudentLesson = () => {
   const [statusMessage, setStatusMessage] = useState('');
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [quizContext, setQuizContext] = useState(null);
 
   const moduleProgressMap = useMemo(() => {
     if (!overview?.modules) return {};
-    return overview.modules.reduce((acc, module) => {
-      acc[String(module.id)] = module.progress || 0;
+    return overview.modules.reduce((acc, item) => {
+      acc[String(item.id)] = item.progress || 0;
       return acc;
     }, {});
   }, [overview]);
@@ -48,7 +54,7 @@ const StudentLesson = () => {
       try {
         const [courseResponse, overviewResponse] = await Promise.all([
           getStudentCourse(),
-          getStudentOverview()
+          getStudentOverview(),
         ]);
 
         if (!courseResponse.success) {
@@ -60,7 +66,6 @@ const StudentLesson = () => {
           setOverview(overviewResponse.data);
         }
       } catch (err) {
-        console.error('StudentLesson error:', err);
         setError('Unable to load lesson content.');
       } finally {
         setLoading(false);
@@ -85,33 +90,37 @@ const StudentLesson = () => {
     setShowRegisterModal(false);
   }, [isRegistered, hasAccess]);
 
+  const moduleMeta = getHackerProtocolModule(moduleId);
+  const roomMeta = getHackerProtocolRoom(moduleId, roomId);
+
   const module = course?.modules?.find((m) => m.moduleId === moduleId);
   const room = module?.rooms.find((r) => r.roomId === roomId);
 
   const handleModuleNav = (targetModule, index) => {
     if (!hasAccess) {
-      setStatusMessage('Complete bootcamp payment to access this module.');
+      setStatusMessage('Complete bootcamp payment to access this phase.');
       setShowPaymentModal(true);
       return;
     }
+
     const previousModule = course?.modules?.[index - 1];
     const previousProgress = previousModule
       ? moduleProgressMap[String(previousModule.moduleId)] || 0
       : 100;
 
     if (previousModule && previousProgress < 100) {
-      setStatusMessage(`Finish ${previousModule.title} before opening this module.`);
+      setStatusMessage(`Finish ${previousModule.title} before opening this phase.`);
       return;
     }
 
     const firstRoom = targetModule.rooms?.[0];
     if (!firstRoom) {
-      setStatusMessage('This module is being prepared for your cohort.');
+      setStatusMessage('This phase is being prepared for your cohort.');
       return;
     }
 
     setStatusMessage('');
-    navigate(`/student-learning/module/${targetModule.moduleId}/room/${firstRoom.roomId}`);
+    navigate(`/student-bootcamps/hacker-protocol/module/${targetModule.moduleId}/room/${firstRoom.roomId}`);
   };
 
   const handleRoomNav = (roomToOpen) => {
@@ -119,7 +128,7 @@ const StudentLesson = () => {
       setShowPaymentModal(true);
       return;
     }
-    navigate(`/student-learning/module/${moduleId}/room/${roomToOpen.roomId}`);
+    navigate(`/student-bootcamps/hacker-protocol/module/${moduleId}/room/${roomToOpen.roomId}`);
   };
 
   if (loading) {
@@ -128,18 +137,13 @@ const StudentLesson = () => {
         <header className="student-hero reveal-on-scroll">
           <div>
             <p className="student-kicker">Loading lesson</p>
-            <h1>Preparing your workspace…</h1>
-            <p>Fetching the content and video for this room.</p>
+            <h1>Preparing your workspace...</h1>
           </div>
         </header>
         <section className="lesson-layout">
           <Card padding="large" className="lesson-main-card">
             <Skeleton className="skeleton-line" style={{ width: '50%' }} />
             <Skeleton className="skeleton-line" style={{ width: '80%', marginTop: '0.75rem' }} />
-            <Skeleton
-              className="skeleton-line"
-              style={{ width: '100%', height: '220px', marginTop: '1.5rem' }}
-            />
           </Card>
         </section>
       </div>
@@ -153,11 +157,15 @@ const StudentLesson = () => {
           <div>
             <p className="student-kicker">Learning Path</p>
             <h1>Lesson unavailable.</h1>
-            <p>We couldn't load this lesson. Please try again or go back.</p>
+            <p>We could not load this lesson. Please try again or go back.</p>
           </div>
-          <Button variant="primary" size="large" onClick={() => navigate('/student-learning')}>
+          <Button
+            variant="primary"
+            size="large"
+            onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+          >
             <FiArrowLeft size={18} />
-            Back to Learning Path
+            Back to Dashboard
           </Button>
         </header>
         <section className="lesson-layout">
@@ -169,18 +177,22 @@ const StudentLesson = () => {
     );
   }
 
-  if (!module || !room) {
+  if (!module || !room || !moduleMeta || !roomMeta) {
     return (
       <div className="student-page lesson-page">
         <header className="student-hero reveal-on-scroll">
           <div>
             <p className="student-kicker">Learning Path</p>
             <h1>Lesson not found.</h1>
-            <p>The requested module or room doesn't exist in this course.</p>
+            <p>The requested phase or room does not exist.</p>
           </div>
-          <Button variant="primary" size="large" onClick={() => navigate('/student-learning')}>
+          <Button
+            variant="primary"
+            size="large"
+            onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+          >
             <FiArrowLeft size={18} />
-            Back to Learning Path
+            Back to Dashboard
           </Button>
         </header>
       </div>
@@ -192,20 +204,24 @@ const StudentLesson = () => {
       <header className="student-hero reveal-on-scroll">
         <div>
           <p className="student-kicker">
-            Module {module.moduleId} · Room {room.roomId}
+            {moduleMeta.codename} · Room {room.roomId}
           </p>
           <h1>{room.title}</h1>
           <p>
-            From: <strong>{module.title}</strong> · Track: <strong>{course.title}</strong>
+            Phase {module.moduleId}: <strong>{moduleMeta.title}</strong> · Role: <strong>{moduleMeta.roleTitle}</strong>
           </p>
         </div>
-        <Button variant="secondary" size="large" onClick={() => navigate('/student-learning')}>
+        <Button
+          variant="secondary"
+          size="large"
+          onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+        >
           <FiArrowLeft size={18} />
-          Back to Learning Path
+          Back to Dashboard
         </Button>
       </header>
 
-      <section className="lesson-layout lesson-layout-enhanced">
+      <section className="lesson-layout lesson-layout-enhanced lesson-layout-tripanel">
         <aside className="lesson-sidebar">
           <div className="lesson-profile-card">
             <p>Signed in as</p>
@@ -213,9 +229,9 @@ const StudentLesson = () => {
             <span className="lesson-role-pill">{user?.role}</span>
           </div>
 
-          <div className="lesson-module-summary">
-            <h3>{module.title}</h3>
-            <p>Module {module.moduleId}</p>
+          <div className="lesson-module-summary" style={{ borderColor: moduleMeta.color }}>
+            <h3>{moduleMeta.codename}</h3>
+            <p>{moduleMeta.roleTitle}</p>
             <div className="lesson-module-progress">
               <div style={{ width: `${moduleProgressMap[String(module.moduleId)] || 0}%` }} />
             </div>
@@ -225,7 +241,7 @@ const StudentLesson = () => {
           </div>
 
           <nav className="lesson-module-nav">
-            <h4>Other Modules</h4>
+            <h4>Phases</h4>
             {course.modules.map((mod, index) => {
               const isActive = mod.moduleId === module.moduleId;
               return (
@@ -247,21 +263,24 @@ const StudentLesson = () => {
             <div className="lesson-meta">
               <span className="lesson-meta-chip">
                 <FiBookOpen size={14} />
-                Resource Pack
+                Theory Module
               </span>
               <span className="lesson-meta-chip subtle">
                 <FiClock size={14} />
-                Live session guided
+                Validated progression
               </span>
             </div>
 
             <div className="lesson-content">
-              <h2>What you'll cover</h2>
-              <p>
-                This room provides structured resources for <strong>{room.title}</strong> within{' '}
-                <strong>{module.title}</strong>. We use these materials during live cohort sessions
-                and guided workshops rather than teaching directly on the platform.
-              </p>
+              <h2>What you will cover</h2>
+              <p>{roomMeta.overview}</p>
+
+              <h3>Key objectives</h3>
+              <ul>
+                {(roomMeta.bullets || []).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
 
               <h3>Room nav</h3>
               <div className="lesson-room-nav">
@@ -279,22 +298,31 @@ const StudentLesson = () => {
                 ))}
               </div>
 
-              <h3>Next actions</h3>
-              <p>
-                Mark this room as complete after your live session or once you finish the provided
-                resources.
-              </p>
-
-              <Button
-                variant="primary"
-                size="large"
-                className="lesson-cta-button"
-                onClick={() => {
-                  setStatusMessage('Room marked as complete (local).');
-                }}
-              >
-                I've completed this room
-              </Button>
+              <div className="lesson-cta-row">
+                <Button
+                  variant="primary"
+                  size="large"
+                  className="lesson-cta-button"
+                  onClick={() => setQuizContext({
+                    scope: {
+                      type: 'room',
+                      id: room.roomId,
+                      moduleId: module.moduleId,
+                      courseId: course.id,
+                    },
+                    title: room.title,
+                  })}
+                >
+                  Take Quiz
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="large"
+                  onClick={() => setStatusMessage('Room completion saved locally for now.')}
+                >
+                  Mark Room Completed
+                </Button>
+              </div>
             </div>
           </Card>
 
@@ -304,16 +332,40 @@ const StudentLesson = () => {
             </Card>
           )}
         </div>
+
+        <aside className="lesson-rightbar">
+          <Card padding="medium" className="lesson-right-card">
+            <div className="student-card-header">
+              <FiShield size={18} />
+              <h3>Phase Identity</h3>
+            </div>
+            <div className="lesson-phase-identity">
+              <img src={moduleMeta.emblem} alt={`${moduleMeta.codename} emblem`} />
+              <div>
+                <strong>{moduleMeta.codename}</strong>
+                <span>{moduleMeta.roleTitle}</span>
+              </div>
+            </div>
+            <p>{moduleMeta.description}</p>
+          </Card>
+
+          <Card padding="medium" className="lesson-right-card">
+            <h3>Validation Rule</h3>
+            <p>
+              Progression is gated. Pass quiz + validation interview to unlock the next phase emblem.
+            </p>
+          </Card>
+        </aside>
       </section>
 
       {showRegisterModal && (
         <StudentAccessModal
           title="Bootcamp registration required"
           description="Register for the bootcamp before you can access course materials."
-          primaryLabel="Register for Bootcamp"
+          primaryLabel="Go to Bootcamps"
           onPrimary={() => {
             setShowRegisterModal(false);
-            navigate('/student-bootcamp');
+            navigate('/student-bootcamps');
           }}
           onClose={() => setShowRegisterModal(false)}
         />
@@ -325,6 +377,18 @@ const StudentLesson = () => {
           onSuccess={() => {
             updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
             setShowPaymentModal(false);
+          }}
+        />
+      )}
+
+      {quizContext && (
+        <QuizPanel
+          scope={quizContext.scope}
+          title={quizContext.title}
+          onClose={() => setQuizContext(null)}
+          onComplete={(result) => {
+            setStatusMessage(result?.passed ? 'Quiz passed. Validation ready.' : 'Quiz submitted. Review and retry.');
+            setQuizContext(null);
           }}
         />
       )}

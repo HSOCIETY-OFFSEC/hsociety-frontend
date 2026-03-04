@@ -58,7 +58,8 @@ const AdminDashboard = () => {
         email: user.email || '',
         organization: user.organization || '',
         role: user.role || 'student',
-        bootcampStatus: user.bootcampStatus || 'not_enrolled'
+        bootcampStatus: user.bootcampStatus || 'not_enrolled',
+        bootcampPaymentStatus: user.bootcampPaymentStatus || 'unpaid',
       }
     }));
   };
@@ -181,6 +182,7 @@ const AdminDashboard = () => {
               <span>Organization</span>
               <span>Role</span>
               <span>Bootcamp</span>
+              <span>Payment</span>
               <span>Actions</span>
             </div>
 
@@ -188,7 +190,7 @@ const AdminDashboard = () => {
               const isEditing = editingId === user.id;
               const draft = drafts[user.id] || {};
               return (
-                <div key={user.id} className="admin-row">
+                <div key={user.id} className="admin-row admin-row-users-lite">
                 <div>
                   {isEditing ? (
                     <input
@@ -258,6 +260,23 @@ const AdminDashboard = () => {
                     <span className="admin-role">
                       {(user.bootcampStatus || 'not_enrolled').replace('_', ' ')}
                     </span>
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <select
+                      className="admin-select"
+                      value={draft.bootcampPaymentStatus || 'unpaid'}
+                      onChange={(e) => updateDraft(user.id, 'bootcampPaymentStatus', e.target.value)}
+                    >
+                      {['unpaid', 'pending', 'paid'].map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span className="admin-role">{user.bootcampPaymentStatus || 'unpaid'}</span>
                   )}
                 </div>
                 <div className="admin-actions">

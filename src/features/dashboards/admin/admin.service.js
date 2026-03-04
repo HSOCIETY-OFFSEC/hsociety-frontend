@@ -136,6 +136,18 @@ export const updateAdminContent = async (payload) => {
   return { success: false, error: response.error || 'Failed to update content' };
 };
 
+export const sendAdminNotification = async (payload) => {
+  const response = await apiClient.post(API_ENDPOINTS.ADMIN.SEND_NOTIFICATION, payload);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to send notification' };
+};
+
+export const publishBootcampMeeting = async (payload) => {
+  const response = await apiClient.post(API_ENDPOINTS.ADMIN.BOOTCAMP_MEETING, payload);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: response.error || 'Failed to publish meeting link' };
+};
+
 export const getSecurityEvents = async (limit = 120) => {
   const response = await apiClient.get(`${API_ENDPOINTS.ADMIN.SECURITY_EVENTS}?limit=${limit}`);
   if (response.success) return { success: true, data: response.data || { items: [], total: 0 } };
@@ -169,6 +181,8 @@ export default {
   muteUser,
   getAdminContent,
   updateAdminContent,
+  sendAdminNotification,
+  publishBootcampMeeting,
   getSecurityEvents,
   getSecuritySummary,
 };

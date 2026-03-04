@@ -85,11 +85,11 @@ const Navbar = ({ sticky = true }) => {
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
     () => [
-      { path: '/student-learning', label: 'Learning Path', icon: FiTerminal },
-      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
+      { path: '/student-learning', label: 'Overview', icon: FiTerminal },
+      { path: '/student-bootcamps', label: 'Bootcamps', icon: FiLayers },
       { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
-      { path: '/student-bootcamp', label: 'Bootcamp', icon: FiLayers },
-      { path: '/student-payments', label: 'Payments', icon: FiCreditCard }
+      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
+      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
     ],
     []
   );

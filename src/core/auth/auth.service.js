@@ -13,17 +13,20 @@ import { validateEmail, validatePassword } from '../validation/input.validator';
  * @param {string} password - User password
  * @returns {Promise<Object>} - { success, user, token, refreshToken, twoFactorRequired, twoFactorToken, mustChangePassword, passwordChangeToken, message }
  */
-export const login = async (email, password) => {
+export const login = async (identity, password) => {
   try {
-    if (!validateEmail(email)) {
-      throw new Error('Invalid email format');
+    if (!identity || String(identity).trim().length < 2) {
+      throw new Error('Email or handle is required');
     }
 
     if (!password || password.length < 6) {
       throw new Error('Password must be at least 6 characters');
     }
 
-    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, { email, password });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.LOGIN, {
+      email: String(identity).trim(),
+      password,
+    });
 
     if (!response.success) {
       return {

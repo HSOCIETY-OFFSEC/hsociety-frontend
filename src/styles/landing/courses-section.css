@@ -1,0 +1,63 @@
+.landing-courses {
+  padding: 4.5rem 1.5rem;
+}
+
+.landing-courses-card {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  cursor: pointer;
+}
+
+.landing-courses-cover {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  min-height: 230px;
+}
+
+.landing-courses-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.landing-courses-body {
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+}
+
+.landing-courses-modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+
+.landing-courses-module-pill {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--module-color, #0EA5E9) 16%, var(--bg-secondary));
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+}
+
+.landing-courses-module-pill img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+@media (max-width: 840px) {
+  .landing-courses-card {
+    grid-template-columns: 1fr;
+  }
+}

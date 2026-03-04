@@ -1,0 +1,9 @@
+.learn-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.learn-overview-card {
+  min-height: 220px;
+}

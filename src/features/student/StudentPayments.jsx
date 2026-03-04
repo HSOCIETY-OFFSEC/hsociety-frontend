@@ -117,10 +117,10 @@ const StudentPayments = () => {
         <StudentAccessModal
           title="Bootcamp registration required"
           description="Register for the bootcamp before completing payment."
-          primaryLabel="Go to Bootcamp"
+          primaryLabel="Go to Bootcamps"
           onPrimary={() => {
             setShowRegisterModal(false);
-            navigate('/student-bootcamp');
+            navigate('/student-bootcamps');
           }}
           onClose={() => setShowRegisterModal(false)}
         />

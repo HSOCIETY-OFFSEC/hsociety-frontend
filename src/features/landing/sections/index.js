@@ -7,6 +7,7 @@ export { default as DeliverablesSection } from './DeliverablesSection';
 export { default as ModulesSection } from './ModulesSection';
 export { default as TrustSection } from './TrustSection';
 export { default as PartnerCarouselSection } from './PartnerCarouselSection';
+export { default as CoursesSection } from './CoursesSection';
 export { default as PathwaysSection } from './PathwaysSection';
 export { default as CycleSection } from './CycleSection';
 export { default as CtaSection } from './CtaSection';

@@ -19,6 +19,64 @@
   margin-bottom: 1.8rem;
 }
 
+.account-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.account-progress-card {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  padding: 0.65rem 0.75rem;
+}
+
+.account-progress-card strong {
+  display: block;
+  font-size: 0.96rem;
+}
+
+.account-progress-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.account-emblem-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.55rem;
+  margin-bottom: 1.2rem;
+}
+
+.account-emblem-chip {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+  background: var(--bg-secondary);
+}
+
+.account-emblem-chip span {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+
+.account-emblem-chip strong {
+  font-size: 0.84rem;
+}
+
+.account-emblem-chip.unlocked {
+  border-color: color-mix(in srgb, var(--success-color) 38%, var(--border-color));
+}
+
 .account-avatar {
   display: flex;
   gap: 1.5rem;

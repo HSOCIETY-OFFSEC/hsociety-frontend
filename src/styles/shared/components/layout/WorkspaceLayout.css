@@ -166,6 +166,121 @@
   gap: 0.75rem;
 }
 
+.workspace-streak-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid color-mix(in srgb, #fb923c 40%, var(--border-color));
+  background: color-mix(in srgb, #fb923c 14%, var(--input-bg));
+  color: var(--text-primary);
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.workspace-notification-wrap {
+  position: relative;
+}
+
+.workspace-notification-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.workspace-notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--error-color);
+  color: #fff;
+  padding: 0 4px;
+}
+
+.workspace-notification-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: min(90vw, 340px);
+  max-height: 420px;
+  overflow: auto;
+  background: var(--card-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  padding: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  z-index: 30;
+}
+
+.workspace-notification-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.workspace-notification-head button {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  cursor: pointer;
+}
+
+.workspace-notification-item {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+
+.workspace-notification-item.unread {
+  border-color: color-mix(in srgb, var(--primary-color) 45%, var(--border-color));
+}
+
+.workspace-notification-item strong {
+  font-size: 0.83rem;
+  color: var(--text-primary);
+}
+
+.workspace-notification-item span {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.workspace-notification-empty {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  padding: 0.45rem 0.15rem;
+}
+
 .workspace-community-tools {
   position: relative;
 }

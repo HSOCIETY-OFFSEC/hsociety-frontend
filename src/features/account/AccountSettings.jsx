@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { FiAlertTriangle, FiLock, FiTrash2 } from 'react-icons/fi';
+import { FiAlertTriangle, FiAward, FiLock, FiTrendingUp, FiTrash2 } from 'react-icons/fi';
+import { IoFlameOutline } from 'react-icons/io5';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
@@ -7,7 +8,15 @@ import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStreng
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { validatePassword } from '../../core/validation/input.validator';
-import { deleteAccount, removeAvatar, updateAvatar, updateProfile, changePassword as changePasswordService } from './account.service';
+import {
+  changePassword as changePasswordService,
+  deleteAccount,
+  getProfile,
+  removeAvatar,
+  updateAvatar,
+  updateProfile,
+} from './account.service';
+import { listNotifications, markNotificationRead } from '../student/services/notifications.service';
 import '../../styles/sections/account/index.css';
 
 const AccountSettings = () => {
@@ -16,11 +25,23 @@ const AccountSettings = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [profileSaving, setProfileSaving] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
   const [avatarSaving, setAvatarSaving] = useState(false);
   const [avatarRemoving, setAvatarRemoving] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatarUrl || '');
   const [avatarFileName, setAvatarFileName] = useState('');
   const [passwordSaving, setPasswordSaving] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [xpSummary, setXpSummary] = useState({
+    totalXp: 0,
+    rank: 'Candidate',
+    streakDays: 0,
+    visits: 0,
+  });
+  const [emblems, setEmblems] = useState({
+    unlockedModules: [],
+    graduationUnlocked: false,
+  });
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +57,64 @@ const AccountSettings = () => {
     if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [error]);
 
+  useEffect(() => {
+    setProfile({
+      name: user?.name || '',
+      organization: user?.organization || '',
+      hackerHandle: user?.hackerHandle || '',
+      bio: user?.bio || '',
+    });
+  }, [user?.name, user?.organization, user?.hackerHandle, user?.bio]);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadProfile = async () => {
+      setProfileLoading(true);
+      const response = await getProfile();
+      if (!mounted || !response.success) {
+        setProfileLoading(false);
+        return;
+      }
+      const data = response.data || {};
+      setProfile({
+        name: data.name || '',
+        organization: data.organization || '',
+        hackerHandle: data.hackerHandle || '',
+        bio: data.bio || '',
+      });
+      setXpSummary({
+        totalXp: Number(data?.xpSummary?.totalXp || 0),
+        rank: data?.xpSummary?.rank || 'Candidate',
+        streakDays: Number(data?.xpSummary?.streakDays || 0),
+        visits: Number(data?.xpSummary?.visits || 0),
+      });
+      setEmblems({
+        unlockedModules: Array.isArray(data?.emblems?.unlockedModules) ? data.emblems.unlockedModules : [],
+        graduationUnlocked: Boolean(data?.emblems?.graduationUnlocked),
+      });
+      updateUser(data);
+      setProfileLoading(false);
+    };
+
+    loadProfile();
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id]);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadNotifications = async () => {
+      const response = await listNotifications();
+      if (!mounted || !response.success) return;
+      setNotifications(response.data || []);
+    };
+    loadNotifications();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const identiconFallback = useMemo(
     () => getGithubAvatarDataUri(profile.name || user?.email || 'User'),
     [profile.name, user?.email]
@@ -47,6 +126,21 @@ const AccountSettings = () => {
     const response = await updateProfile(profile);
     if (response.success) {
       updateUser(response.data);
+      setXpSummary({
+        totalXp: Number(response.data?.xpSummary?.totalXp || xpSummary.totalXp || 0),
+        rank: response.data?.xpSummary?.rank || xpSummary.rank || 'Candidate',
+        streakDays: Number(response.data?.xpSummary?.streakDays || xpSummary.streakDays || 0),
+        visits: Number(response.data?.xpSummary?.visits || xpSummary.visits || 0),
+      });
+      setEmblems({
+        unlockedModules: Array.isArray(response.data?.emblems?.unlockedModules)
+          ? response.data.emblems.unlockedModules
+          : emblems.unlockedModules,
+        graduationUnlocked:
+          typeof response.data?.emblems?.graduationUnlocked === 'boolean'
+            ? response.data.emblems.graduationUnlocked
+            : emblems.graduationUnlocked,
+      });
     } else {
       setError(response.error || 'Failed to update profile');
     }
@@ -141,6 +235,95 @@ const AccountSettings = () => {
       {error && <div className="account-error">{error}</div>}
 
       <Card padding="large" className="account-card">
+        <div className="account-progress-grid">
+          <div className="account-progress-card">
+            <FiTrendingUp size={16} />
+            <div>
+              <span className="account-progress-label">Rank</span>
+              <strong>{xpSummary.rank || 'Candidate'}</strong>
+            </div>
+          </div>
+          <div className="account-progress-card">
+            <FiAward size={16} />
+            <div>
+              <span className="account-progress-label">XP</span>
+              <strong>{xpSummary.totalXp || 0}</strong>
+            </div>
+          </div>
+          <div className="account-progress-card">
+            <IoFlameOutline size={16} />
+            <div>
+              <span className="account-progress-label">Streak</span>
+              <strong>{xpSummary.streakDays || 0} days</strong>
+            </div>
+          </div>
+          <div className="account-progress-card">
+            <FiAward size={16} />
+            <div>
+              <span className="account-progress-label">Emblems</span>
+              <strong>{emblems.unlockedModules.length}/5 unlocked</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className="account-emblem-list" aria-label="Unlocked module emblems">
+          {[1, 2, 3, 4, 5].map((moduleId) => {
+            const unlocked = emblems.unlockedModules.includes(moduleId);
+            return (
+              <div key={moduleId} className={`account-emblem-chip ${unlocked ? 'unlocked' : 'locked'}`}>
+                <span>Phase {String(moduleId).padStart(2, '0')}</span>
+                <strong>{unlocked ? 'Unlocked' : 'Locked'}</strong>
+              </div>
+            );
+          })}
+          <div className={`account-emblem-chip ${emblems.graduationUnlocked ? 'unlocked' : 'locked'}`}>
+            <span>HP Badge</span>
+            <strong>{emblems.graduationUnlocked ? 'Unlocked' : 'Locked'}</strong>
+          </div>
+        </div>
+
+        {profileLoading && (
+          <p style={{ margin: '0 0 1rem', color: 'var(--text-secondary)' }}>Refreshing profile stats…</p>
+        )}
+
+        <div className="account-info" style={{ marginBottom: '1rem' }}>
+          <div className="account-field account-field-wide">
+            <span className="account-label">Notifications</span>
+            {notifications.length === 0 ? (
+              <p style={{ margin: '0.4rem 0 0', color: 'var(--text-secondary)' }}>No notifications yet.</p>
+            ) : (
+              notifications.slice(0, 5).map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    marginTop: '0.5rem',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '10px',
+                    padding: '0.55rem 0.65rem',
+                    background: item.read ? 'var(--bg-secondary)' : 'var(--card-bg)',
+                    cursor: 'pointer'
+                  }}
+                  onClick={async () => {
+                    await markNotificationRead(item.id);
+                    setNotifications((prev) =>
+                      prev.map((entry) => (entry.id === item.id ? { ...entry, read: true } : entry))
+                    );
+                    if (item.metadata?.meetUrl) {
+                      window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
+                    }
+                  }}
+                >
+                  <strong style={{ display: 'block' }}>{item.title}</strong>
+                  <span style={{ color: 'var(--text-secondary)', fontSize: '0.82rem' }}>{item.message}</span>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+
         <div className="account-avatar">
           <div className="account-avatar-preview">
             <img

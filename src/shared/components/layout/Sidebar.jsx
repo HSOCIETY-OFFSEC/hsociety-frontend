@@ -34,15 +34,15 @@ const Sidebar = () => {
   const resolvedRole = routeRole || role || 'student';
   const links = getSidebarLinks(true, resolvedRole);
   const isActive = (path) => location.pathname === path;
-  const [bootcampOpen, setBootcampOpen] = useState(false);
+  const [learnOpen, setLearnOpen] = useState(false);
 
   const bootcampLinks = useMemo(
-    () => links.filter((link) => link.group === 'bootcamp'),
+    () => links.filter((link) => link.group === 'learn'),
     [links]
   );
 
   const defaultLinks = useMemo(
-    () => links.filter((link) => link.group !== 'bootcamp'),
+    () => links.filter((link) => link.group !== 'learn'),
     [links]
   );
 
@@ -77,21 +77,21 @@ const Sidebar = () => {
             {defaultLinks.map(renderLink)}
             {bootcampLinks.length > 0 && (
               <div
-                className={`bootcamp-dropdown ${bootcampOpen ? 'open' : ''}`}
-                onMouseLeave={() => setBootcampOpen(false)}
+                className={`bootcamp-dropdown ${learnOpen ? 'open' : ''}`}
+                onMouseLeave={() => setLearnOpen(false)}
               >
                 <button
                   type="button"
-                  className={`app-sidebar-link ${bootcampOpen ? 'active' : ''}`}
-                  onClick={() => setBootcampOpen((prev) => !prev)}
+                  className={`app-sidebar-link ${learnOpen ? 'active' : ''}`}
+                  onClick={() => setLearnOpen((prev) => !prev)}
                 >
                   <span style={{ display: 'inline-flex' }}>
                     <FiLayers size={18} />
                   </span>
-                  <span>Bootcamp</span>
-                  <FiChevronDown size={16} style={{ marginLeft: 'auto', transition: 'transform 0.2s ease', transform: bootcampOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}/>
+                  <span>Learn</span>
+                  <FiChevronDown size={16} style={{ marginLeft: 'auto', transition: 'transform 0.2s ease', transform: learnOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}/>
                 </button>
-                {bootcampOpen && (
+                {learnOpen && (
                   <div className="bootcamp-dropdown-menu">
                     {bootcampLinks.map((link) => (
                       <button

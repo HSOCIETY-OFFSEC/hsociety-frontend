@@ -124,6 +124,33 @@
   color: var(--text-tertiary);
 }
 
+.community-profile-emblems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.6rem;
+}
+
+.community-profile-emblem {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.55rem 0.65rem;
+  background: var(--bg-primary);
+}
+
+.community-profile-emblem span {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+}
+
+.community-profile-emblem strong {
+  font-size: 0.82rem;
+}
+
+.community-profile-emblem.unlocked {
+  border-color: color-mix(in srgb, var(--success-color) 38%, var(--border-color));
+}
+
 @media (max-width: 1024px) {
   .community-profile-menu {
     display: inline-flex;

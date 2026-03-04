@@ -7,7 +7,8 @@ import {
   FiCode,
   FiCompass,
   FiFlag,
-  FiShield
+  FiShield,
+  FiZap,
 } from 'react-icons/fi';
 import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import Card from '../../../shared/components/ui/Card';
@@ -15,6 +16,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getStudentOverview, registerBootcamp } from './student.service';
 import { useAuth } from '../../../core/auth/AuthContext';
+import { listNotifications } from '../../student/services/notifications.service';
 import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
@@ -31,6 +33,7 @@ const StudentDashboard = () => {
     bootcampPaymentStatus: 'unpaid'
   });
   const [error, setError] = useState('');
+  const [notifications, setNotifications] = useState([]);
   const [bootcampSaving, setBootcampSaving] = useState(false);
   const [showBootcampModal, setShowBootcampModal] = useState(false);
   const [bootcampForm, setBootcampForm] = useState({
@@ -48,6 +51,10 @@ const StudentDashboard = () => {
           throw new Error(response.error || 'Failed to load student dashboard');
         }
         setData(response.data);
+        const notificationsResponse = await listNotifications();
+        if (notificationsResponse.success) {
+          setNotifications(notificationsResponse.data || []);
+        }
       } catch (err) {
         console.error('Student dashboard error:', err);
         setError('Unable to load student dashboard data.');
@@ -165,7 +172,7 @@ const StudentDashboard = () => {
                     <Button
                       variant="primary"
                       size="small"
-                      onClick={() => setShowBootcampModal(true)}
+                      onClick={() => navigate('/student-bootcamps')}
                       disabled={bootcampSaving || data.bootcampStatus !== 'not_enrolled'}
                     >
                       {data.bootcampStatus === 'completed'
@@ -213,10 +220,25 @@ const StudentDashboard = () => {
                     <Button
                       variant="secondary"
                       size="small"
-                      onClick={() => navigate('/student-bootcamp')}
+                      onClick={() => navigate('/student-bootcamps')}
                     >
                       Register for Bootcamp
                     </Button>
+                  </Card>
+                )}
+
+                {data.xpSummary && (
+                  <Card padding="medium" className="student-card reveal-on-scroll">
+                    <div className="student-card-header">
+                      <FiZap size={20} />
+                      <h3>XP Rank</h3>
+                    </div>
+                    <p style={{ marginBottom: '0.4rem' }}>
+                      <strong>{data.xpSummary.rank}</strong> · {data.xpSummary.totalXp} XP
+                    </p>
+                    <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
+                      {data.xpSummary.streakDays} day streak · {data.xpSummary.visits} visits
+                    </p>
                   </Card>
                 )}
 
@@ -249,6 +271,25 @@ const StudentDashboard = () => {
                         );
                       })}
                 </div>
+              </Card>
+
+              <Card padding="medium" className="student-card">
+                <div className="student-card-header">
+                  <FiFlag size={20} />
+                  <h3>Recent Notifications</h3>
+                </div>
+                {notifications.length === 0 ? (
+                  <p style={{ margin: 0, color: 'var(--text-secondary)' }}>No notifications yet.</p>
+                ) : (
+                  notifications.slice(0, 4).map((item) => (
+                    <div key={item.id} style={{ marginBottom: '0.6rem' }}>
+                      <strong style={{ display: 'block', fontSize: '0.9rem' }}>{item.title}</strong>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                        {item.message}
+                      </span>
+                    </div>
+                  ))
+                )}
               </Card>
             </section>
         </>

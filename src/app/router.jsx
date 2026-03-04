@@ -33,8 +33,10 @@ const Contact = React.lazy(() => import('../features/contact/Contact'));
 const ServiceDetail = React.lazy(() => import('../features/services/ServiceDetail'));
 const ThreatMap = React.lazy(() => import('../features/threat-map/ThreatMap'));
 const StudentDashboard = loadDashboard('StudentDashboard');
+const StudentLearnOverview = React.lazy(() => import('../features/student/StudentLearnOverview'));
 const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
+const StudentModuleDetails = React.lazy(() => import('../features/student/StudentModuleDetails'));
 const StudentResources = React.lazy(() => import('../features/student/StudentResources'));
 const StudentQuizMaterial = React.lazy(() => import('../features/student/StudentQuizMaterial'));
 const StudentBootcamp = React.lazy(() => import('../features/student/StudentBootcamp'));
@@ -68,6 +70,9 @@ const Methodology = React.lazy(() => import('../features/methodology/Methodology
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
 const Blog = React.lazy(() => import('../features/blog/Blog'));
 const Terms = React.lazy(() => import('../features/terms/Terms'));
+const Courses = React.lazy(() => import('../features/courses/Courses'));
+const CourseDetails = React.lazy(() => import('../features/courses/CourseDetails'));
+const CourseModuleDetails = React.lazy(() => import('../features/courses/CourseModuleDetails'));
 const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
 const ForcePasswordChange = React.lazy(() => import('../features/auth/ForcePasswordChange'));
 
@@ -327,6 +332,22 @@ const AppRouter = () => {
               path="student-learning"
               element={
                 <RoleRoute allowedRoles={['student']}>
+                  <StudentLearnOverview />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-bootcamps"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentBootcamp />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-bootcamps/hacker-protocol/dashboard"
+              element={
+                <RoleRoute allowedRoles={['student']}>
                   <StudentLearning />
                 </RoleRoute>
               }
@@ -351,7 +372,7 @@ const AppRouter = () => {
               path="student-bootcamp"
               element={
                 <RoleRoute allowedRoles={['student']}>
-                  <StudentBootcamp />
+                  <Navigate to="/student-bootcamps" replace />
                 </RoleRoute>
               }
             />
@@ -364,10 +385,18 @@ const AppRouter = () => {
               }
             />
             <Route
-              path="student-learning/module/:moduleId/room/:roomId"
+              path="student-bootcamps/hacker-protocol/module/:moduleId/room/:roomId"
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentLesson />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-bootcamps/hacker-protocol/modules/:moduleId"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentModuleDetails />
                 </RoleRoute>
               }
             />
@@ -394,6 +423,9 @@ const AppRouter = () => {
           <Route path="case-studies" element={<CaseStudies />} />
           <Route path="blog" element={<Blog />} />
           <Route path="threat-map" element={<ThreatMap />} />
+          <Route path="courses" element={<Courses />} />
+          <Route path="courses/:bootcampId" element={<CourseDetails />} />
+          <Route path="courses/:bootcampId/modules/:moduleId" element={<CourseModuleDetails />} />
           <Route path="terms" element={<Terms />} />
           <Route path="terms-and-conditions" element={<Terms />} />
         </Route>

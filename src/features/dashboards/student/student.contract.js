@@ -31,7 +31,9 @@ export const normalizeStudentOverview = (overview = {}) => ({
   learningPath: (overview.learningPath || []).map(normalizeLearningPathItem),
   modules: (overview.modules || []).map(normalizeModuleOverview),
   snapshot: (overview.snapshot || []).map(normalizeSnapshotItem),
-  bootcampStatus: overview.bootcampStatus || 'not_enrolled'
+  bootcampStatus: overview.bootcampStatus || 'not_enrolled',
+  bootcampPaymentStatus: overview.bootcampPaymentStatus || 'unpaid',
+  xpSummary: overview.xpSummary || null,
 });
 
 export default {

@@ -13,6 +13,7 @@ import {
   ModulesSection,
   TrustSection,
   PartnerCarouselSection,
+  CoursesSection,
   CommunityProfilesSection,
   PathwaysSection,
   CycleSection,
@@ -266,6 +267,7 @@ const Landing = ({ scrollToId = null }) => {
 
     {/* 7. Learning depth / system strength */}
     <ModulesSection modules={learningModules} />
+    <CoursesSection />
     <PathwaysSection content={landingContent.pathways} />
     <CycleSection steps={cycleSteps} />
 

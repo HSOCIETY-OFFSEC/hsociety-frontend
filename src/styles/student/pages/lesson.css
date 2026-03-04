@@ -100,6 +100,10 @@
   margin-top: 1.5rem;
 }
 
+.lesson-layout-tripanel {
+  grid-template-columns: 260px minmax(0, 1fr) 280px;
+}
+
 .lesson-sidebar {
   display: flex;
   flex-direction: column;
@@ -217,9 +221,53 @@
   background: var(--bg-secondary);
 }
 
+.lesson-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.lesson-rightbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lesson-right-card {
+  border-radius: 14px;
+}
+
+.lesson-phase-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.7rem;
+}
+
+.lesson-phase-identity img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.lesson-phase-identity strong {
+  display: block;
+}
+
+.lesson-phase-identity span {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
 @media (max-width: 768px) {
   .lesson-layout {
     padding: 0;
+  }
+
+  .lesson-layout-tripanel {
+    grid-template-columns: 1fr;
   }
 
   .lesson-main-card {

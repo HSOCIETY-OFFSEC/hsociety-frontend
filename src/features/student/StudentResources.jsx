@@ -1,129 +1,99 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiBookOpen, FiExternalLink, FiShield } from 'react-icons/fi';
-import useBootcampAccess from './hooks/useBootcampAccess';
-import StudentAccessModal from './components/StudentAccessModal';
-import StudentPaymentModal from './components/StudentPaymentModal';
+import { FiBookOpen, FiExternalLink, FiInfo } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
-import { useAuth } from '../../core/auth/AuthContext';
+import { getFreeResources } from './services/learn.service';
 import '../../styles/student/base.css';
 import '../../styles/student/components.css';
 import '../../styles/student/pages/resources.css';
 
 const StudentResources = () => {
-  const navigate = useNavigate();
-  const { updateUser } = useAuth();
-  const { isRegistered, isPaid, hasAccess } = useBootcampAccess();
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const triggerAccessModal = () => {
-    if (!isRegistered) {
-      setShowRegisterModal(true);
-      return;
-    }
-    setShowPaymentModal(true);
-  };
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [resources, setResources] = useState([]);
+  const [message, setMessage] = useState('We do not have free resources yet.');
 
   useEffect(() => {
-    if (!isRegistered) {
-      setShowRegisterModal(true);
-      setShowPaymentModal(false);
-      return;
-    }
-    if (!isPaid) {
-      setShowPaymentModal(true);
-      setShowRegisterModal(false);
-      return;
-    }
-    setShowRegisterModal(false);
-    setShowPaymentModal(false);
-  }, [isRegistered, isPaid]);
+    let mounted = true;
+    const loadResources = async () => {
+      setLoading(true);
+      const response = await getFreeResources();
+      if (!mounted) return;
+      if (!response.success) {
+        setError(response.error || 'Unable to load free resources.');
+      } else {
+        setResources(Array.isArray(response.data?.items) ? response.data.items : []);
+        if (response.data?.message) {
+          setMessage(response.data.message);
+        }
+      }
+      setLoading(false);
+    };
+
+    loadResources();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <div className="student-page">
       <div className="dashboard-shell">
         <header className="student-hero dashboard-shell-header reveal-on-scroll">
           <div>
-            <p className="student-kicker dashboard-shell-kicker">Bootcamp Resources</p>
-            <h1 className="dashboard-shell-title">Curated materials for every module.</h1>
+            <p className="student-kicker dashboard-shell-kicker">Resources</p>
+            <h1 className="dashboard-shell-title">Free learning resources.</h1>
             <p className="dashboard-shell-subtitle">
-              Review the readings, playbooks, and tools shared by the cohort instructors.
+              These are admin-managed public materials outside paid bootcamp access.
             </p>
-          </div>
-          <div className="dashboard-shell-actions">
-            <Button
-              variant="primary"
-              size="large"
-              onClick={() => (hasAccess ? navigate('/student-learning') : triggerAccessModal())}
-            >
-              <FiBookOpen size={18} />
-              {hasAccess ? 'Open Learning Path' : 'Access Denied'}
-            </Button>
           </div>
         </header>
 
-        <div className="student-grid">
+        {error && (
+          <Card padding="medium" className="student-card reveal-on-scroll">
+            <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
+          </Card>
+        )}
+
+        {loading ? (
+          <Card padding="medium" className="student-card reveal-on-scroll">
+            <p style={{ margin: 0 }}>Loading resources...</p>
+          </Card>
+        ) : resources.length === 0 ? (
           <Card padding="medium" className="student-card reveal-on-scroll">
             <div className="student-card-header">
-              <FiShield size={20} />
-              <h3>Core Playbooks</h3>
+              <FiInfo size={20} />
+              <h3>No free resources yet</h3>
             </div>
-            <p>
-              Step-by-step tactical notes used in live sessions, plus follow-up checklists for each
-              module.
-            </p>
-            <Button variant="secondary" size="small" disabled={!hasAccess}>
-              {hasAccess ? 'View playbooks' : 'Access Denied'}
-            </Button>
+            <p>{message}</p>
           </Card>
-          <Card padding="medium" className="student-card reveal-on-scroll">
-            <div className="student-card-header">
-              <FiBookOpen size={20} />
-              <h3>Reading Bundles</h3>
-            </div>
-            <p>
-              Recommended readings, whitepapers, and quick references curated for the bootcamp
-              track.
-            </p>
-            <Button variant="secondary" size="small" disabled={!hasAccess}>
-              {hasAccess ? 'Open bundle' : 'Access Denied'}
-            </Button>
-          </Card>
-          <Card padding="medium" className="student-card reveal-on-scroll">
-            <div className="student-card-header">
-              <FiExternalLink size={20} />
-              <h3>Tooling Vault</h3>
-            </div>
-            <p>
-              Installer kits, VM snapshots, and lab resources prepared for the cohort.
-            </p>
-            <Button variant="secondary" size="small" disabled={!hasAccess}>
-              {hasAccess ? 'Download tools' : 'Access Denied'}
-            </Button>
-          </Card>
-        </div>
+        ) : (
+          <div className="student-grid">
+            {resources.map((resource) => (
+              <Card
+                key={resource.id}
+                padding="medium"
+                className="student-card reveal-on-scroll"
+              >
+                <div className="student-card-header">
+                  <FiBookOpen size={20} />
+                  <h3>{resource.title}</h3>
+                </div>
+                <p>{resource.description || 'Free learning resource'}</p>
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => window.open(resource.url, '_blank', 'noopener,noreferrer')}
+                  disabled={!resource.url}
+                >
+                  <FiExternalLink size={14} />
+                  Open Resource
+                </Button>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
-
-      {showRegisterModal && (
-        <StudentAccessModal
-          title="Bootcamp registration required"
-          description="Register for the bootcamp before you can access learning resources."
-          primaryLabel="Go to Bootcamp"
-          onPrimary={() => navigate('/student-bootcamp')}
-          onClose={() => setShowRegisterModal(false)}
-        />
-      )}
-
-      {showPaymentModal && !showRegisterModal && (
-        <StudentPaymentModal
-          onClose={() => setShowPaymentModal(false)}
-          onSuccess={() => {
-            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
-            setShowPaymentModal(false);
-          }}
-        />
-      )}
     </div>
   );
 };

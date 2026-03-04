@@ -1,0 +1,125 @@
+.module-details-page {
+  padding: 1rem;
+}
+
+.module-details-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1rem;
+}
+
+.module-details-hero {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--module-color) 20%, var(--card-bg)), var(--card-bg));
+}
+
+.module-details-hero-left p {
+  margin: 0 0 0.35rem;
+  color: var(--text-secondary);
+}
+
+.module-details-hero-left h1 {
+  margin: 0.15rem 0 0.5rem;
+}
+
+.module-details-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.module-details-tags span {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  font-size: 0.8rem;
+}
+
+.module-details-actions {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.module-details-hero-right {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  min-height: 210px;
+}
+
+.module-details-hero-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.module-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.module-room-list,
+.module-phase-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.module-room-item {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+}
+
+.module-room-item strong,
+.module-room-item small {
+  display: block;
+}
+
+.module-room-item small {
+  color: var(--text-tertiary);
+}
+
+.module-phase-item {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--phase-color) 14%, var(--bg-secondary));
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.6rem;
+  cursor: pointer;
+}
+
+.module-phase-item img {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+
+.module-phase-item.active {
+  border-color: color-mix(in srgb, var(--phase-color) 50%, var(--border-color));
+}
+
+@media (max-width: 860px) {
+  .module-details-hero,
+  .module-details-grid {
+    grid-template-columns: 1fr;
+  }
+}

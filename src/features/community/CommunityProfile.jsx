@@ -1,6 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiMessageSquare, FiHeart, FiMessageCircle, FiImage, FiHash } from 'react-icons/fi';
+import {
+  FiArrowLeft,
+  FiAward,
+  FiHash,
+  FiHeart,
+  FiImage,
+  FiMessageCircle,
+  FiMessageSquare,
+} from 'react-icons/fi';
+import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getCommunityProfile } from './community.service';
 import CommunitySidebar from './components/sidebar/CommunitySidebar';
@@ -16,6 +25,8 @@ const CommunityProfile = () => {
   const [error, setError] = useState('');
   const [profile, setProfile] = useState(null);
   const [stats, setStats] = useState(null);
+  const [xpSummary, setXpSummary] = useState(null);
+  const [emblems, setEmblems] = useState(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const role = useMemo(() => {
@@ -34,6 +45,8 @@ const CommunityProfile = () => {
       if (response.success) {
         setProfile(response.data.user || null);
         setStats(response.data.stats || null);
+        setXpSummary(response.data.xpSummary || null);
+        setEmblems(response.data.emblems || null);
       } else {
         setError(response.error || 'Failed to load profile');
       }
@@ -149,6 +162,51 @@ const CommunityProfile = () => {
                   <span>Rooms active</span>
                 </div>
               </div>
+              <div className="community-profile-stat">
+                <FiAward size={16} />
+                <div>
+                  <strong>{xpSummary?.rank || 'Candidate'}</strong>
+                  <span>Rank</span>
+                </div>
+              </div>
+              <div className="community-profile-stat">
+                <IoFlameOutline size={16} />
+                <div>
+                  <strong>{xpSummary?.streakDays || 0} days</strong>
+                  <span>Streak</span>
+                </div>
+              </div>
+              <div className="community-profile-stat">
+                <FiAward size={16} />
+                <div>
+                  <strong>{xpSummary?.totalXp || 0}</strong>
+                  <span>Total XP</span>
+                </div>
+              </div>
+              <div className="community-profile-stat">
+                <FiAward size={16} />
+                <div>
+                  <strong>{Array.isArray(emblems?.unlockedModules) ? emblems.unlockedModules.length : 0}/5</strong>
+                  <span>Emblems unlocked</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="community-profile-emblems">
+              {[1, 2, 3, 4, 5].map((moduleId) => {
+                const unlocked = Array.isArray(emblems?.unlockedModules)
+                  ? emblems.unlockedModules.includes(moduleId)
+                  : false;
+                return (
+                  <div
+                    key={moduleId}
+                    className={`community-profile-emblem ${unlocked ? 'unlocked' : 'locked'}`}
+                  >
+                    <span>Phase {String(moduleId).padStart(2, '0')}</span>
+                    <strong>{unlocked ? 'Unlocked' : 'Locked'}</strong>
+                  </div>
+                );
+              })}
             </div>
           </section>
         )}

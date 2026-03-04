@@ -51,6 +51,73 @@
   flex-wrap: wrap;
 }
 
+.bootcamp-hero-carousel {
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  overflow: hidden;
+}
+
+.emblem-carousel {
+  overflow: hidden;
+  width: 100%;
+}
+
+.emblem-carousel-track {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  width: max-content;
+  animation: emblem-scroll 26s linear infinite;
+}
+
+.emblem-carousel:hover .emblem-carousel-track {
+  animation-play-state: paused;
+}
+
+.emblem-carousel-card {
+  width: 176px;
+  border: 1px solid color-mix(in srgb, var(--module-color) 45%, var(--border-color));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--module-color) 14%, var(--bg-secondary));
+  padding: 0.45rem;
+  text-align: left;
+  display: grid;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.emblem-carousel-image-wrap {
+  width: 100%;
+  height: 112px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.emblem-carousel-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.emblem-carousel-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emblem-carousel-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+@keyframes emblem-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 .bootcamp-status-card {
   border-radius: 16px;
   border: 1px solid var(--border-color);
@@ -93,7 +160,7 @@
 }
 
 .module-card-image {
-  height: 140px;
+  height: 180px;
   border-radius: 14px 14px 0 0;
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(15, 23, 42, 0.85));
   color: var(--text-primary);
@@ -102,6 +169,14 @@
   justify-content: center;
   font-size: 0.9rem;
   font-weight: 600;
+  overflow: hidden;
+}
+
+.module-card-emblem {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .module-card-body {

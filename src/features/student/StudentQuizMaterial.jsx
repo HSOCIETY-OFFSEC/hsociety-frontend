@@ -91,8 +91,8 @@ const StudentQuizMaterial = () => {
         <StudentAccessModal
           title="Bootcamp registration required"
           description="Register for the bootcamp before you can access quizzes."
-          primaryLabel="Go to Bootcamp"
-          onPrimary={() => navigate('/student-bootcamp')}
+          primaryLabel="Go to Bootcamps"
+          onPrimary={() => navigate('/student-bootcamps')}
           onClose={() => setShowRegisterModal(false)}
         />
       )}

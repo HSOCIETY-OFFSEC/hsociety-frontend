@@ -46,7 +46,8 @@ const AdminUsers = () => {
         email: user.email || '',
         organization: user.organization || '',
         role: user.role || 'student',
-        bootcampStatus: user.bootcampStatus || 'not_enrolled'
+        bootcampStatus: user.bootcampStatus || 'not_enrolled',
+        bootcampPaymentStatus: user.bootcampPaymentStatus || 'unpaid',
       }
     }));
   };
@@ -131,6 +132,7 @@ const AdminUsers = () => {
               <span>Organization</span>
               <span>Role</span>
               <span>Bootcamp</span>
+              <span>Payment</span>
               <span>Mute</span>
               <span>Actions</span>
             </div>
@@ -209,6 +211,23 @@ const AdminUsers = () => {
                     <span className="admin-role">
                       {(user.bootcampStatus || 'not_enrolled').replace('_', ' ')}
                     </span>
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <select
+                      className="admin-select"
+                      value={draft.bootcampPaymentStatus || 'unpaid'}
+                      onChange={(e) => updateDraft(user.id, 'bootcampPaymentStatus', e.target.value)}
+                    >
+                      {['unpaid', 'pending', 'paid'].map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span className="admin-role">{user.bootcampPaymentStatus || 'unpaid'}</span>
                   )}
                 </div>
                 <div>

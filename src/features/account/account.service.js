@@ -4,6 +4,14 @@
 import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
 
+export const getProfile = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.PROFILE.GET);
+  if (response.success) {
+    return { success: true, data: response.data };
+  }
+  return { success: false, error: response.error || 'Failed to load profile' };
+};
+
 export const deleteAccount = async () => {
   const response = await apiClient.delete(API_ENDPOINTS.PROFILE.DELETE);
   if (response.success) {
@@ -49,6 +57,7 @@ export const changePassword = async (currentPassword, newPassword) => {
 };
 
 export default {
+  getProfile,
   deleteAccount,
   updateProfile,
   updateAvatar,

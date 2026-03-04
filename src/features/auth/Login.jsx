@@ -156,7 +156,7 @@ const Login = ({ mode = 'default' }) => {
               <div className="auth-header">
                 <h1>{mode === 'pentester' ? 'Pentester Login' : 'Secure Login'}</h1>
                 <p className="auth-subtitle">
-                  {step === 1 && 'Enter your email and password'}
+                  {step === 1 && 'Enter your email or handle and password'}
                   {step === 2 && 'Enter your 2FA authentication code'}
                 </p>
               </div>
@@ -174,13 +174,13 @@ const Login = ({ mode = 'default' }) => {
                 <>
                   <form onSubmit={handleLogin} className="auth-form">
                     <div className="form-group">
-                      <label htmlFor="email">Email Address</label>
+                      <label htmlFor="email">Email or Handle</label>
                       <input
-                        type="email"
+                        type="text"
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
+                        placeholder="you@example.com or h4ck3r10"
                         required
                         autoFocus
                         disabled={loading}

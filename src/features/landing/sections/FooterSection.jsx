@@ -155,6 +155,10 @@ const FooterSection = () => {
             <FiClipboard size={16} />
             Careers & Opportunities
           </a>
+          <a href="/courses">
+            <FiTerminal size={16} />
+            Courses
+          </a>
         </div>
 
         <div className="footer-column">
@@ -170,6 +174,10 @@ const FooterSection = () => {
           <a href="/blog">
             <FiBarChart2 size={16} />
             Field Notes
+          </a>
+          <a href="/courses">
+            <FiLayers size={16} />
+            Courses
           </a>
           <a href="/student-dashboard">
             <FiTerminal size={16} />
