@@ -90,6 +90,35 @@
   margin: 0;
 }
 
+.student-muted-text {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.student-cp-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.student-cp-rank-line {
+  margin-bottom: 0.4rem;
+}
+
+.student-notification-item {
+  margin-bottom: 0.6rem;
+}
+
+.student-notification-title {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.student-notification-message {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
 .student-card > .button,
 .student-card > button {
   margin-top: 0.25rem;

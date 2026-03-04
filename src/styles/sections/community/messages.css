@@ -93,6 +93,24 @@
   background: color-mix(in srgb, var(--primary-color, #00ff99) 6%, transparent);
 }
 
+.community-load-older {
+  align-self: center;
+  margin: 0 0 0.8rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.community-load-older:hover,
+.community-load-older:focus-visible {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 35%, var(--border-color));
+}
+
 .community-pinned-header {
   font-size: 0.7rem;
   letter-spacing: 0.2em;
@@ -394,6 +412,12 @@
 
 .community-msg-reaction-item:hover {
   background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+}
+
+.community-msg-reaction-add:focus-visible,
+.community-msg-reaction-item:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary-color, #00ff99) 50%, transparent);
+  outline-offset: 2px;
 }
 
 .community-msg-reaction-item:disabled {

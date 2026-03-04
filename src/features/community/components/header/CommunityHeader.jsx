@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiHash, FiMenu, FiMessageSquare, FiUsers, FiX } from 'react-icons/fi';
+import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
 
 const CommunityHeader = ({
   activeChannels = [],
@@ -27,24 +28,24 @@ const CommunityHeader = ({
 
         <div className="community-header-title">
           <div>
-            <p className="community-header-kicker">HSOCIETY</p>
-            <h1>Community</h1>
+            <p className="community-header-kicker">{COMMUNITY_UI.header.brand}</p>
+            <h1>{COMMUNITY_UI.header.title}</h1>
           </div>
         </div>
 
         <div className="community-header-meta">
           <span className="community-header-stat">
             <FiUsers size={13} aria-hidden="true" />
-            {learners} online
+            {learners} {COMMUNITY_UI.header.learnersSuffix}
           </span>
           <span className="community-header-stat">
             <FiMessageSquare size={13} aria-hidden="true" />
-            {posts} posts
+            {posts} {COMMUNITY_UI.header.postsSuffix}
           </span>
         </div>
       </div>
 
-      <div className="community-channel-tabs" role="tablist" aria-label="Channels">
+      <div className="community-channel-tabs" role="tablist" aria-label={COMMUNITY_UI.header.channelsLabel}>
         {activeChannels.map((channel) => (
           <button
             key={channel.id}

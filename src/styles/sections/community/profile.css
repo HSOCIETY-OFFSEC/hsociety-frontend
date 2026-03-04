@@ -124,6 +124,13 @@
   color: var(--text-tertiary);
 }
 
+.community-cp-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, #22c55e 42%, transparent));
+}
+
 .community-profile-emblems {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));

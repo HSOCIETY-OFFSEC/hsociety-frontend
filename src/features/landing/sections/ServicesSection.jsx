@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiArrowRight, FiCheck, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Logo from '../../../shared/components/common/Logo';
-import Button from '../../../shared/components/ui/Button';
-import Card from '../../../shared/components/ui/Card';
-import { slugify } from '../../../shared/utils/slugify';
+import { SERVICES_SECTION_DATA } from '../../../data/landing/servicesSectionData';
+import ServiceCardSlide from '../components/services/ServiceCardSlide';
+import ServiceCarouselDots from '../components/services/ServiceCarouselDots';
 import '../../../styles/landing/services.css';
 
 const ServicesSection = ({ services = [] }) => {
-  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const trackRef = useRef(null);
   const slideRefs = useRef([]);
@@ -70,11 +68,11 @@ const ServicesSection = ({ services = [] }) => {
         <div className="section-header-center">
           <div className="section-eyebrow">
             <Logo size="small" />
-            <span>Offensive Capabilities</span>
+            <span>{SERVICES_SECTION_DATA.eyebrow}</span>
           </div>
-          <h2 className="section-title-large">Our Services</h2>
+          <h2 className="section-title-large">{SERVICES_SECTION_DATA.title}</h2>
           <p className="section-subtitle-large">
-            Comprehensive security testing tailored to your needs
+            {SERVICES_SECTION_DATA.subtitle}
           </p>
         </div>
 
@@ -83,7 +81,7 @@ const ServicesSection = ({ services = [] }) => {
           <button
             className="carousel-btn carousel-btn--prev"
             onClick={prev}
-            aria-label="Previous service"
+            aria-label={SERVICES_SECTION_DATA.aria.previous}
           >
             <FiChevronLeft size={22} />
           </button>
@@ -98,65 +96,13 @@ const ServicesSection = ({ services = [] }) => {
             {services.map((service, index) => {
               const offset = index - activeIndex;
               return (
-                <div
+                <ServiceCardSlide
                   key={service.title}
-                  ref={(el) => (slideRefs.current[index] = el)}
-                  className={[
-                    'carousel-slide',
-                    offset === 0 && 'is-active',
-                    offset === -1 && 'is-prev',
-                    offset === 1 && 'is-next',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                  style={{ '--slide-offset': offset }}
-                  aria-hidden={offset !== 0}
-                >
-                  <Card
-                    hover3d={false}
-                    padding="none"
-                    className={`service-card service-card-${index + 1}`}
-                  >
-                    {service.image && (
-                      <div className="service-card-image">
-                        <img src={service.image} alt={service.title} loading="lazy" />
-                      </div>
-                    )}
-
-                    <div className="service-card-body">
-                      <div className="service-card-header">
-                        <div className="service-icon">
-                          <service.icon size={26} />
-                        </div>
-                        <h3 className="service-title">{service.title}</h3>
-                      </div>
-
-                      <p className="service-description">{service.description}</p>
-
-                      <ul className="service-features">
-                        {service.features.map((feature) => (
-                          <li key={feature}>
-                            <span className="feature-check">
-                              <FiCheck size={14} />
-                            </span>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <Button
-                        variant="card"
-                        size="small"
-                        fullWidth
-                        className="service-learn-btn"
-                        onClick={() => navigate(`/services/${slugify(service.title)}`)}
-                      >
-                        Learn More{' '}
-                        <FiArrowRight className="service-btn-arrow" size={16} />
-                      </Button>
-                    </div>
-                  </Card>
-                </div>
+                  slideRef={(el) => (slideRefs.current[index] = el)}
+                  service={service}
+                  index={index}
+                  offset={offset}
+                />
               );
             })}
           </div>
@@ -164,23 +110,18 @@ const ServicesSection = ({ services = [] }) => {
           <button
             className="carousel-btn carousel-btn--next"
             onClick={next}
-            aria-label="Next service"
+            aria-label={SERVICES_SECTION_DATA.aria.next}
           >
             <FiChevronRight size={22} />
           </button>
 
         </div>
 
-        <div className="carousel-dots">
-          {services.map((_, i) => (
-            <button
-              key={i}
-              className={`carousel-dot${i === activeIndex ? ' is-active' : ''}`}
-              onClick={() => setActiveIndex(i)}
-              aria-label={`Go to service ${i + 1}`}
-            />
-          ))}
-        </div>
+        <ServiceCarouselDots
+          total={services.length}
+          activeIndex={activeIndex}
+          onChange={setActiveIndex}
+        />
 
       </div>
     </section>

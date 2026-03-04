@@ -166,6 +166,26 @@
   gap: 0.75rem;
 }
 
+.workspace-cp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid color-mix(in srgb, #22c55e 45%, var(--border-color));
+  background: color-mix(in srgb, #22c55e 14%, var(--input-bg));
+  color: color-mix(in srgb, #22c55e 78%, var(--text-primary));
+  padding: 0.28rem 0.58rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.workspace-cp-chip-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, #22c55e 42%, transparent));
+}
+
 .workspace-streak-chip {
   display: inline-flex;
   align-items: center;

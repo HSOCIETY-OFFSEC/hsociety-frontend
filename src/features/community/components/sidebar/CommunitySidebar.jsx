@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FiUsers, FiX } from 'react-icons/fi';
 import { getSidebarLinks } from '../../../../config/navigation.config';
 import Logo from '../../../../shared/components/common/Logo';
+import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
 import '../../../../styles/sections/community/sidebar.css';
 
 const CommunitySidebar = ({
@@ -17,7 +18,7 @@ const CommunitySidebar = ({
     if (rawLinks.some((link) => link.path === '/settings')) return rawLinks;
     return [
       ...rawLinks,
-      { path: '/settings', label: 'Settings', icon: FiUsers },
+      { path: '/settings', label: COMMUNITY_UI.sidebar.settingsLabel, icon: FiUsers },
     ];
   }, [rawLinks]);
   const isActive = (path) => location.pathname === path;
@@ -62,7 +63,7 @@ const CommunitySidebar = ({
           aria-label="Go to community home"
         >
           <Logo size="small" className="community-sidebar-logo" />
-          <span className="community-sidebar-brand-name">HSOCIETY</span>
+          <span className="community-sidebar-brand-name">{COMMUNITY_UI.sidebar.brandName}</span>
         </button>
         <button
           type="button"
@@ -75,7 +76,7 @@ const CommunitySidebar = ({
       </div>
 
       <div className="community-sidebar-section">
-        <p className="community-sidebar-section-title">Navigation</p>
+        <p className="community-sidebar-section-title">{COMMUNITY_UI.sidebar.navigationTitle}</p>
         <div className="community-sidebar-links">
           {defaultLinks.map(renderLink)}
         </div>
@@ -83,7 +84,7 @@ const CommunitySidebar = ({
 
       {bootcampLinks.length > 0 && (
         <div className="community-sidebar-section">
-          <p className="community-sidebar-section-title">Bootcamp</p>
+          <p className="community-sidebar-section-title">{COMMUNITY_UI.sidebar.bootcampTitle}</p>
           <div className="community-sidebar-links">
             {bootcampLinks.map(renderLink)}
           </div>

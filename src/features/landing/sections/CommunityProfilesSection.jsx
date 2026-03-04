@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
+import cpIcon from '../../../assets/icons/CP/cp-icon.png';
+import { COMMUNITY_PROFILES_DATA } from '../../../data/landing/communityProfilesData';
 import '../../../styles/landing/community-profiles.css';
 
-const AUTO_ROTATE_MS = 4500;
+const AUTO_ROTATE_MS = COMMUNITY_PROFILES_DATA.autoRotateMs;
 
 const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
   const [index, setIndex] = useState(0);
@@ -50,13 +52,13 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
     <section className="community-profiles" id="community-profiles">
       <div className="community-profiles-inner">
         <div className="community-profiles-header">
-          <span className="eyebrow">Community Profiles</span>
+          <span className="eyebrow">{COMMUNITY_PROFILES_DATA.sectionEyebrow}</span>
           <h2>{title}</h2>
           <p>{subtitle}</p>
         </div>
 
         {count === 0 ? (
-          <div className="community-profiles-empty">Community profiles will appear here.</div>
+          <div className="community-profiles-empty">{COMMUNITY_PROFILES_DATA.emptyStateText}</div>
         ) : (
           <div className="community-profiles-carousel" role="region" aria-label="Community profiles">
             <div
@@ -86,16 +88,22 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
                           />
                           <div>
                             <p className="community-profile-handle">{handle}</p>
-                            <h3>{profile.name || 'Community Member'}</h3>
-                            <span className="community-profile-role">{profile.role || 'member'}</span>
+                            <h3>{profile.name || COMMUNITY_PROFILES_DATA.fallbackName}</h3>
+                            <span className="community-profile-role">{profile.role || COMMUNITY_PROFILES_DATA.fallbackRole}</span>
                           </div>
                         </header>
 
                         <p className="community-profile-bio">
-                          {profile.bio || 'Focused on sharpening offensive skills and sharing findings.'}
+                          {profile.bio || COMMUNITY_PROFILES_DATA.fallbackBio}
                         </p>
 
                         <div className="community-profile-metrics">
+                          <div className="community-profile-cp">
+                            <img src={cpIcon} alt="CP" className="community-profile-cp-icon" />
+                            <span>
+                              {profile.xpSummary?.totalXp || 0} CP
+                            </span>
+                          </div>
                           <div>
                             <FiMessageSquare size={14} />
                             <span>{profile.stats?.messages || 0} messages</span>

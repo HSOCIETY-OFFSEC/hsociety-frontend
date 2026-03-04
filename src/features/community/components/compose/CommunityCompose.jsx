@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { FiImage, FiSend, FiSmile, FiX } from 'react-icons/fi';
 import { uploadCommunityImage } from '../../community.service';
 import { getDisplayName, getUserAvatar } from '../../utils/community.utils';
+import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
 
-const MAX = 1000;
-const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
-const EMOJIS = ['🔥', '🚀', '✅', '⚡', '🧠', '🎯', '🛡️', '🧪', '💡', '🛰️', '📡', '🌍', '💬', '👏', '😂', '🙌', '😮', '😎', '🤝', '❤️'];
+const MAX = COMMUNITY_UI.compose.maxChars;
+const MAX_IMAGE_BYTES = COMMUNITY_UI.compose.maxImageBytes;
+const EMOJIS = COMMUNITY_UI.compose.emojis;
 
 const CommunityCompose = ({
   user,
@@ -49,13 +50,13 @@ const CommunityCompose = ({
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      onImageError?.('Please select an image file.');
+      onImageError?.(COMMUNITY_UI.compose.invalidImageText);
       event.target.value = '';
       return;
     }
 
     if (file.size > MAX_IMAGE_BYTES) {
-      onImageError?.('Image is too large. Use a file under 2 MB.');
+      onImageError?.(COMMUNITY_UI.compose.imageTooLargeText);
       event.target.value = '';
       return;
     }
@@ -65,12 +66,12 @@ const CommunityCompose = ({
       onImageError?.('');
       const response = await uploadCommunityImage(file);
       if (!response.success || !response.data?.url) {
-        onImageError?.(response.error || 'Failed to upload image.');
+        onImageError?.(response.error || COMMUNITY_UI.compose.uploadFailedText);
         return;
       }
       onImageChange?.(response.data.url);
     } catch (_err) {
-      onImageError?.('Failed to upload image. Please try again.');
+      onImageError?.(COMMUNITY_UI.compose.uploadFailedText);
     } finally {
       setUploading(false);
       event.target.value = '';
@@ -198,7 +199,7 @@ const CommunityCompose = ({
           </div>
         )}
 
-        {uploading && <p className="community-compose-status">Uploading image…</p>}
+        {uploading && <p className="community-compose-status">{COMMUNITY_UI.compose.uploadingText}</p>}
         {imageError && <p className="community-compose-error">{imageError}</p>}
       </div>
     </div>

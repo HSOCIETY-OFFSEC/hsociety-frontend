@@ -10,10 +10,12 @@ import {
   FiMessageSquare,
 } from 'react-icons/fi';
 import { IoFlameOutline } from 'react-icons/io5';
+import cpIcon from '../../assets/icons/CP/cp-icon.png';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getCommunityProfile } from './community.service';
 import CommunitySidebar from './components/sidebar/CommunitySidebar';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
+import { COMMUNITY_PROFILE_DATA } from '../../data/community/communityProfileData';
 import '../../styles/sections/community/base.css';
 import '../../styles/sections/community/profile.css';
 
@@ -31,7 +33,7 @@ const CommunityProfile = () => {
 
   const role = useMemo(() => {
     if (user?.role === 'client') return 'corporate';
-    return user?.role || 'student';
+    return user?.role || COMMUNITY_PROFILE_DATA.roleFallback;
   }, [user?.role]);
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const CommunityProfile = () => {
         setXpSummary(response.data.xpSummary || null);
         setEmblems(response.data.emblems || null);
       } else {
-        setError(response.error || 'Failed to load profile');
+        setError(response.error || COMMUNITY_PROFILE_DATA.loadError);
       }
       setLoading(false);
     };
@@ -65,9 +67,9 @@ const CommunityProfile = () => {
 
   const displayHandle = profile?.hackerHandle
     ? `@${profile.hackerHandle}`
-    : profile?.name
+      : profile?.name
       ? `@${profile.name.split(' ')[0].toLowerCase()}`
-      : '@member';
+      : COMMUNITY_PROFILE_DATA.handleFallback;
 
   return (
     <div className="community-root">
@@ -85,21 +87,21 @@ const CommunityProfile = () => {
             onClick={() => navigate('/community')}
           >
             <FiArrowLeft size={16} />
-            Back to Community
+            {COMMUNITY_PROFILE_DATA.backToCommunityLabel}
           </button>
 
           <button
             type="button"
             className="community-profile-menu"
             onClick={() => setMobileNavOpen((prev) => !prev)}
-            aria-label="Toggle navigation"
+            aria-label={COMMUNITY_PROFILE_DATA.closeNavAria}
           >
             <FiHash size={16} />
           </button>
         </header>
 
         {loading ? (
-          <div className="community-profile-state">Loading profile…</div>
+          <div className="community-profile-state">{COMMUNITY_PROFILE_DATA.loadingText}</div>
         ) : error ? (
           <div className="community-profile-state error">{error}</div>
         ) : (
@@ -107,7 +109,7 @@ const CommunityProfile = () => {
             <div className="community-profile-identity">
               <img
                 src={profile?.avatarUrl || fallbackAvatar}
-                alt={profile?.name || 'Community member'}
+                alt={profile?.name || COMMUNITY_PROFILE_DATA.memberFallback}
                 onError={(e) => {
                   if (e.currentTarget.src !== fallbackAvatar) {
                     e.currentTarget.src = fallbackAvatar;
@@ -116,9 +118,11 @@ const CommunityProfile = () => {
               />
               <div>
                 <p className="community-profile-handle">{displayHandle}</p>
-                <h1>{profile?.name || 'Community Member'}</h1>
+                <h1>{profile?.name || COMMUNITY_PROFILE_DATA.memberFallback}</h1>
                 <div className="community-profile-meta">
-                  <span className="community-profile-role">{profile?.role || 'member'}</span>
+                  <span className="community-profile-role">
+                    {profile?.role || COMMUNITY_PROFILE_DATA.roleFallbackLabel}
+                  </span>
                   {profile?.organization && <span>{profile.organization}</span>}
                 </div>
               </div>
@@ -131,63 +135,63 @@ const CommunityProfile = () => {
                 <FiMessageSquare size={16} />
                 <div>
                   <strong>{stats?.messages || 0}</strong>
-                  <span>Messages</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.messages}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
                 <FiHeart size={16} />
                 <div>
                   <strong>{stats?.likesReceived || 0}</strong>
-                  <span>Likes received</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.likesReceived}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
                 <FiMessageCircle size={16} />
                 <div>
                   <strong>{stats?.commentsMade || 0}</strong>
-                  <span>Comments made</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.commentsMade}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
                 <FiImage size={16} />
                 <div>
                   <strong>{stats?.imagesShared || 0}</strong>
-                  <span>Images shared</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.imagesShared}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
                 <FiHash size={16} />
                 <div>
                   <strong>{stats?.roomsActive || 0}</strong>
-                  <span>Rooms active</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.roomsActive}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
                 <FiAward size={16} />
                 <div>
-                  <strong>{xpSummary?.rank || 'Candidate'}</strong>
-                  <span>Rank</span>
+                  <strong>{xpSummary?.rank || COMMUNITY_PROFILE_DATA.rankFallback}</strong>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.rank}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
                 <IoFlameOutline size={16} />
                 <div>
                   <strong>{xpSummary?.streakDays || 0} days</strong>
-                  <span>Streak</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.streak}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
-                <FiAward size={16} />
+                <img src={cpIcon} alt="CP" className="community-cp-icon" />
                 <div>
                   <strong>{xpSummary?.totalXp || 0}</strong>
-                  <span>Total XP</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.cp}</span>
                 </div>
               </div>
               <div className="community-profile-stat">
                 <FiAward size={16} />
                 <div>
                   <strong>{Array.isArray(emblems?.unlockedModules) ? emblems.unlockedModules.length : 0}/5</strong>
-                  <span>Emblems unlocked</span>
+                  <span>{COMMUNITY_PROFILE_DATA.statsLabels.emblems}</span>
                 </div>
               </div>
             </div>
@@ -217,7 +221,7 @@ const CommunityProfile = () => {
           type="button"
           className="community-mobile-nav-overlay"
           onClick={() => setMobileNavOpen(false)}
-          aria-label="Close community navigation"
+          aria-label={COMMUNITY_PROFILE_DATA.mobileNavCloseAria}
         />
       )}
     </div>

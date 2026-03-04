@@ -110,6 +110,18 @@
   font-size: 0.82rem;
 }
 
+.community-profile-cp {
+  color: color-mix(in srgb, #22c55e 70%, var(--text-primary)) !important;
+  font-weight: 700;
+}
+
+.community-profile-cp-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, #22c55e 42%, transparent));
+}
+
 .community-profiles-dots {
   display: flex;
   align-items: center;

@@ -8,7 +8,6 @@ import {
   FiCompass,
   FiFlag,
   FiShield,
-  FiZap,
 } from 'react-icons/fi';
 import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import Card from '../../../shared/components/ui/Card';
@@ -17,6 +16,9 @@ import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getStudentOverview, registerBootcamp } from './student.service';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { listNotifications } from '../../student/services/notifications.service';
+import { STUDENT_DASHBOARD_UI } from '../../../data/student/studentDashboardUiData';
+import StudentXpSummaryCard from './components/StudentXpSummaryCard';
+import StudentRecentNotificationsCard from './components/StudentRecentNotificationsCard';
 import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
@@ -48,7 +50,7 @@ const StudentDashboard = () => {
       try {
         const response = await getStudentOverview();
         if (!response.success) {
-          throw new Error(response.error || 'Failed to load student dashboard');
+          throw new Error(response.error || STUDENT_DASHBOARD_UI.page.loadError);
         }
         setData(response.data);
         const notificationsResponse = await listNotifications();
@@ -57,7 +59,7 @@ const StudentDashboard = () => {
         }
       } catch (err) {
         console.error('Student dashboard error:', err);
-        setError('Unable to load student dashboard data.');
+        setError(STUDENT_DASHBOARD_UI.page.loadError);
       } finally {
         setLoading(false);
       }
@@ -74,11 +76,7 @@ const StudentDashboard = () => {
     code: FiCode
   };
 
-  const bootcampLabels = {
-    not_enrolled: 'Not enrolled',
-    enrolled: 'Enrolled',
-    completed: 'Completed'
-  };
+  const bootcampLabels = STUDENT_DASHBOARD_UI.bootcampStatusLabels;
 
   const handleBootcampRegister = async () => {
     setBootcampSaving(true);
@@ -100,7 +98,7 @@ const StudentDashboard = () => {
       setShowBootcampModal(false);
       setBootcampForm((prev) => ({ ...prev, goal: '' }));
     } else {
-      setError(response.error || 'Failed to register for bootcamp.');
+      setError(response.error || STUDENT_DASHBOARD_UI.page.registerError);
     }
     setBootcampSaving(false);
   };
@@ -113,10 +111,10 @@ const StudentDashboard = () => {
       <div className="dashboard-shell">
         <header className="student-hero dashboard-shell-header reveal-on-scroll">
           <div>
-            <p className="student-kicker dashboard-shell-kicker">Student Dashboard</p>
-            <h1 className="dashboard-shell-title">Build skills with real-world practice.</h1>
+            <p className="student-kicker dashboard-shell-kicker">{STUDENT_DASHBOARD_UI.page.kicker}</p>
+            <h1 className="dashboard-shell-title">{STUDENT_DASHBOARD_UI.page.title}</h1>
             <p className="dashboard-shell-subtitle">
-              Track your progress, access resources, and stay on top of your bootcamp journey.
+              {STUDENT_DASHBOARD_UI.page.subtitle}
             </p>
           </div>
           <div className="dashboard-shell-actions">
@@ -126,14 +124,14 @@ const StudentDashboard = () => {
               onClick={() => navigate('/student-learning')}
             >
               <FiCompass size={18} />
-              Go to Learning Path
+              {STUDENT_DASHBOARD_UI.actions.learningPath}
             </Button>
           </div>
         </header>
 
         {error && (
           <Card padding="medium" className="student-card reveal-on-scroll">
-            <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
+            <p className="student-muted-text">{error}</p>
           </Card>
         )}
 
@@ -159,15 +157,14 @@ const StudentDashboard = () => {
                 <Card padding="medium" className="student-card reveal-on-scroll">
                   <div className="student-card-header">
                     <FiBookOpen size={20} />
-                    <h3>Bootcamp Status</h3>
+                    <h3>{STUDENT_DASHBOARD_UI.cards.bootcampStatusTitle}</h3>
                   </div>
                   <div className="bootcamp-status">
                     <span className={`bootcamp-pill status-${data.bootcampStatus}`}>
                       {bootcampLabels[data.bootcampStatus] || 'Not enrolled'}
                     </span>
                     <p>
-                      Enroll in the Ethical Hacking Bootcamp to access the HSOCIETY learning
-                      resources and join cohort sessions.
+                      {STUDENT_DASHBOARD_UI.body.bootcampInvite}
                     </p>
                     <Button
                       variant="primary"
@@ -176,12 +173,12 @@ const StudentDashboard = () => {
                       disabled={bootcampSaving || data.bootcampStatus !== 'not_enrolled'}
                     >
                       {data.bootcampStatus === 'completed'
-                        ? 'Bootcamp Completed'
+                        ? STUDENT_DASHBOARD_UI.buttonStates.completed
                         : data.bootcampStatus === 'enrolled'
-                        ? 'Enrolled'
+                        ? STUDENT_DASHBOARD_UI.buttonStates.enrolled
                         : bootcampSaving
-                        ? 'Registering...'
-                        : 'Register for Bootcamp'}
+                        ? STUDENT_DASHBOARD_UI.buttonStates.registering
+                        : STUDENT_DASHBOARD_UI.buttonStates.defaultRegister}
                     </Button>
                   </div>
                 </Card>
@@ -192,18 +189,15 @@ const StudentDashboard = () => {
                       <Card padding="medium" className="student-card reveal-on-scroll">
                         <div className="student-card-header">
                           <FiShield size={20} />
-                          <h3>Access Denied</h3>
+                          <h3>{STUDENT_DASHBOARD_UI.cards.accessDeniedTitle}</h3>
                         </div>
-                        <p>
-                          Bootcamp payment is required before you can read learning materials and
-                          resources.
-                        </p>
+                        <p>{STUDENT_DASHBOARD_UI.body.bootcampPaymentRequired}</p>
                         <Button
                           variant="secondary"
                           size="small"
                           onClick={() => navigate('/student-payments')}
                         >
-                          Complete Payment
+                          {STUDENT_DASHBOARD_UI.actions.completePayment}
                         </Button>
                       </Card>
                     )}
@@ -212,35 +206,20 @@ const StudentDashboard = () => {
                   <Card padding="medium" className="student-card reveal-on-scroll">
                     <div className="student-card-header">
                       <FiBookOpen size={20} />
-                      <h3>Bootcamp Required</h3>
+                      <h3>{STUDENT_DASHBOARD_UI.cards.bootcampRequiredTitle}</h3>
                     </div>
-                    <p>
-                      Register for the HSOCIETY Bootcamp to unlock the learning path and modules.
-                    </p>
+                    <p>{STUDENT_DASHBOARD_UI.body.bootcampRequired}</p>
                     <Button
                       variant="secondary"
                       size="small"
                       onClick={() => navigate('/student-bootcamps')}
                     >
-                      Register for Bootcamp
+                      {STUDENT_DASHBOARD_UI.actions.registerBootcamp}
                     </Button>
                   </Card>
                 )}
 
-                {data.xpSummary && (
-                  <Card padding="medium" className="student-card reveal-on-scroll">
-                    <div className="student-card-header">
-                      <FiZap size={20} />
-                      <h3>XP Rank</h3>
-                    </div>
-                    <p style={{ marginBottom: '0.4rem' }}>
-                      <strong>{data.xpSummary.rank}</strong> · {data.xpSummary.totalXp} XP
-                    </p>
-                    <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
-                      {data.xpSummary.streakDays} day streak · {data.xpSummary.visits} visits
-                    </p>
-                  </Card>
-                )}
+                <StudentXpSummaryCard xpSummary={data.xpSummary} />
 
               </div>
             )}
@@ -249,7 +228,7 @@ const StudentDashboard = () => {
               <Card padding="medium" className="student-card">
                 <div className="student-card-header">
                   <FiShield size={20} />
-                  <h3>Progress Snapshot</h3>
+                  <h3>{STUDENT_DASHBOARD_UI.cards.progressSnapshotTitle}</h3>
                 </div>
                 <div className="snapshot-grid">
                   {loading
@@ -273,24 +252,7 @@ const StudentDashboard = () => {
                 </div>
               </Card>
 
-              <Card padding="medium" className="student-card">
-                <div className="student-card-header">
-                  <FiFlag size={20} />
-                  <h3>Recent Notifications</h3>
-                </div>
-                {notifications.length === 0 ? (
-                  <p style={{ margin: 0, color: 'var(--text-secondary)' }}>No notifications yet.</p>
-                ) : (
-                  notifications.slice(0, 4).map((item) => (
-                    <div key={item.id} style={{ marginBottom: '0.6rem' }}>
-                      <strong style={{ display: 'block', fontSize: '0.9rem' }}>{item.title}</strong>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                        {item.message}
-                      </span>
-                    </div>
-                  ))
-                )}
-              </Card>
+              <StudentRecentNotificationsCard notifications={notifications} />
             </section>
         </>
 

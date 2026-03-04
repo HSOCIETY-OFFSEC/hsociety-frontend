@@ -39,6 +39,7 @@
 .account-progress-card strong {
   display: block;
   font-size: 0.96rem;
+  color: color-mix(in srgb, #22c55e 72%, var(--text-primary));
 }
 
 .account-progress-label {
@@ -75,6 +76,17 @@
 
 .account-emblem-chip.unlocked {
   border-color: color-mix(in srgb, var(--success-color) 38%, var(--border-color));
+}
+
+.cp-icon {
+  object-fit: contain;
+  display: inline-block;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, #22c55e 40%, transparent));
+}
+
+.cp-icon-lg {
+  width: 22px;
+  height: 22px;
 }
 
 .account-avatar {
@@ -154,6 +166,47 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
+}
+
+.account-info-spaced {
+  margin-bottom: 1rem;
+}
+
+.account-profile-refreshing {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+}
+
+.account-notifications-empty {
+  margin: 0.4rem 0 0;
+  color: var(--text-secondary);
+}
+
+.account-notification-item {
+  width: 100%;
+  text-align: left;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  cursor: pointer;
+}
+
+.account-notification-item.is-read {
+  background: var(--bg-secondary);
+}
+
+.account-notification-item.is-unread {
+  background: var(--card-bg);
+}
+
+.account-notification-title {
+  display: block;
+}
+
+.account-notification-message {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
 }
 
 .account-field {

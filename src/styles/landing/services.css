@@ -12,10 +12,9 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("../../assets/circuit-services.svg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(58, 163, 255, 0.12), transparent 58%),
+    radial-gradient(circle at 80% 74%, rgba(34, 197, 94, 0.1), transparent 56%);
   opacity: 0.18;
   pointer-events: none;
 }

@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { FiAlertTriangle, FiAward, FiLock, FiTrendingUp, FiTrash2 } from 'react-icons/fi';
 import { IoFlameOutline } from 'react-icons/io5';
+import cpIcon from '../../assets/icons/CP/cp-icon.png';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
@@ -8,6 +9,8 @@ import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStreng
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { validatePassword } from '../../core/validation/input.validator';
+import AccountNotificationsList from './components/AccountNotificationsList';
+import { ACCOUNT_UI } from '../../data/account/accountUiData';
 import {
   changePassword as changePasswordService,
   deleteAccount,
@@ -244,10 +247,10 @@ const AccountSettings = () => {
             </div>
           </div>
           <div className="account-progress-card">
-            <FiAward size={16} />
+            <img src={cpIcon} alt="CP" className="cp-icon cp-icon-lg" />
             <div>
-              <span className="account-progress-label">XP</span>
-              <strong>{xpSummary.totalXp || 0}</strong>
+              <span className="account-progress-label">CP</span>
+              <strong>{xpSummary.totalXp || 0} Compromised Points</strong>
             </div>
           </div>
           <div className="account-progress-card">
@@ -283,44 +286,24 @@ const AccountSettings = () => {
         </div>
 
         {profileLoading && (
-          <p style={{ margin: '0 0 1rem', color: 'var(--text-secondary)' }}>Refreshing profile stats…</p>
+          <p className="account-profile-refreshing">{ACCOUNT_UI.profile.refreshingText}</p>
         )}
 
-        <div className="account-info" style={{ marginBottom: '1rem' }}>
+        <div className="account-info account-info-spaced">
           <div className="account-field account-field-wide">
             <span className="account-label">Notifications</span>
-            {notifications.length === 0 ? (
-              <p style={{ margin: '0.4rem 0 0', color: 'var(--text-secondary)' }}>No notifications yet.</p>
-            ) : (
-              notifications.slice(0, 5).map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  style={{
-                    width: '100%',
-                    textAlign: 'left',
-                    marginTop: '0.5rem',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '10px',
-                    padding: '0.55rem 0.65rem',
-                    background: item.read ? 'var(--bg-secondary)' : 'var(--card-bg)',
-                    cursor: 'pointer'
-                  }}
-                  onClick={async () => {
-                    await markNotificationRead(item.id);
-                    setNotifications((prev) =>
-                      prev.map((entry) => (entry.id === item.id ? { ...entry, read: true } : entry))
-                    );
-                    if (item.metadata?.meetUrl) {
-                      window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
-                    }
-                  }}
-                >
-                  <strong style={{ display: 'block' }}>{item.title}</strong>
-                  <span style={{ color: 'var(--text-secondary)', fontSize: '0.82rem' }}>{item.message}</span>
-                </button>
-              ))
-            )}
+            <AccountNotificationsList
+              notifications={notifications}
+              onOpen={async (item) => {
+                await markNotificationRead(item.id);
+                setNotifications((prev) =>
+                  prev.map((entry) => (entry.id === item.id ? { ...entry, read: true } : entry))
+                );
+                if (item.metadata?.meetUrl) {
+                  window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
+                }
+              }}
+            />
           </div>
         </div>
 

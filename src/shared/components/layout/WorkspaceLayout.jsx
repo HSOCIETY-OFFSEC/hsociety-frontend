@@ -17,12 +17,15 @@ import Sidebar from './Sidebar';
 import ThemeToggle from '../common/ThemeToggle';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
 import { getSidebarLinks } from '../../../config/navigation.config';
+import { getProfile } from '../../../features/account/account.service';
 import {
   listNotifications,
   markAllNotificationsRead,
   markNotificationRead,
 } from '../../../features/student/services/notifications.service';
 import { getStudentXpSummary } from '../../../features/student/services/learn.service';
+import cpIcon from '../../../assets/icons/CP/cp-icon.png';
+import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
 import '../../../styles/shared/components/layout/AppShell.css';
 import '../../../styles/shared/components/layout/WorkspaceLayout.css';
 
@@ -41,6 +44,7 @@ const WorkspaceLayout = () => {
   const [notifications, setNotifications] = useState([]);
   const [learnOpen, setLearnOpen] = useState(false);
   const [streakDays, setStreakDays] = useState(0);
+  const [cpTotal, setCpTotal] = useState(0);
 
   const menuRef = useRef(null);
   const communityMenuRef = useRef(null);
@@ -130,6 +134,23 @@ const WorkspaceLayout = () => {
 
   useEffect(() => {
     let mounted = true;
+    const loadCp = async () => {
+      if (!user?.id) {
+        if (mounted) setCpTotal(0);
+        return;
+      }
+      const response = await getProfile();
+      if (!mounted || !response.success) return;
+      setCpTotal(Number(response.data?.xpSummary?.totalXp || 0));
+    };
+    loadCp();
+    return () => {
+      mounted = false;
+    };
+  }, [location.pathname, user?.id]);
+
+  useEffect(() => {
+    let mounted = true;
     const loadStreak = async () => {
       if (!user?.id || role !== 'student') {
         if (mounted) setStreakDays(0);
@@ -167,10 +188,10 @@ const WorkspaceLayout = () => {
               type="button"
               className="workspace-home-button"
               onClick={() => navigate('/')}
-              aria-label="Go to home"
+              aria-label={WORKSPACE_UI.aria.goHome}
             >
               <FiHome size={16} />
-              <span>Home</span>
+              <span>{WORKSPACE_UI.topbar.home}</span>
             </button>
 
             {isCommunity && (
@@ -198,7 +219,7 @@ const WorkspaceLayout = () => {
                       onClick={() => setLearnOpen((prev) => !prev)}
                     >
                       <FiLayers size={16} />
-                      <span>Learn</span>
+                      <span>{WORKSPACE_UI.topbar.learn}</span>
                       <FiChevronDown size={14} />
                     </button>
                     {learnOpen && (
@@ -228,8 +249,15 @@ const WorkspaceLayout = () => {
           </div>
 
           <div className="workspace-topbar-actions">
+            {user?.id && (
+              <div className="workspace-cp-chip" title={WORKSPACE_UI.cpChipTitle}>
+                <img src={cpIcon} alt="CP" className="workspace-cp-chip-icon" />
+                <span>{cpTotal} CP</span>
+              </div>
+            )}
+
             {role === 'student' && (
-              <div className="workspace-streak-chip" title="Learning streak">
+              <div className="workspace-streak-chip" title={WORKSPACE_UI.streakTitle}>
                 <IoFlameOutline size={15} />
                 <span>{streakDays}</span>
               </div>
@@ -244,7 +272,7 @@ const WorkspaceLayout = () => {
                 type="button"
                 className="workspace-notification-btn"
                 onClick={() => setNotificationMenuOpen((prev) => !prev)}
-                aria-label="Notifications"
+                aria-label={WORKSPACE_UI.aria.notifications}
               >
                 <FiBell size={16} />
                 {unreadCount > 0 && <span className="workspace-notification-badge">{unreadCount}</span>}
@@ -253,7 +281,7 @@ const WorkspaceLayout = () => {
               {notificationMenuOpen && (
                 <div className="workspace-notification-menu">
                   <div className="workspace-notification-head">
-                    <strong>Notifications</strong>
+                    <strong>{WORKSPACE_UI.notifications.title}</strong>
                     <button
                       type="button"
                       onClick={async () => {
@@ -261,12 +289,12 @@ const WorkspaceLayout = () => {
                         setNotifications((prev) => prev.map((item) => ({ ...item, read: true })));
                       }}
                     >
-                      Mark all read
+                      {WORKSPACE_UI.notifications.markAllRead}
                     </button>
                   </div>
 
                   {notifications.length === 0 ? (
-                    <p className="workspace-notification-empty">No notifications yet.</p>
+                    <p className="workspace-notification-empty">{WORKSPACE_UI.notifications.empty}</p>
                   ) : (
                     notifications.slice(0, 8).map((item) => (
                       <button
@@ -308,7 +336,7 @@ const WorkspaceLayout = () => {
                   aria-expanded={communityMenuOpen}
                 >
                   <FiBarChart2 size={16} />
-                  <span>Community</span>
+                  <span>{WORKSPACE_UI.topbar.community}</span>
                   <FiChevronDown size={14} />
                 </button>
                 {communityMenuOpen && (
@@ -322,7 +350,7 @@ const WorkspaceLayout = () => {
                       }}
                     >
                       <FiBarChart2 size={16} />
-                      Stats
+                      {WORKSPACE_UI.topbar.stats}
                     </button>
                     <button
                       type="button"
@@ -333,7 +361,7 @@ const WorkspaceLayout = () => {
                       }}
                     >
                       <FiUser size={16} />
-                      Account Settings
+                      {WORKSPACE_UI.topbar.accountSettings}
                     </button>
                   </div>
                 )}
@@ -361,7 +389,9 @@ const WorkspaceLayout = () => {
                     }}
                   />
                 </span>
-                <span className="workspace-profile-name">{user?.name || user?.email || 'User'}</span>
+                <span className="workspace-profile-name">
+                  {user?.name || user?.email || WORKSPACE_UI.topbar.userFallback}
+                </span>
                 <FiChevronDown size={16} />
               </button>
               {menuOpen && (
@@ -375,7 +405,7 @@ const WorkspaceLayout = () => {
                     }}
                   >
                     <FiUser size={16} />
-                    Profile
+                    {WORKSPACE_UI.topbar.profile}
                   </button>
                   <button
                     type="button"
@@ -385,7 +415,7 @@ const WorkspaceLayout = () => {
                       navigate('/settings');
                     }}
                   >
-                    Account Settings
+                    {WORKSPACE_UI.topbar.accountSettings}
                   </button>
                   <button
                     type="button"
@@ -396,7 +426,7 @@ const WorkspaceLayout = () => {
                     }}
                   >
                     <FiLogOut size={16} />
-                    Log out
+                    {WORKSPACE_UI.topbar.logout}
                   </button>
                 </div>
               )}
@@ -411,7 +441,9 @@ const WorkspaceLayout = () => {
             type="button"
             className="workspace-fab"
             onClick={() => setSidebarOpen((prev) => !prev)}
-            aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
+            aria-label={
+              sidebarOpen ? WORKSPACE_UI.aria.closeNavigation : WORKSPACE_UI.aria.openNavigation
+            }
           >
             {sidebarOpen ? <FiX size={18} /> : <FiMenu size={18} />}
           </button>

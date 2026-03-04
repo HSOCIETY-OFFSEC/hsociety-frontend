@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FiHeart, FiMessageSquare, FiSend, FiSmile } from 'react-icons/fi';
+import { FiHeart, FiMessageSquare, FiMoreHorizontal, FiSend } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
 import { sanitizeText } from '../../../../shared/utils/sanitize';
+import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
 
 const CommunityMessage = ({
   message,
@@ -27,6 +28,13 @@ const CommunityMessage = ({
   const liked = currentUserId ? message?.likedBy?.includes(currentUserId) : false;
   const profileTarget = message?.hackerHandle || message?.userId || '';
   const reactions = message?.reactions || {};
+  const reactionPool = [...new Set([...(reactionEmojis || []), ...Object.keys(reactions || {})])];
+  const inlineReactionPool = reactionPool.slice(0, COMMUNITY_UI.reactions.inlineVisibleCount);
+  const overflowReactionPool = reactionPool.slice(COMMUNITY_UI.reactions.inlineVisibleCount);
+  const userReactionCount = Object.values(reactions).filter(
+    (entry) => currentUserId && Array.isArray(entry.users) && entry.users.includes(currentUserId)
+  ).length;
+  const [supportsHover, setSupportsHover] = useState(false);
 
   useEffect(() => {
     if (!reactionOpen) return undefined;
@@ -38,6 +46,19 @@ const CommunityMessage = ({
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [reactionOpen]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return undefined;
+    const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const apply = () => setSupportsHover(mediaQuery.matches);
+    apply();
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', apply);
+      return () => mediaQuery.removeEventListener('change', apply);
+    }
+    mediaQuery.addListener(apply);
+    return () => mediaQuery.removeListener(apply);
+  }, []);
 
   const handleOpenProfile = () => {
     if (!profileTarget) return;
@@ -88,7 +109,7 @@ const CommunityMessage = ({
             {message?.hackerHandle && (
               <span className="community-msg-handle">@{message.hackerHandle}</span>
             )}
-            {message?.pinned && <span className="community-msg-pin">Pinned</span>}
+            {message?.pinned && <span className="community-msg-pin">{COMMUNITY_UI.messages.pinnedTitle}</span>}
             {message?.userRole && <span className="community-msg-role">{message.userRole}</span>}
             <time
               className="community-msg-time"
@@ -135,12 +156,7 @@ const CommunityMessage = ({
         </div>
 
         <div className="community-msg-reactions" role="group" aria-label="Reactions">
-          {[
-            ...new Set([
-              ...Object.keys(reactions || {}),
-              ...(reactionEmojis || []),
-            ]),
-          ].map((emoji) => {
+          {inlineReactionPool.map((emoji) => {
             const data = reactions[emoji] || { count: 0, users: [] };
             const reacted =
               currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
@@ -160,52 +176,78 @@ const CommunityMessage = ({
               </button>
             );
           })}
-          <div className="community-msg-reaction-picker" ref={reactionRef}>
-            <button
-              type="button"
-              className={`community-msg-reaction-add ${reactionOpen ? 'active' : ''}`}
-              onClick={() => setReactionOpen((prev) => !prev)}
-              aria-label="Add reaction"
-              aria-expanded={reactionOpen}
+          {overflowReactionPool.length > 0 && (
+            <div
+              className="community-msg-reaction-picker"
+              ref={reactionRef}
+              onMouseEnter={() => {
+                if (supportsHover) setReactionOpen(true);
+              }}
+              onMouseLeave={() => {
+                if (supportsHover) setReactionOpen(false);
+              }}
             >
-              <FiSmile size={14} />
-            </button>
-            {reactionOpen && (
-              <div className="community-msg-reaction-panel" role="listbox" aria-label="Emoji picker">
-                {(reactionEmojis || []).map((emoji) => {
-                  const data = reactions[emoji] || { count: 0, users: [] };
-                  const reacted =
-                    currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
-                  const userReactionCount = Object.values(reactions).filter((entry) =>
-                    Array.isArray(entry.users) && entry.users.includes(currentUserId)
-                  ).length;
-                  const blocked = !reacted && userReactionCount >= reactionLimit;
-                  return (
-                    <button
-                      key={emoji}
-                      type="button"
-                      className="community-msg-reaction-item"
-                      onClick={() => {
-                        if (blocked) return;
-                        onReact?.(message.id, emoji);
-                        setReactionOpen(false);
-                      }}
-                      disabled={blocked}
-                      aria-label={`React with ${emoji}`}
-                    >
-                      {emoji}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+              <button
+                type="button"
+                className={`community-msg-reaction-add ${reactionOpen ? 'active' : ''}`}
+                onClick={() => {
+                  if (!supportsHover) setReactionOpen((prev) => !prev);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') {
+                    event.preventDefault();
+                    setReactionOpen(false);
+                  }
+                }}
+                aria-label={COMMUNITY_UI.reactions.moreLabel}
+                aria-expanded={reactionOpen}
+              >
+                <FiMoreHorizontal size={14} />
+              </button>
+              {reactionOpen && (
+                <div
+                  className="community-msg-reaction-panel"
+                  role="listbox"
+                  aria-label={COMMUNITY_UI.reactions.panelLabel}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Escape') {
+                      event.preventDefault();
+                      setReactionOpen(false);
+                    }
+                  }}
+                >
+                  {overflowReactionPool.map((emoji) => {
+                    const data = reactions[emoji] || { count: 0, users: [] };
+                    const reacted =
+                      currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
+                    const blocked = !reacted && userReactionCount >= reactionLimit;
+                    return (
+                      <button
+                        key={emoji}
+                        type="button"
+                        className="community-msg-reaction-item"
+                        onClick={() => {
+                          if (blocked) return;
+                          onReact?.(message.id, emoji);
+                          setReactionOpen(false);
+                        }}
+                        disabled={blocked}
+                        aria-label={`React with ${emoji}`}
+                      >
+                        {emoji}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {commentOpen && (
           <div className="community-msg-comments" role="region" aria-label="Comments">
             {comments.length === 0 ? (
-              <p className="community-msg-comment-empty">No comments yet.</p>
+              <p className="community-msg-comment-empty">{COMMUNITY_UI.messages.noCommentsText}</p>
             ) : (
               comments.map((comment) => (
                 <div className="community-msg-comment" key={comment.id || comment.createdAt}>
@@ -231,8 +273,8 @@ const CommunityMessage = ({
                 type="text"
                 value={commentDraft}
                 onChange={(e) => setCommentDraft(e.target.value)}
-                placeholder="Add a comment"
-                aria-label="Add a comment"
+                placeholder={COMMUNITY_UI.messages.addCommentPlaceholder}
+                aria-label={COMMUNITY_UI.messages.addCommentPlaceholder}
                 maxLength={300}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -245,7 +287,7 @@ const CommunityMessage = ({
                 type="button"
                 onClick={handleSubmitComment}
                 disabled={!commentDraft.trim()}
-                aria-label="Send comment"
+                aria-label={COMMUNITY_UI.messages.sendCommentAria}
               >
                 <FiSend size={14} />
               </button>
