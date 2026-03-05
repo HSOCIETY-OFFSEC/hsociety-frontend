@@ -11,6 +11,7 @@ import { buildRegisterDTO, validateRegisterForm } from './register.contract';
 import { registerUser } from './register.service';
 import { login as loginRequest } from '../../core/auth/auth.service';
 import { useAuth } from '../../core/auth/AuthContext';
+import { useNotifications } from '../../shared/notifications/NotificationProvider';
 import '../../styles/core/auth.css';
 
 const RegistrationForm = ({
@@ -21,6 +22,7 @@ const RegistrationForm = ({
 }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showToast } = useNotifications();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
@@ -77,6 +79,12 @@ const RegistrationForm = ({
           name: payload.profile?.fullName
         };
         await login(mockUser, 'mock-token');
+        showToast({
+          variant: 'success',
+          title: 'Account created',
+          message: 'Welcome to HSOCIETY. Your workspace is ready.',
+          duration: 4200,
+        });
         navigate(successRoute);
         return;
       }
@@ -88,6 +96,12 @@ const RegistrationForm = ({
           name: payload.profile?.fullName
         };
         await login(userData, response.data.token, response.data.refreshToken);
+        showToast({
+          variant: 'success',
+          title: 'Account created',
+          message: 'Welcome to HSOCIETY. Your workspace is ready.',
+          duration: 4200,
+        });
         navigate(successRoute);
         return;
       }
@@ -97,10 +111,22 @@ const RegistrationForm = ({
       if (loginResponse.success && !loginResponse.twoFactorRequired) {
         const role = loginResponse.user?.role || payload.role;
         await login(loginResponse.user, loginResponse.token, loginResponse.refreshToken);
+        showToast({
+          variant: 'success',
+          title: 'Account created',
+          message: 'Welcome to HSOCIETY. Your workspace is ready.',
+          duration: 4200,
+        });
         navigate(resolveDashboardRoute(role));
         return;
       }
 
+      showToast({
+        variant: 'success',
+        title: 'Account created',
+        message: 'Your account is ready. Sign in to continue.',
+        duration: 4200,
+      });
       navigate('/login', {
         state: {
           email: payload.credentials.email,

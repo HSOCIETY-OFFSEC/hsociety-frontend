@@ -4,6 +4,7 @@ import { setupAutoLogout } from '../inactivity/autoLogout';
 import { refreshToken as refreshAuthToken, logout as logoutRequest } from './auth.service';
 import { envConfig } from '../../config/env.config';
 import { trackSecurityEvent } from '../security-tests/security-events.service';
+import { setPendingToast } from '../../shared/notifications/toastStorage';
 
 /**
  * Authentication Context
@@ -164,6 +165,13 @@ export const AuthProvider = ({ children }) => {
       if (isAutoLogout) {
         // Store message for login page to display
         sessionStorage.setItem('logout-reason', 'inactivity');
+      } else {
+        setPendingToast({
+          variant: 'success',
+          title: 'Signed out',
+          message: 'You have safely logged out.',
+          duration: 3600,
+        });
       }
 
       trackSecurityEvent({

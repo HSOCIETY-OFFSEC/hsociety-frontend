@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import { login as loginRequest } from '../../core/auth/auth.service';
 import { verify2FA } from '../../core/auth/twofa.service';
+import { useNotifications } from '../../shared/notifications/NotificationProvider';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
@@ -28,6 +29,7 @@ const Login = ({ mode = 'default' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
+  const { showToast } = useNotifications();
 
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState(location.state?.email || '');
@@ -85,6 +87,12 @@ const Login = ({ mode = 'default' }) => {
       const role = response.user?.role;
       enforceRole(role);
       await login(response.user, response.token, response.refreshToken);
+      showToast({
+        variant: 'success',
+        title: 'Login successful',
+        message: 'Welcome back. Your workspace is ready.',
+        duration: 3600,
+      });
       navigate(resolveRouteForRole(role));
     } catch (err) {
       setError(genericLoginError);
@@ -113,6 +121,12 @@ const Login = ({ mode = 'default' }) => {
       const role = user?.role;
       enforceRole(role);
       await login(user, response.token, response.refreshToken);
+      showToast({
+        variant: 'success',
+        title: 'Verification complete',
+        message: 'You are signed in and secured.',
+        duration: 3600,
+      });
       navigate(resolveRouteForRole(role));
     } catch (err) {
       setError(genericVerifyError);

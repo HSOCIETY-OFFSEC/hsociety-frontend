@@ -1,0 +1,120 @@
+/* ============================================================
+   Binary Toast Notification
+   ============================================================ */
+
+.binary-toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translate(-50%, -12px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10050;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.binary-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.binary-toast-card {
+  position: relative;
+  min-width: 260px;
+  max-width: min(90vw, 380px);
+  padding: 0.75rem 0.95rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.binary-toast-card.success .binary-toast-dot {
+  background: var(--primary-color);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--primary-color) 70%, transparent);
+}
+
+.binary-toast-card.info .binary-toast-dot {
+  background: #38bdf8;
+  box-shadow: 0 0 10px color-mix(in srgb, #38bdf8 70%, transparent);
+}
+
+.binary-toast-header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.binary-toast-header strong {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin-right: auto;
+}
+
+.binary-toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.binary-toast-message {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.binary-toast-close {
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.binary-toast-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.binary-toast-particles span {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  font-size: var(--size, 14px);
+  font-weight: 700;
+  color: color-mix(in srgb, var(--primary-color) 90%, #ffffff);
+  opacity: var(--opacity, 0.8);
+  transform: translate(-50%, -50%);
+  animation: binary-pop var(--duration, 1s) ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes binary-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, -60px))) scale(1.2);
+  }
+}
+
+@media (max-width: 600px) {
+  .binary-toast {
+    top: 0.75rem;
+  }
+
+  .binary-toast-card {
+    padding: 0.65rem 0.8rem 0.75rem;
+  }
+}

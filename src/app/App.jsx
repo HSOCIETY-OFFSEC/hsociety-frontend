@@ -5,6 +5,7 @@ import AppRouter from './router';
 import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
 import FloatingUpdateButton from '../shared/components/ui/FloatingUpdateButton';
 import { runSecurityScan } from '../core/security-tests/scan.runner';
+import { NotificationProvider } from '../shared/notifications/NotificationProvider';
 
 // Import global styles
 import '../styles/shared/common.css';
@@ -39,11 +40,13 @@ const App = () => {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <div className="app-shell">
-          <AppRouter />
-          <PwaUpdatePrompt />
-          <FloatingUpdateButton />
-        </div>
+        <NotificationProvider>
+          <div className="app-shell">
+            <AppRouter />
+            <PwaUpdatePrompt />
+            <FloatingUpdateButton />
+          </div>
+        </NotificationProvider>
       </AuthProvider>
     </ThemeProvider>
   );

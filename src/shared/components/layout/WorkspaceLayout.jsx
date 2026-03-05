@@ -18,14 +18,10 @@ import ThemeToggle from '../common/ThemeToggle';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
 import { getSidebarLinks } from '../../../config/navigation.config';
 import { getProfile } from '../../../features/account/account.service';
-import {
-  listNotifications,
-  markAllNotificationsRead,
-  markNotificationRead,
-} from '../../../features/student/services/notifications.service';
 import { getStudentXpSummary } from '../../../features/student/services/learn.service';
 import cpIcon from '../../../assets/icons/CP/cp-icon.png';
 import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
+import { useNotifications } from '../../notifications/NotificationProvider';
 import '../../../styles/shared/components/layout/AppShell.css';
 import '../../../styles/shared/components/layout/WorkspaceLayout.css';
 
@@ -41,10 +37,15 @@ const WorkspaceLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [communityMenuOpen, setCommunityMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
   const [learnOpen, setLearnOpen] = useState(false);
   const [streakDays, setStreakDays] = useState(0);
   const [cpTotal, setCpTotal] = useState(0);
+  const {
+    notifications,
+    unreadCount,
+    markRead,
+    markAllRead,
+  } = useNotifications();
 
   const menuRef = useRef(null);
   const communityMenuRef = useRef(null);
@@ -119,18 +120,6 @@ const WorkspaceLayout = () => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [notificationMenuOpen]);
 
-  useEffect(() => {
-    let mounted = true;
-    const loadNotifications = async () => {
-      const response = await listNotifications();
-      if (!mounted || !response.success) return;
-      setNotifications(response.data || []);
-    };
-    loadNotifications();
-    return () => {
-      mounted = false;
-    };
-  }, [location.pathname]);
 
   useEffect(() => {
     let mounted = true;
@@ -165,11 +154,6 @@ const WorkspaceLayout = () => {
       mounted = false;
     };
   }, [location.pathname, role, user?.id]);
-
-  const unreadCount = useMemo(
-    () => notifications.filter((item) => !item.read).length,
-    [notifications]
-  );
 
   const showSidebar = !isCommunity && role !== 'admin';
 
@@ -285,8 +269,7 @@ const WorkspaceLayout = () => {
                     <button
                       type="button"
                       onClick={async () => {
-                        await markAllNotificationsRead();
-                        setNotifications((prev) => prev.map((item) => ({ ...item, read: true })));
+                        await markAllRead();
                       }}
                     >
                       {WORKSPACE_UI.notifications.markAllRead}
@@ -302,12 +285,7 @@ const WorkspaceLayout = () => {
                         type="button"
                         className={`workspace-notification-item ${item.read ? '' : 'unread'}`}
                         onClick={async () => {
-                          await markNotificationRead(item.id);
-                          setNotifications((prev) =>
-                            prev.map((entry) =>
-                              entry.id === item.id ? { ...entry, read: true } : entry
-                            )
-                          );
+                          await markRead(item.id);
                           if (item.metadata?.meetUrl) {
                             window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
                           }

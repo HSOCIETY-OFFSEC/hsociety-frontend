@@ -45,7 +45,15 @@
 /* ── Carousel shell ── */
 .partners-carousel {
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+
+.partners-carousel::-webkit-scrollbar {
+  display: none;
 }
 
 /* ── Scrolling track ── */
@@ -59,44 +67,38 @@
   will-change: transform;
 }
 
+.partners-carousel:hover .partners-track {
+  animation-play-state: paused;
+}
+
 /* ── Individual logo slot — no card, no border ── */
 .partner-logo {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  height: 36px;
+  height: 52px;
 }
 
 .partner-logo img {
   height: 100%;
   width: auto;
-  max-width: 130px;
+  max-width: 190px;
   object-fit: contain;
   display: block;
-  filter: saturate(0) opacity(0.5);
-  transition: filter 0.3s ease;
+  filter: none;
   user-select: none;
   -webkit-user-drag: none;
 }
 
-.partner-logo:hover img {
-  filter: saturate(1) opacity(1);
-}
-
 /* Text fallback when no image is present */
 .partner-logo-text {
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-tertiary);
-  white-space: nowrap;
-  transition: color 0.25s ease;
-}
-
-.partner-logo:hover .partner-logo-text {
   color: var(--text-secondary);
+  white-space: nowrap;
 }
 
 /* ── Scroll animation ── */
@@ -120,7 +122,7 @@
   }
 
   .partner-logo {
-    height: 30px;
+    height: 44px;
   }
 }
 
@@ -135,11 +137,11 @@
   }
 
   .partner-logo {
-    height: 26px;
+    height: 36px;
   }
 
   .partner-logo img {
-    max-width: 90px;
+    max-width: 140px;
   }
 }
 

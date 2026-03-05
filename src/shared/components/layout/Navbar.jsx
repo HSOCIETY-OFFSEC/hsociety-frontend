@@ -5,6 +5,7 @@ import {
   FiCheckCircle,
   FiChevronDown,
   FiCreditCard,
+  FiBell,
   FiLayers,
   FiLogOut,
   FiMenu,
@@ -23,6 +24,7 @@ import ThemeToggle from '../common/ThemeToggle';
 import SocialLinks from '../common/SocialLinks';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
 import cpIcon from '../../../assets/icons/CP/cp-icon.png';
+import { useNotifications } from '../../notifications/NotificationProvider';
 import '../../../styles/shared/components/layout/Navbar.css';
 
 const NAV_COLLAPSE_WIDTH = 1024;
@@ -49,12 +51,20 @@ const Navbar = ({ sticky = true }) => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [studentLearnOpen, setStudentLearnOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [streakDays, setStreakDays] = useState(0);
   const [cpTotal, setCpTotal] = useState(0);
   const moreMenuRef = useRef(null);
+  const notificationMenuRef = useRef(null);
   const [viewportMode, setViewportMode] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
   );
+  const {
+    notifications,
+    unreadCount,
+    markRead,
+    markAllRead,
+  } = useNotifications();
 
   const avatarFallback = useMemo(
     () => getGithubAvatarDataUri(user?.email || user?.name || 'user'),
@@ -120,6 +130,7 @@ const Navbar = ({ sticky = true }) => {
     setUserMenuOpen(false);
     setStudentLearnOpen(false);
     setMoreMenuOpen(false);
+    setNotificationMenuOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -131,6 +142,16 @@ const Navbar = ({ sticky = true }) => {
     document.addEventListener('mousedown', handleOutsideClick);
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [moreMenuOpen]);
+
+  useEffect(() => {
+    if (!notificationMenuOpen) return undefined;
+    const handleOutsideClick = (event) => {
+      if (!notificationMenuRef.current || notificationMenuRef.current.contains(event.target)) return;
+      setNotificationMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [notificationMenuOpen]);
 
   useEffect(() => {
     let mounted = true;
@@ -276,6 +297,63 @@ const Navbar = ({ sticky = true }) => {
           <span className="navbar-theme">
             <ThemeToggle />
           </span>
+
+          {isAuthenticated && (
+            <div
+              className="navbar-notification-wrap"
+              ref={notificationMenuRef}
+              onMouseLeave={() => setNotificationMenuOpen(false)}
+            >
+              <button
+                type="button"
+                className="navbar-notification-btn"
+                onClick={() => setNotificationMenuOpen((prev) => !prev)}
+                aria-label="Notifications"
+              >
+                <FiBell size={16} />
+                {unreadCount > 0 && (
+                  <span className="navbar-notification-badge">{unreadCount}</span>
+                )}
+              </button>
+
+              {notificationMenuOpen && (
+                <div className="navbar-notification-menu">
+                  <div className="navbar-notification-head">
+                    <strong>Notifications</strong>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await markAllRead();
+                      }}
+                    >
+                      Mark all read
+                    </button>
+                  </div>
+
+                  {notifications.length === 0 ? (
+                    <p className="navbar-notification-empty">No notifications yet.</p>
+                  ) : (
+                    notifications.slice(0, 8).map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        className={`navbar-notification-item ${item.read ? '' : 'unread'}`}
+                        onClick={async () => {
+                          await markRead(item.id);
+                          if (item.metadata?.meetUrl) {
+                            window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
+                          }
+                        }}
+                      >
+                        <strong>{item.title}</strong>
+                        <span>{item.message}</span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Auth Actions (Desktop, Public) */}
           {!isAuthenticated && viewportMode === 'desktop' && (
