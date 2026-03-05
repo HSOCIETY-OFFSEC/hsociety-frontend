@@ -93,7 +93,9 @@ const AccountSettings = () => {
         visits: Number(data?.xpSummary?.visits || 0),
       });
       setEmblems({
-        unlockedModules: Array.isArray(data?.emblems?.unlockedModules) ? data.emblems.unlockedModules : [],
+        unlockedModules: Array.isArray(data?.emblems?.unlockedModules)
+          ? data.emblems.unlockedModules
+          : [],
         graduationUnlocked: Boolean(data?.emblems?.graduationUnlocked),
       });
       updateUser(data);
@@ -157,7 +159,6 @@ const AccountSettings = () => {
       setError('Please select an image file.');
       return;
     }
-
     const reader = new FileReader();
     reader.onload = () => {
       setAvatarPreview(reader.result || '');
@@ -193,7 +194,6 @@ const AccountSettings = () => {
     setAvatarRemoving(false);
   };
 
-  // SECURITY UPDATE IMPLEMENTED: Change password with strong validation
   const handleChangePassword = async () => {
     setError('');
     const validation = validatePassword(newPassword);
@@ -223,7 +223,6 @@ const AccountSettings = () => {
       setError('Type DELETE to confirm.');
       return;
     }
-
     setLoading(true);
     const response = await deleteAccount();
     if (response.success) {
@@ -238,10 +237,13 @@ const AccountSettings = () => {
     <div className="account-settings">
       {error && <div className="account-error">{error}</div>}
 
+      {/* ── Stats & Emblems ─────────────────────────────────────── */}
       <Card padding="large" className="account-card">
+
+        {/* Progress stats row */}
         <div className="account-progress-grid">
           <div className="account-progress-card">
-            <FiTrendingUp size={16} />
+            <FiTrendingUp size={15} />
             <div>
               <span className="account-progress-label">Rank</span>
               <strong>{xpSummary.rank || 'Candidate'}</strong>
@@ -251,36 +253,42 @@ const AccountSettings = () => {
             <img src={cpIcon} alt="CP" className="cp-icon cp-icon-lg" />
             <div>
               <span className="account-progress-label">CP</span>
-              <strong>{xpSummary.totalXp || 0} Compromised Points</strong>
+              <strong>{xpSummary.totalXp || 0} pts</strong>
             </div>
           </div>
           <div className="account-progress-card">
-            <IoFlameOutline size={16} />
+            <IoFlameOutline size={15} />
             <div>
               <span className="account-progress-label">Streak</span>
               <strong>{xpSummary.streakDays || 0} days</strong>
             </div>
           </div>
           <div className="account-progress-card">
-            <FiAward size={16} />
+            <FiAward size={15} />
             <div>
               <span className="account-progress-label">Emblems</span>
-              <strong>{emblems.unlockedModules.length}/5 unlocked</strong>
+              <strong>{emblems.unlockedModules.length}/5</strong>
             </div>
           </div>
         </div>
 
+        {/* Emblem chips */}
         <div className="account-emblem-list" aria-label="Unlocked module emblems">
           {[1, 2, 3, 4, 5].map((moduleId) => {
             const unlocked = emblems.unlockedModules.includes(moduleId);
             return (
-              <div key={moduleId} className={`account-emblem-chip ${unlocked ? 'unlocked' : 'locked'}`}>
+              <div
+                key={moduleId}
+                className={`account-emblem-chip ${unlocked ? 'unlocked' : 'locked'}`}
+              >
                 <span>Phase {String(moduleId).padStart(2, '0')}</span>
                 <strong>{unlocked ? 'Unlocked' : 'Locked'}</strong>
               </div>
             );
           })}
-          <div className={`account-emblem-chip ${emblems.graduationUnlocked ? 'unlocked' : 'locked'}`}>
+          <div
+            className={`account-emblem-chip ${emblems.graduationUnlocked ? 'unlocked' : 'locked'}`}
+          >
             <span>HP Badge</span>
             <strong>{emblems.graduationUnlocked ? 'Unlocked' : 'Locked'}</strong>
           </div>
@@ -290,6 +298,7 @@ const AccountSettings = () => {
           <p className="account-profile-refreshing">{ACCOUNT_UI.profile.refreshingText}</p>
         )}
 
+        {/* Notifications */}
         <div className="account-info account-info-spaced">
           <div className="account-field account-field-wide">
             <span className="account-label">Notifications</span>
@@ -298,7 +307,9 @@ const AccountSettings = () => {
               onOpen={async (item) => {
                 await markNotificationRead(item.id);
                 setNotifications((prev) =>
-                  prev.map((entry) => (entry.id === item.id ? { ...entry, read: true } : entry))
+                  prev.map((entry) =>
+                    entry.id === item.id ? { ...entry, read: true } : entry
+                  )
                 );
                 if (item.metadata?.meetUrl) {
                   window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
@@ -308,6 +319,7 @@ const AccountSettings = () => {
           </div>
         </div>
 
+        {/* Avatar */}
         <div className="account-avatar">
           <div className="account-avatar-preview">
             <img
@@ -324,7 +336,9 @@ const AccountSettings = () => {
             <div>
               <span className="account-label">Profile Photo</span>
               <p className="account-avatar-meta">
-                {avatarFileName || user?.avatarUrl ? 'Custom image selected.' : 'Upload a photo.'}
+                {avatarFileName || user?.avatarUrl
+                  ? 'Custom image selected.'
+                  : 'Upload a photo.'}
               </p>
             </div>
             <div className="account-avatar-buttons">
@@ -342,7 +356,7 @@ const AccountSettings = () => {
                 onClick={handleAvatarSave}
                 disabled={avatarSaving || !avatarPreview}
               >
-                {avatarSaving ? 'Saving...' : 'Save Photo'}
+                {avatarSaving ? 'Saving…' : 'Save Photo'}
               </Button>
               <Button
                 variant="ghost"
@@ -350,12 +364,13 @@ const AccountSettings = () => {
                 onClick={handleAvatarRemove}
                 disabled={avatarRemoving || (!avatarPreview && !user?.avatarUrl)}
               >
-                {avatarRemoving ? 'Removing...' : 'Remove Photo'}
+                {avatarRemoving ? 'Removing…' : 'Remove'}
               </Button>
             </div>
           </div>
         </div>
 
+        {/* Profile fields */}
         <div className="account-info">
           <div className="account-field">
             <span className="account-label">Name</span>
@@ -371,10 +386,13 @@ const AccountSettings = () => {
             <input
               className="account-input"
               value={profile.organization}
-              onChange={(e) => setProfile((prev) => ({ ...prev, organization: e.target.value }))}
+              onChange={(e) =>
+                setProfile((prev) => ({ ...prev, organization: e.target.value }))
+              }
               placeholder="Company or school"
             />
           </div>
+
           {isPentester && (
             <>
               <div className="account-field">
@@ -396,12 +414,15 @@ const AccountSettings = () => {
                 <textarea
                   className="account-textarea"
                   value={profile.bio}
-                  onChange={(e) => setProfile((prev) => ({ ...prev, bio: e.target.value }))}
+                  onChange={(e) =>
+                    setProfile((prev) => ({ ...prev, bio: e.target.value }))
+                  }
                   placeholder="Summarize your focus, strengths, or what you bring to engagements."
                 />
               </div>
             </>
           )}
+
           <div className="account-field">
             <span className="account-label">Email</span>
             <strong>{user?.email || '—'}</strong>
@@ -411,6 +432,7 @@ const AccountSettings = () => {
             <strong>{user?.role || '—'}</strong>
           </div>
         </div>
+
         <div className="account-actions">
           <Button
             variant="primary"
@@ -418,20 +440,25 @@ const AccountSettings = () => {
             onClick={handleProfileSave}
             disabled={profileSaving}
           >
-            {profileSaving ? 'Saving...' : 'Save Profile'}
+            {profileSaving ? 'Saving…' : 'Save Profile'}
           </Button>
         </div>
       </Card>
 
+      {/* ── Change Password ─────────────────────────────────────── */}
       <Card padding="large" className="account-card account-password-card">
         <div className="account-section-header">
           <FiLock size={20} />
           <div>
             <h2>Change Password</h2>
-            <p>Use at least 8 characters with uppercase, lowercase, a number, and a special character.</p>
+            <p>
+              Use at least 8 characters with uppercase, lowercase, a number, and a special
+              character.
+            </p>
           </div>
         </div>
-        <div className="account-info account-password-fields">
+
+        <div className="account-password-fields">
           <div className="account-field">
             <span className="account-label">Current password</span>
             <PasswordInput
@@ -451,7 +478,10 @@ const AccountSettings = () => {
               placeholder="••••••••"
               autoComplete="new-password"
             />
-            <PasswordStrengthIndicator password={newPassword} className="password-strength--account" />
+            <PasswordStrengthIndicator
+              password={newPassword}
+              className="password-strength--account"
+            />
           </div>
           <div className="account-field">
             <span className="account-label">Confirm new password</span>
@@ -464,18 +494,22 @@ const AccountSettings = () => {
             />
           </div>
         </div>
+
         <div className="account-actions">
           <Button
             variant="secondary"
             size="small"
             onClick={handleChangePassword}
-            disabled={passwordSaving || !currentPassword || !newPassword || !confirmPassword}
+            disabled={
+              passwordSaving || !currentPassword || !newPassword || !confirmPassword
+            }
           >
-            {passwordSaving ? 'Updating...' : 'Update Password'}
+            {passwordSaving ? 'Updating…' : 'Update Password'}
           </Button>
         </div>
       </Card>
 
+      {/* ── Danger Zone ─────────────────────────────────────────── */}
       <Card padding="large" className="account-danger">
         <div className="account-danger-header">
           <FiAlertTriangle size={18} />
@@ -488,19 +522,14 @@ const AccountSettings = () => {
         <div className="account-delete-controls">
           <input
             className="account-input"
-            placeholder="Type DELETE to confirm"
+            placeholder='Type "DELETE" to confirm'
             value={confirmText}
             onChange={(e) => setConfirmText(e.target.value)}
             disabled={loading}
           />
-          <Button
-            variant="danger"
-            size="small"
-            disabled={loading}
-            onClick={handleDelete}
-          >
+          <Button variant="danger" size="small" disabled={loading} onClick={handleDelete}>
             <FiTrash2 size={14} />
-            {loading ? 'Deleting...' : 'Delete Account'}
+            {loading ? 'Deleting…' : 'Delete Account'}
           </Button>
         </div>
       </Card>
