@@ -3,11 +3,15 @@ import '../../../styles/shared/components/ui/BinaryToast.css';
 
 const buildParticles = () =>
   Array.from({ length: 26 }, () => {
+    const originX = `${20 + Math.random() * 60}%`;
+    const originY = `${20 + Math.random() * 50}%`;
     const direction = Math.random() > 0.5 ? 1 : -1;
     const spreadX = 40 + Math.random() * 120;
     const spreadY = 30 + Math.random() * 90;
     return {
       digit: Math.random() > 0.5 ? '1' : '0',
+      originX,
+      originY,
       x: `${direction * spreadX}px`,
       y: `${-spreadY}px`,
       delay: `${Math.random() * 0.25}s`,
@@ -48,6 +52,8 @@ const BinaryToast = ({ toast, onClose }) => {
             <span
               key={`${particle.digit}-${index}`}
               style={{
+                '--origin-x': particle.originX,
+                '--origin-y': particle.originY,
                 '--x': particle.x,
                 '--y': particle.y,
                 '--delay': particle.delay,

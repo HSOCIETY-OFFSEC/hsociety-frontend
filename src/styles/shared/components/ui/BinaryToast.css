@@ -4,9 +4,12 @@
 
 .binary-toast {
   position: fixed;
-  top: 1rem;
-  left: 50%;
-  transform: translate(-50%, -12px);
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 1rem;
+  transform: translateY(-12px);
   opacity: 0;
   pointer-events: none;
   z-index: 10050;
@@ -15,7 +18,7 @@
 
 .binary-toast.is-visible {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: translateY(0);
 }
 
 .binary-toast-card {
@@ -76,16 +79,17 @@
 }
 
 .binary-toast-particles {
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  z-index: 10040;
 }
 
 .binary-toast-particles span {
   position: absolute;
-  left: 50%;
-  top: 55%;
+  left: var(--origin-x, 50%);
+  top: var(--origin-y, 50%);
   font-size: var(--size, 14px);
   font-weight: 700;
   color: color-mix(in srgb, var(--primary-color) 90%, #ffffff);
@@ -111,7 +115,7 @@
 
 @media (max-width: 600px) {
   .binary-toast {
-    top: 0.75rem;
+    padding-top: 0.75rem;
   }
 
   .binary-toast-card {
