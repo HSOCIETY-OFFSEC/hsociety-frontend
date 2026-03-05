@@ -3,12 +3,11 @@ import { FiBarChart2 } from 'react-icons/fi';
 import LeaderboardTable from './components/LeaderboardTable';
 import { getLeaderboard } from './leaderboard.service';
 import { extractLeaderboardEntries } from './leaderboard.utils';
-import { LEADERBOARD_FALLBACK } from '../../data/leaderboard/leaderboardData';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import '../../styles/leaderboard/leaderboard.css';
 
 const Leaderboard = () => {
-  const [entries, setEntries] = useState(LEADERBOARD_FALLBACK);
+  const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -25,9 +24,7 @@ const Leaderboard = () => {
 
       const payload = response.data?.leaderboard || response.data;
       const extracted = extractLeaderboardEntries(payload);
-      if (extracted.length) {
-        setEntries(extracted);
-      }
+      setEntries(extracted);
       setLoading(false);
     };
 
@@ -58,12 +55,8 @@ const Leaderboard = () => {
         <LeaderboardTable
           entries={entries}
           emptyMessage={statusMessage || 'No leaderboard data yet.'}
+          loading={loading}
         />
-        {error && (
-          <p className="leaderboard-disclaimer">
-            Showing cached leaderboard data while we reconnect.
-          </p>
-        )}
       </div>
     </section>
   );

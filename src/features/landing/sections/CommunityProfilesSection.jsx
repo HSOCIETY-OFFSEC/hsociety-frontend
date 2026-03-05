@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
+import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.png';
 import { COMMUNITY_PROFILES_DATA } from '../../../data/landing/communityProfilesData';
 import '../../../styles/landing/community-profiles.css';
 
 const AUTO_ROTATE_MS = COMMUNITY_PROFILES_DATA.autoRotateMs;
 
-const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
+const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = false, error = '' }) => {
   const [index, setIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
 
@@ -48,6 +49,11 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
     return () => window.clearInterval(timer);
   }, [groupCount]);
 
+  const formatMetric = (value) => {
+    if (value === null || value === undefined || Number.isNaN(value)) return '—';
+    return value;
+  };
+
   return (
     <section className="community-profiles" id="community-profiles">
       <div className="community-profiles-inner">
@@ -57,8 +63,34 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
           <p>{subtitle}</p>
         </div>
 
-        {count === 0 ? (
-          <div className="community-profiles-empty">{COMMUNITY_PROFILES_DATA.emptyStateText}</div>
+        {loading ? (
+          <div className="community-profiles-skeleton">
+            {Array.from({ length: cardsPerView }).map((_, index) => (
+              <div key={`skeleton-${index}`} className="community-profile-card">
+                <header>
+                  <Skeleton variant="circle" className="community-profile-avatar-skeleton" />
+                  <div className="community-profile-skeleton-text">
+                    <Skeleton className="community-profile-skeleton-line" />
+                    <Skeleton className="community-profile-skeleton-line short" />
+                  </div>
+                </header>
+                <Skeleton className="community-profile-skeleton-line" />
+                <Skeleton className="community-profile-skeleton-line long" />
+                <div className="community-profile-metrics">
+                  {Array.from({ length: 3 }).map((_, metricIndex) => (
+                    <Skeleton
+                      key={`metric-${metricIndex}`}
+                      className="community-profile-skeleton-metric"
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : count === 0 ? (
+          <div className="community-profiles-empty">
+            {error || COMMUNITY_PROFILES_DATA.emptyStateText}
+          </div>
         ) : (
           <div className="community-profiles-carousel" role="region" aria-label="Community profiles">
             <div
@@ -73,7 +105,9 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
                     );
                     const handle = profile.hackerHandle
                       ? `@${profile.hackerHandle}`
-                      : `@${(profile.name || 'member').split(' ')[0].toLowerCase()}`;
+                      : profile.name
+                      ? `@${profile.name.split(' ')[0].toLowerCase()}`
+                      : 'Handle unavailable';
                     return (
                       <article className="community-profile-card" key={profile.id || handle}>
                         <header>
@@ -88,33 +122,33 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [] }) => {
                           />
                           <div>
                             <p className="community-profile-handle">{handle}</p>
-                            <h3>{profile.name || COMMUNITY_PROFILES_DATA.fallbackName}</h3>
-                            <span className="community-profile-role">{profile.role || COMMUNITY_PROFILES_DATA.fallbackRole}</span>
+                            <h3>{profile.name || 'Name unavailable'}</h3>
+                            <span className="community-profile-role">{profile.role || 'Role unavailable'}</span>
                           </div>
                         </header>
 
                         <p className="community-profile-bio">
-                          {profile.bio || COMMUNITY_PROFILES_DATA.fallbackBio}
+                          {profile.bio || 'Bio unavailable.'}
                         </p>
 
                         <div className="community-profile-metrics">
                           <div className="community-profile-cp">
                             <img src={cpIcon} alt="CP" className="community-profile-cp-icon" />
                             <span>
-                              {profile.xpSummary?.totalXp || 0} CP
+                              {formatMetric(profile.xpSummary?.totalXp)} CP
                             </span>
                           </div>
                           <div>
                             <FiMessageSquare size={14} />
-                            <span>{profile.stats?.messages || 0} messages</span>
+                            <span>{formatMetric(profile.stats?.messages)} messages</span>
                           </div>
                           <div>
                             <FiHeart size={14} />
-                            <span>{profile.stats?.likesReceived || 0} likes</span>
+                            <span>{formatMetric(profile.stats?.likesReceived)} likes</span>
                           </div>
                           <div>
                             <FiMessageCircle size={14} />
-                            <span>{profile.stats?.commentsMade || 0} comments</span>
+                            <span>{formatMetric(profile.stats?.commentsMade)} comments</span>
                           </div>
                         </div>
                       </article>

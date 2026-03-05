@@ -56,6 +56,17 @@
   animation: orbitGlowPulse 6s ease-in-out infinite;
 }
 
+.orbit-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 24px;
+}
+
+.orbit-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 @keyframes orbitGlowPulse {
   0%, 100% { opacity: 0.5; transform: scale(0.9); }
   50%      { opacity: 1;   transform: scale(1.1); }

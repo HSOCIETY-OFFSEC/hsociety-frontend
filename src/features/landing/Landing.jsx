@@ -4,6 +4,7 @@ import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
 import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import { getCommunityProfiles, getLandingContent, getLandingStats } from './landing.service';
+import LandingSkeleton from './LandingSkeleton';
 
 /**Sections importation  */
 /**========================== */
@@ -71,6 +72,11 @@ const Landing = ({ scrollToId = null }) => {
   const [statsData, setStatsData] = useState(null);
   const [communityProfiles, setCommunityProfiles] = useState([]);
   const [landingOverrides, setLandingOverrides] = useState({});
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [profilesLoading, setProfilesLoading] = useState(true);
+  const [contentLoading, setContentLoading] = useState(true);
+  const [statsError, setStatsError] = useState('');
+  const [profilesError, setProfilesError] = useState('');
 
   const iconMap = {
     FiShield,
@@ -147,21 +153,37 @@ const Landing = ({ scrollToId = null }) => {
     let isMounted = true;
 
     const loadStats = async () => {
-      const [statsResponse, profilesResponse, contentResponse] = await Promise.all([
-        getLandingStats(),
-        getCommunityProfiles(6),
-        getLandingContent()
-      ]);
-      if (!isMounted) return;
+      try {
+        const [statsResponse, profilesResponse, contentResponse] = await Promise.all([
+          getLandingStats(),
+          getCommunityProfiles(6),
+          getLandingContent()
+        ]);
+        if (!isMounted) return;
 
-      if (statsResponse.success) {
-        setStatsData(statsResponse.data);
-      }
-      if (profilesResponse.success) {
-        setCommunityProfiles(profilesResponse.data?.profiles || []);
-      }
-      if (contentResponse.success) {
-        setLandingOverrides(contentResponse.data?.landing || {});
+        if (statsResponse.success) {
+          setStatsData(statsResponse.data);
+        } else {
+          setStatsError(statsResponse.error || 'Stats unavailable.');
+        }
+        if (profilesResponse.success) {
+          setCommunityProfiles(profilesResponse.data?.profiles || []);
+        } else {
+          setProfilesError(profilesResponse.error || 'Community profiles unavailable.');
+        }
+        if (contentResponse.success) {
+          setLandingOverrides(contentResponse.data?.landing || {});
+        }
+      } catch (err) {
+        if (!isMounted) return;
+        setStatsError('Stats unavailable.');
+        setProfilesError('Community profiles unavailable.');
+      } finally {
+        if (isMounted) {
+          setStatsLoading(false);
+          setProfilesLoading(false);
+          setContentLoading(false);
+        }
       }
     };
 
@@ -197,7 +219,7 @@ const Landing = ({ scrollToId = null }) => {
   }, [location.hash, scrollToId]);
 
   const formatStatValue = (value, fallback, options = {}) => {
-      if (value === null || value === undefined || Number.isNaN(value)) return fallback;
+      if (value === null || value === undefined || Number.isNaN(value)) return null;
       if (typeof value === 'number') {
         if (options.percent) return `${value}%`;
         if (options.plus) return `${value.toLocaleString()}+`;
@@ -247,11 +269,15 @@ const Landing = ({ scrollToId = null }) => {
     };
   }, [statsData, landingOverrides]);
 
-  const profileFallbacks = landingContent.communityProfiles?.profiles || [];
   const profileContent = useMemo(() => {
-    if (communityProfiles.length) return communityProfiles;
-    return profileFallbacks;
-  }, [communityProfiles, profileFallbacks]);
+    return communityProfiles;
+  }, [communityProfiles]);
+
+  const landingLoading = statsLoading || profilesLoading || contentLoading;
+
+  if (landingLoading) {
+    return <LandingSkeleton />;
+  }
 
   return (
   <div className="landing-page">
@@ -264,7 +290,7 @@ const Landing = ({ scrollToId = null }) => {
     <TrustSection signals={trustSignals} />
 
     {/* 3. Immediate credibility */}
-    <StatsSection content={statsContent} />
+    <StatsSection content={statsContent} loading={statsLoading} error={statsError} />
     
     <PartnerCarouselSection />
 
@@ -286,6 +312,8 @@ const Landing = ({ scrollToId = null }) => {
         'Meet offensive learners already sharing findings, feedback, and collaboration.'
         }
         profiles={profileContent}
+        loading={profilesLoading}
+        error={profilesError}
       />
 
     <LeaderboardSection />

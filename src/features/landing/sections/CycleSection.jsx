@@ -1,12 +1,9 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { motion, useMotionValue, useSpring, animate } from 'framer-motion';
+import React, { useState, useRef, useMemo } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+import { motion } from 'framer-motion';
 import Logo from '../../../shared/components/common/Logo';
 import '../../../styles/landing/cycle.css';
-
-/* ─────────────────────────────────────────
-   Step icons (inline SVG fallback shapes)
-───────────────────────────────────────── */
-const STEP_ICONS = ['⬡', '◈', '⬟', '◇', '⬠'];
 
 /* ─────────────────────────────────────────
    Distribute N points evenly on a circle
@@ -24,139 +21,85 @@ const getOrbitPositions = (count, rx = 155, ry = 55, rz = 155) => {
   });
 };
 
-/* ─────────────────────────────────────────
-   ORBIT RING + NODES (CSS 3D)
-───────────────────────────────────────── */
-const Orbit3D = ({ steps, activeIdx, onHover }) => {
-  const sceneRef  = useRef(null);
-  const rotateY   = useMotionValue(0);
-  const rotateX   = useMotionValue(-18);
-  const springY   = useSpring(rotateY, { stiffness: 60, damping: 18 });
-  const springX   = useSpring(rotateX, { stiffness: 60, damping: 18 });
+const OrbitNodes = ({ steps, activeIdx, onHover, pausedRef }) => {
+  const groupRef = useRef(null);
+  const positions = useMemo(() => getOrbitPositions(steps.length, 3.1, 1.15, 3.1), [steps.length]);
 
-  // Auto-spin: increment rotateY every frame
-  const rafRef    = useRef(null);
-  const pausedRef = useRef(false);
-
-  const startSpin = useCallback(() => {
-    let last = performance.now();
-    const tick = (now) => {
-      if (!pausedRef.current) {
-        const delta = now - last;
-        rotateY.set(rotateY.get() + delta * 0.018);
-      }
-      last = now;
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-  }, [rotateY]);
-
-  React.useEffect(() => {
-    startSpin();
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [startSpin]);
-
-  // Mouse tilt on hover
-  const handleMouseMove = (e) => {
-    const rect = sceneRef.current.getBoundingClientRect();
-    const cx   = rect.left + rect.width  / 2;
-    const cy   = rect.top  + rect.height / 2;
-    const dx   = (e.clientX - cx) / (rect.width  / 2);
-    const dy   = (e.clientY - cy) / (rect.height / 2);
-    rotateX.set(-18 + dy * 14);
-  };
-
-  const handleMouseLeave = () => {
-    rotateX.set(-18);
-  };
-
-  const positions = getOrbitPositions(steps.length);
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
+    if (!pausedRef.current) {
+      groupRef.current.rotation.y += delta * 0.35;
+    }
+    groupRef.current.rotation.x = -0.35 + Math.sin(state.clock.elapsedTime * 0.4) * 0.08;
+  });
 
   return (
-    <div
-      className="orbit-scene-wrap"
-      ref={sceneRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {/* Decorative base glow */}
-      <div className="orbit-glow-base" />
+    <group ref={groupRef}>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[2.3, 2.32, 80]} />
+        <meshBasicMaterial color="#10b981" transparent opacity={0.2} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[1.6, 1.62, 80]} />
+        <meshBasicMaterial color="#10b981" transparent opacity={0.14} />
+      </mesh>
 
-      <motion.div
-        className="orbit-scene"
-        style={{
-          rotateY: springY,
-          rotateX: springX,
-          transformStyle: 'preserve-3d',
+      {positions.map((pos, i) => {
+        const isActive = activeIdx === i;
+        const color = new THREE.Color(isActive ? '#10b981' : '#1f2937');
+        return (
+          <mesh
+            key={steps[i]?.title || i}
+            position={[pos.x, pos.y, pos.z]}
+            onPointerOver={() => {
+              pausedRef.current = true;
+              onHover(i);
+            }}
+            onPointerOut={() => {
+              pausedRef.current = false;
+            }}
+          >
+            <sphereGeometry args={[0.28, 32, 32]} />
+            <meshStandardMaterial
+              color={color}
+              emissive={color}
+              emissiveIntensity={isActive ? 0.6 : 0.2}
+              roughness={0.35}
+              metalness={0.4}
+            />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+};
+
+const Orbit3D = ({ steps, activeIdx, onHover }) => {
+  const pausedRef = useRef(false);
+
+  return (
+    <div className="orbit-scene-wrap">
+      <div className="orbit-glow-base" />
+      <Canvas
+        className="orbit-canvas"
+        camera={{ position: [0, 0, 7], fov: 45 }}
+        gl={{ antialias: true, alpha: true }}
+        onPointerLeave={() => {
+          pausedRef.current = false;
         }}
       >
-        {/* Orbit ellipse rings (decorative planes) */}
-        <div className="orbit-ring-plane orbit-ring-outer" />
-        <div className="orbit-ring-plane orbit-ring-inner" />
+        <ambientLight intensity={0.55} />
+        <pointLight position={[4, 4, 6]} intensity={1.2} />
+        <OrbitNodes steps={steps} activeIdx={activeIdx} onHover={onHover} pausedRef={pausedRef} />
+      </Canvas>
 
-        {/* Connection lines between nodes */}
-        <svg className="orbit-connector-svg" viewBox="-200 -200 400 400" aria-hidden="true">
-          {positions.map((pos, i) => {
-            const next = positions[(i + 1) % positions.length];
-            return (
-              <line
-                key={i}
-                x1={pos.x} y1={pos.y}
-                x2={next.x} y2={next.y}
-                stroke="var(--primary-color)"
-                strokeOpacity="0.18"
-                strokeWidth="1"
-                strokeDasharray="4 6"
-              />
-            );
-          })}
-        </svg>
-
-        {/* Nodes */}
-        {steps.map((step, i) => {
-          const pos    = positions[i];
-          const isActive = activeIdx === i;
-
-          return (
-            <motion.div
-              key={step.title}
-              className={`orbit-node ${isActive ? 'orbit-node--active' : ''}`}
-              style={{
-                transform: `translate3d(${pos.x}px, ${pos.y}px, ${pos.z}px)`,
-                zIndex: Math.round(pos.z + 200),
-              }}
-              onHoverStart={() => {
-                pausedRef.current = true;
-                onHover(i);
-              }}
-              onHoverEnd={() => {
-                pausedRef.current = false;
-              }}
-              whileHover={{ scale: 1.18 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            >
-              <div className="orbit-node-inner">
-                <span className="orbit-node-icon">{STEP_ICONS[i % STEP_ICONS.length]}</span>
-                <span className="orbit-node-label">{step.title}</span>
-                <span className="orbit-node-index">0{i + 1}</span>
-              </div>
-              {/* Depth shadow dot */}
-              <div className="orbit-node-shadow" />
-            </motion.div>
-          );
-        })}
-
-        {/* Central core */}
-        <div className="orbit-core">
-          <div className="orbit-core-ring" />
-          <div className="orbit-core-inner">
-            <Logo size="small" className="orbit-core-logo" />
-          </div>
+      <div className="orbit-core">
+        <div className="orbit-core-ring" />
+        <div className="orbit-core-inner">
+          <Logo size="small" className="orbit-core-logo" />
         </div>
+      </div>
 
-      </motion.div>
-
-      {/* Ground shadow ellipse */}
       <div className="orbit-ground-shadow" />
     </div>
   );

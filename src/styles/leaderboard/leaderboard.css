@@ -194,6 +194,44 @@
   margin: 0;
 }
 
+.leaderboard-row.is-skeleton {
+  pointer-events: none;
+}
+
+.leaderboard-skeleton-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
+
+.leaderboard-skeleton-value {
+  width: 60px;
+  height: 18px;
+}
+
+.leaderboard-skeleton-label {
+  width: 80px;
+  height: 12px;
+}
+
+.leaderboard-skeleton-line {
+  width: 140px;
+  height: 14px;
+}
+
+.leaderboard-skeleton-line.short {
+  width: 90px;
+}
+
+.leaderboard-skeleton-metric {
+  width: 110px;
+  height: 14px;
+}
+
+.leaderboard-skeleton-metric.short {
+  width: 80px;
+}
+
 @media (max-width: 980px) {
   .leaderboard-row {
     grid-template-columns: 1fr;

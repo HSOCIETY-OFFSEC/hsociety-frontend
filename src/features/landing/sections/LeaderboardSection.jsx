@@ -5,13 +5,12 @@ import Button from '../../../shared/components/ui/Button';
 import LeaderboardTable from '../../leaderboard/components/LeaderboardTable';
 import { getLeaderboard } from '../../leaderboard/leaderboard.service';
 import { extractLeaderboardEntries } from '../../leaderboard/leaderboard.utils';
-import { LEADERBOARD_FALLBACK } from '../../../data/leaderboard/leaderboardData';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import '../../../styles/leaderboard/leaderboard.css';
 
 const LeaderboardSection = () => {
   const navigate = useNavigate();
-  const [entries, setEntries] = useState(LEADERBOARD_FALLBACK);
+  const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -28,9 +27,7 @@ const LeaderboardSection = () => {
 
       const payload = response.data?.leaderboard || response.data;
       const extracted = extractLeaderboardEntries(payload);
-      if (extracted.length) {
-        setEntries(extracted);
-      }
+      setEntries(extracted);
       setLoading(false);
     };
 
@@ -64,6 +61,7 @@ const LeaderboardSection = () => {
           entries={entries}
           limit={6}
           emptyMessage={statusMessage || 'No leaderboard data yet.'}
+          loading={loading}
         />
 
         <div className="leaderboard-cta">

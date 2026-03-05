@@ -151,6 +151,33 @@
   line-height: 1.5;
 }
 
+.stat-item.is-loading {
+  pointer-events: none;
+}
+
+.stat-skeleton-value {
+  width: 60%;
+  height: 32px;
+  margin-bottom: 0.55rem;
+}
+
+.stat-skeleton-label {
+  width: 70%;
+  height: 14px;
+}
+
+.stat-skeleton-desc {
+  width: 90%;
+  height: 12px;
+  margin-top: 0.55rem;
+}
+
+.stats-error {
+  margin-top: 1.5rem;
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+}
+
 /* ========================================
    RESPONSIVE
    ======================================== */
