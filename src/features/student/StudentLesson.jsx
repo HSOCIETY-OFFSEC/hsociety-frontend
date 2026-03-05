@@ -38,6 +38,8 @@ const StudentLesson = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [quizContext, setQuizContext] = useState(null);
+  const [showNotes, setShowNotes] = useState(false);
+  const [notes, setNotes] = useState('');
 
   const moduleProgressMap = useMemo(() => {
     if (!overview?.modules) return {};
@@ -92,6 +94,7 @@ const StudentLesson = () => {
 
   const moduleMeta = getHackerProtocolModule(moduleId);
   const roomMeta = getHackerProtocolRoom(moduleId, roomId);
+  const objectivesCount = roomMeta?.bullets?.length || 0;
 
   const module = course?.modules?.find((m) => m.moduleId === moduleId);
   const room = module?.rooms.find((r) => r.roomId === roomId);
@@ -201,36 +204,62 @@ const StudentLesson = () => {
 
   return (
     <div className="student-page lesson-page">
-      <header className="student-hero reveal-on-scroll">
-        <div>
-          <p className="student-kicker">
-            {moduleMeta.codename} · Room {room.roomId}
-          </p>
-          <h1>{room.title}</h1>
-          <p>
-            Phase {module.moduleId}: <strong>{moduleMeta.title}</strong> · Role: <strong>{moduleMeta.roleTitle}</strong>
-          </p>
+      <header className="lesson-appbar">
+        <div className="lesson-appbar-left">
+          <span className="lesson-appbar-chip">{moduleMeta.codename}</span>
+          <div>
+            <p className="lesson-appbar-kicker">Room {room.roomId}</p>
+            <h1>{room.title}</h1>
+          </div>
         </div>
-        <Button
-          variant="secondary"
-          size="large"
-          onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
-        >
-          <FiArrowLeft size={18} />
-          Back to Dashboard
-        </Button>
+        <div className="lesson-appbar-actions">
+          <div className="lesson-utility">
+            <span className="lesson-utility-chip">
+              Progress {moduleProgressMap[String(module.moduleId)] || 0}%
+            </span>
+            <span className="lesson-utility-chip">
+              Room {room.roomId} of {module.rooms.length}
+            </span>
+            <span className="lesson-utility-chip">
+              {objectivesCount} objectives
+            </span>
+          </div>
+          <Button
+            variant="ghost"
+            size="small"
+            onClick={() => navigate(`/student-bootcamps/hacker-protocol/modules/${module.moduleId}`)}
+          >
+            <FiArrowLeft size={16} />
+            Phase Overview
+          </Button>
+          <Button
+            variant="ghost"
+            size="small"
+            onClick={() => setShowNotes((prev) => !prev)}
+          >
+            {showNotes ? 'Hide Notes' : 'Open Notes'}
+          </Button>
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+          >
+            Back to Dashboard
+          </Button>
+        </div>
       </header>
 
-      <section className="lesson-layout lesson-layout-enhanced lesson-layout-tripanel">
-        <aside className="lesson-sidebar">
+      <section className="lesson-shell">
+        <aside className="lesson-rail">
           <div className="lesson-profile-card">
             <p>Signed in as</p>
             <strong>{user?.name || user?.email}</strong>
             <span className="lesson-role-pill">{user?.role}</span>
           </div>
 
-          <div className="lesson-module-summary" style={{ borderColor: moduleMeta.color }}>
-            <h3>{moduleMeta.codename}</h3>
+          <div className="lesson-rail-block">
+            <p className="lesson-rail-label">Phase {module.moduleId}</p>
+            <h3>{moduleMeta.title}</h3>
             <p>{moduleMeta.roleTitle}</p>
             <div className="lesson-module-progress">
               <div style={{ width: `${moduleProgressMap[String(module.moduleId)] || 0}%` }} />
@@ -258,8 +287,16 @@ const StudentLesson = () => {
           </nav>
         </aside>
 
-        <div className="lesson-main">
-          <Card padding="large" className="lesson-main-card reveal-on-scroll">
+        <div className="lesson-center">
+          <div className="lesson-content-header">
+            <div>
+              <p className="lesson-kicker">
+                Phase {module.moduleId}: <strong>{moduleMeta.title}</strong>
+              </p>
+              <p className="lesson-subtitle">
+                Role: <strong>{moduleMeta.roleTitle}</strong>
+              </p>
+            </div>
             <div className="lesson-meta">
               <span className="lesson-meta-chip">
                 <FiBookOpen size={14} />
@@ -270,67 +307,71 @@ const StudentLesson = () => {
                 Validated progression
               </span>
             </div>
+          </div>
 
-            <div className="lesson-content">
-              <h2>What you will cover</h2>
-              <p>{roomMeta.overview}</p>
+          <div className="lesson-workspace">
+            <Card padding="large" className="lesson-main-card reveal-on-scroll">
+              <div className="lesson-content">
+                <h2>What you will cover</h2>
+                <p>{roomMeta.overview}</p>
 
-              <h3>Key objectives</h3>
-              <ul>
-                {(roomMeta.bullets || []).map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+                <h3>Key objectives</h3>
+                <ul>
+                  {(roomMeta.bullets || []).map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
 
-              <h3>Room nav</h3>
-              <div className="lesson-room-nav">
-                {module.rooms.map((roomCandidate) => (
-                  <button
-                    key={roomCandidate.roomId}
-                    type="button"
-                    className={`lesson-room-nav-item ${
-                      roomCandidate.roomId === room.roomId ? 'active' : ''
-                    }`}
-                    onClick={() => handleRoomNav(roomCandidate)}
+                <h3>Room nav</h3>
+                <div className="lesson-room-nav">
+                  {module.rooms.map((roomCandidate) => (
+                    <button
+                      key={roomCandidate.roomId}
+                      type="button"
+                      className={`lesson-room-nav-item ${
+                        roomCandidate.roomId === room.roomId ? 'active' : ''
+                      }`}
+                      onClick={() => handleRoomNav(roomCandidate)}
+                    >
+                      Room {roomCandidate.roomId}: {roomCandidate.title}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="lesson-cta-row">
+                  <Button
+                    variant="primary"
+                    size="large"
+                    className="lesson-cta-button"
+                    onClick={() => setQuizContext({
+                      scope: {
+                        type: 'room',
+                        id: room.roomId,
+                        moduleId: module.moduleId,
+                        courseId: course.id,
+                      },
+                      title: room.title,
+                    })}
                   >
-                    Room {roomCandidate.roomId}: {roomCandidate.title}
-                  </button>
-                ))}
+                    Take Quiz
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="large"
+                    onClick={() => setStatusMessage('Room completion saved locally for now.')}
+                  >
+                    Mark Room Completed
+                  </Button>
+                </div>
               </div>
-
-              <div className="lesson-cta-row">
-                <Button
-                  variant="primary"
-                  size="large"
-                  className="lesson-cta-button"
-                  onClick={() => setQuizContext({
-                    scope: {
-                      type: 'room',
-                      id: room.roomId,
-                      moduleId: module.moduleId,
-                      courseId: course.id,
-                    },
-                    title: room.title,
-                  })}
-                >
-                  Take Quiz
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="large"
-                  onClick={() => setStatusMessage('Room completion saved locally for now.')}
-                >
-                  Mark Room Completed
-                </Button>
-              </div>
-            </div>
-          </Card>
-
-          {statusMessage && (
-            <Card padding="medium" className="lesson-status-card">
-              <p>{statusMessage}</p>
             </Card>
-          )}
+
+            {statusMessage && (
+              <Card padding="medium" className="lesson-status-card">
+                <p>{statusMessage}</p>
+              </Card>
+            )}
+          </div>
         </div>
 
         <aside className="lesson-rightbar">
@@ -355,6 +396,20 @@ const StudentLesson = () => {
               Progression is gated. Pass quiz + validation interview to unlock the next phase emblem.
             </p>
           </Card>
+
+          {showNotes && (
+            <Card padding="medium" className="lesson-right-card lesson-notes-card">
+              <h3>Quick Notes</h3>
+              <p className="lesson-notes-help">Personal notes are stored locally in this session.</p>
+              <textarea
+                className="lesson-notes-input"
+                placeholder="Capture key takeaways, questions, and next steps..."
+                value={notes}
+                onChange={(event) => setNotes(event.target.value)}
+                rows={6}
+              />
+            </Card>
+          )}
         </aside>
       </section>
 

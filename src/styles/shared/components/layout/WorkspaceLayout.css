@@ -20,6 +20,10 @@
   padding: 1.5rem 1rem;
 }
 
+.workspace-layout.lesson-only .workspace-main {
+  padding: 0;
+}
+
 .workspace-topbar {
   position: sticky;
   top: 0;
