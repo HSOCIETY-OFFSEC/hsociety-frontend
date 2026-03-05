@@ -64,6 +64,7 @@
   width: max-content;
   padding: 0.5rem 0;
   animation: partners-scroll 28s linear infinite;
+  animation-direction: normal;
   will-change: transform;
 }
 
@@ -77,13 +78,13 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  height: 52px;
+  height: 130px;
 }
 
 .partner-logo img {
   height: 100%;
   width: auto;
-  max-width: 190px;
+  max-width: 260px;
   object-fit: contain;
   display: block;
   filter: none;
@@ -93,12 +94,22 @@
 
 /* Text fallback when no image is present */
 .partner-logo-text {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-secondary);
   white-space: nowrap;
+}
+
+/* Empty state */
+.partners-empty {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem 0;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
 }
 
 /* ── Scroll animation ── */
@@ -122,7 +133,7 @@
   }
 
   .partner-logo {
-    height: 44px;
+    height: 64px;
   }
 }
 
@@ -137,11 +148,11 @@
   }
 
   .partner-logo {
-    height: 36px;
+    height: 50px;
   }
 
   .partner-logo img {
-    max-width: 140px;
+    max-width: 180px;
   }
 }
 

@@ -1,37 +1,26 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import '../../../styles/landing/partners.css';
 
-const PARTNER_GLOB = import.meta.glob('../../../assets/partners/*.{png,jpg,jpeg,svg,webp}', {
-  eager: true,
-  import: 'default',
-});
+import SorbitLogo from '../../../assets/partners/Sorbit.png';
+import RedspectreAILogo from '../../../assets/partners/redspectre AI.png';
+import WSuitsIndustriesLogo from '../../../assets/partners/wsuitsindustries.png';
 
-const formatPartnerName = (filePath) => {
-  const fileName = filePath.split('/').pop() || '';
-  const base = fileName.replace(/\.[^/.]+$/, '');
-  return base.replace(/[-_]+/g, ' ').trim();
-};
+const PartnerLogo = ({ src, isDuplicate }) => (
+  <div className="partner-logo" aria-hidden={isDuplicate}>
+    <img src={src} alt="" loading="lazy" draggable="false" />
+  </div>
+);
 
 const PartnerCarouselSection = () => {
-  const partners = useMemo(() => {
-    const entries = Object.entries(PARTNER_GLOB);
-    return entries
-      .map(([path, src]) => ({ name: formatPartnerName(path), src }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, []);
-
-  const fallback = [
-    { name: 'Acme Corp' },
-    { name: 'Nexus Labs' },
-    { name: 'Cipher Tech' },
-    { name: 'RedSec' },
-    { name: 'Vaultline' },
-    { name: 'Stealth.io' },
-    { name: 'Darknode' },
+  const partners = [
+    { src: SorbitLogo },
+    { src: RedspectreAILogo },
+    { src: WSuitsIndustriesLogo },
   ];
 
-  const items = partners.length ? partners : fallback;
+  const items = partners;
   const trackItems = [...items, ...items, ...items];
+  const hasPartners = items.length > 0;
 
   return (
     <section className="partners-section" aria-label="Partners">
@@ -42,23 +31,21 @@ const PartnerCarouselSection = () => {
         <div className="partners-rule" />
       </div>
 
-      <div className="partners-carousel" role="presentation">
-        <div className="partners-track">
-          {trackItems.map((partner, index) => (
-            <div
-              key={`${partner.name}-${index}`}
-              className="partner-logo"
-              aria-hidden={index >= items.length}
-            >
-              {partner.src ? (
-                <img src={partner.src} alt={partner.name} loading="lazy" draggable="false" />
-              ) : (
-                <span className="partner-logo-text">{partner.name}</span>
-              )}
-            </div>
-          ))}
+      {hasPartners ? (
+        <div className="partners-carousel" role="presentation">
+          <div className="partners-track">
+            {trackItems.map((partner, index) => (
+              <PartnerLogo
+                key={`partner-${index}`}
+                src={partner.src}
+                isDuplicate={index >= items.length}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="partners-empty">Partner logos are unavailable right now.</div>
+      )}
 
     </section>
   );

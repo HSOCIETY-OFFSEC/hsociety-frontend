@@ -1,17 +1,9 @@
 /**
- * Threat Globe Controls
+ * Threat Globe Controls — Enhanced
  * Location: src/styles/sections/threat-map/controls.css
- *
- * FIXES:
- *  - Control panel raised z-index so it's never hidden behind canvas
- *  - Buttons have explicit color so they're visible on all bg colours
- *  - Hint text repositioned to avoid overlap with controls on mobile
- *  - Controls collapse to icon-only on very small screens
  */
 
-/* ========================================
-   INTERACTIVE WRAPPER
-   ======================================== */
+/* ── Wrapper ──────────────────────────────────────────────────── */
 
 .threat-globe-interactive {
   position: relative;
@@ -22,8 +14,6 @@
   min-height: 0;
 }
 
-/* Stage stays in normal flow so its parent has a real measured height.
-   Three.js / ResizeObserver need the wrapper to have height > 0. */
 .threat-globe-stage {
   position: relative;
   flex: 1 1 0;
@@ -32,9 +22,86 @@
   overflow: hidden;
 }
 
-/* ========================================
-   CONTROL PANEL
-   ======================================== */
+/* ── HUD corner brackets ─────────────────────────────────────── */
+
+.tgi-corner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.tgi-corner--tl {
+  top: 12px;
+  left: 12px;
+  border-top: 1.5px solid var(--primary-color);
+  border-left: 1.5px solid var(--primary-color);
+}
+
+.tgi-corner--br {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 1.5px solid var(--primary-color);
+  border-right: 1.5px solid var(--primary-color);
+}
+
+.tgi-corner-label {
+  position: absolute;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.tgi-corner--tl .tgi-corner-label {
+  top: 6px;
+  left: 10px;
+}
+
+.tgi-corner--br .tgi-corner-label {
+  bottom: 6px;
+  right: 10px;
+}
+
+/* ── Globe sweep line ─────────────────────────────────────────── */
+
+.tgi-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.tgi-sweep::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--primary-color) 60%, transparent) 40%,
+    color-mix(in srgb, var(--primary-color) 90%, transparent) 50%,
+    color-mix(in srgb, var(--primary-color) 60%, transparent) 60%,
+    transparent 100%
+  );
+  animation: tgi-sweep 4.5s linear infinite;
+  opacity: 0.35;
+}
+
+@keyframes tgi-sweep {
+  0%   { top: -2px; }
+  100% { top: 100%; }
+}
+
+/* ── Control panel ───────────────────────────────────────────── */
 
 .threat-globe-controls {
   position: absolute;
@@ -42,22 +109,46 @@
   right: 14px;
   display: flex;
   flex-direction: row;
-  gap: 0.4rem;
+  gap: 0.35rem;
   align-items: center;
-  padding: 0.45rem 0.55rem;
+  padding: 0.45rem 0.6rem;
   border-radius: 12px;
-  /* Solid enough background so it reads on any globe colour */
-  background: color-mix(in srgb, var(--bg-secondary, #0d1117) 88%, transparent);
-  border: 1px solid color-mix(in srgb, var(--primary-color, #2dd4bf) 30%, transparent);
+  background: color-mix(in srgb, var(--bg-primary, #060a10) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #2dd4bf) 28%, transparent);
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(45, 212, 191, 0.06);
-  z-index: 20; /* above Three.js canvas & SVG layers */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+    0 0 0 1px rgba(45, 212, 191, 0.05),
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+  z-index: 20;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
-/* Divider between zoom group and extras */
+/* Grouped zoom buttons share a border */
+.tgi-btn-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--primary-color, #2dd4bf) 28%, transparent);
+  border-radius: 8px;
+  overflow: hidden;
+  gap: 0;
+}
+
+.tgi-btn-group .threat-globe-btn {
+  border: none;
+  border-radius: 0;
+}
+
+.tgi-btn-group .threat-globe-btn:first-child { border-radius: 7px 0 0 7px; }
+.tgi-btn-group .threat-globe-btn:last-child  { border-radius: 0 7px 7px 0; }
+
+.tgi-btn-sep {
+  width: 1px;
+  height: 18px;
+  background: color-mix(in srgb, var(--border-color, #1e293b) 80%, transparent);
+  flex-shrink: 0;
+}
+
 .threat-globe-controls-sep {
   width: 1px;
   height: 20px;
@@ -65,63 +156,57 @@
   flex-shrink: 0;
 }
 
-/* ========================================
-   CONTROL BUTTONS
-   ======================================== */
+/* ── Buttons ──────────────────────────────────────────────────── */
 
 .threat-globe-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  /* Always-visible foreground */
-  border: 1px solid color-mix(in srgb, var(--primary-color, #2dd4bf) 35%, transparent);
-  background: color-mix(in srgb, var(--bg-primary, #060a10) 78%, transparent);
-  color: var(--text-primary, #e2e8f0);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #2dd4bf) 28%, transparent);
+  background: color-mix(in srgb, var(--bg-primary, #060a10) 70%, transparent);
+  color: var(--text-secondary, #9ca3af);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  padding: 0.32rem 0.65rem;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.65rem;
   border-radius: 8px;
   cursor: pointer;
   white-space: nowrap;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease,
-    background 0.18s ease,
-    color 0.18s ease;
   text-transform: uppercase;
   line-height: 1;
-  /* Minimum tap target */
   min-height: 30px;
   min-width: 30px;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .threat-globe-btn:hover {
   transform: translateY(-1px);
-  border-color: var(--primary-color, #2dd4bf);
   color: var(--primary-color, #2dd4bf);
+  border-color: var(--primary-color, #2dd4bf);
   background: color-mix(in srgb, var(--primary-color, #2dd4bf) 10%, transparent);
   box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.25),
-    0 0 10px -3px rgba(45, 212, 191, 0.4);
+    0 4px 14px rgba(0,0,0,0.3),
+    0 0 10px -2px rgba(45, 212, 191, 0.4);
 }
 
 .threat-globe-btn:active {
   transform: translateY(0);
 }
 
-/* Zoom ± get bigger, bolder glyphs */
 .threat-globe-btn--zoom {
   font-size: 1rem;
   font-weight: 700;
-  padding: 0.28rem 0.7rem;
+  padding: 0.26rem 0.72rem;
   letter-spacing: 0;
 }
 
-/* Ghost / reset style */
 .threat-globe-btn.is-ghost {
   background: transparent;
   border-style: dashed;
@@ -133,100 +218,86 @@
   border-style: solid;
 }
 
-/* Active / toggled state (e.g. Paused, Rotate-off) */
 .threat-globe-btn.is-active {
-  border-color: var(--primary-color, #2dd4bf);
   color: var(--primary-color, #2dd4bf);
-  background: color-mix(in srgb, var(--primary-color, #2dd4bf) 12%, transparent);
+  border-color: var(--primary-color, #2dd4bf);
+  background: color-mix(in srgb, var(--primary-color, #2dd4bf) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color, #2dd4bf) 25%, transparent);
 }
 
-/* ========================================
-   DRAG HINT
-   ======================================== */
+.tgi-btn-icon { line-height: 1; }
+.tgi-btn-text { line-height: 1; }
+
+/* ── Drag hint ───────────────────────────────────────────────── */
 
 .threat-globe-hint {
   position: absolute;
   left: 14px;
   bottom: 14px;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   color: var(--text-tertiary, #64748b);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   z-index: 20;
-  /* subtle bg so it's readable over the globe */
-  background: color-mix(in srgb, var(--bg-secondary, #0d1117) 65%, transparent);
-  padding: 0.25rem 0.55rem;
+  background: color-mix(in srgb, var(--bg-primary, #060a10) 60%, transparent);
+  padding: 0.22rem 0.55rem;
   border-radius: 6px;
-  border: 1px solid color-mix(in srgb, var(--border-color, #1e293b) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color, #1e293b) 70%, transparent);
   backdrop-filter: blur(8px);
   pointer-events: none;
 }
 
-/* ========================================
-   RESPONSIVE — tablet
-   ======================================== */
-
-@media (max-width: 1024px) {
-  .threat-globe-controls {
-    top: 10px;
-    right: 10px;
-    padding: 0.4rem 0.5rem;
-    gap: 0.35rem;
-  }
-
-  .threat-globe-hint {
-    left: 10px;
-    bottom: 10px;
-    font-size: 0.58rem;
-  }
+.tgi-hint-icon {
+  color: var(--primary-color);
+  font-size: 0.7rem;
+  animation: hint-spin 6s linear infinite;
+  opacity: 0.7;
 }
 
-/* ========================================
-   RESPONSIVE — mobile (≤ 640 px)
-   ======================================== */
+@keyframes hint-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .threat-globe-controls { top: 10px; right: 10px; }
+  .threat-globe-hint { left: 10px; bottom: 10px; }
+}
 
 @media (max-width: 640px) {
   .threat-globe-controls {
     top: 8px;
     right: 8px;
-    gap: 0.3rem;
-    padding: 0.35rem 0.45rem;
-    border-radius: 10px;
+    gap: 0.28rem;
+    padding: 0.32rem 0.42rem;
     flex-wrap: wrap;
     max-width: calc(100% - 16px);
   }
-
-  /* Shorten button labels on mobile */
   .threat-globe-btn {
-    font-size: 0.65rem;
-    padding: 0.3rem 0.55rem;
-    min-height: 28px;
+    font-size: 0.62rem;
+    padding: 0.28rem 0.5rem;
+    min-height: 26px;
   }
-
-  /* Hide the "Stop Rotate / Auto Rotate" label text on mobile — icon only */
-  .threat-globe-btn[data-label-short]::after {
-    content: attr(data-label-short);
-  }
-
-  .threat-globe-hint {
-    display: none; /* too cramped on mobile */
-  }
+  .tgi-btn-text { display: none; }
+  .tgi-hint-icon { display: none; }
+  .threat-globe-hint { display: none; }
+  .tgi-corner-label { display: none; }
 }
 
-/* ========================================
-   RESPONSIVE — very small (≤ 400 px)
-   ======================================== */
-
 @media (max-width: 400px) {
-  .threat-globe-controls {
-    top: 6px;
-    right: 6px;
-  }
+  .threat-globe-controls { top: 6px; right: 6px; }
+  .threat-globe-btn { font-size: 0.58rem; padding: 0.25rem 0.42rem; }
+}
 
-  .threat-globe-btn {
-    font-size: 0.6rem;
-    padding: 0.28rem 0.45rem;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .tgi-sweep::after,
+  .tgi-hint-icon { animation: none; }
+  .threat-globe-btn { transition: none; }
 }

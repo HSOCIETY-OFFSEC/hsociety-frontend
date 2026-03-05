@@ -185,7 +185,8 @@
   .threat-globe-map-bg {
     /* Zoom in slightly so continents are still recognisable */
     background-size: 145% auto;
-    background-position: 38% 48%;
+    /* Keep the globe centered on mobile */
+    background-position: 50% 50%;
   }
 
   .city-label {

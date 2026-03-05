@@ -1,105 +1,262 @@
 /* ============================================================
-   COMMUNITY PROFILES CAROUSEL
+   COMMUNITY PROFILES — Enhanced with 3D / Glass aesthetic
+   Follows common.css theme variables
    ============================================================ */
 
+/* ── Section shell ──────────────────────────────────────────── */
 .community-profiles {
-  padding: 4rem 1.5rem;
+  position: relative;
+  padding: 6rem 1.5rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Three.js canvas lives behind everything */
+.cp-orb-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+}
+
+/* Subtle radial vignette to blend canvas edges */
+.community-profiles::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    transparent 30%,
+    var(--bg-primary) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .community-profiles-inner {
+  position: relative;
+  z-index: 2;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
+/* ── Header ──────────────────────────────────────────────────── */
 .community-profiles-header {
   max-width: 640px;
 }
 
-.community-profiles-header h2 {
-  font-size: clamp(1.8rem, 2.5vw, 2.6rem);
-  margin: 0.5rem 0 0.75rem;
+.cp-eyebrow {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  background: var(--primary-color-alpha);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
+  border-radius: 999px;
+  padding: 0.28rem 0.85rem;
+  margin-bottom: 1rem;
 }
 
-.community-profiles-header p {
+.cp-heading {
+  font-size: clamp(2rem, 3vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.03em;
+  background: linear-gradient(
+    135deg,
+    var(--text-primary) 40%,
+    color-mix(in srgb, var(--primary-color) 70%, var(--text-primary)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cp-sub {
   color: var(--text-secondary);
   margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
+/* ── Carousel shell ──────────────────────────────────────────── */
 .community-profiles-carousel {
   position: relative;
   overflow: hidden;
-  border-radius: 24px;
-  border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+  border-radius: 28px;
+  border: 1px solid color-mix(in srgb, var(--border-color) 70%, var(--primary-color) 30%);
+  background: color-mix(in srgb, var(--bg-secondary) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary-color) 10%, transparent),
+    0 32px 64px -20px color-mix(in srgb, var(--bg-primary) 50%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 8%, transparent);
 }
 
 .community-profiles-track {
   display: flex;
-  transition: transform 0.6s ease;
+  transition: transform 0.65s cubic-bezier(0.16, 0.64, 0.2, 1);
+  will-change: transform;
 }
 
 .community-profiles-slide {
   min-width: 100%;
   padding: 2rem;
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* ── Profile card ─────────────────────────────────────────────── */
 .community-profile-card {
-  padding: 1.4rem;
-  border-radius: 18px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-primary);
+  position: relative;
+  padding: 1.6rem;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--border-color) 80%, var(--primary-color) 20%);
+  background: color-mix(in srgb, var(--bg-primary) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: grid;
   gap: 1rem;
-  box-shadow: 0 20px 40px -30px color-mix(in srgb, var(--bg-primary) 60%, transparent);
+  transform-style: preserve-3d;
+  /* initial 3D resting state */
+  transform: perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px);
+  transition: transform 0.5s cubic-bezier(0.16, 0.64, 0.2, 1),
+              box-shadow 0.4s ease,
+              border-color 0.3s ease;
+  cursor: default;
+  overflow: hidden;
 }
 
+.community-profile-card:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary-color) 20%, transparent),
+    0 24px 48px -12px color-mix(in srgb, var(--primary-color) 20%, transparent),
+    0 8px 24px -8px rgba(0,0,0,0.3);
+}
+
+/* Moving glint highlight that follows card tilt */
+.cp-card-glint {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, #ffffff 12%, transparent) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  z-index: 0;
+}
+
+.community-profile-card:hover .cp-card-glint {
+  opacity: 1;
+}
+
+/* Ensure card content sits above glint */
+.community-profile-card > *:not(.cp-card-glint) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Avatar ───────────────────────────────────────────────────── */
 .community-profile-card header {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.community-profile-card img {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  object-fit: cover;
+.cp-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
 }
 
+.cp-avatar-wrap img {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  border: 2px solid color-mix(in srgb, var(--border-color) 60%, var(--primary-color) 40%);
+  object-fit: cover;
+  display: block;
+  transition: border-color 0.3s ease;
+}
+
+.community-profile-card:hover .cp-avatar-wrap img {
+  border-color: var(--primary-color);
+}
+
+/* Animated ring */
+.cp-avatar-ring {
+  position: absolute;
+  inset: -5px;
+  border-radius: 22px;
+  border: 1.5px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+  opacity: 0;
+  transform: scale(0.88);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+
+.community-profile-card:hover .cp-avatar-ring {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Text ─────────────────────────────────────────────────────── */
 .community-profile-card h3 {
-  margin: 0.4rem 0 0.35rem;
-  font-size: 1.2rem;
+  margin: 0.3rem 0 0.25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
 }
 
 .community-profile-handle {
   margin: 0;
   font-weight: 600;
-  color: var(--text-tertiary);
+  font-size: 0.78rem;
+  color: var(--primary-color);
+  letter-spacing: 0.01em;
 }
 
 .community-profile-role {
   text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
   color: var(--text-tertiary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.15rem 0.5rem;
+  display: inline-block;
 }
 
 .community-profile-bio {
   margin: 0;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 0.88rem;
 }
 
+/* ── Metrics ──────────────────────────────────────────────────── */
 .community-profile-metrics {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.35rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
 }
 
 .community-profile-metrics div {
@@ -107,54 +264,67 @@
   align-items: center;
   gap: 0.5rem;
   color: var(--text-secondary);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 
 .community-profile-cp {
-  color: color-mix(in srgb, #22c55e 70%, var(--text-primary)) !important;
+  color: color-mix(in srgb, #22c55e 80%, var(--text-primary)) !important;
   font-weight: 700;
+  font-size: 0.88rem !important;
 }
 
 .community-profile-cp-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
-  filter: drop-shadow(0 0 5px color-mix(in srgb, #22c55e 42%, transparent));
+  filter: drop-shadow(0 0 6px color-mix(in srgb, #22c55e 50%, transparent));
 }
 
+/* ── Navigation dots ─────────────────────────────────────────── */
 .community-profiles-dots {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.5rem 0 1.5rem;
+  padding: 0.75rem 0 1.5rem;
 }
 
 .community-profiles-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 999px;
   border: 1px solid var(--border-color);
   background: transparent;
   cursor: pointer;
+  transition: width 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .community-profiles-dot.is-active {
-  background: var(--text-primary);
-  border-color: var(--text-primary);
+  width: 24px;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color) 50%, transparent);
 }
 
+/* ── Empty / error ───────────────────────────────────────────── */
 .community-profiles-empty {
   border: 1px dashed var(--border-color);
   padding: 2rem;
   border-radius: 18px;
   color: var(--text-tertiary);
+  text-align: center;
 }
 
+/* ── Skeleton ────────────────────────────────────────────────── */
 .community-profiles-skeleton {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+  gap: 1.25rem;
+}
+
+.cp-skeleton-card {
+  cursor: default;
+  pointer-events: none;
 }
 
 .community-profile-avatar-skeleton {
@@ -169,66 +339,31 @@
   width: 100%;
 }
 
-.community-profile-skeleton-line {
-  width: 100%;
-  height: 12px;
-}
+.community-profile-skeleton-line        { width: 100%; height: 11px; }
+.community-profile-skeleton-line.short  { width: 55%; }
+.community-profile-skeleton-line.long   { width: 80%; }
+.community-profile-skeleton-metric      { width: 90px; height: 11px; }
 
-.community-profile-skeleton-line.short {
-  width: 60%;
-}
-
-.community-profile-skeleton-line.long {
-  width: 85%;
-}
-
-.community-profile-skeleton-metric {
-  width: 90px;
-  height: 12px;
-}
-
+/* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .community-profiles-slide {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 1.5rem;
-  }
-
-  .community-profiles-skeleton {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  .community-profiles-slide      { grid-template-columns: repeat(2, 1fr); padding: 1.5rem; }
+  .community-profiles-skeleton   { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
-  .community-profiles {
-    padding: 3rem 1rem;
-  }
-
-  .community-profiles-slide {
-    grid-template-columns: 1fr;
-    padding: 1.25rem;
-  }
-
-  .community-profiles-skeleton {
-    grid-template-columns: 1fr;
-  }
-
-  .community-profile-card {
-    padding: 1.1rem;
-  }
-
-  .community-profile-card header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .community-profile-card img {
-    width: 56px;
-    height: 56px;
-  }
+  .community-profiles             { padding: 4rem 1rem; }
+  .community-profiles-slide       { grid-template-columns: 1fr; padding: 1.25rem; }
+  .community-profiles-skeleton    { grid-template-columns: 1fr; }
+  .community-profile-card         { padding: 1.2rem; }
+  .community-profile-card header  { flex-direction: column; align-items: flex-start; }
+  .cp-avatar-wrap img             { width: 56px; height: 56px; }
 }
 
+/* ── Reduced motion ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .community-profiles-track {
-    transition: none;
-  }
+  .community-profiles-track,
+  .community-profile-card,
+  .cp-avatar-ring,
+  .community-profiles-dot       { transition: none; }
+  .cp-orb-canvas                { display: none; }
 }

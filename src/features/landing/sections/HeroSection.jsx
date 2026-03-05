@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FiArrowUpRight,
@@ -32,6 +32,7 @@ const AnimatedWords = ({ text, className = '' }) =>
   });
 
 const HeroSection = ({ content }) => {
+  const heroRef = useRef(null);
   const navigate = useNavigate();
   const { requestPentest, requestPentestModal } = useRequestPentest();
   const { badge, ctas, title, description } = content;
@@ -58,7 +59,7 @@ const HeroSection = ({ content }) => {
   const [titleLine1, titleLine2] = String(resolvedTitle || '').split('|');
 
   return (
-    <section className="hero-section">
+    <section className="hero-section" ref={heroRef}>
       {/* Grid overlay */}
       <div className="hero-grid-overlay" aria-hidden="true" />
 
