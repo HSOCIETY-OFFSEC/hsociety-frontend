@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import ScrollToTopButton from '../ui/ScrollToTopButton';
 import '../../../styles/shared/components/layout/PublicLayout.css';
 import '../../../styles/shared/components/layout/PageLayout.css';
 
@@ -16,6 +17,7 @@ const PublicLayout = () => {
       <main className="public-main page-content container">
         <Outlet />
       </main>
+      <ScrollToTopButton />
     </div>
   );
 };

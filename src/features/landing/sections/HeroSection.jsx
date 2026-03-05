@@ -67,12 +67,6 @@ const HeroSection = ({ content }) => {
         {/* ── LEFT: Content ── */}
         <div className="hero-content-panel">
 
-          {/* Badge */}
-          <div className="hero-badge">
-            <span className="badge-dot" />
-            {badge}
-          </div>
-
           {/* Kicker */}
           <p className="hero-kicker">
             <FiTerminal size={14} style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
@@ -93,7 +87,7 @@ const HeroSection = ({ content }) => {
           {/* Description */}
           <p className="hero-description">
             {description ||
-              'HSOCIETY trains beginners in offensive security and deploys them into supervised, real-world penetration tests — building the next generation of professional red teamers.'}
+              'HSOCIETY is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.'}
           </p>
 
           {/* CTAs */}

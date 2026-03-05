@@ -25,9 +25,15 @@ const StudentBootcamp = () => {
   const [error, setError] = useState('');
 
   const enrolledStateLabel = useMemo(() => {
-    if (!isRegistered) return 'Not Enrolled';
-    if (isRegistered && !isPaid) return 'Enrollment Complete · Payment Pending';
-    return 'Enrolled · Access Active';
+    if (!isRegistered) return 'Not enrolled';
+    if (isRegistered && !isPaid) return 'Enrollment complete · Payment pending';
+    return 'Enrolled · Access active';
+  }, [isRegistered, isPaid]);
+
+  const statusDotClass = useMemo(() => {
+    if (!isRegistered) return 'bootcamp-status-dot';
+    if (isRegistered && !isPaid) return 'bootcamp-status-dot registered';
+    return 'bootcamp-status-dot active';
   }, [isRegistered, isPaid]);
 
   const handleEnroll = async () => {
@@ -57,10 +63,11 @@ const StudentBootcamp = () => {
   return (
     <div className="student-page">
       <div className="dashboard-shell">
+
         <header className="student-hero dashboard-shell-header reveal-on-scroll">
           <div>
             <p className="student-kicker dashboard-shell-kicker">Bootcamps</p>
-            <h1 className="dashboard-shell-title">Choose your current training cycle.</h1>
+            <h1 className="dashboard-shell-title">Choose your training cycle.</h1>
             <p className="dashboard-shell-subtitle">
               Enroll in a bootcamp, complete payment, then unlock the phase-based dashboard.
             </p>
@@ -68,108 +75,111 @@ const StudentBootcamp = () => {
         </header>
 
         {error && (
-          <Card padding="medium" className="student-card reveal-on-scroll">
-            <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
-          </Card>
+          <div className="student-notice error reveal-on-scroll" style={{ marginBottom: '0.5rem' }}>
+            <span>{error}</span>
+          </div>
         )}
 
-        <section className="student-grid bootcamp-catalog-grid">
-          <Card
-            padding="medium"
-            className="student-card bootcamp-catalog-card reveal-on-scroll"
+        <div className="bootcamp-layout">
+
+          {/* ── Main Bootcamp Card ── */}
+          <div
+            className="bootcamp-hero-card reveal-on-scroll"
             onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+            style={{ cursor: 'pointer' }}
           >
-            <div className="bootcamp-cover">
+            <div className="bootcamp-hero-cover">
               <img src={HACKER_PROTOCOL_BOOTCAMP.emblem} alt="Hacker Protocol emblem" />
             </div>
 
-            <div className="bootcamp-catalog-body">
-              <div className="student-card-header">
-                <FiShield size={20} />
-                <h3>{HACKER_PROTOCOL_BOOTCAMP.title}</h3>
+            <div className="bootcamp-hero-body">
+              <div className="bootcamp-hero-eyebrow">
+                <FiShield size={14} />
+                <span>Hacker Protocol</span>
               </div>
-              <p>{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
 
-              <div className="bootcamp-catalog-metadata">
-                <span>
-                  <FiClock size={14} />
+              <h2 className="bootcamp-hero-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h2>
+              <p className="bootcamp-hero-subtitle">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
+
+              <div className="bootcamp-metadata">
+                <span className="bootcamp-metadata-pill">
+                  <FiClock size={12} />
                   {HACKER_PROTOCOL_BOOTCAMP.duration}
                 </span>
-                <span>
-                  <FiMonitor size={14} />
+                <span className="bootcamp-metadata-pill">
+                  <FiMonitor size={12} />
                   {HACKER_PROTOCOL_BOOTCAMP.format}
                 </span>
-                <span>
-                  <FiLayers size={14} />
+                <span className="bootcamp-metadata-pill">
+                  <FiLayers size={12} />
                   {HACKER_PROTOCOL_BOOTCAMP.phases} phases
                 </span>
               </div>
 
-              <p className="bootcamp-state-pill">{enrolledStateLabel}</p>
+              <div className="bootcamp-status-row">
+                <div className="bootcamp-status-label">
+                  <span className={statusDotClass} />
+                  {enrolledStateLabel}
+                </div>
 
-              <div className="bootcamp-catalog-actions">
-                {!isRegistered && (
-                  <Button
-                    variant="primary"
-                    size="small"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleEnroll();
-                    }}
-                    disabled={saving}
-                  >
-                    {saving ? 'Enrolling...' : 'Enroll on Bootcamp'}
-                  </Button>
-                )}
+                <div className="bootcamp-hero-actions" onClick={(e) => e.stopPropagation()}>
+                  {!isRegistered && (
+                    <Button
+                      variant="primary"
+                      size="small"
+                      onClick={handleEnroll}
+                      disabled={saving}
+                    >
+                      {saving ? 'Enrolling…' : 'Enroll now'}
+                    </Button>
+                  )}
 
-                {isRegistered && !isPaid && (
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setShowPaymentModal(true);
-                    }}
-                  >
-                    <FiCreditCard size={14} />
-                    Continue Payment
-                  </Button>
-                )}
+                  {isRegistered && !isPaid && (
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      onClick={() => setShowPaymentModal(true)}
+                    >
+                      <FiCreditCard size={13} />
+                      Continue payment
+                    </Button>
+                  )}
 
-                {isRegistered && isPaid && (
-                  <Button
-                    variant="primary"
-                    size="small"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      navigate('/student-bootcamps/hacker-protocol/dashboard');
-                    }}
-                  >
-                    Open Bootcamp Dashboard
-                  </Button>
-                )}
+                  {isRegistered && isPaid && (
+                    <Button
+                      variant="primary"
+                      size="small"
+                      onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+                    >
+                      Open dashboard
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
-          </Card>
+          </div>
 
-          <Card padding="medium" className="student-card reveal-on-scroll">
-            <div className="student-card-header">
-              <FiLayers size={20} />
-              <h3>Phase Emblems</h3>
+          {/* ── Phase Emblems ── */}
+          <div className="bootcamp-phases-section reveal-on-scroll">
+            <div className="bootcamp-phases-label">
+              <FiLayers size={13} />
+              Phase breakdown
             </div>
-            <div className="bootcamp-phase-preview-grid">
+
+            <div className="bootcamp-phases-grid">
               {HACKER_PROTOCOL_PHASES.map((phase) => (
-                <div key={phase.moduleId} className="bootcamp-phase-preview-item">
+                <div key={phase.moduleId} className="bootcamp-phase-item">
                   <img src={phase.emblem} alt={`${phase.codename} emblem`} />
-                  <div>
+                  <div className="bootcamp-phase-item-text">
                     <strong>{phase.codename}</strong>
                     <span>{phase.roleTitle}</span>
                   </div>
                 </div>
               ))}
             </div>
-          </Card>
-        </section>
+          </div>
+
+        </div>
       </div>
 
       {showPaymentModal && (

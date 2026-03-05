@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import ScrollToTopButton from '../ui/ScrollToTopButton';
 import '../../../styles/shared/components/layout/LandingLayout.css';
 
 /**
@@ -15,6 +16,7 @@ const LandingLayout = () => {
       <main className="landing-main">
         <Outlet />
       </main>
+      <ScrollToTopButton />
     </div>
   );
 };

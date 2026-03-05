@@ -160,14 +160,20 @@ button, input, textarea, select {
 /* Scroll reveal */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(var(--reveal-distance, 22px)) scale(0.985);
+  filter: blur(6px);
+  transition:
+    opacity var(--reveal-duration, 680ms) ease,
+    transform var(--reveal-duration, 680ms) cubic-bezier(0.16, 0.64, 0.2, 1),
+    filter var(--reveal-duration, 680ms) ease;
+  transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
 
 .reveal-on-scroll.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -178,6 +184,7 @@ button, input, textarea, select {
   .reveal-on-scroll {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
     will-change: auto;
   }
