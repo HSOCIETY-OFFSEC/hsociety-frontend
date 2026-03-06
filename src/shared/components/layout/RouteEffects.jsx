@@ -12,12 +12,23 @@ const RouteEffects = ({ durationMs = 520 }) => {
   useEffect(() => {
     const isInitial = firstRender.current;
     firstRender.current = false;
+    const isLanding = location.pathname === '/';
 
     if (isInitial) {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       trackSecurityEvent({
         eventType: 'page_visit',
         action: 'initial_load',
+        path: location.pathname,
+      });
+      return undefined;
+    }
+
+    if (isLanding) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      trackSecurityEvent({
+        eventType: 'page_visit',
+        action: 'route_change',
         path: location.pathname,
       });
       return undefined;

@@ -8,6 +8,7 @@ import LandingLayout from '../shared/components/layout/LandingLayout';
 import PublicLayout from '../shared/components/layout/PublicLayout';
 import RouteEffects from '../shared/components/layout/RouteEffects';
 import StudentRoleBlocker from '../features/student/components/StudentRoleBlocker';
+import Landing from '../features/landing/Landing';
 
 // Lazy load components
 const Login = React.lazy(() => import('../features/auth/Login'));
@@ -24,7 +25,6 @@ const Remediation = React.lazy(() => import('../features/corporate/remediation/R
 const Assets = React.lazy(() => import('../features/corporate/assets/Assets'));
 const Billing = React.lazy(() => import('../features/corporate/billing/Billing'));
 const CorporatePentest = React.lazy(() => import('../features/corporate/pentest/Pentest'));
-const Landing = React.lazy(() => import('../features/landing/Landing'));
 const Services = React.lazy(() => import('../features/services/Services'));
 const About = React.lazy(() => import('../features/about/About'));
 const Team = React.lazy(() => import('../features/team/Team'));
@@ -124,7 +124,7 @@ const PublicRoute = ({ children }) => {
   return children;
 };
 
-const LoadingFallback = () => <PageLoader message="Loading secure interface..." />;
+const LoadingFallback = () => <PageLoader message="Loading secure interface..." durationMs={0} />;
 
 /**
  * App Router with nested layouts

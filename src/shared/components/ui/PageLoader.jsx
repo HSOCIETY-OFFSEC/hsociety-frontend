@@ -18,7 +18,11 @@ const PageLoader = ({
   const startRef = useRef(null);
 
   useEffect(() => {
-    if (!durationMs) return;
+    // durationMs=0 is used by route guards; keep loader visible until parent unmounts it.
+    if (!durationMs) {
+      setPhase('is-visible');
+      return undefined;
+    }
 
     const enterTimer = setTimeout(() => setPhase('is-visible'), 60);
     startRef.current = performance.now();

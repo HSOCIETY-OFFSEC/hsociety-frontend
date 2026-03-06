@@ -4,7 +4,6 @@ import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
 import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import { getCommunityProfiles, getLandingContent, getLandingStats } from './landing.service';
-import LandingSkeleton from './LandingSkeleton';
 
 /**Sections importation  */
 /**========================== */
@@ -72,9 +71,6 @@ const Landing = ({ scrollToId = null }) => {
   const [statsData, setStatsData] = useState(null);
   const [communityProfiles, setCommunityProfiles] = useState([]);
   const [landingOverrides, setLandingOverrides] = useState({});
-  const [statsLoading, setStatsLoading] = useState(true);
-  const [profilesLoading, setProfilesLoading] = useState(true);
-  const [contentLoading, setContentLoading] = useState(true);
   const [statsError, setStatsError] = useState('');
   const [profilesError, setProfilesError] = useState('');
 
@@ -178,12 +174,6 @@ const Landing = ({ scrollToId = null }) => {
         if (!isMounted) return;
         setStatsError('Stats unavailable.');
         setProfilesError('Community profiles unavailable.');
-      } finally {
-        if (isMounted) {
-          setStatsLoading(false);
-          setProfilesLoading(false);
-          setContentLoading(false);
-        }
       }
     };
 
@@ -273,12 +263,6 @@ const Landing = ({ scrollToId = null }) => {
     return communityProfiles;
   }, [communityProfiles]);
 
-  const landingLoading = statsLoading || profilesLoading || contentLoading;
-
-  if (landingLoading) {
-    return <LandingSkeleton />;
-  }
-
   return (
   <div className="landing-page">
     {/* 1. Hook */}
@@ -290,7 +274,7 @@ const Landing = ({ scrollToId = null }) => {
     <TrustSection signals={trustSignals} />
 
     {/* 3. Immediate credibility */}
-    <StatsSection content={statsContent} loading={statsLoading} error={statsError} />
+    <StatsSection content={statsContent} error={statsError} />
     
     <PartnerCarouselSection />
 
@@ -312,7 +296,6 @@ const Landing = ({ scrollToId = null }) => {
         'Meet offensive learners already sharing findings, feedback, and collaboration.'
         }
         profiles={profileContent}
-        loading={profilesLoading}
         error={profilesError}
       />
 

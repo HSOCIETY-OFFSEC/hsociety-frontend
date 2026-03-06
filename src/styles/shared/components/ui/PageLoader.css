@@ -12,11 +12,19 @@
   justify-content: center;
   background: var(--bg-primary, #080b09);
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.35s ease;
 }
 
-.page-loader.is-visible { opacity: 1; }
-.page-loader.is-exiting { opacity: 0; }
+.page-loader.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.page-loader.is-exiting {
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* ── Spinner ── */
 .page-loader-inner {

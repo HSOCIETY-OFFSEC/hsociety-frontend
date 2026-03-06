@@ -11,7 +11,7 @@ import '../../../styles/leaderboard/leaderboard.css';
 const LeaderboardSection = () => {
   const navigate = useNavigate();
   const [entries, setEntries] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -21,14 +21,14 @@ const LeaderboardSection = () => {
       if (!mounted) return;
       if (!response.success) {
         setError(getPublicErrorMessage({ action: 'load', response }));
-        setLoading(false);
+        setHasLoaded(true);
         return;
       }
 
       const payload = response.data?.leaderboard || response.data;
       const extracted = extractLeaderboardEntries(payload);
       setEntries(extracted);
-      setLoading(false);
+      setHasLoaded(true);
     };
 
     loadLeaderboard();
@@ -38,10 +38,10 @@ const LeaderboardSection = () => {
   }, []);
 
   const statusMessage = useMemo(() => {
-    if (loading) return 'Loading leaderboard...';
+    if (!hasLoaded) return 'Loading leaderboard...';
     if (error) return error;
     return null;
-  }, [loading, error]);
+  }, [hasLoaded, error]);
 
   return (
     <section className="leaderboard-section reveal-on-scroll" id="leaderboard">
@@ -61,7 +61,7 @@ const LeaderboardSection = () => {
           entries={entries}
           limit={6}
           emptyMessage={statusMessage || 'No leaderboard data yet.'}
-          loading={loading}
+          loading={false}
         />
 
         <div className="leaderboard-cta">
