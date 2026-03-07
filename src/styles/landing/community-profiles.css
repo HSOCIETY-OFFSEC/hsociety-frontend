@@ -138,6 +138,17 @@
   overflow: hidden;
 }
 
+.community-profile-card.is-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.community-profile-card.is-link:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary-color) 70%, transparent);
+  outline-offset: 3px;
+}
+
 .community-profile-card:hover {
   border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
   box-shadow:

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
@@ -145,8 +146,9 @@ const OrbCanvas = () => {
 };
 
 /* ─── Tilt card wrapper ──────────────────────────────────────────────────────── */
-const TiltCard = ({ children, className, ...rest }) => {
+const TiltCard = ({ children, className, to, ariaLabel, ...rest }) => {
   const cardRef = useRef(null);
+  const Component = to ? Link : 'article';
 
   const handleMove = useCallback((e) => {
     const el = cardRef.current;
@@ -165,16 +167,21 @@ const TiltCard = ({ children, className, ...rest }) => {
     el.style.transition = 'transform 0.5s cubic-bezier(0.16,0.64,0.2,1)';
   }, []);
 
+  const componentProps = {
+    ref: cardRef,
+    className: `community-profile-card ${to ? 'is-link' : ''} ${className || ''}`,
+    onMouseMove: handleMove,
+    onMouseLeave: handleLeave,
+    ...rest
+  };
+
+  if (to) componentProps.to = to;
+  if (ariaLabel) componentProps['aria-label'] = ariaLabel;
+
   return (
-    <article
-      ref={cardRef}
-      className={`community-profile-card ${className || ''}`}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      {...rest}
-    >
+    <Component {...componentProps}>
       {children}
-    </article>
+    </Component>
   );
 };
 
@@ -273,14 +280,23 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
                     const avatarFallback = getGithubAvatarDataUri(
                       profile.name || profile.hackerHandle || profile.id || 'member'
                     );
-                    const handle = profile.hackerHandle
-                      ? `@${profile.hackerHandle}`
+                    const rawHandle = profile.hackerHandle
+                      ? profile.hackerHandle
                       : profile.name
-                      ? `@${profile.name.split(' ')[0].toLowerCase()}`
-                      : 'Handle unavailable';
+                      ? profile.name.split(' ')[0].toLowerCase()
+                      : '';
+                    const normalizedHandle = rawHandle
+                      ? String(rawHandle).trim().replace(/^@/, '').toLowerCase().replace(/[^a-z0-9._-]/g, '')
+                      : '';
+                    const handle = normalizedHandle ? `@${normalizedHandle}` : 'Handle unavailable';
+                    const profileUrl = normalizedHandle ? `/@${normalizedHandle}` : null;
 
                     return (
-                      <TiltCard key={profile.id || handle}>
+                      <TiltCard
+                        key={profile.id || handle}
+                        to={profileUrl}
+                        ariaLabel={profileUrl ? `View ${handle} profile` : undefined}
+                      >
                         {/* Glint overlay */}
                         <div className="cp-card-glint" aria-hidden="true" />
 

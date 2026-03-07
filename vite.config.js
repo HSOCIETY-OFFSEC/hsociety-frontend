@@ -4,8 +4,43 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const publicHandleRewrite = () => ({
+  name: 'public-handle-rewrite',
+  configureServer(server) {
+    server.middlewares.use((req, _res, next) => {
+      const url = req.url || '';
+      if (
+        url.startsWith('/@') &&
+        !url.startsWith('/@vite') &&
+        !url.startsWith('/@id') &&
+        !url.startsWith('/@fs') &&
+        !url.startsWith('/@react-refresh')
+      ) {
+        req.url = '/index.html';
+      }
+      next();
+    });
+  },
+  configurePreviewServer(server) {
+    server.middlewares.use((req, _res, next) => {
+      const url = req.url || '';
+      if (
+        url.startsWith('/@') &&
+        !url.startsWith('/@vite') &&
+        !url.startsWith('/@id') &&
+        !url.startsWith('/@fs') &&
+        !url.startsWith('/@react-refresh')
+      ) {
+        req.url = '/index.html';
+      }
+      next();
+    });
+  }
+});
+
 export default defineConfig({
   plugins: [
+    publicHandleRewrite(),
     react(),
 
     VitePWA({

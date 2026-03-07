@@ -762,7 +762,7 @@
   font-size: 0.8rem;
   color: var(--text-primary);
   word-break: break-all;
-  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono', monospace;
   letter-spacing: 0.02em;
 }
 

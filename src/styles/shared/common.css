@@ -34,6 +34,11 @@
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.12);
   --shadow-lg: 0 18px 40px -20px rgba(15, 23, 42, 0.35);
   --shadow-xl: 0 30px 60px -30px rgba(15, 23, 42, 0.45);
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --z-sticky: 50;
 }
 
@@ -60,6 +65,11 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
   --shadow-xl: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
 }
 
 /* Black Theme */
@@ -85,6 +95,11 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.55);
   --shadow-lg: 0 18px 40px -22px rgba(0, 0, 0, 0.8);
   --shadow-xl: 0 30px 60px -30px rgba(0, 0, 0, 0.85);
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
 }
 
 /* ========================================

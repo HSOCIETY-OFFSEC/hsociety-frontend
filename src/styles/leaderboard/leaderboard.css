@@ -61,15 +61,15 @@
   gap: 1rem;
   align-items: center;
   padding: 1.2rem 1.5rem;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  box-shadow: 0 10px 30px rgba(12, 12, 12, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .leaderboard-row.is-top {
-  border-color: rgba(16, 185, 129, 0.6);
-  box-shadow: 0 16px 36px rgba(16, 185, 129, 0.16);
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+  box-shadow: var(--shadow-lg);
 }
 
 .leaderboard-header {

@@ -259,8 +259,8 @@
 }
 
 .community-status-dot.online {
-  background: #10b981;
-  box-shadow: 0 0 0 2px color-mix(in srgb, #10b981 20%, transparent);
+  background: var(--primary-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 20%, transparent);
 }
 
 .community-status-dot.offline {
@@ -336,9 +336,9 @@
 }
 
 .community-conn-badge.live {
-  color: #10b981;
-  background: color-mix(in srgb, #10b981 10%, var(--card-bg));
-  border: 1px solid color-mix(in srgb, #10b981 28%, var(--border-color));
+  color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, var(--border-color));
 }
 
 .community-conn-badge.away {

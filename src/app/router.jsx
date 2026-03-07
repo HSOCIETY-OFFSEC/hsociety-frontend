@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
 import WorkspaceLayout from '../shared/components/layout/WorkspaceLayout';
@@ -64,6 +64,7 @@ const PentesterProfiles = React.lazy(() =>
 );
 const CommunityHub = React.lazy(() => import('../features/community/CommunityHub'));
 const CommunityProfile = React.lazy(() => import('../features/community/CommunityProfile'));
+const PublicProfile = React.lazy(() => import('../features/public/PublicProfile'));
 const AccountSettings = React.lazy(() => import('../features/account/AccountSettings'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
@@ -122,6 +123,14 @@ const PublicRoute = ({ children }) => {
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
   }
   return children;
+};
+
+const PublicHandleRoute = () => {
+  const { handle } = useParams();
+  if (!handle || !String(handle).startsWith('@')) {
+    return <NotFound />;
+  }
+  return <PublicProfile />;
 };
 
 const LoadingFallback = () => <PageLoader message="Loading secure interface..." durationMs={0} />;
@@ -430,6 +439,7 @@ const AppRouter = () => {
           <Route path="leaderboard" element={<Leaderboard />} />
           <Route path="terms" element={<Terms />} />
           <Route path="terms-and-conditions" element={<Terms />} />
+          <Route path=":handle" element={<PublicHandleRoute />} />
         </Route>
 
           {/* 404 - minimal layout */}

@@ -119,7 +119,7 @@
 }
 
 .community-aside-channel.active {
-  background: color-mix(in srgb, var(--primary-color, #00ff99) 10%, var(--bg-secondary));
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
   color: var(--text-primary);
   font-weight: 700;
 }
@@ -213,8 +213,8 @@
 }
 
 .community-status-dot.online {
-  background: #10b981;
-  box-shadow: 0 0 0 2px color-mix(in srgb, #10b981 22%, transparent);
+  background: var(--primary-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 22%, transparent);
 }
 
 .community-status-dot.offline {
@@ -239,9 +239,9 @@
 }
 
 .community-conn-badge.live {
-  color: #10b981;
-  background: color-mix(in srgb, #10b981 10%, var(--bg-secondary));
-  border-color: color-mix(in srgb, #10b981 30%, var(--border-color));
+  color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
 }
 
 .community-conn-dot {

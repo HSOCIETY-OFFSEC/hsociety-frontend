@@ -152,8 +152,8 @@
 }
 
 .community-channel-tab.active {
-  background: color-mix(in srgb, var(--primary-color, #00ff99) 14%, var(--bg-secondary));
-  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 30%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 14%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
   color: var(--text-primary);
 }
 

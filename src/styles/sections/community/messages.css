@@ -90,7 +90,7 @@
   padding: 0.4rem 0.6rem 0.6rem;
   border-radius: 12px;
   border: 1px dashed var(--border-color);
-  background: color-mix(in srgb, var(--primary-color, #00ff99) 6%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 6%, transparent);
 }
 
 .community-load-older {
@@ -108,7 +108,7 @@
 .community-load-older:hover,
 .community-load-older:focus-visible {
   color: var(--text-primary);
-  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 35%, var(--border-color));
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
 }
 
 .community-pinned-header {
@@ -216,8 +216,8 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--primary-color, #00ff99);
-  border: 1px solid color-mix(in srgb, var(--primary-color, #00ff99) 40%, transparent);
+  color: var(--primary-color);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 40%, transparent);
   border-radius: 999px;
   padding: 0.05rem 0.45rem;
 }
@@ -248,8 +248,8 @@
 
 /* Own bubble — accent tinted */
 .community-message.own .community-msg-bubble p {
-  background: color-mix(in srgb, var(--primary-color, #00ff99) 11%, var(--bg-secondary));
-  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 24%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 11%, var(--bg-secondary));
+  border-color: color-mix(in srgb, var(--primary-color) 24%, var(--border-color));
   border-radius: 18px 18px 4px 18px;
 }
 
@@ -274,7 +274,7 @@
 }
 
 .community-message.own .community-msg-image {
-  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 24%, var(--border-color));
+  border-color: color-mix(in srgb, var(--primary-color) 24%, var(--border-color));
 }
 
 /* ── Actions ───────────────────────────────────────────────── */
@@ -305,7 +305,7 @@
 
 .community-msg-action.active {
   color: var(--text-primary);
-  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 35%, var(--border-color));
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
 }
 
 .community-msg-action:hover {
@@ -341,7 +341,7 @@
 
 .community-msg-reaction.active {
   color: var(--text-primary);
-  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 35%, var(--border-color));
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
 }
 
 .community-msg-reaction:hover {
@@ -379,7 +379,7 @@
 .community-msg-reaction-add.active,
 .community-msg-reaction-add:hover {
   color: var(--text-primary);
-  border-color: color-mix(in srgb, var(--primary-color, #00ff99) 35%, var(--border-color));
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
 }
 
 .community-msg-reaction-panel {
@@ -416,7 +416,7 @@
 
 .community-msg-reaction-add:focus-visible,
 .community-msg-reaction-item:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--primary-color, #00ff99) 50%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--primary-color) 50%, transparent);
   outline-offset: 2px;
 }
 

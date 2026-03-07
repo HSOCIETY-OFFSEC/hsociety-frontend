@@ -241,6 +241,7 @@ const DEFAULT_API_ENDPOINTS = {
     LANDING_STATS: '/public/landing-stats',
     SUBSCRIBE: '/public/subscribe',
     COMMUNITY_PROFILES: '/public/community-profiles',
+    COMMUNITY_PROFILE: '/public/community-profiles/:handle',
     LANDING_CONTENT: '/public/content/landing',
     TERMS_CONTENT: '/public/content/terms',
     TEAM_CONTENT: '/public/content/team',
