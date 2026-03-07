@@ -34,11 +34,11 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const root = document.documentElement;
     
-    // Remove old theme
-    root.removeAttribute('data-theme');
-    
-    // Set new theme
-    root.setAttribute('data-theme', theme);
+    // Set new theme if needed (avoid reflow on initial load)
+    if (root.getAttribute('data-theme') !== theme) {
+      root.setAttribute('data-theme', theme);
+    }
+    root.style.colorScheme = theme === 'light' ? 'light' : 'dark';
     
     // Save to localStorage
     localStorage.setItem('hsociety-theme', theme);
