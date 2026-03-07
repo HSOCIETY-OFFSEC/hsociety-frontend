@@ -3,14 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiArrowRight, FiClock, FiLayers, FiShield, FiChevronRight } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import '../../styles/sections/courses/index.css';
 
 const CourseDetails = () => {
   const { bootcampId } = useParams();
   const navigate = useNavigate();
-  useScrollReveal();
 
   if (bootcampId !== 'hacker-protocol') {
     return (

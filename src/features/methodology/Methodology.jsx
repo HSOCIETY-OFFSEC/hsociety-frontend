@@ -1,12 +1,10 @@
 import React, { useMemo } from 'react';
 import { FiCheckCircle, FiClipboard, FiSearch, FiShield, FiTarget, FiTool } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import methodologyContent from '../../data/methodology.json';
 import '../../styles/sections/methodology/index.css';
 
 const Methodology = () => {
-  useScrollReveal();
 
   const iconMap = useMemo(() => ({
     FiClipboard,

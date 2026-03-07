@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiActivity, FiCode, FiCpu, FiGitBranch, FiGithub, FiMessageSquare, FiShield, FiTool } from 'react-icons/fi';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
@@ -10,7 +9,6 @@ import '../../styles/sections/developer/index.css';
 
 const Developer = () => {
   const navigate = useNavigate();
-  useScrollReveal();
 
   const iconMap = useMemo(() => ({
     FiCode,

@@ -4,7 +4,6 @@ import { useAuth } from '../../core/auth/AuthContext';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { validateForm } from '../../core/validation/input.validator';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { submitFeedback } from './feedback.service';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import feedbackContent from '../../data/feedback.json';
@@ -28,7 +27,6 @@ import '../../styles/sections/feedback/index.css';
 const Feedback = () => {
   const { user } = useAuth();
 
-  useScrollReveal();
 
   const iconMap = useMemo(() => ({
     FiAlertTriangle,

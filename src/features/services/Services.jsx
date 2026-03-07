@@ -13,7 +13,6 @@ import {
   FiMessageSquare
 } from 'react-icons/fi';
 import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
@@ -28,7 +27,6 @@ import '../../styles/sections/services/index.css';
 const Services = () => {
   const navigate = useNavigate();
   const { requestPentest, requestPentestModal } = useRequestPentest();
-  useScrollReveal();
 
   const iconMap = useMemo(
     () => ({

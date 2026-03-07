@@ -4,7 +4,6 @@ import { FiAward, FiBookOpen, FiCompass, FiFlag, FiLock, FiPlayCircle, FiTarget,
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
-import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import { getStudentCourse } from './course.service';
 import { deriveProfileFromCourseState, syncProfileProgress } from '../profile/profile.service';
 import { QuizPanel } from '../quizzes/QuizPanel';
@@ -127,7 +126,6 @@ const getModuleState = (course, progressState, moduleId) => {
 };
 
 export const CourseLearning = () => {
-  useScrollReveal();
   const navigate = useNavigate();
   const { updateUser } = useAuth();
   const { isRegistered, isPaid, hasAccess } = useBootcampAccess();

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiBookOpen, FiClock, FiShield } from 'react-icons/fi';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Skeleton from '../../shared/components/ui/Skeleton';
@@ -21,7 +20,6 @@ import '../../styles/student/components.css';
 import '../../styles/student/pages/lesson.css';
 
 const StudentLesson = () => {
-  useScrollReveal();
   const navigate = useNavigate();
   const { moduleId: moduleIdParam, roomId: roomIdParam } = useParams();
   const { user, updateUser } = useAuth();

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
-import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import { getDashboardOverview } from './dashboard.service';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import SecurityStatusCard from './components/SecurityStatusCard';
@@ -24,7 +23,6 @@ const Dashboard = () => {
     loadDashboardData();
   }, []);
 
-  useScrollReveal('.reveal-on-scroll', {}, [loading]);
 
   const loadDashboardData = async () => {
     setLoading(true);

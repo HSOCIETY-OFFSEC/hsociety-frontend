@@ -12,7 +12,6 @@ import {
   FaXTwitter,
   FaYoutube
 } from 'react-icons/fa6';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
@@ -48,7 +47,6 @@ const normalizeTeamContent = (base, incoming = {}) => ({
 
 const Team = () => {
   const navigate = useNavigate();
-  useScrollReveal();
   const [content, setContent] = useState(teamContent);
 
   const iconMap = useMemo(() => ({

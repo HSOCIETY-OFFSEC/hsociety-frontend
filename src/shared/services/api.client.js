@@ -137,7 +137,9 @@ class APIClient {
     }
 
     try {
-      console.log(`[API] ${method} ${endpoint}`);
+      if (import.meta.env.DEV) {
+        console.log(`[API] ${method} ${endpoint}`);
+      }
 
       const response = await fetch(url, config);
       window.clearTimeout(timeoutId);
@@ -162,7 +164,9 @@ class APIClient {
         };
       }
 
-      console.log(`[API] ${method} ${endpoint} - Success`);
+      if (import.meta.env.DEV) {
+        console.log(`[API] ${method} ${endpoint} - Success`);
+      }
 
       return {
         success: true,
@@ -241,7 +245,9 @@ class APIClient {
     }
 
     try {
-      console.log(`[API] Upload to ${endpoint}`);
+      if (import.meta.env.DEV) {
+        console.log(`[API] Upload to ${endpoint}`);
+      }
 
       const response = await fetch(url, {
         method: 'POST',
@@ -260,7 +266,9 @@ class APIClient {
         };
       }
 
-      console.log(`[API] Upload to ${endpoint} - Success`);
+      if (import.meta.env.DEV) {
+        console.log(`[API] Upload to ${endpoint} - Success`);
+      }
 
       return {
         success: true,
@@ -285,7 +293,9 @@ class APIClient {
     }
 
     try {
-      console.log(`[API] Download from ${endpoint}`);
+      if (import.meta.env.DEV) {
+        console.log(`[API] Download from ${endpoint}`);
+      }
 
       const response = await fetch(url, { headers });
 
@@ -305,7 +315,9 @@ class APIClient {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
 
-      console.log(`[API] Download from ${endpoint} - Success`);
+      if (import.meta.env.DEV) {
+        console.log(`[API] Download from ${endpoint} - Success`);
+      }
 
       return {
         success: true,

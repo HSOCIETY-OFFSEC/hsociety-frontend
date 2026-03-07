@@ -1,6 +1,5 @@
 import React from 'react';
 import { FiMail, FiMapPin, FiMessageSquare, FiPhone } from 'react-icons/fi';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
@@ -8,7 +7,6 @@ import SocialLinks from '../../shared/components/common/SocialLinks';
 import '../../styles/sections/contact/index.css';
 
 const Contact = () => {
-  useScrollReveal();
 
   return (
     <div className="contact-page">

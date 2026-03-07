@@ -2,13 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiClock, FiLayers, FiShield, FiChevronRight } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import '../../styles/sections/courses/index.css';
 
 const Courses = () => {
   const navigate = useNavigate();
-  useScrollReveal();
 
   return (
     <section className="courses-page reveal-on-scroll">

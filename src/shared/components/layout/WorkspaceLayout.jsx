@@ -140,7 +140,7 @@ const WorkspaceLayout = () => {
     return () => {
       mounted = false;
     };
-  }, [location.pathname, user?.id]);
+  }, [user?.id]);
 
   useEffect(() => {
     let mounted = true;
@@ -157,7 +157,7 @@ const WorkspaceLayout = () => {
     return () => {
       mounted = false;
     };
-  }, [location.pathname, role, user?.id]);
+  }, [role, user?.id]);
 
   const showSidebar = !isCommunity && role !== 'admin' && !isLessonWorkspace;
 

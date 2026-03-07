@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiBookOpen, FiCalendar, FiChevronRight } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import SocialLinks from '../../shared/components/common/SocialLinks';
 import { apiClient } from '../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../config/api.config';
@@ -11,7 +10,6 @@ import '../../styles/sections/blog/index.css';
 
 const Blog = () => {
   const navigate = useNavigate();
-  useScrollReveal();
 
   const fallbackPosts = [
     {

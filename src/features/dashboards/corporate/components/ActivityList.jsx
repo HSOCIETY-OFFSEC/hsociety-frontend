@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiAlertTriangle, FiFileText, FiShield, FiTool } from 'react-icons/fi';
 import Card from '../../../../shared/components/ui/Card';
-import { getRelativeTime } from '../../../../utils/helpers';
+import { getRelativeTime } from '../../../../shared/utils/date';
 
 const iconMap = {
   engagement: FiShield,

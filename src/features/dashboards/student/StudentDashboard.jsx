@@ -9,7 +9,6 @@ import {
   FiFlag,
   FiShield,
 } from 'react-icons/fi';
-import useScrollReveal from '../../../shared/hooks/useScrollReveal';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
@@ -24,7 +23,6 @@ import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
 const StudentDashboard = () => {
-  useScrollReveal();
   const navigate = useNavigate();
   const { updateUser } = useAuth();
   const [loading, setLoading] = useState(true);

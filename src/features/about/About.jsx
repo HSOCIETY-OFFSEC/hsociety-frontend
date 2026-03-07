@@ -1,11 +1,9 @@
 import React from 'react';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import aboutContent from '../../data/about.json';
 import SocialLinks from '../../shared/components/common/SocialLinks';
 import '../../styles/sections/about/index.css';
 
 const About = () => {
-  useScrollReveal();
 
   const { hero, cycle, experience, principle } = aboutContent;
 

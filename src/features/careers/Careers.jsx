@@ -2,12 +2,10 @@ import React from 'react';
 import { FiCompass, FiMessageSquare } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../shared/components/ui/Button';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import '../../styles/sections/careers/index.css';
 
 const Careers = () => {
   const navigate = useNavigate();
-  useScrollReveal();
   const heroCopy =
     'We are pausing hiring for now while we focus on internal programs and training. Keep an eye on this page for future opportunities as we scale.';
 

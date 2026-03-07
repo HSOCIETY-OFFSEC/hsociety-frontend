@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import landingContent from '../../data/landing.json';
 import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import { getCommunityProfiles, getLandingContent, getLandingStats } from './landing.service';
@@ -66,7 +65,6 @@ import careerReadyPathwayImage from '../../assets/why-choose-hsociety-images/car
 import '../../styles/landing/index.css';
 
 const Landing = ({ scrollToId = null }) => {
-  useScrollReveal();
   const location = useLocation();
   const [statsData, setStatsData] = useState(null);
   const [communityProfiles, setCommunityProfiles] = useState([]);
