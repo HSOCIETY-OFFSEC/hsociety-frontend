@@ -46,7 +46,7 @@ const ServiceDetail = () => {
               <Button
                 variant="ghost"
                 size="large"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/register/corporate')}
               >
                 Join the Training Cycle
               </Button>

@@ -274,13 +274,23 @@ const Login = ({ mode = 'default' }) => {
 
               <div className="auth-footer">
                 <p>
-                  Don't have an account?{' '}
+                  Student access?{' '}
                   <button
                     onClick={() => navigate('/register')}
                     className="auth-link-inline"
                     disabled={loading}
                   >
-                    Register here
+                    Create a student account
+                  </button>
+                </p>
+                <p>
+                  Corporate access?{' '}
+                  <button
+                    onClick={() => navigate('/register/corporate')}
+                    className="auth-link-inline"
+                    disabled={loading}
+                  >
+                    Create a corporate account
                   </button>
                 </p>
                 <p>

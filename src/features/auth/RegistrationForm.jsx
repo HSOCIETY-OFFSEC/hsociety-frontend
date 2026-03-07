@@ -148,7 +148,9 @@ const RegistrationForm = ({
         <p className="auth-subtitle">
           {allowAccountTypeSwitch
             ? 'Register as a corporate team or student and get started.'
-            : 'Create a corporate team account to request HSOCIETY services and client dashboards.'}
+            : defaultAccountType === 'student'
+              ? 'Create a student account to join the community and training tracks.'
+              : 'Create a corporate team account to request HSOCIETY services and client dashboards.'}
         </p>
       </div>
 
@@ -182,7 +184,9 @@ const RegistrationForm = ({
         ) : (
           <div className="form-group">
             <label>Account Type</label>
-            <div className="auth-account-label">Corporate account</div>
+            <div className="auth-account-label">
+              {defaultAccountType === 'student' ? 'Student account' : 'Corporate account'}
+            </div>
           </div>
         )}
 

@@ -46,6 +46,16 @@ const CorporateRegister = () => {
             />
             <div className="auth-footer">
               <p>
+                Looking for student access?{' '}
+                <button
+                  type="button"
+                  className="auth-link-inline"
+                  onClick={() => navigate('/register')}
+                >
+                  Register as student
+                </button>
+              </p>
+              <p>
                 By creating a corporate account you agree to the{' '}
                 <button
                   type="button"

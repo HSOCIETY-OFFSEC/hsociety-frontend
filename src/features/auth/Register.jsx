@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FiLock } from 'react-icons/fi';
 import Logo from '../../shared/components/common/Logo';
 import ThemeToggle from '../../shared/components/common/ThemeToggle';
@@ -7,14 +7,7 @@ import RegistrationForm from './RegistrationForm';
 import '../../styles/core/auth.css';
 
 const Register = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const query = new URLSearchParams(location.search);
-  const initialAccountType = query.get('accountType') === 'student' ? 'student' : 'corporate';
-  const redirectRoute = query.get('redirect') || '/login';
-  const note = query.get('accountType') === 'corporate'
-    ? 'Need corporate access? This form pre-selects the corporate account for you.'
-    : '';
 
   return (
     <div className="auth-container">
@@ -29,15 +22,15 @@ const Register = () => {
             <div className="auth-hero-toggle">
               <ThemeToggle />
             </div>
-            <h1 className="auth-hero-title">Create Your Account</h1>
+            <h1 className="auth-hero-title">Join the Student Community</h1>
             <p className="auth-hero-subtitle">
               Join a structured offensive security cycle with real-world engagement
               opportunities and community-driven learning.
             </p>
             <div className="auth-hero-list">
-              <div className="auth-hero-item">Beginner-friendly training tracks</div>
-              <div className="auth-hero-item">Supervised real engagement delivery</div>
-              <div className="auth-hero-item">Actionable reports and remediation</div>
+              <div className="auth-hero-item">Cohort-based training tracks</div>
+              <div className="auth-hero-item">Hands-on practice rooms</div>
+              <div className="auth-hero-item">Community mentorship and feedback</div>
             </div>
           </div>
         </section>
@@ -46,10 +39,9 @@ const Register = () => {
         <section className="auth-panel auth-panel--form">
           <div className="auth-wrapper">
             <RegistrationForm
-              defaultAccountType={initialAccountType}
-              allowAccountTypeSwitch
-              note={note}
-              onSuccessRedirect={redirectRoute}
+              defaultAccountType="student"
+              allowAccountTypeSwitch={false}
+              onSuccessRedirect="/login"
             />
             <div className="auth-footer">
               <p>
@@ -59,6 +51,16 @@ const Register = () => {
                   className="auth-link-inline"
                 >
                   Login
+                </button>
+              </p>
+              <p>
+                Need a corporate account?{' '}
+                <button
+                  type="button"
+                  className="auth-link-inline"
+                  onClick={() => navigate('/register/corporate')}
+                >
+                  Register as corporate
                 </button>
               </p>
               <p>
