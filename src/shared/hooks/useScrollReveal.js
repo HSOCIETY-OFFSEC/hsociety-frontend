@@ -6,6 +6,7 @@ import { useEffect } from 'react';
  */
 const useScrollReveal = (selector = '.reveal-on-scroll', options = {}, deps = []) => {
   useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
     const elements = Array.from(document.querySelectorAll(selector));
     if (elements.length === 0) return undefined;
 
@@ -16,8 +17,13 @@ const useScrollReveal = (selector = '.reveal-on-scroll', options = {}, deps = []
       }
     });
 
+    if (typeof window === 'undefined' || typeof window.IntersectionObserver === 'undefined') {
+      elements.forEach((el) => el.classList.add('is-visible'));
+      return undefined;
+    }
+
     const mergedOptions = { threshold: 0.2, rootMargin: '0px 0px -10% 0px', ...options };
-    const observer = new IntersectionObserver(
+    const observer = new window.IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {

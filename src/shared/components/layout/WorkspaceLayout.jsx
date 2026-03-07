@@ -22,6 +22,7 @@ import { getStudentXpSummary } from '../../../features/student/services/learn.se
 import cpIcon from '../../../assets/icons/CP/cp-icon.png';
 import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
 import { useNotifications } from '../../notifications/NotificationProvider';
+import useScrollReveal from '../../hooks/useScrollReveal';
 import '../../../styles/shared/components/layout/AppShell.css';
 import '../../../styles/shared/components/layout/WorkspaceLayout.css';
 
@@ -30,6 +31,8 @@ import '../../../styles/shared/components/layout/WorkspaceLayout.css';
  * App-like shell for dashboards and learning flows.
  */
 const WorkspaceLayout = () => {
+  useScrollReveal();
+
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();

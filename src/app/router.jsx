@@ -70,6 +70,7 @@ const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
 const Blog = React.lazy(() => import('../features/blog/Blog'));
+const Feedback = React.lazy(() => import('../features/feedback/Feedback'));
 const Terms = React.lazy(() => import('../features/terms/Terms'));
 const Courses = React.lazy(() => import('../features/courses/Courses'));
 const CourseDetails = React.lazy(() => import('../features/courses/CourseDetails'));
@@ -424,6 +425,7 @@ const AppRouter = () => {
           <Route element={<PublicLayout />}>
             <Route path="services/:slug" element={<ServiceDetail />} />
             <Route path="services" element={<Services />} />
+            <Route path="feedback" element={<Feedback />} />
             <Route path="about" element={<About />} />
             <Route path="team" element={<Team />} />
             <Route path="developer" element={<Developer />} />

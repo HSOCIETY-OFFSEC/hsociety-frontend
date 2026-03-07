@@ -21,7 +21,12 @@ const QuickActions = ({ actions = [], onAction }) => (
             </div>
             <h3 className="quick-action-title">{action.title}</h3>
             <p className="quick-action-description">{action.description}</p>
-            <Button variant="card" size="small" style={{ marginTop: 'auto' }}>
+            <Button
+              variant="card"
+              size="small"
+              style={{ marginTop: 'auto' }}
+              onClick={() => onAction(action)}
+            >
               Get Started →
             </Button>
           </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiBookOpen, FiCalendar, FiChevronRight } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
@@ -9,6 +10,7 @@ import { API_ENDPOINTS } from '../../config/api.config';
 import '../../styles/sections/blog/index.css';
 
 const Blog = () => {
+  const navigate = useNavigate();
   useScrollReveal();
 
   const fallbackPosts = [
@@ -45,6 +47,14 @@ const Blog = () => {
     };
   }, []);
 
+  const handleReadArticle = (post) => {
+    if (post?.url) {
+      window.open(post.url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    navigate('/contact');
+  };
+
   return (
     <div className="blog-page">
         <header className="blog-hero reveal-on-scroll">
@@ -67,7 +77,7 @@ const Blog = () => {
               </div>
             </div>
           </div>
-          <Button variant="secondary" size="large">
+          <Button variant="secondary" size="large" onClick={() => navigate('/contact')}>
             <FiBookOpen size={18} />
             Subscribe
           </Button>
@@ -90,7 +100,7 @@ const Blog = () => {
               </div>
               <h3>{post.title}</h3>
               <p>{post.summary}</p>
-              <Button variant="ghost" size="small">
+              <Button variant="ghost" size="small" onClick={() => handleReadArticle(post)}>
                 Read Article <FiChevronRight size={16} />
               </Button>
             </Card>

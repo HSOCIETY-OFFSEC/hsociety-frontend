@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiBarChart2, FiCheckCircle, FiShield } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
@@ -6,6 +7,7 @@ import useScrollReveal from '../../shared/hooks/useScrollReveal';
 import '../../styles/sections/case-studies/index.css';
 
 const CaseStudies = () => {
+  const navigate = useNavigate();
   useScrollReveal();
 
   const studies = [
@@ -59,7 +61,9 @@ const CaseStudies = () => {
               <h3>{study.title}</h3>
               <p>{study.focus}</p>
               <div className="case-studies-outcome">{study.outcome}</div>
-              <Button variant="ghost" size="small">Read More</Button>
+              <Button variant="ghost" size="small" onClick={() => navigate('/contact')}>
+                Read More
+              </Button>
             </Card>
           ))}
         </section>

@@ -54,22 +54,16 @@ export const ThemeProvider = ({ children }) => {
       metaThemeColor.setAttribute('content', themeColorMap[theme] || '#0a0f14');
     }
     
-    // Update favicon based on theme
-    updateFavicon(theme);
+    // Keep a single favicon set across themes.
+    updateFavicon();
   }, [theme]);
 
-  // Update favicon based on theme
-  const updateFavicon = (currentTheme) => {
+  // Keep favicon assets on a single canonical path.
+  const updateFavicon = () => {
     const favicon = document.querySelector('link[rel="icon"]');
     const appleTouchIcon = document.querySelector('link[rel="apple-touch-icon"]');
-    
-    const faviconPath = currentTheme === 'light' 
-      ? '/FAVICON_HSOCIETY_BLACK/favicon.ico'
-      : '/FAVICON_HSOCIETY_WHITE/favicon.ico';
-    
-    const appleTouchPath = currentTheme === 'light'
-      ? '/FAVICON_HSOCIETY_BLACK/apple-touch-icon.png'
-      : '/FAVICON_HSOCIETY_WHITE/apple-touch-icon.png';
+    const faviconPath = '/FAVICON_HSOCIETY_BLACK/favicon.ico';
+    const appleTouchPath = '/FAVICON_HSOCIETY_BLACK/apple-touch-icon.png';
     
     if (favicon) {
       favicon.href = faviconPath;

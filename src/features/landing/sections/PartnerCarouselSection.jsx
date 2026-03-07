@@ -1,9 +1,9 @@
 import React from 'react';
 import '../../../styles/landing/partners.css';
 
-import SorbitLogo from '../../../assets/partners/Sorbit.png';
-import RedspectreAILogo from '../../../assets/partners/redspectre AI.png';
-import WSuitsIndustriesLogo from '../../../assets/partners/wsuitsindustries.png';
+import SorbitLogo from '../../../assets/partners/sorbit.png';
+import RedspectreAILogo from '../../../assets/partners/redspectre-ai.png';
+import WSuitsIndustriesLogo from '../../../assets/partners/wsuits-industries.png';
 
 const PartnerLogo = ({ src, isDuplicate }) => (
   <div className="partner-logo" aria-hidden={isDuplicate}>

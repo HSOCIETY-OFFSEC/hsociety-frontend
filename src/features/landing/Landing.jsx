@@ -54,13 +54,13 @@ import {
 
 /**Image importation */
 /**=========================== */
-import terminalWallpaper from '../../assets/services_images/begginner_offsec_training.png';
-import greenBinaryWallpaper from '../../assets/services_images/community_integration.png';
-import hackerLaptop from '../../assets/services_images/Penetration_tests.png';
-import handsOnLearningImage from '../../assets/why-choos-hsociety-images/hands-on-learning.png';
-import communityEngagementsImage from '../../assets/why-choos-hsociety-images/community-engagments.png';
-import supervisedPentestsImage from '../../assets/why-choos-hsociety-images/supervised-pentests.png';
-import careerReadyPathwayImage from '../../assets/why-choos-hsociety-images/career-ready-pathway.png';
+import terminalWallpaper from '../../assets/services-images/beginner-offsec-training.png';
+import greenBinaryWallpaper from '../../assets/services-images/community-integration.png';
+import hackerLaptop from '../../assets/services-images/penetration-tests.png';
+import handsOnLearningImage from '../../assets/why-choose-hsociety-images/hands-on-learning.png';
+import communityEngagementsImage from '../../assets/why-choose-hsociety-images/community-engagements.png';
+import supervisedPentestsImage from '../../assets/why-choose-hsociety-images/supervised-pentests.png';
+import careerReadyPathwayImage from '../../assets/why-choose-hsociety-images/career-ready-pathway.png';
 
 /**ROOT CSS importation */
 import '../../styles/landing/index.css';

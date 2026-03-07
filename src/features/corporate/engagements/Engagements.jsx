@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiCalendar, FiFlag, FiShield } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
@@ -17,6 +18,7 @@ const statusMap = {
 };
 
 const Engagements = () => {
+  const navigate = useNavigate();
   const [activeEngagements, setActiveEngagements] = useState([]);
   const [pastEngagements, setPastEngagements] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,7 +99,7 @@ const Engagements = () => {
           <p className="engagement-budget">
             <FiCalendar size={16} /> {engagement.summary}
           </p>
-          <Button variant="ghost" size="small">
+          <Button variant="ghost" size="small" onClick={() => navigate('/reports')}>
             View Details <FiArrowRight size={16} />
           </Button>
         </div>

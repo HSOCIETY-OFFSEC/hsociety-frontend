@@ -70,7 +70,12 @@ const StudentQuizMaterial = () => {
               <h3>Module Check-ins</h3>
             </div>
             <p>Quick quizzes mapped to the bootcamp modules and live walkthroughs.</p>
-            <Button variant="secondary" size="small" disabled={!hasAccess}>
+            <Button
+              variant="secondary"
+              size="small"
+              disabled={!hasAccess}
+              onClick={() => (hasAccess ? navigate('/student-learning') : triggerAccessModal())}
+            >
               {hasAccess ? 'Start check-in' : 'Access Denied'}
             </Button>
           </Card>
@@ -80,7 +85,12 @@ const StudentQuizMaterial = () => {
               <h3>Skill Validation</h3>
             </div>
             <p>Confidence checks after each workshop to confirm the critical steps.</p>
-            <Button variant="secondary" size="small" disabled={!hasAccess}>
+            <Button
+              variant="secondary"
+              size="small"
+              disabled={!hasAccess}
+              onClick={() => (hasAccess ? navigate('/student-learning') : triggerAccessModal())}
+            >
               {hasAccess ? 'Open validation' : 'Access Denied'}
             </Button>
           </Card>
