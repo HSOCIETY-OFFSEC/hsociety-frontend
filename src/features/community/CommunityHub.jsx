@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FiHash } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
 import {
   createCommunitySocket,
@@ -390,6 +391,7 @@ const CommunityHub = () => {
           overviewStats={overview.stats}
           mobileNavOpen={mobileNavOpen}
           onToggleMobileNav={() => setMobileNavOpen((prev) => !prev)}
+          connected={connected}
         />
 
         <CommunityMessageList
@@ -410,6 +412,25 @@ const CommunityHub = () => {
           reactionLimit={reactionLimit}
           currentUserId={currentUserId}
         />
+
+        {/* ── Mobile channel switcher bar (replaces header tabs on mobile) ── */}
+        {activeChannels.length > 1 && (
+          <div className="community-mobile-channel-bar" role="tablist" aria-label="Channels">
+            {activeChannels.map((ch) => (
+              <button
+                key={ch.id}
+                type="button"
+                className={`community-mobile-channel-tab${room === ch.id ? ' active' : ''}`}
+                onClick={() => handleRoomChange(ch.id)}
+                role="tab"
+                aria-selected={room === ch.id}
+              >
+                <FiHash size={12} aria-hidden="true" />
+                {ch.name || ch.id}
+              </button>
+            ))}
+          </div>
+        )}
 
         {user && (
           <button

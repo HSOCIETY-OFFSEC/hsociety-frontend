@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiHash, FiMenu, FiMessageSquare, FiUsers, FiX } from 'react-icons/fi';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
+import '../../../../styles/sections/community/header.css';
 
 const CommunityHeader = ({
   activeChannels = [],
@@ -9,6 +10,7 @@ const CommunityHeader = ({
   overviewStats,
   mobileNavOpen = false,
   onToggleMobileNav,
+  connected = false,
 }) => {
   const learners = Number(overviewStats?.learners || 0).toLocaleString();
   const posts = Number(overviewStats?.questions || 0).toLocaleString();
@@ -41,6 +43,10 @@ const CommunityHeader = ({
           <span className="community-header-stat">
             <FiMessageSquare size={13} aria-hidden="true" />
             {posts} {COMMUNITY_UI.header.postsSuffix}
+          </span>
+          <span className={`community-header-conn${connected ? ' live' : ''}`} aria-label={connected ? 'Live' : 'Connecting'}>
+            <span className="community-header-conn-dot" aria-hidden="true" />
+            {connected ? 'Live' : 'Connecting'}
           </span>
         </div>
       </div>

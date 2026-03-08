@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FiHeart, FiMessageSquare, FiMoreHorizontal, FiSend } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
@@ -21,6 +21,7 @@ const CommunityMessage = ({
   const [commentOpen, setCommentOpen] = useState(false);
   const [commentDraft, setCommentDraft] = useState('');
   const [reactionOpen, setReactionOpen] = useState(false);
+  const [lastTap, setLastTap] = useState(0);
   const reactionRef = useRef(null);
   const navigate = useNavigate();
   const likes = Number(message?.likes || 0);
@@ -59,6 +60,15 @@ const CommunityMessage = ({
     mediaQuery.addListener(apply);
     return () => mediaQuery.removeListener(apply);
   }, []);
+
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      // Double-tap detected — like the message
+      if (!liked) onLike?.(message.id);
+    }
+    setLastTap(now);
+  };
 
   const handleOpenProfile = () => {
     if (!profileTarget) return;
@@ -120,7 +130,7 @@ const CommunityMessage = ({
             </time>
           </div>
         )}
-        <div className="community-msg-bubble">
+        <div className="community-msg-bubble" onTouchEnd={handleDoubleTap}>
           {message?.content && <p>{sanitizeText(message.content)}</p>}
           {message?.imageUrl && (
             <img

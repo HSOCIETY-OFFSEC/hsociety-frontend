@@ -22,9 +22,19 @@
   background: var(--bg-secondary);
   color: var(--text-primary);
   border-radius: 999px;
-  padding: 0.5rem 0.9rem;
+  padding: 0.6rem 1rem;
   cursor: pointer;
   font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 600;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  min-height: 44px;
+}
+
+.community-profile-back:hover,
+.community-profile-menu:hover {
+  border-color: color-mix(in srgb, var(--text-primary) 25%, var(--border-color));
+  background: color-mix(in srgb, var(--text-primary) 5%, var(--bg-secondary));
 }
 
 .community-profile-menu {
@@ -172,10 +182,29 @@
   .community-profile-identity {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.9rem;
   }
 
   .community-profile-identity img {
-    width: 72px;
-    height: 72px;
+    width: 76px;
+    height: 76px;
+  }
+
+  .community-profile-identity h1 {
+    font-size: 1.35rem;
+  }
+
+  .community-profile-stats {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .community-profile-emblems {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .community-profile-stats {
+    grid-template-columns: 1fr 1fr;
   }
 }
