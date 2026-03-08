@@ -2,6 +2,7 @@
    Account Settings — Responsive & Mobile-First
    ============================================================ */
 
+@import '../../mobile-dashboard-fixes.css';
 .account-settings {
   padding: 1.5rem 1rem 5rem;
   min-height: calc(100vh - 120px);

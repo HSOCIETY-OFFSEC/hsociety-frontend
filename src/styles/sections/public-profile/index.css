@@ -3,6 +3,7 @@
  * Location: src/styles/sections/public-profile/index.css
  */
 
+@import '../../mobile-dashboard-fixes.css';
 .public-profile {
   display: flex;
   flex-direction: column;

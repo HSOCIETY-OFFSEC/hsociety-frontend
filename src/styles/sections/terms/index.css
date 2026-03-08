@@ -3,6 +3,7 @@
  * Location: src/styles/sections/terms/index.css
  */
 
+@import '../../mobile-dashboard-fixes.css';
 .terms-page {
   min-height: 100vh;
   padding: 4rem 0 5rem;

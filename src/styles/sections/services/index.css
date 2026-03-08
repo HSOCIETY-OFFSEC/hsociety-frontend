@@ -2,6 +2,7 @@
    SERVICES PAGE — Editorial Luxury
    ============================================================ */
 
+@import '../../mobile-dashboard-fixes.css';
 .services-page {
   display: flex;
   flex-direction: column;

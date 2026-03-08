@@ -5,6 +5,7 @@
    ============================================================ */
 
 /* ── Root ───────────────────────────────────────────────────── */
+@import '../../mobile-dashboard-fixes.css';
 .community-root {
   display: flex;
   flex-direction: column;

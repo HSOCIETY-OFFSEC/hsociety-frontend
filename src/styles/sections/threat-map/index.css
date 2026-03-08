@@ -14,6 +14,7 @@
    CSS CUSTOM PROPERTY SAFETY NETS
    (in case host stylesheet omits these)
    ======================================== */
+@import '../../mobile-dashboard-fixes.css';
 :root {
   --tm-header-h: 0px; /* set by JS if needed; kept as 0 so flex handles it */
 }

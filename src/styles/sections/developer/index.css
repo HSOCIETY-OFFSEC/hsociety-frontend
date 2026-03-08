@@ -2,6 +2,7 @@
  * Developer Page Styles
  */
 
+@import '../../mobile-dashboard-fixes.css';
 .developer-page {
   min-height: 100vh;
   background: radial-gradient(900px 420px at 15% -10%, rgba(45, 212, 191, 0.16), transparent 60%),

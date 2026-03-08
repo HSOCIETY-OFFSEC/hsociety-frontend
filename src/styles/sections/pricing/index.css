@@ -1,3 +1,4 @@
+@import '../../mobile-dashboard-fixes.css';
 .pricing-page {
   display: grid;
   gap: 2rem;

@@ -1,0 +1,576 @@
+/* ============================================================
+   MOBILE DASHBOARD OPTIMISATION
+   Goal: Cards take FULL viewport width on mobile,
+         desktop layouts are untouched.
+   Apply this file AFTER all existing dashboard CSS imports.
+   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   1. SHARED DASHBOARD SHELL
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Remove horizontal padding so cards can bleed edge-to-edge */
+  .dashboard-shell {
+    padding-left: 0;
+    padding-right: 0;
+    gap: 0.75rem;
+  }
+
+  /* Header inside shell still gets a little breathing room */
+  .dashboard-shell-header {
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    width: calc(100% - 1.5rem);
+    box-sizing: border-box;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-shell {
+    gap: 0.5rem;
+  }
+
+  .dashboard-shell-header {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    width: calc(100% - 1rem);
+    padding: 1.1rem 1rem;
+    border-radius: 10px;
+  }
+
+  .dashboard-shell-title {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-shell-subtitle {
+    font-size: 0.875rem;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. STUDENT DASHBOARD — student-grid + student-card
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Force single full-width column */
+  .student-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    width: 100%;
+    padding: 0;
+  }
+
+  /* Cards stretch edge-to-edge; bottom border acts as divider */
+  .student-card {
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+    padding: 1.1rem 1rem;
+    /* Remove hover lift on touch devices */
+    transform: none !important;
+  }
+
+  .student-card::before {
+    display: none; /* shimmer line not needed when borderless */
+  }
+
+  /* Keep card inside padding from the page shell consistent */
+  .student-page {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+  }
+
+  /* Hero banner stays full width but keeps horizontal padding */
+  .student-hero {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Bottom section (snapshot + notifications) */
+  .student-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  .student-bottom .student-card {
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-card {
+    padding: 1rem 0.875rem;
+  }
+
+  .student-card-header {
+    padding-bottom: 0.7rem;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. ADMIN DASHBOARD — admin-card + admin layout
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 0;
+  }
+
+  /* All admin cards go full-width, borderless sides */
+  .admin-card {
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+  }
+
+  /* Hero banner */
+  .admin-hero {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 1.25rem 1rem;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Alert bar */
+  .admin-alert {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    margin: 0 0 0.5rem;
+  }
+
+  /* Overview grid — single column */
+  .admin-overview-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  /* Tables stay scrollable horizontally */
+  .admin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Compact row layout for moderation tables */
+  .admin-row-moderation {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .admin-row-users,
+  .admin-row-users-lite,
+  .admin-row-pentests {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  /* Stack stats form */
+  .admin-stats-form {
+    grid-template-columns: 1fr;
+  }
+
+  /* Management action buttons */
+  .admin-management-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .admin-management-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-hero {
+    padding: 1rem 0.875rem;
+  }
+
+  .admin-card {
+    /* inner padding */
+  }
+
+  .admin-badges {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .admin-badge {
+    width: 100%;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. PENTESTER DASHBOARD — pentester-card + pentester-grid
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pentester-dashboard {
+    padding: 0;
+  }
+
+  /* Full-width card strip */
+  .pentester-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .pentester-card {
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+    transform: none !important;
+  }
+
+  .pentester-card::before {
+    display: none;
+  }
+
+  /* Profile cards grid */
+  .pentester-profiles-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .pentester-profile-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+  }
+
+  /* Report cards */
+  .pentester-report-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .pentester-report-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+  }
+
+  /* Summary stat bar — stays as a horizontal scroll row */
+  .pentester-summary-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding: 0.75rem 0.875rem;
+    margin-bottom: 0;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .pentester-summary-card {
+    flex: 0 0 calc(50% - 0.25rem);
+    min-width: 140px;
+    scroll-snap-align: start;
+    border-radius: 10px; /* keep rounded in the scroll strip */
+  }
+
+  /* Hero */
+  .pentester-hero {
+    padding: 1.25rem 1rem;
+    margin: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Alert */
+  .pentester-alert {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    margin: 0 0 0.5rem;
+  }
+
+  /* Section headers get padding */
+  .pentester-section {
+    padding: 0 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Detail grid */
+  .pentester-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .pentester-detail-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .pentester-summary-grid {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .pentester-summary-card {
+    flex: 0 0 calc(55% - 0.25rem);
+  }
+
+  .pentester-section {
+    padding: 0 0.75rem;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. CORPORATE DASHBOARD
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 0;
+  }
+
+  .dashboard-wrapper {
+    gap: 0;
+  }
+
+  /* Header */
+  .corporate-hero {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 1.25rem 1rem;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Stats grid — horizontal scroll strip */
+  .stats-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding: 0.75rem 0.875rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .stats-grid > * {
+    flex: 0 0 calc(50% - 0.25rem);
+    min-width: 160px;
+    scroll-snap-align: start;
+    border-radius: 10px;
+  }
+
+  /* Dashboard grid (status / action / reports) */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .status-card,
+  .primary-action-card,
+  .reports-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+  }
+
+  /* Quick actions */
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .quick-action-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+    transform: none !important;
+  }
+
+  .quick-action-card::before {
+    display: none;
+  }
+
+  /* Activity list */
+  .activity-item {
+    padding: 0.85rem 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .corporate-hero {
+    padding: 1rem 0.875rem;
+  }
+
+  .stats-grid {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .stats-grid > * {
+    flex: 0 0 calc(60% - 0.25rem);
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. ADMIN LAYOUT SHELL (sidebar + main)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Main area gets NO horizontal padding so cards bleed */
+  .admin-main {
+    padding: 0;
+    padding-bottom: 4rem;
+  }
+
+  /* Mobile header stays padded */
+  .admin-mobile-header {
+    padding: 0.75rem 0.875rem;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. STUDENT PAGE SHELL — bootcamp, lesson, resources, etc.
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .student-page {
+    padding: 0;
+  }
+
+  /* Any standalone student-card outside a grid */
+  .student-page > .dashboard-shell > .student-card,
+  .student-page > .dashboard-shell > .admin-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  /* Bootcamp hero */
+  .bootcamp-shell .bootcamp-intro {
+    padding: 1.25rem 1rem;
+  }
+
+  /* Bootcamp module cards */
+  .bootcamp-modules-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .bootcamp-module-card {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .bootcamp-shell .bootcamp-intro {
+    padding: 1rem 0.875rem;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   8. UNIVERSAL CARD FULL-WIDTH UTILITY
+   Apply .card-mobile-full to ANY card that should be edge-to-edge
+   on mobile without needing to change component files.
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .card-mobile-full {
+    width: 100% !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: none !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   9. SCROLL REVEAL — disable on mobile (performance + layout)
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   10. SAFE HORIZONTAL OVERFLOW LOCK
+   Prevents any card from accidentally causing horizontal scroll
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .admin-dashboard,
+  .pentester-dashboard,
+  .dashboard-container,
+  .student-page {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+}

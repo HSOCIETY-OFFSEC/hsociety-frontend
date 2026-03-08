@@ -2,6 +2,7 @@
  * Contact Page Styles
  */
 
+@import '../../mobile-dashboard-fixes.css';
 .contact-page {
   min-height: 100vh;
   padding-bottom: 4rem;

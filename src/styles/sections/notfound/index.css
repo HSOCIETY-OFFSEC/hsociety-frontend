@@ -2,6 +2,7 @@
  * Not Found Page Styles
  */
 
+@import '../../mobile-dashboard-fixes.css';
 .notfound-page {
   min-height: calc(100vh - 72px);
   display: flex;

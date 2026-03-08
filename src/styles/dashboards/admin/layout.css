@@ -1,34 +1,133 @@
+/**
+ * Admin Dashboard — layout.css (Mobile-First)
+ * Location: src/styles/dashboards/admin/layout.css
+ */
+
+/* ── Admin Shell (sidebar + main) ─────────────────────────── */
 body.admin-sidebar-open {
   overflow: hidden;
 }
 
 .admin-shell {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "header" "main";
   min-height: 100vh;
+  width: 100%;
 }
 
-/* Mobile header: visible only on small screens */
+/* ── Mobile Header ─────────────────────────────────────────── */
 .admin-mobile-header {
-  display: none;
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
+.admin-mobile-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  min-height: 44px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  touch-action: manipulation;
+}
+
+.admin-mobile-menu-btn:hover {
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
+}
+
+.admin-mobile-header-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Sidebar Overlay ───────────────────────────────────────── */
+.admin-sidebar-overlay {
+  display: block;
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 998;
+}
+
+.admin-sidebar-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
 .admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(280px, 85vw);
+  max-width: 320px;
+  height: 100vh;
+  z-index: 999;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
   border-right: 1px solid var(--border-color);
   background: var(--bg-secondary);
   padding: 1.5rem 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  box-sizing: border-box;
 }
 
+.admin-sidebar.open {
+  transform: translateX(0);
+}
+
+.admin-sidebar .admin-sidebar-brand {
+  padding-right: 3rem;
+}
+
+/* ── Sidebar Close Button ──────────────────────────────────── */
 .admin-sidebar-close {
-  display: none;
+  display: inline-flex;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
+.admin-sidebar-close:hover {
+  background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
+}
+
+/* ── Sidebar Brand ─────────────────────────────────────────── */
 .admin-sidebar-brand {
   display: flex;
   flex-direction: column;
@@ -41,6 +140,7 @@ body.admin-sidebar-open {
   font-size: 1.1rem;
 }
 
+/* ── Sidebar Nav ───────────────────────────────────────────── */
 .admin-sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -51,11 +151,14 @@ body.admin-sidebar-open {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.6rem 0.75rem;
+  padding: 0.7rem 0.85rem;
+  min-height: 44px;
   border-radius: 10px;
   color: var(--text-secondary);
   text-decoration: none;
+  font-size: 0.92rem;
   transition: background 0.2s ease, color 0.2s ease;
+  touch-action: manipulation;
 }
 
 .admin-sidebar-link.active,
@@ -64,126 +167,90 @@ body.admin-sidebar-open {
   color: var(--text-primary);
 }
 
+/* ── Main Content ──────────────────────────────────────────── */
 .admin-main {
-  padding: 1.5rem 2rem 3rem;
+  grid-area: main;
+  padding: 1rem 0.875rem 3rem;
+  min-width: 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-/* Overlay for mobile drawer (always present but only visible when open) */
-.admin-sidebar-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 6, 23, 0.5);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 998;
-}
-
-@media (max-width: 1024px) {
+/* ── Desktop: Persistent sidebar ──────────────────────────── */
+@media (min-width: 1024px) {
   .admin-shell {
-    grid-template-columns: 1fr;
-    grid-template-areas: "header" "main";
+    grid-template-columns: 260px 1fr;
+    grid-template-areas: "sidebar main";
   }
 
-  .admin-mobile-header {
-    display: flex;
-    grid-area: header;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .admin-mobile-menu-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border-color);
-    background: var(--input-bg);
-    color: var(--text-primary);
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .admin-mobile-menu-btn:hover {
-    background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
-  }
-
-  .admin-mobile-header-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-
-  .admin-sidebar-overlay {
-    display: block;
-  }
-
-  .admin-sidebar-overlay.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
+  .admin-mobile-header { display: none; }
 
   .admin-sidebar {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    width: min(280px, 85vw);
-    max-width: 320px;
     height: 100vh;
-    z-index: 999;
-    transform: translateX(-100%);
-    transition: transform 0.25s ease;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
-    overflow-y: auto;
+    transform: none;
+    box-shadow: none;
+    z-index: auto;
+    width: 260px;
+    max-width: none;
+    grid-area: sidebar;
   }
 
-  .admin-sidebar.open {
-    transform: translateX(0);
-  }
-
-  .admin-sidebar .admin-sidebar-brand {
-    padding-right: 3rem;
-  }
-
-  .admin-sidebar-close {
-    display: inline-flex;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border: 1px solid var(--border-color);
-    background: var(--input-bg);
-    color: var(--text-primary);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .admin-sidebar-close:hover {
-    background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
-  }
-
-  .admin-sidebar-nav {
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
+  .admin-sidebar-overlay { display: none !important; }
+  .admin-sidebar-close { display: none; }
 
   .admin-main {
-    grid-area: main;
-    padding: 1rem 1.25rem 3rem;
+    padding: 1.5rem 2rem 3rem;
+  }
+}
+
+/* ── Admin Page Shell ──────────────────────────────────────── */
+.admin-dashboard {
+  min-height: calc(100vh - 60px);
+  /*
+   * MOBILE: zero horizontal padding — cards bleed edge-to-edge.
+   * Only vertical padding for nav clearance and bottom bar.
+   */
+  padding: 0.75rem 0 3.5rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.admin-dashboard .dashboard-shell {
+  min-width: 0;
+  width: 100%;
+}
+
+.admin-dashboard .admin-section-header,
+.admin-dashboard .admin-hero,
+.admin-dashboard .admin-subtitle {
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Large tablet: restore horizontal page padding */
+@media (min-width: 900px) {
+  .admin-dashboard {
+    padding: 1.25rem 1rem 3.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-dashboard {
+    padding: 1.5rem 1.5rem 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-sidebar {
+    transition: none;
+  }
+  .admin-sidebar-overlay {
+    transition: none;
   }
 }
