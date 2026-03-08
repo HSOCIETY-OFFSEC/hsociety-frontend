@@ -201,13 +201,13 @@ const FooterSection = () => {
 
         <div className="footer-column">
           <h4>Contact</h4>
-          <a href="mailto:ops@hsociety.africa">
+          <a href="mailto:hsocietyoffsec@gmail.com">
             <FiMessageSquare size={16} />
-            ops@hsociety.africa
+            hsocietyoffsec@gmail.com
           </a>
-          <a href="tel:+254700000000">
+          <a href="tel:+233 504 500 337">
             <FiPhone size={16} />
-            +254 700 000 000
+            +233 504 500 337
           </a>
           <span className="footer-address">
             <FiGlobe size={16} />
