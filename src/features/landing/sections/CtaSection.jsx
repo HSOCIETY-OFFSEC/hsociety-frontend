@@ -2,13 +2,25 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
-import brandImageBlack from '../../../assets/brand-images/brand-image-black.png';
-import brandImageWhite from '../../../assets/brand-images/brand-image-white.png';
+import useRequestPentest from '../../../shared/hooks/useRequestPentest';
+import { trackEvent } from '../../../shared/services/analytics.service';
+import { ROUTES } from '../../../app/routes';
+import brandImageBlack from '../../../assets/brand-images/brand-image-black.webp';
+import brandImageWhite from '../../../assets/brand-images/brand-image-white.webp';
 import '../../../styles/landing/cta.css';
 
 const CtaSection = ({ content }) => {
   const navigate = useNavigate();
+  const { requestPentest, requestPentestModal } = useRequestPentest();
   const { left, right } = content;
+  const handleRoute = (route) => {
+    trackEvent('landing_cta_click', { location: 'final_cta', route });
+    if (route === ROUTES.CORPORATE_PENTEST) {
+      requestPentest();
+      return;
+    }
+    navigate(route);
+  };
 
   return (
     <section className="cta-section reveal-on-scroll">
@@ -24,7 +36,7 @@ const CtaSection = ({ content }) => {
               <Button
                 variant={left.variant}
                 size="large"
-                onClick={() => navigate(left.route)}
+                onClick={() => handleRoute(left.route)}
               >
                 {left.button}
               </Button>
@@ -41,7 +53,7 @@ const CtaSection = ({ content }) => {
               <Button
                 variant={right.variant}
                 size="large"
-                onClick={() => navigate(right.route)}
+                onClick={() => handleRoute(right.route)}
               >
                 {right.button}
               </Button>
@@ -49,6 +61,7 @@ const CtaSection = ({ content }) => {
           </div>
         </Card>
       </div>
+      {requestPentestModal}
     </section>
   );
 };

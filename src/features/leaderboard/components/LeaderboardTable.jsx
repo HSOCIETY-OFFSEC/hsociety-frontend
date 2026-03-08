@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { IoFlameOutline } from 'react-icons/io5';
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
-import cpIcon from '../../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { buildLeaderboard } from '../leaderboard.utils';
 import '../../../styles/leaderboard/leaderboard.css';
 

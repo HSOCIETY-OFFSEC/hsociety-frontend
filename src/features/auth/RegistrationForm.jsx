@@ -12,6 +12,7 @@ import { registerUser } from './register.service';
 import { login as loginRequest } from '../../core/auth/auth.service';
 import { useAuth } from '../../core/auth/AuthContext';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
+import { trackEvent } from '../../shared/services/analytics.service';
 import '../../styles/core/auth.css';
 
 const RegistrationForm = ({
@@ -58,6 +59,7 @@ const RegistrationForm = ({
     }
 
     setLoading(true);
+    trackEvent('register_submit_start', { account_type: form.accountType });
     try {
       const payload = buildRegisterDTO(form);
       const response = await registerUser(payload);
@@ -85,6 +87,7 @@ const RegistrationForm = ({
           message: 'Welcome to HSOCIETY. Your workspace is ready.',
           duration: 4200,
         });
+        trackEvent('register_submit_success', { account_type: payload.role, source: 'mock' });
         navigate(successRoute);
         return;
       }
@@ -102,6 +105,7 @@ const RegistrationForm = ({
           message: 'Welcome to HSOCIETY. Your workspace is ready.',
           duration: 4200,
         });
+        trackEvent('register_submit_success', { account_type: payload.role, source: 'token' });
         navigate(successRoute);
         return;
       }
@@ -117,6 +121,7 @@ const RegistrationForm = ({
           message: 'Welcome to HSOCIETY. Your workspace is ready.',
           duration: 4200,
         });
+        trackEvent('register_submit_success', { account_type: role, source: 'login' });
         navigate(resolveDashboardRoute(role));
         return;
       }
@@ -127,6 +132,7 @@ const RegistrationForm = ({
         message: 'Your account is ready. Sign in to continue.',
         duration: 4200,
       });
+      trackEvent('register_submit_success', { account_type: payload.role, source: 'redirect_login' });
       navigate('/login', {
         state: {
           email: payload.credentials.email,
@@ -135,6 +141,7 @@ const RegistrationForm = ({
       });
     } catch (err) {
       console.error('Registration failed:', err);
+      trackEvent('register_submit_failure', { account_type: form.accountType });
       setError('Registration failed. Please try again.');
     } finally {
       setLoading(false);

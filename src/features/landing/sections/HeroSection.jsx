@@ -9,6 +9,8 @@ import { getSocialLinks } from '../../../config/social.config';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
+import { trackEvent } from '../../../shared/services/analytics.service';
+import { ROUTES } from '../../../app/routes';
 import '../../../styles/landing/hero.css';
 
 /**
@@ -99,7 +101,8 @@ const HeroSection = ({ content }) => {
                 variant={cta.variant}
                 size="large"
                 onClick={() => {
-                  if (cta.route === '/corporate/pentest') {
+                  trackEvent('landing_cta_click', { location: 'hero', route: cta.route });
+                  if (cta.route === ROUTES.CORPORATE_PENTEST) {
                     requestPentest();
                     return;
                   }

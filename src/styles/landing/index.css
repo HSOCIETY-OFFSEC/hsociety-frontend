@@ -188,7 +188,7 @@
 
 /* ── Section Titles ─────────────────────────────────────────── */
 .section-title-large {
-  font-size: clamp(1.85rem, 3.5vw, 3rem);
+  font-size: clamp(1.75rem, 3.2vw, 2.7rem);
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.03em;
@@ -197,7 +197,7 @@
 }
 
 .section-subtitle-large {
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.7;
   margin: 0;
@@ -419,7 +419,7 @@
   .trust-section,
   .pathways-section,
   .cycle-section {
-    padding: 4rem 1.25rem;
+    padding: 3.25rem 1.1rem;
   }
 
   .section-header-center {
@@ -427,7 +427,7 @@
   }
 
   .section-title-large {
-    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-size: clamp(1.45rem, 4vw, 1.95rem);
   }
 
   /* CTA */
@@ -563,7 +563,7 @@
   }
 
   .section-subtitle-large {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .section-eyebrow {

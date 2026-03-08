@@ -28,6 +28,9 @@
 }
 
 .navbar-logo {
+  border: 0;
+  background: transparent;
+  padding: 0;
   min-width: 0;
   flex-shrink: 0;
   cursor: pointer;

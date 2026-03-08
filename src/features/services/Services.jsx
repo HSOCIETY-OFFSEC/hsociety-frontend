@@ -19,9 +19,9 @@ import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import useRequestPentest from '../../shared/hooks/useRequestPentest';
 import { slugify } from '../../shared/utils/slugify';
-import terminalWallpaper from '../../assets/services-images/beginner-offsec-training.png';
-import greenBinaryWallpaper from '../../assets/services-images/community-integration.png';
-import hackerLaptop from '../../assets/services-images/penetration-tests.png';
+import terminalWallpaper from '../../assets/services-images/beginner-offsec-training.webp';
+import greenBinaryWallpaper from '../../assets/services-images/community-integration.webp';
+import hackerLaptop from '../../assets/services-images/penetration-tests.webp';
 import '../../styles/sections/services/index.css';
 
 const Services = () => {

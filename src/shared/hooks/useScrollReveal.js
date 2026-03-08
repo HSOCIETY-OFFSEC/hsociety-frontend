@@ -28,11 +28,19 @@ const getObserver = (options) => {
   return sharedObserver;
 };
 
-const useScrollReveal = (selector = '.reveal-on-scroll', options = {}, deps = []) => {
+const useScrollReveal = (selector = '.reveal-on-scroll', options = {}, deps = [], rootSelector = null) => {
+  const optionsKey = JSON.stringify(options || {});
+
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
+    const rootNode =
+      rootSelector && typeof rootSelector === 'string'
+        ? document.querySelector(rootSelector)
+        : null;
+    const queryRoot = rootNode || document;
+
     const revealElements = () => {
-      const elements = Array.from(document.querySelectorAll(selector));
+      const elements = Array.from(queryRoot.querySelectorAll(selector));
       if (elements.length === 0) return;
 
       elements.forEach((el, index) => {
@@ -55,15 +63,8 @@ const useScrollReveal = (selector = '.reveal-on-scroll', options = {}, deps = []
     };
 
     revealElements();
-
-    const mutationObserver = new MutationObserver(() => {
-      revealElements();
-    });
-
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
-
-    return () => mutationObserver.disconnect();
-  }, [selector, ...deps]);
+    return undefined;
+  }, [selector, rootSelector, optionsKey, ...deps]);
 };
 
 export default useScrollReveal;

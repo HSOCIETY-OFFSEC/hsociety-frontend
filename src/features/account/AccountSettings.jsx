@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { FiAlertTriangle, FiAward, FiLock, FiTrendingUp, FiTrash2 } from 'react-icons/fi';
 import { IoFlameOutline } from 'react-icons/io5';
-import cpIcon from '../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import PasswordInput from '../../shared/components/ui/PasswordInput';

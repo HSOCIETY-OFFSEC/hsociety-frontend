@@ -14,7 +14,7 @@ import SocialLinks from '../../shared/components/common/SocialLinks';
 import { getUserAvatar } from './utils/community.utils';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { getProfile } from '../account/account.service';
-import cpIcon from '../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_HUB_DATA } from '../../data/community/communityHubData';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import '../../styles/sections/community/base.css';

@@ -10,7 +10,7 @@ import {
   FiMessageSquare,
 } from 'react-icons/fi';
 import { IoFlameOutline } from 'react-icons/io5';
-import cpIcon from '../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getCommunityProfile } from './community.service';
 import CommunitySidebar from './components/sidebar/CommunitySidebar';

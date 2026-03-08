@@ -17,12 +17,11 @@ import Sidebar from './Sidebar';
 import ThemeToggle from '../common/ThemeToggle';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
 import { getSidebarLinks } from '../../../config/navigation.config';
-import { getProfile } from '../../../features/account/account.service';
-import { getStudentXpSummary } from '../../../features/student/services/learn.service';
-import cpIcon from '../../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
 import { useNotifications } from '../../notifications/NotificationProvider';
 import useScrollReveal from '../../hooks/useScrollReveal';
+import { useUserStats } from '../../hooks/useUserStats';
 import '../../../styles/shared/components/layout/AppShell.css';
 import '../../../styles/shared/components/layout/WorkspaceLayout.css';
 
@@ -31,9 +30,9 @@ import '../../../styles/shared/components/layout/WorkspaceLayout.css';
  * App-like shell for dashboards and learning flows.
  */
 const WorkspaceLayout = () => {
-  useScrollReveal();
-
   const location = useLocation();
+  useScrollReveal('.reveal-on-scroll', {}, [location.pathname], '.workspace-layout');
+
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -41,8 +40,6 @@ const WorkspaceLayout = () => {
   const [communityMenuOpen, setCommunityMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [learnOpen, setLearnOpen] = useState(false);
-  const [streakDays, setStreakDays] = useState(0);
-  const [cpTotal, setCpTotal] = useState(0);
   const {
     notifications,
     unreadCount,
@@ -58,6 +55,7 @@ const WorkspaceLayout = () => {
   const isLessonWorkspace = pathname.startsWith('/student-bootcamps/hacker-protocol/module/');
   const isCommunity = pathname.startsWith('/community');
   const role = user?.role === 'client' ? 'corporate' : user?.role;
+  const { cpTotal, streakDays } = useUserStats(user?.id, role);
 
   const communityLinks = useMemo(() => {
     if (!isCommunity) return [];
@@ -124,40 +122,6 @@ const WorkspaceLayout = () => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [notificationMenuOpen]);
 
-
-  useEffect(() => {
-    let mounted = true;
-    const loadCp = async () => {
-      if (!user?.id) {
-        if (mounted) setCpTotal(0);
-        return;
-      }
-      const response = await getProfile();
-      if (!mounted || !response.success) return;
-      setCpTotal(Number(response.data?.xpSummary?.totalXp || 0));
-    };
-    loadCp();
-    return () => {
-      mounted = false;
-    };
-  }, [user?.id]);
-
-  useEffect(() => {
-    let mounted = true;
-    const loadStreak = async () => {
-      if (!user?.id || role !== 'student') {
-        if (mounted) setStreakDays(0);
-        return;
-      }
-      const response = await getStudentXpSummary();
-      if (!mounted || !response.success) return;
-      setStreakDays(Number(response.data?.streakDays || 0));
-    };
-    loadStreak();
-    return () => {
-      mounted = false;
-    };
-  }, [role, user?.id]);
 
   const showSidebar = !isCommunity && role !== 'admin' && !isLessonWorkspace;
 

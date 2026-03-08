@@ -1,9 +1,9 @@
-import bootcampEmblem from '../../assets/bootcamps/hacker-protocol/emblem/hacker-protocol-bootcamp-emblem.png';
-import awakeningEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/Awakening-owl-emblem-phase-1.png';
-import signalEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/signal-falcon-emblem-phase-2.png';
-import coreEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/core-panther-emblem-phase-3.png';
-import structureEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/Structure-bear-emblem-phase-4.png';
-import nexusEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/Nexus-Fox-emblem-phase-5.png';
+import bootcampEmblem from '../../assets/bootcamps/hacker-protocol/emblem/hacker-protocol-bootcamp-emblem.webp';
+import awakeningEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/Awakening-owl-emblem-phase-1.webp';
+import signalEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/signal-falcon-emblem-phase-2.webp';
+import coreEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/core-panther-emblem-phase-3.webp';
+import structureEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/Structure-bear-emblem-phase-4.webp';
+import nexusEmblem from '../../assets/bootcamps/hacker-protocol/modules/emblems/Nexus-Fox-emblem-phase-5.webp';
 
 export const HACKER_PROTOCOL_ID = 'hacker-protocol';
 

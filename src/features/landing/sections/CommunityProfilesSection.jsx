@@ -3,142 +3,89 @@ import { Link } from 'react-router-dom';
 import { FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
-import cpIcon from '../../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_PROFILES_DATA } from '../../../data/landing/communityProfilesData';
 import '../../../styles/landing/community-profiles.css';
 
 const AUTO_ROTATE_MS = COMMUNITY_PROFILES_DATA.autoRotateMs;
 
-/* ─── Three.js floating orb background ─────────────────────────────────────── */
+/* ─── Lightweight canvas orb background ────────────────────────────────────── */
 const OrbCanvas = () => {
   const canvasRef = useRef(null);
   const animRef = useRef(null);
 
   useEffect(() => {
-    let THREE;
-    let renderer, scene, camera;
-    let particles, clock;
-    let mounted = true;
+    const canvas = canvasRef.current;
+    if (!canvas) return undefined;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return undefined;
 
-    const init = async () => {
-      try {
-        THREE = await import('three');
-      } catch {
-        return; // silently skip if Three.js unavailable
-      }
-      if (!mounted || !canvasRef.current) return;
+    const dots = Array.from({ length: 80 }).map(() => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 2.2 + 0.8,
+      speedX: (Math.random() - 0.5) * 0.00035,
+      speedY: (Math.random() - 0.5) * 0.00035,
+      alpha: Math.random() * 0.35 + 0.1,
+      color: Math.random() > 0.5 ? '45,212,191' : '31,191,143',
+    }));
 
-      const canvas = canvasRef.current;
-      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(60, canvas.offsetWidth / canvas.offsetHeight, 0.1, 100);
-      camera.position.z = 5;
-
-      clock = new THREE.Clock();
-
-      // ── particle field ──────────────────────────────────────
-      const count = 280;
-      const geo = new THREE.BufferGeometry();
-      const pos = new Float32Array(count * 3);
-      const col = new Float32Array(count * 3);
-      const sizes = new Float32Array(count);
-
-      // brand colours from common.css primary
-      const palette = [
-        new THREE.Color('#1fbf8f'),
-        new THREE.Color('#2dd4bf'),
-        new THREE.Color('#14a779'),
-        new THREE.Color('#0b1220').lerp(new THREE.Color('#1fbf8f'), 0.25),
-      ];
-
-      for (let i = 0; i < count; i++) {
-        pos[i * 3]     = (Math.random() - 0.5) * 14;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 8;
-        pos[i * 3 + 2] = (Math.random() - 0.5) * 6;
-
-        const c = palette[Math.floor(Math.random() * palette.length)];
-        col[i * 3]     = c.r;
-        col[i * 3 + 1] = c.g;
-        col[i * 3 + 2] = c.b;
-
-        sizes[i] = Math.random() * 3 + 1;
-      }
-
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-      geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-      const mat = new THREE.PointsMaterial({
-        size: 0.06,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.55,
-        sizeAttenuation: true,
-      });
-
-      particles = new THREE.Points(geo, mat);
-      scene.add(particles);
-
-      // ── ambient glow sphere ──────────────────────────────────
-      const sphereGeo = new THREE.SphereGeometry(1.6, 32, 32);
-      const sphereMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color('#1fbf8f'),
-        transparent: true,
-        opacity: 0.04,
-        wireframe: true,
-      });
-      const sphere = new THREE.Mesh(sphereGeo, sphereMat);
-      sphere.position.set(3, -0.5, -1);
-      scene.add(sphere);
-
-      const sphereGeo2 = new THREE.SphereGeometry(1.0, 24, 24);
-      const sphereMat2 = new THREE.MeshBasicMaterial({
-        color: new THREE.Color('#2dd4bf'),
-        transparent: true,
-        opacity: 0.05,
-        wireframe: true,
-      });
-      const sphere2 = new THREE.Mesh(sphereGeo2, sphereMat2);
-      sphere2.position.set(-4, 1, -2);
-      scene.add(sphere2);
-
-      const resize = () => {
-        if (!canvas || !renderer) return;
-        renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-        camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
-        camera.updateProjectionMatrix();
-      };
-      window.addEventListener('resize', resize);
-
-      const animate = () => {
-        if (!mounted) return;
-        animRef.current = requestAnimationFrame(animate);
-        const t = clock.getElapsedTime();
-
-        particles.rotation.y = t * 0.04;
-        particles.rotation.x = Math.sin(t * 0.02) * 0.15;
-
-        sphere.rotation.y = t * 0.12;
-        sphere.rotation.x = t * 0.07;
-        sphere2.rotation.y = -t * 0.09;
-        sphere2.rotation.z = t * 0.05;
-
-        renderer.render(scene, camera);
-      };
-      animate();
-
-      return () => window.removeEventListener('resize', resize);
+    const resize = () => {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const width = canvas.offsetWidth;
+      const height = canvas.offsetHeight;
+      canvas.width = Math.max(1, Math.floor(width * ratio));
+      canvas.height = Math.max(1, Math.floor(height * ratio));
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     };
 
-    init();
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
 
+    const drawGlow = (width, height, time) => {
+      const cx1 = width * 0.78 + Math.sin(time * 0.0005) * 24;
+      const cy1 = height * 0.38 + Math.cos(time * 0.0004) * 20;
+      const g1 = ctx.createRadialGradient(cx1, cy1, 4, cx1, cy1, 140);
+      g1.addColorStop(0, 'rgba(31,191,143,0.16)');
+      g1.addColorStop(1, 'rgba(31,191,143,0)');
+      ctx.fillStyle = g1;
+      ctx.fillRect(0, 0, width, height);
+
+      const cx2 = width * 0.22 + Math.cos(time * 0.00055) * 20;
+      const cy2 = height * 0.62 + Math.sin(time * 0.00045) * 18;
+      const g2 = ctx.createRadialGradient(cx2, cy2, 2, cx2, cy2, 120);
+      g2.addColorStop(0, 'rgba(45,212,191,0.14)');
+      g2.addColorStop(1, 'rgba(45,212,191,0)');
+      ctx.fillStyle = g2;
+      ctx.fillRect(0, 0, width, height);
+    };
+
+    const tick = (time) => {
+      const width = canvas.offsetWidth;
+      const height = canvas.offsetHeight;
+      ctx.clearRect(0, 0, width, height);
+      drawGlow(width, height, time);
+
+      dots.forEach((dot) => {
+        dot.x += dot.speedX;
+        dot.y += dot.speedY;
+        if (dot.x < -0.05) dot.x = 1.05;
+        if (dot.x > 1.05) dot.x = -0.05;
+        if (dot.y < -0.05) dot.y = 1.05;
+        if (dot.y > 1.05) dot.y = -0.05;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${dot.color}, ${dot.alpha})`;
+        ctx.arc(dot.x * width, dot.y * height, dot.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      animRef.current = window.requestAnimationFrame(tick);
+    };
+
+    animRef.current = window.requestAnimationFrame(tick);
     return () => {
-      mounted = false;
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-      if (renderer) renderer.dispose();
+      window.removeEventListener('resize', resize);
+      if (animRef.current) window.cancelAnimationFrame(animRef.current);
     };
   }, []);
 
@@ -149,8 +96,16 @@ const OrbCanvas = () => {
 const TiltCard = ({ children, className, to, ariaLabel, ...rest }) => {
   const cardRef = useRef(null);
   const Component = to ? Link : 'article';
+  const [enableTilt, setEnableTilt] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setEnableTilt(window.innerWidth >= 1024 && !reduceMotion);
+  }, []);
 
   const handleMove = useCallback((e) => {
+    if (!enableTilt) return;
     const el = cardRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -158,14 +113,15 @@ const TiltCard = ({ children, className, to, ariaLabel, ...rest }) => {
     const y = ((e.clientY - rect.top) / rect.height - 0.5) * -18;
     el.style.transform = `perspective(800px) rotateY(${x}deg) rotateX(${y}deg) translateZ(8px)`;
     el.style.transition = 'transform 0.08s linear';
-  }, []);
+  }, [enableTilt]);
 
   const handleLeave = useCallback(() => {
+    if (!enableTilt) return;
     const el = cardRef.current;
     if (!el) return;
     el.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
     el.style.transition = 'transform 0.5s cubic-bezier(0.16,0.64,0.2,1)';
-  }, []);
+  }, [enableTilt]);
 
   const componentProps = {
     ref: cardRef,
@@ -189,6 +145,7 @@ const TiltCard = ({ children, className, to, ariaLabel, ...rest }) => {
 const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = false, error = '' }) => {
   const [index, setIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
+  const [showOrb, setShowOrb] = useState(false);
 
   const slides = useMemo(() => profiles.filter(Boolean), [profiles]);
   const count = slides.length;
@@ -204,6 +161,13 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const onDesktop = window.innerWidth >= 1024;
+    setShowOrb(onDesktop && !reduceMotion);
   }, []);
 
   const groups = useMemo(() => {
@@ -227,8 +191,8 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
 
   return (
     <section className="community-profiles" id="community-profiles">
-      {/* Three.js background canvas */}
-      <OrbCanvas />
+      {/* Background canvas */}
+      {showOrb && <OrbCanvas />}
 
       <div className="community-profiles-inner">
         {/* Header */}

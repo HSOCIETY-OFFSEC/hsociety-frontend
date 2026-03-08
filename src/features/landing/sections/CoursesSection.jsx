@@ -26,6 +26,15 @@ const CoursesSection = () => {
         <div
           className="landing-courses-card"
           onClick={() => navigate('/courses/hacker-protocol')}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              navigate('/courses/hacker-protocol');
+            }
+          }}
+          aria-label="Open Hacker Protocol course details"
         >
           {/* ── Cover panel ── */}
           <div className="landing-courses-cover">

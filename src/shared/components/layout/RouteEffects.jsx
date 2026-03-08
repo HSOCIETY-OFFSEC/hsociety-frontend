@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import BinaryLoader from '../ui/BinaryLoader';
 import { trackSecurityEvent } from '../../../core/security-tests/security-events.service';
+import { trackPageView } from '../../services/analytics.service';
 import '../../../styles/shared/components/layout/RouteEffects.css';
 
 const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
@@ -34,6 +35,7 @@ const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
         action: 'initial_load',
         path: location.pathname,
       });
+      trackPageView(location.pathname);
       return undefined;
     }
 
@@ -44,6 +46,7 @@ const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
         action: 'route_change',
         path: location.pathname,
       });
+      trackPageView(location.pathname);
       return undefined;
     }
 
@@ -55,6 +58,7 @@ const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
       action: 'route_change',
       path: location.pathname,
     });
+    trackPageView(location.pathname);
     return () => {
       clearTimeout(showTimer);
       clearTimeout(hideTimer);

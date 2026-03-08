@@ -1,40 +1,26 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import landingContent from '../../data/landing.json';
-import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
-import { getCommunityProfiles, getLandingContent, getLandingStats } from './landing.service';
+import {
+  getCommunityProfiles,
+  getLandingCacheSnapshot,
+  getLandingContent,
+  getLandingStats,
+} from './landing.service';
 
 /**Sections importation  */
 /**========================== */
-import {
-  HeroSection,
-  StatsSection,
-  ServicesSection,
-  WhySection,
-  ProcessSection,
-  DeliverablesSection,
-  ModulesSection,
-  LeaderboardSection,
-  TrustSection,
-  PartnerCarouselSection,
-  CoursesSection,
-  CommunityProfilesSection,
-  PathwaysSection,
-  CycleSection,
-  CtaSection,
-  FaqSection,
-  ThreatMapSection,
-  FooterSection
-} from './sections';
-
-/**ICON importation */
-/**===================== */
-import { 
-  FaGraduationCap, 
-  FaUsers, 
-  FaShieldAlt, 
-  FaRocket 
-} from 'react-icons/fa';
+import HeroSection from './sections/HeroSection';
+import CoursesSection from './sections/CoursesSection';
+import TrustSection from './sections/TrustSection';
+import StatsSection from './sections/StatsSection';
+import ServicesSection from './sections/ServicesSection';
+import ProcessSection from './sections/ProcessSection';
+import PartnerCarouselSection from './sections/PartnerCarouselSection';
+import CommunityProfilesSection from './sections/CommunityProfilesSection';
+import CtaSection from './sections/CtaSection';
+import FaqSection from './sections/FaqSection';
+import FooterSection from './sections/FooterSection';
 
 /**ICON importation */
 /**===================== */
@@ -44,22 +30,20 @@ import {
   FiTarget, 
   FiClipboard, 
   FiSearch, 
-  FiLayers, 
+  FiLayers,
   FiCheckCircle,
   FiTerminal, 
-  FiLock, 
-  FiMessageSquare 
+  FiMessageSquare
 } from 'react-icons/fi';
 
 /**Image importation */
 /**=========================== */
-import terminalWallpaper from '../../assets/services-images/beginner-offsec-training.png';
-import greenBinaryWallpaper from '../../assets/services-images/community-integration.png';
-import hackerLaptop from '../../assets/services-images/penetration-tests.png';
-import handsOnLearningImage from '../../assets/why-choose-hsociety-images/hands-on-learning.png';
-import communityEngagementsImage from '../../assets/why-choose-hsociety-images/community-engagements.png';
-import supervisedPentestsImage from '../../assets/why-choose-hsociety-images/supervised-pentests.png';
-import careerReadyPathwayImage from '../../assets/why-choose-hsociety-images/career-ready-pathway.png';
+import terminalWallpaper from '../../assets/services-images/beginner-offsec-training.webp';
+import greenBinaryWallpaper from '../../assets/services-images/community-integration.webp';
+import hackerLaptop from '../../assets/services-images/penetration-tests.webp';
+import terminalWallpaperSm from '../../assets/services-images/beginner-offsec-training-sm.webp';
+import greenBinaryWallpaperSm from '../../assets/services-images/community-integration-sm.webp';
+import hackerLaptopSm from '../../assets/services-images/penetration-tests-sm.webp';
 
 /**ROOT CSS importation */
 import '../../styles/landing/index.css';
@@ -81,12 +65,7 @@ const Landing = ({ scrollToId = null }) => {
     FiLayers,
     FiCheckCircle,
     FiTerminal,
-    FiLock,
     FiMessageSquare,
-    FaGraduationCap,
-    FaUsers,
-    FaShieldAlt,
-    FaRocket
   };
 
   /**Image mapping variable */
@@ -95,27 +74,21 @@ const Landing = ({ scrollToId = null }) => {
     binary: greenBinaryWallpaper,
     hacker: hackerLaptop
   };
-
-  
-  /** Why section image map variable*/
-  const whyImageMap = {
-    'Hands-On Learning': handsOnLearningImage,
-    'Community & Collaboration': communityEngagementsImage,
-    'Real Engagements': supervisedPentestsImage,
-    'Career-Ready Pathway': careerReadyPathwayImage
+  const imageMapSm = {
+    terminal: terminalWallpaperSm,
+    binary: greenBinaryWallpaperSm,
+    hacker: hackerLaptopSm
   };
 
   /**Services mapping var */
   const services = landingContent.services.map((item) => ({
     ...item,
     icon: iconMap[item.icon],
-    image: item.imageKey ? imageMap[item.imageKey] : item.image
-  }));
-
-  const whyChooseUs = landingContent.why.map((item) => ({
-    ...item,
-    icon: iconMap[item.icon],
-    image: whyImageMap[item.title] || item.image
+    image: item.imageKey ? imageMap[item.imageKey] : item.image,
+    imageSrcSet:
+      item.imageKey && imageMapSm[item.imageKey]
+        ? `${imageMapSm[item.imageKey]} 768w, ${imageMap[item.imageKey]} 1440w`
+        : undefined,
   }));
 
   const engagementSteps = landingContent.process.map((item) => ({
@@ -123,62 +96,76 @@ const Landing = ({ scrollToId = null }) => {
     icon: iconMap[item.icon]
   }));
 
-  const deliverables = landingContent.deliverables.map((item) => ({
-    ...item,
-    icon: iconMap[item.icon]
-  }));
-
-  const learningModules = HACKER_PROTOCOL_PHASES.map((phase) => ({
-    title: `${phase.codename}: ${phase.title}`,
-    description: phase.description,
-    level: phase.roleTitle,
-    duration: `Phase ${phase.moduleId}`,
-    image: phase.emblem
-  }));
-
   const trustSignals = landingContent.trust.map((item) => ({
     ...item,
     icon: item.icon ? iconMap[item.icon] : null
   }));
 
-  const cycleSteps = landingContent.cycle;
-
   useEffect(() => {
     let isMounted = true;
+    const timeoutIds = [];
+    let idleId = null;
+    const cached = getLandingCacheSnapshot();
+    if (cached.stats) setStatsData(cached.stats);
+    if (cached.profiles) setCommunityProfiles(cached.profiles?.profiles || []);
+    if (cached.content) setLandingOverrides(cached.content?.landing || {});
 
     const loadStats = async () => {
       try {
-        const [statsResponse, profilesResponse, contentResponse] = await Promise.all([
-          getLandingStats(),
-          getCommunityProfiles(6),
-          getLandingContent()
-        ]);
+        const statsResponse = await getLandingStats();
         if (!isMounted) return;
-
         if (statsResponse.success) {
           setStatsData(statsResponse.data);
         } else {
           setStatsError(statsResponse.error || 'Stats unavailable.');
         }
+      } catch {
+        if (!isMounted) return;
+        setStatsError('Stats unavailable.');
+      }
+    };
+
+    const loadProfiles = async () => {
+      try {
+        const profilesResponse = await getCommunityProfiles(6);
+        if (!isMounted) return;
         if (profilesResponse.success) {
           setCommunityProfiles(profilesResponse.data?.profiles || []);
         } else {
           setProfilesError(profilesResponse.error || 'Community profiles unavailable.');
         }
-        if (contentResponse.success) {
-          setLandingOverrides(contentResponse.data?.landing || {});
-        }
-      } catch (err) {
+      } catch {
         if (!isMounted) return;
-        setStatsError('Stats unavailable.');
         setProfilesError('Community profiles unavailable.');
       }
     };
 
+    const loadContent = async () => {
+      try {
+        const contentResponse = await getLandingContent();
+        if (!isMounted) return;
+        if (contentResponse.success) {
+          setLandingOverrides(contentResponse.data?.landing || {});
+        }
+      } catch {
+        if (!isMounted) return;
+      }
+    };
+
     loadStats();
+    timeoutIds.push(window.setTimeout(loadProfiles, 300));
+    if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(loadContent, { timeout: 1500 });
+    } else {
+      timeoutIds.push(window.setTimeout(loadContent, 900));
+    }
 
     return () => {
       isMounted = false;
+      timeoutIds.forEach((id) => window.clearTimeout(id));
+      if (idleId && typeof window !== 'undefined' && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId);
+      }
     };
   }, []);
 
@@ -266,23 +253,21 @@ const Landing = ({ scrollToId = null }) => {
     {/* 1. Hook */}
     <HeroSection content={heroContent} />
 
-    {/* 2 Courses Section  */}
+    {/* 2. Early product entry */}
     <CoursesSection />
 
+    {/* 3. Trust proof near fold */}
     <TrustSection signals={trustSignals} />
 
-    {/* 3. Immediate credibility */}
+    {/* 4. Immediate credibility */}
     <StatsSection content={statsContent} error={statsError} />
-    
+
     <PartnerCarouselSection />
 
-    {/* 4. Problem & differentiation */}
-    <WhySection items={whyChooseUs} />
-
-    {/* 5. What you actually offer */}
+    {/* 5. Core offer */}
     <ServicesSection services={services} />
 
-    {/* 6. How it works (reduce friction) */}
+    {/* 6. How it works */}
     <ProcessSection steps={engagementSteps} />
 
     {/* 7. Community proof */}
@@ -297,27 +282,13 @@ const Landing = ({ scrollToId = null }) => {
         error={profilesError}
       />
 
-    <LeaderboardSection />
-
-    {/* 6. What they get at the end */}
-    <DeliverablesSection deliverables={deliverables} />
-
-    {/* 7. Learning depth / system strength */}
-    <ModulesSection modules={learningModules} />
-    
-    <PathwaysSection content={landingContent.pathways} />
-    <CycleSection steps={cycleSteps} />
-
-    {/* 8. Objections handling */}
+    {/* 7. Objections handling */}
     <FaqSection content={landingContent.faq} />
 
-    {/* 9. Final conversion push */}
+    {/* 8. Final conversion push */}
     <CtaSection content={landingContent.cta} />
 
-    {/* 9.5 Threat map visual */}
-    <ThreatMapSection />
-
-    {/* 10. Closure */}
+    {/* 9. Closure */}
     <FooterSection />
   </div>
 );

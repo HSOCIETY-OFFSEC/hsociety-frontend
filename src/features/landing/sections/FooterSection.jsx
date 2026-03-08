@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   FiBarChart2,
   FiClipboard,
@@ -123,75 +124,79 @@ const FooterSection = () => {
         <div className="footer-column">
           <h4>Services</h4>
           {landingContent.services.slice(0, 4).map((service) => (
-            <a key={service.title} href={`/services/${slugify(service.title)}`}>
+            <Link key={service.title} to={`/services/${slugify(service.title)}`}>
               <FiShield size={16} />
               {service.title}
-            </a>
+            </Link>
           ))}
         </div>
 
         <div className="footer-column">
           <h4>Company</h4>
-          <a href="/about">
+          <Link to="/about">
             <FiUsers size={16} />
             About Us
-          </a>
-          <a href="/team">
+          </Link>
+          <Link to="/team">
             <FiUsers size={16} />
             Meet the Team
-          </a>
-          <a href="/student-dashboard">
+          </Link>
+          <Link to="/student-dashboard">
             <FiTerminal size={16} />
             Student Dashboard
-          </a>
-          <a href="/contact">
+          </Link>
+          <Link to="/contact">
             <FiMessageSquare size={16} />
             Contact
-          </a>
-          <a href="/developer">
+          </Link>
+          <Link to="/developer">
             <FiCode size={16} />
             Meet the Developer
-          </a>
-          <a href="/careers">
+          </Link>
+          <Link to="/careers">
             <FiClipboard size={16} />
             Careers & Opportunities
-          </a>
-          <a href="/courses">
+          </Link>
+          <Link to="/pricing">
+            <FiBarChart2 size={16} />
+            Pricing
+          </Link>
+          <Link to="/courses">
             <FiTerminal size={16} />
             Courses
-          </a>
+          </Link>
         </div>
 
         <div className="footer-column">
           <h4>Resources</h4>
-          <a href="/case-studies">
+          <Link to="/case-studies">
             <FiFileText size={16} />
             Case Studies
-          </a>
-          <a href="/methodology">
+          </Link>
+          <Link to="/methodology">
             <FiLayers size={16} />
             Testing Methodology
-          </a>
-          <a href="/blog">
+          </Link>
+          <Link to="/blog">
             <FiBarChart2 size={16} />
             Field Notes
-          </a>
-          <a href="/leaderboard">
+          </Link>
+          <Link to="/leaderboard">
             <FiBarChart2 size={16} />
             Leaderboard
-          </a>
-          <a href="/courses">
+          </Link>
+          <Link to="/courses">
             <FiLayers size={16} />
             Courses
-          </a>
-          <a href="/student-dashboard">
+          </Link>
+          <Link to="/student-dashboard">
             <FiTerminal size={16} />
             Student Dashboard
-          </a>
-          <a href="/terms">
+          </Link>
+          <Link to="/terms">
             <FiFileText size={16} />
             Terms & Conditions
-          </a>
+          </Link>
         </div>
 
         <div className="footer-column">

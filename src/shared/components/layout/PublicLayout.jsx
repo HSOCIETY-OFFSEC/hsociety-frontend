@@ -1,7 +1,7 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
-import ScrollToTopButton from '../ui/ScrollToTopButton';
+import FloatingUtilityToolbar from '../ui/FloatingUtilityToolbar';
 import useScrollReveal from '../../hooks/useScrollReveal';
 import '../../../styles/shared/components/layout/PublicLayout.css';
 import '../../../styles/shared/components/layout/PageLayout.css';
@@ -12,7 +12,8 @@ import '../../../styles/shared/components/layout/PageLayout.css';
  * Uses standard sticky Navbar and constrained content area.
  */
 const PublicLayout = () => {
-  useScrollReveal();
+  const location = useLocation();
+  useScrollReveal('.reveal-on-scroll', {}, [location.pathname], '.public-layout');
 
   return (
     <div className="public-layout page-container">
@@ -20,7 +21,7 @@ const PublicLayout = () => {
       <main className="public-main page-content container">
         <Outlet />
       </main>
-      <ScrollToTopButton />
+      <FloatingUtilityToolbar />
     </div>
   );
 };

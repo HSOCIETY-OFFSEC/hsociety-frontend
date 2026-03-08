@@ -70,6 +70,7 @@ const Careers = React.lazy(() => import('../features/careers/Careers'));
 const Methodology = React.lazy(() => import('../features/methodology/Methodology'));
 const CaseStudies = React.lazy(() => import('../features/case-studies/CaseStudies'));
 const Blog = React.lazy(() => import('../features/blog/Blog'));
+const Pricing = React.lazy(() => import('../features/pricing/Pricing'));
 const Feedback = React.lazy(() => import('../features/feedback/Feedback'));
 const Terms = React.lazy(() => import('../features/terms/Terms'));
 const Courses = React.lazy(() => import('../features/courses/Courses'));
@@ -434,6 +435,7 @@ const AppRouter = () => {
             <Route path="methodology" element={<Methodology />} />
           <Route path="case-studies" element={<CaseStudies />} />
           <Route path="blog" element={<Blog />} />
+          <Route path="pricing" element={<Pricing />} />
           <Route path="threat-map" element={<ThreatMap />} />
           <Route path="courses" element={<Courses />} />
           <Route path="courses/:bootcampId" element={<CourseDetails />} />

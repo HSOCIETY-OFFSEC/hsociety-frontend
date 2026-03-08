@@ -18,7 +18,8 @@ import {
   FiBookOpen,
   FiLayers,
   FiTerminal,
-  FiGlobe
+  FiGlobe,
+  FiDollarSign
 } from 'react-icons/fi';
 import { FiCpu } from 'react-icons/fi';
 
@@ -66,6 +67,7 @@ export const NAV_LINKS = {
     { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
     { path: '/about', label: 'About', icon: FiUsers },
     { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
+    { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
     { path: '/terms', label: 'Terms', icon: FiFileText }
   ],
 
@@ -84,6 +86,7 @@ export const NAV_LINKS = {
       { path: '/team', label: 'Meet the Team', icon: FiUsers },
       { path: '/developer', label: 'Meet the Developer', icon: FiCode },
       { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
+      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
       { path: '/terms', label: 'Terms', icon: FiFileText }
     ],
     pentester: [
@@ -95,6 +98,7 @@ export const NAV_LINKS = {
       { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
       { path: '/settings', label: 'Settings', icon: FiUsers },
       { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
+      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
       { path: '/terms', label: 'Terms', icon: FiFileText }
     ],
     admin: [
@@ -103,6 +107,7 @@ export const NAV_LINKS = {
       { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
       { path: '/settings', label: 'Settings', icon: FiUsers },
       { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
+      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
       { path: '/terms', label: 'Terms', icon: FiFileText }
     ],
     student: [
@@ -114,6 +119,7 @@ export const NAV_LINKS = {
       { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
       { path: '/settings', label: 'Settings', icon: FiUsers },
       { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
+      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
       { path: '/terms', label: 'Terms', icon: FiFileText }
     ]
   },
@@ -127,6 +133,7 @@ export const NAV_LINKS = {
     { path: '/about', label: 'About', icon: FiUsers },
     { path: '/careers', label: 'Careers', icon: FiBriefcase },
     { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
+    { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
     { path: '/terms', label: 'Terms', icon: FiFileText }
   ]
 };

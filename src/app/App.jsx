@@ -3,9 +3,9 @@ import { AuthProvider } from '../core/auth/AuthContext';
 import { ThemeProvider } from './providers';
 import AppRouter from './router';
 import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
-import FloatingUpdateButton from '../shared/components/ui/FloatingUpdateButton';
 import { runSecurityScan } from '../core/security-tests/scan.runner';
 import { NotificationProvider } from '../shared/notifications/NotificationProvider';
+import { envConfig } from '../config/env.config';
 
 // Import global styles
 import '../styles/shared/common.css';
@@ -29,10 +29,17 @@ import '../styles/shared/components/layout/AppShell.css';
 
 const App = () => {
   React.useEffect(() => {
+    const isDev = import.meta.env.DEV;
+    const runtimeEnabled = envConfig.security.enableRuntimeScan;
+    const sampleRate = Number(envConfig.security.runtimeScanSampleRate || 0);
+
+    if (!isDev && !runtimeEnabled) return undefined;
+    if (!isDev && sampleRate > 0 && Math.random() > sampleRate) return undefined;
+
     runSecurityScan();
     const interval = window.setInterval(() => {
       runSecurityScan();
-    }, 10 * 60 * 1000);
+    }, 30 * 60 * 1000);
 
     return () => window.clearInterval(interval);
   }, []);
@@ -44,7 +51,6 @@ const App = () => {
           <div className="app-shell">
             <AppRouter />
             <PwaUpdatePrompt />
-            <FloatingUpdateButton />
           </div>
         </NotificationProvider>
       </AuthProvider>

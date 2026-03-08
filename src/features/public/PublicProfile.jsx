@@ -9,7 +9,7 @@ import {
   FiShare2,
   FiUsers
 } from 'react-icons/fi';
-import cpIcon from '../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import PageLoader from '../../shared/components/ui/PageLoader';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { getPublicProfileByHandle } from './publicProfile.service';

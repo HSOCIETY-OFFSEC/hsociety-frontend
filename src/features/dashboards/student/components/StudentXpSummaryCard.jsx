@@ -1,5 +1,5 @@
 import React from 'react';
-import cpIcon from '../../../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../../../assets/icons/CP/cp-icon.webp';
 import Card from '../../../../shared/components/ui/Card';
 import { STUDENT_DASHBOARD_UI } from '../../../../data/student/studentDashboardUiData';
 

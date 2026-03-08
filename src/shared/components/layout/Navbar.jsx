@@ -17,14 +17,13 @@ import {
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
-import { getProfile } from '../../../features/account/account.service';
-import { getStudentXpSummary } from '../../../features/student/services/learn.service';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
 import SocialLinks from '../common/SocialLinks';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
-import cpIcon from '../../../assets/icons/CP/cp-icon.png';
+import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { useNotifications } from '../../notifications/NotificationProvider';
+import { useUserStats } from '../../hooks/useUserStats';
 import '../../../styles/shared/components/layout/Navbar.css';
 
 const NAV_COLLAPSE_WIDTH = 1024;
@@ -52,8 +51,6 @@ const Navbar = ({ sticky = true }) => {
   const [studentLearnOpen, setStudentLearnOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
-  const [streakDays, setStreakDays] = useState(0);
-  const [cpTotal, setCpTotal] = useState(0);
   const moreMenuRef = useRef(null);
   const notificationMenuRef = useRef(null);
   const [viewportMode, setViewportMode] = useState(() =>
@@ -98,6 +95,7 @@ const Navbar = ({ sticky = true }) => {
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   const isStudent = role === 'student';
   const showUserStats = isAuthenticated && Boolean(user?.id);
+  const { cpTotal, streakDays } = useUserStats(user?.id, role);
   const mobileLinks = getMobileLinks(isAuthenticated, role);
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
@@ -153,47 +151,18 @@ const Navbar = ({ sticky = true }) => {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [notificationMenuOpen]);
 
-  useEffect(() => {
-    let mounted = true;
-    const loadCp = async () => {
-      if (!showUserStats) {
-        if (mounted) setCpTotal(0);
-        return;
-      }
-      const response = await getProfile();
-      if (!mounted || !response.success) return;
-      setCpTotal(Number(response.data?.xpSummary?.totalXp || 0));
-    };
-    loadCp();
-    return () => {
-      mounted = false;
-    };
-  }, [showUserStats, user?.id]);
-
-  useEffect(() => {
-    let mounted = true;
-    const loadStreak = async () => {
-      if (!showUserStats || !isStudent) {
-        if (mounted) setStreakDays(0);
-        return;
-      }
-      const response = await getStudentXpSummary();
-      if (!mounted || !response.success) return;
-      setStreakDays(Number(response.data?.streakDays || 0));
-    };
-    loadStreak();
-    return () => {
-      mounted = false;
-    };
-  }, [showUserStats, isStudent, user?.id]);
-
   return (
     <nav className="navbar">
       <div className="container navbar-inner">
         {/* Logo */}
-        <div className="navbar-logo" onClick={() => navigate('/')}>
+        <button
+          type="button"
+          className="navbar-logo"
+          onClick={() => navigate('/')}
+          aria-label="Go to home"
+        >
           <Logo size="medium" />
-        </div>
+        </button>
 
         {/* Desktop Basic Navigation */}
         <div className="desktop-nav">

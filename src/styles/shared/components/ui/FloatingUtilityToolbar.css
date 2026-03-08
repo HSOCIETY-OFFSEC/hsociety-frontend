@@ -1,0 +1,156 @@
+.floating-utility-toolbar {
+  position: fixed;
+  inset: 50% 16px auto auto;
+  right: 16px;
+  top: 50%;
+  bottom: auto !important;
+  transform: translateY(-50%);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  animation: toolbar-enter 260ms ease-out;
+}
+
+.floating-utility-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  animation: toolbar-enter 180ms ease-out;
+}
+
+.floating-utility-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, var(--primary-color) 15%);
+  color: var(--text-primary);
+  border-radius: 999px;
+  padding: 10px 14px;
+  box-shadow: var(--shadow-md), 0 10px 22px -16px var(--accent-glow);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.floating-utility-toolbar.is-notice .floating-utility-btn {
+  animation: toolbar-pulse 1.2s ease-in-out 2;
+}
+
+.floating-utility-launcher {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, var(--primary-color) 15%);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md), 0 10px 22px -16px var(--accent-glow);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.floating-utility-launcher:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--primary-color) 28%, transparent);
+}
+
+.floating-utility-launcher:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.floating-utility-toolbar.is-notice .floating-utility-launcher {
+  animation: toolbar-pulse 1.2s ease-in-out 2;
+}
+
+.floating-utility-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--primary-color) 28%, transparent);
+}
+
+.floating-utility-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.floating-utility-btn.is-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.floating-utility-status {
+  max-width: 260px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  padding: 6px 10px;
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+}
+
+.floating-utility-status.success {
+  color: #7dd3fc;
+}
+
+.floating-utility-status.error {
+  color: #fca5a5;
+}
+
+@media (max-width: 720px) {
+  .floating-utility-toolbar {
+    inset: 50% 12px auto auto;
+    right: 12px;
+    top: 50%;
+    bottom: auto !important;
+    transform: translateY(-50%);
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .floating-utility-btn {
+    justify-content: flex-start;
+  }
+
+  .floating-utility-status {
+    max-width: 230px;
+  }
+}
+
+@keyframes toolbar-enter {
+  from {
+    opacity: 0;
+    filter: blur(1px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes toolbar-pulse {
+  0%,
+  100% {
+    box-shadow: var(--shadow-md), 0 10px 22px -16px var(--accent-glow);
+  }
+  50% {
+    box-shadow: var(--shadow-lg), 0 0 0 3px color-mix(in srgb, var(--primary-color) 25%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-utility-toolbar,
+  .floating-utility-toolbar.is-notice .floating-utility-btn,
+  .floating-utility-toolbar.is-notice .floating-utility-launcher {
+    animation: none;
+  }
+}

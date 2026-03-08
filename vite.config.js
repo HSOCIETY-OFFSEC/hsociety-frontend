@@ -99,9 +99,26 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          icons: ['react-icons']
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return null;
+          if (id.includes('react-icons')) return 'icons';
+          if (id.includes('react-dom') || id.includes('react-router-dom') || id.includes('/react/')) {
+            return 'react-vendor';
+          }
+          if (
+            id.includes('three/build/three.module') ||
+            id.includes('/three/src/')
+          ) {
+            return 'three-core';
+          }
+          if (id.includes('@react-three/fiber')) {
+            return 'r3f-vendor';
+          }
+          if (id.includes('@react-three/drei')) {
+            return 'drei-vendor';
+          }
+          if (id.includes('framer-motion')) return 'motion-vendor';
+          return undefined;
         }
       }
     }

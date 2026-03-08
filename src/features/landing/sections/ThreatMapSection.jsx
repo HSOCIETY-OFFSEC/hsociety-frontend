@@ -1,10 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import ThreatGlobeInteractive from '../../threat-map/components/ThreatGlobeInteractive';
+import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import '../../../styles/landing/threat-map-section.css';
+
+const ThreatGlobeInteractive = lazy(() => import('../../threat-map/components/ThreatGlobeInteractive'));
 
 const ThreatMapSection = () => {
   const handleAttack = useCallback(() => {}, []);
   const [expanded, setExpanded] = useState(false);
+  const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
     document.body.classList.toggle('workspace-lock-scroll', expanded);
@@ -13,6 +16,7 @@ const ThreatMapSection = () => {
 
   useEffect(() => {
     if (!expanded) return undefined;
+    setShouldLoadGlobe(true);
     const handleKey = (event) => {
       if (event.key === 'Escape') setExpanded(false);
     };
@@ -20,8 +24,27 @@ const ThreatMapSection = () => {
     return () => window.removeEventListener('keydown', handleKey);
   }, [expanded]);
 
+  useEffect(() => {
+    if (shouldLoadGlobe || typeof window === 'undefined') return undefined;
+    const section = sectionRef.current;
+    if (!section) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          setShouldLoadGlobe(true);
+          observer.disconnect();
+        });
+      },
+      { rootMargin: '240px 0px' }
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [shouldLoadGlobe]);
+
   return (
-    <section className="landing-threatmap">
+    <section className="landing-threatmap" ref={sectionRef}>
       <div className="landing-threatmap-inner">
         <div className="landing-threatmap-copy">
           <p className="landing-threatmap-kicker">Live Visualization</p>
@@ -34,7 +57,13 @@ const ThreatMapSection = () => {
         <div className="landing-threatmap-visual" aria-hidden="true">
           <div className="landing-threatmap-frame">
             <div className="landing-threatmap-overlay" />
-            <ThreatGlobeInteractive paused={false} onNewAttack={handleAttack} />
+            {shouldLoadGlobe ? (
+              <Suspense fallback={<div className="landing-threatmap-caption">Loading globe...</div>}>
+                <ThreatGlobeInteractive paused={false} onNewAttack={handleAttack} />
+              </Suspense>
+            ) : (
+              <div className="landing-threatmap-caption">Globe loads when section is visible.</div>
+            )}
           </div>
           <div className="landing-threatmap-caption">
             Simulated data • Not a live threat intelligence feed
@@ -69,7 +98,9 @@ const ThreatMapSection = () => {
               Close
             </button>
             <div className="landing-threatmap-modal-frame">
-              <ThreatGlobeInteractive paused={false} onNewAttack={handleAttack} />
+              <Suspense fallback={<div className="landing-threatmap-caption">Loading globe...</div>}>
+                <ThreatGlobeInteractive paused={false} onNewAttack={handleAttack} />
+              </Suspense>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import StudentAccessModal from '../components/StudentAccessModal';
 import StudentPaymentModal from '../components/StudentPaymentModal';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { ROUTES } from '../../../app/routes';
 import '../../../styles/student/pages/learning.css';
 
 /**
@@ -289,7 +290,7 @@ export const CourseLearning = () => {
       triggerAccessModal();
       return;
     }
-    navigate(`/student-learning/module/${moduleId}/room/${roomId}`);
+    navigate(ROUTES.STUDENT_LESSON(moduleId, roomId));
   };
 
   const handleQuizForRoom = (moduleId, roomId) => {
@@ -677,7 +678,7 @@ export const CourseLearning = () => {
               <p className="course-subtitle">
                 The course modules unlock once your bootcamp registration is confirmed.
               </p>
-              <Button variant="primary" size="large" onClick={() => navigate('/student-bootcamp')}>
+              <Button variant="primary" size="large" onClick={() => navigate(ROUTES.STUDENT_BOOTCAMPS)}>
                 Register for Bootcamp
               </Button>
             </Card>
@@ -689,7 +690,7 @@ export const CourseLearning = () => {
             title="Bootcamp registration required"
             description="Register for the bootcamp before you can access course materials."
             primaryLabel="Go to Bootcamp"
-            onPrimary={() => navigate('/student-bootcamp')}
+            onPrimary={() => navigate(ROUTES.STUDENT_BOOTCAMPS)}
             onClose={() => setShowRegisterModal(false)}
           />
         )}
@@ -720,7 +721,7 @@ export const CourseLearning = () => {
           title="Bootcamp registration required"
           description="Register for the bootcamp before you can access course materials."
           primaryLabel="Go to Bootcamp"
-          onPrimary={() => navigate('/student-bootcamp')}
+          onPrimary={() => navigate(ROUTES.STUDENT_BOOTCAMPS)}
           onClose={() => setShowRegisterModal(false)}
         />
       )}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
-import ScrollToTopButton from '../ui/ScrollToTopButton';
+import FloatingUtilityToolbar from '../ui/FloatingUtilityToolbar';
 import useScrollReveal from '../../hooks/useScrollReveal';
 import '../../../styles/shared/components/layout/LandingLayout.css';
 
@@ -11,7 +11,8 @@ import '../../../styles/shared/components/layout/LandingLayout.css';
  * Navbar is non-sticky for hero sections that extend to top.
  */
 const LandingLayout = () => {
-  useScrollReveal();
+  const location = useLocation();
+  useScrollReveal('.reveal-on-scroll', {}, [location.pathname], '.landing-layout');
 
   return (
     <div className="landing-layout">
@@ -19,7 +20,7 @@ const LandingLayout = () => {
       <main className="landing-main">
         <Outlet />
       </main>
-      <ScrollToTopButton />
+      <FloatingUtilityToolbar />
     </div>
   );
 };

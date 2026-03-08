@@ -2,15 +2,27 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../../shared/components/ui/Button';
 import Card from '../../../shared/components/ui/Card';
+import useRequestPentest from '../../../shared/hooks/useRequestPentest';
+import { trackEvent } from '../../../shared/services/analytics.service';
+import { ROUTES } from '../../../app/routes';
 import '../../../styles/landing/pathways.css';
 
 // Replace these with your actual image imports
-import studentImg from '../../../assets/brand-images/brand-image-black.png';
-import companyImg from '../../../assets/brand-images/brand-image-white.png';
+import studentImg from '../../../assets/brand-images/brand-image-black.webp';
+import companyImg from '../../../assets/brand-images/brand-image-white.webp';
 
 const PathwaysSection = ({ content }) => {
   const navigate = useNavigate();
+  const { requestPentest, requestPentestModal } = useRequestPentest();
   const { student, company } = content;
+  const handleRoute = (route) => {
+    trackEvent('landing_cta_click', { location: 'pathways', route });
+    if (route === ROUTES.CORPORATE_PENTEST) {
+      requestPentest();
+      return;
+    }
+    navigate(route);
+  };
 
   return (
     <section className="pathways-section reveal-on-scroll">
@@ -36,7 +48,7 @@ const PathwaysSection = ({ content }) => {
               <Button
                 variant="primary"
                 size="small"
-                onClick={() => navigate(student.route)}
+                onClick={() => handleRoute(student.route)}
               >
                 {student.cta}
               </Button>
@@ -62,7 +74,7 @@ const PathwaysSection = ({ content }) => {
               <Button
                 variant="primary"
                 size="small"
-                onClick={() => navigate(company.route)}
+                onClick={() => handleRoute(company.route)}
               >
                 {company.cta}
               </Button>
@@ -71,6 +83,7 @@ const PathwaysSection = ({ content }) => {
 
         </div>
       </div>
+      {requestPentestModal}
     </section>
   );
 };

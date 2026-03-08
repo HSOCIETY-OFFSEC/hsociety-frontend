@@ -110,7 +110,9 @@ export const envConfig = {
     enableEncryption: getEnvVar('VITE_ENABLE_ENCRYPTION', 'false') === 'true',
     encryptionKey: getEnvVar('VITE_ENCRYPTION_KEY', ''),
     enableCSRF: getEnvVar('VITE_ENABLE_CSRF', 'true') === 'true',
-    enableRateLimiting: getEnvVar('VITE_ENABLE_RATE_LIMITING', 'true') === 'true'
+    enableRateLimiting: getEnvVar('VITE_ENABLE_RATE_LIMITING', 'true') === 'true',
+    enableRuntimeScan: getEnvVar('VITE_ENABLE_RUNTIME_SECURITY_SCAN', 'false') === 'true',
+    runtimeScanSampleRate: parseFloat(getEnvVar('VITE_RUNTIME_SECURITY_SCAN_SAMPLE_RATE', '0.15'))
   },
 
   // Feature Flags

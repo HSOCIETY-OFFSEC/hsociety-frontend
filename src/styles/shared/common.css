@@ -126,7 +126,7 @@ body {
   background-color: var(--bg-primary);
   background-image:
     linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(241, 245, 249, 0.96)),
-    url('../../assets/brand-images/brand-image-white.png');
+    url('../../assets/brand-images/brand-image-white.webp');
   background-size:
     cover,
     cover;
@@ -134,7 +134,7 @@ body {
   background-repeat:
     no-repeat,
     no-repeat;
-  background-attachment: fixed;
+  background-attachment: scroll;
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
@@ -152,7 +152,7 @@ body {
   background-image: none;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: scroll;
 }
 
 body.workspace-lock-scroll {
@@ -170,6 +170,15 @@ img {
 
 button, input, textarea, select {
   font-family: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
 /* Scroll reveal */
@@ -202,5 +211,16 @@ button, input, textarea, select {
     filter: none;
     transition: none;
     will-change: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.98));
+    background-attachment: scroll;
+  }
+
+  [data-theme='dark'] body {
+    background-image: linear-gradient(180deg, rgba(5, 15, 25, 0.96), rgba(5, 15, 25, 0.92));
   }
 }

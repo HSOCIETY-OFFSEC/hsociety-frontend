@@ -63,13 +63,18 @@ const Sidebar = () => {
   return (
     <aside className="app-sidebar" aria-label="Sidebar navigation">
       <div className="app-sidebar-inner">
-        <div className="app-sidebar-logo" onClick={() => navigate('/')}>
+        <button
+          type="button"
+          className="app-sidebar-logo"
+          onClick={() => navigate('/')}
+          aria-label="Go to home"
+        >
           <Logo size="small" />
           <div className="app-sidebar-brand">
             <span className="app-sidebar-title">HSOCIETY</span>
             <span className="app-sidebar-subtitle">OffSec</span>
           </div>
-        </div>
+        </button>
 
         <div>
           <p className="app-sidebar-section-title">Navigation</p>

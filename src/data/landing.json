@@ -1,8 +1,8 @@
 {
   "hero": {
     "badge": "Offensive Security Training + Delivery",
-    "title": "Build Real Offensive Security Talent. Deliver Real Penetration Testing.",
-    "description": "HSOCIETY is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.",
+    "title": "Build Real Offensive Security Operators.",
+    "description": "HSOCIETY trains entry-level talent into execution-ready offensive operators and delivers supervised penetration testing for growing companies.",
     "highlights": [
       "Paid training designed for complete beginners",
       "Supervised real-world engagements with reporting",
@@ -10,12 +10,12 @@
     ],
     "ctas": [
       {
-        "label": "Become A Hacker  ",
+        "label": "Start Learning",
         "route": "/register",
         "variant": "primary"
       },
       {
-        "label": "Request a Penetration Tests     ",
+        "label": "Request a Pentest",
         "route": "/corporate/pentest",
         "variant": "secondary"
       }
@@ -283,16 +283,16 @@
   ],
   "cta": {
     "left": {
-      "title": "Start Your Offensive Security Journey",
-      "description": "Join the paid training cycle and move from beginner to professional penetration tester.",
-      "button": "Register",
+      "title": "Launch Your OffSec Career",
+      "description": "Join the training cycle and progress from fundamentals to supervised offensive execution.",
+      "button": "Join as Student",
       "route": "/register",
       "variant": "primary"
     },
     "right": {
-      "title": "Secure Your Organization",
-      "description": "Request a supervised penetration test with clear reporting and remediation guidance.",
-      "button": "Request Pentest",
+      "title": "Test Your Defenses",
+      "description": "Request a supervised penetration test with evidence-backed reporting and remediation steps.",
+      "button": "Book Pentest",
       "route": "/corporate/pentest",
       "variant": "ghost"
     }

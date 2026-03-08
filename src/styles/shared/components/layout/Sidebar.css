@@ -46,6 +46,10 @@
 }
 
 .app-sidebar-logo {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
   display: flex;
   align-items: center;
   gap: 0.75rem;

@@ -26,7 +26,14 @@ const ServiceCardSlide = ({ service, index, offset, slideRef }) => {
       <Card hover3d={false} padding="none" className={`service-card service-card-${index + 1}`}>
         {service.image && (
           <div className="service-card-image">
-            <img src={service.image} alt={service.title} loading="lazy" decoding="async" />
+            <img
+              src={service.image}
+              srcSet={service.imageSrcSet}
+              sizes="(max-width: 768px) 90vw, 640px"
+              alt={service.title}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         )}
 
