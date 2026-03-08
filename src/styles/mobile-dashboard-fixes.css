@@ -26,6 +26,50 @@
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   1b. GLOBAL DASHBOARD EDGE-TO-EDGE CARD UTILITY
+   Ensures every dashboard/card wrapper follows the high-width treatment.
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  :is(.dashboard-shell, .dashboard-container, .dashboard-wrapper, .student-page, .admin-dashboard, .pentester-dashboard) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  :is(.dashboard-shell, .dashboard-container, .dashboard-wrapper, .student-page, .admin-dashboard, .pentester-dashboard) :is(
+    .card,
+    .student-card,
+    .admin-card,
+    .pentester-card,
+    .pentester-profile-card,
+    .pentester-report-card,
+    .pentester-detail-card,
+    .status-card,
+    .primary-action-card,
+    .reports-card,
+    .quick-action-card,
+    .activity-item,
+    .snapshot-item,
+    .bootcamp-module-card,
+    .stats-card,
+    .overview-card
+  ) {
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: none;
+    transform: none !important;
+    margin: 0;
+  }
+
+  :is(.dashboard-shell, .dashboard-container, .dashboard-wrapper, .student-page, .admin-dashboard, .pentester-dashboard) .card__content {
+    gap: 0.6rem;
+  }
+}
+
 @media (max-width: 480px) {
   .dashboard-shell {
     gap: 0.5rem;
