@@ -1,37 +1,74 @@
 /**
- * Landing Layout Styles
+ * LandingLayout.css
  * Location: src/styles/shared/components/layout/LandingLayout.css
+ *
+ * Full-width marketing / landing pages.
+ * Hero sections bleed edge-to-edge; each child <section> manages
+ * its own internal padding so the layout stays adaptable.
  */
 
-.landing-layout .landing-main {
-  flex: 1;
-}
-
+/* ── Landing root ─────────────────────────────────────────── */
 .landing-layout {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  overflow: visible;
+  width: 100%;
+  overflow-x: hidden;
+  isolation: isolate;
 }
 
-.landing-layout::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('../../../../assets/circuit-hero.svg');
-  background-size: 520px auto;
-  background-repeat: repeat;
-  background-position: center;
-  opacity: 0.06;
-  pointer-events: none;
-  z-index: 0;
+/* ── Landing main ─────────────────────────────────────────── */
+.landing-layout .landing-main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  /*
+   * No default padding — hero sections need to bleed to the very top.
+   * Individual page sections add their own vertical spacing.
+   */
+  padding: 0;
 }
 
-[data-theme="light"] .landing-layout::before {
-  opacity: 0.04;
-  filter: brightness(0.7);
+/*
+ * Direct <section> children get a sensible minimum vertical padding
+ * so content is never flush against viewport edges.
+ */
+.landing-layout .landing-main > section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.landing-layout > *:not(.navbar) {
-  position: relative;
-  z-index: 1;
+/*
+ * First section (usually the hero) sits right under the Navbar;
+ * reduce top padding since the Navbar already provides visual separation.
+ */
+.landing-layout .landing-main > section:first-child {
+  padding-top: 2rem;
+}
+
+/* ── Responsive tweaks ────────────────────────────────────── */
+@media (min-width: 768px) {
+  .landing-layout .landing-main > section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .landing-layout .landing-main > section:first-child {
+    padding-top: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .landing-layout .landing-main > section {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+
+  .landing-layout .landing-main > section:first-child {
+    padding-top: 4rem;
+  }
 }

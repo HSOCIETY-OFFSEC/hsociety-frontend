@@ -1,13 +1,57 @@
 /**
- * Auth Layout Styles
+ * AuthLayout.css
  * Location: src/styles/shared/components/layout/AuthLayout.css
+ *
+ * Minimal centred layout for login, register, OTP, password-reset flows.
+ * A decorative radial glow uses --accent-glow so it works across all themes.
  */
 
+/* ── Auth main area ───────────────────────────────────────── */
 .auth-layout .auth-main {
-  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 72px);
-  padding: 2rem 1rem;
+  /* flex-start keeps tall forms (e.g. registration) from clipping */
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 3rem 1rem 4rem;
+  position: relative;
+}
+
+/*
+ * Ambient radial glow behind auth cards.
+ * Uses --accent-glow (defined in common.css) so it adapts to
+ * light / dark / black themes with zero extra JS.
+ */
+.auth-layout .auth-main::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 72% 52% at 50% 18%,
+    var(--accent-glow, rgba(31, 191, 143, 0.11)) 0%,
+    transparent 68%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Keep card content above the decorative layer */
+.auth-layout .auth-main > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Responsive tweaks ────────────────────────────────────── */
+@media (min-width: 640px) {
+  .auth-layout .auth-main {
+    padding: 4rem 2rem 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .auth-layout .auth-main {
+    padding: 5rem 2rem 6rem;
+  }
 }

@@ -8,8 +8,13 @@ import '../../../styles/shared/components/layout/PageLayout.css';
 
 /**
  * Public Layout
- * For public pages like About, Team, Blog, etc.
- * Uses standard sticky Navbar and constrained content area.
+ * Location: src/shared/components/layout/PublicLayout.jsx
+ *
+ * For public informational pages — About, Team, Blog, Careers, etc.
+ * - Sticky Navbar.
+ * - Content constrained via .container (layout.css) for comfortable reading.
+ * - Scroll-reveal hook re-runs on every route change, scoped to .public-layout.
+ * - FloatingUtilityToolbar renders outside <main> so it overlays page content.
  */
 const PublicLayout = () => {
   const location = useLocation();

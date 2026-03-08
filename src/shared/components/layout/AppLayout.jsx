@@ -1,23 +1,28 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import '../../../styles/shared/components/layout/AppLayout.css';
+import '../../../styles/shared/components/layout/AuthLayout.css';
 import '../../../styles/shared/components/layout/PageLayout.css';
 
 /**
- * App Layout
- * Wraps authenticated app pages (Dashboard, Audits, Pentest, etc.)
- * with consistent Navbar and main content area.
+ * Auth Layout
+ * Location: src/shared/components/layout/AuthLayout.jsx
+ *
+ * Wraps login, register, OTP, and password-reset pages.
+ * - Sticky minimal Navbar (user menu not shown during auth flows).
+ * - Full-height centred main with a subtle theme-aware radial glow.
+ * - .page-container / .page-content from PageLayout.css provide the
+ *   shared flex-column / min-height contract across all layouts.
  */
-const AppLayout = () => {
+const AuthLayout = () => {
   return (
-    <div className="app-layout page-container">
+    <div className="auth-layout page-container">
       <Navbar sticky={true} />
-      <main className="app-main page-content">
+      <main className="auth-main page-content">
         <Outlet />
       </main>
     </div>
   );
 };
 
-export default AppLayout;
+export default AuthLayout;

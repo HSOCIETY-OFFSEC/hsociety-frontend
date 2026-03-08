@@ -7,8 +7,18 @@ import '../../../styles/shared/components/layout/LandingLayout.css';
 
 /**
  * Landing Layout
- * Full-width layout for marketing/landing pages.
- * Navbar is non-sticky for hero sections that extend to top.
+ * Location: src/shared/components/layout/LandingLayout.jsx
+ *
+ * Full-width layout for marketing and hero pages.
+ * - Sticky Navbar stays accessible during long hero scrolls.
+ * - .landing-main has no default padding; child <section>s manage their
+ *   own vertical spacing so hero sections can bleed full edge-to-edge.
+ * - Scroll-reveal hook is scoped to .landing-layout.
+ * - FloatingUtilityToolbar overlays the page, rendered outside <main>.
+ *
+ * Note: LandingLayout does NOT import PageLayout.css because it owns its
+ * own root (.landing-layout) rather than using .page-container — this
+ * preserves full-bleed control without conflicting with shared styles.
  */
 const LandingLayout = () => {
   const location = useLocation();

@@ -6,8 +6,13 @@ import '../../../styles/shared/components/layout/PageLayout.css';
 
 /**
  * Auth Layout
- * Wraps login, register, and other auth pages.
- * Uses minimal Navbar (no user menu) with full-height content area.
+ * Location: src/shared/components/layout/AuthLayout.jsx
+ *
+ * Wraps login, register, OTP, and password-reset pages.
+ * - Sticky minimal Navbar (user menu not shown during auth flows).
+ * - Full-height centred main with a subtle theme-aware radial glow.
+ * - .page-container / .page-content from PageLayout.css provide the
+ *   shared flex-column / min-height contract across all layouts.
  */
 const AuthLayout = () => {
   return (

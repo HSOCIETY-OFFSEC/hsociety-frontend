@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiHash, FiMenu, FiMessageSquare, FiUsers, FiX } from 'react-icons/fi';
-import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
-import '../../../../styles/sections/community/header.css';
+import { COMMUNITY_UI } from '../../data/community/communityUiData';
+import '@styles/sections/community/header.css';
 
 const CommunityHeader = ({
   activeChannels = [],
