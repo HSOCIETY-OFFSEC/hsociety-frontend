@@ -13,6 +13,7 @@
 
 /* Light Theme (default) */
 :root {
+  --navbar-height: 72px;
   --bg-primary: #f7f9fb;
   --bg-secondary: #ffffff;
   --bg-tertiary: #eef2f6;

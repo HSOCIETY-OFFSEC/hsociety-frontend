@@ -499,6 +499,8 @@
   border-bottom: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
   transition: background 0.2s ease;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .courses-room-item:last-child {
@@ -507,6 +509,10 @@
 
 .courses-room-item:hover {
   background: var(--bg-tertiary);
+}
+
+.courses-room-item.is-active {
+  background: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .courses-room-index {

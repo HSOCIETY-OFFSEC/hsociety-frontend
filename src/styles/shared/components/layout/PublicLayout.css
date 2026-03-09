@@ -14,7 +14,7 @@
   width: 100%;
   box-sizing: border-box;
   /* Vertical breathing room; horizontal handled by .container */
-  padding-top: 2rem;
+  padding-top: calc(var(--navbar-height) + 2rem);
   padding-bottom: 5rem;
 }
 
@@ -40,14 +40,14 @@
 /* ── Responsive tweaks ────────────────────────────────────── */
 @media (min-width: 768px) {
   .public-layout .public-main {
-    padding-top: 3rem;
+    padding-top: calc(var(--navbar-height) + 3rem);
     padding-bottom: 6rem;
   }
 }
 
 @media (min-width: 1024px) {
   .public-layout .public-main {
-    padding-top: 4rem;
+    padding-top: calc(var(--navbar-height) + 4rem);
     padding-bottom: 8rem;
   }
 

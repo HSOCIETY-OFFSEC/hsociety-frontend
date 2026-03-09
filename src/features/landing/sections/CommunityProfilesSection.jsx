@@ -146,6 +146,10 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
   const [index, setIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
   const [showOrb, setShowOrb] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
+  const reduceMotionRef = useRef(false);
+  const trackRef = useRef(null);
 
   const slides = useMemo(() => profiles.filter(Boolean), [profiles]);
   const count = slides.length;
@@ -168,9 +172,10 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const onDesktop = window.innerWidth >= 1024;
     setShowOrb(onDesktop && !reduceMotion);
+    reduceMotionRef.current = reduceMotion;
   }, []);
 
-  const groups = useMemo(() => {
+  const rawGroups = useMemo(() => {
     if (!count) return [];
     const groupSize = Math.max(1, cardsPerView);
     const result = [];
@@ -178,14 +183,42 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
     return result.length ? result : [slides];
   }, [count, slides, cardsPerView]);
 
-  const groupCount = groups.length;
-  const activeIndex = groupCount ? index % groupCount : 0;
+  const renderGroups = useMemo(() => {
+    if (rawGroups.length <= 1 && count > 0) return [rawGroups[0], rawGroups[0]];
+    return rawGroups;
+  }, [rawGroups, count]);
+
+  const groupCount = renderGroups.length;
+  const dotCount = rawGroups.length;
+  const activeDotIndex = dotCount ? index % dotCount : 0;
+  const extendedGroups = useMemo(() => {
+    if (groupCount <= 1) return renderGroups;
+    return [...renderGroups, renderGroups[0]];
+  }, [groupCount, renderGroups]);
 
   useEffect(() => {
-    if (groupCount <= 1) return;
-    const timer = window.setInterval(() => setIndex((p) => (p + 1) % groupCount), AUTO_ROTATE_MS);
-    return () => window.clearInterval(timer);
+    setIndex(0);
+    setIsResetting(true);
+    const raf = window.requestAnimationFrame(() => setIsResetting(false));
+    return () => window.cancelAnimationFrame(raf);
   }, [groupCount]);
+
+  useEffect(() => {
+    if (groupCount <= 1 || isPaused || reduceMotionRef.current) return undefined;
+    const timer = window.setInterval(() => setIndex((p) => p + 1), AUTO_ROTATE_MS);
+    return () => window.clearInterval(timer);
+  }, [groupCount, isPaused]);
+
+  const pauseCarousel = useCallback(() => setIsPaused(true), []);
+  const resumeCarousel = useCallback(() => setIsPaused(false), []);
+
+  const handleTransitionEnd = useCallback(() => {
+    if (groupCount <= 1) return;
+    if (index !== groupCount) return;
+    setIsResetting(true);
+    setIndex(0);
+    window.requestAnimationFrame(() => setIsResetting(false));
+  }, [groupCount, index]);
 
   const fmt = (v) => (v === null || v === undefined || Number.isNaN(v) ? '—' : v);
 
@@ -233,12 +266,27 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
 
         /* Carousel */
         ) : (
-          <div className="community-profiles-carousel" role="region" aria-label="Community profiles">
+          <div
+            className={`community-profiles-carousel ${isPaused ? 'is-paused' : ''}`}
+            role="region"
+            aria-label="Community profiles"
+            onMouseEnter={pauseCarousel}
+            onMouseLeave={resumeCarousel}
+            onFocusCapture={pauseCarousel}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) resumeCarousel();
+            }}
+          >
             <div
+              ref={trackRef}
               className="community-profiles-track"
-              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+              onTransitionEnd={handleTransitionEnd}
+              style={{
+                transform: `translateX(-${index * 100}%)`,
+                transition: isResetting ? 'none' : undefined
+              }}
             >
-              {groups.map((group, gi) => (
+              {extendedGroups.map((group, gi) => (
                 <div className="community-profiles-slide" key={`g-${gi}`}>
                   {group.map((profile) => {
                     const avatarFallback = getGithubAvatarDataUri(
@@ -311,17 +359,19 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
             </div>
 
             {/* Dots */}
-            <div className="community-profiles-dots" role="tablist" aria-label="Profile slides">
-              {groups.map((_, i) => (
-                <button
-                  type="button"
-                  key={`dot-${i}`}
-                  className={`community-profiles-dot ${i === activeIndex ? 'is-active' : ''}`}
-                  aria-label={`Go to profile ${i + 1}`}
-                  onClick={() => setIndex(i)}
-                />
-              ))}
-            </div>
+            {dotCount > 1 && (
+              <div className="community-profiles-dots" role="tablist" aria-label="Profile slides">
+                {rawGroups.map((_, i) => (
+                  <button
+                    type="button"
+                    key={`dot-${i}`}
+                    className={`community-profiles-dot ${i === activeDotIndex ? 'is-active' : ''}`}
+                    aria-label={`Go to profile ${i + 1}`}
+                    onClick={() => setIndex(i)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

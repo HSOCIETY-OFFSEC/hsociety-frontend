@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   FiBookOpen,
@@ -19,7 +19,6 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
-import SocialLinks from '../common/SocialLinks';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { useNotifications } from '../../notifications/NotificationProvider';
@@ -53,6 +52,12 @@ const Navbar = ({ sticky = true }) => {
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const moreMenuRef = useRef(null);
   const notificationMenuRef = useRef(null);
+  const studentMenuRef = useRef(null);
+  const userMenuRef = useRef(null);
+  const moreCloseTimerRef = useRef(null);
+  const studentCloseTimerRef = useRef(null);
+  const userCloseTimerRef = useRef(null);
+  const notificationCloseTimerRef = useRef(null);
   const [viewportMode, setViewportMode] = useState(() =>
     typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
   );
@@ -122,6 +127,23 @@ const Navbar = ({ sticky = true }) => {
 
   const isActive = (path) => location.pathname === path;
 
+  const clearCloseTimer = useCallback((ref) => {
+    if (ref.current) {
+      window.clearTimeout(ref.current);
+      ref.current = null;
+    }
+  }, []);
+
+  const scheduleClose = useCallback((ref, setter) => {
+    clearCloseTimer(ref);
+    ref.current = window.setTimeout(() => setter(false), 160);
+  }, [clearCloseTimer]);
+
+  const openMenu = useCallback((ref, setter) => {
+    clearCloseTimer(ref);
+    setter(true);
+  }, [clearCloseTimer]);
+
   useEffect(() => {
     // Always reset transient nav UI when route changes.
     setMobileMenuOpen(false);
@@ -182,7 +204,13 @@ const Navbar = ({ sticky = true }) => {
             <div
               className="navbar-more-dropdown"
               ref={moreMenuRef}
-              onMouseLeave={() => setMoreMenuOpen(false)}
+              onMouseEnter={() => openMenu(moreCloseTimerRef, setMoreMenuOpen)}
+              onMouseLeave={() => scheduleClose(moreCloseTimerRef, setMoreMenuOpen)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setMoreMenuOpen(false);
+                }
+              }}
             >
               <button
                 type="button"
@@ -194,7 +222,11 @@ const Navbar = ({ sticky = true }) => {
                 <FiChevronDown size={14} />
               </button>
               {moreMenuOpen && (
-                <div className="navbar-more-menu">
+                <div
+                  className="navbar-more-menu"
+                  onMouseEnter={() => openMenu(moreCloseTimerRef, setMoreMenuOpen)}
+                  onMouseLeave={() => scheduleClose(moreCloseTimerRef, setMoreMenuOpen)}
+                >
                   {overflowDesktopLinks.map((link) => (
                     <button
                       key={link.path}
@@ -217,7 +249,14 @@ const Navbar = ({ sticky = true }) => {
           {isStudent && (
             <div
               className="student-learn-dropdown"
-              onMouseLeave={() => setStudentLearnOpen(false)}
+              ref={studentMenuRef}
+              onMouseEnter={() => openMenu(studentCloseTimerRef, setStudentLearnOpen)}
+              onMouseLeave={() => scheduleClose(studentCloseTimerRef, setStudentLearnOpen)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setStudentLearnOpen(false);
+                }
+              }}
             >
               <button
                 type="button"
@@ -229,7 +268,11 @@ const Navbar = ({ sticky = true }) => {
                 <FiChevronDown size={14} />
               </button>
               {studentLearnOpen && (
-                <div className="student-learn-menu">
+                <div
+                  className="student-learn-menu"
+                  onMouseEnter={() => openMenu(studentCloseTimerRef, setStudentLearnOpen)}
+                  onMouseLeave={() => scheduleClose(studentCloseTimerRef, setStudentLearnOpen)}
+                >
                   {studentLearnLinks.map((link) => (
                     <button
                       key={link.path}
@@ -271,7 +314,13 @@ const Navbar = ({ sticky = true }) => {
             <div
               className="navbar-notification-wrap"
               ref={notificationMenuRef}
-              onMouseLeave={() => setNotificationMenuOpen(false)}
+              onMouseEnter={() => openMenu(notificationCloseTimerRef, setNotificationMenuOpen)}
+              onMouseLeave={() => scheduleClose(notificationCloseTimerRef, setNotificationMenuOpen)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setNotificationMenuOpen(false);
+                }
+              }}
             >
               <button
                 type="button"
@@ -286,7 +335,11 @@ const Navbar = ({ sticky = true }) => {
               </button>
 
               {notificationMenuOpen && (
-                <div className="navbar-notification-menu">
+                <div
+                  className="navbar-notification-menu"
+                  onMouseEnter={() => openMenu(notificationCloseTimerRef, setNotificationMenuOpen)}
+                  onMouseLeave={() => scheduleClose(notificationCloseTimerRef, setNotificationMenuOpen)}
+                >
                   <div className="navbar-notification-head">
                     <strong>Notifications</strong>
                     <button
@@ -327,7 +380,6 @@ const Navbar = ({ sticky = true }) => {
           {/* Auth Actions (Desktop, Public) */}
           {!isAuthenticated && viewportMode === 'desktop' && (
             <div className="navbar-right-actions">
-              <SocialLinks className="navbar-socials" size={16} />
               <button
                 type="button"
                 onClick={() => navigate('/login')}
@@ -349,7 +401,14 @@ const Navbar = ({ sticky = true }) => {
           {isAuthenticated && user && (
             <div
               className="desktop-user-menu"
-              onMouseLeave={() => setUserMenuOpen(false)}
+              ref={userMenuRef}
+              onMouseEnter={() => openMenu(userCloseTimerRef, setUserMenuOpen)}
+              onMouseLeave={() => scheduleClose(userCloseTimerRef, setUserMenuOpen)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setUserMenuOpen(false);
+                }
+              }}
             >
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -375,7 +434,11 @@ const Navbar = ({ sticky = true }) => {
 
               {/* Dropdown Menu */}
               {userMenuOpen && (
-                <div className="navbar-user-menu">
+                <div
+                  className="navbar-user-menu"
+                  onMouseEnter={() => openMenu(userCloseTimerRef, setUserMenuOpen)}
+                  onMouseLeave={() => scheduleClose(userCloseTimerRef, setUserMenuOpen)}
+                >
                   <div className="navbar-user-menu-header">
                     <p className="navbar-user-menu-label">
                       Signed in as
@@ -499,7 +562,6 @@ const Navbar = ({ sticky = true }) => {
                   </span>
                   <span>Register</span>
                 </button>
-                <SocialLinks className="mobile-menu-socials" size={18} />
               </>
             )}
           </div>

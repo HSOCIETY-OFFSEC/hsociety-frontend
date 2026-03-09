@@ -76,6 +76,7 @@ const Terms = React.lazy(() => import('../features/terms/Terms'));
 const Courses = React.lazy(() => import('../features/courses/Courses'));
 const CourseDetails = React.lazy(() => import('../features/courses/CourseDetails'));
 const CourseModuleDetails = React.lazy(() => import('../features/courses/CourseModuleDetails'));
+const CourseRoomDetails = React.lazy(() => import('../features/courses/CourseRoomDetails'));
 const Leaderboard = React.lazy(() => import('../features/leaderboard/Leaderboard'));
 const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
 const ForcePasswordChange = React.lazy(() => import('../features/auth/ForcePasswordChange'));
@@ -440,6 +441,7 @@ const AppRouter = () => {
           <Route path="courses" element={<Courses />} />
           <Route path="courses/:bootcampId" element={<CourseDetails />} />
           <Route path="courses/:bootcampId/modules/:moduleId" element={<CourseModuleDetails />} />
+          <Route path="courses/:bootcampId/modules/:moduleId/rooms/:roomId" element={<CourseRoomDetails />} />
           <Route path="leaderboard" element={<Leaderboard />} />
           <Route path="terms" element={<Terms />} />
           <Route path="terms-and-conditions" element={<Terms />} />

@@ -7,7 +7,8 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
+  min-height: calc(100svh - var(--navbar-height));
+  width: 100%;
   display: flex;
   align-items: stretch;
   background:
@@ -56,6 +57,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  min-height: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -74,7 +76,7 @@
   align-items: center;
   justify-content: flex-start;
   padding: 0 2rem 2rem;
-  margin-top: 100px;
+  margin-top: clamp(1rem, 5vh, 3.5rem);
   flex: 0 0 42%;
   overflow: hidden;
 }
@@ -137,7 +139,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 1.6rem;
-  padding: 7rem 5rem 5rem 6rem;
+  padding: clamp(3rem, 8vh, 6rem) clamp(2rem, 6vw, 5rem) clamp(2.5rem, 6vh, 5rem) clamp(2rem, 6vw, 6rem);
 }
 
 /* Badge */
@@ -591,8 +593,8 @@
 
 @media (max-width: 640px) {
   .hero-section {
-    width: 100vw;
-    min-height: 100svh;
+    width: 100%;
+    min-height: calc(100svh - var(--navbar-height));
   }
 
   .hero-container {
