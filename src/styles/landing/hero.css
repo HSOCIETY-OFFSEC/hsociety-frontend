@@ -435,7 +435,7 @@
 
 @media (max-width: 900px) {
   .hero-cta {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 }
 
@@ -637,13 +637,17 @@
   }
 
   .hero-cta {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: nowrap;
     width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .hero-cta button {
-    width: 100%;
-    min-width: unset;
+    width: auto;
+    min-width: 140px;
+    flex: 0 0 auto;
   }
 
   .hero-proof {

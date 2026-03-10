@@ -395,11 +395,16 @@
   }
 
   .hero-cta {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .hero-cta .button {
-    width: 100%;
+    width: auto;
+    min-width: 140px;
+    flex: 0 0 auto;
   }
 
   /* Stats */
@@ -437,12 +442,18 @@
   }
 
   .cta-buttons {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: nowrap;
     width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.75rem;
   }
 
   .cta-buttons .button {
-    width: 100%;
+    width: auto;
+    min-width: 140px;
+    flex: 0 0 auto;
   }
 
   /* Grids */
