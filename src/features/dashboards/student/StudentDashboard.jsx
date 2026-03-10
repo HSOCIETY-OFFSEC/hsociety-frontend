@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiCompass } from 'react-icons/fi';
+import { FiArrowRight, FiCompass, FiMessageSquare } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
@@ -9,10 +9,8 @@ import { listNotifications } from '../../student/services/notifications.service'
 import StudentXpSummaryCard from './components/StudentXpSummaryCard';
 import StudentRecentNotificationsCard from './components/StudentRecentNotificationsCard';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
-import ContinueLearningCard from './components/ContinueLearningCard';
-import BootcampStatusCard from './components/BootcampStatusCard';
 import SkillProgressCard from './components/SkillProgressCard';
-import DailyMissionCard from './components/DailyMissionCard';
+import { getHackerProtocolModule, HACKER_PROTOCOL_PHASES } from '../../../data/bootcamps/hackerProtocolData';
 import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
@@ -67,6 +65,27 @@ const StudentDashboard = () => {
     return null;
   }, [data.learningPath, data.modules]);
 
+  const continueModuleMeta = useMemo(() => {
+    if (!continueModule?.id) return null;
+    return getHackerProtocolModule(Number(continueModule.id));
+  }, [continueModule?.id]);
+
+  const continueRoomMeta = useMemo(() => {
+    if (!continueModuleMeta) return null;
+    const roomsTotal = continueModule?.roomsTotal || continueModuleMeta.rooms.length || 0;
+    const roomsCompleted = continueModule?.roomsCompleted || 0;
+    const roomIndex = Math.min(Math.max(roomsCompleted, 0), Math.max(roomsTotal - 1, 0));
+    return continueModuleMeta.rooms?.[roomIndex] || null;
+  }, [continueModule, continueModuleMeta]);
+
+  const handleResumeLesson = () => {
+    if (!continueModuleMeta || !continueRoomMeta) {
+      navigate('/student-bootcamps/hacker-protocol/dashboard');
+      return;
+    }
+    navigate(`/student-bootcamps/hacker-protocol/module/${continueModuleMeta.moduleId}/room/${continueRoomMeta.roomId}`);
+  };
+
   const skillPillars = useMemo(() => {
     const parsePercent = (value) => {
       const raw = String(value || '').replace(/[^\d.]/g, '');
@@ -100,12 +119,19 @@ const StudentDashboard = () => {
     ];
   }, [data.modules, data.snapshot]);
 
-  const bootcampState = useMemo(() => {
-    if (data.bootcampStatus === 'completed') return 'completed';
-    if (data.bootcampStatus === 'enrolled' && data.bootcampPaymentStatus !== 'paid') return 'enrolled_but_unpaid';
-    if (data.bootcampStatus === 'enrolled') return 'enrolled';
-    return 'not_enrolled';
-  }, [data.bootcampStatus, data.bootcampPaymentStatus]);
+  const bootcampProgressMap = useMemo(() => {
+    return (data.modules || []).reduce((acc, module) => {
+      acc[Number(module.id)] = Number(module.progress) || 0;
+      return acc;
+    }, {});
+  }, [data.modules]);
+
+  const currentPhaseId = useMemo(() => {
+    const firstIncomplete = HACKER_PROTOCOL_PHASES.find(
+      (phase) => (bootcampProgressMap[Number(phase.moduleId)] || 0) < 100
+    );
+    return firstIncomplete?.moduleId || HACKER_PROTOCOL_PHASES[HACKER_PROTOCOL_PHASES.length - 1]?.moduleId;
+  }, [bootcampProgressMap]);
 
   return (
     <div className="student-page">
@@ -120,10 +146,10 @@ const StudentDashboard = () => {
             <Button
               variant="primary"
               size="large"
-              onClick={() => navigate('/student-learning')}
+              onClick={handleResumeLesson}
             >
               <FiCompass size={18} />
-              Continue Learning
+              Resume Lesson
             </Button>
           </div>
         </header>
@@ -160,23 +186,55 @@ const StudentDashboard = () => {
               </div>
             ) : (
               <>
-                {/* 1. Action section */}
+                {/* 1. Continue Learning */}
                 <section className="student-section">
-                  <ContinueLearningCard
-                    moduleTitle={continueModule?.title || 'No active module yet'}
-                    progress={continueModule?.progress || 0}
-                    hasModule={Boolean(continueModule)}
-                    onContinue={() => navigate('/student-learning')}
-                  />
+                  <Card padding="large" className="student-card continue-learning-card">
+                    <div className="continue-learning-header">
+                      <p className="continue-learning-kicker">Continue Learning</p>
+                      <h2>{continueModuleMeta?.title || continueModule?.title || 'Start your bootcamp'}</h2>
+                      <p className="continue-learning-module">
+                        Phase: {continueModuleMeta?.codename || 'Hacker Protocol'}
+                        {continueRoomMeta ? ` · Room ${continueRoomMeta.roomId}: ${continueRoomMeta.title}` : ''}
+                      </p>
+                      <span className="continue-learning-progress-pill">
+                        Progress {Math.round(continueModule?.progress || 0)}%
+                      </span>
+                    </div>
+                    <Button
+                      variant="primary"
+                      size="large"
+                      className="continue-learning-button"
+                      onClick={handleResumeLesson}
+                    >
+                      Resume Lesson <FiArrowRight size={16} />
+                    </Button>
+                  </Card>
                 </section>
 
-                {/* 2. Bootcamp status + 4. Daily mission */}
-                <section className="student-section student-section-grid">
-                  <BootcampStatusCard
-                    status={bootcampState}
-                    onNavigate={(route) => navigate(route)}
-                  />
-                  <DailyMissionCard onStart={() => navigate('/student-learning')} />
+                {/* 2. Bootcamp Progress */}
+                <section className="student-section">
+                  <Card padding="large" className="student-card bootcamp-progress-card">
+                    <div className="bootcamp-progress-header">
+                      <h3>Bootcamp Progress</h3>
+                      <span className="bootcamp-progress-subtitle">Phase-by-phase completion</span>
+                    </div>
+                    <div className="bootcamp-progress-list">
+                      {HACKER_PROTOCOL_PHASES.map((phase) => {
+                        const progress = bootcampProgressMap[Number(phase.moduleId)] || 0;
+                        const isCompleted = progress >= 100;
+                        const isCurrent = !isCompleted && phase.moduleId === currentPhaseId;
+                        return (
+                          <div key={phase.moduleId} className={`bootcamp-progress-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}>
+                            <span className="bootcamp-progress-phase">Phase {phase.moduleId}</span>
+                            <span className="bootcamp-progress-title">{phase.codename}</span>
+                            <span className="bootcamp-progress-status">
+                              {isCompleted ? '✓ Completed' : isCurrent ? '→ Current' : '🔒 Locked'}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </Card>
                 </section>
 
                 {/* 3. Progress */}
@@ -185,9 +243,23 @@ const StudentDashboard = () => {
                   <SkillProgressCard pillars={skillPillars} />
                 </section>
 
-                {/* 5. Awareness */}
-                <section className="student-section">
+                {/* 4. Notifications */}
+                <section className="student-section student-section-grid">
                   <StudentRecentNotificationsCard notifications={notifications} />
+                  <Card padding="medium" className="student-card">
+                    <div className="student-card-header">
+                      <FiMessageSquare size={20} />
+                      <h3>Community</h3>
+                    </div>
+                    <p>Join the HSOCIETY community to share wins, get feedback, and learn together.</p>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      onClick={() => navigate('/community')}
+                    >
+                      Open Community
+                    </Button>
+                  </Card>
                 </section>
               </>
             )}

@@ -4,47 +4,47 @@
  *
  * Usage: drop-in replacement for the existing ContactPage.
  * Requires: contact.css (updated), common.css, layout.css
- * Icons: lucide-react (already in most Vite setups)
+ * Icons: react-icons (Feather set)
  */
 
 import { useEffect, useRef } from 'react';
 import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  MessageSquare,
-  Github,
-  Twitter,
-  Linkedin,
-  Globe,
-  ArrowRight,
-  Calendar,
-} from 'lucide-react';
+  FiMail,
+  FiPhone,
+  FiMapPin,
+  FiClock,
+  FiMessageSquare,
+  FiGithub,
+  FiTwitter,
+  FiLinkedin,
+  FiGlobe,
+  FiArrowRight,
+  FiCalendar,
+} from 'react-icons/fi';
 
 /* ─── data ─────────────────────────────────────────────── */
 
 const CONTACT_CARDS = [
   {
-    icon: <Mail size={20} strokeWidth={1.75} />,
+    icon: <FiMail size={20} />,
     label: 'Email',
     value: 'hello@yourcompany.com',
     sub: 'We reply within 24 hours',
   },
   {
-    icon: <Phone size={20} strokeWidth={1.75} />,
+    icon: <FiPhone size={20} />,
     label: 'Phone',
     value: '+1 (555) 000-0000',
     sub: 'Mon – Fri, 9 am – 6 pm EST',
   },
   {
-    icon: <MapPin size={20} strokeWidth={1.75} />,
+    icon: <FiMapPin size={20} />,
     label: 'Office',
     value: '123 Innovation Drive',
     sub: 'San Francisco, CA 94105',
   },
   {
-    icon: <Clock size={20} strokeWidth={1.75} />,
+    icon: <FiClock size={20} />,
     label: 'Response time',
     value: '< 4 hours',
     sub: 'Average first-reply SLA',
@@ -59,10 +59,10 @@ const STATS = [
 ];
 
 const SOCIAL_LINKS = [
-  { icon: <Twitter size={15} strokeWidth={1.75} />,  label: 'Twitter',  href: '#' },
-  { icon: <Github  size={15} strokeWidth={1.75} />,  label: 'GitHub',   href: '#' },
-  { icon: <Linkedin size={15} strokeWidth={1.75} />, label: 'LinkedIn', href: '#' },
-  { icon: <Globe   size={15} strokeWidth={1.75} />,  label: 'Website',  href: '#' },
+  { icon: <FiTwitter size={15} />,  label: 'Twitter',  href: '#' },
+  { icon: <FiGithub  size={15} />,  label: 'GitHub',   href: '#' },
+  { icon: <FiLinkedin size={15} />, label: 'LinkedIn', href: '#' },
+  { icon: <FiGlobe   size={15} />,  label: 'Website',  href: '#' },
 ];
 
 /* ─── scroll-reveal hook ────────────────────────────────── */
@@ -123,7 +123,7 @@ export default function ContactPage() {
                 className="button button--primary"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}
               >
-                <Mail size={16} strokeWidth={2} />
+                <FiMail size={16} />
                 Send us an email
               </a>
 
@@ -132,9 +132,9 @@ export default function ContactPage() {
                 className="button button--ghost"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}
               >
-                <Calendar size={16} strokeWidth={2} />
+                <FiCalendar size={16} />
                 Book a call
-                <ArrowRight size={14} strokeWidth={2} />
+                <FiArrowRight size={14} />
               </a>
             </div>
           </div>
@@ -142,10 +142,9 @@ export default function ContactPage() {
           {/* Right: decorative mark */}
           <div className="contact-hero-mark reveal-on-scroll" style={{ '--reveal-delay': '120ms' }}>
             <div className="contact-hero-visual">
-              <MessageSquare
+              <FiMessageSquare
                 className="contact-hero-icon"
                 size={72}
-                strokeWidth={1.25}
               />
             </div>
           </div>

@@ -119,6 +119,81 @@
 }
 
 /* ══════════════════════════════════════════════
+   TIMELINE
+   ══════════════════════════════════════════════ */
+
+.bootcamp-timeline {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.bootcamp-timeline-item {
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--card-bg);
+  padding: 1rem 1.2rem;
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.bootcamp-timeline-item:hover:not(.locked) {
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
+  transform: translateY(-1px);
+}
+
+.bootcamp-timeline-item.completed {
+  border-color: color-mix(in srgb, #22c55e 45%, var(--border-color));
+}
+
+.bootcamp-timeline-item.current {
+  border-color: color-mix(in srgb, var(--primary-color) 45%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 6%, var(--card-bg));
+}
+
+.bootcamp-timeline-item.locked {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.bootcamp-timeline-phase {
+  text-transform: uppercase;
+  letter-spacing: 0.16rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+}
+
+.bootcamp-timeline-body h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.bootcamp-timeline-body p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.bootcamp-timeline-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 720px) {
+  .bootcamp-timeline-item {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ══════════════════════════════════════════════
    EMBLEM CAROUSEL
    ══════════════════════════════════════════════ */
 

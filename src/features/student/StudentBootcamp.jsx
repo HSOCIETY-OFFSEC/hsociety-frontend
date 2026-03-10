@@ -1,16 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiClock, FiCreditCard, FiLayers, FiMonitor, FiShield } from 'react-icons/fi';
-import Card from '../../shared/components/ui/Card';
+import { FiClock, FiLayers, FiMonitor, FiShield, FiTrendingUp } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
-import { registerBootcamp } from '../dashboards/student/student.service';
+import { getStudentOverview, registerBootcamp } from '../dashboards/student/student.service';
 import useBootcampAccess from './hooks/useBootcampAccess';
-import StudentPaymentModal from './components/StudentPaymentModal';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import {
   HACKER_PROTOCOL_BOOTCAMP,
-  HACKER_PROTOCOL_PHASES,
 } from '../../data/bootcamps/hackerProtocolData';
 import '../../styles/student/base.css';
 import '../../styles/student/components.css';
@@ -21,8 +18,24 @@ const StudentBootcamp = () => {
   const { updateUser } = useAuth();
   const { isRegistered, isPaid } = useBootcampAccess();
   const [saving, setSaving] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [error, setError] = useState('');
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadProgress = async () => {
+      const response = await getStudentOverview();
+      if (!mounted || !response.success) return;
+      const modules = response.data?.modules || [];
+      if (!modules.length) return;
+      const avg = modules.reduce((sum, module) => sum + (Number(module.progress) || 0), 0) / modules.length;
+      setProgress(Math.round(avg));
+    };
+    loadProgress();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const enrolledStateLabel = useMemo(() => {
     if (!isRegistered) return 'Not enrolled';
@@ -52,7 +65,7 @@ const StudentBootcamp = () => {
         bootcampStatus: response.data?.bootcampStatus || 'enrolled',
         bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'unpaid',
       });
-      setShowPaymentModal(true);
+      navigate('/student-payments');
     } else {
       setError(getPublicErrorMessage({ action: 'submit', response }));
     }
@@ -81,13 +94,7 @@ const StudentBootcamp = () => {
         )}
 
         <div className="bootcamp-layout">
-
-          {/* ── Main Bootcamp Card ── */}
-          <div
-            className="bootcamp-hero-card reveal-on-scroll"
-            onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
-            style={{ cursor: 'pointer' }}
-          >
+          <div className="bootcamp-hero-card reveal-on-scroll">
             <div className="bootcamp-hero-cover">
               <img src={HACKER_PROTOCOL_BOOTCAMP.emblem} alt="Hacker Protocol emblem" />
             </div>
@@ -95,7 +102,7 @@ const StudentBootcamp = () => {
             <div className="bootcamp-hero-body">
               <div className="bootcamp-hero-eyebrow">
                 <FiShield size={14} />
-                <span>Hacker Protocol</span>
+                <span>{HACKER_PROTOCOL_BOOTCAMP.title}</span>
               </div>
 
               <h2 className="bootcamp-hero-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h2>
@@ -114,6 +121,10 @@ const StudentBootcamp = () => {
                   <FiLayers size={12} />
                   {HACKER_PROTOCOL_BOOTCAMP.phases} phases
                 </span>
+                <span className="bootcamp-metadata-pill">
+                  <FiTrendingUp size={12} />
+                  {progress}% progress
+                </span>
               </div>
 
               <div className="bootcamp-status-row">
@@ -122,7 +133,7 @@ const StudentBootcamp = () => {
                   {enrolledStateLabel}
                 </div>
 
-                <div className="bootcamp-hero-actions" onClick={(e) => e.stopPropagation()}>
+                <div className="bootcamp-hero-actions">
                   {!isRegistered && (
                     <Button
                       variant="primary"
@@ -130,7 +141,7 @@ const StudentBootcamp = () => {
                       onClick={handleEnroll}
                       disabled={saving}
                     >
-                      {saving ? 'Enrolling…' : 'Enroll now'}
+                      {saving ? 'Enrolling…' : 'Enroll Now'}
                     </Button>
                   )}
 
@@ -138,10 +149,9 @@ const StudentBootcamp = () => {
                     <Button
                       variant="secondary"
                       size="small"
-                      onClick={() => setShowPaymentModal(true)}
+                      onClick={() => navigate('/student-payments')}
                     >
-                      <FiCreditCard size={13} />
-                      Continue payment
+                      Complete Payment
                     </Button>
                   )}
 
@@ -151,46 +161,15 @@ const StudentBootcamp = () => {
                       size="small"
                       onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
                     >
-                      Open dashboard
+                      Open Bootcamp
                     </Button>
                   )}
                 </div>
               </div>
             </div>
           </div>
-
-          {/* ── Phase Emblems ── */}
-          <div className="bootcamp-phases-section reveal-on-scroll">
-            <div className="bootcamp-phases-label">
-              <FiLayers size={13} />
-              Phase breakdown
-            </div>
-
-            <div className="bootcamp-phases-grid">
-              {HACKER_PROTOCOL_PHASES.map((phase) => (
-                <div key={phase.moduleId} className="bootcamp-phase-item">
-                  <img src={phase.emblem} alt={`${phase.codename} emblem`} />
-                  <div className="bootcamp-phase-item-text">
-                    <strong>{phase.codename}</strong>
-                    <span>{phase.roleTitle}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
         </div>
       </div>
-
-      {showPaymentModal && (
-        <StudentPaymentModal
-          onClose={() => setShowPaymentModal(false)}
-          onSuccess={() => {
-            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
-            setShowPaymentModal(false);
-          }}
-        />
-      )}
     </div>
   );
 };

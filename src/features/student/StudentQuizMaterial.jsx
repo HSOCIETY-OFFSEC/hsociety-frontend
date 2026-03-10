@@ -55,7 +55,7 @@ const StudentQuizMaterial = () => {
             <Button
               variant="primary"
               size="large"
-              onClick={() => (hasAccess ? navigate('/student-learning') : triggerAccessModal())}
+              onClick={() => (hasAccess ? navigate('/student-bootcamps/hacker-protocol/dashboard') : triggerAccessModal())}
             >
               <FiTarget size={18} />
               {hasAccess ? 'Go to Learning Path' : 'Access Denied'}
@@ -74,7 +74,7 @@ const StudentQuizMaterial = () => {
               variant="secondary"
               size="small"
               disabled={!hasAccess}
-              onClick={() => (hasAccess ? navigate('/student-learning') : triggerAccessModal())}
+              onClick={() => (hasAccess ? navigate('/student-bootcamps/hacker-protocol/dashboard') : triggerAccessModal())}
             >
               {hasAccess ? 'Start check-in' : 'Access Denied'}
             </Button>
@@ -89,7 +89,7 @@ const StudentQuizMaterial = () => {
               variant="secondary"
               size="small"
               disabled={!hasAccess}
-              onClick={() => (hasAccess ? navigate('/student-learning') : triggerAccessModal())}
+              onClick={() => (hasAccess ? navigate('/student-bootcamps/hacker-protocol/dashboard') : triggerAccessModal())}
             >
               {hasAccess ? 'Open validation' : 'Access Denied'}
             </Button>

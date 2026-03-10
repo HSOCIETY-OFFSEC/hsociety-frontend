@@ -10,7 +10,6 @@ import { useAuth } from '../../core/auth/AuthContext';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import EmblemCarousel from './components/EmblemCarousel';
 import {
   HACKER_PROTOCOL_BOOTCAMP,
   HACKER_PROTOCOL_PHASES,
@@ -113,6 +112,11 @@ const StudentLearning = () => {
     navigate(`/student-bootcamps/hacker-protocol/modules/${module.moduleId}`);
   };
 
+  const currentPhaseId = useMemo(() => {
+    const firstIncomplete = phaseCards.find((module) => (module.progress || 0) < 100);
+    return firstIncomplete?.moduleId || phaseCards[phaseCards.length - 1]?.moduleId;
+  }, [phaseCards]);
+
   return (
     <div className="student-page bootcamp-page">
       <div className="bootcamp-shell">
@@ -132,13 +136,6 @@ const StudentLearning = () => {
               Free Resources
             </Button>
           </div>
-        </section>
-
-        <section className="bootcamp-hero-carousel">
-          <EmblemCarousel
-            items={HACKER_PROTOCOL_PHASES}
-            onSelect={(item) => navigate(`/student-bootcamps/hacker-protocol/modules/${item.moduleId}`)}
-          />
         </section>
 
         {meetingNotification && (
@@ -195,41 +192,35 @@ const StudentLearning = () => {
               </Card>
             )}
 
-            <section className="bootcamp-modules-grid">
-              {phaseCards.map((module) => (
-                <Card
-                  key={module.moduleId}
-                  padding="medium"
-                  className="bootcamp-module-card"
-                  onClick={() => handleModuleClick(module, module.index)}
-                >
-                  <div
-                    className="module-card-image"
-                    style={{
-                      background: `linear-gradient(140deg, ${module.color || '#0f172a'}, #0b1220)`,
+            <section className="bootcamp-timeline">
+              {phaseCards.map((module, index) => {
+                const progress = module.progress || 0;
+                const isCompleted = progress >= 100;
+                const isCurrent = module.moduleId === currentPhaseId;
+                const isLocked = !isCompleted && !isCurrent;
+                return (
+                  <button
+                    key={module.moduleId}
+                    type="button"
+                    className={`bootcamp-timeline-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}`}
+                    onClick={() => {
+                      if (isLocked) return;
+                      handleModuleClick(module, index);
                     }}
-                    aria-hidden="true"
+                    disabled={isLocked}
                   >
-                    {module.emblem ? (
-                      <img
-                        src={module.emblem}
-                        alt={`${module.codename || module.title} emblem`}
-                        className="module-card-emblem"
-                      />
-                    ) : (
-                      <span>Module {module.moduleId}</span>
-                    )}
-                  </div>
-                  <div className="module-card-body">
-                    <h3>{module.title}</h3>
-                    <p>{module.description || module.ctf || 'Skill building module'}</p>
-                    <div className="module-card-progress">
-                      <div style={{ width: `${module.progress}%` }} />
+                    <span className="bootcamp-timeline-phase">Phase {module.moduleId}</span>
+                    <div className="bootcamp-timeline-body">
+                      <h3>{module.codename || module.title}</h3>
+                      <p>{module.roleTitle || module.description || module.ctf || 'Skill building module'}</p>
                     </div>
-                    <span className="module-card-footer">{module.progress}% complete</span>
-                  </div>
-                </Card>
-              ))}
+                    <div className="bootcamp-timeline-status">
+                      {isCompleted ? 'Completed' : isCurrent ? 'Current' : 'Locked'}
+                      {isLocked && <FiLock size={14} />}
+                    </div>
+                  </button>
+                );
+              })}
             </section>
           </>
         )}

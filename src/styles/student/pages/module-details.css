@@ -11,9 +11,9 @@
 
 .module-details-hero {
   display: grid;
-  grid-template-columns: 1.5fr 0.8fr;
+  grid-template-columns: 1.6fr 0.7fr;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1.25rem;
   border: 1px solid var(--border-color);
   border-radius: 18px;
   background: linear-gradient(145deg, color-mix(in srgb, var(--module-color) 20%, var(--card-bg)), var(--card-bg));
@@ -28,22 +28,22 @@
   margin: 0.15rem 0 0.5rem;
 }
 
-.module-details-tags {
+.module-details-progress {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.6rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
 }
 
-.module-details-tags span {
-  padding: 0.3rem 0.75rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  font-size: 0.8rem;
+.module-details-progress strong {
+  color: var(--text-primary);
+  font-size: 0.95rem;
 }
 
 .module-details-actions {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
@@ -62,9 +62,8 @@
   object-fit: cover;
 }
 
-.module-details-grid {
+.module-details-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -83,7 +82,7 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.55rem 0.7rem;
-  cursor: pointer;
+  cursor: default;
 }
 
 .module-room-item strong,
@@ -95,31 +94,22 @@
   color: var(--text-tertiary);
 }
 
-.module-phase-item {
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--phase-color) 14%, var(--bg-secondary));
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.45rem 0.6rem;
-  cursor: pointer;
+.module-room-item.completed {
+  border-color: color-mix(in srgb, #22c55e 45%, var(--border-color));
 }
 
-.module-phase-item img {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  object-fit: cover;
+.module-room-item.current {
+  border-color: color-mix(in srgb, var(--primary-color) 45%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 6%, var(--bg-secondary));
 }
 
-.module-phase-item.active {
-  border-color: color-mix(in srgb, var(--phase-color) 50%, var(--border-color));
+.module-room-item.locked {
+  opacity: 0.7;
 }
 
 @media (max-width: 860px) {
   .module-details-hero,
-  .module-details-grid {
+  .module-details-list {
     grid-template-columns: 1fr;
   }
 }

@@ -32,7 +32,6 @@ const Contact = React.lazy(() => import('../features/contact/Contact'));
 const ServiceDetail = React.lazy(() => import('../features/services/ServiceDetail'));
 const ThreatMap = React.lazy(() => import('../features/threat-map/ThreatMap'));
 const StudentDashboard = loadDashboard('StudentDashboard');
-const StudentLearnOverview = React.lazy(() => import('../features/student/StudentLearnOverview'));
 const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
 const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
 const StudentModuleDetails = React.lazy(() => import('../features/student/StudentModuleDetails'));
@@ -332,7 +331,7 @@ const AppRouter = () => {
               path="student-learning"
               element={
                 <RoleRoute allowedRoles={['student']}>
-                  <StudentLearnOverview />
+                  <Navigate to="/student-bootcamps/hacker-protocol/dashboard" replace />
                 </RoleRoute>
               }
             />

@@ -77,6 +77,75 @@
   justify-content: center;
 }
 
+/* ── Bootcamp Progress ───────────────────────────────────── */
+.bootcamp-progress-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.bootcamp-progress-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.bootcamp-progress-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+.bootcamp-progress-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.bootcamp-progress-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  font-size: 0.85rem;
+  align-items: center;
+}
+
+.bootcamp-progress-item.completed {
+  border-color: color-mix(in srgb, #22c55e 45%, var(--border-color));
+}
+
+.bootcamp-progress-item.current {
+  border-color: color-mix(in srgb, var(--primary-color) 45%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--bg-secondary));
+}
+
+.bootcamp-progress-phase {
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.12rem;
+}
+
+.bootcamp-progress-title {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.bootcamp-progress-status {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 640px) {
+  .bootcamp-progress-item {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}
+
 /* ── Progress Bars ─────────────────────────────────────────── */
 .student-progress-bar {
   width: 100%;

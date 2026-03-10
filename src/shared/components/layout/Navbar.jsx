@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   FiBookOpen,
-  FiCheckCircle,
   FiChevronDown,
   FiCreditCard,
   FiBell,
@@ -10,6 +9,7 @@ import {
   FiLogOut,
   FiMenu,
   FiMoreHorizontal,
+  FiMessageSquare,
   FiShield,
   FiTerminal,
   FiX
@@ -118,17 +118,16 @@ const Navbar = ({ sticky = true }) => {
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
     () => [
-      { path: '/student-learning', label: 'Continue Learning', icon: FiTerminal },
-      { path: '/student-bootcamps', label: 'Bootcamps', icon: FiLayers },
+      { path: '/student-bootcamps/hacker-protocol/dashboard', label: 'Learning', icon: FiTerminal },
+      { path: '/student-bootcamps', label: 'Bootcamp', icon: FiLayers },
       { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
+      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
+      { path: '/community', label: 'Community', icon: FiMessageSquare },
     ],
     []
   );
   const studentUtilityLinks = useMemo(
-    () => [
-      { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
-      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
-    ],
+    () => [],
     []
   );
   const hiddenStudentNavPaths = useMemo(
@@ -138,12 +137,11 @@ const Navbar = ({ sticky = true }) => {
   const roleOrder = useMemo(() => ({
     student: [
       '/student-dashboard',
-      '/student-learning',
+      '/student-bootcamps/hacker-protocol/dashboard',
       '/student-bootcamps',
       '/student-resources',
-      '/community',
-      '/leaderboard',
-      '/settings'
+      '/student-payments',
+      '/community'
     ],
     corporate: [
       '/corporate-dashboard',
