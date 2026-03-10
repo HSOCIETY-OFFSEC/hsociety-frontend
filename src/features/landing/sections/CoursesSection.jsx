@@ -14,6 +14,23 @@ const S = {
     overflow: 'hidden',
   },
 
+  emblemBackdrop: {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.08,
+    pointerEvents: 'none',
+    zIndex: 0,
+    transform: 'translateY(20px)',
+  },
+
+  emblemImg: {
+    width: 'min(520px, 70vw)',
+    filter: 'grayscale(100%) brightness(1.1)',
+  },
+
   /* subtle scanline texture */
   scanlines: {
     position: 'absolute',
@@ -21,12 +38,12 @@ const S = {
     backgroundImage:
       'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px)',
     pointerEvents: 'none',
-    zIndex: 0,
+    zIndex: 1,
   },
 
   inner: {
     position: 'relative',
-    zIndex: 1,
+    zIndex: 2,
     maxWidth: '1200px',
     margin: '0 auto',
     padding: '0 2rem',
@@ -153,7 +170,7 @@ const S = {
     transform: hovered ? 'translateY(-3px)' : 'none',
   }),
 
-  emblemImg: {
+  emblemImgSmall: {
     width: '78%',
     height: '78%',
     objectFit: 'contain',
@@ -252,7 +269,7 @@ const PhaseCard = ({ module, index, onClick }) => {
 
       {/* Emblem */}
       <div style={S.emblemWrap(color, hovered)}>
-        <img src={module.emblem} alt={`${module.codename} emblem`} style={S.emblemImg} />
+        <img src={module.emblem} alt={`${module.codename} emblem`} style={S.emblemImgSmall} />
       </div>
 
       {/* Label */}
@@ -269,6 +286,13 @@ const CoursesSection = () => {
 
   return (
     <section style={S.section} className="reveal-on-scroll">
+      <div style={S.emblemBackdrop} aria-hidden="true">
+        <img
+          src={HACKER_PROTOCOL_BOOTCAMP.emblem}
+          alt=""
+          style={S.emblemImg}
+        />
+      </div>
       <div style={S.scanlines} aria-hidden="true" />
 
       <div style={S.inner}>

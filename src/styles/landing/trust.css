@@ -21,6 +21,8 @@
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  animation: trustFloat 9s ease-in-out infinite;
+  will-change: transform;
 }
 
 .trust-card::after {
@@ -34,13 +36,21 @@
 }
 
 .trust-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-10px);
   border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
   box-shadow: 0 18px 32px -26px rgba(15, 23, 42, 0.5);
 }
 
 .trust-card:hover::after {
   opacity: 1;
+}
+
+.trust-card:nth-child(2) {
+  animation-delay: -3s;
+}
+
+.trust-card:nth-child(3) {
+  animation-delay: -6s;
 }
 
 .trust-icon {
@@ -65,4 +75,19 @@
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+@keyframes trustFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trust-card {
+    animation: none;
+  }
 }
