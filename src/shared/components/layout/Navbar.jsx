@@ -153,7 +153,8 @@ const Navbar = ({ sticky = true }) => {
       '/assets',
       '/billing',
       '/community',
-      '/leaderboard'
+      '/leaderboard',
+      '/settings'
     ],
     pentester: [
       '/pentester',
@@ -187,7 +188,8 @@ const Navbar = ({ sticky = true }) => {
     });
   }, [desktopBasicLinks, hiddenStudentNavPaths, isStudent, role, roleOrder]);
 
-  const maxDesktopLinks = isAuthenticated ? (isStudent ? 3 : 4) : 4;
+  // Keep desktop nav compact: no more than two buttons + dropdowns.
+  const maxDesktopLinks = isAuthenticated ? (isStudent ? 1 : 2) : 4;
   const visibleDesktopLinks = orderedDesktopLinks.slice(0, maxDesktopLinks);
   const overflowDesktopLinks = orderedDesktopLinks.slice(maxDesktopLinks);
 
