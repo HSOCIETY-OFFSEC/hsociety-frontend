@@ -384,13 +384,6 @@ const Navbar = ({ sticky = true }) => {
             <div className="navbar-right-actions">
               <button
                 type="button"
-                onClick={() => openAuthModal('login')}
-                className="navbar-auth-button"
-              >
-                Login
-              </button>
-              <button
-                type="button"
                 onClick={() => openAuthModal('register')}
                 className="navbar-auth-button navbar-auth-primary"
               >
@@ -540,18 +533,6 @@ const Navbar = ({ sticky = true }) => {
               </button>
             ) : (
               <>
-                <button
-                  onClick={() => {
-                    openAuthModal('login');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="mobile-menu-login"
-                >
-                  <span className="mobile-menu-icon">
-                    <FiShield size={18} />
-                  </span>
-                  <span>Login</span>
-                </button>
                 <button
                   onClick={() => {
                     openAuthModal('register');

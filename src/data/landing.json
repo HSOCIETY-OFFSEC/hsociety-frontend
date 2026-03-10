@@ -10,7 +10,7 @@
     ],
     "ctas": [
       {
-        "label": "Start Learning",
+        "label": "Learn to Hack",
         "route": "/register",
         "variant": "primary"
       },

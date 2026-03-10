@@ -4,8 +4,8 @@
 
 .landing-footer {
   background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 85%, transparent), var(--bg-secondary));
-  border-top: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
-  padding: 5rem 2rem 2.5rem;
+  border-top: none;
+  padding: 0;
   position: relative;
   overflow: hidden;
 }
@@ -20,15 +20,6 @@
   pointer-events: none;
 }
 
-.landing-footer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.06) 45%, transparent 70%);
-  opacity: 0.25;
-  animation: footerSweep 12s ease-in-out infinite;
-  pointer-events: none;
-}
 
 .footer-container {
   max-width: 1280px;
@@ -44,29 +35,42 @@
   margin-bottom: 3.5rem;
 }
 
+.footer-card {
+  padding: 5rem 2rem 3rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card-bg) 94%, transparent), var(--bg-secondary));
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.footer-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(520px 280px at 10% 10%, rgba(16, 185, 129, 0.12), transparent 70%),
+    radial-gradient(420px 240px at 90% 20%, rgba(56, 189, 248, 0.12), transparent 60%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.footer-top,
+.footer-content,
+.footer-bottom {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
 .footer-content {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 3rem;
-  margin-bottom: 2.5rem;
-  padding: 2.25rem;
-  border-radius: 28px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
-  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
-  box-shadow: 0 18px 40px -32px rgba(15, 23, 42, 0.7);
-  position: relative;
-  overflow: hidden;
+  margin-top: 3rem;
 }
-
-.footer-content::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(360px 220px at 0% 0%, rgba(16, 185, 129, 0.12), transparent 70%);
-  opacity: 0.6;
-  pointer-events: none;
-}
-
 .footer-brand {
   display: flex;
   flex-direction: column;
@@ -212,6 +216,7 @@
 }
 
 .footer-bottom {
+  margin-top: 2.5rem;
   padding-top: 2rem;
   border-top: 1px solid var(--border-color);
   display: flex;
@@ -259,22 +264,8 @@
   box-shadow: 0 10px 20px -14px rgba(16, 185, 129, 0.6);
 }
 
-@keyframes footerSweep {
-  0%, 100% { transform: translateX(-40%); opacity: 0.15; }
-  50% { transform: translateX(40%); opacity: 0.4; }
-}
-
-@media (prefers-reduced-motion: reduce), (max-width: 900px) {
-  .landing-footer::after {
-    animation: none;
-  }
-}
-
 @media (min-width: 1024px) {
   .landing-footer {
-    min-height: 100vh;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
+    padding: 0;
   }
 }
