@@ -28,6 +28,8 @@
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  animation: whyFloat 10s ease-in-out infinite;
+  will-change: transform;
 }
 
 .why-item::after {
@@ -41,13 +43,21 @@
 }
 
 .why-item:hover {
-  transform: translateY(-6px);
+  transform: translateY(-10px);
   border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
   box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.2);
 }
 
 .why-item:hover::after {
   opacity: 1;
+}
+
+.why-item:nth-child(2) {
+  animation-delay: -3s;
+}
+
+.why-item:nth-child(3) {
+  animation-delay: -6s;
 }
 
 /* ---- Media (flush to card top) ---- */
@@ -116,6 +126,21 @@
   line-height: 1.65;
   margin: 0 1.5rem 1.75rem;
   flex-grow: 1;
+}
+
+@keyframes whyFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-item {
+    animation: none;
+  }
 }
 
 /* ---- Responsive ---- */
