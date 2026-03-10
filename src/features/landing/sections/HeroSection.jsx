@@ -23,9 +23,13 @@ const AnimatedWords = ({ text, className = '' }) =>
   text.split(' ').map((word, i) => {
     const clean = word.replace(/[^a-zA-Z]/g, '').toLowerCase();
     const highlight = clean === 'hacker' || clean === 'hackers';
+    const typeCount = clean.length || word.length;
     return (
       <span key={i} className="title-word">
-        <span className={`title-word-inner ${className} ${highlight ? 'hero-word-accent' : ''}`}>
+        <span
+          className={`title-word-inner ${className} ${highlight ? 'hero-word-accent ani-type' : ''}`}
+          style={highlight ? { '--type-ch': typeCount } : undefined}
+        >
           {word}
         </span>
         {/* preserve whitespace between words */}

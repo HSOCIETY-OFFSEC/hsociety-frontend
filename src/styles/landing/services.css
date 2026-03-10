@@ -3,30 +3,86 @@
    ======================================== */
 
 .services-section {
-  padding: 6rem 2rem;
+  padding: clamp(3rem, 8vh, 7rem) clamp(0.75rem, 3vw, 2rem);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
-.services-section::before {
-  content: "";
+/* Ambient background glows */
+.services-bg-glow {
   position: absolute;
-  inset: 0;
-  opacity: 0.18;
+  border-radius: 50%;
   pointer-events: none;
+  filter: blur(80px);
+  z-index: 0;
 }
 
-.services-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.7;
+.services-bg-glow--1 {
+  width: clamp(260px, 40vw, 560px);
+  height: clamp(260px, 40vw, 560px);
+  background: radial-gradient(circle, color-mix(in srgb, var(--primary-color) 18%, transparent), transparent 70%);
+  top: -10%;
+  right: -8%;
+  opacity: 0.55;
+}
+
+.services-bg-glow--2 {
+  width: clamp(180px, 28vw, 380px);
+  height: clamp(180px, 28vw, 380px);
+  background: radial-gradient(circle, color-mix(in srgb, var(--primary-color) 10%, transparent), transparent 70%);
+  bottom: 5%;
+  left: -6%;
+  opacity: 0.4;
 }
 
 .services-section .section-container {
   position: relative;
   z-index: 1;
+  max-width: min(860px, 94vw);
+  margin: 0 auto;
+}
+
+/* ========================================
+   SECTION HEADER
+   ======================================== */
+
+.section-header-center {
+  text-align: center;
+  margin-bottom: clamp(1.5rem, 4vh, 3rem);
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin-bottom: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+}
+
+.section-title-large {
+  font-size: clamp(1.65rem, 4.5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.section-subtitle-large {
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto;
 }
 
 /* ========================================
@@ -36,23 +92,23 @@
 .services-carousel {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  margin-top: 3rem;
+  gap: clamp(0.4rem, 1.5vw, 1.25rem);
 }
 
 /* ========================================
    TRACK
-   Height driven entirely by JS (scrollHeight
-   of active card). No fixed min-height so
-   the button is never clipped on any device.
+   Height driven by JS (active card scrollHeight).
+   Max-height uses viewport to keep card visible.
    ======================================== */
 
 .carousel-track {
   flex: 1;
   position: relative;
-  height: 640px; /* JS overrides this immediately on mount */
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden; /* clips inactive slides — no text bleed */
+  min-height: 200px;
+  /* JS sets explicit height; this is just the fallback */
+  height: clamp(460px, 72vh, 740px);
+  transition: height 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 /* ========================================
@@ -66,13 +122,14 @@
   align-items: stretch;
 
   opacity: 0;
-  visibility: hidden; /* prevents text bleed through transparent bg */
+  visibility: hidden;
   pointer-events: none;
-  transform: translateX(calc(var(--slide-offset, 1) * 56px)) scale(0.96);
+  transform: translateX(calc(var(--slide-offset, 1) * 48px)) scale(0.965);
   transition:
-    opacity    0.4s ease,
-    visibility 0.4s ease,
-    transform  0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity    0.42s ease,
+    visibility 0.42s ease,
+    transform  0.42s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
 }
 
 .carousel-slide.is-active {
@@ -84,7 +141,7 @@
 
 .carousel-slide.is-prev,
 .carousel-slide.is-next {
-  opacity: 0.12;
+  opacity: 0.08;
   visibility: visible;
 }
 
@@ -97,18 +154,53 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
-  border-radius: 16px;
+  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+  border-radius: 20px;
   overflow: hidden;
   position: relative;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow   0.3s ease,
+    transform    0.35s ease;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+/* Top accent line */
+.service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary-color) 40%,
+    color-mix(in srgb, var(--primary-color) 50%, transparent) 80%,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+/* Subtle gradient overlay */
 .service-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(140deg, rgba(16, 185, 129, 0.07), transparent 50%);
+  background: linear-gradient(
+    148deg,
+    color-mix(in srgb, var(--primary-color) 5%, transparent) 0%,
+    transparent 55%
+  );
   pointer-events: none;
   z-index: 0;
 }
@@ -119,8 +211,11 @@
 }
 
 .service-card:hover {
-  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
-  box-shadow: 0 24px 48px -24px rgba(15, 23, 42, 0.5);
+  border-color: color-mix(in srgb, var(--primary-color) 40%, transparent);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 20px 56px -16px rgba(0, 0, 0, 0.22),
+    0 0 0 1px color-mix(in srgb, var(--primary-color) 15%, transparent);
 }
 
 /* ========================================
@@ -129,10 +224,11 @@
 
 .service-card-image {
   width: 100%;
-  height: 220px;
+  height: clamp(130px, 22vh, 240px);
   flex-shrink: 0;
   overflow: hidden;
   background: var(--card-bg);
+  position: relative;
 }
 
 .service-card-image img {
@@ -141,24 +237,35 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .service-card:hover .service-card-image img {
-  transform: scale(1.04);
+  transform: scale(1.05);
+}
+
+/* Gradient overlay at bottom of image */
+.service-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    color-mix(in srgb, var(--card-bg) 70%, transparent) 100%
+  );
+  pointer-events: none;
 }
 
 /* ========================================
    CARD BODY
-   Natural flow — no flex:1, no overflow:hidden
-   so scrollHeight measurement is accurate
    ======================================== */
 
 .service-card-body {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  padding: 1.75rem 1.75rem 1.5rem;
+  gap: clamp(0.8rem, 2vh, 1.25rem);
+  padding: clamp(1.1rem, 2.5vh, 1.75rem) clamp(1.1rem, 3vw, 1.75rem) clamp(1rem, 2.5vh, 1.5rem);
+  flex: 1;
 }
 
 /* ========================================
@@ -168,33 +275,53 @@
 .service-card-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .service-icon {
-  width: 48px;
-  height: 48px;
+  width: clamp(40px, 5vw, 52px);
+  height: clamp(40px, 5vw, 52px);
   flex-shrink: 0;
   border-radius: 14px;
-  background: var(--primary-color-alpha);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--primary-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform   0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow  0.3s ease,
+    background  0.3s ease;
 }
 
 .service-card:hover .service-icon {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 10px 24px -12px rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px) scale(1.06) rotate(-3deg);
+  background: color-mix(in srgb, var(--primary-color) 18%, transparent);
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--primary-color) 55%, transparent);
 }
 
 .service-title {
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.25;
+  letter-spacing: -0.015em;
   word-break: break-word;
+}
+
+/* ========================================
+   DIVIDER
+   ======================================== */
+
+.service-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--border-color) 80%, transparent),
+    transparent
+  );
+  margin: 0 -0.25rem;
 }
 
 /* ========================================
@@ -202,9 +329,9 @@
    ======================================== */
 
 .service-description {
-  font-size: 0.95rem;
+  font-size: clamp(0.82rem, 1.6vw, 0.95rem);
   color: var(--text-secondary);
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 /* ========================================
@@ -217,23 +344,31 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.6rem;
+  flex: 1;
 }
 
 .service-features li {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  font-size: 0.9rem;
+  gap: 0.6rem;
+  font-size: clamp(0.78rem, 1.5vw, 0.9rem);
   color: var(--text-secondary);
   line-height: 1.5;
 }
 
 .feature-check {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
   color: var(--primary-color);
   display: inline-flex;
-  flex-shrink: 0;
-  margin-top: 2px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
 }
 
 /* ========================================
@@ -242,19 +377,23 @@
 
 .service-learn-btn {
   width: 100%;
-  margin-top: 0.25rem;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
 }
 
 .service-btn-arrow {
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
-  margin-left: 0.4rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.22s ease;
+  flex-shrink: 0;
 }
 
 .service-card:hover .service-btn-arrow {
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 /* ========================================
@@ -263,24 +402,36 @@
 
 .carousel-btn {
   flex-shrink: 0;
-  width: 46px;
-  height: 46px;
+  width: clamp(36px, 5vw, 48px);
+  height: clamp(36px, 5vw, 48px);
   border-radius: 50%;
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 80%, transparent);
+  background: color-mix(in srgb, var(--card-bg) 82%, transparent);
   color: var(--text-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background    0.2s ease,
+    border-color  0.2s ease,
+    transform     0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow    0.2s ease;
   align-self: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .carousel-btn:hover {
-  background: var(--primary-color-alpha);
-  border-color: color-mix(in srgb, var(--primary-color) 50%, transparent);
-  transform: scale(1.1);
+  background: color-mix(in srgb, var(--primary-color) 14%, var(--card-bg));
+  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  transform: scale(1.12);
+  box-shadow: 0 4px 16px -4px color-mix(in srgb, var(--primary-color) 35%, transparent);
+}
+
+.carousel-btn:active {
+  transform: scale(0.96);
 }
 
 /* ========================================
@@ -291,8 +442,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.55rem;
-  margin-top: 2rem;
+  gap: 0.5rem;
+  margin-top: clamp(1.25rem, 3vh, 2rem);
 }
 
 .carousel-dot {
@@ -301,50 +452,76 @@
   border-radius: 50%;
   border: none;
   padding: 0;
-  background: var(--border-color);
+  background: color-mix(in srgb, var(--text-secondary) 35%, transparent);
   cursor: pointer;
-  transition: background 0.25s ease, width 0.25s ease, border-radius 0.25s ease;
+  transition:
+    background     0.28s ease,
+    width          0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius  0.28s ease,
+    transform      0.2s ease;
+}
+
+.carousel-dot:hover {
+  background: color-mix(in srgb, var(--primary-color) 60%, transparent);
+  transform: scale(1.25);
 }
 
 .carousel-dot.is-active {
   background: var(--primary-color);
-  width: 24px;
+  width: 28px;
   border-radius: 4px;
+  box-shadow: 0 2px 8px -2px color-mix(in srgb, var(--primary-color) 55%, transparent);
 }
 
 /* ========================================
-   MOBILE ≤ 480px  (covers iPhone SE 375px)
-   Key changes:
-   - Image dropped to 140px
-   - Padding tightened
-   - Font sizes reduced
-   - Carousel side padding removed so card
-     fills the full width minus tiny buttons
+   COUNTER  (e.g. "2 / 5")
+   ======================================== */
+
+.carousel-counter {
+  text-align: center;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  opacity: 0.55;
+  margin-top: 0.5rem;
+}
+
+/* ========================================
+   MOBILE  ≤ 480px  (iPhone SE 375 etc.)
    ======================================== */
 
 @media (max-width: 480px) {
   .services-section {
-    padding: 3.5rem 0.25rem;
+    padding: clamp(2.5rem, 6vh, 4rem) 0.2rem;
   }
 
   .services-carousel {
-    gap: 0.25rem;
+    gap: 0.2rem;
   }
 
   .carousel-btn {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     flex-shrink: 0;
   }
 
-  /* Image shorter = more room for body + button */
+  .carousel-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .carousel-track {
+    height: clamp(420px, 78vh, 680px);
+  }
+
   .service-card-image {
-    height: 140px;
+    height: clamp(110px, 18vh, 160px);
   }
 
   .service-card-body {
-    padding: 1rem 1rem 1rem;
-    gap: 0.85rem;
+    padding: 0.9rem 0.9rem 0.85rem;
+    gap: 0.7rem;
   }
 
   .service-icon {
@@ -358,45 +535,50 @@
   }
 
   .service-description {
-    font-size: 0.82rem;
-    line-height: 1.55;
+    font-size: 0.81rem;
+    line-height: 1.6;
   }
 
   .service-features li {
-    font-size: 0.78rem;
-    gap: 0.5rem;
+    font-size: 0.76rem;
+    gap: 0.45rem;
   }
 
-  .service-learn-btn {
-    margin-top: 0.1rem;
+  .feature-check {
+    width: 17px;
+    height: 17px;
   }
 }
 
 /* ========================================
-   MOBILE 481px – 640px
+   SMALL MOBILE  481px – 640px
    ======================================== */
 
 @media (min-width: 481px) and (max-width: 640px) {
   .services-section {
-    padding: 4rem 0.5rem;
+    padding: clamp(3rem, 7vh, 5rem) 0.4rem;
   }
 
   .services-carousel {
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
 
   .carousel-btn {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-track {
+    height: clamp(440px, 74vh, 700px);
   }
 
   .service-card-image {
-    height: 160px;
+    height: clamp(130px, 20vh, 190px);
   }
 
   .service-card-body {
-    padding: 1.25rem 1.1rem 1.1rem;
-    gap: 1rem;
+    padding: 1.15rem 1.15rem 1rem;
+    gap: 0.85rem;
   }
 
   .service-title {
@@ -404,24 +586,59 @@
   }
 
   .service-description {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
   }
 
   .service-features li {
-    font-size: 0.83rem;
+    font-size: 0.81rem;
   }
 }
 
 /* ========================================
-   TABLET 641px – 1024px
+   TABLET  641px – 1024px
    ======================================== */
 
 @media (min-width: 641px) and (max-width: 1024px) {
+  .carousel-track {
+    height: clamp(460px, 68vh, 720px);
+  }
+
   .service-card-image {
-    height: 200px;
+    height: clamp(160px, 22vh, 220px);
   }
 
   .service-card-body {
     padding: 1.5rem 1.5rem 1.25rem;
+  }
+}
+
+/* ========================================
+   LARGE DESKTOP  > 1400px
+   ======================================== */
+
+@media (min-width: 1400px) {
+  .services-section .section-container {
+    max-width: 900px;
+  }
+
+  .carousel-track {
+    height: clamp(500px, 64vh, 760px);
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-slide,
+  .carousel-track,
+  .service-card,
+  .service-card-image img,
+  .carousel-btn,
+  .carousel-dot,
+  .service-icon {
+    transition: none !important;
+    animation: none !important;
   }
 }

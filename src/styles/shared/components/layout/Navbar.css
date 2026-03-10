@@ -525,6 +525,37 @@
   gap: 0.5rem;
 }
 
+.mobile-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-menu-section-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-menu-section-toggle svg {
+  transition: transform 0.2s ease;
+}
+
+.mobile-menu-section-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
 .mobile-menu-link {
   display: flex;
   align-items: center;

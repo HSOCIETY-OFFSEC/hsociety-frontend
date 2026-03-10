@@ -33,27 +33,19 @@ const ServicesSection = ({ services = [] }) => {
     touchEndX.current = null;
   };
 
-  /* ── Dynamic track height ─────────────────────────────
-     Measure the active slide's card height and set the
-     track to match. This means the button is never
-     clipped regardless of screen size.
-  ──────────────────────────────────────────────────── */
   const syncHeight = useCallback(() => {
     const activeSlide = slideRefs.current[activeIndex];
     const track = trackRef.current;
     if (!activeSlide || !track) return;
 
-    // Temporarily make it visible so we can measure it
     const card = activeSlide.querySelector('.service-card');
     if (!card) return;
 
-    const height = card.scrollHeight;
-    track.style.height = `${height}px`;
+    track.style.height = `${card.scrollHeight}px`;
   }, [activeIndex]);
 
   useEffect(() => {
     syncHeight();
-    // Re-measure on resize (font loading, window resize, etc.)
     const ro = new ResizeObserver(syncHeight);
     if (slideRefs.current[activeIndex]) {
       ro.observe(slideRefs.current[activeIndex]);
@@ -61,23 +53,32 @@ const ServicesSection = ({ services = [] }) => {
     return () => ro.disconnect();
   }, [activeIndex, syncHeight]);
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
+
   return (
     <section className="services-section reveal-on-scroll" id="services">
-      <div className="section-container">
+      <div className="services-bg-glow services-bg-glow--1" aria-hidden="true" />
+      <div className="services-bg-glow services-bg-glow--2" aria-hidden="true" />
 
+      <div className="section-container">
         <div className="section-header-center">
           <div className="section-eyebrow">
             <Logo size="small" />
             <span>{SERVICES_SECTION_DATA.eyebrow}</span>
           </div>
           <h2 className="section-title-large">{SERVICES_SECTION_DATA.title}</h2>
-          <p className="section-subtitle-large">
-            {SERVICES_SECTION_DATA.subtitle}
-          </p>
+          <p className="section-subtitle-large">{SERVICES_SECTION_DATA.subtitle}</p>
         </div>
 
-        <div className="services-carousel">
-
+        <div className="services-carousel" role="region" aria-label="Services carousel">
           <button
             className="carousel-btn carousel-btn--prev"
             onClick={prev}
@@ -102,6 +103,7 @@ const ServicesSection = ({ services = [] }) => {
                   service={service}
                   index={index}
                   offset={offset}
+                  total={services.length}
                 />
               );
             })}
@@ -114,7 +116,6 @@ const ServicesSection = ({ services = [] }) => {
           >
             <FiChevronRight size={22} />
           </button>
-
         </div>
 
         <ServiceCarouselDots
@@ -123,6 +124,9 @@ const ServicesSection = ({ services = [] }) => {
           onChange={setActiveIndex}
         />
 
+        <p className="carousel-counter" aria-live="polite">
+          {activeIndex + 1} / {services.length}
+        </p>
       </div>
     </section>
   );

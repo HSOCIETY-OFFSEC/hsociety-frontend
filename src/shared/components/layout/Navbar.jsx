@@ -27,6 +27,12 @@ import { useUserStats } from '../../hooks/useUserStats';
 import '../../../styles/shared/components/layout/Navbar.css';
 
 const NAV_COLLAPSE_WIDTH = 1024;
+const MENU_IDS = {
+  more: 'navbar-more-menu',
+  student: 'navbar-student-menu',
+  notifications: 'navbar-notifications',
+  mobile: 'navbar-mobile-menu'
+};
 
 /**
  * Navbar Component
@@ -52,6 +58,11 @@ const Navbar = ({ sticky = true }) => {
   const [studentLearnOpen, setStudentLearnOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
+  const [mobileSectionsOpen, setMobileSectionsOpen] = useState({
+    primary: true,
+    learning: true,
+    secondary: false
+  });
   const moreMenuRef = useRef(null);
   const notificationMenuRef = useRef(null);
   const studentMenuRef = useRef(null);
@@ -107,9 +118,14 @@ const Navbar = ({ sticky = true }) => {
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
     () => [
-      { path: '/student-learning', label: 'Overview', icon: FiTerminal },
+      { path: '/student-learning', label: 'Continue Learning', icon: FiTerminal },
       { path: '/student-bootcamps', label: 'Bootcamps', icon: FiLayers },
       { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
+    ],
+    []
+  );
+  const studentUtilityLinks = useMemo(
+    () => [
       { path: '/student-quiz-material', label: 'Quiz Material', icon: FiCheckCircle },
       { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
     ],
@@ -119,13 +135,70 @@ const Navbar = ({ sticky = true }) => {
     () => new Set(studentLearnLinks.map((link) => link.path)),
     [studentLearnLinks]
   );
-  const desktopLinks = useMemo(() => {
-    if (!isStudent) return desktopBasicLinks;
-    return desktopBasicLinks.filter((link) => !hiddenStudentNavPaths.has(link.path));
-  }, [desktopBasicLinks, hiddenStudentNavPaths, isStudent]);
-  const maxDesktopLinks = isAuthenticated ? (isStudent ? 2 : 4) : 4;
-  const visibleDesktopLinks = desktopLinks.slice(0, maxDesktopLinks);
-  const overflowDesktopLinks = desktopLinks.slice(maxDesktopLinks);
+  const roleOrder = useMemo(() => ({
+    student: [
+      '/student-dashboard',
+      '/student-learning',
+      '/student-bootcamps',
+      '/student-resources',
+      '/community',
+      '/leaderboard',
+      '/settings'
+    ],
+    corporate: [
+      '/corporate-dashboard',
+      '/engagements',
+      '/reports',
+      '/remediation',
+      '/assets',
+      '/billing',
+      '/community',
+      '/leaderboard'
+    ],
+    pentester: [
+      '/pentester',
+      '/pentester/engagements',
+      '/pentester/reports',
+      '/pentester/profiles',
+      '/community',
+      '/leaderboard',
+      '/settings'
+    ],
+    admin: [
+      '/mr-robot',
+      '/community',
+      '/leaderboard',
+      '/settings'
+    ]
+  }), []);
+
+  const orderedDesktopLinks = useMemo(() => {
+    const baseLinks = isStudent
+      ? desktopBasicLinks.filter((link) => !hiddenStudentNavPaths.has(link.path))
+      : desktopBasicLinks;
+    const order = roleOrder[role] || [];
+    return [...baseLinks].sort((a, b) => {
+      const aIdx = order.indexOf(a.path);
+      const bIdx = order.indexOf(b.path);
+      if (aIdx === -1 && bIdx === -1) return 0;
+      if (aIdx === -1) return 1;
+      if (bIdx === -1) return -1;
+      return aIdx - bIdx;
+    });
+  }, [desktopBasicLinks, hiddenStudentNavPaths, isStudent, role, roleOrder]);
+
+  const maxDesktopLinks = isAuthenticated ? (isStudent ? 3 : 4) : 4;
+  const visibleDesktopLinks = orderedDesktopLinks.slice(0, maxDesktopLinks);
+  const overflowDesktopLinks = orderedDesktopLinks.slice(maxDesktopLinks);
+
+  const mobileSections = useMemo(() => {
+    const primary = isStudent
+      ? mobileLinks.filter((link) => !hiddenStudentNavPaths.has(link.path))
+      : mobileLinks;
+    const learning = isStudent ? studentLearnLinks : [];
+    const secondary = isStudent ? studentUtilityLinks : [];
+    return { primary, learning, secondary };
+  }, [isStudent, mobileLinks, hiddenStudentNavPaths, studentLearnLinks, studentUtilityLinks]);
 
   const isActive = (path) => location.pathname === path;
 
@@ -175,6 +248,10 @@ const Navbar = ({ sticky = true }) => {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [notificationMenuOpen]);
 
+  const handleEscape = (event, setter) => {
+    if (event.key === 'Escape') setter(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="container navbar-inner">
@@ -196,6 +273,7 @@ const Navbar = ({ sticky = true }) => {
               type="button"
               onClick={() => navigate(link.path)}
               className={`desktop-nav-link ${isActive(link.path) ? 'active' : ''}`}
+              aria-current={isActive(link.path) ? 'page' : undefined}
             >
               <link.icon size={16} />
               <span>{link.label}</span>
@@ -218,6 +296,10 @@ const Navbar = ({ sticky = true }) => {
                 type="button"
                 onClick={() => setMoreMenuOpen((prev) => !prev)}
                 className="desktop-nav-link navbar-more-trigger"
+                aria-haspopup="menu"
+                aria-expanded={moreMenuOpen}
+                aria-controls={MENU_IDS.more}
+                onKeyDown={(event) => handleEscape(event, setMoreMenuOpen)}
               >
                 <FiMoreHorizontal size={16} />
                 <span>More</span>
@@ -226,6 +308,8 @@ const Navbar = ({ sticky = true }) => {
               {moreMenuOpen && (
                 <div
                   className="navbar-more-menu"
+                  id={MENU_IDS.more}
+                  role="menu"
                   onMouseEnter={() => openMenu(moreCloseTimerRef, setMoreMenuOpen)}
                   onMouseLeave={() => scheduleClose(moreCloseTimerRef, setMoreMenuOpen)}
                 >
@@ -238,6 +322,7 @@ const Navbar = ({ sticky = true }) => {
                         setMoreMenuOpen(false);
                       }}
                       className={`navbar-more-item ${isActive(link.path) ? 'active' : ''}`}
+                      role="menuitem"
                     >
                       <link.icon size={16} />
                       <span>{link.label}</span>
@@ -264,6 +349,10 @@ const Navbar = ({ sticky = true }) => {
                 type="button"
                 onClick={() => setStudentLearnOpen((prev) => !prev)}
                 className="desktop-nav-link student-learn-trigger"
+                aria-haspopup="menu"
+                aria-expanded={studentLearnOpen}
+                aria-controls={MENU_IDS.student}
+                onKeyDown={(event) => handleEscape(event, setStudentLearnOpen)}
               >
                 <FiTerminal size={16} />
                 <span>Learn</span>
@@ -272,6 +361,8 @@ const Navbar = ({ sticky = true }) => {
               {studentLearnOpen && (
                 <div
                   className="student-learn-menu"
+                  id={MENU_IDS.student}
+                  role="menu"
                   onMouseEnter={() => openMenu(studentCloseTimerRef, setStudentLearnOpen)}
                   onMouseLeave={() => scheduleClose(studentCloseTimerRef, setStudentLearnOpen)}
                 >
@@ -281,6 +372,7 @@ const Navbar = ({ sticky = true }) => {
                       type="button"
                       onClick={() => navigate(link.path)}
                       className={`student-learn-item ${isActive(link.path) ? 'active' : ''}`}
+                      role="menuitem"
                     >
                       <link.icon size={16} />
                       <span>{link.label}</span>
@@ -329,6 +421,10 @@ const Navbar = ({ sticky = true }) => {
                 className="navbar-notification-btn"
                 onClick={() => setNotificationMenuOpen((prev) => !prev)}
                 aria-label="Notifications"
+                aria-haspopup="menu"
+                aria-expanded={notificationMenuOpen}
+                aria-controls={MENU_IDS.notifications}
+                onKeyDown={(event) => handleEscape(event, setNotificationMenuOpen)}
               >
                 <FiBell size={16} />
                 {unreadCount > 0 && (
@@ -339,6 +435,7 @@ const Navbar = ({ sticky = true }) => {
               {notificationMenuOpen && (
                 <div
                   className="navbar-notification-menu"
+                  id={MENU_IDS.notifications}
                   onMouseEnter={() => openMenu(notificationCloseTimerRef, setNotificationMenuOpen)}
                   onMouseLeave={() => scheduleClose(notificationCloseTimerRef, setNotificationMenuOpen)}
                 >
@@ -408,6 +505,9 @@ const Navbar = ({ sticky = true }) => {
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 className="navbar-user-button"
+                aria-haspopup="menu"
+                aria-expanded={userMenuOpen}
+                onKeyDown={(event) => handleEscape(event, setUserMenuOpen)}
               >
                 <span className="navbar-user-avatar">
                   <img
@@ -431,6 +531,7 @@ const Navbar = ({ sticky = true }) => {
               {userMenuOpen && (
                 <div
                   className="navbar-user-menu"
+                  role="menu"
                   onMouseEnter={() => openMenu(userCloseTimerRef, setUserMenuOpen)}
                   onMouseLeave={() => scheduleClose(userCloseTimerRef, setUserMenuOpen)}
                 >
@@ -445,6 +546,7 @@ const Navbar = ({ sticky = true }) => {
                   <button
                     onClick={() => navigate('/settings')}
                     className="navbar-user-logout"
+                    role="menuitem"
                   >
                     <span className="navbar-user-icon">
                       <FiShield size={16} />
@@ -455,6 +557,7 @@ const Navbar = ({ sticky = true }) => {
                   <button
                     onClick={handleLogout}
                     className="navbar-user-logout"
+                    role="menuitem"
                   >
                     <span className="navbar-user-icon">
                       <FiLogOut size={16} />
@@ -472,6 +575,8 @@ const Navbar = ({ sticky = true }) => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="mobile-menu-button"
               aria-label="Toggle navigation"
+              aria-expanded={mobileMenuOpen}
+              aria-controls={MENU_IDS.mobile}
             >
               {mobileMenuOpen ? <FiX /> : <FiMenu />}
             </button>
@@ -481,41 +586,102 @@ const Navbar = ({ sticky = true }) => {
 
       {/* Mobile Menu */}
       {viewportMode === 'mobile' && mobileMenuOpen && (
-        <div className="mobile-menu">
+        <div className="mobile-menu" id={MENU_IDS.mobile}>
           <div className="mobile-menu-inner">
-            {(isStudent ? mobileLinks.filter((link) => !hiddenStudentNavPaths.has(link.path)) : mobileLinks).map(link => (
+            <div className="mobile-menu-section">
               <button
-                key={link.path}
-                onClick={() => {
-                  navigate(link.path);
-                  setMobileMenuOpen(false);
-                }}
-                className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
+                type="button"
+                className="mobile-menu-section-toggle"
+                onClick={() => setMobileSectionsOpen((prev) => ({ ...prev, primary: !prev.primary }))}
+                aria-expanded={mobileSectionsOpen.primary}
               >
-                <span className="mobile-menu-icon">
-                  <link.icon size={18} />
-                </span>
-                <span>{link.label}</span>
+                <span>Primary</span>
+                <FiChevronDown size={16} />
               </button>
-            ))}
+              {mobileSectionsOpen.primary && (
+                <div className="mobile-menu-group">
+                  {mobileSections.primary.map((link) => (
+                    <button
+                      key={link.path}
+                      onClick={() => {
+                        navigate(link.path);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
+                    >
+                      <span className="mobile-menu-icon">
+                        <link.icon size={18} />
+                      </span>
+                      <span>{link.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {isStudent && (
-              <div className="mobile-menu-group">
-                {studentLearnLinks.map((link) => (
-                  <button
-                    key={link.path}
-                    onClick={() => {
-                      navigate(link.path);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
-                  >
-                    <span className="mobile-menu-icon">
-                      <link.icon size={18} />
-                    </span>
-                    <span>{link.label}</span>
-                  </button>
-                ))}
+              <div className="mobile-menu-section">
+                <button
+                  type="button"
+                  className="mobile-menu-section-toggle"
+                  onClick={() => setMobileSectionsOpen((prev) => ({ ...prev, learning: !prev.learning }))}
+                  aria-expanded={mobileSectionsOpen.learning}
+                >
+                  <span>Learning</span>
+                  <FiChevronDown size={16} />
+                </button>
+                {mobileSectionsOpen.learning && (
+                  <div className="mobile-menu-group">
+                    {mobileSections.learning.map((link) => (
+                      <button
+                        key={link.path}
+                        onClick={() => {
+                          navigate(link.path);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
+                      >
+                        <span className="mobile-menu-icon">
+                          <link.icon size={18} />
+                        </span>
+                        <span>{link.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {isStudent && mobileSections.secondary.length > 0 && (
+              <div className="mobile-menu-section">
+                <button
+                  type="button"
+                  className="mobile-menu-section-toggle"
+                  onClick={() => setMobileSectionsOpen((prev) => ({ ...prev, secondary: !prev.secondary }))}
+                  aria-expanded={mobileSectionsOpen.secondary}
+                >
+                  <span>Utilities</span>
+                  <FiChevronDown size={16} />
+                </button>
+                {mobileSectionsOpen.secondary && (
+                  <div className="mobile-menu-group">
+                    {mobileSections.secondary.map((link) => (
+                      <button
+                        key={link.path}
+                        onClick={() => {
+                          navigate(link.path);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
+                      >
+                        <span className="mobile-menu-icon">
+                          <link.icon size={18} />
+                        </span>
+                        <span>{link.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
