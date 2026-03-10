@@ -1,23 +1,143 @@
 /**
- * Corporate Dashboard — new UX layout
+ * Corporate Dashboard — Overview (Cards, Sections, Stats)
  * Location: src/styles/dashboards/corporate/overview.css
  */
 
+/* ── Generic Section ─────────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.section-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin: 0.2rem 0 0;
+  line-height: 1.5;
+}
+
+.view-all-link {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  transition: color 0.18s ease, background 0.18s ease;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  flex-shrink: 0;
+}
+
+.view-all-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+/* ── Stats Grid ──────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* ── Stat Card ───────────────────────────────────────────────── */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-width: 0;
+  padding: var(--card-padding, 1.25rem);
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.stat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.stat-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Corp Overview Cards ─────────────────────────────────────── */
 .corp-header-kicker {
-  margin: 0 0 0.65rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.2rem;
+  margin: 0 0 0.55rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.18rem;
   text-transform: uppercase;
   color: var(--text-tertiary);
 }
 
 .corp-loading-text {
   color: var(--text-tertiary);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .corp-section {
-  margin-top: 1.1rem;
+  margin-top: 1rem;
 }
 
 .corp-section-grid {
@@ -26,16 +146,21 @@
   gap: 1rem;
 }
 
+@media (min-width: 1024px) {
+  .corp-section-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .corp-card {
-  border-radius: 18px;
+  border-radius: 14px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
 }
 
 .corp-card-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -43,153 +168,174 @@
 
 .corp-card-title {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
 .corp-card-kicker {
-  margin: 0 0 0.35rem;
-  font-size: 0.65rem;
+  margin: 0 0 0.3rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.14rem;
   color: var(--text-tertiary);
 }
 
 .corp-card-subtitle {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-tertiary);
+  margin: 0;
 }
 
 .corp-card-body {
-  margin: 0.6rem 0 1rem;
+  margin: 0.5rem 0 0.875rem;
   color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 .corp-muted-text {
   color: var(--text-secondary);
-  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  margin: 0.4rem 0 0;
 }
 
-/* Command Center */
+/* ── Command Center Card ─────────────────────────────────────── */
 .corp-command-card {
   background: linear-gradient(135deg,
-    color-mix(in srgb, var(--primary-color) 12%, var(--card-bg)),
+    color-mix(in srgb, var(--primary-color) 10%, var(--card-bg)),
     var(--card-bg));
-  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, var(--border-color));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 20%, var(--border-color));
 }
 
 .corp-command-metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1.25rem;
+  gap: 0.875rem;
+  margin-top: 1.1rem;
+}
+
+@media (max-width: 480px) {
+  .corp-command-metrics {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
 }
 
 .corp-metric-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.08rem;
   color: var(--text-tertiary);
+  margin-bottom: 0.2rem;
 }
 
 .corp-metric-value {
   font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
 .corp-card-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
-  margin-top: 1.25rem;
+  margin-top: 1.1rem;
 }
 
+/* ── Pills ───────────────────────────────────────────────────── */
 .corp-risk-pill,
 .corp-status-pill {
-  padding: 0.25rem 0.7rem;
+  padding: 0.2rem 0.65rem;
   border-radius: 999px;
   border: 1px solid var(--border-color);
-  font-size: 0.7rem;
+  font-size: 0.67rem;
   text-transform: uppercase;
   letter-spacing: 0.08rem;
   color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
 }
 
-.risk-low { color: #22c55e; border-color: color-mix(in srgb, #22c55e 55%, var(--border-color)); }
-.risk-medium { color: #f59e0b; border-color: color-mix(in srgb, #f59e0b 55%, var(--border-color)); }
-.risk-high { color: #ef4444; border-color: color-mix(in srgb, #ef4444 55%, var(--border-color)); }
+.risk-low    { color: #22c55e; border-color: color-mix(in srgb, #22c55e 45%, var(--border-color)); background: color-mix(in srgb, #22c55e 8%, transparent); }
+.risk-medium { color: #f59e0b; border-color: color-mix(in srgb, #f59e0b 45%, var(--border-color)); background: color-mix(in srgb, #f59e0b 8%, transparent); }
+.risk-high   { color: #ef4444; border-color: color-mix(in srgb, #ef4444 45%, var(--border-color)); background: color-mix(in srgb, #ef4444 8%, transparent); }
 
-.status-active { color: #38bdf8; border-color: color-mix(in srgb, #38bdf8 55%, var(--border-color)); }
-.status-completed { color: #22c55e; border-color: color-mix(in srgb, #22c55e 55%, var(--border-color)); }
-.status-none { color: var(--text-tertiary); }
+.status-active    { color: #38bdf8; border-color: color-mix(in srgb, #38bdf8 45%, var(--border-color)); background: color-mix(in srgb, #38bdf8 8%, transparent); }
+.status-completed { color: #22c55e; border-color: color-mix(in srgb, #22c55e 45%, var(--border-color)); background: color-mix(in srgb, #22c55e 8%, transparent); }
+.status-none      { color: var(--text-tertiary); }
 
-/* Indicators */
+/* ── Indicators ──────────────────────────────────────────────── */
 .corp-indicators-grid {
   display: grid;
-  gap: 0.85rem;
-  margin-top: 0.85rem;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 .corp-indicator {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  align-items: center;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
   padding-bottom: 0.5rem;
 }
 
 .corp-indicator:last-child {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
 .corp-indicator-label {
-  color: var(--text-tertiary);
-  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
 }
 
 .corp-indicator-value {
   font-weight: 700;
+  font-size: 0.9rem;
   color: var(--text-primary);
 }
 
-/* Vulnerabilities */
+/* ── Vulnerabilities ─────────────────────────────────────────── */
 .corp-vuln-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin: 1rem 0 1.1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+  margin: 0.875rem 0 1rem;
 }
 
 .corp-vuln-item {
-  padding: 0.75rem;
-  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
 }
 
 .corp-vuln-label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.08rem;
+  margin-bottom: 0.25rem;
 }
 
 .corp-vuln-value {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
-.severity-critical { border-color: color-mix(in srgb, #ef4444 35%, var(--border-color)); }
-.severity-high { border-color: color-mix(in srgb, #f97316 35%, var(--border-color)); }
-.severity-medium { border-color: color-mix(in srgb, #f59e0b 35%, var(--border-color)); }
-.severity-low { border-color: color-mix(in srgb, #22c55e 35%, var(--border-color)); }
+.severity-critical { border-color: color-mix(in srgb, #ef4444 30%, var(--border-color)); }
+.severity-high     { border-color: color-mix(in srgb, #f97316 30%, var(--border-color)); }
+.severity-medium   { border-color: color-mix(in srgb, #f59e0b 30%, var(--border-color)); }
+.severity-low      { border-color: color-mix(in srgb, #22c55e 30%, var(--border-color)); }
 
-/* Reports */
+/* ── Reports ─────────────────────────────────────────────────── */
 .corp-reports-list {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.75rem;
   margin-top: 0.75rem;
 }
 
@@ -198,8 +344,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  flex-wrap: wrap;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
 }
 
 .corp-report-row:last-child {
@@ -210,60 +357,73 @@
 .corp-report-title {
   margin: 0;
   font-weight: 600;
+  font-size: 0.9rem;
   color: var(--text-primary);
 }
 
 .corp-report-date {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-tertiary);
+  margin: 0.15rem 0 0;
 }
 
 .corp-report-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
-/* Activity feed */
+/* ── Activity Feed ───────────────────────────────────────────── */
 .corp-activity-list {
   list-style: none;
   padding: 0;
   margin: 0.75rem 0 0;
-  display: grid;
-  gap: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .corp-activity-item {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.75rem;
   align-items: baseline;
-  padding: 0.55rem 0.6rem;
-  border-radius: 12px;
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
   background: var(--bg-secondary);
-  border: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
 }
 
 .corp-activity-time {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-tertiary);
-  min-width: 56px;
+  min-width: 52px;
+  flex-shrink: 0;
 }
 
 .corp-activity-message {
   color: var(--text-secondary);
+  font-size: 0.84rem;
+  line-height: 1.4;
 }
 
-/* Skeletons */
+/* ── Skeletons ───────────────────────────────────────────────── */
 .corp-skeleton-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-top: 1rem;
 }
 
+@media (max-width: 480px) {
+  .corp-skeleton-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .corp-skeleton-card {
-  height: 180px;
-  border-radius: 16px;
+  height: 160px;
+  border-radius: 14px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
 }
@@ -271,24 +431,4 @@
 .corp-error-card h3,
 .corp-error-card p {
   margin: 0 0 0.5rem;
-}
-
-@media (min-width: 1024px) {
-  .corp-section-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .corp-command-metrics {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .corp-command-metrics {
-    grid-template-columns: 1fr;
-  }
-
-  .corp-skeleton-grid {
-    grid-template-columns: 1fr;
-  }
 }

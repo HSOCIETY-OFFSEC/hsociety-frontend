@@ -1,113 +1,167 @@
+/**
+ * Remediation Page Styles
+ * Location: src/styles/corporate/pages/remediation.css
+ */
+
 .remediation-page {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 1rem 0 3rem;
-  --card-padding: 1.6rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* ── Header ────────────────────────────────────────────────── */
 .remediation-header {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
 }
 
 .remediation-header h1 {
-  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.3rem;
+  color: var(--text-primary);
 }
 
 .remediation-header p {
-  margin: 0.35rem 0 0;
   color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+  line-height: 1.6;
 }
 
 .remediation-error {
-  color: #b91c1c;
+  font-size: 0.85rem;
+  color: var(--error-color, #ef4444);
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--error-color, #ef4444) 8%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--error-color, #ef4444) 25%, var(--border-color));
 }
 
+/* ── Summary Stats ─────────────────────────────────────────── */
 .remediation-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.875rem;
+}
+
+@media (min-width: 900px) {
+  .remediation-summary {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .remediation-stat-card {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.stat-icon {
-  width: 44px;
-  height: 44px;
   border-radius: 12px;
   display: flex;
   align-items: center;
+  gap: 0.875rem;
+}
+
+.remediation-stat-card .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
+  color: var(--text-secondary);
 }
 
 .stat-label {
-  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
   color: var(--text-tertiary);
-  font-size: 0.85rem;
+  margin: 0 0 0.2rem;
 }
 
 .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0;
-  font-size: 1.45rem;
-  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
+/* ── Reports Section ───────────────────────────────────────── */
 .remediation-reports {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.875rem;
 }
 
-.section-title-row h2 {
+.remediation-reports .section-title-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.remediation-reports h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
   margin: 0;
 }
 
-.section-title-row p {
-  margin: 0.25rem 0 0;
+.remediation-reports p {
+  font-size: 0.8rem;
   color: var(--text-secondary);
+  margin: 0;
 }
 
+/* ── Report List ───────────────────────────────────────────── */
 .remediation-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .remediation-report-card {
+  border-radius: 12px;
   display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transition: border-color 0.2s ease;
+}
+
+.remediation-report-card:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 20%, var(--border-color));
+}
+
+.remediation-report-meta {
+  flex: 1;
+  min-width: 0;
 }
 
 .remediation-report-meta h3 {
-  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.2rem;
 }
 
 .remediation-report-meta p {
-  margin: 0;
+  font-size: 0.82rem;
   color: var(--text-secondary);
+  margin: 0 0 0.15rem;
 }
 
 .remediation-report-meta small {
+  font-size: 0.75rem;
   color: var(--text-tertiary);
-}
-
-@media (max-width: 768px) {
-  .remediation-page {
-    --card-padding: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .remediation-page {
-    --card-padding: 1.1rem 1rem;
-  }
 }
