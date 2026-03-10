@@ -1,315 +1,362 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiAlertTriangle } from 'react-icons/fi';
+import React, { useState, useEffect, useRef } from 'react';
+import { FiAlertTriangle, FiLock } from 'react-icons/fi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../core/auth/AuthContext';
+import { login as loginRequest } from '../../core/auth/auth.service';
+import { verify2FA } from '../../core/auth/twofa.service';
+import { useNotifications } from '../../shared/notifications/NotificationProvider';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
-import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
 import PublicError from '../../shared/components/ui/PublicError';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
-import { buildRegisterDTO, validateRegisterForm } from './register.contract';
-import { registerUser } from './register.service';
-import { login as loginRequest } from '../../core/auth/auth.service';
-import { useAuth } from '../../core/auth/AuthContext';
-import { useNotifications } from '../../shared/notifications/NotificationProvider';
-import { trackEvent } from '../../shared/services/analytics.service';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import '../../styles/core/auth.css';
 
-const RegistrationForm = ({
-  defaultAccountType = 'corporate',
-  allowAccountTypeSwitch = true,
-  note = '',
-  onSuccessRedirect = null,
-  onLoginRedirect = null,
+/**
+ * Login Component
+ *
+ * Flow:
+ * 1. Email + password
+ * 2. If 2FA enabled, prompt for code
+ *
+ * Designed to be viewport-contained — no scrolling required on any screen size.
+ */
+const Login = ({
+  mode = 'default',
+  layout = 'page',
+  onRequestModeChange = null,
+  prefillEmail = '',
+  redirect = null,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
   const { showToast } = useNotifications();
-  const copy = AUTH_FORM_CONTENT.register;
+  const copy = AUTH_FORM_CONTENT.login;
+
+  const [step, setStep] = useState(1);
+  const [email, setEmail] = useState(prefillEmail || location.state?.email || '');
+  const [password, setPassword] = useState('');
+  const [twoFACode, setTwoFACode] = useState('');
+  const [twoFactorToken, setTwoFactorToken] = useState(null);
+  const [pendingUser, setPendingUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [form, setForm] = useState({
-    accountType: defaultAccountType,
-    name: '',
-    email: '',
-    companyOrSchool: '',
-    password: '',
-    confirmPassword: '',
-    agree: false
-  });
+  const otpInputRef = useRef(null);
 
-  const updateField = (key, value) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
-
+  // Auto-focus OTP input when entering step 2
   useEffect(() => {
-    if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [error]);
+    if (step === 2 && otpInputRef.current) {
+      otpInputRef.current.focus();
+    }
+  }, [step]);
 
-  const resolveDashboardRoute = (role) => {
+  // Clear error on step change
+  useEffect(() => {
+    setError('');
+  }, [step]);
+
+  const resolveRouteForRole = (role) => {
+    if (role === 'admin') return '/mr-robot';
+    if (role === 'pentester') return '/pentester';
     if (role === 'student') return '/student-dashboard';
     return '/corporate-dashboard';
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError('');
-    const isValid = validateRegisterForm(form);
-    if (!isValid) {
-      setError('Registration failed. Please check your details.');
-      return;
+  const resolveRedirect = (role) => {
+    const candidate = redirect || location.state?.redirect;
+    if (candidate && typeof candidate === 'string' && candidate.startsWith('/')) {
+      return candidate;
     }
+    return resolveRouteForRole(role);
+  };
 
+  const enforceRole = (role) => {
+    if (mode === 'pentester' && role !== 'pentester') {
+      throw new Error('Login failed');
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
     setLoading(true);
-    trackEvent('register_submit_start', { account_type: form.accountType });
+    const genericLoginError = 'Login failed. Please try again.';
     try {
-      const payload = buildRegisterDTO(form);
-      const response = await registerUser(payload);
+      const response = await loginRequest(email, password);
       if (!response.success) {
-        setError(getPublicErrorMessage({ action: 'submit', response }));
+        setError(response.message || genericLoginError);
         return;
       }
 
-      const successRoute =
-        onSuccessRedirect && onSuccessRedirect !== '/login'
-          ? onSuccessRedirect
-          : resolveDashboardRoute(payload.role);
+      if (response.twoFactorRequired) {
+        setTwoFactorToken(response.twoFactorToken);
+        setPendingUser(response.user || { email });
+        setStep(2);
+        return;
+      }
 
-      if (response.isMock) {
-        const mockUser = response.data || {
-          id: `mock-${Date.now()}`,
-          email: payload.credentials.email,
-          role: payload.role,
-          name: payload.profile?.fullName
-        };
-        await login(mockUser, 'mock-token');
-        showToast({
-          variant: 'success',
-          title: 'Account created',
-          message: 'Welcome to HSOCIETY. Your workspace is ready.',
-          duration: 4200,
+      if (response.mustChangePassword && response.passwordChangeToken) {
+        navigate('/change-password', {
+          replace: true,
+          state: { passwordChangeToken: response.passwordChangeToken, user: response.user },
         });
-        trackEvent('register_submit_success', { account_type: payload.role, source: 'mock' });
-        navigate(successRoute);
         return;
       }
 
-      if (response.data?.token) {
-        const userData = response.data.user || {
-          email: payload.credentials.email,
-          role: payload.role,
-          name: payload.profile?.fullName
-        };
-        await login(userData, response.data.token, response.data.refreshToken);
-        showToast({
-          variant: 'success',
-          title: 'Account created',
-          message: 'Welcome to HSOCIETY. Your workspace is ready.',
-          duration: 4200,
-        });
-        trackEvent('register_submit_success', { account_type: payload.role, source: 'token' });
-        navigate(successRoute);
-        return;
-      }
-
-      const loginResponse = await loginRequest(payload.credentials.email, payload.credentials.password);
-
-      if (loginResponse.success && !loginResponse.twoFactorRequired) {
-        const role = loginResponse.user?.role || payload.role;
-        await login(loginResponse.user, loginResponse.token, loginResponse.refreshToken);
-        showToast({
-          variant: 'success',
-          title: 'Account created',
-          message: 'Welcome to HSOCIETY. Your workspace is ready.',
-          duration: 4200,
-        });
-        trackEvent('register_submit_success', { account_type: role, source: 'login' });
-        navigate(resolveDashboardRoute(role));
-        return;
-      }
-
+      const role = response.user?.role;
+      enforceRole(role);
+      await login(response.user, response.token, response.refreshToken);
       showToast({
         variant: 'success',
-        title: 'Account created',
-        message: 'Your account is ready. Sign in to continue.',
-        duration: 4200,
+        title: 'Login successful',
+        message: 'Welcome back. Your workspace is ready.',
+        duration: 3600,
       });
-      trackEvent('register_submit_success', { account_type: payload.role, source: 'redirect_login' });
-      if (onLoginRedirect) {
-        onLoginRedirect({
-          email: payload.credentials.email,
-          redirect: successRoute,
-        });
-        return;
-      }
-      navigate('/login', {
-        state: {
-          email: payload.credentials.email,
-          redirect: successRoute,
-        },
-      });
+      navigate(resolveRedirect(role));
     } catch (err) {
-      console.error('Registration failed:', err);
-      trackEvent('register_submit_failure', { account_type: form.accountType });
-      setError('Registration failed. Please try again.');
+      setError(genericLoginError);
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <Card className="auth-card" padding="medium">
-      <div className="auth-header">
-        <h1>{copy.header.title}</h1>
-        <p className="auth-subtitle">
-          {allowAccountTypeSwitch
-            ? copy.header.subtitle.defaultSwitch
-            : defaultAccountType === 'student'
-              ? copy.header.subtitle.student
-              : copy.header.subtitle.corporate}
-        </p>
-      </div>
+  const handleVerify2FA = async (e) => {
+    e.preventDefault();
+    setError('');
+    const genericVerifyError = 'Verification failed. Please try again.';
+    if (twoFACode.length !== 6) {
+      setError(genericVerifyError);
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await verify2FA(twoFactorToken, twoFACode);
+      if (!response.success) {
+        setError(response.message || genericVerifyError);
+        return;
+      }
 
-      <PublicError message={error} icon={<FiAlertTriangle size={16} />} />
+      const user = response.user || pendingUser;
+      const role = user?.role;
+      enforceRole(role);
+      await login(user, response.token, response.refreshToken);
+      showToast({
+        variant: 'success',
+        title: 'Verification complete',
+        message: 'You are signed in and secured.',
+        duration: 3600,
+      });
+      navigate(resolveRedirect(role));
+    } catch (err) {
+      setError(genericVerifyError);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      {note && <p className="auth-note">{note}</p>}
+  // Handle OTP digit input — auto-submit when 6 digits entered
+  const handleOtpChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+    setTwoFACode(val);
+    if (val.length === 6) {
+      // Trigger submit after state settles
+      setTimeout(() => {
+        document.getElementById('otp-submit-btn')?.click();
+      }, 80);
+    }
+  };
 
-      <form onSubmit={handleSubmit} className="auth-form">
-        {allowAccountTypeSwitch ? (
-          <div className="form-group">
-            <label>{copy.accountType.label}</label>
-            <div className="auth-toggle">
+  const handleReset = () => {
+    setStep(1);
+    setPassword('');
+    setTwoFACode('');
+    setTwoFactorToken(null);
+    setPendingUser(null);
+    setError('');
+  };
+
+  const content = (
+    <section
+      className={`auth-panel auth-panel--form ${layout === 'modal' ? 'auth-panel--modal' : ''}`}
+    >
+      <div className="auth-wrapper">
+        <Card className="auth-card">
+          {/* Step indicator for 2FA flow */}
+          {step === 2 && (
+            <div className="auth-step-indicator">
+              <span className="auth-step-dot auth-step-dot--done" />
+              <span className="auth-step-line" />
+              <span className="auth-step-dot auth-step-dot--active" />
+            </div>
+          )}
+
+          <div className="auth-header">
+            <h1>{mode === 'pentester' ? copy.titles.pentester : copy.titles.default}</h1>
+            <p className="auth-subtitle">
+              {step === 1 && copy.subtitles.step1}
+              {step === 2 && (
+                <>
+                  {copy.subtitles.step2}{' '}
+                  <span className="auth-email-pill">{email}</span>
+                </>
+              )}
+            </p>
+          </div>
+
+          {error && (
+            <div className="auth-error" role="alert">
+              <span className="error-icon"><FiAlertTriangle size={15} /></span>
+              {error}
+            </div>
+          )}
+
+          {step === 1 && (
+            <form onSubmit={handleLogin} className="auth-form" noValidate>
+              <div className="form-group">
+                <label htmlFor="email">{copy.fields.email.label}</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={copy.fields.email.placeholder}
+                  required
+                  autoFocus
+                  disabled={loading}
+                  className="form-input"
+                  autoComplete="username"
+                  inputMode="email"
+                />
+              </div>
+              <div className="form-group">
+                <div className="form-label-row">
+                  <label htmlFor="password">{copy.fields.password.label}</label>
+                  {copy.fields.password.forgotLink && (
+                    <button
+                      type="button"
+                      className="auth-link-muted"
+                      onClick={() => navigate('/forgot-password')}
+                      tabIndex={-1}
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
+                <PasswordInput
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={copy.fields.password.placeholder}
+                  required
+                  disabled={loading}
+                  className="form-input"
+                  autoComplete="current-password"
+                />
+              </div>
+              <Button
+                type="submit"
+                variant="primary"
+                fullWidth
+                loading={loading}
+                disabled={loading || !email || !password}
+              >
+                {loading ? copy.buttons.signingIn : copy.buttons.signIn}
+              </Button>
+            </form>
+          )}
+
+          {step === 2 && (
+            <form onSubmit={handleVerify2FA} className="auth-form" noValidate>
+              <div className="form-group">
+                <label htmlFor="twofa">{copy.fields.twofa.label}</label>
+                <input
+                  ref={otpInputRef}
+                  type="text"
+                  id="twofa"
+                  value={twoFACode}
+                  onChange={handleOtpChange}
+                  placeholder={copy.fields.twofa.placeholder}
+                  maxLength={6}
+                  required
+                  disabled={loading}
+                  className="form-input otp-input"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  pattern="\d{6}"
+                />
+                <span className="form-hint">{copy.fields.twofa.hint}</span>
+              </div>
+              <Button
+                id="otp-submit-btn"
+                type="submit"
+                variant="primary"
+                fullWidth
+                loading={loading}
+                disabled={loading || twoFACode.length !== 6}
+              >
+                {loading ? copy.buttons.verifying : copy.buttons.verify}
+              </Button>
               <button
                 type="button"
-                className={form.accountType === 'corporate' ? 'active' : ''}
-                onClick={() => updateField('accountType', 'corporate')}
+                onClick={handleReset}
+                className="auth-link"
                 disabled={loading}
               >
-                {copy.accountType.corporate}
+                {copy.buttons.useDifferent}
               </button>
+            </form>
+          )}
+
+          <div className="auth-footer">
+            <p>
+              {copy.footer.studentPrompt}{' '}
               <button
-                type="button"
-                className={form.accountType === 'student' ? 'active' : ''}
-                onClick={() => updateField('accountType', 'student')}
-                disabled={loading}
-              >
-                {copy.accountType.student}
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="form-group">
-            <label>{copy.accountType.label}</label>
-            <div className="auth-account-label">
-              {defaultAccountType === 'student'
-                ? copy.accountType.studentLabel
-                : copy.accountType.corporateLabel}
-            </div>
-          </div>
-        )}
-
-        <div className="auth-form-row">
-          <div className="form-group">
-            <label htmlFor="register-name">{copy.fields.name.label}</label>
-            <input
-              id="register-name"
-              type="text"
-              className="form-input"
-              value={form.name}
-              onChange={(e) => updateField('name', e.target.value)}
-              placeholder={copy.fields.name.placeholder}
-              disabled={loading}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="register-org">
-              {form.accountType === 'student'
-                ? copy.fields.org.studentLabel
-                : copy.fields.org.corporateLabel}
-            </label>
-            <input
-              id="register-org"
-              type="text"
-              className="form-input"
-              value={form.companyOrSchool}
-              onChange={(e) => updateField('companyOrSchool', e.target.value)}
-              placeholder={
-                form.accountType === 'student'
-                  ? copy.fields.org.studentPlaceholder
-                  : copy.fields.org.corporatePlaceholder
-              }
-              disabled={loading}
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="register-email">{copy.fields.email.label}</label>
-          <input
-            id="register-email"
-            type="email"
-            className="form-input"
-            value={form.email}
-            onChange={(e) => updateField('email', e.target.value)}
-            placeholder={copy.fields.email.placeholder}
-            disabled={loading}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="register-password">{copy.fields.password.label}</label>
-          <PasswordInput
-            id="register-password"
-            className="form-input"
-            value={form.password}
-            onChange={(e) => updateField('password', e.target.value)}
-            placeholder={copy.fields.password.placeholder}
-            disabled={loading}
-          />
-          <PasswordStrengthIndicator password={form.password} />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="register-confirm-password">{copy.fields.confirmPassword.label}</label>
-          <PasswordInput
-            id="register-confirm-password"
-            className="form-input"
-            value={form.confirmPassword}
-            onChange={(e) => updateField('confirmPassword', e.target.value)}
-            placeholder={copy.fields.confirmPassword.placeholder}
-            disabled={loading}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="auth-checkbox">
-            <input
-              type="checkbox"
-              checked={form.agree}
-              onChange={(e) => updateField('agree', e.target.checked)}
-              disabled={loading}
-            />
-            <span>
-              {copy.fields.agree.prefix}{' '}
-              <button
-                type="button"
+                onClick={() =>
+                  onRequestModeChange
+                    ? onRequestModeChange('register')
+                    : navigate('/register')
+                }
                 className="auth-link-inline"
-                onClick={() => navigate('/terms')}
+                disabled={loading}
               >
-                {copy.fields.agree.link}
-              </button>{' '}
-              {copy.fields.agree.suffix}
-            </span>
-          </label>
-        </div>
+                {copy.footer.studentAction}
+              </button>
+            </p>
+            <p>
+              {copy.footer.corporatePrompt}{' '}
+              <button
+                onClick={() =>
+                  onRequestModeChange
+                    ? onRequestModeChange('register-corporate')
+                    : navigate('/register/corporate')
+                }
+                className="auth-link-inline"
+                disabled={loading}
+              >
+                {copy.footer.corporateAction}
+              </button>
+            </p>
+          </div>
+        </Card>
 
-        <Button variant="primary" size="large" type="submit" loading={loading} fullWidth>
-          {copy.button.create}
-        </Button>
-      </form>
-    </Card>
+        <div className="auth-notice">
+          <p>
+            <span className="notice-icon"><FiLock size={13} /></span>
+            {copy.notice}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+
+  if (layout === 'modal') return content;
+
+  return (
+    <div className="auth-container">
+      <div className="auth-split auth-split--single">{content}</div>
+    </div>
   );
 };
 
-export default RegistrationForm;
+export default Login;

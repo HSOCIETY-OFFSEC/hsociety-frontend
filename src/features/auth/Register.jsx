@@ -5,6 +5,11 @@ import RegistrationForm from './RegistrationForm';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import '../../styles/core/auth.css';
 
+/**
+ * Register page / modal wrapper.
+ * Renders RegistrationForm inside the standard auth layout.
+ * Viewport-contained — no scrolling required.
+ */
 const Register = ({
   layout = 'page',
   onRequestModeChange = null,
@@ -23,6 +28,7 @@ const Register = ({
           allowAccountTypeSwitch={false}
           onLoginRedirect={onLoginRedirect}
         />
+
         <div className="auth-footer">
           <p>
             {copy.footer.loginPrompt}{' '}
@@ -49,25 +55,14 @@ const Register = ({
               {copy.footer.corporateAction}
             </button>
           </p>
-          <p>
-            {copy.footer.termsPrompt}{' '}
-            <button
-              type="button"
-              className="auth-link-inline"
-              onClick={() => navigate('/terms')}
-            >
-              {copy.footer.termsAction}
-            </button>
-            .
-          </p>
         </div>
 
         <div className="auth-notice">
           <p>
             <span className="notice-icon">
-              <FiLock size={14} />
+              <FiLock size={13} />
             </span>
-            {copy.notice.student}
+            {copy.notice?.student ?? copy.notice}
           </p>
         </div>
       </div>

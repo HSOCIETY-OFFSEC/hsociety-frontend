@@ -656,6 +656,19 @@
     scrollbar-width: thin;
     padding-bottom: 0.25rem;
   }
+
+  .desktop-nav::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .desktop-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .desktop-nav::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 999px;
+  }
 }
 
 @media (max-width: 1024px) {

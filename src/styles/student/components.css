@@ -42,6 +42,19 @@
   overflow: hidden;
 }
 
+.student-modal-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.student-modal-card::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.student-modal-card::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 999px;
+}
+
 /* Shimmer top line on modal */
 .student-modal-card::before {
   content: '';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FiAlertTriangle, FiLock } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
@@ -18,6 +18,8 @@ import '../../styles/core/auth.css';
  * Flow:
  * 1. Email + password
  * 2. If 2FA enabled, prompt for code
+ *
+ * Designed to be viewport-contained — no scrolling required on any screen size.
  */
 const Login = ({
   mode = 'default',
@@ -40,10 +42,19 @@ const Login = ({
   const [pendingUser, setPendingUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const otpInputRef = useRef(null);
 
+  // Auto-focus OTP input when entering step 2
   useEffect(() => {
-    if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [error]);
+    if (step === 2 && otpInputRef.current) {
+      otpInputRef.current.focus();
+    }
+  }, [step]);
+
+  // Clear error on step change
+  useEffect(() => {
+    setError('');
+  }, [step]);
 
   const resolveRouteForRole = (role) => {
     if (role === 'admin') return '/mr-robot';
@@ -84,7 +95,7 @@ const Login = ({
         setStep(2);
         return;
       }
-      // SECURITY UPDATE IMPLEMENTED: Force password change when backend returns mustChangePassword
+
       if (response.mustChangePassword && response.passwordChangeToken) {
         navigate('/change-password', {
           replace: true,
@@ -144,6 +155,18 @@ const Login = ({
     }
   };
 
+  // Handle OTP digit input — auto-submit when 6 digits entered
+  const handleOtpChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+    setTwoFACode(val);
+    if (val.length === 6) {
+      // Trigger submit after state settles
+      setTimeout(() => {
+        document.getElementById('otp-submit-btn')?.click();
+      }, 80);
+    }
+  };
+
   const handleReset = () => {
     setStep(1);
     setPassword('');
@@ -159,22 +182,41 @@ const Login = ({
     >
       <div className="auth-wrapper">
         <Card className="auth-card">
+          {/* Step indicator for 2FA flow */}
+          {step === 2 && (
+            <div className="auth-step-indicator">
+              <span className="auth-step-dot auth-step-dot--done" />
+              <span className="auth-step-line" />
+              <span className="auth-step-dot auth-step-dot--active" />
+            </div>
+          )}
+
           <div className="auth-header">
             <h1>{mode === 'pentester' ? copy.titles.pentester : copy.titles.default}</h1>
             <p className="auth-subtitle">
               {step === 1 && copy.subtitles.step1}
-              {step === 2 && copy.subtitles.step2}
+              {step === 2 && (
+                <>
+                  {copy.subtitles.step2}{' '}
+                  <span className="auth-email-pill">{email}</span>
+                </>
+              )}
             </p>
           </div>
 
-          <PublicError message={error} icon={<FiAlertTriangle size={16} />} />
+          {error && (
+            <div className="auth-error" role="alert">
+              <span className="error-icon"><FiAlertTriangle size={15} /></span>
+              {error}
+            </div>
+          )}
 
           {step === 1 && (
-            <form onSubmit={handleLogin} className="auth-form">
+            <form onSubmit={handleLogin} className="auth-form" noValidate>
               <div className="form-group">
                 <label htmlFor="email">{copy.fields.email.label}</label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -184,10 +226,23 @@ const Login = ({
                   disabled={loading}
                   className="form-input"
                   autoComplete="username"
+                  inputMode="email"
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="password">{copy.fields.password.label}</label>
+                <div className="form-label-row">
+                  <label htmlFor="password">{copy.fields.password.label}</label>
+                  {copy.fields.password.forgotLink && (
+                    <button
+                      type="button"
+                      className="auth-link-muted"
+                      onClick={() => navigate('/forgot-password')}
+                      tabIndex={-1}
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
                 <PasswordInput
                   id="password"
                   value={password}
@@ -204,7 +259,7 @@ const Login = ({
                 variant="primary"
                 fullWidth
                 loading={loading}
-                disabled={loading}
+                disabled={loading || !email || !password}
               >
                 {loading ? copy.buttons.signingIn : copy.buttons.signIn}
               </Button>
@@ -212,26 +267,28 @@ const Login = ({
           )}
 
           {step === 2 && (
-            <form onSubmit={handleVerify2FA} className="auth-form">
+            <form onSubmit={handleVerify2FA} className="auth-form" noValidate>
               <div className="form-group">
                 <label htmlFor="twofa">{copy.fields.twofa.label}</label>
                 <input
+                  ref={otpInputRef}
                   type="text"
                   id="twofa"
                   value={twoFACode}
-                  onChange={(e) =>
-                    setTwoFACode(e.target.value.replace(/\D/g, '').slice(0, 6))
-                  }
+                  onChange={handleOtpChange}
                   placeholder={copy.fields.twofa.placeholder}
                   maxLength={6}
                   required
-                  autoFocus
                   disabled={loading}
                   className="form-input otp-input"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  pattern="\d{6}"
                 />
                 <span className="form-hint">{copy.fields.twofa.hint}</span>
               </div>
               <Button
+                id="otp-submit-btn"
                 type="submit"
                 variant="primary"
                 fullWidth
@@ -280,26 +337,12 @@ const Login = ({
                 {copy.footer.corporateAction}
               </button>
             </p>
-            <p>
-              {copy.footer.termsPrompt}{' '}
-              <button
-                type="button"
-                className="auth-link-inline"
-                onClick={() => navigate('/terms')}
-                disabled={loading}
-              >
-                {copy.footer.termsAction}
-              </button>
-              .
-            </p>
           </div>
         </Card>
 
         <div className="auth-notice">
           <p>
-            <span className="notice-icon">
-              <FiLock size={14} />
-            </span>
+            <span className="notice-icon"><FiLock size={13} /></span>
             {copy.notice}
           </p>
         </div>

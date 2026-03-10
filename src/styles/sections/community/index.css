@@ -82,6 +82,19 @@
   scrollbar-color: var(--border-color) transparent;
 }
 
+.community-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.community-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.community-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 999px;
+}
+
 /* Sidebar head */
 .community-sidebar-head {
   padding: 1.5rem 1.25rem 1rem;
@@ -371,6 +384,19 @@
   gap: 0.15rem;
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
+}
+
+.community-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.community-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.community-messages::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
 }
 
 /* Empty / loading state */

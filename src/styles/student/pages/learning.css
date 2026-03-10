@@ -513,6 +513,19 @@
   position: relative;
 }
 
+.payment-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.payment-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.payment-modal::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 999px;
+}
+
 /* Shimmer top line */
 .payment-modal::before {
   content: '';

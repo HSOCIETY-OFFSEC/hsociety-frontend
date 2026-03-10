@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AUTH_QUERY_KEY } from '../utils/authModal';
+import { AUTH_MODAL_MODES, AUTH_QUERY_KEY } from '../utils/authModal';
 
 const getSearchString = (params) => {
   const search = params.toString();
@@ -8,19 +8,23 @@ const getSearchString = (params) => {
 
 const getAuthPayload = (state) => state?.authModal || null;
 
+const allowedAuthModes = new Set(Object.values(AUTH_MODAL_MODES));
+const normalizeAuthMode = (mode) => (allowedAuthModes.has(mode) ? mode : null);
+
 const useAuthModal = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const mode = params.get(AUTH_QUERY_KEY);
+  const mode = normalizeAuthMode(params.get(AUTH_QUERY_KEY));
   const redirect = params.get('redirect');
   const reason = params.get('reason');
   const payload = getAuthPayload(location.state);
 
   const openAuthModal = (nextMode, options = {}) => {
     const nextParams = new URLSearchParams(location.search);
-    if (nextMode) {
-      nextParams.set(AUTH_QUERY_KEY, nextMode);
+    const normalizedMode = normalizeAuthMode(nextMode);
+    if (normalizedMode) {
+      nextParams.set(AUTH_QUERY_KEY, normalizedMode);
     } else {
       nextParams.delete(AUTH_QUERY_KEY);
     }
