@@ -25,12 +25,20 @@
 
 .threat-map-page {
   min-height: 100vh;
-  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
   background: var(--bg-primary);
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+}
+
+body.threat-map-fullscreen .public-layout .public-main.page-content.container {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 /* Subtle teal grid background */
@@ -315,7 +323,7 @@
 
 .threat-map-globe-wrap {
   position: relative;
-  border-right: 1px solid var(--border-color);
+  border-right: none;
   overflow: hidden;
   min-height: 0;
   /* Must have height so Three.js canvas measures correctly */
@@ -468,32 +476,21 @@
 @media (max-width: 1024px) {
   .threat-map-body {
     grid-template-columns: 1fr;
-    /* Globe gets a fixed generous height; log panel below it */
-    grid-template-rows: 460px 280px;
-    /* Allow the body to overflow so both panels are always reachable */
-    overflow-y: auto;
-    overflow-x: hidden;
-    flex: none; /* stop it from flex-shrinking away */
+    grid-template-rows: 1fr 0.42fr;
+    overflow: hidden;
   }
 
   .threat-map-globe-wrap {
     border-right: none;
     border-bottom: 1px solid var(--border-color);
-    height: 460px;
-    min-height: 460px;
+    height: auto;
+    min-height: 0;
   }
 
   .threat-map-sidebar {
-    height: 280px;
-    min-height: 280px;
-    max-height: none;
-  }
-
-  /* Page no longer needs to be locked to 100vh on tablet — let it scroll */
-  .threat-map-page {
     height: auto;
-    min-height: 100vh;
-    overflow: auto;
+    min-height: 0;
+    max-height: none;
   }
 
   .threat-map-subtitle {
@@ -510,13 +507,6 @@
    ======================================== */
 
 @media (max-width: 640px) {
-  /* On mobile the page scrolls — never lock to 100vh */
-  .threat-map-page {
-    height: auto;
-    min-height: 100vh;
-    overflow: auto;
-  }
-
   .threat-map-header {
     padding: 1rem 1rem 0.875rem;
   }
@@ -557,20 +547,18 @@
 
   /* Globe gets a solid pixel height so it's never a sliver */
   .threat-map-body {
-    grid-template-rows: 360px 260px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    flex: none;
+    grid-template-rows: 1fr 0.55fr;
+    overflow: hidden;
   }
 
   .threat-map-globe-wrap {
-    height: 360px;
-    min-height: 360px;
+    height: auto;
+    min-height: 0;
   }
 
   .threat-map-sidebar {
-    height: 260px;
-    min-height: 260px;
+    height: auto;
+    min-height: 0;
     max-height: none;
   }
 
@@ -614,17 +602,17 @@
 
 @media (max-width: 400px) {
   .threat-map-body {
-    grid-template-rows: 300px 240px;
+    grid-template-rows: 1fr 0.6fr;
   }
 
   .threat-map-globe-wrap {
-    height: 300px;
-    min-height: 300px;
+    height: auto;
+    min-height: 0;
   }
 
   .threat-map-sidebar {
-    height: 240px;
-    min-height: 240px;
+    height: auto;
+    min-height: 0;
   }
 
   .threat-map-pause-btn,

@@ -23,9 +23,9 @@ const ThreatMap = () => {
   );
 
   useEffect(() => {
-    document.body.classList.toggle('workspace-lock-scroll', expanded);
-    return () => document.body.classList.remove('workspace-lock-scroll');
-  }, [expanded]);
+    document.body.classList.add('workspace-lock-scroll', 'threat-map-fullscreen');
+    return () => document.body.classList.remove('workspace-lock-scroll', 'threat-map-fullscreen');
+  }, []);
 
   useEffect(() => {
     if (!expanded) return undefined;

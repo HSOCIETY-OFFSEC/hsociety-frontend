@@ -48,13 +48,27 @@
 .tgi-flat-map-bg {
   position: absolute;
   inset: 0;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/38/BlankMap-World.svg');
-  background-size: 95% auto;
-  background-position: center 52%;
+  background-image:
+    url('https://threejs.org/examples/textures/planets/earth_lights_2048.png'),
+    url('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  filter: invert(1) sepia(1) saturate(0.5) hue-rotate(140deg) brightness(0.14);
-  opacity: 0.9;
+  background-blend-mode: screen;
+  filter: saturate(1.05) contrast(1.05) brightness(0.78);
+  opacity: 0.95;
   z-index: 0;
+}
+
+.tgi-flat-map-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(2, 9, 18, 0.0) 45%, rgba(2, 9, 18, 0.65) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .tgi-flat-svg {
@@ -62,7 +76,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 2;
   overflow: visible;
 }
 

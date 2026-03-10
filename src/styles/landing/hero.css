@@ -10,7 +10,8 @@
   min-height: calc(100svh - var(--navbar-height));
   width: 100%;
   display: flex;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
   background:
     linear-gradient(
       180deg,
@@ -57,7 +58,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  min-height: 100%;
+  min-height: calc(100svh - var(--navbar-height));
 }
 
 @media (min-width: 1024px) {
@@ -138,6 +139,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
   gap: 1.6rem;
   padding: clamp(3rem, 8vh, 6rem) clamp(2rem, 6vw, 5rem) clamp(2.5rem, 6vh, 5rem) clamp(2rem, 6vw, 6rem);
 }
@@ -250,7 +252,6 @@
 /* ── "Hacker" / "Hackers" accent color ── */
 .hero-hacker-word {
   color: var(--primary-color, #10b981);
-  font-style: normal;
 }
 
 /* ── Blinking cursor ── */
@@ -583,6 +584,8 @@
   .hero-container {
     flex-direction: column;
     width: 100%;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero-visual-panel {
@@ -591,36 +594,46 @@
 
   .hero-content-panel {
     width: 100%;
-    padding: 6rem 2rem 4rem;
+    padding: 2rem 2rem;
     box-sizing: border-box;
+    align-items: flex-start;
+    justify-content: center;
   }
 }
 
 @media (max-width: 640px) {
   .hero-section {
     width: 100%;
-    min-height: calc(100svh - var(--navbar-height));
+    height: calc(100svh - var(--navbar-height));
+    min-height: unset;
+    overflow: hidden;
   }
 
   .hero-container {
     width: 100%;
-    min-height: 100svh;
+    height: 100%;
+    min-height: unset;
+    justify-content: center;
+    align-items: center;
   }
 
   .hero-content-panel {
     width: 100%;
-    padding: 5rem 1.25rem 3rem;
-    gap: 1.25rem;
+    height: auto;
+    padding: 1.5rem 1.25rem;
+    gap: 1rem;
     box-sizing: border-box;
+    justify-content: center;
+    align-items: flex-start;
   }
 
   .hero-title {
-    font-size: clamp(1.9rem, 8vw, 2.4rem);
+    font-size: clamp(1.75rem, 7.5vw, 2.2rem);
   }
 
   .hero-description {
     max-width: 100%;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .hero-cta {

@@ -60,6 +60,14 @@ const REGION_COLORS = {
   Asia:     '#f59e0b',
 };
 
+const EARTH_TEXTURES = {
+  day: 'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg',
+  night: 'https://threejs.org/examples/textures/planets/earth_lights_2048.png',
+  normal: 'https://threejs.org/examples/textures/planets/earth_normal_2048.jpg',
+  specular: 'https://threejs.org/examples/textures/planets/earth_specular_2048.jpg',
+  clouds: 'https://threejs.org/examples/textures/planets/earth_clouds_1024.png',
+};
+
 /* Country-level Africa attack stats (simulated, emphasis data) */
 const AFRICA_STATS = [
   { country: 'Nigeria',       pct: 23, count: 1840, flag: '🇳🇬' },
@@ -171,26 +179,58 @@ const ThreatGlobeInteractive = ({ paused: pausedProp = false, onNewAttack }) => 
     /* Globe sphere */
     const geo = new THREE.SphereGeometry(1, 64, 64);
 
+    const loader = new THREE.TextureLoader();
+    const loadTexture = (url, isColor = false) => {
+      const tex = loader.load(url);
+      if (isColor && tex.colorSpace !== undefined) {
+        tex.colorSpace = THREE.SRGBColorSpace;
+      }
+      return tex;
+    };
+    const dayTex = loadTexture(EARTH_TEXTURES.day, true);
+    const nightTex = loadTexture(EARTH_TEXTURES.night, true);
+    const normalTex = loadTexture(EARTH_TEXTURES.normal);
+    const specularTex = loadTexture(EARTH_TEXTURES.specular);
+    const cloudsTex = loadTexture(EARTH_TEXTURES.clouds, true);
+
     /* Holographic wireframe ocean */
     const wireGeo = new THREE.SphereGeometry(1.001, 32, 32);
     const wireMat = new THREE.MeshBasicMaterial({
       color: 0x0d4f50,
       wireframe: true,
       transparent: true,
-      opacity: 0.08,
+      opacity: 0.04,
     });
     scene.add(new THREE.Mesh(wireGeo, wireMat));
 
-    /* Base sphere — deep ocean tint */
+    const maxAniso = renderer.capabilities.getMaxAnisotropy();
+    [dayTex, nightTex, normalTex, specularTex, cloudsTex].forEach((tex) => {
+      if (tex) tex.anisotropy = maxAniso;
+    });
+
+    /* Base sphere — realistic Earth textures */
     const baseMat = new THREE.MeshPhongMaterial({
-      color: 0x040e18,
-      emissive: 0x061820,
-      shininess: 80,
-      transparent: true,
-      opacity: 0.98,
+      map: dayTex,
+      normalMap: normalTex,
+      specularMap: specularTex,
+      emissiveMap: nightTex,
+      emissive: new THREE.Color(0x1a4c5c),
+      emissiveIntensity: 0.75,
+      shininess: 18,
     });
     const globe = new THREE.Mesh(geo, baseMat);
     scene.add(globe);
+
+    /* Cloud layer */
+    const cloudsGeo = new THREE.SphereGeometry(1.012, 64, 64);
+    const cloudsMat = new THREE.MeshPhongMaterial({
+      map: cloudsTex,
+      transparent: true,
+      opacity: 0.32,
+      depthWrite: false,
+    });
+    const clouds = new THREE.Mesh(cloudsGeo, cloudsMat);
+    scene.add(clouds);
 
     /* Atmosphere glow shell */
     const atmoGeo = new THREE.SphereGeometry(1.08, 64, 64);
@@ -263,6 +303,7 @@ const ThreatGlobeInteractive = ({ paused: pausedProp = false, onNewAttack }) => 
     s.camera   = camera;
     s.renderer = renderer;
     s.globe    = globe;
+    s.clouds   = clouds;
     s.arcGroup = arcGroup;
     s.cityGroup = cityGroup;
 
@@ -309,6 +350,10 @@ const ThreatGlobeInteractive = ({ paused: pausedProp = false, onNewAttack }) => 
       arcGroup.rotation.x  = s.rotation.x;
       cityGroup.rotation.y = s.rotation.y;
       cityGroup.rotation.x = s.rotation.x;
+      if (s.clouds) {
+        s.clouds.rotation.y = s.rotation.y * 1.02 + Date.now() * 0.00003;
+        s.clouds.rotation.x = s.rotation.x * 0.98;
+      }
 
       /* Pulse Africa rings */
       const t = Date.now() * 0.003;
@@ -352,10 +397,11 @@ const ThreatGlobeInteractive = ({ paused: pausedProp = false, onNewAttack }) => 
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseup', onUp);
       renderer.dispose();
+      [dayTex, nightTex, normalTex, specularTex, cloudsTex].forEach((tex) => tex?.dispose());
       if (renderer.domElement.parentNode === el) {
         el.removeChild(renderer.domElement);
       }
-      s.scene = s.camera = s.renderer = s.globe = s.arcGroup = s.cityGroup = null;
+      s.scene = s.camera = s.renderer = s.globe = s.clouds = s.arcGroup = s.cityGroup = null;
     };
   }, [mode]);
 
