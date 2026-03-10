@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowRight, FiCompass, FiMessageSquare } from 'react-icons/fi';
+import { FiArrowRight, FiCheckCircle, FiCompass, FiLock, FiMessageSquare } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
@@ -228,7 +228,22 @@ const StudentDashboard = () => {
                             <span className="bootcamp-progress-phase">Phase {phase.moduleId}</span>
                             <span className="bootcamp-progress-title">{phase.codename}</span>
                             <span className="bootcamp-progress-status">
-                              {isCompleted ? '✓ Completed' : isCurrent ? '→ Current' : '🔒 Locked'}
+                              {isCompleted ? (
+                                <>
+                                  <FiCheckCircle size={14} />
+                                  Completed
+                                </>
+                              ) : isCurrent ? (
+                                <>
+                                  <FiArrowRight size={14} />
+                                  Current
+                                </>
+                              ) : (
+                                <>
+                                  <FiLock size={14} />
+                                  Locked
+                                </>
+                              )}
                             </span>
                           </div>
                         );
