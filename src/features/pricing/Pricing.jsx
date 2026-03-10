@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuthModal from '../../shared/hooks/useAuthModal';
 import { FiArrowRight, FiUsers } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
@@ -25,6 +26,7 @@ const tiers = [
 
 const Pricing = () => {
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
 
   return (
     <div className="pricing-page">
@@ -51,7 +53,7 @@ const Pricing = () => {
         <Button variant="primary" size="large" onClick={() => navigate('/contact')}>
           Talk to Security Team <FiArrowRight size={16} />
         </Button>
-        <Button variant="ghost" size="large" onClick={() => navigate('/register/corporate')}>
+        <Button variant="ghost" size="large" onClick={() => openAuthModal('register-corporate')}>
           Create Corporate Account <FiUsers size={16} />
         </Button>
       </section>

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import useAuthModal from '../../shared/hooks/useAuthModal';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import Logo from '../../shared/components/common/Logo';
@@ -15,6 +16,7 @@ const slugify = (value) =>
 const ServiceDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
   const services = landingContent.services || [];
   const service = services.find((item) => slugify(item.title) === slug);
 
@@ -46,7 +48,7 @@ const ServiceDetail = () => {
               <Button
                 variant="ghost"
                 size="large"
-                onClick={() => navigate('/register/corporate')}
+                onClick={() => openAuthModal('register-corporate')}
               >
                 Join the Training Cycle
               </Button>

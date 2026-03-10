@@ -18,6 +18,7 @@
 import { sessionManager } from '../../core/auth/session.manager';
 import { envConfig } from '../../config/env.config';
 import { getPublicErrorMessage } from '../utils/publicError';
+import { buildAuthModalUrl } from '../utils/authModal';
 
 const API_BASE_URL = envConfig.api.baseURL;
 
@@ -95,7 +96,7 @@ class APIClient {
     // Unauthorized - clear session
     if (status === 401) {
       sessionManager.clearSession();
-      window.location.href = '/login';
+      window.location.href = buildAuthModalUrl('login', { reason: 'session_expired' });
       return {
         success: false,
         error: 'Session expired. Please login again.',

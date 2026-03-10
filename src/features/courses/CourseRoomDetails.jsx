@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import useAuthModal from '../../shared/hooks/useAuthModal';
 import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiChevronRight, FiTerminal } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
@@ -9,6 +10,7 @@ import '../../styles/sections/courses/index.css';
 const CourseRoomDetails = () => {
   const { bootcampId, moduleId, roomId } = useParams();
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
   const module = getHackerProtocolModule(Number(moduleId));
   const room = getHackerProtocolRoom(Number(moduleId), Number(roomId));
 
@@ -53,7 +55,7 @@ const CourseRoomDetails = () => {
                 <FiArrowLeft size={14} />
                 Back to Module
               </Button>
-              <Button variant="primary" size="small" onClick={() => navigate('/register')}>
+              <Button variant="primary" size="small" onClick={() => openAuthModal('register')}>
                 Enroll Now
                 <FiArrowRight size={14} />
               </Button>

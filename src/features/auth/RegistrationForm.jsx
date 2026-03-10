@@ -13,17 +13,20 @@ import { login as loginRequest } from '../../core/auth/auth.service';
 import { useAuth } from '../../core/auth/AuthContext';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
 import { trackEvent } from '../../shared/services/analytics.service';
+import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import '../../styles/core/auth.css';
 
 const RegistrationForm = ({
   defaultAccountType = 'corporate',
   allowAccountTypeSwitch = true,
   note = '',
-  onSuccessRedirect = '/login'
+  onSuccessRedirect = null,
+  onLoginRedirect = null,
 }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const { showToast } = useNotifications();
+  const copy = AUTH_FORM_CONTENT.register;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({
@@ -133,11 +136,18 @@ const RegistrationForm = ({
         duration: 4200,
       });
       trackEvent('register_submit_success', { account_type: payload.role, source: 'redirect_login' });
+      if (onLoginRedirect) {
+        onLoginRedirect({
+          email: payload.credentials.email,
+          redirect: successRoute,
+        });
+        return;
+      }
       navigate('/login', {
         state: {
           email: payload.credentials.email,
-          redirect: successRoute
-        }
+          redirect: successRoute,
+        },
       });
     } catch (err) {
       console.error('Registration failed:', err);
@@ -151,13 +161,13 @@ const RegistrationForm = ({
   return (
     <Card className="auth-card" padding="medium">
       <div className="auth-header">
-        <h1>Create Account</h1>
+        <h1>{copy.header.title}</h1>
         <p className="auth-subtitle">
           {allowAccountTypeSwitch
-            ? 'Register as a corporate team or student and get started.'
+            ? copy.header.subtitle.defaultSwitch
             : defaultAccountType === 'student'
-              ? 'Create a student account to join the community and training tracks.'
-              : 'Create a corporate team account to request HSOCIETY services and client dashboards.'}
+              ? copy.header.subtitle.student
+              : copy.header.subtitle.corporate}
         </p>
       </div>
 
@@ -168,7 +178,7 @@ const RegistrationForm = ({
       <form onSubmit={handleSubmit} className="auth-form">
         {allowAccountTypeSwitch ? (
           <div className="form-group">
-            <label>Account Type</label>
+            <label>{copy.accountType.label}</label>
             <div className="auth-toggle">
               <button
                 type="button"
@@ -176,7 +186,7 @@ const RegistrationForm = ({
                 onClick={() => updateField('accountType', 'corporate')}
                 disabled={loading}
               >
-                Corporate
+                {copy.accountType.corporate}
               </button>
               <button
                 type="button"
@@ -184,35 +194,39 @@ const RegistrationForm = ({
                 onClick={() => updateField('accountType', 'student')}
                 disabled={loading}
               >
-                Student
+                {copy.accountType.student}
               </button>
             </div>
           </div>
         ) : (
           <div className="form-group">
-            <label>Account Type</label>
+            <label>{copy.accountType.label}</label>
             <div className="auth-account-label">
-              {defaultAccountType === 'student' ? 'Student account' : 'Corporate account'}
+              {defaultAccountType === 'student'
+                ? copy.accountType.studentLabel
+                : copy.accountType.corporateLabel}
             </div>
           </div>
         )}
 
         <div className="auth-form-row">
           <div className="form-group">
-            <label htmlFor="register-name">Full Name</label>
+            <label htmlFor="register-name">{copy.fields.name.label}</label>
             <input
               id="register-name"
               type="text"
               className="form-input"
               value={form.name}
               onChange={(e) => updateField('name', e.target.value)}
-              placeholder="Wunpini Andani"
+              placeholder={copy.fields.name.placeholder}
               disabled={loading}
             />
           </div>
           <div className="form-group">
             <label htmlFor="register-org">
-              {form.accountType === 'student' ? 'School / Program' : 'Company'}
+              {form.accountType === 'student'
+                ? copy.fields.org.studentLabel
+                : copy.fields.org.corporateLabel}
             </label>
             <input
               id="register-org"
@@ -221,7 +235,9 @@ const RegistrationForm = ({
               value={form.companyOrSchool}
               onChange={(e) => updateField('companyOrSchool', e.target.value)}
               placeholder={
-                form.accountType === 'student' ? 'University name' : 'Company name'
+                form.accountType === 'student'
+                  ? copy.fields.org.studentPlaceholder
+                  : copy.fields.org.corporatePlaceholder
               }
               disabled={loading}
             />
@@ -229,39 +245,39 @@ const RegistrationForm = ({
         </div>
 
         <div className="form-group">
-          <label htmlFor="register-email">Email Address</label>
+          <label htmlFor="register-email">{copy.fields.email.label}</label>
           <input
             id="register-email"
             type="email"
             className="form-input"
             value={form.email}
             onChange={(e) => updateField('email', e.target.value)}
-            placeholder="you@company.com"
+            placeholder={copy.fields.email.placeholder}
             disabled={loading}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="register-password">Password</label>
+          <label htmlFor="register-password">{copy.fields.password.label}</label>
           <PasswordInput
             id="register-password"
             className="form-input"
             value={form.password}
             onChange={(e) => updateField('password', e.target.value)}
-            placeholder="Create a secure password"
+            placeholder={copy.fields.password.placeholder}
             disabled={loading}
           />
           <PasswordStrengthIndicator password={form.password} />
         </div>
 
         <div className="form-group">
-          <label htmlFor="register-confirm-password">Confirm Password</label>
+          <label htmlFor="register-confirm-password">{copy.fields.confirmPassword.label}</label>
           <PasswordInput
             id="register-confirm-password"
             className="form-input"
             value={form.confirmPassword}
             onChange={(e) => updateField('confirmPassword', e.target.value)}
-            placeholder="Repeat your password"
+            placeholder={copy.fields.confirmPassword.placeholder}
             disabled={loading}
           />
         </div>
@@ -275,21 +291,21 @@ const RegistrationForm = ({
               disabled={loading}
             />
             <span>
-              I have read the{' '}
+              {copy.fields.agree.prefix}{' '}
               <button
                 type="button"
                 className="auth-link-inline"
                 onClick={() => navigate('/terms')}
               >
-                HSOCIETY Terms & Conditions
+                {copy.fields.agree.link}
               </button>{' '}
-              and agree to the security policies.
+              {copy.fields.agree.suffix}
             </span>
           </label>
         </div>
 
         <Button variant="primary" size="large" type="submit" loading={loading} fullWidth>
-          Create Account
+          {copy.button.create}
         </Button>
       </form>
     </Card>

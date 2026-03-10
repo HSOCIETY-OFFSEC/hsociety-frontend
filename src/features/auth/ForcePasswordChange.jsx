@@ -14,6 +14,7 @@ import { useAuth } from '../../core/auth/AuthContext';
 import { validatePassword } from '../../core/validation/input.validator';
 import { apiClient } from '../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../config/api.config';
+import { buildAuthModalUrl } from '../../shared/utils/authModal';
 import '../../styles/core/auth.css';
 
 export default function ForcePasswordChange() {
@@ -31,7 +32,10 @@ export default function ForcePasswordChange() {
   }, [error]);
 
   if (!passwordChangeToken) {
-    navigate('/login', { replace: true, state: { message: 'Please log in again to set a new password.' } });
+    navigate(buildAuthModalUrl('login', { reason: 'password_required' }), {
+      replace: true,
+      state: { message: 'Please log in again to set a new password.' },
+    });
     return null;
   }
 

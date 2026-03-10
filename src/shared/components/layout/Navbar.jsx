@@ -16,6 +16,7 @@ import {
 } from 'react-icons/fi';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
+import useAuthModal from '../../hooks/useAuthModal';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
@@ -44,6 +45,7 @@ const NAV_COLLAPSE_WIDTH = 1024;
 const Navbar = ({ sticky = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { openAuthModal } = useAuthModal();
   const { user, isAuthenticated, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -382,14 +384,14 @@ const Navbar = ({ sticky = true }) => {
             <div className="navbar-right-actions">
               <button
                 type="button"
-                onClick={() => navigate('/login')}
+                onClick={() => openAuthModal('login')}
                 className="navbar-auth-button"
               >
                 Login
               </button>
               <button
                 type="button"
-                onClick={() => navigate('/register')}
+                onClick={() => openAuthModal('register')}
                 className="navbar-auth-button navbar-auth-primary"
               >
                 Register
@@ -540,7 +542,7 @@ const Navbar = ({ sticky = true }) => {
               <>
                 <button
                   onClick={() => {
-                    navigate('/login');
+                    openAuthModal('login');
                     setMobileMenuOpen(false);
                   }}
                   className="mobile-menu-login"
@@ -552,7 +554,7 @@ const Navbar = ({ sticky = true }) => {
                 </button>
                 <button
                   onClick={() => {
-                    navigate('/register');
+                    openAuthModal('register');
                     setMobileMenuOpen(false);
                   }}
                   className="mobile-menu-register"

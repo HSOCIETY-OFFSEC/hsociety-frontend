@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import useAuthModal from '../../shared/hooks/useAuthModal';
 import { FiArrowLeft, FiArrowRight, FiClock, FiLayers, FiShield, FiChevronRight } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
@@ -9,6 +10,7 @@ import '../../styles/sections/courses/index.css';
 const CourseDetails = () => {
   const { bootcampId } = useParams();
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
 
   if (bootcampId !== 'hacker-protocol') {
     return (
@@ -48,7 +50,7 @@ const CourseDetails = () => {
               <FiArrowLeft size={14} />
               Back
             </Button>
-            <Button variant="primary" size="small" onClick={() => navigate('/register')}>
+            <Button variant="primary" size="small" onClick={() => openAuthModal('register')}>
               Enroll Now
               <FiArrowRight size={14} />
             </Button>

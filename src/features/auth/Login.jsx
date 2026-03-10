@@ -9,6 +9,7 @@ import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PublicError from '../../shared/components/ui/PublicError';
+import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import '../../styles/core/auth.css';
 
 /**
@@ -18,14 +19,21 @@ import '../../styles/core/auth.css';
  * 1. Email + password
  * 2. If 2FA enabled, prompt for code
  */
-const Login = ({ mode = 'default' }) => {
+const Login = ({
+  mode = 'default',
+  layout = 'page',
+  onRequestModeChange = null,
+  prefillEmail = '',
+  redirect = null,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
   const { showToast } = useNotifications();
+  const copy = AUTH_FORM_CONTENT.login;
 
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState(location.state?.email || '');
+  const [email, setEmail] = useState(prefillEmail || location.state?.email || '');
   const [password, setPassword] = useState('');
   const [twoFACode, setTwoFACode] = useState('');
   const [twoFactorToken, setTwoFactorToken] = useState(null);
@@ -42,6 +50,14 @@ const Login = ({ mode = 'default' }) => {
     if (role === 'pentester') return '/pentester';
     if (role === 'student') return '/student-dashboard';
     return '/corporate-dashboard';
+  };
+
+  const resolveRedirect = (role) => {
+    const candidate = redirect || location.state?.redirect;
+    if (candidate && typeof candidate === 'string' && candidate.startsWith('/')) {
+      return candidate;
+    }
+    return resolveRouteForRole(role);
   };
 
   const enforceRole = (role) => {
@@ -86,7 +102,7 @@ const Login = ({ mode = 'default' }) => {
         message: 'Welcome back. Your workspace is ready.',
         duration: 3600,
       });
-      navigate(resolveRouteForRole(role));
+      navigate(resolveRedirect(role));
     } catch (err) {
       setError(genericLoginError);
     } finally {
@@ -120,7 +136,7 @@ const Login = ({ mode = 'default' }) => {
         message: 'You are signed in and secured.',
         duration: 3600,
       });
-      navigate(resolveRouteForRole(role));
+      navigate(resolveRedirect(role));
     } catch (err) {
       setError(genericVerifyError);
     } finally {
@@ -137,155 +153,165 @@ const Login = ({ mode = 'default' }) => {
     setError('');
   };
 
+  const content = (
+    <section
+      className={`auth-panel auth-panel--form ${layout === 'modal' ? 'auth-panel--modal' : ''}`}
+    >
+      <div className="auth-wrapper">
+        <Card className="auth-card">
+          <div className="auth-header">
+            <h1>{mode === 'pentester' ? copy.titles.pentester : copy.titles.default}</h1>
+            <p className="auth-subtitle">
+              {step === 1 && copy.subtitles.step1}
+              {step === 2 && copy.subtitles.step2}
+            </p>
+          </div>
+
+          <PublicError message={error} icon={<FiAlertTriangle size={16} />} />
+
+          {step === 1 && (
+            <form onSubmit={handleLogin} className="auth-form">
+              <div className="form-group">
+                <label htmlFor="email">{copy.fields.email.label}</label>
+                <input
+                  type="text"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={copy.fields.email.placeholder}
+                  required
+                  autoFocus
+                  disabled={loading}
+                  className="form-input"
+                  autoComplete="username"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">{copy.fields.password.label}</label>
+                <PasswordInput
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={copy.fields.password.placeholder}
+                  required
+                  disabled={loading}
+                  className="form-input"
+                  autoComplete="current-password"
+                />
+              </div>
+              <Button
+                type="submit"
+                variant="primary"
+                fullWidth
+                loading={loading}
+                disabled={loading}
+              >
+                {loading ? copy.buttons.signingIn : copy.buttons.signIn}
+              </Button>
+            </form>
+          )}
+
+          {step === 2 && (
+            <form onSubmit={handleVerify2FA} className="auth-form">
+              <div className="form-group">
+                <label htmlFor="twofa">{copy.fields.twofa.label}</label>
+                <input
+                  type="text"
+                  id="twofa"
+                  value={twoFACode}
+                  onChange={(e) =>
+                    setTwoFACode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                  }
+                  placeholder={copy.fields.twofa.placeholder}
+                  maxLength={6}
+                  required
+                  autoFocus
+                  disabled={loading}
+                  className="form-input otp-input"
+                />
+                <span className="form-hint">{copy.fields.twofa.hint}</span>
+              </div>
+              <Button
+                type="submit"
+                variant="primary"
+                fullWidth
+                loading={loading}
+                disabled={loading || twoFACode.length !== 6}
+              >
+                {loading ? copy.buttons.verifying : copy.buttons.verify}
+              </Button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="auth-link"
+                disabled={loading}
+              >
+                {copy.buttons.useDifferent}
+              </button>
+            </form>
+          )}
+
+          <div className="auth-footer">
+            <p>
+              {copy.footer.studentPrompt}{' '}
+              <button
+                onClick={() =>
+                  onRequestModeChange
+                    ? onRequestModeChange('register')
+                    : navigate('/register')
+                }
+                className="auth-link-inline"
+                disabled={loading}
+              >
+                {copy.footer.studentAction}
+              </button>
+            </p>
+            <p>
+              {copy.footer.corporatePrompt}{' '}
+              <button
+                onClick={() =>
+                  onRequestModeChange
+                    ? onRequestModeChange('register-corporate')
+                    : navigate('/register/corporate')
+                }
+                className="auth-link-inline"
+                disabled={loading}
+              >
+                {copy.footer.corporateAction}
+              </button>
+            </p>
+            <p>
+              {copy.footer.termsPrompt}{' '}
+              <button
+                type="button"
+                className="auth-link-inline"
+                onClick={() => navigate('/terms')}
+                disabled={loading}
+              >
+                {copy.footer.termsAction}
+              </button>
+              .
+            </p>
+          </div>
+        </Card>
+
+        <div className="auth-notice">
+          <p>
+            <span className="notice-icon">
+              <FiLock size={14} />
+            </span>
+            {copy.notice}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+
+  if (layout === 'modal') return content;
+
   return (
     <div className="auth-container">
-      <div className="auth-split auth-split--single">
-        <section className="auth-panel auth-panel--form">
-          <div className="auth-wrapper">
-            <Card className="auth-card">
-              <div className="auth-header">
-                <h1>{mode === 'pentester' ? 'Pentester Login' : 'Secure Login'}</h1>
-                <p className="auth-subtitle">
-                  {step === 1 && 'Enter your email or handle and password'}
-                  {step === 2 && 'Enter your 2FA authentication code'}
-                </p>
-              </div>
-
-              <PublicError message={error} icon={<FiAlertTriangle size={16} />} />
-
-              {step === 1 && (
-                <>
-                  <form onSubmit={handleLogin} className="auth-form">
-                    <div className="form-group">
-                      <label htmlFor="email">Email or Handle</label>
-                      <input
-                        type="text"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com or h4ck3r10"
-                        required
-                        autoFocus
-                        disabled={loading}
-                        className="form-input"
-                        autoComplete="username"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="password">Password</label>
-                      <PasswordInput
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Your password"
-                        required
-                        disabled={loading}
-                        className="form-input"
-                        autoComplete="current-password"
-                      />
-                    </div>
-                    <Button
-                      type="submit"
-                      variant="primary"
-                      fullWidth
-                      loading={loading}
-                      disabled={loading}
-                    >
-                      {loading ? 'Signing in...' : 'Sign In'}
-                    </Button>
-                  </form>
-                </>
-              )}
-
-              {step === 2 && (
-                <form onSubmit={handleVerify2FA} className="auth-form">
-                  <div className="form-group">
-                    <label htmlFor="twofa">Two-Factor Authentication</label>
-                    <input
-                      type="text"
-                      id="twofa"
-                      value={twoFACode}
-                      onChange={(e) =>
-                        setTwoFACode(e.target.value.replace(/\D/g, '').slice(0, 6))
-                      }
-                      placeholder="000000"
-                      maxLength={6}
-                      required
-                      autoFocus
-                      disabled={loading}
-                      className="form-input otp-input"
-                    />
-                    <span className="form-hint">
-                      Enter the 6-digit code from your authenticator app
-                    </span>
-                  </div>
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    fullWidth
-                    loading={loading}
-                    disabled={loading || twoFACode.length !== 6}
-                  >
-                    {loading ? 'Verifying...' : 'Verify 2FA'}
-                  </Button>
-                  <button
-                    type="button"
-                    onClick={handleReset}
-                    className="auth-link"
-                    disabled={loading}
-                  >
-                    Use a different account
-                  </button>
-                </form>
-              )}
-
-              <div className="auth-footer">
-                <p>
-                  Student access?{' '}
-                  <button
-                    onClick={() => navigate('/register')}
-                    className="auth-link-inline"
-                    disabled={loading}
-                  >
-                    Create a student account
-                  </button>
-                </p>
-                <p>
-                  Corporate access?{' '}
-                  <button
-                    onClick={() => navigate('/register/corporate')}
-                    className="auth-link-inline"
-                    disabled={loading}
-                  >
-                    Create a corporate account
-                  </button>
-                </p>
-                <p>
-                  By signing in you agree to the{' '}
-                  <button
-                    type="button"
-                    className="auth-link-inline"
-                    onClick={() => navigate('/terms')}
-                    disabled={loading}
-                  >
-                    Terms & Conditions
-                  </button>
-                  .
-                </p>
-              </div>
-            </Card>
-
-            <div className="auth-notice">
-              <p>
-                <span className="notice-icon">
-                  <FiLock size={14} />
-                </span>
-                Your security is our priority. All communications are encrypted.
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
+      <div className="auth-split auth-split--single">{content}</div>
     </div>
   );
 };

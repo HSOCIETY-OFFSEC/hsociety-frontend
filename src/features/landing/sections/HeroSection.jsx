@@ -9,6 +9,7 @@ import { getSocialLinks } from '../../../config/social.config';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
+import useAuthModal from '../../../shared/hooks/useAuthModal';
 import { trackEvent } from '../../../shared/services/analytics.service';
 import { ROUTES } from '../../../app/routes';
 import '../../../styles/landing/hero.css';
@@ -37,6 +38,7 @@ const HeroSection = ({ content }) => {
   const heroRef = useRef(null);
   const navigate = useNavigate();
   const { requestPentest, requestPentestModal } = useRequestPentest();
+  const { openAuthModal } = useAuthModal();
   const { badge, ctas, title, description } = content;
   const defaultTitles = [
     'Train like a Hacker.|Prepare for Hackers',
@@ -104,6 +106,18 @@ const HeroSection = ({ content }) => {
                   trackEvent('landing_cta_click', { location: 'hero', route: cta.route });
                   if (cta.route === ROUTES.CORPORATE_PENTEST) {
                     requestPentest();
+                    return;
+                  }
+                  if (cta.route === ROUTES.LOGIN) {
+                    openAuthModal('login');
+                    return;
+                  }
+                  if (cta.route === ROUTES.REGISTER) {
+                    openAuthModal('register');
+                    return;
+                  }
+                  if (cta.route === ROUTES.CORPORATE_REGISTER) {
+                    openAuthModal('register-corporate');
                     return;
                   }
                   navigate(cta.route);

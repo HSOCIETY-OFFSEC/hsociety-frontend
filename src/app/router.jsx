@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { useAuth } from '../core/auth/AuthContext';
 import PageLoader from '../shared/components/ui/PageLoader';
 import WorkspaceLayout from '../shared/components/layout/WorkspaceLayout';
@@ -9,11 +9,10 @@ import PublicLayout from '../shared/components/layout/PublicLayout';
 import RouteEffects from '../shared/components/layout/RouteEffects';
 import StudentRoleBlocker from '../features/student/components/StudentRoleBlocker';
 import Landing from '../features/landing/Landing';
+import AuthModal from '../features/auth/AuthModal';
+import { AUTH_MODAL_MODES } from '../shared/utils/authModal';
 
 // Lazy load components
-const Login = React.lazy(() => import('../features/auth/Login'));
-const Register = React.lazy(() => import('../features/auth/Register'));
-const CorporateRegister = React.lazy(() => import('../features/auth/CorporateRegister'));
 const loadDashboard = (key) =>
   React.lazy(() =>
     import('../features/dashboards').then((module) => ({ default: module[key] }))
@@ -86,8 +85,17 @@ const ForcePasswordChange = React.lazy(() => import('../features/auth/ForcePassw
  */
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
+  const location = useLocation();
   if (isLoading) return <PageLoader message="Authenticating session..." durationMs={0} />;
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isAuthenticated) {
+    const redirect = `${location.pathname}${location.search}`;
+    return (
+      <Navigate
+        to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.LOGIN}&redirect=${encodeURIComponent(redirect)}` }}
+        replace
+      />
+    );
+  }
   return children;
 };
 
@@ -96,31 +104,25 @@ const ProtectedRoute = ({ children }) => {
  */
 const RoleRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, isLoading, user } = useAuth();
+  const location = useLocation();
   const role = user?.role === 'client' ? 'corporate' : user?.role;
 
   if (isLoading) return <PageLoader message="Preparing your workspace..." durationMs={0} />;
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isAuthenticated) {
+    const redirect = `${location.pathname}${location.search}`;
+    return (
+      <Navigate
+        to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.LOGIN}&redirect=${encodeURIComponent(redirect)}` }}
+        replace
+      />
+    );
+  }
   if (!role) return <PageLoader message="Loading your profile..." durationMs={0} />;
   if (!allowedRoles.includes(role)) {
     if (allowedRoles.includes('corporate') && (role === 'pentester' || role === 'client')) {
       return children;
     }
     if (role === 'student') return <StudentRoleBlocker />;
-    if (role === 'admin') return <Navigate to="/mr-robot" replace />;
-    if (role === 'pentester') return <Navigate to="/pentester" replace />;
-    return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
-  }
-  return children;
-};
-
-/**
- * Public Route (redirects auth users to dashboard)
- */
-const PublicRoute = ({ children }) => {
-  const { isAuthenticated, isLoading, user } = useAuth();
-  if (isLoading) return <PageLoader message="Preparing your workspace..." durationMs={0} />;
-  const role = user?.role === 'client' ? 'corporate' : user?.role;
-  if (isAuthenticated) {
     if (role === 'admin') return <Navigate to="/mr-robot" replace />;
     if (role === 'pentester') return <Navigate to="/pentester" replace />;
     return <Navigate to={role === 'student' ? '/student-dashboard' : '/corporate-dashboard'} replace />;
@@ -145,6 +147,7 @@ const AppRouter = () => {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <RouteEffects />
+      <AuthModal />
       <React.Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Landing - full-width marketing layout */}
@@ -156,35 +159,19 @@ const AppRouter = () => {
           <Route element={<AuthLayout />}>
             <Route
               path="login"
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              }
+              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.LOGIN}` }} replace />}
             />
             <Route
               path="pentester-login"
-              element={
-                <PublicRoute>
-                  <Login mode="pentester" />
-                </PublicRoute>
-              }
+              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.PENTESTER_LOGIN}` }} replace />}
             />
             <Route
               path="register"
-              element={
-                <PublicRoute>
-                  <Register />
-                </PublicRoute>
-              }
+              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.REGISTER}` }} replace />}
             />
             <Route
               path="register/corporate"
-              element={
-                <PublicRoute>
-                  <CorporateRegister />
-                </PublicRoute>
-              }
+              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.CORPORATE_REGISTER}` }} replace />}
             />
             <Route path="change-password" element={<ForcePasswordChange />} />
           </Route>

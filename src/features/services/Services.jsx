@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuthModal from '../../shared/hooks/useAuthModal';
 import {
   FiShield,
   FiFileText,
@@ -26,6 +27,7 @@ import '../../styles/sections/services/index.css';
 
 const Services = () => {
   const navigate = useNavigate();
+  const { openAuthModal } = useAuthModal();
   const { requestPentest, requestPentestModal } = useRequestPentest();
 
   const iconMap = useMemo(
@@ -102,7 +104,7 @@ const Services = () => {
               <Button
                 variant="ghost"
                 size="large"
-                onClick={() => navigate('/register/corporate')}
+                onClick={() => openAuthModal('register-corporate')}
               >
                 Join the Training Cycle
               </Button>

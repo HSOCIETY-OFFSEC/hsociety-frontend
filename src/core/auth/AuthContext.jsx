@@ -5,6 +5,7 @@ import { refreshToken as refreshAuthToken, logout as logoutRequest } from './aut
 import { envConfig } from '../../config/env.config';
 import { trackSecurityEvent } from '../security-tests/security-events.service';
 import { setPendingToast } from '../../shared/notifications/toastStorage';
+import { buildAuthModalUrl } from '../../shared/utils/authModal';
 
 /**
  * Authentication Context
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
           setToken(null);
           setIsAuthenticated(false);
           if (typeof window !== 'undefined') {
-            window.location.href = '/login?reason=password_required';
+            window.location.href = buildAuthModalUrl('login', { reason: 'password_required' });
           }
           return;
         }
