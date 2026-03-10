@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FiAlertTriangle, FiLock, FiShield, FiUsers, FiLayers } from 'react-icons/fi';
+import { FiAlertTriangle, FiLock } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import { login as loginRequest } from '../../core/auth/auth.service';
 import { verify2FA } from '../../core/auth/twofa.service';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
-import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PublicError from '../../shared/components/ui/PublicError';
 import '../../styles/core/auth.css';
-
-const HERO_ITEMS = [
-  { icon: <FiShield size={14} />, text: '2FA-ready sessions' },
-  { icon: <FiUsers size={14} />, text: 'Role-based dashboards' },
-  { icon: <FiLayers size={14} />, text: 'Encrypted in transit' }
-];
 
 /**
  * Login Component
@@ -144,35 +137,9 @@ const Login = ({ mode = 'default' }) => {
     setError('');
   };
 
-  const heroTitle = mode === 'pentester' ? 'Pentester Access' : 'Secure Access';
-  const heroSubtitle =
-    mode === 'pentester'
-      ? 'Signed access for offensive operators. Verified sessions. Controlled scope.'
-      : 'Role-based access to training, engagements, and reporting in one secure workspace.';
-
   return (
     <div className="auth-container">
-      <div className="auth-split">
-        {/* ── Hero Panel ── */}
-        <section className="auth-panel auth-panel--hero">
-          <div className="auth-hero-content">
-            <div className="auth-hero-badge">
-              <Logo size="small" />
-              <span>HSOCIETY Secure Portal</span>
-            </div>
-            <h1 className="auth-hero-title">{heroTitle}</h1>
-            <p className="auth-hero-subtitle">{heroSubtitle}</p>
-            <div className="auth-hero-list">
-              {HERO_ITEMS.map((item) => (
-                <div key={item.text} className="auth-hero-item">
-                  {item.icon}&nbsp; {item.text}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Form Panel ── */}
+      <div className="auth-split auth-split--single">
         <section className="auth-panel auth-panel--form">
           <div className="auth-wrapper">
             <Card className="auth-card">

@@ -640,7 +640,12 @@
   }
 
   .navbar-logo {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
+    margin-right: auto;
+  }
+
+  .navbar-logo .logo-container {
+    justify-content: flex-start;
   }
 
   .navbar-right {

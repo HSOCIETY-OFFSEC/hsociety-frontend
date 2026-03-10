@@ -15,7 +15,9 @@
   justify-content: flex-start;
   width: 100%;
   box-sizing: border-box;
-  padding: calc(var(--navbar-height) + 3rem) 1rem 4rem;
+  min-height: calc(100dvh - var(--navbar-height, 72px));
+  height: calc(100dvh - var(--navbar-height, 72px));
+  padding: 1.5rem 1rem 2rem;
   position: relative;
 }
 
@@ -46,12 +48,12 @@
 /* ── Responsive tweaks ────────────────────────────────────── */
 @media (min-width: 640px) {
   .auth-layout .auth-main {
-    padding: calc(var(--navbar-height) + 4rem) 2rem 5rem;
+    padding: 2rem 2rem 2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .auth-layout .auth-main {
-    padding: calc(var(--navbar-height) + 5rem) 2rem 6rem;
+    padding: 2.5rem 2rem 3rem;
   }
 }
