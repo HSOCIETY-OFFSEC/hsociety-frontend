@@ -1,0 +1,294 @@
+/**
+ * Corporate Dashboard — new UX layout
+ * Location: src/styles/dashboards/corporate/overview.css
+ */
+
+.corp-header-kicker {
+  margin: 0 0 0.65rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.corp-loading-text {
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+}
+
+.corp-section {
+  margin-top: 1.1rem;
+}
+
+.corp-section-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.corp-card {
+  border-radius: 18px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.corp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.corp-card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.corp-card-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14rem;
+  color: var(--text-tertiary);
+}
+
+.corp-card-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.corp-card-body {
+  margin: 0.6rem 0 1rem;
+  color: var(--text-secondary);
+}
+
+.corp-muted-text {
+  color: var(--text-secondary);
+  margin: 0.5rem 0 0;
+}
+
+/* Command Center */
+.corp-command-card {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--primary-color) 12%, var(--card-bg)),
+    var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, var(--border-color));
+}
+
+.corp-command-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.corp-metric-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
+  color: var(--text-tertiary);
+}
+
+.corp-metric-value {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.corp-card-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+}
+
+.corp-risk-pill,
+.corp-status-pill {
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
+  color: var(--text-secondary);
+}
+
+.risk-low { color: #22c55e; border-color: color-mix(in srgb, #22c55e 55%, var(--border-color)); }
+.risk-medium { color: #f59e0b; border-color: color-mix(in srgb, #f59e0b 55%, var(--border-color)); }
+.risk-high { color: #ef4444; border-color: color-mix(in srgb, #ef4444 55%, var(--border-color)); }
+
+.status-active { color: #38bdf8; border-color: color-mix(in srgb, #38bdf8 55%, var(--border-color)); }
+.status-completed { color: #22c55e; border-color: color-mix(in srgb, #22c55e 55%, var(--border-color)); }
+.status-none { color: var(--text-tertiary); }
+
+/* Indicators */
+.corp-indicators-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+}
+
+.corp-indicator {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  padding-bottom: 0.5rem;
+}
+
+.corp-indicator:last-child {
+  border-bottom: none;
+}
+
+.corp-indicator-label {
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+}
+
+.corp-indicator-value {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Vulnerabilities */
+.corp-vuln-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.1rem;
+}
+
+.corp-vuln-item {
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.corp-vuln-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08rem;
+}
+
+.corp-vuln-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.severity-critical { border-color: color-mix(in srgb, #ef4444 35%, var(--border-color)); }
+.severity-high { border-color: color-mix(in srgb, #f97316 35%, var(--border-color)); }
+.severity-medium { border-color: color-mix(in srgb, #f59e0b 35%, var(--border-color)); }
+.severity-low { border-color: color-mix(in srgb, #22c55e 35%, var(--border-color)); }
+
+/* Reports */
+.corp-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.corp-report-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+}
+
+.corp-report-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.corp-report-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.corp-report-date {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.corp-report-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Activity feed */
+.corp-activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.corp-activity-item {
+  display: flex;
+  gap: 0.8rem;
+  align-items: baseline;
+  padding: 0.55rem 0.6rem;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+}
+
+.corp-activity-time {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  min-width: 56px;
+}
+
+.corp-activity-message {
+  color: var(--text-secondary);
+}
+
+/* Skeletons */
+.corp-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.corp-skeleton-card {
+  height: 180px;
+  border-radius: 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.corp-error-card h3,
+.corp-error-card p {
+  margin: 0 0 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .corp-section-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .corp-command-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .corp-command-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .corp-skeleton-grid {
+    grid-template-columns: 1fr;
+  }
+}

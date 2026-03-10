@@ -27,10 +27,10 @@ export const NAV_LINKS = {
   /** Authenticated workspace nav (sidebar) */
   workspace: {
     corporate: [
-      { path: '/corporate-dashboard', label: 'Overview', icon: FiBarChart2 },
+      { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
       { path: '/engagements', label: 'Engagements', icon: FiShield },
       { path: '/reports', label: 'Reports', icon: FiFileText },
-      { path: '/remediation', label: 'Remediation', icon: FiTool },
+      { path: '/remediation', label: 'Vulnerabilities', icon: FiTool },
       { path: '/assets', label: 'Assets', icon: FiLayers },
       { path: '/billing', label: 'Billing', icon: FiCreditCard },
       { path: '/community', label: 'Community', icon: FiMessageSquare }
