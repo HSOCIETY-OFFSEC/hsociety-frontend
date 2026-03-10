@@ -258,8 +258,8 @@ const css = `
 const SHOW_AFTER_PX = 220;
 const MIN_SCROLLABLE_PX = 420;
 
-const THEME_ORDER = ['light', 'dark', 'black'];
-const THEME_LABELS = { light: 'Light', dark: 'Dark', black: 'Black' };
+const THEME_ORDER = ['light', 'black'];
+const THEME_LABELS = { light: 'White', black: 'Black' };
 
 // ─── Component ────────────────────────────────────────────────────────────────
 const FloatingUtilityToolbar = () => {
@@ -347,10 +347,10 @@ const FloatingUtilityToolbar = () => {
           type="button"
           className="fut-tool"
           onClick={toggleTheme}
-          aria-label={`Switch to ${THEME_LABELS[nextTheme] || 'Dark'} mode`}
+          aria-label={`Switch to ${THEME_LABELS[nextTheme] || 'Black'} mode`}
         >
           <span className="fut-tool-icon"><ThemeIcon size={15} /></span>
-          <span className="fut-tool-label">{THEME_LABELS[nextTheme] || 'Dark'} mode</span>
+          <span className="fut-tool-label">{THEME_LABELS[nextTheme] || 'Black'} mode</span>
         </button>
 
         {/* ── Scroll to top (conditional) ── */}

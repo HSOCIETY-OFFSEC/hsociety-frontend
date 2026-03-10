@@ -5,29 +5,29 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
  * Location: src/app/providers.jsx
  * 
  * Features:
- * - Light/Dark/Black theme management
+ * - Light/Black theme management
  * - Persists theme preference in localStorage
  * - Applies theme to document root
  * - Provides theme context to entire app
  * 
  * Theme Colors:
  * - Light: White background + Green accents (#10b981)
- * - Dark: Charcoal background + Green accents (#10b981)
  * - Black: True black background + Green accents (#10b981)
  */
 
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
-  const themeOrder = ['light', 'dark', 'black'];
+  const themeOrder = ['light', 'black'];
 
-  // Initialize theme from localStorage or default to 'dark'
+  // Initialize theme from localStorage or default to 'black'
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('hsociety-theme');
-      return themeOrder.includes(savedTheme) ? savedTheme : 'dark';
+      if (savedTheme === 'dark') return 'black';
+      return themeOrder.includes(savedTheme) ? savedTheme : 'black';
     }
-    return 'dark';
+    return 'black';
   });
 
   // Apply theme to document root on mount and when theme changes
@@ -48,10 +48,9 @@ export const ThemeProvider = ({ children }) => {
     if (metaThemeColor) {
       const themeColorMap = {
         light: '#ffffff',
-        dark: '#0a0f14',
         black: '#000000'
       };
-      metaThemeColor.setAttribute('content', themeColorMap[theme] || '#0a0f14');
+      metaThemeColor.setAttribute('content', themeColorMap[theme] || '#000000');
     }
     
     // Keep a single favicon set across themes.
@@ -74,7 +73,7 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  // Toggle between light, dark, and black
+  // Toggle between light and black
   const toggleTheme = () => {
     setTheme(prevTheme => {
       const currentIndex = themeOrder.indexOf(prevTheme);
@@ -94,7 +93,7 @@ export const ThemeProvider = ({ children }) => {
     theme,
     toggleTheme,
     setTheme: setThemeMode,
-    isDark: theme === 'dark',
+    isDark: theme === 'black',
     isLight: theme === 'light',
     isBlack: theme === 'black'
   };

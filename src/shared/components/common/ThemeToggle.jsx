@@ -8,7 +8,7 @@ import '../../../styles/shared/components/common/ThemeToggle.css';
  * Location: src/shared/components/common/ThemeToggle.jsx
  * 
  * Features:
- * - Switches between light/dark/black themes
+ * - Switches between light/black themes
  * - Accessible button with clear label
  */
 
@@ -17,19 +17,18 @@ const ThemeToggle = ({ className = '' }) => {
 
   const themeLabels = {
     light: 'White',
-    dark: 'Dark',
     black: 'Black'
   };
 
-  const themeOrder = ['light', 'dark', 'black'];
+  const themeOrder = ['light', 'black'];
   const currentIndex = themeOrder.indexOf(theme);
   const nextTheme = themeOrder[currentIndex === -1 ? 0 : (currentIndex + 1) % themeOrder.length];
 
   return (
     <button
       type="button"
-      aria-label={`Switch to ${themeLabels[nextTheme] || 'Dark'} mode`}
-      title={`Switch to ${themeLabels[nextTheme] || 'Dark'} mode`}
+      aria-label={`Switch to ${themeLabels[nextTheme] || 'Black'} mode`}
+      title={`Switch to ${themeLabels[nextTheme] || 'Black'} mode`}
       onClick={toggleTheme}
       className={`theme-toggle ${className}`}
     >
@@ -37,7 +36,7 @@ const ThemeToggle = ({ className = '' }) => {
         {theme === 'light' ? <FiSun /> : <FiMoon />}
       </span>
       <span className="theme-toggle-label">
-        {themeLabels[theme] || 'Dark'}
+        {themeLabels[theme] || 'Black'}
       </span>
     </button>
   );

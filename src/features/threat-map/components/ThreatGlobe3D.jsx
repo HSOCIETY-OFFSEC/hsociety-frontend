@@ -248,7 +248,7 @@ const GlobeScene = ({ paused, onNewAttack, theme, autoRotate, cameraDistance, re
 };
 
 const ThreatGlobe3D = ({ paused, onNewAttack, zoom = 0.45, autoRotate = true, resetSeed = 0 }) => {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('black');
   const cameraDistance = useMemo(() => {
     const clamped = Math.min(Math.max(zoom, 0), 1);
     const min = 2.2;
@@ -258,7 +258,7 @@ const ThreatGlobe3D = ({ paused, onNewAttack, zoom = 0.45, autoRotate = true, re
 
   useEffect(() => {
     const root = document.documentElement;
-    const getTheme = () => root.getAttribute('data-theme') || 'dark';
+    const getTheme = () => root.getAttribute('data-theme') || 'black';
     setTheme(getTheme());
     const observer = new MutationObserver(() => setTheme(getTheme()));
     observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });

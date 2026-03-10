@@ -52,7 +52,7 @@ const Card = ({
     large: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
   };
 
-  // Dark theme shadow adjustments
+  // Black theme shadow adjustments
   const darkShadowMap = {
     none: 'none',
     small: '0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2)',
@@ -61,7 +61,7 @@ const Card = ({
   };
 
   const isClickable = !!onClick;
-  const isDarkTheme = ['dark', 'black'].includes(document.documentElement.getAttribute('data-theme'));
+  const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'black';
 
   // Base card styles
   const baseStyles = {
