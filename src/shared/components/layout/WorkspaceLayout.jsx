@@ -204,7 +204,7 @@ const WorkspaceLayout = () => {
               {user?.id && (
                 <div className="workspace-cp-chip" title={WORKSPACE_UI.cpChipTitle}>
                   <img src={cpIcon} alt="CP" className="workspace-cp-chip-icon" />
-                  <span>{cpTotal} CP</span>
+                  <span>{cpTotal}</span>
                 </div>
               )}
 

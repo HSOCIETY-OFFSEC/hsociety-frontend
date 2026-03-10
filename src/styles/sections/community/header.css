@@ -346,14 +346,14 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: color-mix(in srgb, #22c55e 72%, var(--text-primary));
 }
 
 .community-aside-user-cp-icon {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
   filter: drop-shadow(0 0 4px color-mix(in srgb, #22c55e 42%, transparent));
 }

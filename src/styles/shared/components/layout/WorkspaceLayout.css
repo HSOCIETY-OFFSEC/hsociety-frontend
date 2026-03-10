@@ -235,19 +235,19 @@
 .workspace-cp-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.45rem;
   border: 1px solid color-mix(in srgb, #22c55e 40%, var(--border-color));
   background: color-mix(in srgb, #22c55e 10%, var(--card-bg));
   color: color-mix(in srgb, #22c55e 80%, var(--text-primary));
-  padding: 0.25rem 0.55rem;
+  padding: 0.3rem 0.7rem;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
 .workspace-cp-chip-icon {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
@@ -573,7 +573,6 @@
     display: none;
   }
 
-  .workspace-cp-chip span:not(.workspace-cp-chip-icon),
   .workspace-streak-chip span:last-child {
     display: none;
   }

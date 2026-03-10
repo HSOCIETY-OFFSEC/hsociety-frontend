@@ -181,10 +181,9 @@ const PublicProfile = () => {
         <div className="public-profile-stats">
           <div className="public-profile-stat">
             <div className="public-profile-stat-icon">
-              <img src={cpIcon} alt="CP" />
+              <img src={cpIcon} alt="CP" className="public-profile-cp-icon" />
             </div>
             <div>
-              <span>Cyber Points</span>
               <strong>{formatValue(profile?.xpSummary?.totalXp || profile?.stats?.totalXp || 0)}</strong>
             </div>
           </div>

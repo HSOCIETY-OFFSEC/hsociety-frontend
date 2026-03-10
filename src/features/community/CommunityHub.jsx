@@ -456,7 +456,7 @@ const CommunityHub = () => {
               <span className="community-aside-user-role">{role}</span>
               <span className="community-aside-user-cp">
                 <img src={cpIcon} alt="CP" className="community-aside-user-cp-icon" />
-                {cpTotal} CP
+                {cpTotal}
               </span>
             </div>
             <span className={`community-status-dot ${connected ? 'online' : 'offline'}`} />
@@ -542,7 +542,7 @@ const CommunityHub = () => {
               <span className="community-aside-user-role">{role}</span>
               <span className="community-aside-user-cp">
                 <img src={cpIcon} alt="CP" className="community-aside-user-cp-icon" />
-                {cpTotal} CP
+                {cpTotal}
               </span>
             </div>
             <span className={`community-status-dot ${connected ? 'online' : 'offline'}`} />

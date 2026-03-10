@@ -392,7 +392,7 @@ const Navbar = ({ sticky = true }) => {
             <div className="navbar-landing-stats">
               <div className="navbar-stat-chip" title="Compromised Points">
                 <img src={cpIcon} alt="CP" className="navbar-stat-icon" />
-                <span>{cpTotal} CP</span>
+                <span>{cpTotal}</span>
               </div>
               <div className="navbar-stat-chip" title="Learning streak">
                 <IoFlameOutline size={16} />

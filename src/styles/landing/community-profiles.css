@@ -288,12 +288,12 @@
 .community-profile-cp {
   color: color-mix(in srgb, #22c55e 80%, var(--text-primary)) !important;
   font-weight: 700;
-  font-size: 0.88rem !important;
+  font-size: 1rem !important;
 }
 
 .community-profile-cp-icon {
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
   filter: drop-shadow(0 0 6px color-mix(in srgb, #22c55e 50%, transparent));
 }

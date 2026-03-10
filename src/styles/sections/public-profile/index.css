@@ -162,8 +162,8 @@
 }
 
 .public-profile-stat-icon {
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--primary-color) 15%, transparent);
   display: flex;
@@ -172,8 +172,15 @@
 }
 
 .public-profile-stat-icon img {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
+}
+
+.public-profile-cp-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, #22c55e 45%, transparent));
 }
 
 .public-profile-panels {

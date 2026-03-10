@@ -109,9 +109,9 @@ const LeaderboardTable = ({
             </div>
 
             <div className="leaderboard-col leaderboard-metrics" role="cell">
-              <div className="leaderboard-metric">
-                <img src={cpIcon} alt="CP" />
-                <span>{entry.totalXp ?? '—'} CP</span>
+              <div className="leaderboard-metric leaderboard-metric-cp">
+                <img src={cpIcon} alt="CP" className="leaderboard-cp-icon" />
+                <span className="leaderboard-cp-value">{entry.totalXp ?? '—'}</span>
               </div>
               <div className="leaderboard-metric">
                 <IoFlameOutline size={16} />

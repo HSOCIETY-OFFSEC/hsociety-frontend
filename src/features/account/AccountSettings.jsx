@@ -249,11 +249,10 @@ const AccountSettings = () => {
               <strong>{xpSummary.rank || 'Candidate'}</strong>
             </div>
           </div>
-          <div className="account-progress-card">
+          <div className="account-progress-card account-progress-card--cp">
             <img src={cpIcon} alt="CP" className="cp-icon cp-icon-lg" />
             <div>
-              <span className="account-progress-label">CP</span>
-              <strong>{xpSummary.totalXp || 0} pts</strong>
+              <strong>{xpSummary.totalXp || 0}</strong>
             </div>
           </div>
           <div className="account-progress-card">

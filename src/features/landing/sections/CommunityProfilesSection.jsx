@@ -352,7 +352,7 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
                     <div className="community-profile-metrics">
                       <div className="community-profile-cp">
                         <img src={cpIcon} alt="CP" className="community-profile-cp-icon" />
-                        <span>{fmt(profile.xpSummary?.totalXp)} CP</span>
+                        <span>{fmt(profile.xpSummary?.totalXp)}</span>
                       </div>
                       <div>
                         <FiMessageSquare size={13} />

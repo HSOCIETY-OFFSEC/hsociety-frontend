@@ -383,7 +383,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-secondary);
   background: var(--bg-tertiary);
@@ -394,8 +394,24 @@
 }
 
 .leaderboard-metric img {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
+}
+
+.leaderboard-metric-cp {
+  color: color-mix(in srgb, #22c55e 80%, var(--text-primary));
+  font-weight: 700;
+}
+
+.leaderboard-cp-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, #22c55e 45%, transparent));
+}
+
+.leaderboard-cp-value {
+  font-size: 0.95rem;
 }
 
 /* =========================================
@@ -533,6 +549,8 @@
   .leaderboard-metrics  { grid-area: unset; align-self: center; }
   .leaderboard-metric   { font-size: 0.76rem; padding: 0.28rem 0.65rem; }
   .leaderboard-metric img { width: 15px; height: 15px; }
+  .leaderboard-cp-icon { width: 20px; height: 20px; }
+  .leaderboard-cp-value { font-size: 0.9rem; }
 
   /* Skeleton at desktop size */
   .leaderboard-skeleton-avatar  { width: 44px; height: 44px; }
