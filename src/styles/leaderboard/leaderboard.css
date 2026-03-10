@@ -233,17 +233,14 @@
 }
 
 @media (max-width: 980px) {
+  .leaderboard-table {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+  }
+
   .leaderboard-row {
-    grid-template-columns: 1fr;
-    align-items: flex-start;
-  }
-
-  .leaderboard-header {
-    display: none;
-  }
-
-  .leaderboard-metrics {
-    flex-direction: column;
+    min-width: 720px;
   }
 }
 
@@ -258,5 +255,14 @@
 
   .leaderboard-row {
     padding: 1rem 1.1rem;
+    min-width: 640px;
+  }
+
+  .leaderboard-table {
+    scrollbar-width: none;
+  }
+
+  .leaderboard-table::-webkit-scrollbar {
+    display: none;
   }
 }

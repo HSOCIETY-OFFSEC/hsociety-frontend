@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_PROFILES_DATA } from '../../../data/landing/communityProfilesData';
 import '../../../styles/landing/community-profiles.css';
 
-const AUTO_ROTATE_MS = COMMUNITY_PROFILES_DATA.autoRotateMs;
+const SCROLL_SPEED_PX = COMMUNITY_PROFILES_DATA.scrollSpeedPx ?? 22;
 
 /* ─── Lightweight canvas orb background ────────────────────────────────────── */
 const OrbCanvas = () => {
@@ -143,13 +143,14 @@ const TiltCard = ({ children, className, to, ariaLabel, ...rest }) => {
 
 /* ─── Main section ───────────────────────────────────────────────────────────── */
 const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = false, error = '' }) => {
-  const [index, setIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
   const [showOrb, setShowOrb] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [isResetting, setIsResetting] = useState(false);
   const reduceMotionRef = useRef(false);
+  const carouselRef = useRef(null);
   const trackRef = useRef(null);
+  const rafRef = useRef(null);
+  const lastTimeRef = useRef(null);
 
   const slides = useMemo(() => profiles.filter(Boolean), [profiles]);
   const count = slides.length;
@@ -175,50 +176,69 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
     reduceMotionRef.current = reduceMotion;
   }, []);
 
-  const rawGroups = useMemo(() => {
+  const loopSlides = useMemo(() => {
     if (!count) return [];
-    const groupSize = Math.max(1, cardsPerView);
-    const result = [];
-    for (let i = 0; i < count; i += groupSize) result.push(slides.slice(i, i + groupSize));
-    return result.length ? result : [slides];
-  }, [count, slides, cardsPerView]);
-
-  const renderGroups = useMemo(() => {
-    if (rawGroups.length <= 1 && count > 0) return [rawGroups[0], rawGroups[0]];
-    return rawGroups;
-  }, [rawGroups, count]);
-
-  const groupCount = renderGroups.length;
-  const dotCount = rawGroups.length;
-  const activeDotIndex = dotCount ? index % dotCount : 0;
-  const extendedGroups = useMemo(() => {
-    if (groupCount <= 1) return renderGroups;
-    return [...renderGroups, renderGroups[0]];
-  }, [groupCount, renderGroups]);
-
-  useEffect(() => {
-    setIndex(0);
-    setIsResetting(true);
-    const raf = window.requestAnimationFrame(() => setIsResetting(false));
-    return () => window.cancelAnimationFrame(raf);
-  }, [groupCount]);
-
-  useEffect(() => {
-    if (groupCount <= 1 || isPaused || reduceMotionRef.current) return undefined;
-    const timer = window.setInterval(() => setIndex((p) => p + 1), AUTO_ROTATE_MS);
-    return () => window.clearInterval(timer);
-  }, [groupCount, isPaused]);
+    return [...slides, ...slides];
+  }, [count, slides]);
 
   const pauseCarousel = useCallback(() => setIsPaused(true), []);
   const resumeCarousel = useCallback(() => setIsPaused(false), []);
 
-  const handleTransitionEnd = useCallback(() => {
-    if (groupCount <= 1) return;
-    if (index !== groupCount) return;
-    setIsResetting(true);
-    setIndex(0);
-    window.requestAnimationFrame(() => setIsResetting(false));
-  }, [groupCount, index]);
+  useEffect(() => {
+    if (!count || reduceMotionRef.current) return undefined;
+    const el = carouselRef.current;
+    const track = trackRef.current;
+    if (!el || !track) return undefined;
+
+    const normalizeScroll = () => {
+      const maxScroll = track.scrollWidth / 2;
+      if (maxScroll <= 0) return;
+      if (el.scrollLeft >= maxScroll) {
+        el.scrollLeft -= maxScroll;
+      } else if (el.scrollLeft < 0) {
+        el.scrollLeft += maxScroll;
+      }
+    };
+
+    const tick = (time) => {
+      if (!lastTimeRef.current) lastTimeRef.current = time;
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+
+      if (!isPaused) {
+        const next = el.scrollLeft + (SCROLL_SPEED_PX * delta) / 1000;
+        el.scrollLeft = next;
+        normalizeScroll();
+      }
+
+      rafRef.current = window.requestAnimationFrame(tick);
+    };
+
+    rafRef.current = window.requestAnimationFrame(tick);
+    const onScroll = () => normalizeScroll();
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      lastTimeRef.current = null;
+      el.removeEventListener('scroll', onScroll);
+    };
+  }, [count, isPaused, loopSlides]);
+
+  const scrollByCards = useCallback((direction = 1) => {
+    const el = carouselRef.current;
+    const track = trackRef.current;
+    if (!el || !track) return;
+    const card = el.querySelector('.community-profile-card');
+    const styles = window.getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap || '24') || 24;
+    const amount = card ? card.offsetWidth + gap : el.clientWidth * 0.85;
+    el.scrollBy({ left: amount * direction, behavior: 'smooth' });
+    window.requestAnimationFrame(() => {
+      const maxScroll = track.scrollWidth / 2;
+      if (maxScroll > 0 && el.scrollLeft >= maxScroll) el.scrollLeft -= maxScroll;
+    });
+  }, []);
 
   const fmt = (v) => (v === null || v === undefined || Number.isNaN(v) ? '—' : v);
 
@@ -270,108 +290,107 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
             className={`community-profiles-carousel ${isPaused ? 'is-paused' : ''}`}
             role="region"
             aria-label="Community profiles"
-            onMouseEnter={pauseCarousel}
-            onMouseLeave={resumeCarousel}
-            onFocusCapture={pauseCarousel}
-            onBlurCapture={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget)) resumeCarousel();
-            }}
           >
             <div
+              ref={carouselRef}
+              className="community-profiles-viewport"
+              aria-live="polite"
+            >
+              <div
               ref={trackRef}
               className="community-profiles-track"
-              onTransitionEnd={handleTransitionEnd}
-              style={{
-                transform: `translateX(-${index * 100}%)`,
-                transition: isResetting ? 'none' : undefined
-              }}
             >
-              {extendedGroups.map((group, gi) => (
-                <div className="community-profiles-slide" key={`g-${gi}`}>
-                  {group.map((profile) => {
-                    const avatarFallback = getGithubAvatarDataUri(
-                      profile.name || profile.hackerHandle || profile.id || 'member'
-                    );
-                    const rawHandle = profile.hackerHandle
-                      ? profile.hackerHandle
-                      : profile.name
-                      ? profile.name.split(' ')[0].toLowerCase()
-                      : '';
-                    const normalizedHandle = rawHandle
-                      ? String(rawHandle).trim().replace(/^@/, '').toLowerCase().replace(/[^a-z0-9._-]/g, '')
-                      : '';
-                    const handle = normalizedHandle ? `@${normalizedHandle}` : 'Handle unavailable';
-                    const profileUrl = normalizedHandle ? `/@${normalizedHandle}` : null;
+              {loopSlides.map((profile, gi) => {
+                const avatarFallback = getGithubAvatarDataUri(
+                  profile.name || profile.hackerHandle || profile.id || 'member'
+                );
+                const rawHandle = profile.hackerHandle
+                  ? profile.hackerHandle
+                  : profile.name
+                  ? profile.name.split(' ')[0].toLowerCase()
+                  : '';
+                const normalizedHandle = rawHandle
+                  ? String(rawHandle).trim().replace(/^@/, '').toLowerCase().replace(/[^a-z0-9._-]/g, '')
+                  : '';
+                const handle = normalizedHandle ? `@${normalizedHandle}` : 'Handle unavailable';
+                const profileUrl = normalizedHandle ? `/@${normalizedHandle}` : null;
 
-                    return (
-                      <TiltCard
-                        key={profile.id || handle}
-                        to={profileUrl}
-                        ariaLabel={profileUrl ? `View ${handle} profile` : undefined}
-                      >
-                        {/* Glint overlay */}
-                        <div className="cp-card-glint" aria-hidden="true" />
+                return (
+                  <TiltCard
+                    key={`${profile.id || handle}-${gi}`}
+                    to={profileUrl}
+                    ariaLabel={profileUrl ? `View ${handle} profile` : undefined}
+                    onMouseEnter={pauseCarousel}
+                    onMouseLeave={resumeCarousel}
+                    onFocus={pauseCarousel}
+                    onBlur={resumeCarousel}
+                  >
+                    {/* Glint overlay */}
+                    <div className="cp-card-glint" aria-hidden="true" />
 
-                        <header>
-                          <div className="cp-avatar-wrap">
-                            <img
-                              src={profile.avatarUrl || avatarFallback}
-                              alt={profile.name || 'Community member'}
-                              onError={(e) => {
-                                if (e.currentTarget.src !== avatarFallback)
-                                  e.currentTarget.src = avatarFallback;
-                              }}
-                            />
-                            <div className="cp-avatar-ring" aria-hidden="true" />
-                          </div>
-                          <div>
-                            <p className="community-profile-handle">{handle}</p>
-                            <h3>{profile.name || 'Name unavailable'}</h3>
-                            <span className="community-profile-role">{profile.role || 'Role unavailable'}</span>
-                          </div>
-                        </header>
+                    <header>
+                      <div className="cp-avatar-wrap">
+                        <img
+                          src={profile.avatarUrl || avatarFallback}
+                          alt={profile.name || 'Community member'}
+                          onError={(e) => {
+                            if (e.currentTarget.src !== avatarFallback)
+                              e.currentTarget.src = avatarFallback;
+                          }}
+                        />
+                        <div className="cp-avatar-ring" aria-hidden="true" />
+                      </div>
+                      <div>
+                        <p className="community-profile-handle">{handle}</p>
+                        <h3>{profile.name || 'Name unavailable'}</h3>
+                        <span className="community-profile-role">{profile.role || 'Role unavailable'}</span>
+                      </div>
+                    </header>
 
-                        <p className="community-profile-bio">{profile.bio || 'Bio unavailable.'}</p>
+                    <p className="community-profile-bio">{profile.bio || 'Bio unavailable.'}</p>
 
-                        <div className="community-profile-metrics">
-                          <div className="community-profile-cp">
-                            <img src={cpIcon} alt="CP" className="community-profile-cp-icon" />
-                            <span>{fmt(profile.xpSummary?.totalXp)} CP</span>
-                          </div>
-                          <div>
-                            <FiMessageSquare size={13} />
-                            <span>{fmt(profile.stats?.messages)} messages</span>
-                          </div>
-                          <div>
-                            <FiHeart size={13} />
-                            <span>{fmt(profile.stats?.likesReceived)} likes</span>
-                          </div>
-                          <div>
-                            <FiMessageCircle size={13} />
-                            <span>{fmt(profile.stats?.commentsMade)} comments</span>
-                          </div>
-                        </div>
-                      </TiltCard>
-                    );
-                  })}
-                </div>
-              ))}
+                    <div className="community-profile-metrics">
+                      <div className="community-profile-cp">
+                        <img src={cpIcon} alt="CP" className="community-profile-cp-icon" />
+                        <span>{fmt(profile.xpSummary?.totalXp)} CP</span>
+                      </div>
+                      <div>
+                        <FiMessageSquare size={13} />
+                        <span>{fmt(profile.stats?.messages)} messages</span>
+                      </div>
+                      <div>
+                        <FiHeart size={13} />
+                        <span>{fmt(profile.stats?.likesReceived)} likes</span>
+                      </div>
+                      <div>
+                        <FiMessageCircle size={13} />
+                        <span>{fmt(profile.stats?.commentsMade)} comments</span>
+                      </div>
+                    </div>
+                  </TiltCard>
+                );
+              })}
+            </div>
             </div>
 
-            {/* Dots */}
-            {dotCount > 1 && (
-              <div className="community-profiles-dots" role="tablist" aria-label="Profile slides">
-                {rawGroups.map((_, i) => (
-                  <button
-                    type="button"
-                    key={`dot-${i}`}
-                    className={`community-profiles-dot ${i === activeDotIndex ? 'is-active' : ''}`}
-                    aria-label={`Go to profile ${i + 1}`}
-                    onClick={() => setIndex(i)}
-                  />
-                ))}
-              </div>
-            )}
+            <div className="community-profiles-controls" aria-label="Carousel controls">
+              <button
+                type="button"
+                className="community-profiles-control"
+                onClick={() => scrollByCards(-1)}
+                aria-label="Scroll profiles left"
+              >
+                <FiChevronLeft size={18} />
+              </button>
+              <button
+                type="button"
+                className="community-profiles-control"
+                onClick={() => scrollByCards(1)}
+                aria-label="Scroll profiles right"
+              >
+                <FiChevronRight size={18} />
+              </button>
+            </div>
           </div>
         )}
       </div>

@@ -103,18 +103,23 @@
     inset 0 1px 0 color-mix(in srgb, #ffffff 8%, transparent);
 }
 
-.community-profiles-track {
-  display: flex;
-  transition: transform 0.65s cubic-bezier(0.16, 0.64, 0.2, 1);
-  will-change: transform;
+.community-profiles-viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2.25rem;
+  scrollbar-width: none;
 }
 
-.community-profiles-slide {
-  min-width: 100%;
-  padding: 2rem;
-  display: grid;
+.community-profiles-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.community-profiles-track {
+  display: flex;
   gap: 1.25rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  will-change: transform;
+  flex-wrap: nowrap;
 }
 
 /* ── Profile card ─────────────────────────────────────────────── */
@@ -136,6 +141,8 @@
               border-color 0.3s ease;
   cursor: default;
   overflow: hidden;
+  flex: 0 0 clamp(240px, 28vw, 320px);
+  min-height: 320px;
 }
 
 .community-profile-card.is-link {
@@ -291,30 +298,32 @@
   filter: drop-shadow(0 0 6px color-mix(in srgb, #22c55e 50%, transparent));
 }
 
-/* ── Navigation dots ─────────────────────────────────────────── */
-.community-profiles-dots {
+/* ── Controls ────────────────────────────────────────────────── */
+.community-profiles-controls {
   display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0 2.25rem 1.75rem;
+}
+
+.community-profiles-control {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+  color: var(--text-secondary);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 0 1.5rem;
-}
-
-.community-profiles-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  border: 1px solid var(--border-color);
-  background: transparent;
   cursor: pointer;
-  transition: width 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.community-profiles-dot.is-active {
-  width: 24px;
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color) 50%, transparent);
+.community-profiles-control:hover {
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+  transform: translateY(-1px);
 }
 
 /* ── Empty / error ───────────────────────────────────────────── */
@@ -357,15 +366,17 @@
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .community-profiles-slide      { grid-template-columns: repeat(2, 1fr); padding: 1.5rem; }
+  .community-profiles-viewport   { padding: 1.75rem; }
+  .community-profile-card        { flex-basis: clamp(220px, 42vw, 300px); }
   .community-profiles-skeleton   { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
   .community-profiles             { padding: 4rem 1rem; }
-  .community-profiles-slide       { grid-template-columns: 1fr; padding: 1.25rem; }
+  .community-profiles-viewport    { padding: 1.25rem; }
+  .community-profiles-controls    { justify-content: center; padding: 0 1.25rem 1.5rem; }
   .community-profiles-skeleton    { grid-template-columns: 1fr; }
-  .community-profile-card         { padding: 1.2rem; }
+  .community-profile-card         { padding: 1.2rem; flex-basis: 80vw; }
   .community-profile-card header  { flex-direction: column; align-items: flex-start; }
   .cp-avatar-wrap img             { width: 56px; height: 56px; }
 }
