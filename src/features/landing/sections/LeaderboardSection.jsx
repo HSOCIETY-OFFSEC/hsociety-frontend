@@ -45,10 +45,14 @@ const LeaderboardSection = () => {
 
   return (
     <section className="leaderboard-section reveal-on-scroll" id="leaderboard">
-      <div className="section-container">
-        <div className="section-header-center">
-          <div className="section-eyebrow">
-            <FiBarChart2 size={14} />
+      <div className="leaderboard-section-inner">
+
+        {/* Decorative top-glow bar */}
+        <div className="leaderboard-glow-bar" aria-hidden="true" />
+
+        <div className="leaderboard-hero">
+          <div className="leaderboard-hero-eyebrow">
+            <FiBarChart2 size={13} />
             <span>Leaderboard</span>
           </div>
           <h2 className="section-title-large">Top Operators This Cycle</h2>
@@ -61,7 +65,7 @@ const LeaderboardSection = () => {
           entries={entries}
           limit={6}
           emptyMessage={statusMessage || 'No leaderboard data yet.'}
-          loading={false}
+          loading={!hasLoaded}
         />
 
         <div className="leaderboard-cta">
@@ -70,6 +74,7 @@ const LeaderboardSection = () => {
             <FiArrowRight size={16} />
           </Button>
         </div>
+
       </div>
     </section>
   );
