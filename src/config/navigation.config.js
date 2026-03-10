@@ -49,11 +49,10 @@ export const NAV_LINKS = {
       { path: '/settings', label: 'Settings', icon: FiUsers }
     ],
     student: [
-      { path: '/', label: 'Home', icon: FiShield, group: 'default' },
-      { path: '/student-dashboard', label: 'Overview', icon: FiBookOpen, group: 'default' },
-      { path: '/student-learning', label: 'Overview', icon: FiTerminal, group: 'learn' },
-      { path: '/student-bootcamps', label: 'Bootcamps', icon: FiLayers, group: 'learn' },
-      { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'learn' },
+      { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen, group: 'default' },
+      { path: '/student-learning', label: 'Continue Learning', icon: FiTerminal, group: 'default' },
+      { path: '/student-bootcamps', label: 'Bootcamps', icon: FiLayers, group: 'default' },
+      { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'default' },
       { path: '/community', label: 'Community', icon: FiMessageSquare, group: 'default' },
       { path: '/settings', label: 'Settings', icon: FiUsers, group: 'default' }
     ]

@@ -1,30 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  FiBookOpen,
-  FiCheckCircle,
-  FiClock,
-  FiCode,
-  FiCompass,
-  FiFlag,
-  FiShield,
-} from 'react-icons/fi';
+import { FiCompass } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
-import { getStudentOverview, registerBootcamp } from './student.service';
-import { useAuth } from '../../../core/auth/AuthContext';
+import { getStudentOverview } from './student.service';
 import { listNotifications } from '../../student/services/notifications.service';
-import { STUDENT_DASHBOARD_UI } from '../../../data/student/studentDashboardUiData';
 import StudentXpSummaryCard from './components/StudentXpSummaryCard';
 import StudentRecentNotificationsCard from './components/StudentRecentNotificationsCard';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import ContinueLearningCard from './components/ContinueLearningCard';
+import BootcampStatusCard from './components/BootcampStatusCard';
+import SkillProgressCard from './components/SkillProgressCard';
+import DailyMissionCard from './components/DailyMissionCard';
 import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
-  const { updateUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     learningPath: [],
@@ -35,86 +28,93 @@ const StudentDashboard = () => {
   });
   const [error, setError] = useState('');
   const [notifications, setNotifications] = useState([]);
-  const [bootcampSaving, setBootcampSaving] = useState(false);
-  const [showBootcampModal, setShowBootcampModal] = useState(false);
-  const [bootcampForm, setBootcampForm] = useState({
-    experienceLevel: 'beginner',
-    goal: '',
-    availability: '3-5',
-  });
-
-  useEffect(() => {
-    const loadStudentData = async () => {
-      setLoading(true);
-      try {
-        const response = await getStudentOverview();
-        if (!response.success) {
-          throw new Error(getPublicErrorMessage({ action: 'load', response }));
-        }
-        setData(response.data);
-        const notificationsResponse = await listNotifications();
-        if (notificationsResponse.success) {
-          setNotifications(notificationsResponse.data || []);
-        }
-      } catch (err) {
-        console.error('Student dashboard error:', err);
-        setError(STUDENT_DASHBOARD_UI.page.loadError);
-      } finally {
-        setLoading(false);
+  const loadStudentData = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await getStudentOverview();
+      if (!response.success) {
+        throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
-    };
-
-    loadStudentData();
+      setData(response.data);
+      const notificationsResponse = await listNotifications();
+      if (notificationsResponse.success) {
+        setNotifications(notificationsResponse.data || []);
+      }
+    } catch (err) {
+      console.error('Student dashboard error:', err);
+      setError('Unable to load student dashboard data.');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const iconMap = {
-    shield: FiShield,
-    flag: FiFlag,
-    check: FiCheckCircle,
-    clock: FiClock,
-    code: FiCode
-  };
+  useEffect(() => {
+    loadStudentData();
+  }, [loadStudentData]);
 
-  const bootcampLabels = STUDENT_DASHBOARD_UI.bootcampStatusLabels;
+  // Backend registration remains handled in the bootcamp flow.
 
-  const handleBootcampRegister = async () => {
-    setBootcampSaving(true);
-    const response = await registerBootcamp({
-      experienceLevel: bootcampForm.experienceLevel,
-      goal: bootcampForm.goal,
-      availability: bootcampForm.availability,
-    });
-    if (response.success) {
-      setData((prev) => ({
-        ...prev,
-        bootcampStatus: response.data?.bootcampStatus || 'enrolled'
-      }));
-      updateUser({
-        bootcampRegistered: true,
-        bootcampStatus: response.data?.bootcampStatus || 'enrolled',
-        bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'unpaid'
-      });
-      setShowBootcampModal(false);
-      setBootcampForm((prev) => ({ ...prev, goal: '' }));
-    } else {
-      setError(getPublicErrorMessage({ action: 'submit', response }));
+  const continueModule = useMemo(() => {
+    if (data.learningPath?.length) {
+      return data.learningPath.find((item) => item.status === 'current')
+        || data.learningPath.find((item) => item.status === 'next')
+        || data.learningPath[0];
     }
-    setBootcampSaving(false);
-  };
+    if (data.modules?.length) {
+      return data.modules.find((item) => (Number(item.progress) || 0) < 100) || data.modules[0];
+    }
+    return null;
+  }, [data.learningPath, data.modules]);
 
-  const hasBootcamp = data.bootcampStatus !== 'not_enrolled';
-  const hasPaidAccess = data.bootcampPaymentStatus === 'paid';
+  const skillPillars = useMemo(() => {
+    const parsePercent = (value) => {
+      const raw = String(value || '').replace(/[^\d.]/g, '');
+      return Math.max(0, Math.min(100, Math.round(Number(raw) || 0)));
+    };
+
+    const getSnapshotValue = (keyword) => {
+      const match = data.snapshot?.find((item) =>
+        item.label?.toLowerCase().includes(keyword)
+      );
+      return match ? parsePercent(match.value) : null;
+    };
+
+    const avgModuleProgress = (keywords) => {
+      const matches = (data.modules || []).filter((module) =>
+        keywords.some((keyword) => module.title?.toLowerCase().includes(keyword))
+      );
+      if (!matches.length) return null;
+      const avg = matches.reduce((sum, item) => sum + (Number(item.progress) || 0), 0) / matches.length;
+      return Math.round(avg);
+    };
+
+    const fallbackValue = (keywords) =>
+      avgModuleProgress(keywords) ?? getSnapshotValue(keywords[0]) ?? 0;
+
+    return [
+      { key: 'linux', label: 'Linux', progress: fallbackValue(['linux', 'terminal']) },
+      { key: 'networking', label: 'Networking', progress: fallbackValue(['network', 'tcp']) },
+      { key: 'web', label: 'Web Hacking', progress: fallbackValue(['web', 'http']) },
+      { key: 'priv-esc', label: 'Privilege Escalation', progress: fallbackValue(['privilege', 'escalation', 'privesc']) }
+    ];
+  }, [data.modules, data.snapshot]);
+
+  const bootcampState = useMemo(() => {
+    if (data.bootcampStatus === 'completed') return 'completed';
+    if (data.bootcampStatus === 'enrolled' && data.bootcampPaymentStatus !== 'paid') return 'enrolled_but_unpaid';
+    if (data.bootcampStatus === 'enrolled') return 'enrolled';
+    return 'not_enrolled';
+  }, [data.bootcampStatus, data.bootcampPaymentStatus]);
 
   return (
     <div className="student-page">
       <div className="dashboard-shell">
         <header className="student-hero dashboard-shell-header reveal-on-scroll">
           <div>
-            <p className="student-kicker dashboard-shell-kicker">{STUDENT_DASHBOARD_UI.page.kicker}</p>
-            <h1 className="dashboard-shell-title">{STUDENT_DASHBOARD_UI.page.title}</h1>
-            <p className="dashboard-shell-subtitle">
-              {STUDENT_DASHBOARD_UI.page.subtitle}
-            </p>
+            <p className="student-kicker dashboard-shell-kicker">Student Dashboard</p>
+            <h1 className="dashboard-shell-title">Your training command center</h1>
+            <p className="dashboard-shell-subtitle">Action first. Progress always visible.</p>
           </div>
           <div className="dashboard-shell-actions">
             <Button
@@ -123,209 +123,75 @@ const StudentDashboard = () => {
               onClick={() => navigate('/student-learning')}
             >
               <FiCompass size={18} />
-              {STUDENT_DASHBOARD_UI.actions.learningPath}
+              Continue Learning
             </Button>
           </div>
         </header>
 
+        {loading && (
+          <div className="student-loading-text">Loading your training data...</div>
+        )}
+
         {error && (
-          <Card padding="medium" className="student-card reveal-on-scroll">
-            <p className="student-muted-text">{error}</p>
+          <Card padding="medium" className="student-card student-error-card">
+            <h3>Something went wrong</h3>
+            <p>We couldn't load your training dashboard.</p>
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={loadStudentData}
+            >
+              Reload Dashboard
+            </Button>
           </Card>
         )}
 
-        <>
+        {!error && (
+          <>
             {loading ? (
-              <div className="student-grid">
-                {[1, 2, 3].map((item) => (
-                  <Card key={item} padding="medium" className="student-card">
-                    <Skeleton className="skeleton-line" style={{ width: '40%' }} />
-                    <Skeleton
-                      className="skeleton-line"
-                      style={{ width: '80%', marginTop: '0.75rem' }}
-                    />
-                    <Skeleton
-                      className="skeleton-line"
-                      style={{ width: '60%', marginTop: '0.75rem' }}
-                    />
+              <div className="student-dashboard-grid">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Card key={`sk-${index}`} padding="medium" className="student-card">
+                    <Skeleton className="skeleton-line" style={{ width: '45%' }} />
+                    <Skeleton className="skeleton-line" style={{ width: '80%', marginTop: '0.75rem' }} />
+                    <Skeleton className="skeleton-line" style={{ width: '60%', marginTop: '0.75rem' }} />
                   </Card>
                 ))}
               </div>
             ) : (
-              <div className="student-grid">
-                <Card padding="medium" className="student-card reveal-on-scroll">
-                  <div className="student-card-header">
-                    <FiBookOpen size={20} />
-                    <h3>{STUDENT_DASHBOARD_UI.cards.bootcampStatusTitle}</h3>
-                  </div>
-                  <div className="bootcamp-status">
-                    <span className={`bootcamp-pill status-${data.bootcampStatus}`}>
-                      {bootcampLabels[data.bootcampStatus] || 'Not enrolled'}
-                    </span>
-                    <p>
-                      {STUDENT_DASHBOARD_UI.body.bootcampInvite}
-                    </p>
-                    <Button
-                      variant="primary"
-                      size="small"
-                      onClick={() => navigate('/student-bootcamps')}
-                      disabled={bootcampSaving || data.bootcampStatus !== 'not_enrolled'}
-                    >
-                      {data.bootcampStatus === 'completed'
-                        ? STUDENT_DASHBOARD_UI.buttonStates.completed
-                        : data.bootcampStatus === 'enrolled'
-                        ? STUDENT_DASHBOARD_UI.buttonStates.enrolled
-                        : bootcampSaving
-                        ? STUDENT_DASHBOARD_UI.buttonStates.registering
-                        : STUDENT_DASHBOARD_UI.buttonStates.defaultRegister}
-                    </Button>
-                  </div>
-                </Card>
-
-                {hasBootcamp ? (
-                  <>
-                    {hasBootcamp && !hasPaidAccess && (
-                      <Card padding="medium" className="student-card reveal-on-scroll">
-                        <div className="student-card-header">
-                          <FiShield size={20} />
-                          <h3>{STUDENT_DASHBOARD_UI.cards.accessDeniedTitle}</h3>
-                        </div>
-                        <p>{STUDENT_DASHBOARD_UI.body.bootcampPaymentRequired}</p>
-                        <Button
-                          variant="secondary"
-                          size="small"
-                          onClick={() => navigate('/student-payments')}
-                        >
-                          {STUDENT_DASHBOARD_UI.actions.completePayment}
-                        </Button>
-                      </Card>
-                    )}
-                  </>
-                ) : (
-                  <Card padding="medium" className="student-card reveal-on-scroll">
-                    <div className="student-card-header">
-                      <FiBookOpen size={20} />
-                      <h3>{STUDENT_DASHBOARD_UI.cards.bootcampRequiredTitle}</h3>
-                    </div>
-                    <p>{STUDENT_DASHBOARD_UI.body.bootcampRequired}</p>
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      onClick={() => navigate('/student-bootcamps')}
-                    >
-                      {STUDENT_DASHBOARD_UI.actions.registerBootcamp}
-                    </Button>
-                  </Card>
-                )}
-
-                <StudentXpSummaryCard xpSummary={data.xpSummary} />
-
-              </div>
-            )}
-
-            <section className="student-bottom reveal-on-scroll">
-              <Card padding="medium" className="student-card">
-                <div className="student-card-header">
-                  <FiShield size={20} />
-                  <h3>{STUDENT_DASHBOARD_UI.cards.progressSnapshotTitle}</h3>
-                </div>
-                <div className="snapshot-grid">
-                  {loading
-                    ? [1, 2, 3, 4].map((item) => (
-                        <div key={item} className="snapshot-item">
-                          <Skeleton className="skeleton-line" style={{ width: '50%' }} />
-                        </div>
-                      ))
-                    : data.snapshot.map((item) => {
-                        const Icon = iconMap[item.icon] || FiCheckCircle;
-                        return (
-                          <div key={item.id} className="snapshot-item">
-                            <Icon size={18} />
-                            <div>
-                              <h4>{item.value}</h4>
-                              <span>{item.label}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                </div>
-              </Card>
-
-              <StudentRecentNotificationsCard notifications={notifications} />
-            </section>
-        </>
-
-        {showBootcampModal && (
-          <div className="student-modal-backdrop" role="dialog" aria-modal="true">
-            <div className="student-modal-card">
-              <div className="student-modal-header">
-                <h3>Bootcamp Registration</h3>
-                <button
-                  type="button"
-                  className="student-modal-close"
-                  onClick={() => setShowBootcampModal(false)}
-                  aria-label="Close"
-                >
-                  ×
-                </button>
-              </div>
-              <p className="student-modal-subtitle">
-                Share a few details so we can place you in the right cohort.
-              </p>
-              <div className="student-modal-form">
-                <label className="student-modal-field">
-                  <span>Experience level</span>
-                  <select
-                    value={bootcampForm.experienceLevel}
-                    onChange={(e) =>
-                      setBootcampForm((prev) => ({ ...prev, experienceLevel: e.target.value }))
-                    }
-                  >
-                    <option value="beginner">Beginner</option>
-                    <option value="some">Some experience</option>
-                    <option value="advanced">Advanced</option>
-                  </select>
-                </label>
-                <label className="student-modal-field">
-                  <span>Weekly availability</span>
-                  <select
-                    value={bootcampForm.availability}
-                    onChange={(e) =>
-                      setBootcampForm((prev) => ({ ...prev, availability: e.target.value }))
-                    }
-                  >
-                    <option value="3-5">3-5 hours</option>
-                    <option value="6-10">6-10 hours</option>
-                    <option value="10+">10+ hours</option>
-                  </select>
-                </label>
-                <label className="student-modal-field">
-                  <span>Primary goal</span>
-                  <textarea
-                    rows="3"
-                    placeholder="What do you want to achieve in this bootcamp?"
-                    value={bootcampForm.goal}
-                    onChange={(e) =>
-                      setBootcampForm((prev) => ({ ...prev, goal: e.target.value }))
-                    }
+              <>
+                {/* 1. Action section */}
+                <section className="student-section">
+                  <ContinueLearningCard
+                    moduleTitle={continueModule?.title || 'No active module yet'}
+                    progress={continueModule?.progress || 0}
+                    hasModule={Boolean(continueModule)}
+                    onContinue={() => navigate('/student-learning')}
                   />
-                </label>
-              </div>
-              <div className="student-modal-actions">
-                <Button variant="ghost" size="small" onClick={() => setShowBootcampModal(false)}>
-                  Cancel
-                </Button>
-                <Button
-                  variant="primary"
-                  size="small"
-                  onClick={handleBootcampRegister}
-                  disabled={bootcampSaving || !bootcampForm.goal.trim()}
-                >
-                  {bootcampSaving ? 'Registering...' : 'Submit Registration'}
-                </Button>
-              </div>
-            </div>
-          </div>
+                </section>
+
+                {/* 2. Bootcamp status + 4. Daily mission */}
+                <section className="student-section student-section-grid">
+                  <BootcampStatusCard
+                    status={bootcampState}
+                    onNavigate={(route) => navigate(route)}
+                  />
+                  <DailyMissionCard onStart={() => navigate('/student-learning')} />
+                </section>
+
+                {/* 3. Progress */}
+                <section className="student-section student-section-grid">
+                  <StudentXpSummaryCard xpSummary={data.xpSummary} />
+                  <SkillProgressCard pillars={skillPillars} />
+                </section>
+
+                {/* 5. Awareness */}
+                <section className="student-section">
+                  <StudentRecentNotificationsCard notifications={notifications} />
+                </section>
+              </>
+            )}
+          </>
         )}
       </div>
     </div>
