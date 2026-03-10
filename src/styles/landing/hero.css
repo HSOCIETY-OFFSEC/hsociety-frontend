@@ -217,9 +217,12 @@
   50%       { opacity: 0; }
 }
 
-/* ═══════════════════════════════════════
-   HERO TITLE — Word-by-word animation
-   ═══════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════
+   TYPEWRITER TITLE — replaces .ani-type / .title-word blocks
+   ═══════════════════════════════════════════════════════════ */
+
+/* Keep the h1 sizing from hero.css unchanged */
 .hero-title {
   font-size: clamp(2.4rem, 4.5vw, 4rem);
   font-weight: 800;
@@ -227,42 +230,69 @@
   color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.02em;
+  /* No opacity animation — title fades in via hero-content-panel or is instant */
   opacity: 1;
+  /* Reserve space so layout doesn't jump as text grows */
+  min-height: calc(1.1em * 2);
 }
 
-.title-word {
+/* Each line is inline so the cursor sits flush after the last character */
+.hero-typed-line {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+/* The text itself — no special style needed, inherits h1 */
+.hero-typed-text {
+  display: inline;
+}
+
+/* ── "Hacker" / "Hackers" accent color ── */
+.hero-hacker-word {
+  color: var(--primary-color, #10b981);
+  font-style: normal;
+}
+
+/* ── Blinking cursor ── */
+.hero-type-cursor {
   display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  line-height: 1.15;
+  width: 3px;
+  height: 0.85em;
+  background: var(--primary-color, #10b981);
+  border-radius: 1px;
+  vertical-align: middle;
+  margin-left: 3px;
+  box-shadow: 0 0 8px var(--primary-color, #10b981);
+  animation: cursorTyping 0.55s step-end infinite;
 }
 
-.title-word-inner {
-  display: inline-block;
-  animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-  will-change: transform, opacity;
+/* Idle cursor (typing finished) — slower blink, slightly dimmer */
+.hero-type-cursor--idle {
+  animation: cursorIdle 1.1s step-end infinite;
+  opacity: 0.65;
 }
 
-/* Stagger each word */
-.title-word:nth-child(1)  .title-word-inner { animation-delay: 0.25s; }
-.title-word:nth-child(2)  .title-word-inner { animation-delay: 0.38s; }
-.title-word:nth-child(3)  .title-word-inner { animation-delay: 0.51s; }
-.title-word:nth-child(4)  .title-word-inner { animation-delay: 0.64s; }
-.title-word:nth-child(5)  .title-word-inner { animation-delay: 0.77s; }
-.title-word:nth-child(6)  .title-word-inner { animation-delay: 0.90s; }
-
-@keyframes wordReveal {
-  from {
-    opacity: 0;
-    transform: translateY(110%) skewY(4deg);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) skewY(0deg);
-    filter: blur(0);
-  }
+@keyframes cursorTyping {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
 }
+
+@keyframes cursorIdle {
+  0%, 45%, 100% { opacity: 0.65; }
+  50%, 95%      { opacity: 0; }
+}
+
+/* ── Remove old word-reveal styles that conflict ── */
+.title-word        { display: none !important; } /* safety: old markup won't render */
+.title-word-inner  { display: none !important; }
+.ani-type          { clip-path: none !important; animation: none !important; }
+.ani-type::before  { display: none !important; }
+
+/* Reduced motion: show full text instantly, hide cursor */
+@media (prefers-reduced-motion: reduce) {
+  .hero-type-cursor { display: none; }
+}
+
 
 .hero-title-accent {
   color: var(--primary-color, #10b981);
@@ -332,60 +362,6 @@
   height: 2px;
   background: linear-gradient(90deg, var(--primary-color, #10b981), transparent);
   opacity: 0.4;
-}
-
-.ani-type {
-  position: relative;
-  display: inline-block;
-  overflow: visible;
-  white-space: nowrap;
-  clip-path: inset(0 100% 0 0);
-  animation: typingClip 2.2s steps(7, end) 0.4s forwards !important;
-}
-
-.ani-type::before {
-  content: '';
-  position: absolute;
-  right: -2px;
-  top: 0;
-  bottom: 0.05em;
-  width: 2px;
-  background: var(--primary-color, #10b981);
-  animation: caretBlink 0.8s step-end infinite;
-}
-
-@keyframes typingClip {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-
-@keyframes caretBlink {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
-}
-
-@keyframes hackerFlicker {
-  0%, 100% { opacity: 1; }
-  4% { opacity: 0.35; }
-  6% { opacity: 1; }
-  10% { opacity: 0.15; }
-  12% { opacity: 1; }
-  34% { opacity: 0.5; }
-  36% { opacity: 1; }
-  54% { opacity: 0.2; }
-  56% { opacity: 1; }
-  78% { opacity: 0.4; }
-  80% { opacity: 1; }
-}
-
-@keyframes hackerGlitch {
-  0%, 82%, 100% { text-shadow: none; transform: translate(0, 0); }
-  83% { text-shadow: 3px 0 rgba(255, 50, 50, 0.75), -3px 0 rgba(50, 200, 255, 0.75); transform: translate(2px, -1px); }
-  84% { text-shadow: none; transform: translate(-2px, 1px); }
-  85% { text-shadow: -4px 0 rgba(255, 50, 50, 0.7), 4px 0 rgba(50, 200, 255, 0.7); transform: translate(3px, 0); }
-  86% { text-shadow: none; transform: translate(0, 0); }
-  87% { text-shadow: 5px 0 rgba(255, 50, 50, 0.8), -5px 0 rgba(50, 200, 255, 0.8); transform: translate(-3px, 1px); }
-  88% { text-shadow: none; transform: translate(0, 0); }
 }
 
 /* Description */
@@ -638,7 +614,6 @@
     box-sizing: border-box;
   }
 
-
   .hero-title {
     font-size: clamp(1.9rem, 8vw, 2.4rem);
   }
@@ -680,7 +655,6 @@
   .hero-badge::after,
   .badge-dot,
   .hero-grid-overlay::after,
-  .title-word-inner,
   .hero-title-accent,
   .hero-kicker,
   .hero-kicker::after,
@@ -699,13 +673,5 @@
     opacity: 0.55;
   }
 
-  .ani-type {
-    clip-path: none;
-    overflow: visible;
-    animation: none !important;
-  }
-
-  .ani-type::before {
-    display: none;
-  }
+  .hero-type-cursor { display: none !important; }
 }
