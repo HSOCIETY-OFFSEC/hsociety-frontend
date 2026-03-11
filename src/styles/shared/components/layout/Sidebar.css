@@ -1,55 +1,84 @@
 /**
- * Sidebar Styles
+ * App / Workspace Sidebar Styles
  * Location: src/styles/shared/components/layout/Sidebar.css
+ *
+ * Design: X (Twitter) — clean, icon-forward, razor-sharp transitions.
+ * Fixes:
+ *  - Collapsed sidebar no longer shows a scrollbar.
+ *  - Tooltip logic works without overflow clipping.
+ *  - No horizontal bleed on any breakpoint.
+ *  - Label / brand fade is GPU-composited (opacity + transform only).
  */
 
+/* ── Base shell ─────────────────────────────────────────────── */
 .app-sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: var(--sidebar-width);
+  width: var(--sidebar-width, 260px);
   height: 100vh;
   background: var(--card-bg);
   border-right: 1px solid var(--border-color);
   z-index: 1000;
+
+  /* Hidden off-screen on mobile */
   transform: translateX(-110%);
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
   display: flex;
   flex-direction: column;
+
+  /* Prevent any rogue scrollbar on the sidebar itself */
+  overflow: hidden;
 }
 
+/* Visible on tablet+ */
 @media (min-width: 768px) {
   .app-sidebar {
     transform: translateX(0);
   }
 }
 
+/* Collapsed state — narrow icon-only rail */
 .app-sidebar.collapsed {
-  width: var(--sidebar-collapsed-width, 84px);
+  width: var(--sidebar-collapsed-width, 72px);
 }
 
-/* ── Inner scroll ──────────────────────────────────────────── */
+/* ── Inner scroll region ────────────────────────────────────── */
+/*
+ * KEY FIX: overflow-x is always hidden.
+ * overflow-y is auto ONLY on the expanded sidebar so tooltips
+ * on the collapsed sidebar are never clipped by overflow.
+ */
 .app-sidebar-inner {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 1.25rem 0.75rem;
-  overflow-y: auto;
+  padding: 1rem 0.6rem;
   gap: 0.25rem;
   min-height: 0;
+
+  /* Expanded: allow vertical scroll if content is very tall */
+  overflow-x: hidden;
+  overflow-y: auto;
+
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--primary-color) 30%, transparent) transparent;
+  scrollbar-color: color-mix(in srgb, var(--primary-color) 25%, transparent) transparent;
 }
 
-.app-sidebar-nav-block {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
+/* When collapsed: disable all scroll — icons are always visible */
+.app-sidebar.collapsed .app-sidebar-inner {
+  overflow: visible; /* lets tooltips escape the sidebar boundary */
+  /* Clip content that would bleed horizontally */
+  clip-path: none;
+  padding: 0.75rem 0.4rem;
+  gap: 0;
 }
 
 .app-sidebar-inner::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 
 .app-sidebar-inner::-webkit-scrollbar-track {
@@ -57,27 +86,46 @@
 }
 
 .app-sidebar-inner::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--primary-color) 30%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 25%, transparent);
   border-radius: 999px;
 }
 
-/* ── Logo / Brand ──────────────────────────────────────────── */
+/* Hide scrollbar entirely on collapsed sidebar */
+.app-sidebar.collapsed .app-sidebar-inner::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Nav block ──────────────────────────────────────────────── */
+.app-sidebar-nav-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.app-sidebar.collapsed .app-sidebar-nav-block {
+  flex: 1;
+}
+
+/* ── Logo / Brand ───────────────────────────────────────────── */
 .app-sidebar-logo {
   border: 0;
   background: transparent;
-  padding: 0.5rem 0.65rem;
+  padding: 0.5rem 0.6rem;
   text-align: left;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
-  border-radius: 10px;
-  margin-bottom: 0.75rem;
-  transition: background 0.2s ease;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  transition: background 0.18s ease;
+  width: 100%;
 }
 
 .app-sidebar.collapsed .app-sidebar-logo {
   justify-content: center;
+  padding: 0.5rem;
 }
 
 .app-sidebar-logo:hover {
@@ -87,105 +135,151 @@
 .app-sidebar-brand {
   display: flex;
   flex-direction: column;
-  line-height: 1.15;
+  line-height: 1.2;
+  overflow: hidden; /* prevent text from escaping during collapse */
+
+  /* Animate out when collapsing */
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
 .app-sidebar.collapsed .app-sidebar-brand {
-  display: none;
+  opacity: 0;
+  transform: translateX(-8px);
+  pointer-events: none;
+  /* Keep in DOM so layout doesn't jump; just make invisible */
+  width: 0;
+  overflow: hidden;
 }
 
 .app-sidebar-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   color: var(--text-primary);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .app-sidebar-subtitle {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
 }
 
-/* ── Section Label ─────────────────────────────────────────── */
+/* ── Section label ──────────────────────────────────────────── */
 .app-sidebar-section-title {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-tertiary);
-  padding: 0.75rem 0.65rem 0.3rem;
+  padding: 0.6rem 0.6rem 0.25rem;
   margin: 0;
+
+  opacity: 1;
+  transition: opacity 0.18s ease;
 }
 
 .app-sidebar.collapsed .app-sidebar-section-title {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
-/* ── Nav Links ─────────────────────────────────────────────── */
+/* ── Links container ────────────────────────────────────────── */
 .app-sidebar-links {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
   flex: 1;
   justify-content: space-evenly;
-  min-height: 0;
 }
 
+.app-sidebar.collapsed .app-sidebar-links {
+  flex: 1;
+  justify-content: space-evenly;
+  gap: 0;
+}
+
+/* ── Single nav link ────────────────────────────────────────── */
 .app-sidebar-link {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 9px;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 999px; /* X/Twitter pill shape */
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
-  transition: background 0.18s ease, color 0.18s ease;
-  min-height: 40px;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+  min-height: 44px;
   width: 100%;
   line-height: 1.2;
+  white-space: nowrap;
+  position: relative; /* for tooltip */
 }
 
 .app-sidebar.collapsed .app-sidebar-link {
   justify-content: center;
-  padding: 0.55rem;
+  padding: 0.65rem;
+  border-radius: 999px;
 }
 
+/* Label text */
 .app-sidebar-label {
   display: inline-flex;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .app-sidebar.collapsed .app-sidebar-label {
-  display: none;
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none;
+  width: 0;
+  overflow: hidden;
 }
 
+/* Hover */
 .app-sidebar-link:hover {
   background: var(--input-bg);
   color: var(--text-primary);
 }
 
+/* Active */
 .app-sidebar-link.active {
-  background: color-mix(in srgb, var(--primary-color) 12%, var(--card-bg));
-  color: var(--primary-color);
-  font-weight: 600;
-  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, var(--border-color));
+  color: var(--text-primary);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--card-bg));
 }
 
-/* ── Dropdown ──────────────────────────────────────────────── */
+/* ── Dropdown (Learn group) ─────────────────────────────────── */
 .bootcamp-dropdown-menu {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  margin: 0.2rem 0 0.2rem 1.1rem;
-  padding: 0.35rem 0 0.35rem 0.6rem;
-  border-left: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
-  animation: sidebar-dropdown-pop 160ms ease;
+  gap: 0.05rem;
+  margin: 0.15rem 0 0.15rem 1.25rem;
+  padding: 0.3rem 0 0.3rem 0.65rem;
+  border-left: 2px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  animation: sidebar-dropdown-pop 150ms ease;
   transform-origin: top left;
 }
 
@@ -194,50 +288,63 @@
 }
 
 .bootcamp-dropdown-menu .app-sidebar-link {
-  border-radius: 8px;
-  font-size: 0.84rem;
-  min-height: 38px;
-  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  min-height: 40px;
+  padding: 0.5rem 0.75rem;
 }
 
 @keyframes sidebar-dropdown-pop {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bootcamp-dropdown-menu {
-    animation: none;
-  }
+  .bootcamp-dropdown-menu { animation: none; }
 }
 
-/* ── Footer ────────────────────────────────────────────────── */
+/* ── Footer ─────────────────────────────────────────────────── */
 .app-sidebar-footer {
   margin-top: auto;
-  padding: 0.75rem 0 0;
+  padding: 0.65rem 0 0;
   border-top: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
 }
 
+.app-sidebar.collapsed .app-sidebar-footer {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  display: flex;
+  justify-content: center;
+}
+
+/* Collapse toggle button */
 .app-sidebar-collapse {
   border: 1px solid var(--border-color);
   background: transparent;
   color: var(--text-secondary);
-  padding: 0.45rem 0.65rem;
-  border-radius: 9px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   cursor: pointer;
-  transition: background 0.18s ease, color 0.18s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+  font-size: 0.88rem;
+  font-weight: 500;
+  width: 100%;
+  white-space: nowrap;
+  position: relative; /* for tooltip */
+}
+
+.app-sidebar.collapsed .app-sidebar-collapse {
+  justify-content: center;
+  padding: 0.5rem;
 }
 
 .app-sidebar-collapse:hover {
@@ -245,42 +352,45 @@
   color: var(--text-primary);
 }
 
-.app-sidebar.collapsed .app-sidebar-collapse {
-  justify-content: center;
-}
-
-/* ── Tooltip ─────────────────────────────────────────────── */
-.app-sidebar .app-sidebar-link.is-collapsed,
-.app-sidebar .app-sidebar-logo,
-.app-sidebar .app-sidebar-collapse {
+/* ── Tooltips (collapsed state only) ───────────────────────── */
+/*
+ * Tooltips need the sidebar overflow to be 'visible' on the
+ * collapsed state — that's handled above on .app-sidebar-inner.
+ * We scope tooltips only to elements that carry [data-tooltip].
+ */
+[data-tooltip] {
   position: relative;
 }
 
-.app-sidebar .app-sidebar-link.is-collapsed[data-tooltip]::after,
-.app-sidebar .app-sidebar-logo[data-tooltip]::after,
-.app-sidebar .app-sidebar-collapse[data-tooltip]::after {
+[data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
-  left: calc(100% + 10px);
+  left: calc(100% + 12px);
   top: 50%;
   transform: translateY(-50%);
   background: var(--card-bg);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
-  padding: 0.35rem 0.55rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 8px;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  box-shadow: var(--shadow-md);
-  z-index: 5;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
 }
 
-.app-sidebar .app-sidebar-link.is-collapsed[data-tooltip]:hover::after,
-.app-sidebar .app-sidebar-logo[data-tooltip]:hover::after,
-.app-sidebar .app-sidebar-collapse[data-tooltip]:hover::after {
+[data-tooltip]:hover::after {
   opacity: 1;
-  transform: translate(2px, -50%);
+  transform: translateY(-50%) translateX(2px);
+}
+
+/* Only show tooltips when collapsed */
+.app-sidebar:not(.collapsed) [data-tooltip]::after {
+  display: none;
 }

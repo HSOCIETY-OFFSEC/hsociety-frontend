@@ -1,11 +1,15 @@
 /**
- * App Shell Styles
+ * AppShell.css — updated
  * Location: src/styles/shared/components/layout/AppShell.css
+ *
+ * Patch: defines sidebar CSS variables used by WorkspaceLayout
+ * and ensures the layout shifts cleanly when sidebar is collapsed.
  */
 
 :root {
   --sidebar-width: 260px;
-  --workspace-topbar-height: 64px;
+  --sidebar-collapsed-width: 72px;
+  --workspace-topbar-height: 56px;
 }
 
 .app-shell {
@@ -18,7 +22,11 @@
   content: '';
   position: fixed;
   inset: 0;
-  background-image: linear-gradient(135deg, rgba(1, 5, 12, 0.9), rgba(1, 5, 12, 0.4));
+  background-image: linear-gradient(
+    135deg,
+    rgba(1, 5, 12, 0.9),
+    rgba(1, 5, 12, 0.4)
+  );
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -28,6 +36,11 @@
 }
 
 [data-theme="light"] .app-shell::before {
-  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(241, 245, 249, 0.06));
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(241, 245, 249, 0.06)
+  );
   opacity: 0.12;
 }
+

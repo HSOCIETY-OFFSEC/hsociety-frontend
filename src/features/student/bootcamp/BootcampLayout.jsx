@@ -26,6 +26,7 @@ import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
 import '../../../styles/shared/components/layout/WorkspaceLayout.css';
 import '../../../styles/student/bootcamp-app.css';
+import '../../../styles/student/pages/learning.css';
 
 const BootcampLayout = () => {
   const location = useLocation();
@@ -179,7 +180,7 @@ const BootcampLayout = () => {
     <div
       className={`bootcamp-app ${gateAccess ? 'bootcamp-gated' : ''} ${
         sidebarCollapsed ? 'bootcamp-collapsed' : ''
-      } ${navMode}`}
+      } ${navMode} ${rightPanel ? 'bootcamp-right-open' : ''}`}
       style={{
         '--bootcamp-sidebar-width': sidebarCollapsed ? '84px' : '260px',
         '--bootcamp-sidebar-collapsed-width': '84px',

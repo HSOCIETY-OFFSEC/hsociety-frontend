@@ -1,22 +1,31 @@
 /**
- * Admin Dashboard — layout.css (Mobile-First)
+ * Admin Dashboard — layout.css
  * Location: src/styles/dashboards/admin/layout.css
+ *
+ * Design: X (Twitter) — minimal, icon-pill navigation.
+ * Fixes:
+ *  - Mobile: drawer slides in cleanly, no layout shift.
+ *  - Desktop: sticky sidebar, no overflow, no rogue scroll.
+ *  - Overlay only on mobile; hidden on desktop via display:none.
  */
 
-/* ── Admin Shell (sidebar + main) ─────────────────────────── */
+/* ── Scroll lock on <body> when drawer is open ──────────────── */
 body.admin-sidebar-open {
   overflow: hidden;
 }
 
+/* ── Admin shell grid ───────────────────────────────────────── */
 .admin-shell {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-areas: "header" "main";
+  grid-template-areas:
+    "header"
+    "main";
   min-height: 100vh;
   width: 100%;
 }
 
-/* ── Mobile Header ─────────────────────────────────────────── */
+/* ── Mobile header bar ──────────────────────────────────────── */
 .admin-mobile-header {
   grid-area: header;
   display: flex;
@@ -34,38 +43,39 @@ body.admin-sidebar-open {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.55rem 0.85rem;
-  min-height: 44px;
+  padding: 0.5rem 0.9rem;
+  min-height: 42px;
   border: 1px solid var(--border-color);
   background: var(--input-bg);
   color: var(--text-primary);
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  border-radius: 999px; /* pill — X style */
+  font-size: 0.88rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.18s ease;
   touch-action: manipulation;
 }
 
 .admin-mobile-menu-btn:hover {
-  background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--input-bg));
 }
 
 .admin-mobile-header-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
-/* ── Sidebar Overlay ───────────────────────────────────────── */
+/* ── Overlay (mobile only) ──────────────────────────────────── */
 .admin-sidebar-overlay {
   display: block;
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.5);
+  background: rgba(0, 0, 0, 0.45);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.22s ease;
   z-index: 998;
 }
 
@@ -74,26 +84,29 @@ body.admin-sidebar-open {
   pointer-events: auto;
 }
 
-/* ── Sidebar ───────────────────────────────────────────────── */
+/* ── Sidebar drawer ─────────────────────────────────────────── */
 .admin-sidebar {
   position: fixed;
   top: 0;
   left: 0;
   width: min(280px, 85vw);
-  max-width: 320px;
+  max-width: 300px;
   height: 100vh;
   z-index: 999;
   transform: translateX(-100%);
-  transition: transform 0.25s ease;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.18);
   overflow-y: auto;
+  overflow-x: hidden;
   border-right: 1px solid var(--border-color);
   background: var(--bg-secondary);
-  padding: 1.5rem 1.25rem;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
 }
 
 .admin-sidebar.open {
@@ -101,54 +114,56 @@ body.admin-sidebar-open {
 }
 
 .admin-sidebar .admin-sidebar-brand {
-  padding-right: 3rem;
+  padding-right: 3rem; /* clear of close button */
 }
 
-/* ── Sidebar Close Button ──────────────────────────────────── */
+/* ── Close button ───────────────────────────────────────────── */
 .admin-sidebar-close {
-  display: inline-flex;
   position: absolute;
   top: 1rem;
   right: 1rem;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   padding: 0;
   border: 1px solid var(--border-color);
   background: var(--input-bg);
   color: var(--text-primary);
-  border-radius: 10px;
+  border-radius: 50%; /* circle — X close style */
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.18s ease;
+  flex-shrink: 0;
 }
 
 .admin-sidebar-close:hover {
-  background: color-mix(in srgb, var(--primary-color) 12%, var(--input-bg));
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--input-bg));
 }
 
-/* ── Sidebar Brand ─────────────────────────────────────────── */
+/* ── Brand block ────────────────────────────────────────────── */
 .admin-sidebar-brand {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.15rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
+.admin-sidebar-brand span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
 .admin-sidebar-brand strong {
-  font-size: 1.1rem;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
 }
 
-/* ── Sidebar Nav ───────────────────────────────────────────── */
-.admin-sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex: 1;
-  justify-content: space-evenly;
-}
-
+/* ── Nav block ──────────────────────────────────────────────── */
 .admin-sidebar-nav-block {
   display: flex;
   flex-direction: column;
@@ -156,27 +171,44 @@ body.admin-sidebar-open {
   min-height: 0;
 }
 
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+/* ── Nav links — X/Twitter pill style ──────────────────────── */
 .admin-sidebar-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.7rem 0.85rem;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
   min-height: 44px;
-  border-radius: 10px;
+  border-radius: 999px; /* pill */
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.92rem;
-  transition: background 0.2s ease, color 0.2s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
   touch-action: manipulation;
+  white-space: nowrap;
 }
 
-.admin-sidebar-link.active,
 .admin-sidebar-link:hover {
-  background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+  background: var(--input-bg);
   color: var(--text-primary);
 }
 
-/* ── Main Content ──────────────────────────────────────────── */
+.admin-sidebar-link.active {
+  color: var(--text-primary);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+
+/* ── Main content area ──────────────────────────────────────── */
 .admin-main {
   grid-area: main;
   padding: 1rem 0.875rem 3rem;
@@ -185,42 +217,48 @@ body.admin-sidebar-open {
   width: 100%;
 }
 
-/* ── Desktop: Persistent sidebar ──────────────────────────── */
+/* ── Desktop: persistent sticky sidebar ─────────────────────── */
 @media (min-width: 1024px) {
   .admin-shell {
     grid-template-columns: 260px 1fr;
     grid-template-areas: "sidebar main";
   }
 
-  .admin-mobile-header { display: none; }
+  .admin-mobile-header {
+    display: none;
+  }
 
   .admin-sidebar {
     position: sticky;
     top: 0;
     height: 100vh;
-    transform: none;
+    transform: none !important; /* always visible on desktop */
     box-shadow: none;
     z-index: auto;
     width: 260px;
     max-width: none;
     grid-area: sidebar;
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
-  .admin-sidebar-overlay { display: none !important; }
-  .admin-sidebar-close { display: none; }
+  .admin-sidebar-overlay {
+    display: none !important;
+  }
+
+  .admin-sidebar-close {
+    display: none;
+  }
 
   .admin-main {
     padding: 1.5rem 2rem 3rem;
   }
 }
 
-/* ── Admin Page Shell ──────────────────────────────────────── */
+/* ── Admin page shell ───────────────────────────────────────── */
 .admin-dashboard {
   min-height: calc(100vh - 60px);
-  /*
-   * MOBILE: zero horizontal padding — cards bleed edge-to-edge.
-   * Only vertical padding for nav clearance and bottom bar.
-   */
   padding: 0.75rem 0 3.5rem;
   color: var(--text-primary);
   font-family: inherit;
@@ -242,7 +280,6 @@ body.admin-sidebar-open {
   word-break: break-word;
 }
 
-/* Large tablet: restore horizontal page padding */
 @media (min-width: 900px) {
   .admin-dashboard {
     padding: 1.25rem 1rem 3.5rem;
@@ -256,9 +293,7 @@ body.admin-sidebar-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .admin-sidebar {
-    transition: none;
-  }
+  .admin-sidebar,
   .admin-sidebar-overlay {
     transition: none;
   }

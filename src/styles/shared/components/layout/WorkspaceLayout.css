@@ -1,32 +1,43 @@
-/**
- * Workspace Layout Styles
- * Location: src/styles/shared/components/layout/WorkspaceLayout.css
- */
+/* ===========================================================
+   WorkspaceLayout.css — updated sidebar integration
+   Location: src/styles/shared/components/layout/WorkspaceLayout.css
+   (append or replace the layout shell section)
+   =========================================================== */
 
-/* ── Layout Shell ──────────────────────────────────────────── */
+/* ── Layout shell ───────────────────────────────────────────── */
 .workspace-layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Shift content right by the sidebar width on tablet+ */
+  padding-left: 0;
+  transition: padding-left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (min-width: 768px) {
   .workspace-layout {
-    padding-left: var(--sidebar-width);
+    padding-left: var(--sidebar-width, 260px);
   }
+
+  /* When sidebar is collapsed, the CSS variable is updated by JS.
+     The transition on padding-left handles the smooth shift. */
 }
 
+/* No sidebar pages (admin, lesson workspace, etc.) */
+.workspace-layout.no-sidebar {
+  padding-left: 0 !important;
+}
+
+/* Main content */
 .workspace-main {
   flex: 1;
   padding: 1.5rem 1rem;
+  min-width: 0; /* prevent overflow bleed */
+  overflow-x: hidden;
 }
 
 .workspace-layout.lesson-only .workspace-main {
   padding: 0;
-}
-
-.workspace-layout.no-sidebar {
-  padding-left: 0 !important;
 }
 
 .workspace-layout.no-sidebar .workspace-main {
@@ -38,27 +49,24 @@
   padding-right: 1.5rem;
 }
 
+/* Bottom nav spacing on mobile */
 .workspace-layout.mobile .workspace-main {
-  padding-bottom: calc(1.5rem + var(--bottom-nav-height));
+  padding-bottom: calc(1.5rem + var(--bottom-nav-height, 64px));
 }
 
-.workspace-layout.sidebar-open .app-sidebar {
-  transform: translateX(0);
-}
-
-/* ── Topbar ────────────────────────────────────────────────── */
+/* ── Topbar ─────────────────────────────────────────────────── */
 .workspace-topbar {
   position: sticky;
   top: 0;
   z-index: 900;
-  min-height: var(--workspace-topbar-height);
+  min-height: var(--workspace-topbar-height, 56px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 0 1.25rem;
   backdrop-filter: blur(12px);
-  background: color-mix(in srgb, var(--card-bg) 85%, transparent);
+  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -77,11 +85,11 @@
   min-width: 0;
 }
 
-/* ── Community Nav ─────────────────────────────────────────── */
+/* ── Community nav (horizontal pills in topbar) ─────────────── */
 .workspace-community-nav {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.25rem;
   flex-wrap: wrap;
   min-width: 0;
 }
@@ -93,12 +101,12 @@
   border: 1px solid var(--border-color);
   background: transparent;
   color: var(--text-secondary);
-  padding: 0.3rem 0.7rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
@@ -114,11 +122,8 @@
   border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
 }
 
-/* ── Community Dropdown ────────────────────────────────────── */
-.workspace-community-dropdown {
-  position: relative;
-}
-
+/* ── Community dropdown ─────────────────────────────────────── */
+.workspace-community-dropdown,
 .workspace-community-tools {
   position: relative;
 }
@@ -130,12 +135,12 @@
   border: 1px solid var(--border-color);
   background: transparent;
   color: var(--text-secondary);
-  padding: 0.3rem 0.7rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
 }
 
@@ -146,35 +151,28 @@
 }
 
 @keyframes workspace-dropdown-pop {
-  from {
-    opacity: 0;
-    transform: translateY(6px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(5px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .workspace-community-menu {
   position: absolute;
-  top: calc(100% + 0.45rem);
+  top: calc(100% + 0.4rem);
   left: 0;
-  min-width: 240px;
-  width: min(90vw, 300px);
+  min-width: 220px;
+  width: min(90vw, 280px);
   background: var(--card-bg);
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
-  padding: 0.5rem;
+  padding: 0.4rem;
   display: grid;
-  gap: 0.2rem;
+  gap: 0.15rem;
   z-index: 20;
-  animation: workspace-dropdown-pop 180ms ease;
+  animation: workspace-dropdown-pop 170ms ease;
   transform-origin: top left;
 }
 
-/* Right-aligned variant */
 .workspace-community-tools .workspace-community-menu {
   left: auto;
   right: 0;
@@ -189,14 +187,14 @@
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  padding: 0.65rem 0.8rem;
-  border-radius: 7px;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
   cursor: pointer;
   text-align: left;
   width: 100%;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background 0.12s ease, color 0.12s ease;
 }
 
 .workspace-community-item:hover,
@@ -206,7 +204,7 @@
   color: var(--text-primary);
 }
 
-/* ── Home Button ───────────────────────────────────────────── */
+/* ── Home button ────────────────────────────────────────────── */
 .workspace-home-button {
   display: inline-flex;
   align-items: center;
@@ -214,28 +212,29 @@
   border: 1px solid var(--border-color);
   background: var(--input-bg);
   color: var(--text-primary);
-  padding: 0.35rem 0.7rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.18s ease;
+  transition: background 0.15s ease;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .workspace-home-button:hover {
-  background: color-mix(in srgb, var(--input-bg) 70%, var(--primary-color) 30%);
+  background: color-mix(in srgb, var(--input-bg) 65%, var(--primary-color) 35%);
 }
 
-/* ── Topbar Actions ────────────────────────────────────────── */
+/* ── Topbar actions ─────────────────────────────────────────── */
 .workspace-topbar-actions {
-  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
-/* ── Chips ─────────────────────────────────────────────────── */
+/* ── Chips ──────────────────────────────────────────────────── */
 .workspace-cp-chip {
   display: inline-flex;
   align-items: center;
@@ -243,15 +242,16 @@
   border: 1px solid color-mix(in srgb, #22c55e 40%, var(--border-color));
   background: color-mix(in srgb, #22c55e 10%, var(--card-bg));
   color: color-mix(in srgb, #22c55e 80%, var(--text-primary));
-  padding: 0.3rem 0.7rem;
+  padding: 0.28rem 0.7rem;
   border-radius: 999px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .workspace-cp-chip-icon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
 }
 
@@ -262,20 +262,21 @@
   border: 1px solid color-mix(in srgb, #fb923c 35%, var(--border-color));
   background: color-mix(in srgb, #fb923c 10%, var(--card-bg));
   color: var(--text-primary);
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.55rem;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
-/* ── Notification ──────────────────────────────────────────── */
+/* ── Notification ───────────────────────────────────────────── */
 .workspace-notification-wrap {
   position: relative;
 }
 
 .workspace-notification-btn {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1px solid var(--border-color);
   background: var(--input-bg);
@@ -285,7 +286,8 @@
   justify-content: center;
   cursor: pointer;
   position: relative;
-  transition: color 0.18s ease, border-color 0.18s ease;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
 }
 
 .workspace-notification-btn:hover {
@@ -297,8 +299,8 @@
   position: absolute;
   top: -3px;
   right: -3px;
-  min-width: 15px;
-  height: 15px;
+  min-width: 16px;
+  height: 16px;
   border-radius: 999px;
   font-size: 0.62rem;
   font-weight: 700;
@@ -312,21 +314,21 @@
 
 .workspace-notification-menu {
   position: absolute;
-  top: calc(100% + 0.45rem);
+  top: calc(100% + 0.4rem);
   right: 0;
   width: min(90vw, 320px);
   max-height: 400px;
   overflow: auto;
   background: var(--card-bg);
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
-  padding: 0.65rem;
+  padding: 0.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.35rem;
   z-index: 30;
-  animation: workspace-dropdown-pop 180ms ease;
+  animation: workspace-dropdown-pop 170ms ease;
   transform-origin: top right;
 }
 
@@ -335,8 +337,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding-bottom: 0.4rem;
+  padding-bottom: 0.35rem;
   border-bottom: 1px solid var(--border-color);
+}
+
+.workspace-notification-head strong {
+  font-size: 0.88rem;
 }
 
 .workspace-notification-head button {
@@ -351,14 +357,14 @@
   width: 100%;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
-  border-radius: 8px;
-  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
   text-align: left;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  transition: border-color 0.15s ease;
+  gap: 0.18rem;
+  transition: border-color 0.12s ease;
 }
 
 .workspace-notification-item.unread {
@@ -371,7 +377,7 @@
 }
 
 .workspace-notification-item span {
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
 
@@ -379,41 +385,42 @@
   margin: 0;
   font-size: 0.82rem;
   color: var(--text-secondary);
-  padding: 0.5rem 0.15rem;
+  padding: 0.4rem 0.15rem;
 }
 
-/* ── Profile Button ────────────────────────────────────────── */
+/* ── Profile button ─────────────────────────────────────────── */
 .workspace-profile-button {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
   border: 1px solid var(--border-color);
   background: var(--input-bg);
   color: var(--text-primary);
-  padding: 0.3rem 0.65rem 0.3rem 0.35rem;
+  padding: 0.28rem 0.6rem 0.28rem 0.32rem;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
 }
 
 .workspace-profile-button:hover {
-  background: color-mix(in srgb, var(--input-bg) 70%, var(--primary-color) 30%);
+  background: color-mix(in srgb, var(--input-bg) 65%, var(--primary-color) 35%);
   border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
 }
 
 .workspace-profile-name {
   font-size: 0.85rem;
   font-weight: 600;
-  max-width: 140px;
+  max-width: 130px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* ── Avatar ────────────────────────────────────────────────── */
+/* ── Avatar ─────────────────────────────────────────────────── */
 .workspace-avatar {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   overflow: hidden;
   background: var(--primary-color);
@@ -421,8 +428,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.8rem;
+  font-weight: 700;
+  font-size: 0.78rem;
   flex-shrink: 0;
 }
 
@@ -433,22 +440,22 @@
   display: block;
 }
 
-/* ── Profile Menu ──────────────────────────────────────────── */
+/* ── Profile menu ───────────────────────────────────────────── */
 .workspace-profile-menu {
   position: absolute;
-  top: calc(100% + 0.45rem);
+  top: calc(100% + 0.4rem);
   right: 0;
-  min-width: 240px;
-  width: min(90vw, 280px);
+  min-width: 220px;
+  width: min(90vw, 260px);
   background: var(--card-bg);
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
-  padding: 0.5rem;
+  padding: 0.4rem;
   display: grid;
-  gap: 0.15rem;
+  gap: 0.1rem;
   z-index: 20;
-  animation: workspace-dropdown-pop 180ms ease;
+  animation: workspace-dropdown-pop 170ms ease;
   transform-origin: top right;
 }
 
@@ -456,16 +463,16 @@
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.88rem;
   font-weight: 500;
   text-align: left;
-  padding: 0.7rem 0.8rem;
-  border-radius: 7px;
+  padding: 0.65rem 0.85rem;
+  border-radius: 9px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background 0.12s ease, color 0.12s ease;
   width: 100%;
 }
 
@@ -474,33 +481,14 @@
   color: var(--text-primary);
 }
 
-/* ── FAB ───────────────────────────────────────────────────── */
-.workspace-fab {
-  position: fixed;
-  bottom: 1.25rem;
-  right: 1.25rem;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  background: var(--card-bg);
-  color: var(--text-primary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 950;
-  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.35);
-}
-
-/* ── Overlay ───────────────────────────────────────────────── */
+/* ── Overlay (mobile) ───────────────────────────────────────── */
 .workspace-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.22s ease;
   z-index: 950;
 }
 
@@ -509,28 +497,13 @@
   pointer-events: auto;
 }
 
-/* ── Reduced Motion ────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .workspace-topbar {
-    backdrop-filter: none;
-  }
-  .workspace-community-menu,
-  .workspace-profile-menu,
-  .workspace-notification-menu {
-    animation: none;
-  }
-}
-
-/* ── Desktop ───────────────────────────────────────────────── */
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (min-width: 900px) {
   .workspace-main {
     padding: 1.75rem 2rem;
   }
 
-  .workspace-overlay {
-    display: none;
-  }
-
+  .workspace-overlay,
   .workspace-fab {
     display: none;
   }
@@ -540,7 +513,7 @@
   .workspace-community-nav {
     overflow-x: auto;
     flex-wrap: nowrap;
-    max-width: 55vw;
+    max-width: 50vw;
     scrollbar-width: none;
   }
 
@@ -549,7 +522,6 @@
   }
 }
 
-/* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 767px) {
   .workspace-topbar {
     position: fixed;
@@ -557,27 +529,37 @@
     right: 0;
     padding: 0 1rem;
     backdrop-filter: none;
+    background: var(--card-bg);
   }
 
   .workspace-main {
-    padding-top: calc(1.25rem + var(--workspace-topbar-height));
+    padding-top: calc(1rem + var(--workspace-topbar-height, 56px));
   }
 
   .workspace-layout.no-sidebar .workspace-main {
-    padding-top: calc(1.25rem + var(--workspace-topbar-height));
+    padding-top: calc(1rem + var(--workspace-topbar-height, 56px));
   }
 }
 
 @media (max-width: 480px) {
-  .workspace-home-button span {
-    display: none;
-  }
-
+  .workspace-home-button span,
   .workspace-profile-name {
     display: none;
   }
 
   .workspace-streak-chip span:last-child {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-topbar {
+    backdrop-filter: none;
+  }
+
+  .workspace-community-menu,
+  .workspace-profile-menu,
+  .workspace-notification-menu {
+    animation: none;
   }
 }

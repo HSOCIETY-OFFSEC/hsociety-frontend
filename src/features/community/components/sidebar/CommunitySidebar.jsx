@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiUsers, FiX } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiUsers, FiX } from 'react-icons/fi';
 import { getSidebarLinks } from '../../../../config/navigation.config';
 import Logo from '../../../../shared/components/common/Logo';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
@@ -10,6 +10,8 @@ const CommunitySidebar = ({
   role,
   mobileOpen = false,
   onCloseMobileNav = () => {},
+  collapsed = false,
+  onToggleCollapse = () => {},
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,12 +48,15 @@ const CommunitySidebar = ({
       <span className="community-sidebar-link-icon">
         <link.icon size={16} />
       </span>
-      <span>{link.label}</span>
+      <span className="community-sidebar-link-label">{link.label}</span>
     </button>
   );
 
   return (
-    <aside className={`community-sidebar ${mobileOpen ? 'open' : ''}`} aria-label="Community navigation">
+    <aside
+      className={`community-sidebar ${mobileOpen ? 'open' : ''} ${collapsed ? 'collapsed' : ''}`}
+      aria-label="Community navigation"
+    >
       <div className="community-sidebar-brand">
         <button
           type="button"
@@ -72,6 +77,14 @@ const CommunitySidebar = ({
           aria-label="Close navigation"
         >
           <FiX size={16} aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="community-sidebar-collapse-btn"
+          onClick={onToggleCollapse}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          {collapsed ? <FiChevronRight size={16} /> : <FiChevronLeft size={16} />}
         </button>
       </div>
 

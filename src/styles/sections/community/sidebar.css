@@ -1,5 +1,11 @@
 /* ============================================================
    COMMUNITY SIDEBAR
+   Location: src/styles/sections/community/sidebar.css
+   Design: X (Twitter) — clean pill nav, smooth mobile drawer.
+   Fixes:
+    - No overflow/scroll issues on desktop.
+    - Mobile drawer slides in without layout shift.
+    - Close button always visible on mobile.
    ============================================================ */
 
 .community-sidebar {
@@ -10,14 +16,19 @@
   background: var(--bg-primary);
   overflow-y: auto;
   overflow-x: hidden;
+  min-height: 0;
+  /* Thin scrollbar — only shows on desktop when content is tall */
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
-  position: relative;
-  min-height: 0;
+}
+
+.community-sidebar.collapsed {
+  width: 72px;
+  overflow: hidden;
 }
 
 .community-sidebar::-webkit-scrollbar {
-  width: 6px;
+  width: 3px;
 }
 
 .community-sidebar::-webkit-scrollbar-track {
@@ -29,12 +40,20 @@
   border-radius: 999px;
 }
 
+/* ── Brand row ──────────────────────────────────────────────── */
 .community-sidebar-brand {
-  padding: 1.1rem 1rem 0.7rem;
+  padding: 1rem 0.85rem 0.6rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.community-sidebar.collapsed .community-sidebar-brand {
+  padding: 0.75rem 0.4rem 0.4rem;
+  justify-content: center;
+  gap: 0;
 }
 
 .community-sidebar-brand-btn {
@@ -44,88 +63,160 @@
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   cursor: pointer;
+  border-radius: 12px;
 }
 
-.community-sidebar-logo {
-  min-height: 0;
+.community-sidebar.collapsed .community-sidebar-brand-btn {
+  justify-content: center;
+  width: 100%;
 }
 
 .community-sidebar-logo .logo-image {
-  height: 32px !important;
+  height: 30px !important;
   width: auto !important;
 }
 
 .community-sidebar-brand-name {
-  font-size: 0.82rem;
-  letter-spacing: 0.08rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.07rem;
   font-weight: 800;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
+.community-sidebar.collapsed .community-sidebar-brand-name {
+  display: none;
+}
+
+/* Close button — hidden on desktop, shown on mobile */
 .community-sidebar-close-btn {
   display: none;
   align-items: center;
   justify-content: center;
   width: 34px;
   height: 34px;
-  border-radius: 10px;
+  border-radius: 50%;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
   color: var(--text-secondary);
   cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.community-sidebar-collapse-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.community-sidebar-collapse-btn:hover {
+  color: var(--text-primary);
+  background: var(--input-bg);
+}
+
+.community-sidebar.collapsed .community-sidebar-collapse-btn {
+  margin-top: 0.35rem;
 }
 
 .community-sidebar-close-btn:hover {
   color: var(--text-primary);
+  background: var(--input-bg);
 }
 
+/* ── Sections ───────────────────────────────────────────────── */
 .community-sidebar-section {
-  padding: 0.35rem 0.85rem 0.9rem;
+  padding: 0.25rem 0.75rem 0.75rem;
+}
+
+.community-sidebar.collapsed .community-sidebar-section {
+  padding: 0.25rem 0.35rem 0.35rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .community-sidebar-section-title {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.18rem;
   text-transform: uppercase;
   color: var(--text-tertiary);
-  padding: 0.4rem 0.5rem 0.35rem;
+  padding: 0.35rem 0.5rem 0.3rem;
   margin: 0;
+}
+
+.community-sidebar.collapsed .community-sidebar-section-title {
+  display: none;
 }
 
 .community-sidebar-links {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.1rem;
+  justify-content: space-evenly;
+  flex: 1;
 }
 
+.community-sidebar.collapsed .community-sidebar-links {
+  flex: 1;
+  justify-content: space-evenly;
+  gap: 0;
+}
+
+/* ── Nav links — X/Twitter pill ─────────────────────────────── */
 .community-sidebar-link {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
   width: 100%;
-  padding: 0.6rem 0.75rem;
-  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px; /* pill */
   border: none;
   background: none;
   color: var(--text-secondary);
   font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+  white-space: nowrap;
+}
+
+.community-sidebar.collapsed .community-sidebar-link {
+  justify-content: center;
+  padding: 0.65rem;
+}
+
+.community-sidebar-link-label {
+  display: inline-flex;
+}
+
+.community-sidebar.collapsed .community-sidebar-link-label {
+  display: none;
 }
 
 .community-sidebar-link:hover {
-  background: var(--bg-secondary);
+  background: var(--input-bg);
   color: var(--text-primary);
 }
 
 .community-sidebar-link.active {
-  background: var(--bg-secondary);
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-primary));
   color: var(--text-primary);
   font-weight: 700;
 }
@@ -138,23 +229,34 @@
 
 .community-sidebar-link.active .community-sidebar-link-icon,
 .community-sidebar-link:hover .community-sidebar-link-icon {
-  color: var(--text-secondary);
+  color: var(--primary-color);
 }
 
+/* ── Mobile drawer ──────────────────────────────────────────── */
 @media (max-width: 768px) {
   .community-sidebar {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: min(86vw, 320px);
+    width: min(82vw, 300px);
     background: var(--bg-primary);
-    z-index: 40;
+    z-index: 1050;
     border-right: 1px solid var(--border-color);
+
+    /* Start off-screen */
     transform: translateX(-105%);
-    transition: transform 0.2s ease;
-    box-shadow: var(--shadow-lg);
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
     pointer-events: none;
+
+    /* Ensure content doesn't bleed */
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .community-sidebar-collapse-btn {
+    display: none;
   }
 
   .community-sidebar.open {
@@ -162,25 +264,33 @@
     pointer-events: auto;
   }
 
-  .community-sidebar-section {
-    padding: 0.35rem 0.9rem 0.9rem;
-  }
-
+  /* Show close button on mobile */
   .community-sidebar-close-btn {
     display: inline-flex;
   }
 
+  /* Section title hidden to save vertical space on mobile */
   .community-sidebar-section-title {
     display: none;
   }
 
+  .community-sidebar-section {
+    padding: 0.25rem 0.85rem 0.85rem;
+  }
+
   .community-sidebar-links {
-    flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.15rem;
   }
 
   .community-sidebar-link {
-    padding: 0.58rem 0.75rem;
-    font-size: 0.86rem;
+    font-size: 0.9rem;
+    padding: 0.7rem 0.9rem;
+    min-height: 48px; /* comfortable touch target */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-sidebar {
+    transition: none;
   }
 }

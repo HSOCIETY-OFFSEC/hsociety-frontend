@@ -36,6 +36,7 @@ const CommunityHub = () => {
   const [connected, setConnected] = useState(false);
   const [cpTotal, setCpTotal] = useState(0);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
   const location = useLocation();
@@ -199,6 +200,14 @@ const CommunityHub = () => {
     if (!target) return;
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [location.hash]);
+
+  useEffect(() => {
+    const resolveCollapsed = () => {
+      if (typeof window === 'undefined') return false;
+      return window.innerWidth < 1200;
+    };
+    setSidebarCollapsed(resolveCollapsed());
+  }, []);
 
   useEffect(() => {
     setMobileNavOpen(false);
@@ -373,13 +382,15 @@ const CommunityHub = () => {
   }, [activeChannels, room]);
 
   return (
-    <div className="community-root">
+    <div className={`community-root ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
 
       {/* ── Left Sidebar / Mobile Top Nav ── */}
       <CommunitySidebar
         role={role}
         mobileOpen={mobileNavOpen}
         onCloseMobileNav={() => setMobileNavOpen(false)}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
       />
 
       {/* ── Main feed column ── */}
