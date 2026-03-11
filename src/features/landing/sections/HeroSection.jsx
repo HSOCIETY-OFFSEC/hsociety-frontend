@@ -15,9 +15,48 @@ import { ROUTES } from '../../../app/routes';
 import '../../../styles/landing/hero.css';
 
 /* ══════════════════════════════════════════════════════════
+   BINARY RAIN — streams of 0s and 1s scrolling vertically.
+   Pure CSS animation; no JS timers or canvas needed.
+   ══════════════════════════════════════════════════════════ */
+
+// Generate a random binary string of given length
+function makeBinaryString(len) {
+  let s = '';
+  for (let i = 0; i < len; i++) {
+    s += Math.random() > 0.5 ? '1' : '0';
+    // Occasionally inject a space for readability / variety
+    if (i > 0 && i % 8 === 7) s += ' ';
+  }
+  return s;
+}
+
+// One scrolling column: a long text block that CSS scrolls downward
+const BinaryStreamCol = ({ index }) => {
+  // Each column gets a unique seed so they all look different
+  const text = useMemo(() => makeBinaryString(220), []);
+  return (
+    <div
+      className="hero-binary-stream-col"
+      aria-hidden="true"
+      style={{ '--col-index': index }}
+    >
+      {text}
+    </div>
+  );
+};
+
+const STREAM_COUNT = 33; // matches CSS nth-child rules above
+
+const BinaryRain = () => (
+  <div className="hero-binary-stream" aria-hidden="true">
+    {Array.from({ length: STREAM_COUNT }, (_, i) => (
+      <BinaryStreamCol key={i} index={i} />
+    ))}
+  </div>
+);
+
+/* ══════════════════════════════════════════════════════════
    TYPEWRITER HOOK
-   Builds `text` one character at a time with slight jitter.
-   Resets cleanly whenever `text` changes (title rotation).
    ══════════════════════════════════════════════════════════ */
 function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
   const [displayed, setDisplayed] = useState('');
@@ -25,7 +64,6 @@ function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
   const timerRef = useRef(null);
 
   useEffect(() => {
-    // Hard-reset on every new string
     setDisplayed('');
     setIsDone(false);
     let index = 0;
@@ -35,7 +73,6 @@ function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
         index += 1;
         setDisplayed(text.slice(0, index));
         if (index < text.length) {
-          // Slight random jitter so it feels hand-typed
           const jitter = speed + (Math.random() * 28 - 14);
           timerRef.current = setTimeout(tick, Math.max(16, jitter));
         } else {
@@ -56,7 +93,6 @@ function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
 
 /* ══════════════════════════════════════════════════════════
    COLOR "Hacker" / "Hackers" wherever they appear in text.
-   Splits on word boundaries so partial matches aren't caught.
    ══════════════════════════════════════════════════════════ */
 const HACKER_RE = /(Hackers?)/g;
 
@@ -72,14 +108,9 @@ const ColoredText = ({ text }) => {
     </>
   );
 };
-// Reset lastIndex after .test() mutates it
-// (safe because we use map — each call re-splits fresh)
 
 /* ══════════════════════════════════════════════════════════
    TYPED TITLE
-   Renders a two-line title where each line types out in
-   sequence. Line 2 starts only after line 1 finishes.
-   A blinking cursor follows the active typing position.
    ══════════════════════════════════════════════════════════ */
 const TypedTitle = ({ line1, line2 }) => {
   const { displayed: text1, isDone: done1 } = useTypewriter(line1, {
@@ -99,7 +130,6 @@ const TypedTitle = ({ line1, line2 }) => {
 
   return (
     <h1 className="hero-title">
-      {/* Line 1 */}
       <span className="hero-typed-line">
         <span className="hero-typed-text"><ColoredText text={text1} /></span>
         {cursorOnLine1 && <span className="hero-type-cursor" aria-hidden="true" />}
@@ -108,7 +138,6 @@ const TypedTitle = ({ line1, line2 }) => {
         )}
       </span>
 
-      {/* Line 2 */}
       {showLine2 && done1 && (
         <>
           <br />
@@ -126,7 +155,7 @@ const TypedTitle = ({ line1, line2 }) => {
 };
 
 /* ══════════════════════════════════════════════════════════
-   MAIN COMPONENT — unchanged except title rendering
+   MAIN COMPONENT
    ══════════════════════════════════════════════════════════ */
 const HeroSection = ({ content }) => {
   const heroRef = useRef(null);
@@ -146,7 +175,7 @@ const HeroSection = ({ content }) => {
     if (hasOverride) return undefined;
     const timer = window.setInterval(() => {
       setTitleIndex((prev) => (prev + 1) % defaultTitles.length);
-    }, 2000); // 2s cycle — fast swap keeps energy high
+    }, 2000);
     return () => window.clearInterval(timer);
   }, [title]);
 
@@ -159,7 +188,11 @@ const HeroSection = ({ content }) => {
 
   return (
     <section className="hero-section" ref={heroRef}>
-      {/* Grid overlay */}
+
+      {/* ── Binary rain — bottom-most layer ── */}
+      <BinaryRain />
+
+      {/* ── Grid overlay — sits above binary rain ── */}
       <div className="hero-grid-overlay" aria-hidden="true" />
 
       <div className="hero-container">
@@ -228,6 +261,7 @@ const HeroSection = ({ content }) => {
         <div className="hero-visual-panel">
           <div className="hero-logo-wrap">
             <div className="hero-logo-halo" />
+            <div className="hero-logo-binary" aria-hidden="true" />
             <Logo size="xlarge" className="hero-logo-minimal" />
           </div>
         </div>
