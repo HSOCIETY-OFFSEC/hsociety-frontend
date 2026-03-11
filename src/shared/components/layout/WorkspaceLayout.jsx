@@ -151,7 +151,7 @@ const WorkspaceLayout = () => {
   }, [notificationMenuOpen]);
 
 
-  const showSidebar = !isCommunity && role !== 'admin' && !isLessonWorkspace && navMode !== 'mobile';
+  const showSidebar = role !== 'admin' && !isLessonWorkspace && navMode !== 'mobile';
   const bottomNavLinks = useMemo(
     () => (navMode === 'mobile' ? getMobileLinks(true, role || 'student') : []),
     [navMode, role]
@@ -192,7 +192,7 @@ const WorkspaceLayout = () => {
                 <span>{WORKSPACE_UI.topbar.home}</span>
               </button>
 
-              {isCommunity && (
+              {isCommunity && !showSidebar && (
                 <nav className="workspace-community-nav" aria-label="Workspace navigation">
                   {defaultLinks.map((link) => (
                     <button

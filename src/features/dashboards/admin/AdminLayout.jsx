@@ -63,25 +63,27 @@ const AdminLayout = () => {
         >
           <LuX size={20} />
         </button>
-        <nav className="admin-sidebar-nav">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  `admin-sidebar-link ${isActive ? 'active' : ''}`
-                }
-                onClick={() => setSidebarOpen(false)}
-              >
-                <Icon size={16} />
-                {item.label}
-              </NavLink>
-            );
-          })}
-        </nav>
+        <div className="admin-sidebar-nav-block">
+          <nav className="admin-sidebar-nav">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  className={({ isActive }) =>
+                    `admin-sidebar-link ${isActive ? 'active' : ''}`
+                  }
+                  onClick={() => setSidebarOpen(false)}
+                >
+                  <Icon size={16} />
+                  {item.label}
+                </NavLink>
+              );
+            })}
+          </nav>
+        </div>
       </aside>
       <main className="admin-main">
         <Outlet />

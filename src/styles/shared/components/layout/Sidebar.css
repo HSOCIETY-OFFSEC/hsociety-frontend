@@ -36,8 +36,16 @@
   padding: 1.25rem 0.75rem;
   overflow-y: auto;
   gap: 0.25rem;
+  min-height: 0;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--primary-color) 30%, transparent) transparent;
+}
+
+.app-sidebar-nav-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .app-sidebar-inner::-webkit-scrollbar {
@@ -120,6 +128,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  flex: 1;
+  justify-content: space-evenly;
+  min-height: 0;
 }
 
 .app-sidebar-link {

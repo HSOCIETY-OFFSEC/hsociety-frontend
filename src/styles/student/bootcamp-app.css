@@ -4,6 +4,7 @@
 
 .bootcamp-app {
   min-height: 100vh;
+  height: 100vh;
   background: var(--bg-primary);
   color: var(--text-primary);
   display: grid;
@@ -107,12 +108,22 @@
   border-right: 1px solid var(--border-color);
   background: var(--bg-secondary);
   padding: 1.5rem 1rem;
+  position: sticky;
+  top: var(--workspace-topbar-height, 64px);
+  height: calc(100vh - var(--workspace-topbar-height, 64px) - 48px);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
 }
 
 .bootcamp-sidebar-inner {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  height: 100%;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .bootcamp-sidebar-inner.collapsed .bootcamp-sidebar-kicker,
@@ -166,6 +177,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  flex: 1;
+  justify-content: space-evenly;
+  min-height: 0;
 }
 
 .bootcamp-nav-link {
@@ -196,6 +210,30 @@
   color: var(--text-primary);
   background: var(--primary-color-alpha);
   border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+}
+
+.bootcamp-sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.bootcamp-sidebar-collapse {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.bootcamp-sidebar-collapse:hover {
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .bootcamp-nav-link[data-tooltip] {
@@ -230,6 +268,8 @@
 .bootcamp-main {
   grid-area: main;
   padding: 2rem;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .bootcamp-right {
@@ -238,6 +278,11 @@
   background: var(--bg-secondary);
   padding: 1.5rem;
   display: none;
+  position: sticky;
+  top: var(--workspace-topbar-height, 64px);
+  height: calc(100vh - var(--workspace-topbar-height, 64px) - 48px);
+  align-self: start;
+  overflow-y: auto;
 }
 
 .bootcamp-right.active {
@@ -366,6 +411,7 @@
       "footer";
     grid-template-columns: 1fr;
     grid-template-rows: 64px auto auto 48px;
+    height: auto;
   }
 
   .bootcamp-menu-btn {
@@ -390,9 +436,14 @@
     left: 0;
     bottom: 0;
     width: min(85vw, var(--bootcamp-sidebar-width, 280px));
+    height: calc(100vh - 64px);
     transform: translateX(-100%);
     transition: transform 0.2s ease;
     z-index: 950;
+  }
+
+  .bootcamp-main {
+    overflow-y: visible;
   }
 
   .bootcamp-app.sidebar-open .bootcamp-sidebar {

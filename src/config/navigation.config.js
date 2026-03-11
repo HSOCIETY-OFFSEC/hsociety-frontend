@@ -153,7 +153,7 @@ const normalizeRole = (role) => {
 export const getMobileLinks = (isAuthenticated, role) => {
   if (!isAuthenticated) return NAV_LINKS.public;
   const normalizedRole = normalizeRole(role) || 'student';
-  return dedupeLinks([...(NAV_LINKS.desktopAuth[normalizedRole] || [])]);
+  return NAV_LINKS.workspace[normalizedRole] || NAV_LINKS.public;
 };
 
 /** Get desktop nav links based on auth state and role */

@@ -145,6 +145,15 @@ body.admin-sidebar-open {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
+  justify-content: space-evenly;
+}
+
+.admin-sidebar-nav-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .admin-sidebar-link {

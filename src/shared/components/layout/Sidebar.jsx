@@ -81,7 +81,7 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
           </div>
         </button>
 
-        <div>
+        <div className="app-sidebar-nav-block">
           <p className="app-sidebar-section-title">Navigation</p>
           <div className="app-sidebar-links">
             {collapsed ? (
