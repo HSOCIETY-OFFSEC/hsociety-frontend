@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { FiActivity, FiClipboard, FiHome, FiMenu, FiSettings, FiShield, FiUsers, FiWifi, FiX } from 'react-icons/fi';
+import { LuActivity, LuClipboard, LuHouse, LuMenu, LuSettings, LuShield, LuUsers, LuWifi, LuX } from 'react-icons/lu';
 import '../../../styles/dashboards/admin/index.css';
 
 const navItems = [
-  { to: '/mr-robot', label: 'Overview', icon: FiHome, end: true },
-  { to: '/mr-robot/community', label: 'Manage Community', icon: FiActivity },
-  { to: '/mr-robot/users', label: 'Manage Users', icon: FiUsers },
-  { to: '/mr-robot/pentests', label: 'Manage Pentests', icon: FiShield },
-  { to: '/mr-robot/security', label: 'Security (Mini SOC)', icon: FiWifi },
-  { to: '/mr-robot/content', label: 'Manage Content', icon: FiClipboard },
-  { to: '/mr-robot/operations', label: 'Management Hub', icon: FiClipboard },
-  { to: '/settings', label: 'Account Settings', icon: FiSettings },
+  { to: '/mr-robot', label: 'Overview', icon: LuHouse, end: true },
+  { to: '/mr-robot/community', label: 'Manage Community', icon: LuActivity },
+  { to: '/mr-robot/users', label: 'Manage Users', icon: LuUsers },
+  { to: '/mr-robot/pentests', label: 'Manage Pentests', icon: LuShield },
+  { to: '/mr-robot/security', label: 'Security (Mini SOC)', icon: LuWifi },
+  { to: '/mr-robot/content', label: 'Manage Content', icon: LuClipboard },
+  { to: '/mr-robot/operations', label: 'Management Hub', icon: LuClipboard },
+  { to: '/settings', label: 'Account Settings', icon: LuSettings },
 ];
 
 const AdminLayout = () => {
@@ -32,7 +32,7 @@ const AdminLayout = () => {
           onClick={() => setSidebarOpen(true)}
           aria-label="Open admin menu"
         >
-          <FiMenu size={22} />
+          <LuMenu size={22} />
           <span>Menu</span>
         </button>
         <span className="admin-mobile-header-title">Admin Console</span>
@@ -61,7 +61,7 @@ const AdminLayout = () => {
           onClick={() => setSidebarOpen(false)}
           aria-label="Close admin menu"
         >
-          <FiX size={20} />
+          <LuX size={20} />
         </button>
         <nav className="admin-sidebar-nav">
           {navItems.map((item) => {

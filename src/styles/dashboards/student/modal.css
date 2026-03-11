@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
   padding: 1.25rem;
   box-sizing: border-box;
 }
@@ -175,7 +175,7 @@
 @media (max-width: 768px) {
   .student-modal-backdrop {
     padding: 1rem;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .student-modal-card {
@@ -194,7 +194,7 @@
 @media (max-width: 480px) {
   .student-modal-backdrop {
     padding: 0.75rem;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .student-modal-card {

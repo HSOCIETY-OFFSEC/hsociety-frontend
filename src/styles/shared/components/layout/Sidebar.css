@@ -18,10 +18,14 @@
   flex-direction: column;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .app-sidebar {
     transform: translateX(0);
   }
+}
+
+.app-sidebar.collapsed {
+  width: var(--sidebar-collapsed-width, 84px);
 }
 
 /* ── Inner scroll ──────────────────────────────────────────── */
@@ -64,6 +68,10 @@
   transition: background 0.2s ease;
 }
 
+.app-sidebar.collapsed .app-sidebar-logo {
+  justify-content: center;
+}
+
 .app-sidebar-logo:hover {
   background: var(--input-bg);
 }
@@ -72,6 +80,10 @@
   display: flex;
   flex-direction: column;
   line-height: 1.15;
+}
+
+.app-sidebar.collapsed .app-sidebar-brand {
+  display: none;
 }
 
 .app-sidebar-title {
@@ -97,6 +109,10 @@
   color: var(--text-tertiary);
   padding: 0.75rem 0.65rem 0.3rem;
   margin: 0;
+}
+
+.app-sidebar.collapsed .app-sidebar-section-title {
+  display: none;
 }
 
 /* ── Nav Links ─────────────────────────────────────────────── */
@@ -125,6 +141,19 @@
   line-height: 1.2;
 }
 
+.app-sidebar.collapsed .app-sidebar-link {
+  justify-content: center;
+  padding: 0.55rem;
+}
+
+.app-sidebar-label {
+  display: inline-flex;
+}
+
+.app-sidebar.collapsed .app-sidebar-label {
+  display: none;
+}
+
 .app-sidebar-link:hover {
   background: var(--input-bg);
   color: var(--text-primary);
@@ -147,6 +176,10 @@
   border-left: 1px solid color-mix(in srgb, var(--border-color) 80%, transparent);
   animation: sidebar-dropdown-pop 160ms ease;
   transform-origin: top left;
+}
+
+.app-sidebar.collapsed .bootcamp-dropdown {
+  display: none;
 }
 
 .bootcamp-dropdown-menu .app-sidebar-link {
@@ -181,4 +214,62 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+}
+
+.app-sidebar-collapse {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.45rem 0.65rem;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.app-sidebar-collapse:hover {
+  background: var(--input-bg);
+  color: var(--text-primary);
+}
+
+.app-sidebar.collapsed .app-sidebar-collapse {
+  justify-content: center;
+}
+
+/* ── Tooltip ─────────────────────────────────────────────── */
+.app-sidebar .app-sidebar-link.is-collapsed,
+.app-sidebar .app-sidebar-logo,
+.app-sidebar .app-sidebar-collapse {
+  position: relative;
+}
+
+.app-sidebar .app-sidebar-link.is-collapsed[data-tooltip]::after,
+.app-sidebar .app-sidebar-logo[data-tooltip]::after,
+.app-sidebar .app-sidebar-collapse[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--shadow-md);
+  z-index: 5;
+}
+
+.app-sidebar .app-sidebar-link.is-collapsed[data-tooltip]:hover::after,
+.app-sidebar .app-sidebar-logo[data-tooltip]:hover::after,
+.app-sidebar .app-sidebar-collapse[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translate(2px, -50%);
 }

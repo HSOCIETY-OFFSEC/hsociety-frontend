@@ -1,19 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
-  FiBookOpen,
-  FiChevronDown,
-  FiCreditCard,
-  FiBell,
-  FiLayers,
-  FiLogOut,
-  FiMenu,
-  FiMoreHorizontal,
-  FiMessageSquare,
-  FiShield,
-  FiTerminal,
-  FiX
-} from 'react-icons/fi';
+  LuBookOpen,
+  LuChevronDown,
+  LuCreditCard,
+  LuBell,
+  LuLayers,
+  LuLogOut,
+  LuMenu,
+  LuEllipsis,
+  LuMessageCircle,
+  LuShield,
+  LuX
+} from 'react-icons/lu';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import useAuthModal from '../../hooks/useAuthModal';
@@ -118,11 +117,10 @@ const Navbar = ({ sticky = true }) => {
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
     () => [
-      { path: '/student-bootcamps/overview', label: 'Learning', icon: FiTerminal },
-      { path: '/student-bootcamps', label: 'Bootcamp', icon: FiLayers },
-      { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
-      { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
+      { path: '/student-bootcamps', label: 'Bootcamp', icon: LuLayers },
+      { path: '/student-resources', label: 'Resources', icon: LuBookOpen },
+      { path: '/student-payments', label: 'Payments', icon: LuCreditCard },
+      { path: '/community', label: 'Community', icon: LuMessageCircle },
     ],
     []
   );
@@ -301,9 +299,9 @@ const Navbar = ({ sticky = true }) => {
                 aria-controls={MENU_IDS.more}
                 onKeyDown={(event) => handleEscape(event, setMoreMenuOpen)}
               >
-                <FiMoreHorizontal size={16} />
+                <LuEllipsis size={16} />
                 <span>More</span>
-                <FiChevronDown size={14} />
+                <LuChevronDown size={14} />
               </button>
               {moreMenuOpen && (
                 <div
@@ -354,9 +352,9 @@ const Navbar = ({ sticky = true }) => {
                 aria-controls={MENU_IDS.student}
                 onKeyDown={(event) => handleEscape(event, setStudentLearnOpen)}
               >
-                <FiTerminal size={16} />
+                <LuLayers size={16} />
                 <span>Learn</span>
-                <FiChevronDown size={14} />
+                <LuChevronDown size={14} />
               </button>
               {studentLearnOpen && (
                 <div
@@ -426,7 +424,7 @@ const Navbar = ({ sticky = true }) => {
                 aria-controls={MENU_IDS.notifications}
                 onKeyDown={(event) => handleEscape(event, setNotificationMenuOpen)}
               >
-                <FiBell size={16} />
+                <LuBell size={16} />
                 {unreadCount > 0 && (
                   <span className="navbar-notification-badge">{unreadCount}</span>
                 )}
@@ -523,7 +521,7 @@ const Navbar = ({ sticky = true }) => {
                 </span>
                 <span>{user.name || user.email}</span>
                 <span className="navbar-user-chevron">
-                  <FiChevronDown size={14} />
+                  <LuChevronDown size={14} />
                 </span>
               </button>
 
@@ -549,7 +547,7 @@ const Navbar = ({ sticky = true }) => {
                     role="menuitem"
                   >
                     <span className="navbar-user-icon">
-                      <FiShield size={16} />
+                      <LuShield size={16} />
                     </span>
                     <span>Account Settings</span>
                   </button>
@@ -560,7 +558,7 @@ const Navbar = ({ sticky = true }) => {
                     role="menuitem"
                   >
                     <span className="navbar-user-icon">
-                      <FiLogOut size={16} />
+                      <LuLogOut size={16} />
                     </span>
                     <span>Logout</span>
                   </button>
@@ -578,7 +576,7 @@ const Navbar = ({ sticky = true }) => {
               aria-expanded={mobileMenuOpen}
               aria-controls={MENU_IDS.mobile}
             >
-              {mobileMenuOpen ? <FiX /> : <FiMenu />}
+              {mobileMenuOpen ? <LuX /> : <LuMenu />}
             </button>
           )}
         </div>
@@ -596,7 +594,7 @@ const Navbar = ({ sticky = true }) => {
                 aria-expanded={mobileSectionsOpen.primary}
               >
                 <span>Primary</span>
-                <FiChevronDown size={16} />
+                <LuChevronDown size={16} />
               </button>
               {mobileSectionsOpen.primary && (
                 <div className="mobile-menu-group">
@@ -628,7 +626,7 @@ const Navbar = ({ sticky = true }) => {
                   aria-expanded={mobileSectionsOpen.learning}
                 >
                   <span>Learning</span>
-                  <FiChevronDown size={16} />
+                  <LuChevronDown size={16} />
                 </button>
                 {mobileSectionsOpen.learning && (
                   <div className="mobile-menu-group">
@@ -661,7 +659,7 @@ const Navbar = ({ sticky = true }) => {
                   aria-expanded={mobileSectionsOpen.secondary}
                 >
                   <span>Utilities</span>
-                  <FiChevronDown size={16} />
+                  <LuChevronDown size={16} />
                 </button>
                 {mobileSectionsOpen.secondary && (
                   <div className="mobile-menu-group">
@@ -693,7 +691,7 @@ const Navbar = ({ sticky = true }) => {
                 className="mobile-menu-logout"
               >
                 <span className="mobile-menu-icon">
-                  <FiLogOut size={18} />
+                  <LuLogOut size={18} />
                 </span>
                 <span>Logout</span>
               </button>
@@ -707,7 +705,7 @@ const Navbar = ({ sticky = true }) => {
                   className="mobile-menu-register"
                 >
                   <span className="mobile-menu-icon">
-                    <FiShield size={18} />
+                    <LuShield size={18} />
                   </span>
                   <span>Register</span>
                 </button>

@@ -1,0 +1,61 @@
+/**
+ * Bottom Navigation Styles
+ * Location: src/styles/shared/components/layout/BottomNav.css
+ */
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--bottom-nav-height, 64px);
+  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  border-top: 1px solid var(--border-color);
+  backdrop-filter: blur(14px);
+  z-index: 950;
+  display: none;
+}
+
+.bottom-nav-track {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0 0.75rem;
+  scrollbar-width: none;
+}
+
+.bottom-nav-track::-webkit-scrollbar {
+  display: none;
+}
+
+.bottom-nav-item {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  transition: color 0.18s ease, background 0.18s ease, border 0.18s ease;
+  flex: 0 0 auto;
+}
+
+.bottom-nav-item:hover {
+  background: var(--input-bg);
+  color: var(--text-primary);
+}
+
+.bottom-nav-item.active {
+  color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  border-color: color-mix(in srgb, var(--primary-color) 30%, transparent);
+}
+
+@media (max-width: 767px) {
+  .bottom-nav {
+    display: block;
+  }
+}

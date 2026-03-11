@@ -5,137 +5,133 @@
  */
 
 import {
-  FiBarChart2,
-  FiBriefcase,
-  FiCreditCard,
-  FiFileText,
-  FiMessageSquare,
-  FiCheckCircle,
-  FiShield,
-  FiTool,
-  FiUsers,
-  FiCode,
-  FiBookOpen,
-  FiLayers,
-  FiTerminal,
-  FiGlobe,
-  FiDollarSign
-} from 'react-icons/fi';
-import { FiCpu } from 'react-icons/fi';
+  LuChartBar,
+  LuBriefcase,
+  LuCreditCard,
+  LuFileText,
+  LuMessageCircle,
+  LuShield,
+  LuWrench,
+  LuUsers,
+  LuCode,
+  LuBookOpen,
+  LuLayers,
+  LuGlobe,
+  LuDollarSign,
+  LuCpu
+} from 'react-icons/lu';
 
 export const NAV_LINKS = {
   /** Authenticated workspace nav (sidebar) */
   workspace: {
     corporate: [
-      { path: '/corporate-dashboard', label: 'Dashboard', icon: FiBarChart2 },
-      { path: '/engagements', label: 'Engagements', icon: FiShield },
-      { path: '/reports', label: 'Reports', icon: FiFileText },
-      { path: '/remediation', label: 'Vulnerabilities', icon: FiTool },
-      { path: '/assets', label: 'Assets', icon: FiLayers },
-      { path: '/billing', label: 'Billing', icon: FiCreditCard },
-      { path: '/community', label: 'Community', icon: FiMessageSquare }
+      { path: '/corporate-dashboard', label: 'Dashboard', icon: LuChartBar },
+      { path: '/engagements', label: 'Engagements', icon: LuShield },
+      { path: '/reports', label: 'Reports', icon: LuFileText },
+      { path: '/remediation', label: 'Vulnerabilities', icon: LuWrench },
+      { path: '/assets', label: 'Assets', icon: LuLayers },
+      { path: '/billing', label: 'Billing', icon: LuCreditCard },
+      { path: '/community', label: 'Community', icon: LuMessageCircle }
     ],
     pentester: [
-      { path: '/pentester', label: 'Overview', icon: FiBarChart2 },
-      { path: '/pentester/engagements', label: 'Engagements', icon: FiShield },
-      { path: '/pentester/reports', label: 'Reports', icon: FiFileText },
-      { path: '/pentester/profiles', label: 'Pentester Profiles', icon: FiUsers },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/settings', label: 'Settings', icon: FiUsers }
+      { path: '/pentester', label: 'Overview', icon: LuChartBar },
+      { path: '/pentester/engagements', label: 'Engagements', icon: LuShield },
+      { path: '/pentester/reports', label: 'Reports', icon: LuFileText },
+      { path: '/pentester/profiles', label: 'Pentester Profiles', icon: LuUsers },
+      { path: '/community', label: 'Community', icon: LuMessageCircle },
+      { path: '/settings', label: 'Settings', icon: LuUsers }
     ],
     admin: [
-      { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
-      { path: '/community', label: 'Community', icon: FiMessageSquare },
-      { path: '/settings', label: 'Settings', icon: FiUsers }
+      { path: '/mr-robot', label: 'Mr. Robot', icon: LuCpu },
+      { path: '/community', label: 'Community', icon: LuMessageCircle },
+      { path: '/settings', label: 'Settings', icon: LuUsers }
     ],
     student: [
-      { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen, group: 'default' },
-      { path: '/student-bootcamps/overview', label: 'Learning', icon: FiTerminal, group: 'default' },
-      { path: '/student-bootcamps', label: 'Bootcamp', icon: FiLayers, group: 'default' },
-      { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'default' },
-      { path: '/student-payments', label: 'Payments', icon: FiCreditCard, group: 'default' },
-      { path: '/community', label: 'Community', icon: FiMessageSquare, group: 'default' }
+      { path: '/student-dashboard', label: 'Dashboard', icon: LuBookOpen, group: 'default' },
+      { path: '/student-bootcamps', label: 'Bootcamp', icon: LuLayers, group: 'default' },
+      { path: '/student-resources', label: 'Resources', icon: LuBookOpen, group: 'default' },
+      { path: '/student-payments', label: 'Payments', icon: LuCreditCard, group: 'default' },
+      { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'default' }
     ]
   },
 
   /** Public pages */
   public: [
-    { path: '/', label: 'Home', icon: FiShield },
-    { path: '/courses', label: 'Courses', icon: FiBookOpen },
-    { path: '/services', label: 'Services', icon: FiTool },
-    { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
-    { path: '/about', label: 'About', icon: FiUsers },
-    { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
-    { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
-    { path: '/terms', label: 'Terms', icon: FiFileText }
+    { path: '/', label: 'Home', icon: LuShield },
+    { path: '/courses', label: 'Courses', icon: LuBookOpen },
+    { path: '/services', label: 'Services', icon: LuWrench },
+    { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
+    { path: '/about', label: 'About', icon: LuUsers },
+    { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
+    { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
+    { path: '/terms', label: 'Terms', icon: LuFileText }
   ],
 
   /** Desktop quick links when authenticated */
   desktopAuth: {
     corporate: [
-      { path: '/', label: 'Home', icon: FiShield },
-      { path: '/corporate-dashboard', label: 'Overview', icon: FiBarChart2 },
-      { path: '/engagements', label: 'Engagements', icon: FiShield },
-      { path: '/reports', label: 'Reports', icon: FiFileText },
-      { path: '/remediation', label: 'Remediation', icon: FiTool },
-      { path: '/assets', label: 'Assets', icon: FiLayers },
-      { path: '/billing', label: 'Billing', icon: FiCreditCard },
-      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
-      { path: '/about', label: 'About Us', icon: FiUsers },
-      { path: '/team', label: 'Meet the Team', icon: FiUsers },
-      { path: '/developer', label: 'Meet the Developer', icon: FiCode },
-      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
-      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
-      { path: '/terms', label: 'Terms', icon: FiFileText }
+      { path: '/', label: 'Home', icon: LuShield },
+      { path: '/corporate-dashboard', label: 'Overview', icon: LuChartBar },
+      { path: '/engagements', label: 'Engagements', icon: LuShield },
+      { path: '/reports', label: 'Reports', icon: LuFileText },
+      { path: '/remediation', label: 'Remediation', icon: LuWrench },
+      { path: '/assets', label: 'Assets', icon: LuLayers },
+      { path: '/billing', label: 'Billing', icon: LuCreditCard },
+      { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
+      { path: '/about', label: 'About Us', icon: LuUsers },
+      { path: '/team', label: 'Meet the Team', icon: LuUsers },
+      { path: '/developer', label: 'Meet the Developer', icon: LuCode },
+      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
+      { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
+      { path: '/terms', label: 'Terms', icon: LuFileText }
     ],
     pentester: [
-      { path: '/', label: 'Home', icon: FiShield },
-      { path: '/pentester', label: 'Overview', icon: FiBarChart2 },
-      { path: '/pentester/engagements', label: 'Engagements', icon: FiShield },
-      { path: '/pentester/reports', label: 'Reports', icon: FiFileText },
-      { path: '/pentester/profiles', label: 'Pentester Profiles', icon: FiUsers },
-      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
-      { path: '/settings', label: 'Settings', icon: FiUsers },
-      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
-      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
-      { path: '/terms', label: 'Terms', icon: FiFileText }
+      { path: '/', label: 'Home', icon: LuShield },
+      { path: '/pentester', label: 'Overview', icon: LuChartBar },
+      { path: '/pentester/engagements', label: 'Engagements', icon: LuShield },
+      { path: '/pentester/reports', label: 'Reports', icon: LuFileText },
+      { path: '/pentester/profiles', label: 'Pentester Profiles', icon: LuUsers },
+      { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
+      { path: '/settings', label: 'Settings', icon: LuUsers },
+      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
+      { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
+      { path: '/terms', label: 'Terms', icon: LuFileText }
     ],
     admin: [
-      { path: '/', label: 'Home', icon: FiShield },
-      { path: '/mr-robot', label: 'Mr. Robot', icon: FiCpu },
-      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
-      { path: '/settings', label: 'Settings', icon: FiUsers },
-      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
-      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
-      { path: '/terms', label: 'Terms', icon: FiFileText }
+      { path: '/', label: 'Home', icon: LuShield },
+      { path: '/mr-robot', label: 'Mr. Robot', icon: LuCpu },
+      { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
+      { path: '/settings', label: 'Settings', icon: LuUsers },
+      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
+      { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
+      { path: '/terms', label: 'Terms', icon: LuFileText }
     ],
     student: [
-      { path: '/', label: 'Home', icon: FiShield },
-      { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen, group: 'default' },
-      { path: '/student-bootcamps/overview', label: 'Learning', icon: FiTerminal, group: 'learn' },
-      { path: '/student-bootcamps', label: 'Bootcamp', icon: FiLayers, group: 'learn' },
-      { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'learn' },
-      { path: '/student-payments', label: 'Payments', icon: FiCreditCard, group: 'learn' },
-      { path: '/community', label: 'Community', icon: FiMessageSquare, group: 'learn' },
-      { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
-      { path: '/settings', label: 'Settings', icon: FiUsers },
-      { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
-      { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
-      { path: '/terms', label: 'Terms', icon: FiFileText }
+      { path: '/', label: 'Home', icon: LuShield },
+      { path: '/student-dashboard', label: 'Dashboard', icon: LuBookOpen, group: 'default' },
+      { path: '/student-bootcamps', label: 'Bootcamp', icon: LuLayers, group: 'learn' },
+      { path: '/student-resources', label: 'Resources', icon: LuBookOpen, group: 'learn' },
+      { path: '/student-payments', label: 'Payments', icon: LuCreditCard, group: 'learn' },
+      { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'learn' },
+      { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
+      { path: '/settings', label: 'Settings', icon: LuUsers },
+      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
+      { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
+      { path: '/terms', label: 'Terms', icon: LuFileText }
     ]
   },
 
   /** Desktop quick links when not authenticated */
   desktopPublic: [
-    { path: '/', label: 'Home', icon: FiShield },
-    { path: '/courses', label: 'Courses', icon: FiBookOpen },
-    { path: '/services', label: 'Services', icon: FiTool },
-    { path: '/leaderboard', label: 'Leaderboard', icon: FiBarChart2 },
-    { path: '/about', label: 'About', icon: FiUsers },
-    { path: '/careers', label: 'Careers', icon: FiBriefcase },
-    { path: '/threat-map', label: 'Threat Map', icon: FiGlobe },
-    { path: '/pricing', label: 'Pricing', icon: FiDollarSign },
-    { path: '/terms', label: 'Terms', icon: FiFileText }
+    { path: '/', label: 'Home', icon: LuShield },
+    { path: '/courses', label: 'Courses', icon: LuBookOpen },
+    { path: '/services', label: 'Services', icon: LuWrench },
+    { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
+    { path: '/about', label: 'About', icon: LuUsers },
+    { path: '/careers', label: 'Careers', icon: LuBriefcase },
+    { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
+    { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
+    { path: '/terms', label: 'Terms', icon: LuFileText }
   ]
 };
 

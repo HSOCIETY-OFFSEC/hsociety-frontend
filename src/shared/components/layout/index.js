@@ -7,3 +7,4 @@ export { default as LandingLayout } from './LandingLayout';
 export { default as PublicLayout } from './PublicLayout';
 export { default as Navbar } from './Navbar';
 export { default as Sidebar } from './Sidebar';
+export { default as BottomNav } from './BottomNav';

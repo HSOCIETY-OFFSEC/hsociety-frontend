@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../shared/hooks/useAuthModal';
 import { FiArrowLeft, FiArrowRight, FiClock, FiLayers, FiShield, FiChevronRight } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
+import { useAuth } from '../../core/auth/AuthContext';
 import '../../styles/sections/courses/index.css';
 
 const CourseDetails = () => {
   const { bootcampId } = useParams();
   const navigate = useNavigate();
   const { openAuthModal } = useAuthModal();
+  const { isAuthenticated } = useAuth();
+
+  const handleEnroll = useCallback(() => {
+    if (!isAuthenticated) {
+      openAuthModal('register', { redirect: '/student-bootcamps' });
+      return;
+    }
+
+    navigate('/student-bootcamps');
+  }, [isAuthenticated, navigate, openAuthModal]);
 
   if (bootcampId !== 'hacker-protocol') {
     return (
@@ -50,7 +61,7 @@ const CourseDetails = () => {
               <FiArrowLeft size={14} />
               Back
             </Button>
-            <Button variant="primary" size="small" onClick={() => openAuthModal('register')}>
+            <Button variant="primary" size="small" onClick={handleEnroll}>
               Enroll Now
               <FiArrowRight size={14} />
             </Button>

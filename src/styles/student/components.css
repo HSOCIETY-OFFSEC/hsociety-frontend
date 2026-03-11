@@ -12,7 +12,7 @@
   -webkit-backdrop-filter: blur(8px);
   display: grid;
   place-items: center;
-  z-index: var(--z-modal, 60);
+  z-index: 2000;
   padding: 1.25rem;
   animation: modal-backdrop-in 0.2s ease forwards;
 }

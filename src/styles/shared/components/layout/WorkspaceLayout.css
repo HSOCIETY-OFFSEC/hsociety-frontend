@@ -10,7 +10,7 @@
   flex-direction: column;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .workspace-layout {
     padding-left: var(--sidebar-width);
   }
@@ -36,6 +36,10 @@
 .workspace-layout.no-sidebar .workspace-topbar {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.workspace-layout.mobile .workspace-main {
+  padding-bottom: calc(1.5rem + var(--bottom-nav-height));
 }
 
 .workspace-layout.sidebar-open .app-sidebar {
@@ -546,7 +550,7 @@
 }
 
 /* ── Mobile ────────────────────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .workspace-topbar {
     position: fixed;
     left: 0;

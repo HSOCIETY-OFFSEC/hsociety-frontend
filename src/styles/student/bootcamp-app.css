@@ -11,28 +11,27 @@
     "topbar topbar topbar"
     "sidebar main right"
     "footer footer footer";
-  grid-template-columns: 260px minmax(0, 1fr) 280px;
+  grid-template-columns: var(--bootcamp-sidebar-width, 260px) minmax(0, 1fr) 280px;
   grid-template-rows: 64px 1fr 48px;
 }
 
 .bootcamp-topbar {
   grid-area: topbar;
+}
+
+.bootcamp-topbar-content {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
-  border-bottom: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: var(--z-sticky);
+  gap: 1rem;
 }
 
 .bootcamp-topbar-left {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .bootcamp-menu-btn {
@@ -47,6 +46,7 @@
 .bootcamp-title {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .bootcamp-title-label {
@@ -54,6 +54,13 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-tertiary);
+}
+
+.bootcamp-title strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
 }
 
 .bootcamp-topbar-right {
@@ -72,14 +79,27 @@
 }
 
 .bootcamp-back-btn {
+  gap: 0.4rem;
+}
+
+.bootcamp-collapse-btn {
   border: 1px solid var(--border-color);
   background: transparent;
-  color: var(--text-primary);
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem;
+  color: var(--text-secondary);
+  border-radius: 9px;
+  padding: 0.35rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+}
+
+.bootcamp-collapse-btn:hover {
+  background: var(--input-bg);
+  color: var(--text-primary);
+}
+
+.bootcamp-overlay {
+  display: none;
 }
 
 .bootcamp-sidebar {
@@ -95,10 +115,44 @@
   gap: 1.5rem;
 }
 
+.bootcamp-sidebar-inner.collapsed .bootcamp-sidebar-kicker,
+.bootcamp-sidebar-inner.collapsed strong {
+  display: none;
+}
+
 .bootcamp-sidebar-brand {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+}
+
+.bootcamp-sidebar-brand[data-tooltip] {
+  position: relative;
+}
+
+.bootcamp-sidebar-brand[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--shadow-md);
+  z-index: 5;
+}
+
+.bootcamp-sidebar-brand[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translate(2px, -50%);
 }
 
 .bootcamp-sidebar-kicker {
@@ -125,10 +179,52 @@
   border: 1px solid transparent;
 }
 
+.bootcamp-app.bootcamp-collapsed .bootcamp-nav-link {
+  justify-content: center;
+  padding: 0.6rem;
+}
+
+.bootcamp-nav-label {
+  display: inline-flex;
+}
+
+.bootcamp-app.bootcamp-collapsed .bootcamp-nav-label {
+  display: none;
+}
+
 .bootcamp-nav-link.active {
   color: var(--text-primary);
   background: var(--primary-color-alpha);
   border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
+}
+
+.bootcamp-nav-link[data-tooltip] {
+  position: relative;
+}
+
+.bootcamp-nav-link[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.55rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--shadow-md);
+  z-index: 5;
+}
+
+.bootcamp-nav-link[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translate(2px, -50%);
 }
 
 .bootcamp-main {
@@ -235,6 +331,156 @@
   flex-direction: column;
   gap: 0.6rem;
   align-items: flex-start;
+}
+
+.bootcamp-gated .bootcamp-sidebar,
+.bootcamp-gated .bootcamp-right,
+.bootcamp-gated .bootcamp-footer {
+  display: none;
+}
+
+.bootcamp-gated .bootcamp-main {
+  padding: 0;
+}
+
+.bootcamp-gated .bootcamp-overlay {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .bootcamp-app {
+    grid-template-columns: var(--bootcamp-sidebar-width, 240px) minmax(0, 1fr) 0;
+  }
+
+  .bootcamp-right {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .bootcamp-app {
+    grid-template-areas:
+      "topbar"
+      "main"
+      "right"
+      "footer";
+    grid-template-columns: 1fr;
+    grid-template-rows: 64px auto auto 48px;
+  }
+
+  .bootcamp-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bootcamp-topbar-content {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .bootcamp-topbar-right {
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .bootcamp-sidebar {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    bottom: 0;
+    width: min(85vw, var(--bootcamp-sidebar-width, 280px));
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    z-index: 950;
+  }
+
+  .bootcamp-app.sidebar-open .bootcamp-sidebar {
+    transform: translateX(0);
+  }
+
+  .bootcamp-main {
+    padding: 1.5rem;
+  }
+
+  .bootcamp-overlay {
+    position: fixed;
+    inset: 64px 0 0 0;
+    background: rgba(8, 11, 20, 0.6);
+    opacity: 0;
+    display: block;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 900;
+  }
+
+  .bootcamp-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .bootcamp-collapse-btn {
+    display: none;
+  }
+
+  .bootcamp-main {
+    padding: 1.25rem;
+    padding-bottom: calc(1.25rem + var(--bottom-nav-height, 64px));
+  }
+
+  .bootcamp-page-header {
+    flex-direction: column;
+  }
+
+  .bootcamp-hero {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .bootcamp-hero-actions {
+    width: 100%;
+  }
+
+  .bootcamp-hero-actions > * {
+    width: 100%;
+  }
+
+  .bootcamp-room-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bootcamp-room-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bootcamp-room-nav {
+    flex-direction: column;
+  }
+
+  .bootcamp-footer {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .bootcamp-topbar-content {
+    gap: 0.75rem;
+  }
+
+  .bootcamp-title strong {
+    font-size: 0.95rem;
+    max-width: 220px;
+  }
+
+  .bootcamp-user-chip {
+    font-size: 0.8rem;
+  }
 }
 
 .bootcamp-kicker {

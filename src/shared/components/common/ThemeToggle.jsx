@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiMoon, FiSun } from 'react-icons/fi';
+import { LuMoon, LuSun } from 'react-icons/lu';
 import { useTheme } from '../../../app/providers';
 import '../../../styles/shared/components/common/ThemeToggle.css';
 
@@ -33,10 +33,7 @@ const ThemeToggle = ({ className = '' }) => {
       className={`theme-toggle ${className}`}
     >
       <span className="theme-toggle-icon" aria-hidden="true">
-        {theme === 'light' ? <FiSun /> : <FiMoon />}
-      </span>
-      <span className="theme-toggle-label">
-        {themeLabels[theme] || 'Black'}
+        {theme === 'light' ? <LuSun /> : <LuMoon />}
       </span>
     </button>
   );

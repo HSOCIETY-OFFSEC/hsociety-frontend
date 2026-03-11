@@ -1,22 +1,21 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
-  FiBarChart2,
-  FiBell,
-  FiChevronDown,
-  FiHome,
-  FiLayers,
-  FiLogOut,
-  FiMenu,
-  FiUser,
-  FiX,
-} from 'react-icons/fi';
+  LuChartBar,
+  LuBell,
+  LuChevronDown,
+  LuHouse,
+  LuLayers,
+  LuLogOut,
+  LuUser,
+} from 'react-icons/lu';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
+import BottomNav from './BottomNav';
 import ThemeToggle from '../common/ThemeToggle';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
-import { getSidebarLinks } from '../../../config/navigation.config';
+import { getMobileLinks, getSidebarLinks } from '../../../config/navigation.config';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
 import { useNotifications } from '../../notifications/NotificationProvider';
@@ -35,7 +34,8 @@ const WorkspaceLayout = () => {
 
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [navMode, setNavMode] = useState('desktop');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [communityMenuOpen, setCommunityMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
@@ -74,7 +74,6 @@ const WorkspaceLayout = () => {
   );
 
   useEffect(() => {
-    setSidebarOpen(false);
     setMenuOpen(false);
     setLearnOpen(false);
     setCommunityMenuOpen(false);
@@ -82,9 +81,38 @@ const WorkspaceLayout = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    document.body.classList.toggle('workspace-lock-scroll', sidebarOpen);
+    if (typeof window === 'undefined') return undefined;
+    const resolveMode = () => {
+      const width = window.innerWidth;
+      if (width < 768) return 'mobile';
+      if (width < 1024) return 'tablet';
+      return 'desktop';
+    };
+
+    const handleResize = () => {
+      const nextMode = resolveMode();
+      setNavMode(nextMode);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const stored = window?.sessionStorage?.getItem('hsociety.sidebar.collapsed');
+    if (stored === 'true' || stored === 'false') {
+      setSidebarCollapsed(stored === 'true');
+      return;
+    }
+    setSidebarCollapsed(navMode === 'tablet');
+  }, [navMode]);
+
+  useEffect(() => {
+    if (navMode === 'mobile') return undefined;
+    document.body.classList.remove('workspace-lock-scroll');
     return () => document.body.classList.remove('workspace-lock-scroll');
-  }, [sidebarOpen]);
+  }, [navMode]);
 
   const avatarFallback = useMemo(
     () => getGithubAvatarDataUri(user?.email || user?.name || 'user'),
@@ -123,15 +151,33 @@ const WorkspaceLayout = () => {
   }, [notificationMenuOpen]);
 
 
-  const showSidebar = !isCommunity && role !== 'admin' && !isLessonWorkspace;
+  const showSidebar = !isCommunity && role !== 'admin' && !isLessonWorkspace && navMode !== 'mobile';
+  const bottomNavLinks = useMemo(
+    () => (navMode === 'mobile' ? getMobileLinks(true, role || 'student') : []),
+    [navMode, role]
+  );
 
   return (
     <div
-      className={`workspace-layout app-shell ${sidebarOpen ? 'sidebar-open' : ''} ${
-        showSidebar ? '' : 'no-sidebar'
-      } ${isLessonWorkspace ? 'lesson-only' : ''}`}
+      className={`workspace-layout app-shell ${showSidebar ? '' : 'no-sidebar'} ${
+        isLessonWorkspace ? 'lesson-only' : ''
+      } ${navMode}`}
+      style={{
+        '--sidebar-width': sidebarCollapsed ? '84px' : '260px',
+        '--sidebar-collapsed-width': '84px',
+        '--bottom-nav-height': '64px',
+      }}
     >
-      {showSidebar && <Sidebar />}
+      {showSidebar && (
+        <Sidebar
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={() => {
+            const next = !sidebarCollapsed;
+            setSidebarCollapsed(next);
+            window?.sessionStorage?.setItem('hsociety.sidebar.collapsed', String(next));
+          }}
+        />
+      )}
       {!isLessonWorkspace && (
         <header className="workspace-topbar">
           <div className="workspace-topbar-content">
@@ -142,7 +188,7 @@ const WorkspaceLayout = () => {
                 onClick={() => navigate('/')}
                 aria-label={WORKSPACE_UI.aria.goHome}
               >
-                <FiHome size={16} />
+                <LuHouse size={16} />
                 <span>{WORKSPACE_UI.topbar.home}</span>
               </button>
 
@@ -170,9 +216,9 @@ const WorkspaceLayout = () => {
                         className={`workspace-community-link ${learnOpen ? 'active' : ''}`}
                         onClick={() => setLearnOpen((prev) => !prev)}
                       >
-                        <FiLayers size={16} />
+                        <LuLayers size={16} />
                         <span>{WORKSPACE_UI.topbar.learn}</span>
-                        <FiChevronDown size={14} />
+                        <LuChevronDown size={14} />
                       </button>
                       {learnOpen && (
                         <div className="workspace-community-menu">
@@ -226,7 +272,7 @@ const WorkspaceLayout = () => {
                   onClick={() => setNotificationMenuOpen((prev) => !prev)}
                   aria-label={WORKSPACE_UI.aria.notifications}
                 >
-                  <FiBell size={16} />
+                  <LuBell size={16} />
                   {unreadCount > 0 && <span className="workspace-notification-badge">{unreadCount}</span>}
                 </button>
 
@@ -281,9 +327,9 @@ const WorkspaceLayout = () => {
                     aria-haspopup="menu"
                     aria-expanded={communityMenuOpen}
                   >
-                    <FiBarChart2 size={16} />
+                    <LuChartBar size={16} />
                     <span>{WORKSPACE_UI.topbar.community}</span>
-                    <FiChevronDown size={14} />
+                    <LuChevronDown size={14} />
                   </button>
                   {communityMenuOpen && (
                     <div className="workspace-community-menu" role="menu">
@@ -295,7 +341,7 @@ const WorkspaceLayout = () => {
                           navigate('/community#stats');
                         }}
                       >
-                        <FiBarChart2 size={16} />
+                        <LuChartBar size={16} />
                         {WORKSPACE_UI.topbar.stats}
                       </button>
                       <button
@@ -306,7 +352,7 @@ const WorkspaceLayout = () => {
                           navigate('/settings');
                         }}
                       >
-                        <FiUser size={16} />
+                        <LuUser size={16} />
                         {WORKSPACE_UI.topbar.accountSettings}
                       </button>
                     </div>
@@ -338,7 +384,7 @@ const WorkspaceLayout = () => {
                   <span className="workspace-profile-name">
                     {user?.name || user?.email || WORKSPACE_UI.topbar.userFallback}
                   </span>
-                  <FiChevronDown size={16} />
+                  <LuChevronDown size={16} />
                 </button>
                 {menuOpen && (
                   <div className="workspace-profile-menu" role="menu">
@@ -350,7 +396,7 @@ const WorkspaceLayout = () => {
                         navigate('/settings');
                       }}
                     >
-                      <FiUser size={16} />
+                      <LuUser size={16} />
                       {WORKSPACE_UI.topbar.profile}
                     </button>
                     <button
@@ -371,7 +417,7 @@ const WorkspaceLayout = () => {
                         await logout();
                       }}
                     >
-                      <FiLogOut size={16} />
+                      <LuLogOut size={16} />
                       {WORKSPACE_UI.topbar.logout}
                     </button>
                   </div>
@@ -382,30 +428,11 @@ const WorkspaceLayout = () => {
         </header>
       )}
 
-      {!isCommunity && showSidebar && (
-        <>
-          <button
-            type="button"
-            className="workspace-fab"
-            onClick={() => setSidebarOpen((prev) => !prev)}
-            aria-label={
-              sidebarOpen ? WORKSPACE_UI.aria.closeNavigation : WORKSPACE_UI.aria.openNavigation
-            }
-          >
-            {sidebarOpen ? <FiX size={18} /> : <FiMenu size={18} />}
-          </button>
-
-          <div
-            className={`workspace-overlay ${sidebarOpen ? 'open' : ''}`}
-            onClick={() => setSidebarOpen(false)}
-            aria-hidden="true"
-          />
-        </>
-      )}
-
       <main className={`workspace-main ${isCommunity ? 'community-main' : ''}`}>
         <Outlet />
       </main>
+
+      {navMode === 'mobile' && <BottomNav links={bottomNavLinks} />}
     </div>
   );
 };
