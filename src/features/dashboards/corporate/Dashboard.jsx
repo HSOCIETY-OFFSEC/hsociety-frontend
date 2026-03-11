@@ -4,6 +4,7 @@ import { getDashboardOverview } from './dashboard.service';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
+import Skeleton from '../../../shared/components/ui/Skeleton';
 import SecurityCommandCenterCard from './components/SecurityCommandCenterCard';
 import SecurityActionCenterCard from './components/SecurityActionCenterCard';
 import SecurityIndicatorsCard from './components/SecurityIndicatorsCard';
@@ -46,16 +47,16 @@ const Dashboard = () => {
         <div className="dashboard-wrapper dashboard-shell">
           <div className="dashboard-header">
             <div>
-              <div className="skeleton-title" />
-              <div className="skeleton-subtitle" />
+              <Skeleton className="skeleton-title" />
+              <Skeleton className="skeleton-subtitle" />
             </div>
           </div>
           <div className="status-grid">
             {['status', 'action', 'reports'].map((section) => (
               <div key={section} className="skeleton-card">
-                <div className="skeleton-title short" />
-                <div className="skeleton-line" />
-                <div className="skeleton-line short" />
+                <Skeleton className="skeleton-title short" />
+                <Skeleton className="skeleton-line" />
+                <Skeleton className="skeleton-line short" />
               </div>
             ))}
           </div>

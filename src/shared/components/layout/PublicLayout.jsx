@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
-import FloatingUtilityToolbar from '../ui/FloatingUtilityToolbar';
+import ScrollToTopButton from '../ui/ScrollToTopButton';
 import useScrollReveal from '../../hooks/useScrollReveal';
 import '../../../styles/shared/components/layout/PublicLayout.css';
 import '../../../styles/shared/components/layout/PageLayout.css';
@@ -14,7 +14,7 @@ import '../../../styles/shared/components/layout/PageLayout.css';
  * - Sticky Navbar.
  * - Content constrained via .container (layout.css) for comfortable reading.
  * - Scroll-reveal hook re-runs on every route change, scoped to .public-layout.
- * - FloatingUtilityToolbar renders outside <main> so it overlays page content.
+ * - ScrollToTopButton renders outside <main> so it overlays page content.
  */
 const PublicLayout = () => {
   const location = useLocation();
@@ -26,7 +26,7 @@ const PublicLayout = () => {
       <main className="public-main page-content container">
         <Outlet />
       </main>
-      <FloatingUtilityToolbar />
+      <ScrollToTopButton />
     </div>
   );
 };

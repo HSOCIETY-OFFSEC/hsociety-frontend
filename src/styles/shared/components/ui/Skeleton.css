@@ -8,6 +8,8 @@
   overflow: hidden;
   background: color-mix(in srgb, var(--input-bg) 85%, transparent);
   border: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  display: grid;
+  place-items: center;
 }
 
 .skeleton::after {
@@ -17,6 +19,17 @@
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
   transform: translateX(-100%);
   animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.skeleton-loader {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  --loader-size: clamp(10px, 45%, 18px);
+  --loader-ring: 2px;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .skeleton-line {

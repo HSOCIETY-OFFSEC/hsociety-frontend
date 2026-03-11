@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import BinaryLoader from '../ui/BinaryLoader';
+import Loader from '../ui/Loader';
 import { trackSecurityEvent } from '../../../core/security-tests/security-events.service';
 import { trackPageView } from '../../services/analytics.service';
 import '../../../styles/shared/components/layout/RouteEffects.css';
@@ -70,7 +70,7 @@ const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
 
   return (
     <div className="route-loader-overlay" aria-hidden="true">
-      <BinaryLoader size="lg" message="Switching secure context..." />
+      <Loader size="lg" label="Switching secure context" />
     </div>
   );
 };

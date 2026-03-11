@@ -1,0 +1,50 @@
+/**
+ * Loader Styles — Minimal ring
+ * Location: src/styles/shared/components/ui/Loader.css
+ */
+
+.loader {
+  --loader-size: 36px;
+  --loader-ring: 2px;
+  position: relative;
+  width: var(--loader-size);
+  height: var(--loader-size);
+  display: grid;
+  place-items: center;
+  color: var(--text-primary, #e2e8f0);
+}
+
+.loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 90deg,
+    transparent 0deg,
+    rgba(31, 191, 143, 0.85) 120deg,
+    rgba(31, 191, 143, 0.08) 240deg,
+    transparent 360deg
+  );
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--loader-ring)), #000 calc(100% - var(--loader-ring)));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--loader-ring)), #000 calc(100% - var(--loader-ring)));
+  animation: loader-spin 1.1s linear infinite;
+}
+
+.loader-core {
+  width: calc(var(--loader-size) * 0.18);
+  height: calc(var(--loader-size) * 0.18);
+  border-radius: 999px;
+  background: rgba(31, 191, 143, 0.55);
+  box-shadow: 0 0 12px rgba(31, 191, 143, 0.45);
+}
+
+.loader-xs { --loader-size: 18px; --loader-ring: 2px; }
+.loader-sm { --loader-size: 24px; --loader-ring: 2px; }
+.loader-md { --loader-size: 36px; --loader-ring: 2px; }
+.loader-lg { --loader-size: 52px; --loader-ring: 3px; }
+
+@keyframes loader-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-ring { animation: none; }
+}

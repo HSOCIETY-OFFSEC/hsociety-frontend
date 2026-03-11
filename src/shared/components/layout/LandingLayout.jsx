@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
-import FloatingUtilityToolbar from '../ui/FloatingUtilityToolbar';
+import ScrollToTopButton from '../ui/ScrollToTopButton';
 import useScrollReveal from '../../hooks/useScrollReveal';
 import '../../../styles/shared/components/layout/LandingLayout.css';
 
@@ -14,7 +14,7 @@ import '../../../styles/shared/components/layout/LandingLayout.css';
  * - .landing-main has no default padding; child <section>s manage their
  *   own vertical spacing so hero sections can bleed full edge-to-edge.
  * - Scroll-reveal hook is scoped to .landing-layout.
- * - FloatingUtilityToolbar overlays the page, rendered outside <main>.
+ * - ScrollToTopButton overlays the page, rendered outside <main>.
  *
  * Note: LandingLayout does NOT import PageLayout.css because it owns its
  * own root (.landing-layout) rather than using .page-container — this
@@ -30,7 +30,7 @@ const LandingLayout = () => {
       <main className="landing-main">
         <Outlet />
       </main>
-      <FloatingUtilityToolbar />
+      <ScrollToTopButton />
     </div>
   );
 };

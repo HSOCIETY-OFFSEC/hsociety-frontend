@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import BinaryLoader from './BinaryLoader';
+import Loader from './Loader';
 import '../../../styles/shared/components/ui/ImageWithLoader.css';
 
 const ImageWithLoader = ({
@@ -16,7 +16,7 @@ const ImageWithLoader = ({
     <div className={`image-with-loader ${loaded ? 'is-loaded' : ''} ${error ? 'is-error' : ''} ${className}`}>
       {!loaded && !error && (
         <div className="image-loader">
-          <BinaryLoader size="sm" message={loaderMessage} />
+          <Loader size="sm" label={loaderMessage} />
         </div>
       )}
       <img

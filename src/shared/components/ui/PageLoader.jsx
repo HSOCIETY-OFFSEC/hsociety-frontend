@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Logo from '../common/Logo';
+import Loader from './Loader';
 import '../../../styles/shared/components/ui/PageLoader.css';
 
 /**
@@ -59,11 +59,7 @@ const PageLoader = ({
       aria-label={message}
     >
       <div className="page-loader-inner">
-        <div className="pl-logo-wrap">
-          <div className="pl-logo-ring" aria-hidden="true" />
-          <Logo size="large" className="page-loader-logo" />
-        </div>
-        <p className="page-loader-message">{message}</p>
+        <Loader size="lg" label={message} />
       </div>
     </div>
   );

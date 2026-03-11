@@ -21,6 +21,22 @@
     var(--bg-primary);
 }
 
+/* Soft blur veil to diffuse the hero background layers */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: -2%;
+  z-index: 1;
+  pointer-events: none;
+  backdrop-filter: blur(14px) saturate(1.08);
+  -webkit-backdrop-filter: blur(14px) saturate(1.08);
+  background: color-mix(in srgb, var(--bg-primary) 22%, transparent);
+}
+
+[data-theme="light"] .hero-section::before {
+  background: color-mix(in srgb, var(--bg-primary) 14%, transparent);
+}
+
 /* ═══════════════════════════════════════
    BINARY RAIN BACKGROUND
    ═══════════════════════════════════════ */
@@ -34,6 +50,7 @@
   overflow: hidden;
   display: flex;
   gap: 0;
+  filter: blur(1.1px);
 }
 
 /* Each column of binary digits */
@@ -125,6 +142,7 @@
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  filter: blur(1.1px);
 }
 
 /* Dense scrolling text streams */
@@ -232,21 +250,28 @@
 .hero-grid-overlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(0, 255, 170, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 170, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(0, 255, 170, 0.12) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0, 255, 170, 0.12) 2px, transparent 2px);
   background-size: 40px 40px;
-  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.8) 75%, transparent 100%);
+  mask-image:
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 28%, rgba(0,0,0,0.85) 78%, transparent 100%),
+    linear-gradient(90deg, transparent 22%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,1) 58%, rgba(0,0,0,1) 100%);
+  mask-composite: intersect;
+  filter: blur(1.2px);
 }
 
 /* Light theme: grid much more visible */
 [data-theme="light"] .hero-grid-overlay {
   background-image:
-    linear-gradient(rgba(5, 120, 80, 0.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(5, 120, 80, 0.18) 1px, transparent 1px);
-  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 25%, rgba(0,0,0,0.9) 80%, transparent 100%);
+    linear-gradient(rgba(5, 120, 80, 0.24) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(5, 120, 80, 0.24) 2px, transparent 2px);
+  mask-image:
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 25%, rgba(0,0,0,0.9) 80%, transparent 100%),
+    linear-gradient(90deg, transparent 22%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,1) 58%, rgba(0,0,0,1) 100%);
+  mask-composite: intersect;
 }
 
 /* Grid pulse animation */
@@ -255,17 +280,21 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 255, 170, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 170, 0.12) 1px, transparent 1px);
+    linear-gradient(rgba(0, 255, 170, 0.18) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0, 255, 170, 0.18) 2px, transparent 2px);
   background-size: 40px 40px;
   animation: gridPulse 4s ease-in-out infinite;
   opacity: 0;
+  mask-image:
+    linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 28%, rgba(0,0,0,0.85) 78%, transparent 100%),
+    linear-gradient(90deg, transparent 22%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,1) 58%, rgba(0,0,0,1) 100%);
+  mask-composite: intersect;
 }
 
 [data-theme="light"] .hero-grid-overlay::before {
   background-image:
-    linear-gradient(rgba(5, 120, 80, 0.28) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(5, 120, 80, 0.28) 1px, transparent 1px);
+    linear-gradient(rgba(5, 120, 80, 0.34) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(5, 120, 80, 0.34) 2px, transparent 2px);
 }
 
 @keyframes gridPulse {
@@ -294,7 +323,7 @@
 /* ── Main container: two columns ── */
 .hero-container {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   max-width: 100%;
   display: flex;
