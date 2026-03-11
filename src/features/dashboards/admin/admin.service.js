@@ -143,6 +143,15 @@ export const sendAdminNotification = async (payload) => {
   return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
 };
 
+export const sendBootcampRoomLink = async (payload) => {
+  const response = await apiClient.post(API_ENDPOINTS.ADMIN.SEND_NOTIFICATION, {
+    ...payload,
+    type: 'bootcamp_meeting',
+  });
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
+};
+
 export const publishBootcampMeeting = async (payload) => {
   const response = await apiClient.post(API_ENDPOINTS.ADMIN.BOOTCAMP_MEETING, payload);
   if (response.success) return { success: true, data: response.data || {} };
@@ -183,6 +192,7 @@ export default {
   getAdminContent,
   updateAdminContent,
   sendAdminNotification,
+  sendBootcampRoomLink,
   publishBootcampMeeting,
   getSecurityEvents,
   getSecuritySummary,

@@ -8,7 +8,15 @@
 
 export const normalizeRoom = (room = {}) => ({
   roomId: Number(room.roomId ?? 0),
-  title: room.title || 'Untitled room'
+  title: room.title || 'Untitled room',
+  liveClass: room.liveClass
+    ? {
+        title: room.liveClass.title || '',
+        instructor: room.liveClass.instructor || '',
+        time: room.liveClass.time || '',
+        link: room.liveClass.link || ''
+      }
+    : null
 });
 
 export const normalizeModule = (module = {}) => ({
@@ -43,4 +51,3 @@ export default {
   normalizeCourse,
   normalizeCoursePayload
 };
-

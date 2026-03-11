@@ -64,7 +64,7 @@ const StudentLearnOverview = () => {
             <Button
               variant="ghost"
               size="small"
-              onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+              onClick={() => navigate('/student-bootcamps/overview')}
             >
               Open Dashboard
             </Button>

@@ -23,10 +23,17 @@ export const useBootcampAccess = () => {
       paymentStatus === 'paid'
     );
 
+    const isAccessGranted = Boolean(
+      user?.bootcampAccess ||
+      bootcampStatus === 'active' ||
+      bootcampStatus === 'completed'
+    );
+
     return {
       isRegistered,
       isPaid,
-      hasAccess: isRegistered && isPaid
+      isAccessGranted,
+      hasAccess: isAccessGranted || (isRegistered && isPaid)
     };
   }, [
     user?.bootcampStatus,

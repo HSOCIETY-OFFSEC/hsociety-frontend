@@ -80,10 +80,10 @@ const StudentDashboard = () => {
 
   const handleResumeLesson = () => {
     if (!continueModuleMeta || !continueRoomMeta) {
-      navigate('/student-bootcamps/hacker-protocol/dashboard');
+      navigate('/student-bootcamps/overview');
       return;
     }
-    navigate(`/student-bootcamps/hacker-protocol/module/${continueModuleMeta.moduleId}/room/${continueRoomMeta.roomId}`);
+    navigate(`/student-bootcamps/modules/${continueModuleMeta.moduleId}/rooms/${continueRoomMeta.roomId}`);
   };
 
   const skillPillars = useMemo(() => {

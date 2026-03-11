@@ -50,7 +50,7 @@ export const NAV_LINKS = {
     ],
     student: [
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen, group: 'default' },
-      { path: '/student-bootcamps/hacker-protocol/dashboard', label: 'Learning', icon: FiTerminal, group: 'default' },
+      { path: '/student-bootcamps/overview', label: 'Learning', icon: FiTerminal, group: 'default' },
       { path: '/student-bootcamps', label: 'Bootcamp', icon: FiLayers, group: 'default' },
       { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'default' },
       { path: '/student-payments', label: 'Payments', icon: FiCreditCard, group: 'default' },
@@ -112,7 +112,7 @@ export const NAV_LINKS = {
     student: [
       { path: '/', label: 'Home', icon: FiShield },
       { path: '/student-dashboard', label: 'Dashboard', icon: FiBookOpen, group: 'default' },
-      { path: '/student-bootcamps/hacker-protocol/dashboard', label: 'Learning', icon: FiTerminal, group: 'learn' },
+      { path: '/student-bootcamps/overview', label: 'Learning', icon: FiTerminal, group: 'learn' },
       { path: '/student-bootcamps', label: 'Bootcamp', icon: FiLayers, group: 'learn' },
       { path: '/student-resources', label: 'Resources', icon: FiBookOpen, group: 'learn' },
       { path: '/student-payments', label: 'Payments', icon: FiCreditCard, group: 'learn' },

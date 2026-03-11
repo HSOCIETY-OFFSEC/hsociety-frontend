@@ -32,13 +32,17 @@ const Contact = React.lazy(() => import('../features/contact/Contact'));
 const ServiceDetail = React.lazy(() => import('../features/services/ServiceDetail'));
 const ThreatMap = React.lazy(() => import('../features/threat-map/ThreatMap'));
 const StudentDashboard = loadDashboard('StudentDashboard');
-const StudentLearning = React.lazy(() => import('../features/student/StudentLearning'));
-const StudentLesson = React.lazy(() => import('../features/student/StudentLesson'));
-const StudentModuleDetails = React.lazy(() => import('../features/student/StudentModuleDetails'));
 const StudentResources = React.lazy(() => import('../features/student/StudentResources'));
 const StudentQuizMaterial = React.lazy(() => import('../features/student/StudentQuizMaterial'));
-const StudentBootcamp = React.lazy(() => import('../features/student/StudentBootcamp'));
 const StudentPayments = React.lazy(() => import('../features/student/StudentPayments'));
+const BootcampLayout = React.lazy(() => import('../features/student/bootcamp/BootcampLayout'));
+const BootcampOverview = React.lazy(() => import('../features/student/bootcamp/BootcampOverview'));
+const BootcampModules = React.lazy(() => import('../features/student/bootcamp/BootcampModules'));
+const BootcampModule = React.lazy(() => import('../features/student/bootcamp/BootcampModule'));
+const BootcampRoom = React.lazy(() => import('../features/student/bootcamp/BootcampRoom'));
+const BootcampLiveClass = React.lazy(() => import('../features/student/bootcamp/BootcampLiveClass'));
+const BootcampResources = React.lazy(() => import('../features/student/bootcamp/BootcampResources'));
+const BootcampProgress = React.lazy(() => import('../features/student/bootcamp/BootcampProgress'));
 const AdminLayout = React.lazy(() => import('../features/dashboards/admin/AdminLayout'));
 const AdminOverview = React.lazy(() => import('../features/dashboards/admin/AdminOverview'));
 const AdminUsers = React.lazy(() => import('../features/dashboards/admin/AdminUsers'));
@@ -137,6 +141,16 @@ const PublicHandleRoute = () => {
   return <PublicProfile />;
 };
 
+const LegacyBootcampModuleRedirect = () => {
+  const { moduleId } = useParams();
+  return <Navigate to={`/student-bootcamps/modules/${moduleId}`} replace />;
+};
+
+const LegacyBootcampRoomRedirect = () => {
+  const { moduleId, roomId } = useParams();
+  return <Navigate to={`/student-bootcamps/modules/${moduleId}/rooms/${roomId}`} replace />;
+};
+
 const LoadingFallback = () => <PageLoader message="Loading secure interface..." durationMs={0} />;
 
 /**
@@ -192,6 +206,37 @@ const AppRouter = () => {
               </RoleRoute>
             }
           />
+
+          {/* Bootcamp learning app (standalone layout) */}
+          <Route
+            path="student-bootcamps"
+            element={
+              <RoleRoute allowedRoles={['student']}>
+                <BootcampLayout />
+              </RoleRoute>
+            }
+          >
+            <Route index element={<Navigate to="overview" replace />} />
+            <Route path="overview" element={<BootcampOverview />} />
+            <Route path="modules" element={<BootcampModules />} />
+            <Route path="modules/:moduleId" element={<BootcampModule />} />
+            <Route path="modules/:moduleId/rooms/:roomId" element={<BootcampRoom />} />
+            <Route path="live-class" element={<BootcampLiveClass />} />
+            <Route path="resources" element={<BootcampResources />} />
+            <Route path="progress" element={<BootcampProgress />} />
+            <Route
+              path="hacker-protocol/dashboard"
+              element={<Navigate to="/student-bootcamps/overview" replace />}
+            />
+            <Route
+              path="hacker-protocol/modules/:moduleId"
+              element={<LegacyBootcampModuleRedirect />}
+            />
+            <Route
+              path="hacker-protocol/module/:moduleId/room/:roomId"
+              element={<LegacyBootcampRoomRedirect />}
+            />
+          </Route>
 
           {/* Workspace pages - dashboard and student learning */}
           <Route element={<WorkspaceLayout />}>
@@ -331,23 +376,7 @@ const AppRouter = () => {
               path="student-learning"
               element={
                 <RoleRoute allowedRoles={['student']}>
-                  <Navigate to="/student-bootcamps/hacker-protocol/dashboard" replace />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="student-bootcamps"
-              element={
-                <RoleRoute allowedRoles={['student']}>
-                  <StudentBootcamp />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="student-bootcamps/hacker-protocol/dashboard"
-              element={
-                <RoleRoute allowedRoles={['student']}>
-                  <StudentLearning />
+                  <Navigate to="/student-bootcamps/overview" replace />
                 </RoleRoute>
               }
             />
@@ -380,22 +409,6 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentPayments />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="student-bootcamps/hacker-protocol/module/:moduleId/room/:roomId"
-              element={
-                <RoleRoute allowedRoles={['student']}>
-                  <StudentLesson />
-                </RoleRoute>
-              }
-            />
-            <Route
-              path="student-bootcamps/hacker-protocol/modules/:moduleId"
-              element={
-                <RoleRoute allowedRoles={['student']}>
-                  <StudentModuleDetails />
                 </RoleRoute>
               }
             />

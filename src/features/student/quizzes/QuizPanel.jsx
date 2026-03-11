@@ -70,6 +70,11 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
     }
   };
 
+  const handleRetry = () => {
+    setResult(null);
+    setAnswers({});
+  };
+
   const headerLabel =
     scope.type === 'room'
       ? 'Room Quiz'
@@ -183,6 +188,11 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
                 <Button variant="ghost" size="small" onClick={onClose}>
                   Close
                 </Button>
+                {result && !result.passed && (
+                  <Button variant="secondary" size="small" onClick={handleRetry}>
+                    Retry Quiz
+                  </Button>
+                )}
                 {!result && (
                   <Button
                     variant="primary"

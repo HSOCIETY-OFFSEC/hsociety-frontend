@@ -52,7 +52,7 @@ const WorkspaceLayout = () => {
   const notificationMenuRef = useRef(null);
 
   const pathname = location.pathname || '';
-  const isLessonWorkspace = pathname.startsWith('/student-bootcamps/hacker-protocol/module/');
+  const isLessonWorkspace = pathname.startsWith('/student-bootcamps/modules/');
   const isCommunity = pathname.startsWith('/community');
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   const { cpTotal, streakDays } = useUserStats(user?.id, role);

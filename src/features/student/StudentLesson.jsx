@@ -112,7 +112,7 @@ const StudentLesson = () => {
         <header className="student-hero reveal-on-scroll">
           <div>
             <p className="student-kicker">Loading lesson</p>
-            <h1>Preparing your workspace...</h1>
+            <h1>Preparing your lesson...</h1>
           </div>
         </header>
         <section className="lesson-layout">
@@ -137,7 +137,7 @@ const StudentLesson = () => {
           <Button
             variant="primary"
             size="large"
-            onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+            onClick={() => navigate('/student-bootcamps/overview')}
           >
             <FiArrowLeft size={18} />
             Back to Dashboard
@@ -164,7 +164,7 @@ const StudentLesson = () => {
           <Button
             variant="primary"
             size="large"
-            onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+            onClick={() => navigate('/student-bootcamps/overview')}
           >
             <FiArrowLeft size={18} />
             Back to Dashboard
@@ -236,7 +236,7 @@ const StudentLesson = () => {
           size="large"
           onClick={() => {
             if (!previousRoom) return;
-            navigate(`/student-bootcamps/hacker-protocol/module/${module.moduleId}/room/${previousRoom.roomId}`);
+            navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${previousRoom.roomId}`);
           }}
           disabled={!previousRoom}
         >
@@ -262,7 +262,7 @@ const StudentLesson = () => {
           size="large"
           onClick={() => {
             if (canAdvance && nextRoom) {
-              navigate(`/student-bootcamps/hacker-protocol/module/${module.moduleId}/room/${nextRoom.roomId}`);
+              navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${nextRoom.roomId}`);
               return;
             }
             setStatusMessage('Complete the quiz to unlock the next room.');

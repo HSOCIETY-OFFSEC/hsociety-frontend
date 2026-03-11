@@ -159,7 +159,7 @@ const StudentBootcamp = () => {
                     <Button
                       variant="primary"
                       size="small"
-                      onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+                      onClick={() => navigate('/student-bootcamps/overview')}
                     >
                       Open Bootcamp
                     </Button>

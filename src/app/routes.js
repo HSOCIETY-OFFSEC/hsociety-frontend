@@ -10,7 +10,7 @@ export const ROUTES = {
   STUDENT_DASHBOARD: '/student-dashboard',
   STUDENT_BOOTCAMPS: '/student-bootcamps',
   STUDENT_LESSON: (moduleId, roomId) =>
-    `/student-bootcamps/hacker-protocol/module/${moduleId}/room/${roomId}`,
+    `/student-bootcamps/modules/${moduleId}/rooms/${roomId}`,
 };
 
 export default ROUTES;

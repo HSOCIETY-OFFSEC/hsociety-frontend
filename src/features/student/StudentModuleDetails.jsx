@@ -54,7 +54,7 @@ const StudentModuleDetails = () => {
       <div className="student-page module-details-page">
         <Card padding="large" className="module-details-card">
           <h1>Module not found</h1>
-          <Button variant="secondary" size="small" onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}>
+          <Button variant="secondary" size="small" onClick={() => navigate('/student-bootcamps/overview')}>
             <FiArrowLeft size={16} />
             Back
           </Button>
@@ -89,7 +89,7 @@ const StudentModuleDetails = () => {
                     return;
                   }
                   if (!nextRoom) return;
-                  navigate(`/student-bootcamps/hacker-protocol/module/${module.moduleId}/room/${nextRoom.roomId}`);
+                  navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${nextRoom.roomId}`);
                 }}
               >
                 <FiPlayCircle size={15} />
@@ -98,7 +98,7 @@ const StudentModuleDetails = () => {
               <Button
                 variant="ghost"
                 size="small"
-                onClick={() => navigate('/student-bootcamps/hacker-protocol/dashboard')}
+                onClick={() => navigate('/student-bootcamps/overview')}
               >
                 <FiArrowLeft size={15} />
                 Back to Dashboard

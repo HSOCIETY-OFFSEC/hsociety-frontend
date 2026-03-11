@@ -118,7 +118,7 @@ const Navbar = ({ sticky = true }) => {
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
   const studentLearnLinks = useMemo(
     () => [
-      { path: '/student-bootcamps/hacker-protocol/dashboard', label: 'Learning', icon: FiTerminal },
+      { path: '/student-bootcamps/overview', label: 'Learning', icon: FiTerminal },
       { path: '/student-bootcamps', label: 'Bootcamp', icon: FiLayers },
       { path: '/student-resources', label: 'Resources', icon: FiBookOpen },
       { path: '/student-payments', label: 'Payments', icon: FiCreditCard },
@@ -137,7 +137,7 @@ const Navbar = ({ sticky = true }) => {
   const roleOrder = useMemo(() => ({
     student: [
       '/student-dashboard',
-      '/student-bootcamps/hacker-protocol/dashboard',
+      '/student-bootcamps/overview',
       '/student-bootcamps',
       '/student-resources',
       '/student-payments',

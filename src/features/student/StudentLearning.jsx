@@ -109,7 +109,7 @@ const StudentLearning = () => {
     }
 
     setStatusMessage('');
-    navigate(`/student-bootcamps/hacker-protocol/modules/${module.moduleId}`);
+    navigate(`/student-bootcamps/modules/${module.moduleId}`);
   };
 
   const currentPhaseId = useMemo(() => {

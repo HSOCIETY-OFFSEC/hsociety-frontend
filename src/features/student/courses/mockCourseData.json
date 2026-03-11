@@ -11,7 +11,16 @@
         "title": "The Hacker Mindset & Learning Path",
         "badge": "Mindset Master",
         "rooms": [
-          { "roomId": 1, "title": "The Hacker Mindset" },
+          {
+            "roomId": 1,
+            "title": "The Hacker Mindset",
+            "liveClass": {
+              "title": "Network Recon Basics",
+              "instructor": "Admin",
+              "time": "19:00 GMT",
+              "link": ""
+            }
+          },
           { "roomId": 2, "title": "How to Learn Hacking Effectively" }
         ],
         "ctf": "Mindset CTF"
@@ -22,7 +31,16 @@
         "badge": "Network Explorer",
         "rooms": [
           { "roomId": 3, "title": "Networking Basics" },
-          { "roomId": 4, "title": "Networking Intermediate" },
+          {
+            "roomId": 4,
+            "title": "Networking Intermediate",
+            "liveClass": {
+              "title": "Live Mapping Drill",
+              "instructor": "Admin",
+              "time": "20:00 GMT",
+              "link": "https://meet.google.com/example"
+            }
+          },
           { "roomId": 5, "title": "Hacker Network Techniques" }
         ],
         "ctf": "Network Breach Lab"
