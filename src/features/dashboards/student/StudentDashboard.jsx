@@ -10,7 +10,6 @@ import StudentXpSummaryCard from './components/StudentXpSummaryCard';
 import StudentRecentNotificationsCard from './components/StudentRecentNotificationsCard';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import SkillProgressCard from './components/SkillProgressCard';
-import { getHackerProtocolModule, HACKER_PROTOCOL_PHASES } from '../../../data/bootcamps/hackerProtocolData';
 import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
@@ -55,7 +54,7 @@ const StudentDashboard = () => {
 
   const continueModule = useMemo(() => {
     if (data.learningPath?.length) {
-      return data.learningPath.find((item) => item.status === 'current')
+      return data.learningPath.find((item) => item.status === 'in-progress' || item.status === 'current')
         || data.learningPath.find((item) => item.status === 'next')
         || data.learningPath[0];
     }
@@ -65,25 +64,12 @@ const StudentDashboard = () => {
     return null;
   }, [data.learningPath, data.modules]);
 
-  const continueModuleMeta = useMemo(() => {
-    if (!continueModule?.id) return null;
-    return getHackerProtocolModule(Number(continueModule.id));
-  }, [continueModule?.id]);
-
-  const continueRoomMeta = useMemo(() => {
-    if (!continueModuleMeta) return null;
-    const roomsTotal = continueModule?.roomsTotal || continueModuleMeta.rooms.length || 0;
-    const roomsCompleted = continueModule?.roomsCompleted || 0;
-    const roomIndex = Math.min(Math.max(roomsCompleted, 0), Math.max(roomsTotal - 1, 0));
-    return continueModuleMeta.rooms?.[roomIndex] || null;
-  }, [continueModule, continueModuleMeta]);
-
   const handleResumeLesson = () => {
-    if (!continueModuleMeta || !continueRoomMeta) {
+    if (!continueModule?.id) {
       navigate('/student-bootcamps/overview');
       return;
     }
-    navigate(`/student-bootcamps/modules/${continueModuleMeta.moduleId}/rooms/${continueRoomMeta.roomId}`);
+    navigate(`/student-bootcamps/modules/${continueModule.id}`);
   };
 
   const skillPillars = useMemo(() => {
@@ -119,19 +105,17 @@ const StudentDashboard = () => {
     ];
   }, [data.modules, data.snapshot]);
 
-  const bootcampProgressMap = useMemo(() => {
-    return (data.modules || []).reduce((acc, module) => {
-      acc[Number(module.id)] = Number(module.progress) || 0;
-      return acc;
-    }, {});
-  }, [data.modules]);
+  const bootcampProgressItems = useMemo(() => {
+    const source = (data.learningPath && data.learningPath.length)
+      ? data.learningPath
+      : (data.modules || []);
 
-  const currentPhaseId = useMemo(() => {
-    const firstIncomplete = HACKER_PROTOCOL_PHASES.find(
-      (phase) => (bootcampProgressMap[Number(phase.moduleId)] || 0) < 100
-    );
-    return firstIncomplete?.moduleId || HACKER_PROTOCOL_PHASES[HACKER_PROTOCOL_PHASES.length - 1]?.moduleId;
-  }, [bootcampProgressMap]);
+    return (source || []).map((item, index) => ({
+      ...item,
+      phaseNumber: Number(item.id) || index + 1,
+      status: item.status || (Number(item.progress) >= 100 ? 'done' : index === 0 ? 'in-progress' : 'next')
+    }));
+  }, [data.learningPath, data.modules]);
 
   return (
     <div className="student-page">
@@ -191,10 +175,12 @@ const StudentDashboard = () => {
                   <Card padding="large" className="student-card continue-learning-card">
                     <div className="continue-learning-header">
                       <p className="continue-learning-kicker">Continue Learning</p>
-                      <h2>{continueModuleMeta?.title || continueModule?.title || 'Start your bootcamp'}</h2>
+                      <h2>{continueModule?.title || 'Start your bootcamp'}</h2>
                       <p className="continue-learning-module">
-                        Phase: {continueModuleMeta?.codename || 'Hacker Protocol'}
-                        {continueRoomMeta ? ` · Room ${continueRoomMeta.roomId}: ${continueRoomMeta.title}` : ''}
+                        Phase {continueModule?.id || '1'}
+                        {continueModule?.roomsTotal
+                          ? ` · Rooms ${continueModule?.roomsCompleted || 0}/${continueModule?.roomsTotal}`
+                          : ''}
                       </p>
                       <span className="continue-learning-progress-pill">
                         Progress {Math.round(continueModule?.progress || 0)}%
@@ -219,14 +205,15 @@ const StudentDashboard = () => {
                       <span className="bootcamp-progress-subtitle">Phase-by-phase completion</span>
                     </div>
                     <div className="bootcamp-progress-list">
-                      {HACKER_PROTOCOL_PHASES.map((phase) => {
-                        const progress = bootcampProgressMap[Number(phase.moduleId)] || 0;
-                        const isCompleted = progress >= 100;
-                        const isCurrent = !isCompleted && phase.moduleId === currentPhaseId;
+                      {bootcampProgressItems.map((phase) => {
+                        const progress = Number(phase.progress) || 0;
+                        const status = String(phase.status || '').toLowerCase();
+                        const isCompleted = status === 'done' || progress >= 100;
+                        const isCurrent = status === 'in-progress' || status === 'current';
                         return (
-                          <div key={phase.moduleId} className={`bootcamp-progress-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}>
-                            <span className="bootcamp-progress-phase">Phase {phase.moduleId}</span>
-                            <span className="bootcamp-progress-title">{phase.codename}</span>
+                          <div key={phase.id} className={`bootcamp-progress-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}>
+                            <span className="bootcamp-progress-phase">Phase {phase.phaseNumber}</span>
+                            <span className="bootcamp-progress-title">{phase.title}</span>
                             <span className="bootcamp-progress-status">
                               {isCompleted ? (
                                 <>
