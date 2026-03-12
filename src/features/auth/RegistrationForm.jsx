@@ -259,15 +259,17 @@ const RegistrationForm = ({
           </span>
         </label>
 
-        <Button
-          type="submit"
-          variant="primary"
-          fullWidth
-          loading={loading}
-          disabled={loading || !isValid}
-        >
-          {copy.button.create}
-        </Button>
+        <div className="auth-mobile-actions">
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            loading={loading}
+            disabled={loading || !isValid}
+          >
+            {copy.button.create}
+          </Button>
+        </div>
       </form>
 
     </Card>

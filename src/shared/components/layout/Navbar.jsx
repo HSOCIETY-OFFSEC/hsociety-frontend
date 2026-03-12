@@ -6,6 +6,7 @@ import {
   LuCreditCard,
   LuBell,
   LuLayers,
+  LuLogIn,
   LuLogOut,
   LuMenu,
   LuEllipsis,
@@ -582,10 +583,10 @@ const Navbar = ({ sticky = true }) => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {viewportMode === 'mobile' && mobileMenuOpen && (
-        <div className="mobile-menu" id={MENU_IDS.mobile}>
-          <div className="mobile-menu-inner">
+          {/* Mobile Menu */}
+          {viewportMode === 'mobile' && mobileMenuOpen && (
+            <div className="mobile-menu" id={MENU_IDS.mobile}>
+              <div className="mobile-menu-inner">
             <div className="mobile-menu-section">
               <button
                 type="button"
@@ -699,6 +700,18 @@ const Navbar = ({ sticky = true }) => {
               <>
                 <button
                   onClick={() => {
+                    openAuthModal('login');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="mobile-menu-login"
+                >
+                  <span className="mobile-menu-icon">
+                    <LuLogIn size={18} />
+                  </span>
+                  <span>Login</span>
+                </button>
+                <button
+                  onClick={() => {
                     openAuthModal('register');
                     setMobileMenuOpen(false);
                   }}
@@ -712,6 +725,25 @@ const Navbar = ({ sticky = true }) => {
               </>
             )}
           </div>
+            </div>
+          )}
+
+      {viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && (
+        <div className="mobile-action-dock" role="navigation" aria-label="Quick actions">
+          <button
+            type="button"
+            className="mobile-action-btn mobile-action-login"
+            onClick={() => openAuthModal('login')}
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            className="mobile-action-btn mobile-action-register"
+            onClick={() => openAuthModal('register')}
+          >
+            Register
+          </button>
         </div>
       )}
 

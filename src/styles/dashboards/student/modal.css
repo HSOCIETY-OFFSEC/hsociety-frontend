@@ -92,6 +92,15 @@
     min-width: 44px;
     min-height: 44px;
     padding: 0.5rem;
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 10;
+    background: var(--bg-secondary);
+  }
+
+  .student-modal-card {
+    padding-bottom: 4.5rem;
   }
 }
 

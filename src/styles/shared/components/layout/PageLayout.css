@@ -34,6 +34,6 @@
 
 @media (max-width: 767px) {
   .page-content {
-    padding-bottom: calc(1rem + var(--bottom-nav-height, 64px));
+    padding-bottom: calc(1rem + var(--bottom-nav-height, 64px) + 56px);
   }
 }

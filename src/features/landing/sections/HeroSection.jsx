@@ -255,6 +255,11 @@ const HeroSection = ({ content }) => {
             })}
           </div>
 
+          <div className="hero-scroll-cue" aria-hidden="true">
+            <span className="hero-scroll-text">Scroll</span>
+            <span className="hero-scroll-arrow" />
+          </div>
+
         </div>
 
         {/* ── RIGHT: Logo visual ── */}

@@ -43,8 +43,15 @@
 
 @media (max-width: 640px) {
   .scroll-to-top {
+    left: auto;
     right: 16px;
-    bottom: 16px;
+    top: 18%;
+    bottom: auto;
+    transform: translateY(0) scale(0.98);
     padding: 10px 14px;
+  }
+
+  .scroll-to-top.is-visible {
+    transform: translateY(0) scale(1);
   }
 }

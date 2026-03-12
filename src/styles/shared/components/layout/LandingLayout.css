@@ -91,3 +91,9 @@
     padding-bottom: 0;
   }
 }
+
+@media (max-width: 767px) {
+  .landing-layout .landing-main {
+    padding-bottom: calc(1rem + var(--bottom-nav-height, 64px) + 56px);
+  }
+}

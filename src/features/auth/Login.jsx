@@ -254,15 +254,17 @@ const Login = ({
                   autoComplete="current-password"
                 />
               </div>
-              <Button
-                type="submit"
-                variant="primary"
-                fullWidth
-                loading={loading}
-                disabled={loading || !email || !password}
-              >
-                {loading ? copy.buttons.signingIn : copy.buttons.signIn}
-              </Button>
+              <div className="auth-mobile-actions">
+                <Button
+                  type="submit"
+                  variant="primary"
+                  fullWidth
+                  loading={loading}
+                  disabled={loading || !email || !password}
+                >
+                  {loading ? copy.buttons.signingIn : copy.buttons.signIn}
+                </Button>
+              </div>
             </form>
           )}
 
@@ -287,24 +289,26 @@ const Login = ({
                 />
                 <span className="form-hint">{copy.fields.twofa.hint}</span>
               </div>
-              <Button
-                id="otp-submit-btn"
-                type="submit"
-                variant="primary"
-                fullWidth
-                loading={loading}
-                disabled={loading || twoFACode.length !== 6}
-              >
-                {loading ? copy.buttons.verifying : copy.buttons.verify}
-              </Button>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="auth-link"
-                disabled={loading}
-              >
-                {copy.buttons.useDifferent}
-              </button>
+              <div className="auth-mobile-actions">
+                <Button
+                  id="otp-submit-btn"
+                  type="submit"
+                  variant="primary"
+                  fullWidth
+                  loading={loading}
+                  disabled={loading || twoFACode.length !== 6}
+                >
+                  {loading ? copy.buttons.verifying : copy.buttons.verify}
+                </Button>
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="auth-link"
+                  disabled={loading}
+                >
+                  {copy.buttons.useDifferent}
+                </button>
+              </div>
             </form>
           )}
 
