@@ -42,16 +42,6 @@ const AdminSecurity = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-shell">
-        <div className="admin-hero dashboard-shell-header">
-          <div>
-            <p className="admin-kicker dashboard-shell-kicker">MINI SOC</p>
-            <h1 className="dashboard-shell-title">Security Activity Feed</h1>
-            <p className="admin-subtitle dashboard-shell-subtitle">
-              Real-time IP activity, auth failures, and API security signals.
-            </p>
-          </div>
-        </div>
-
         <PublicError message={error} className="admin-alert" />
 
         <div className="admin-overview-grid">
@@ -101,14 +91,14 @@ const AdminSecurity = () => {
               <tbody>
                 {events.map((event) => (
                   <tr key={event.id}>
-                    <td>{new Date(event.createdAt).toLocaleString()}</td>
-                    <td>{event.eventType}</td>
-                    <td>{event.action}</td>
-                    <td>{event.user?.email || 'anonymous'}</td>
-                    <td>{event.ipAddress || '-'}</td>
-                    <td>{event.macAddress || 'unavailable'}</td>
-                    <td>{event.path || '-'}</td>
-                    <td>
+                    <td data-label="Time">{new Date(event.createdAt).toLocaleString()}</td>
+                    <td data-label="Type">{event.eventType}</td>
+                    <td data-label="Action">{event.action}</td>
+                    <td data-label="User">{event.user?.email || 'anonymous'}</td>
+                    <td data-label="IP">{event.ipAddress || '-'}</td>
+                    <td data-label="MAC">{event.macAddress || 'unavailable'}</td>
+                    <td data-label="Path">{event.path || '-'}</td>
+                    <td data-label="Status">
                       {event.statusCode > 0 ? event.statusCode : <FiLock size={14} />}
                     </td>
                   </tr>

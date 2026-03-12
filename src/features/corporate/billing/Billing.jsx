@@ -121,7 +121,7 @@ const Billing = () => {
               <span>Status</span>
               <span>Actions</span>
             </div>
-            {loadingInvoices
+                {loadingInvoices
               ? [...Array(3)].map((_, index) => (
                   <div key={index} className="billing-row">
                     <Skeleton className="billing-skeleton" style={{ width: '100%' }} />
@@ -129,16 +129,16 @@ const Billing = () => {
                 ))
               : invoices.map((invoice) => (
                   <div key={invoice.id} className="billing-row">
-                    <span>{invoice.id}</span>
-                    <span>{invoice.engagementName}</span>
-                    <span>{formatDate(invoice.date)}</span>
-                    <span>${invoice.amount?.toLocaleString()}</span>
-                    <span>
+                    <span data-label="Invoice ID">{invoice.id}</span>
+                    <span data-label="Engagement">{invoice.engagementName}</span>
+                    <span data-label="Date">{formatDate(invoice.date)}</span>
+                    <span data-label="Amount">${invoice.amount?.toLocaleString()}</span>
+                    <span data-label="Status">
                       <span className={`billing-status billing-status-${invoice.status.toLowerCase()}`}>
                         {invoice.status}
                       </span>
                     </span>
-                    <span className="billing-row-actions">
+                    <span className="billing-row-actions" data-label="Actions">
                       <Button variant="ghost" size="small" onClick={() => downloadDocument(invoice.id)}>
                         <FiDownload size={14} />
                       </Button>

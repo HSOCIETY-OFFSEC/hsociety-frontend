@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FiActivity, FiMessageSquare, FiShield, FiUsers } from 'react-icons/fi';
+import { FiMessageSquare, FiShield, FiUsers } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
@@ -44,32 +44,6 @@ const AdminOverview = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-shell">
-        <div className="admin-hero dashboard-shell-header">
-          <div>
-            <p className="admin-kicker dashboard-shell-kicker">HSOCIETY CONTROL NODE</p>
-            <h1 className="dashboard-shell-title">MR ROBOT</h1>
-            <p className="admin-subtitle dashboard-shell-subtitle">
-              Monitor activity, manage teams, and keep operations aligned.
-            </p>
-          </div>
-          <div className="admin-badges dashboard-shell-actions">
-            <div className="admin-badge">
-              <FiUsers size={18} />
-              <div>
-                <span>Total Users</span>
-                <strong>{users.total || 0}</strong>
-              </div>
-            </div>
-            <div className="admin-badge">
-              <FiActivity size={18} />
-              <div>
-                <span>Active (24h)</span>
-                <strong>{users.active24h || 0}</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <PublicError message={error} className="admin-alert" />
 
         <div className="admin-overview-grid">

@@ -85,6 +85,15 @@
   min-width: 0;
 }
 
+/* ── Dashboard border reset ───────────────────────────────── */
+:is(.dashboard-shell, .dashboard-container, .dashboard-wrapper, .student-page, .admin-dashboard, .pentester-dashboard) {
+  border: none !important;
+}
+
+:is(.dashboard-shell, .dashboard-container, .dashboard-wrapper, .student-page, .admin-dashboard, .pentester-dashboard) * {
+  border: none !important;
+}
+
 /* ── Large tablet (900px+) — restore card borders + row layout ─ */
 @media (min-width: 900px) {
   .dashboard-shell {
@@ -292,7 +301,7 @@
    ======================================== */
 
 .w-full   { width: 100%; }
-.w-screen { width: 100vw; }
+.w-screen { width: 100%; max-width: 100%; }
 .w-auto   { width: auto; }
 .w-fit    { width: fit-content; }
 

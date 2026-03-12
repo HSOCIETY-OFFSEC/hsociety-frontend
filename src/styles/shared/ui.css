@@ -69,10 +69,42 @@ textarea {
 
 input[type="checkbox"],
 input[type="radio"] {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
   accent-color: var(--primary-color);
+}
+
+@media (max-width: 480px) {
+  .checkbox-wrapper,
+  .radio-wrapper {
+    min-height: 44px;
+    padding: 0.25rem 0;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ========================================
+   TAP TARGET UTILITIES
+   ======================================== */
+
+.tap-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Expands hit area without visual change */
+.tap-boost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: -10px;
 }
 
 /* ========================================
@@ -192,6 +224,18 @@ select {
 .tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.tooltip:focus-within .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .tooltip:active .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 /* ========================================

@@ -121,16 +121,6 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-wrapper dashboard-shell">
-        <header className="dashboard-header dashboard-shell-header reveal-on-scroll dramatic-header corporate-hero">
-          <div>
-            <p className="corp-header-kicker">Corporate Dashboard</p>
-            <h1 className="dashboard-title dashboard-shell-title">Security Command Overview</h1>
-            <p className="dashboard-subtitle dashboard-shell-subtitle">
-              Actionable security insight, prioritized for your team.
-            </p>
-          </div>
-        </header>
-
         {loading && (
           <div className="corp-loading-text">Loading your security dashboard...</div>
         )}

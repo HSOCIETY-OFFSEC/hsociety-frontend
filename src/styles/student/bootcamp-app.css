@@ -23,6 +23,8 @@
     "sidebar main"
     "sidebar footer";
   min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   transition: grid-template-columns 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -311,6 +313,14 @@
   transform: translateY(-50%) translateX(2px);
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .bootcamp-sidebar-inner.collapsed [data-tooltip]:active::after,
+  .bootcamp-sidebar-inner.collapsed [data-tooltip]:focus-visible::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(2px);
+  }
+}
+
 /* ── Main area ──────────────────────────────────────────────── */
 .bootcamp-main {
   grid-area: main;
@@ -319,6 +329,9 @@
   padding: 0;
   display: flex;
   justify-content: center;
+  min-height: 0;
+  overflow-y: auto;
+  height: calc(100vh - var(--workspace-topbar-height, 56px));
 }
 
 .bootcamp-main > * {
@@ -341,6 +354,10 @@
   width: 320px;
   overflow-y: auto;
   padding: 1.25rem;
+  position: sticky;
+  top: var(--workspace-topbar-height, 56px);
+  height: calc(100vh - var(--workspace-topbar-height, 56px));
+  align-self: start;
 }
 
 .bootcamp-right-inner {

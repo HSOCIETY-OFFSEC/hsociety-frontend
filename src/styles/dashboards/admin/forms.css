@@ -29,3 +29,15 @@
   width: 18px;
   height: 18px;
 }
+
+@media (max-width: 480px) {
+  .admin-checkbox {
+    min-height: 44px;
+    padding: 0.25rem 0;
+  }
+
+  .admin-checkbox input {
+    width: 22px;
+    height: 22px;
+  }
+}

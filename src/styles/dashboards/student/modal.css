@@ -87,6 +87,14 @@
   background: var(--bg-secondary);
 }
 
+@media (max-width: 480px) {
+  .student-modal-close {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.5rem;
+  }
+}
+
 /* ── Modal Subtitle ─────────────────────────────────────────── */
 .student-modal-subtitle {
   margin: 0 0 1.35rem;

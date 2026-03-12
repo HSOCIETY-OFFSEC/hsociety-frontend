@@ -189,24 +189,6 @@ const AppRouter = () => {
             <Route path="change-password" element={<ForcePasswordChange />} />
           </Route>
 
-          {/* Community (standalone layout) */}
-          <Route
-            path="community"
-            element={
-              <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
-                <CommunityHub />
-              </RoleRoute>
-            }
-          />
-          <Route
-            path="community/profile/:handle"
-            element={
-              <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
-                <CommunityProfile />
-              </RoleRoute>
-            }
-          />
-
           {/* Bootcamp learning app (standalone layout) */}
           <Route
             path="student-bootcamps"
@@ -240,6 +222,22 @@ const AppRouter = () => {
 
           {/* Workspace pages - dashboard and student learning */}
           <Route element={<WorkspaceLayout />}>
+            <Route
+              path="community"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                  <CommunityHub />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="community/profile/:handle"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                  <CommunityProfile />
+                </RoleRoute>
+              }
+            />
             <Route
               path="corporate-dashboard"
               element={

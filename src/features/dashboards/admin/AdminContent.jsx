@@ -394,16 +394,6 @@ const AdminContent = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-shell">
-        <div className="admin-hero dashboard-shell-header">
-          <div>
-            <p className="admin-kicker dashboard-shell-kicker">CONTENT CONTROL</p>
-            <h1 className="dashboard-shell-title">Manage Learn, Resources, and Alerts</h1>
-            <p className="admin-subtitle dashboard-shell-subtitle">
-              Configure student-facing content and send targeted notifications.
-            </p>
-          </div>
-        </div>
-
         {error && <div className="admin-alert">{error}</div>}
         {status && <div className="admin-alert">{status}</div>}
 

@@ -11,16 +11,6 @@ const AdminOperations = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-shell">
-        <div className="admin-hero dashboard-shell-header">
-          <div>
-            <p className="admin-kicker dashboard-shell-kicker">MANAGEMENT HUB</p>
-            <h1 className="dashboard-shell-title">Admin Operations</h1>
-            <p className="admin-subtitle dashboard-shell-subtitle">
-              Jump into the tools that keep HSOCIETY running.
-            </p>
-          </div>
-        </div>
-
         <div className="admin-overview-grid">
           <Card className="admin-card" padding="medium">
             <div className="admin-section-header">

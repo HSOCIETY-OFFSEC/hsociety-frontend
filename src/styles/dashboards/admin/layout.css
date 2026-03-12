@@ -141,6 +141,16 @@ body.admin-sidebar-open {
   background: color-mix(in srgb, var(--primary-color) 10%, var(--input-bg));
 }
 
+@media (max-width: 480px) {
+  .admin-sidebar-close {
+    width: 44px;
+    height: 44px;
+    top: auto;
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
 /* ── Brand block ────────────────────────────────────────────── */
 .admin-sidebar-brand {
   display: flex;

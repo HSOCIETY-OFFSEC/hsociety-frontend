@@ -443,6 +443,18 @@
   cursor: pointer;
 }
 
+@media (max-width: 480px) {
+  .auth-checkbox {
+    min-height: 44px;
+    padding: 0.25rem 0;
+  }
+
+  .auth-checkbox input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 /* ============================================================
    LINKS
    ============================================================ */
@@ -901,5 +913,15 @@
   .otp-input {
     font-size: 1rem;
     letter-spacing: 0.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-subtitle,
+  .auth-link,
+  .auth-link-inline,
+  .auth-link-muted,
+  .auth-hero-item {
+    font-size: 0.875rem;
   }
 }

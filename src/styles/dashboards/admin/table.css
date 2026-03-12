@@ -119,6 +119,58 @@ table.admin-table tbody tr:hover {
   accent-color: var(--primary-color);
 }
 
+@media (max-width: 480px) {
+  .admin-select-cell input[type='checkbox'] {
+    width: 22px;
+    height: 22px;
+  }
+
+  .admin-table-wrap {
+    overflow-x: visible;
+  }
+
+  table.admin-table {
+    min-width: 0;
+    width: 100%;
+    display: block;
+  }
+
+  table.admin-table thead {
+    display: none;
+  }
+
+  table.admin-table tbody,
+  table.admin-table tr,
+  table.admin-table td {
+    display: block;
+    width: 100%;
+  }
+
+  table.admin-table tr {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.75rem 0.75rem;
+    margin-bottom: 0.75rem;
+    background: var(--bg-secondary);
+  }
+
+  table.admin-table td {
+    padding: 0.4rem 0;
+    border: none;
+    font-size: 0.9rem;
+  }
+
+  table.admin-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.2rem;
+  }
+}
+
 .admin-bulk-bar {
   display: flex;
   align-items: center;

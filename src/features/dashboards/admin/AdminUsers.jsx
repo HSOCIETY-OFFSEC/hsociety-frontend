@@ -211,32 +211,6 @@ const AdminUsers = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-shell">
-        <div className="admin-hero dashboard-shell-header">
-          <div>
-            <p className="admin-kicker dashboard-shell-kicker">USER CONTROL</p>
-            <h1 className="dashboard-shell-title">Manage Users</h1>
-            <p className="admin-subtitle dashboard-shell-subtitle">
-              Update roles, bootcamp status, and user profiles.
-            </p>
-          </div>
-          <div className="admin-badges dashboard-shell-actions">
-            <div className="admin-badge">
-              <FiUsers size={18} />
-              <div>
-                <span>Total Users</span>
-                <strong>{stats.total}</strong>
-              </div>
-            </div>
-            <div className="admin-badge">
-              <FiUsers size={18} />
-              <div>
-                <span>Pentesters</span>
-                <strong>{stats.pentester}</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <PublicError message={error} className="admin-alert" />
         {bulkStatus && <div className="admin-alert">{bulkStatus}</div>}
 

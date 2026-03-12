@@ -18,6 +18,14 @@
   transition: all 0.2s ease;
 }
 
+@media (max-width: 480px) {
+  .theme-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.6rem;
+  }
+}
+
 .theme-toggle:hover {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px var(--primary-color-alpha);

@@ -105,7 +105,7 @@ const WorkspaceLayout = () => {
       setSidebarCollapsed(stored === 'true');
       return;
     }
-    setSidebarCollapsed(navMode === 'tablet');
+    setSidebarCollapsed(navMode !== 'mobile');
   }, [navMode]);
 
   useEffect(() => {

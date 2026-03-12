@@ -1,17 +1,17 @@
 /* ============================================================
    COMMUNITY HUB — BASE LAYOUT
-   X/Twitter-style: left sidebar | center feed | right aside
+   two-column feed + aside layout
    ============================================================ */
 
 /* ── Root grid ──────────────────────────────────────────────── */
 .community-root {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 280px;
+  grid-template-columns: minmax(0, 1fr) 280px;
   grid-template-rows: 1fr;
-  grid-template-areas: "sidebar main aside";
+  grid-template-areas: "main aside";
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  min-height: 0;
+  height: 100%;
   background: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
@@ -256,10 +256,6 @@
   animation: community-pulse 1.8s ease-in-out infinite;
 }
 
-.community-mobile-nav-overlay {
-  display: none;
-}
-
 @keyframes community-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.45; transform: scale(0.75); }
@@ -365,15 +361,15 @@
 
 @media (max-width: 1200px) {
   .community-root {
-    grid-template-columns: 230px minmax(0, 1fr) 240px;
+    grid-template-columns: minmax(0, 1fr) 250px;
   }
 }
 
 /* Hide right aside */
 @media (max-width: 1024px) {
   .community-root {
-    grid-template-columns: 220px minmax(0, 1fr);
-    grid-template-areas: "sidebar main";
+    grid-template-columns: 1fr;
+    grid-template-areas: "main";
   }
 
   .community-aside {
@@ -383,6 +379,10 @@
   .community-aside-user-mobile {
     display: flex;
     margin: 0.75rem 1rem 0.25rem;
+  }
+
+  .community-mobile-channel-bar {
+    display: flex;
   }
 }
 
@@ -411,22 +411,6 @@
     padding: 0.7rem 0.8rem;
   }
 
-  .community-mobile-channel-bar {
-    display: none;
-  }
-
-  .community-mobile-nav-overlay {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 30;
-    border: none;
-    background: rgba(2, 6, 23, 0.65);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    padding: 0;
-    margin: 0;
-  }
 }
 
 @media (max-width: 400px) {
@@ -439,15 +423,5 @@
   .community-root {
     height: 100vh;
     height: 100dvh;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .community-sidebar {
-    transition: none !important;
-  }
-
-  @keyframes community-pulse {
-    0%, 100% { opacity: 1; }
   }
 }

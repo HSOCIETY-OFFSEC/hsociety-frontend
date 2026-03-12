@@ -35,8 +35,8 @@
 
 .orbit-scene-wrap {
   position: relative;
-  width: 420px;
-  height: 420px;
+  width: min(420px, 90vw);
+  height: min(420px, 90vw);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,8 +80,8 @@
 /* The 3D scene container */
 .orbit-scene {
   position: relative;
-  width: 320px;
-  height: 320px;
+  width: min(320px, 72vw);
+  height: min(320px, 72vw);
   transform-style: preserve-3d;
 }
 
@@ -96,9 +96,9 @@
 }
 
 .orbit-ring-outer {
-  width: 330px;
-  height: 330px;
-  margin: -165px 0 0 -165px;
+  width: min(330px, 74vw);
+  height: min(330px, 74vw);
+  margin: calc(min(-165px, -37vw)) 0 0 calc(min(-165px, -37vw));
   border: 1px solid color-mix(in srgb, var(--primary-color) 22%, transparent);
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--primary-color) 8%, transparent),
@@ -106,9 +106,9 @@
 }
 
 .orbit-ring-inner {
-  width: 240px;
-  height: 240px;
-  margin: -120px 0 0 -120px;
+  width: min(240px, 54vw);
+  height: min(240px, 54vw);
+  margin: calc(min(-120px, -27vw)) 0 0 calc(min(-120px, -27vw));
   border: 1px dashed color-mix(in srgb, var(--primary-color) 14%, transparent);
 }
 
@@ -484,9 +484,25 @@
 
 @media (max-width: 480px) {
   .orbit-scene-wrap {
-    width: 340px;
-    height: 340px;
+    width: min(340px, 90vw);
+    height: min(340px, 90vw);
     transform: scale(0.88);
+  }
+}
+
+@media (max-width: 360px) {
+  .orbit-scene-wrap {
+    width: min(300px, 90vw);
+    height: min(300px, 90vw);
+    transform: scale(0.82);
+  }
+}
+
+@media (max-width: 320px) {
+  .orbit-scene-wrap {
+    width: min(280px, 90vw);
+    height: min(280px, 90vw);
+    transform: scale(0.78);
   }
 }
 

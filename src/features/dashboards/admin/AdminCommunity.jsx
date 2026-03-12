@@ -119,16 +119,6 @@ const AdminCommunity = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-shell">
-        <div className="admin-hero dashboard-shell-header">
-          <div>
-            <p className="admin-kicker dashboard-shell-kicker">COMMUNITY CONTROL</p>
-            <h1 className="dashboard-shell-title">Manage Community</h1>
-            <p className="admin-subtitle dashboard-shell-subtitle">
-              Update channels, tags, and community stats.
-            </p>
-          </div>
-        </div>
-
         <PublicError message={error} className="admin-alert" />
 
         <Card className="admin-card" padding="medium">

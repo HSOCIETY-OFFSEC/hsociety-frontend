@@ -10,7 +10,6 @@ import {
 import CommunityHeader from './components/header/CommunityHeader';
 import CommunityMessageList from './components/messages/CommunityMessageList';
 import CommunityCompose from './components/compose/CommunityCompose';
-import CommunitySidebar from './components/sidebar/CommunitySidebar';
 import SocialLinks from '../../shared/components/common/SocialLinks';
 import { getUserAvatar } from './utils/community.utils';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
@@ -35,8 +34,6 @@ const CommunityHub = () => {
   const [error, setError] = useState('');
   const [connected, setConnected] = useState(false);
   const [cpTotal, setCpTotal] = useState(0);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
   const location = useLocation();
@@ -200,18 +197,6 @@ const CommunityHub = () => {
     if (!target) return;
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [location.hash]);
-
-  useEffect(() => {
-    const resolveCollapsed = () => {
-      if (typeof window === 'undefined') return false;
-      return window.innerWidth < 1200;
-    };
-    setSidebarCollapsed(resolveCollapsed());
-  }, []);
-
-  useEffect(() => {
-    setMobileNavOpen(false);
-  }, [location.pathname, room]);
 
   useEffect(() => {
     let mounted = true;
@@ -382,26 +367,12 @@ const CommunityHub = () => {
   }, [activeChannels, room]);
 
   return (
-    <div className={`community-root ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-
-      {/* ── Left Sidebar / Mobile Top Nav ── */}
-      <CommunitySidebar
-        role={role}
-        mobileOpen={mobileNavOpen}
-        onCloseMobileNav={() => setMobileNavOpen(false)}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed((prev) => !prev)}
-      />
+    <div className="community-root">
 
       {/* ── Main feed column ── */}
       <main className="community-main" aria-label={`#${displayRoom(room)} channel`}>
         <CommunityHeader
-          activeChannels={activeChannels}
-          room={room}
-          onRoomChange={handleRoomChange}
           overviewStats={overview.stats}
-          mobileNavOpen={mobileNavOpen}
-          onToggleMobileNav={() => setMobileNavOpen((prev) => !prev)}
           connected={connected}
         />
 
@@ -560,15 +531,6 @@ const CommunityHub = () => {
           </button>
         )}
       </aside>
-
-      {mobileNavOpen && (
-        <button
-          type="button"
-          className="community-mobile-nav-overlay"
-          onClick={() => setMobileNavOpen(false)}
-          aria-label={COMMUNITY_HUB_DATA.mobileNav.closeAria}
-        />
-      )}
 
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiLayers } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
@@ -283,6 +283,30 @@ const PhaseCard = ({ module, index, onClick }) => {
 ───────────────────────────────────────────── */
 const CoursesSection = () => {
   const navigate = useNavigate();
+  const [isNarrow, setIsNarrow] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
+    const update = () => {
+      setIsNarrow(window.innerWidth <= 520);
+    };
+
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  const innerStyle = {
+    ...S.inner,
+    padding: isNarrow ? '0 1rem' : S.inner.padding,
+  };
+
+  const trackStyle = {
+    ...S.track,
+    gridTemplateColumns: isNarrow ? 'repeat(2, minmax(0, 1fr))' : S.track.gridTemplateColumns,
+    gap: isNarrow ? '0.75rem 0.5rem' : S.track.gap,
+  };
 
   return (
     <section style={S.section} className="reveal-on-scroll">
@@ -295,7 +319,7 @@ const CoursesSection = () => {
       </div>
       <div style={S.scanlines} aria-hidden="true" />
 
-      <div style={S.inner}>
+      <div style={innerStyle}>
         {/* ── Header ── */}
         <div style={S.header}>
           <span style={S.eyebrow}>
@@ -314,7 +338,7 @@ const CoursesSection = () => {
         {/* ── Phase track ── */}
         <div style={S.trackWrap}>
           <div style={S.connectorLine} aria-hidden="true" />
-          <div style={S.track}>
+          <div style={trackStyle}>
             {HACKER_PROTOCOL_PHASES.map((module, i) => (
               <PhaseCard
                 key={module.moduleId}

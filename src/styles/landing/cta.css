@@ -203,6 +203,19 @@
   .cta-title {
     font-size: 1.375rem;
   }
+
+  .cta-panel .button {
+    font-size: 0.9rem;
+    padding: 0.65rem 1rem;
+    line-height: 1.25;
+  }
+}
+
+@media (max-width: 360px) {
+  .cta-panel .button {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.9rem;
+  }
 }
 
 /* ── Reduced motion ───────────────────── */

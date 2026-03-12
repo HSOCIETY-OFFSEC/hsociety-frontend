@@ -121,6 +121,54 @@
   border-radius: 6px;
 }
 
+@media (max-width: 480px) {
+  .billing-kicker {
+    font-size: 0.875rem;
+    letter-spacing: 0.12rem;
+  }
+
+  .billing-table {
+    overflow-x: visible;
+  }
+
+  .billing-row {
+    min-width: 0;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    padding: 0.85rem 0.9rem;
+  }
+
+  .billing-header-row {
+    display: none;
+  }
+
+  .billing-row span {
+    display: block;
+    font-size: 0.9rem;
+  }
+
+  .billing-row span::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.2rem;
+  }
+
+  .billing-row-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .billing-status {
+    font-size: 0.875rem;
+    padding: 0.35rem 0.7rem;
+  }
+}
+
 /* ── Status Badges ─────────────────────────────────────────── */
 .billing-status {
   display: inline-flex;

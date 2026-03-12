@@ -190,7 +190,7 @@
   }
 
   .city-label {
-    font-size: 7px;
+    font-size: 0.875rem;
     stroke-width: 2.5px;
   }
 
@@ -199,6 +199,12 @@
   .threat-globe-wrap::after {
     width: 16px;
     height: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .city-label {
+    font-size: 0.875rem;
   }
 }
 

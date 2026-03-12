@@ -84,4 +84,8 @@
   .admin-actions > * {
     flex: 1;
   }
+
+  table.admin-table {
+    min-width: 0;
+  }
 }

@@ -390,6 +390,14 @@
   transform: translateY(-50%) translateX(2px);
 }
 
+@media (hover: none) and (pointer: coarse) {
+  [data-tooltip]:active::after,
+  [data-tooltip]:focus-visible::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(2px);
+  }
+}
+
 /* Only show tooltips when collapsed */
 .app-sidebar:not(.collapsed) [data-tooltip]::after {
   display: none;

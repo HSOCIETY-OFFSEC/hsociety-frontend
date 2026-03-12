@@ -148,32 +148,6 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-shell">
-        <div className="admin-hero dashboard-shell-header">
-          <div>
-            <p className="admin-kicker dashboard-shell-kicker">HSOCIETY CONTROL NODE</p>
-            <h1 className="dashboard-shell-title">Mr. Robot</h1>
-            <p className="admin-subtitle dashboard-shell-subtitle">
-              Manage users, promote pentesters, and keep the operation secure.
-            </p>
-          </div>
-          <div className="admin-badges dashboard-shell-actions">
-            <div className="admin-badge">
-              <FiUsers size={18} />
-              <div>
-                <span>Total Users</span>
-                <strong>{stats.total}</strong>
-              </div>
-            </div>
-            <div className="admin-badge">
-              <FiShield size={18} />
-              <div>
-                <span>Pentesters</span>
-                <strong>{stats.pentester}</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <PublicError message={error} className="admin-alert" />
 
         <Card className="admin-card" padding="medium">

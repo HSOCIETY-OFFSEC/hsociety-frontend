@@ -171,4 +171,14 @@
   .button-card {
     letter-spacing: 0.12em;
   }
+
+  .button--small {
+    height: 44px;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .button--card.button--small {
+    font-size: 0.875rem;
+  }
 }

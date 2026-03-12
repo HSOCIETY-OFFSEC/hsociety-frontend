@@ -1,15 +1,10 @@
 import React from 'react';
-import { FiHash, FiMenu, FiMessageSquare, FiUsers, FiX } from 'react-icons/fi';
+import { FiMessageSquare, FiUsers } from 'react-icons/fi';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
 import '../../../../styles/sections/community/header.css';
 
 const CommunityHeader = ({
-  activeChannels = [],
-  room,
-  onRoomChange,
   overviewStats,
-  mobileNavOpen = false,
-  onToggleMobileNav,
   connected = false,
 }) => {
   const learners = Number(overviewStats?.learners || 0).toLocaleString();
@@ -18,16 +13,6 @@ const CommunityHeader = ({
   return (
     <header className="community-header">
       <div className="community-header-top">
-        <button
-          type="button"
-          className="community-feed-menu-btn"
-          onClick={onToggleMobileNav}
-          aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={mobileNavOpen}
-        >
-          {mobileNavOpen ? <FiX size={16} aria-hidden="true" /> : <FiMenu size={16} aria-hidden="true" />}
-        </button>
-
         <div className="community-header-title">
           <div>
             <p className="community-header-kicker">{COMMUNITY_UI.header.brand}</p>
@@ -49,21 +34,6 @@ const CommunityHeader = ({
             {connected ? 'Live' : 'Connecting'}
           </span>
         </div>
-      </div>
-
-      <div className="community-channel-tabs" role="tablist" aria-label={COMMUNITY_UI.header.channelsLabel}>
-        {activeChannels.map((channel) => (
-          <button
-            key={channel.id}
-            type="button"
-            className={`community-channel-tab${room === channel.id ? ' active' : ''}`}
-            onClick={() => onRoomChange(channel.id)}
-            aria-current={room === channel.id ? 'true' : undefined}
-          >
-            <FiHash size={13} aria-hidden="true" />
-            {channel.name || channel.id}
-          </button>
-        ))}
       </div>
     </header>
   );

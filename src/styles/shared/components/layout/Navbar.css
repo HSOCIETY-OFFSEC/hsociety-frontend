@@ -256,8 +256,8 @@
 }
 
 .navbar-notification-btn {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid var(--border-color);
   background: var(--input-bg);
@@ -284,6 +284,24 @@
   background: var(--error-color);
   color: #fff;
   padding: 0 4px;
+}
+
+@media (max-width: 480px) {
+  .navbar-right {
+    gap: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-right {
+    gap: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-right {
+    gap: 0.6rem;
+  }
 }
 
 .navbar-notification-menu {
@@ -517,6 +535,7 @@
   max-height: calc(100vh - 84px);
   overflow-y: auto;
   overscroll-behavior: contain;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 }
 
 .mobile-menu-inner {
@@ -546,6 +565,7 @@
   font-weight: 600;
   cursor: pointer;
   text-align: left;
+  min-height: 44px;
 }
 
 .mobile-menu-section-toggle svg {
@@ -570,6 +590,7 @@
   cursor: pointer;
   text-align: left;
   transition: all 0.2s ease;
+  min-height: 44px;
 }
 
 .mobile-menu-link.active {

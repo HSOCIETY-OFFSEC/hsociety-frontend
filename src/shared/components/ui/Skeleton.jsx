@@ -1,5 +1,4 @@
 import React from 'react';
-import Loader from './Loader';
 import '../../../styles/shared/components/ui/Skeleton.css';
 
 /**
@@ -18,9 +17,7 @@ const Skeleton = ({ className = '', style = {}, variant = 'line' }) => {
       className={`skeleton skeleton-${variant} ${className}`}
       style={style}
       aria-hidden="true"
-    >
-      <Loader size="xs" className="skeleton-loader" label="Loading" />
-    </div>
+    />
   );
 };
 
