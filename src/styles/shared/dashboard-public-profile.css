@@ -1,0 +1,108 @@
+/**
+ * Dashboard Public Profile Theme
+ * Location: src/styles/shared/dashboard-public-profile.css
+ */
+
+.workspace-layout.pp-dashboard-theme {
+  --pp-border: color-mix(in srgb, var(--border-color) 90%, transparent);
+  --pp-card: var(--bg-secondary);
+  --pp-muted: var(--text-tertiary);
+  --card-radius: 8px;
+}
+
+.workspace-layout.pp-dashboard-theme .workspace-main {
+  padding: 2rem 1.5rem 5rem;
+}
+
+.workspace-layout.pp-dashboard-theme.no-sidebar .workspace-main {
+  padding: 2rem 1.5rem 5rem;
+}
+
+.workspace-layout.pp-dashboard-theme :is(
+  .dashboard-shell,
+  .dashboard-container,
+  .dashboard-wrapper,
+  .student-page,
+  .admin-dashboard,
+  .pentester-dashboard
+) {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+}
+
+/* Panel treatment across dashboards */
+.workspace-layout.pp-dashboard-theme :is(
+  .card,
+  .dashboard-shell-header,
+  .dashboard-header,
+  .admin-card,
+  .pentester-card,
+  .student-card,
+  .corp-card,
+  .corp-skeleton-card,
+  .skeleton-card,
+  .dashboard-section,
+  .dashboard-panel
+) {
+  background: var(--pp-card) !important;
+  border: 1px solid var(--pp-border) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.workspace-layout.pp-dashboard-theme .dashboard-shell-header {
+  padding: 1.25rem 1.4rem;
+}
+
+.workspace-layout.pp-dashboard-theme .dashboard-shell-kicker {
+  border: 1px solid var(--pp-border);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, var(--bg-primary));
+  color: var(--pp-muted);
+  letter-spacing: 0.18rem;
+}
+
+.workspace-layout.pp-dashboard-theme .dashboard-shell-title {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+}
+
+.workspace-layout.pp-dashboard-theme .dashboard-shell-subtitle {
+  color: var(--text-secondary);
+}
+
+.workspace-layout.pp-dashboard-theme .card {
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.workspace-layout.pp-dashboard-theme .card:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 40%, var(--pp-border)) !important;
+}
+
+@media (max-width: 1024px) {
+  .workspace-layout.pp-dashboard-theme .workspace-main {
+    padding: 1.75rem 1.25rem 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace-layout.pp-dashboard-theme .workspace-main {
+    padding: 1.5rem 0 4rem;
+  }
+
+  .workspace-layout.pp-dashboard-theme.no-sidebar .workspace-main {
+    padding: 1.5rem 0 4rem;
+  }
+
+  .workspace-layout.pp-dashboard-theme .dashboard-shell-header {
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-layout.pp-dashboard-theme .card {
+    transition: none;
+  }
+}

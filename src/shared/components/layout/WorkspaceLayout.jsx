@@ -23,6 +23,7 @@ import useScrollReveal from '../../hooks/useScrollReveal';
 import { useUserStats } from '../../hooks/useUserStats';
 import '../../../styles/shared/components/layout/AppShell.css';
 import '../../../styles/shared/components/layout/WorkspaceLayout.css';
+import '../../../styles/shared/dashboard-public-profile.css';
 
 /**
  * Workspace Layout
@@ -54,6 +55,7 @@ const WorkspaceLayout = () => {
   const pathname = location.pathname || '';
   const isLessonWorkspace = pathname.startsWith('/student-bootcamps/modules/');
   const isCommunity = pathname.startsWith('/community');
+  const isDashboardTheme = !isCommunity && !isLessonWorkspace;
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   const { cpTotal, streakDays } = useUserStats(user?.id, role);
 
@@ -161,7 +163,7 @@ const WorkspaceLayout = () => {
     <div
       className={`workspace-layout app-shell ${showSidebar ? '' : 'no-sidebar'} ${
         isLessonWorkspace ? 'lesson-only' : ''
-      } ${navMode} ${isCommunity ? 'community-mode' : ''}`}
+      } ${navMode} ${isCommunity ? 'community-mode' : ''} ${isDashboardTheme ? 'pp-dashboard-theme' : ''}`}
       style={{
         '--sidebar-width': sidebarCollapsed ? '84px' : '260px',
         '--sidebar-collapsed-width': '84px',
@@ -318,7 +320,6 @@ const WorkspaceLayout = () => {
                 <div
                   className="workspace-community-tools"
                   ref={communityMenuRef}
-                  onMouseLeave={() => setCommunityMenuOpen(false)}
                 >
                   <button
                     type="button"
@@ -362,7 +363,7 @@ const WorkspaceLayout = () => {
 
               {isCommunity && <ThemeToggle />}
 
-              <div ref={menuRef} onMouseLeave={() => setMenuOpen(false)}>
+              <div ref={menuRef}>
                 <button
                   type="button"
                   className="workspace-profile-button"

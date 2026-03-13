@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { FiAlertTriangle, FiAward, FiLock, FiTrendingUp, FiTrash2 } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiAlertTriangle, FiAward, FiLock, FiMail, FiMapPin, FiTrash2, FiTrendingUp, FiUser } from 'react-icons/fi';
 import { IoFlameOutline } from 'react-icons/io5';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
-import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
@@ -22,6 +22,12 @@ import {
 } from './account.service';
 import { listNotifications, markNotificationRead } from '../student/services/notifications.service';
 import '../../styles/sections/account/index.css';
+import '../../styles/sections/public-profile/index.css';
+
+const normalizeHandle = (handle) => {
+  if (!handle) return '';
+  return String(handle).trim().replace(/^@/, '').toLowerCase().replace(/[^a-z0-9._-]/g, '');
+};
 
 const AccountSettings = () => {
   const { user, logout, updateUser } = useAuth();
@@ -56,6 +62,8 @@ const AccountSettings = () => {
     bio: user?.bio || '',
   });
   const isPentester = user?.role === 'pentester';
+  const normalizedHandle = normalizeHandle(profile.hackerHandle || user?.hackerHandle);
+  const publicProfilePath = normalizedHandle ? `/@${normalizedHandle}` : '/community';
 
   useEffect(() => {
     if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -234,304 +242,380 @@ const AccountSettings = () => {
   };
 
   return (
-    <div className="account-settings">
-      {error && <div className="account-error">{error}</div>}
+    <div className="pp-root account-settings">
+      <div className="pp-layout">
+        <aside className="pp-sidebar">
+          <div className="pp-avatar-wrap">
+            <div className="pp-avatar">
+              <img
+                src={avatarPreview || identiconFallback}
+                alt="Profile avatar"
+                onError={(e) => {
+                  if (e.currentTarget.src !== identiconFallback) {
+                    e.currentTarget.src = identiconFallback;
+                  }
+                }}
+              />
+            </div>
+          </div>
 
-      {/* ── Stats & Emblems ─────────────────────────────────────── */}
-      <Card padding="large" className="account-card">
+          <div className="pp-identity">
+            <h1 className="pp-name">{profile.name || user?.name || 'Account Settings'}</h1>
+            <p className="pp-handle">{normalizedHandle ? `@${normalizedHandle}` : user?.email || '—'}</p>
+            {profile.bio && <p className="pp-bio">{profile.bio}</p>}
+          </div>
 
-        {/* Progress stats row */}
-        <div className="account-progress-grid">
-          <div className="account-progress-card">
-            <FiTrendingUp size={15} />
-            <div>
-              <span className="account-progress-label">Rank</span>
-              <strong>{xpSummary.rank || 'Candidate'}</strong>
-            </div>
+          <div className="pp-cta-row">
+            <button
+              type="button"
+              className="pp-btn pp-btn--outline"
+              onClick={handleProfileSave}
+              disabled={profileSaving}
+            >
+              {profileSaving ? 'Saving…' : 'Save Profile'}
+            </button>
+            <Link className="pp-btn pp-btn--ghost" to={publicProfilePath}>
+              View Profile
+            </Link>
           </div>
-          <div className="account-progress-card account-progress-card--cp">
-            <img src={cpIcon} alt="CP" className="cp-icon cp-icon-lg" />
-            <div>
-              <strong>{xpSummary.totalXp || 0}</strong>
-            </div>
-          </div>
-          <div className="account-progress-card">
-            <IoFlameOutline size={15} />
-            <div>
-              <span className="account-progress-label">Streak</span>
-              <strong>{xpSummary.streakDays || 0} days</strong>
-            </div>
-          </div>
-          <div className="account-progress-card">
-            <FiAward size={15} />
-            <div>
-              <span className="account-progress-label">Emblems</span>
-              <strong>{emblems.unlockedModules.length}/5</strong>
-            </div>
-          </div>
-        </div>
 
-        {/* Emblem chips */}
-        <div className="account-emblem-list" aria-label="Unlocked module emblems">
-          {[1, 2, 3, 4, 5].map((moduleId) => {
-            const unlocked = emblems.unlockedModules.includes(moduleId);
-            return (
-              <div
-                key={moduleId}
-                className={`account-emblem-chip ${unlocked ? 'unlocked' : 'locked'}`}
-              >
-                <span>Phase {String(moduleId).padStart(2, '0')}</span>
-                <strong>{unlocked ? 'Unlocked' : 'Locked'}</strong>
+          <ul className="pp-meta-list">
+            <li><FiUser size={14} /><span>{user?.role || 'Member'}</span></li>
+            <li><FiMail size={14} /><span>{user?.email || '—'}</span></li>
+            <li><FiMapPin size={14} /><span>{profile.organization || 'Independent'}</span></li>
+          </ul>
+
+          <div className="pp-stats-card">
+            <div className="pp-stat-row">
+              <div className="pp-stat-icon">
+                <img src={cpIcon} alt="CP" className="pp-cp-icon" />
               </div>
-            );
-          })}
-          <div
-            className={`account-emblem-chip ${emblems.graduationUnlocked ? 'unlocked' : 'locked'}`}
-          >
-            <span>HP Badge</span>
-            <strong>{emblems.graduationUnlocked ? 'Unlocked' : 'Locked'}</strong>
-          </div>
-        </div>
-
-        {profileLoading && (
-          <p className="account-profile-refreshing">{ACCOUNT_UI.profile.refreshingText}</p>
-        )}
-
-        {/* Notifications */}
-        <div className="account-info account-info-spaced">
-          <div className="account-field account-field-wide">
-            <span className="account-label">Notifications</span>
-            <AccountNotificationsList
-              notifications={notifications}
-              onOpen={async (item) => {
-                await markNotificationRead(item.id);
-                setNotifications((prev) =>
-                  prev.map((entry) =>
-                    entry.id === item.id ? { ...entry, read: true } : entry
-                  )
-                );
-                if (item.metadata?.meetUrl) {
-                  window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
-                }
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Avatar */}
-        <div className="account-avatar">
-          <div className="account-avatar-preview">
-            <img
-              src={avatarPreview || identiconFallback}
-              alt="Profile avatar"
-              onError={(e) => {
-                if (e.currentTarget.src !== identiconFallback) {
-                  e.currentTarget.src = identiconFallback;
-                }
-              }}
-            />
-          </div>
-          <div className="account-avatar-actions">
-            <div>
-              <span className="account-label">Profile Photo</span>
-              <p className="account-avatar-meta">
-                {avatarFileName || user?.avatarUrl
-                  ? 'Custom image selected.'
-                  : 'Upload a photo.'}
-              </p>
+              <div className="pp-stat-info">
+                <span className="pp-stat-label">CP</span>
+                <strong className="pp-stat-val">{xpSummary.totalXp || 0}</strong>
+              </div>
             </div>
-            <div className="account-avatar-buttons">
-              <label className="account-upload">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleAvatarFile(e.target.files?.[0])}
+            <div className="pp-stat-row">
+              <FiTrendingUp size={15} className="pp-stat-fi" />
+              <div className="pp-stat-info">
+                <span className="pp-stat-label">Rank</span>
+                <strong className="pp-stat-val">{xpSummary.rank || 'Candidate'}</strong>
+              </div>
+            </div>
+            <div className="pp-stat-row">
+              <IoFlameOutline size={15} className="pp-stat-fi" />
+              <div className="pp-stat-info">
+                <span className="pp-stat-label">Streak</span>
+                <strong className="pp-stat-val">{xpSummary.streakDays || 0} days</strong>
+              </div>
+            </div>
+            <div className="pp-stat-row">
+              <FiAward size={15} className="pp-stat-fi" />
+              <div className="pp-stat-info">
+                <span className="pp-stat-label">Emblems</span>
+                <strong className="pp-stat-val">{emblems.unlockedModules.length}/5</strong>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <main className="pp-main">
+          {error && <div className="account-error">{error}</div>}
+
+          <section className="pp-panel">
+            <h2 className="pp-section-title">Profile Overview</h2>
+
+            <div className="account-progress-grid">
+              <div className="account-progress-card">
+                <FiTrendingUp size={15} />
+                <div>
+                  <span className="account-progress-label">Rank</span>
+                  <strong>{xpSummary.rank || 'Candidate'}</strong>
+                </div>
+              </div>
+              <div className="account-progress-card account-progress-card--cp">
+                <img src={cpIcon} alt="CP" className="cp-icon cp-icon-lg" />
+                <div>
+                  <strong>{xpSummary.totalXp || 0}</strong>
+                </div>
+              </div>
+              <div className="account-progress-card">
+                <IoFlameOutline size={15} />
+                <div>
+                  <span className="account-progress-label">Streak</span>
+                  <strong>{xpSummary.streakDays || 0} days</strong>
+                </div>
+              </div>
+              <div className="account-progress-card">
+                <FiAward size={15} />
+                <div>
+                  <span className="account-progress-label">Emblems</span>
+                  <strong>{emblems.unlockedModules.length}/5</strong>
+                </div>
+              </div>
+            </div>
+
+            <div className="account-emblem-list" aria-label="Unlocked module emblems">
+              {[1, 2, 3, 4, 5].map((moduleId) => {
+                const unlocked = emblems.unlockedModules.includes(moduleId);
+                return (
+                  <div
+                    key={moduleId}
+                    className={`account-emblem-chip ${unlocked ? 'unlocked' : 'locked'}`}
+                  >
+                    <span>Phase {String(moduleId).padStart(2, '0')}</span>
+                    <strong>{unlocked ? 'Unlocked' : 'Locked'}</strong>
+                  </div>
+                );
+              })}
+              <div
+                className={`account-emblem-chip ${emblems.graduationUnlocked ? 'unlocked' : 'locked'}`}
+              >
+                <span>HP Badge</span>
+                <strong>{emblems.graduationUnlocked ? 'Unlocked' : 'Locked'}</strong>
+              </div>
+            </div>
+
+            {profileLoading && (
+              <p className="account-profile-refreshing">{ACCOUNT_UI.profile.refreshingText}</p>
+            )}
+          </section>
+
+          <section className="pp-panel">
+            <h2 className="pp-section-title">Profile Details</h2>
+
+            <div className="account-info account-info-spaced">
+              <div className="account-field account-field-wide">
+                <span className="account-label">Notifications</span>
+                <AccountNotificationsList
+                  notifications={notifications}
+                  onOpen={async (item) => {
+                    await markNotificationRead(item.id);
+                    setNotifications((prev) =>
+                      prev.map((entry) =>
+                        entry.id === item.id ? { ...entry, read: true } : entry
+                      )
+                    );
+                    if (item.metadata?.meetUrl) {
+                      window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
+                    }
+                  }}
                 />
-                Choose Image
-              </label>
+              </div>
+            </div>
+
+            <div className="account-avatar">
+              <div className="account-avatar-preview">
+                <img
+                  src={avatarPreview || identiconFallback}
+                  alt="Profile avatar"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== identiconFallback) {
+                      e.currentTarget.src = identiconFallback;
+                    }
+                  }}
+                />
+              </div>
+              <div className="account-avatar-actions">
+                <div>
+                  <span className="account-label">Profile Photo</span>
+                  <p className="account-avatar-meta">
+                    {avatarFileName || user?.avatarUrl
+                      ? 'Custom image selected.'
+                      : 'Upload a photo.'}
+                  </p>
+                </div>
+                <div className="account-avatar-buttons">
+                  <label className="account-upload">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleAvatarFile(e.target.files?.[0])}
+                    />
+                    Choose Image
+                  </label>
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={handleAvatarSave}
+                    disabled={avatarSaving || !avatarPreview}
+                  >
+                    {avatarSaving ? 'Saving…' : 'Save Photo'}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="small"
+                    onClick={handleAvatarRemove}
+                    disabled={avatarRemoving || (!avatarPreview && !user?.avatarUrl)}
+                  >
+                    {avatarRemoving ? 'Removing…' : 'Remove'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="account-info">
+              <div className="account-field">
+                <span className="account-label">Name</span>
+                <input
+                  className="account-input"
+                  value={profile.name}
+                  onChange={(e) => setProfile((prev) => ({ ...prev, name: e.target.value }))}
+                  placeholder="Your name"
+                />
+              </div>
+              <div className="account-field">
+                <span className="account-label">Organization</span>
+                <input
+                  className="account-input"
+                  value={profile.organization}
+                  onChange={(e) =>
+                    setProfile((prev) => ({ ...prev, organization: e.target.value }))
+                  }
+                  placeholder="Company or school"
+                />
+              </div>
+
+              {isPentester && (
+                <>
+                  <div className="account-field">
+                    <span className="account-label">Hacker handle</span>
+                    <div className="account-handle-row">
+                      <span className="account-handle-prefix">@</span>
+                      <input
+                        className="account-input"
+                        value={profile.hackerHandle}
+                        onChange={(e) =>
+                          setProfile((prev) => ({ ...prev, hackerHandle: e.target.value }))
+                        }
+                        placeholder="ghost"
+                      />
+                    </div>
+                  </div>
+                  <div className="account-field account-field-wide">
+                    <span className="account-label">Description</span>
+                    <textarea
+                      className="account-textarea"
+                      value={profile.bio}
+                      onChange={(e) =>
+                        setProfile((prev) => ({ ...prev, bio: e.target.value }))
+                      }
+                      placeholder="Summarize your focus, strengths, or what you bring to engagements."
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="account-field">
+                <span className="account-label">Email</span>
+                <strong>{user?.email || '—'}</strong>
+              </div>
+              <div className="account-field">
+                <span className="account-label">Role</span>
+                <strong>{user?.role || '—'}</strong>
+              </div>
+            </div>
+
+            <div className="account-actions">
+              <Button
+                variant="primary"
+                size="small"
+                onClick={handleProfileSave}
+                disabled={profileSaving}
+              >
+                {profileSaving ? 'Saving…' : 'Save Profile'}
+              </Button>
+            </div>
+          </section>
+
+          <section className="pp-panel account-password-card">
+            <div className="account-section-header">
+              <FiLock size={20} />
+              <div>
+                <h2>Change Password</h2>
+                <p>
+                  Use at least 8 characters with uppercase, lowercase, a number, and a special
+                  character.
+                </p>
+              </div>
+            </div>
+
+            <div className="account-password-fields">
+              <div className="account-field">
+                <span className="account-label">Current password</span>
+                <PasswordInput
+                  className="account-input"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                />
+              </div>
+              <div className="account-field">
+                <span className="account-label">New password</span>
+                <PasswordInput
+                  className="account-input"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                />
+                <PasswordStrengthIndicator
+                  password={newPassword}
+                  className="password-strength--account"
+                />
+              </div>
+              <div className="account-field">
+                <span className="account-label">Confirm new password</span>
+                <PasswordInput
+                  className="account-input"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                />
+              </div>
+            </div>
+
+            <div className="account-actions">
               <Button
                 variant="secondary"
                 size="small"
-                onClick={handleAvatarSave}
-                disabled={avatarSaving || !avatarPreview}
+                onClick={handleChangePassword}
+                disabled={
+                  passwordSaving || !currentPassword || !newPassword || !confirmPassword
+                }
               >
-                {avatarSaving ? 'Saving…' : 'Save Photo'}
-              </Button>
-              <Button
-                variant="ghost"
-                size="small"
-                onClick={handleAvatarRemove}
-                disabled={avatarRemoving || (!avatarPreview && !user?.avatarUrl)}
-              >
-                {avatarRemoving ? 'Removing…' : 'Remove'}
+                {passwordSaving ? 'Updating…' : 'Update Password'}
               </Button>
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Profile fields */}
-        <div className="account-info">
-          <div className="account-field">
-            <span className="account-label">Name</span>
-            <input
-              className="account-input"
-              value={profile.name}
-              onChange={(e) => setProfile((prev) => ({ ...prev, name: e.target.value }))}
-              placeholder="Your name"
-            />
-          </div>
-          <div className="account-field">
-            <span className="account-label">Organization</span>
-            <input
-              className="account-input"
-              value={profile.organization}
-              onChange={(e) =>
-                setProfile((prev) => ({ ...prev, organization: e.target.value }))
-              }
-              placeholder="Company or school"
-            />
-          </div>
-
-          {isPentester && (
-            <>
-              <div className="account-field">
-                <span className="account-label">Hacker handle</span>
-                <div className="account-handle-row">
-                  <span className="account-handle-prefix">@</span>
-                  <input
-                    className="account-input"
-                    value={profile.hackerHandle}
-                    onChange={(e) =>
-                      setProfile((prev) => ({ ...prev, hackerHandle: e.target.value }))
-                    }
-                    placeholder="ghost"
-                  />
-                </div>
+          <section className="pp-panel account-danger">
+            <div className="account-danger-header">
+              <FiAlertTriangle size={18} />
+              <div>
+                <h2>Delete Account</h2>
+                <p>This is permanent. All your data will be removed.</p>
               </div>
-              <div className="account-field account-field-wide">
-                <span className="account-label">Description</span>
-                <textarea
-                  className="account-textarea"
-                  value={profile.bio}
-                  onChange={(e) =>
-                    setProfile((prev) => ({ ...prev, bio: e.target.value }))
-                  }
-                  placeholder="Summarize your focus, strengths, or what you bring to engagements."
-                />
-              </div>
-            </>
-          )}
+            </div>
 
-          <div className="account-field">
-            <span className="account-label">Email</span>
-            <strong>{user?.email || '—'}</strong>
-          </div>
-          <div className="account-field">
-            <span className="account-label">Role</span>
-            <strong>{user?.role || '—'}</strong>
-          </div>
-        </div>
-
-        <div className="account-actions">
-          <Button
-            variant="primary"
-            size="small"
-            onClick={handleProfileSave}
-            disabled={profileSaving}
-          >
-            {profileSaving ? 'Saving…' : 'Save Profile'}
-          </Button>
-        </div>
-      </Card>
-
-      {/* ── Change Password ─────────────────────────────────────── */}
-      <Card padding="large" className="account-card account-password-card">
-        <div className="account-section-header">
-          <FiLock size={20} />
-          <div>
-            <h2>Change Password</h2>
-            <p>
-              Use at least 8 characters with uppercase, lowercase, a number, and a special
-              character.
-            </p>
-          </div>
-        </div>
-
-        <div className="account-password-fields">
-          <div className="account-field">
-            <span className="account-label">Current password</span>
-            <PasswordInput
-              className="account-input"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="current-password"
-            />
-          </div>
-          <div className="account-field">
-            <span className="account-label">New password</span>
-            <PasswordInput
-              className="account-input"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="new-password"
-            />
-            <PasswordStrengthIndicator
-              password={newPassword}
-              className="password-strength--account"
-            />
-          </div>
-          <div className="account-field">
-            <span className="account-label">Confirm new password</span>
-            <PasswordInput
-              className="account-input"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="new-password"
-            />
-          </div>
-        </div>
-
-        <div className="account-actions">
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={handleChangePassword}
-            disabled={
-              passwordSaving || !currentPassword || !newPassword || !confirmPassword
-            }
-          >
-            {passwordSaving ? 'Updating…' : 'Update Password'}
-          </Button>
-        </div>
-      </Card>
-
-      {/* ── Danger Zone ─────────────────────────────────────────── */}
-      <Card padding="large" className="account-danger">
-        <div className="account-danger-header">
-          <FiAlertTriangle size={18} />
-          <div>
-            <h2>Delete Account</h2>
-            <p>This is permanent. All your data will be removed.</p>
-          </div>
-        </div>
-
-        <div className="account-delete-controls">
-          <input
-            className="account-input"
-            placeholder='Type "DELETE" to confirm'
-            value={confirmText}
-            onChange={(e) => setConfirmText(e.target.value)}
-            disabled={loading}
-          />
-          <Button variant="danger" size="small" disabled={loading} onClick={handleDelete}>
-            <FiTrash2 size={14} />
-            {loading ? 'Deleting…' : 'Delete Account'}
-          </Button>
-        </div>
-      </Card>
+            <div className="account-delete-controls">
+              <input
+                className="account-input"
+                placeholder='Type "DELETE" to confirm'
+                value={confirmText}
+                onChange={(e) => setConfirmText(e.target.value)}
+                disabled={loading}
+              />
+              <Button variant="danger" size="small" disabled={loading} onClick={handleDelete}>
+                <FiTrash2 size={14} />
+                {loading ? 'Deleting…' : 'Delete Account'}
+              </Button>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   );
 };

@@ -4,10 +4,13 @@
 
 @import '../../mobile-dashboard-fixes.css';
 .account-settings {
-  padding: 1.5rem 1rem 5rem;
+  --pp-border: color-mix(in srgb, var(--border-color) 90%, transparent);
+  --pp-card: var(--bg-secondary);
+  --pp-muted: var(--text-tertiary);
+  padding: 0;
   min-height: calc(100vh - 120px);
-  max-width: 960px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   width: 100%;
   box-sizing: border-box;
 }
@@ -16,6 +19,10 @@
 
 .account-card {
   margin-bottom: 1.5rem;
+  background: var(--pp-card) !important;
+  border: 1px solid var(--pp-border) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
 }
 
 /* ── Progress Grid ─────────────────────────────────────────── */
@@ -37,9 +44,9 @@
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  background: var(--bg-secondary);
+  border: 1px solid var(--pp-border);
+  border-radius: 8px;
+  background: var(--pp-card);
   padding: 0.7rem 0.8rem;
   min-width: 0;
 }
@@ -104,10 +111,10 @@
 }
 
 .account-emblem-chip {
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border: 1px solid var(--pp-border);
+  border-radius: 8px;
   padding: 0.5rem 0.6rem;
-  background: var(--bg-secondary);
+  background: var(--pp-card);
   min-width: 0;
 }
 
@@ -157,8 +164,8 @@
   width: 100%;
   text-align: left;
   margin-top: 0.5rem;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border: 1px solid var(--pp-border);
+  border-radius: 8px;
   padding: 0.65rem 0.75rem;
   cursor: pointer;
   background: transparent;
@@ -203,9 +210,9 @@
 .account-avatar-preview {
   width: 88px;
   height: 88px;
-  border-radius: 20px;
-  border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+  border-radius: 50%;
+  border: 1px solid var(--pp-border);
+  background: color-mix(in srgb, var(--pp-card) 92%, transparent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -252,9 +259,9 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.45rem 0.85rem;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--input-bg);
+  border-radius: 8px;
+  border: 1px solid var(--pp-border);
+  background: color-mix(in srgb, var(--bg-secondary) 85%, var(--bg-primary));
   color: var(--text-primary);
   cursor: pointer;
   font-size: 0.85rem;
@@ -297,7 +304,7 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
-  color: var(--text-muted);
+  color: var(--pp-muted);
   margin-bottom: 0.2rem;
 }
 
@@ -305,9 +312,9 @@
   width: 100%;
   box-sizing: border-box;
   padding: 0.6rem 0.8rem;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--input-bg);
+  border-radius: 8px;
+  border: 1px solid var(--pp-border);
+  background: color-mix(in srgb, var(--bg-secondary) 92%, var(--bg-primary));
   color: var(--text-primary);
   font-size: 0.9rem;
   font-family: inherit;
@@ -340,9 +347,9 @@
 .account-textarea {
   min-height: 110px;
   resize: vertical;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--input-bg);
+  border-radius: 8px;
+  border: 1px solid var(--pp-border);
+  background: color-mix(in srgb, var(--bg-secondary) 92%, var(--bg-primary));
   color: var(--text-primary);
   padding: 0.65rem 0.8rem;
   font-size: 0.9rem;
@@ -377,8 +384,10 @@
 /* ── Password Card ─────────────────────────────────────────── */
 
 .account-password-card {
-  border: 1px solid var(--border-color);
-  background: var(--card-bg);
+  border: 1px solid var(--pp-border);
+  background: var(--pp-card);
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 .account-section-header {
@@ -421,8 +430,8 @@
   box-sizing: border-box;
   padding: 0.65rem 0.9rem;
   font-size: 0.9rem;
-  border: 1.5px solid var(--border-color);
-  border-radius: 10px;
+  border: 1.5px solid var(--pp-border);
+  border-radius: 8px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -435,8 +444,10 @@
 /* ── Danger Zone ───────────────────────────────────────────── */
 
 .account-danger {
-  border: 1px solid rgba(255, 90, 90, 0.3);
-  background: rgba(255, 90, 90, 0.05);
+  border: 1px solid color-mix(in srgb, #ff5a5a 40%, var(--pp-border));
+  background: color-mix(in srgb, #ff5a5a 6%, var(--pp-card));
+  border-radius: 8px;
+  box-shadow: none;
 }
 
 .account-danger-header {
@@ -503,12 +514,12 @@
 
 @media (min-width: 768px) {
   .account-settings {
-    padding: 2.5rem 2rem 5rem;
+    padding: 0;
   }
 }
 
 @media (min-width: 1024px) {
   .account-settings {
-    padding: 2.5rem 1.5rem 5rem;
+    padding: 0;
   }
 }

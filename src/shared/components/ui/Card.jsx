@@ -70,7 +70,7 @@ const Card = ({
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: 'var(--border-color)',
-    borderRadius: '12px',
+    borderRadius: 'var(--card-radius, 12px)',
     padding: `var(--card-padding, ${paddingMap[padding]})`,
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     cursor: isClickable ? 'pointer' : 'default',
