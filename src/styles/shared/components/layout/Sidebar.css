@@ -119,7 +119,7 @@
   cursor: pointer;
   border-radius: 12px;
   margin-bottom: 0.5rem;
-  transition: background 0.18s ease;
+  transition: color 0.18s ease;
   width: 100%;
 }
 
@@ -129,7 +129,7 @@
 }
 
 .app-sidebar-logo:hover {
-  background: var(--input-bg);
+  background: transparent;
 }
 
 .app-sidebar-brand {
@@ -213,17 +213,16 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.65rem 0.75rem;
+  padding: 0.9rem 1rem;
   border-radius: 999px; /* X/Twitter pill shape */
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
   transition:
-    background 0.15s ease,
     color 0.15s ease;
   min-height: 44px;
   width: 100%;
@@ -234,7 +233,7 @@
 
 .app-sidebar.collapsed .app-sidebar-link {
   justify-content: center;
-  padding: 0.65rem;
+  padding: 0.75rem;
   border-radius: 999px;
 }
 
@@ -260,7 +259,6 @@
 
 /* Hover */
 .app-sidebar-link:hover {
-  background: var(--input-bg);
   color: var(--text-primary);
 }
 
@@ -289,9 +287,9 @@
 
 .bootcamp-dropdown-menu .app-sidebar-link {
   border-radius: 999px;
-  font-size: 0.88rem;
-  min-height: 40px;
-  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  min-height: 48px;
+  padding: 0.65rem 0.9rem;
 }
 
 @keyframes sidebar-dropdown-pop {
@@ -323,17 +321,16 @@
 
 /* Collapse toggle button */
 .app-sidebar-collapse {
-  border: 1px solid var(--border-color);
+  border: none;
   background: transparent;
   color: var(--text-secondary);
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
   cursor: pointer;
   transition:
-    background 0.15s ease,
     color 0.15s ease;
   font-size: 0.88rem;
   font-weight: 500;
@@ -348,7 +345,6 @@
 }
 
 .app-sidebar-collapse:hover {
-  background: var(--input-bg);
   color: var(--text-primary);
 }
 

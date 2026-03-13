@@ -161,7 +161,7 @@ const WorkspaceLayout = () => {
     <div
       className={`workspace-layout app-shell ${showSidebar ? '' : 'no-sidebar'} ${
         isLessonWorkspace ? 'lesson-only' : ''
-      } ${navMode}`}
+      } ${navMode} ${isCommunity ? 'community-mode' : ''}`}
       style={{
         '--sidebar-width': sidebarCollapsed ? '84px' : '260px',
         '--sidebar-collapsed-width': '84px',

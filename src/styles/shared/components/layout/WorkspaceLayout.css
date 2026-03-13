@@ -14,6 +14,12 @@
   transition: padding-left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Community: lock page scroll so only the feed scrolls */
+.workspace-layout.community-mode {
+  height: 100vh;
+  overflow: hidden;
+}
+
 @media (min-width: 768px) {
   .workspace-layout {
     padding-left: var(--sidebar-width, 260px);
@@ -36,6 +42,16 @@
   overflow-x: hidden;
 }
 
+.workspace-layout.community-mode .workspace-main {
+  padding: 0;
+  overflow: hidden;
+  height: calc(100vh - var(--workspace-topbar-height, 56px));
+}
+
+.workspace-layout.community-mode .app-sidebar-inner {
+  overflow: hidden;
+}
+
 .workspace-layout.lesson-only .workspace-main {
   padding: 0;
 }
@@ -52,6 +68,13 @@
 /* Bottom nav spacing on mobile */
 .workspace-layout.mobile .workspace-main {
   padding-bottom: calc(1.5rem + var(--bottom-nav-height, 64px));
+}
+
+.workspace-layout.community-mode.mobile .workspace-main {
+  padding-bottom: 0;
+  height: calc(
+    100vh - var(--workspace-topbar-height, 56px) - var(--bottom-nav-height, 64px)
+  );
 }
 
 /* ── Topbar ─────────────────────────────────────────────────── */

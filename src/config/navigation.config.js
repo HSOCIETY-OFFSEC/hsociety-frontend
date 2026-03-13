@@ -18,7 +18,8 @@ import {
   LuLayers,
   LuGlobe,
   LuDollarSign,
-  LuCpu
+  LuCpu,
+  LuTrophy
 } from 'react-icons/lu';
 
 export const NAV_LINKS = {
@@ -60,6 +61,7 @@ export const NAV_LINKS = {
     { path: '/', label: 'Home', icon: LuShield },
     { path: '/courses', label: 'Courses', icon: LuBookOpen },
     { path: '/services', label: 'Services', icon: LuWrench },
+    { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
     { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
     { path: '/about', label: 'About', icon: LuUsers },
     { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
@@ -77,6 +79,7 @@ export const NAV_LINKS = {
       { path: '/remediation', label: 'Remediation', icon: LuWrench },
       { path: '/assets', label: 'Assets', icon: LuLayers },
       { path: '/billing', label: 'Billing', icon: LuCreditCard },
+      { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/about', label: 'About Us', icon: LuUsers },
       { path: '/team', label: 'Meet the Team', icon: LuUsers },
@@ -91,6 +94,7 @@ export const NAV_LINKS = {
       { path: '/pentester/engagements', label: 'Engagements', icon: LuShield },
       { path: '/pentester/reports', label: 'Reports', icon: LuFileText },
       { path: '/pentester/profiles', label: 'Pentester Profiles', icon: LuUsers },
+      { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
       { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
@@ -100,6 +104,7 @@ export const NAV_LINKS = {
     admin: [
       { path: '/', label: 'Home', icon: LuShield },
       { path: '/mr-robot', label: 'Mr. Robot', icon: LuCpu },
+      { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
       { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
@@ -113,6 +118,7 @@ export const NAV_LINKS = {
       { path: '/student-resources', label: 'Resources', icon: LuBookOpen, group: 'learn' },
       { path: '/student-payments', label: 'Payments', icon: LuCreditCard, group: 'learn' },
       { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'learn' },
+      { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
       { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
@@ -126,6 +132,7 @@ export const NAV_LINKS = {
     { path: '/', label: 'Home', icon: LuShield },
     { path: '/courses', label: 'Courses', icon: LuBookOpen },
     { path: '/services', label: 'Services', icon: LuWrench },
+    { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
     { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
     { path: '/about', label: 'About', icon: LuUsers },
     { path: '/careers', label: 'Careers', icon: LuBriefcase },

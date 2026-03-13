@@ -80,6 +80,7 @@ const CourseDetails = React.lazy(() => import('../features/courses/CourseDetails
 const CourseModuleDetails = React.lazy(() => import('../features/courses/CourseModuleDetails'));
 const CourseRoomDetails = React.lazy(() => import('../features/courses/CourseRoomDetails'));
 const Leaderboard = React.lazy(() => import('../features/leaderboard/Leaderboard'));
+const CPPoints = React.lazy(() => import('../features/cp-points/CPPoints'));
 const NotFound = React.lazy(() => import('../features/notfound/NotFound'));
 const ForcePasswordChange = React.lazy(() => import('../features/auth/ForcePasswordChange'));
 
@@ -440,6 +441,7 @@ const AppRouter = () => {
           <Route path="courses/:bootcampId/modules/:moduleId" element={<CourseModuleDetails />} />
           <Route path="courses/:bootcampId/modules/:moduleId/rooms/:roomId" element={<CourseRoomDetails />} />
           <Route path="leaderboard" element={<Leaderboard />} />
+          <Route path="cp-points" element={<CPPoints />} />
           <Route path="terms" element={<Terms />} />
           <Route path="terms-and-conditions" element={<Terms />} />
           <Route path=":handle" element={<PublicHandleRoute />} />
