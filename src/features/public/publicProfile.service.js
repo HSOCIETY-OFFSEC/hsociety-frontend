@@ -34,7 +34,8 @@ export const getPublicProfileByHandle = async (handle) => {
         ...profile,
         stats: profile.stats || response.data?.stats,
         xpSummary: profile.xpSummary || response.data?.xpSummary,
-        emblems: profile.emblems || response.data?.emblems
+        emblems: profile.emblems || response.data?.emblems,
+        activity: profile.activity || response.data?.activity,
       };
       return { success: true, data: mergedProfile };
     }
