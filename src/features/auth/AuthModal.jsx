@@ -34,61 +34,41 @@ const AuthModal = () => {
       className="auth-modal-backdrop"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="auth-modal-title"
+      aria-label="Account access"
       onClick={() => closeAuthModal()}
     >
-      <div
-        className="auth-modal-card"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="auth-modal-header">
-          <span id="auth-modal-title" className="auth-modal-title">
-            Account Access
-          </span>
-          <button
-            type="button"
-            className="auth-modal-close"
-            onClick={() => closeAuthModal()}
-            aria-label="Close dialog"
-          >
-            ×
-          </button>
-        </div>
-        <div className="auth-modal-body">
-          {mode === AUTH_MODAL_MODES.LOGIN && (
-            <Login
-              {...sharedProps}
-              mode="default"
-              prefillEmail={payload?.email}
-              redirect={redirect || payload?.redirect}
-            />
-          )}
-          {mode === AUTH_MODAL_MODES.PENTESTER_LOGIN && (
-            <Login
-              {...sharedProps}
-              mode="pentester"
-              prefillEmail={payload?.email}
-              redirect={redirect || payload?.redirect}
-            />
-          )}
-          {mode === AUTH_MODAL_MODES.REGISTER && (
-            <Register
-              {...sharedProps}
-              onLoginRedirect={(data) =>
-                handleSwitchMode(AUTH_MODAL_MODES.LOGIN, { payload: data })
-              }
-            />
-          )}
-          {mode === AUTH_MODAL_MODES.CORPORATE_REGISTER && (
-            <CorporateRegister
-              {...sharedProps}
-              onLoginRedirect={(data) =>
-                handleSwitchMode(AUTH_MODAL_MODES.LOGIN, { payload: data })
-              }
-            />
-          )}
-        </div>
-      </div>
+      {mode === AUTH_MODAL_MODES.LOGIN && (
+        <Login
+          {...sharedProps}
+          mode="default"
+          prefillEmail={payload?.email}
+          redirect={redirect || payload?.redirect}
+        />
+      )}
+      {mode === AUTH_MODAL_MODES.PENTESTER_LOGIN && (
+        <Login
+          {...sharedProps}
+          mode="pentester"
+          prefillEmail={payload?.email}
+          redirect={redirect || payload?.redirect}
+        />
+      )}
+      {mode === AUTH_MODAL_MODES.REGISTER && (
+        <Register
+          {...sharedProps}
+          onLoginRedirect={(data) =>
+            handleSwitchMode(AUTH_MODAL_MODES.LOGIN, { payload: data })
+          }
+        />
+      )}
+      {mode === AUTH_MODAL_MODES.CORPORATE_REGISTER && (
+        <CorporateRegister
+          {...sharedProps}
+          onLoginRedirect={(data) =>
+            handleSwitchMode(AUTH_MODAL_MODES.LOGIN, { payload: data })
+          }
+        />
+      )}
     </div>
   );
 };

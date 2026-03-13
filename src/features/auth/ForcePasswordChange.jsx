@@ -72,53 +72,49 @@ export default function ForcePasswordChange() {
 
   return (
     <div className="auth-container">
-      <div className="auth-split auth-split--single">
-        <section className="auth-panel auth-panel--form">
-          <div className="auth-wrapper">
-            <Card className="auth-card" padding="medium">
-              <div className="auth-header">
-                <h1>Update your password</h1>
-                <p className="auth-subtitle">
-                  Your password must meet security requirements: at least 8 characters, one uppercase, one lowercase, one number, and one special character.
-                </p>
-              </div>
-              <PublicError message={error} icon={<FiLock size={16} />} />
-              <form onSubmit={handleSubmit} className="auth-form">
-                <div className="form-group">
-                  <label htmlFor="new-password">New password</label>
-                  <PasswordInput
-                    id="new-password"
-                    className="form-input"
-                    autoComplete="new-password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    disabled={loading}
-                  />
-                  <PasswordStrengthIndicator password={newPassword} />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="confirm-password">Confirm password</label>
-                  <PasswordInput
-                    id="confirm-password"
-                    className="form-input"
-                    autoComplete="new-password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    disabled={loading}
-                  />
-                </div>
-                <Button type="submit" variant="primary" fullWidth disabled={loading}>
-                  {loading ? 'Updating…' : 'Update password'}
-                </Button>
-              </form>
-            </Card>
+      <section className="auth-wrapper">
+        <Card className="auth-card" padding="medium">
+          <div className="auth-header">
+            <h1>Update your password</h1>
+            <p className="auth-subtitle">
+              Your password must meet security requirements: at least 8 characters, one uppercase, one lowercase, one number, and one special character.
+            </p>
           </div>
-        </section>
-      </div>
+          <PublicError message={error} icon={<FiLock size={16} />} />
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label htmlFor="new-password">New password</label>
+              <PasswordInput
+                id="new-password"
+                className="form-input"
+                autoComplete="new-password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                disabled={loading}
+              />
+              <PasswordStrengthIndicator password={newPassword} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirm-password">Confirm password</label>
+              <PasswordInput
+                id="confirm-password"
+                className="form-input"
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                disabled={loading}
+              />
+            </div>
+            <Button type="submit" variant="primary" fullWidth disabled={loading}>
+              {loading ? 'Updating…' : 'Update password'}
+            </Button>
+          </form>
+        </Card>
+      </section>
     </div>
   );
 }

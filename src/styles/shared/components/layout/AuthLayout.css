@@ -17,7 +17,7 @@
   box-sizing: border-box;
   min-height: calc(100dvh - var(--navbar-height, 72px));
   height: calc(100dvh - var(--navbar-height, 72px));
-  padding: 1.5rem 1rem 2rem;
+  padding: 0;
   position: relative;
 }
 
@@ -48,12 +48,12 @@
 /* ── Responsive tweaks ────────────────────────────────────── */
 @media (min-width: 640px) {
   .auth-layout .auth-main {
-    padding: 2rem 2rem 2.5rem;
+    padding: 0;
   }
 }
 
 @media (min-width: 1024px) {
   .auth-layout .auth-main {
-    padding: 2.5rem 2rem 3rem;
+    padding: 0;
   }
 }

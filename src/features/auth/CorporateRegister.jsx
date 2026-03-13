@@ -18,43 +18,42 @@ const CorporateRegister = ({
 
   const content = (
     <section
-      className={`auth-panel auth-panel--form ${layout === 'modal' ? 'auth-panel--modal' : ''}`}
+      className={`auth-wrapper ${layout === 'modal' ? 'auth-wrapper--modal' : ''}`}
+      onClick={layout === 'modal' ? (event) => event.stopPropagation() : undefined}
     >
-      <div className="auth-wrapper">
-        <RegistrationForm
-          defaultAccountType="corporate"
-          allowAccountTypeSwitch={false}
-          note={copy.note.corporate}
-          onSuccessRedirect={redirectRoute}
-          onLoginRedirect={onLoginRedirect}
-        />
-        <div className="auth-footer">
-          <p>
-            {copy.footer.studentPrompt}{' '}
-            <button
-              type="button"
-              className="auth-link-inline"
-              onClick={() =>
-                onRequestModeChange
-                  ? onRequestModeChange('register')
-                  : navigate('/register')
-              }
-            >
-              {copy.footer.studentAction}
-            </button>
-          </p>
-          <p>
-            {copy.footer.termsPrompt}{' '}
-            <button
-              type="button"
-              className="auth-link-inline"
-              onClick={() => navigate('/terms')}
-            >
-              {copy.footer.termsAction}
-            </button>
-            .
-          </p>
-        </div>
+      <RegistrationForm
+        defaultAccountType="corporate"
+        allowAccountTypeSwitch={false}
+        note={copy.note.corporate}
+        onSuccessRedirect={redirectRoute}
+        onLoginRedirect={onLoginRedirect}
+      />
+      <div className="auth-footer">
+        <p>
+          {copy.footer.studentPrompt}{' '}
+          <button
+            type="button"
+            className="auth-link-inline"
+            onClick={() =>
+              onRequestModeChange
+                ? onRequestModeChange('register')
+                : navigate('/register')
+            }
+          >
+            {copy.footer.studentAction}
+          </button>
+        </p>
+        <p>
+          {copy.footer.termsPrompt}{' '}
+          <button
+            type="button"
+            className="auth-link-inline"
+            onClick={() => navigate('/terms')}
+          >
+            {copy.footer.termsAction}
+          </button>
+          .
+        </p>
       </div>
       <div className="auth-notice">
         <p>
@@ -71,7 +70,7 @@ const CorporateRegister = ({
 
   return (
     <div className="auth-container">
-      <div className="auth-split auth-split--single">{content}</div>
+      {content}
     </div>
   );
 };

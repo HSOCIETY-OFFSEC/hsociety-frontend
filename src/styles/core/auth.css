@@ -37,10 +37,11 @@
  */
 .auth-container {
   min-height: 100dvh;
+  width: 100vw;
   display: flex;
   align-items: stretch;
   justify-content: center;
-  overflow: hidden; /* page-level scroll managed by the split */
+  overflow: hidden;
   background: var(--bg-primary);
 }
 
@@ -48,51 +49,6 @@
   .auth-container {
     padding-bottom: calc(1rem + var(--bottom-nav-height, 64px) + 56px);
   }
-}
-
-/* Grid shell — single or dual column */
-.auth-split {
-  width: min(1120px, 100vw);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(0.75rem, 2vw, 2rem);
-  align-items: stretch;
-  padding: clamp(0.75rem, 2vh, 2rem) clamp(0.75rem, 2vw, 2rem);
-  min-height: 100dvh;
-  box-sizing: border-box;
-}
-
-/* Login / change-password — single centred column */
-.auth-split--single {
-  grid-template-columns: 1fr;
-  align-items: center;
-  justify-items: center;
-}
-
-/* ============================================================
-   AUTH PANEL (the form column)
-   ============================================================ */
-
-.auth-panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/*
- * Form panel: centred, never clips content.
- * We use a small vertical padding so the card breathes against the
- * viewport edges on short screens without adding a scrollbar.
- */
-.auth-panel--form {
-  padding: clamp(0.5rem, 2vh, 1.5rem) 0;
-}
-
-/* When rendered directly inside a modal shell (no outer container) */
-.auth-panel--modal {
-  padding: 0;
 }
 
 /* ============================================================
@@ -107,10 +63,31 @@
  */
 .auth-wrapper {
   width: 100%;
-  max-width: 440px;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: clamp(0.4rem, 1vh, 0.75rem);
+  padding: clamp(0.75rem, 2.5vh, 2rem) clamp(0.75rem, 3vw, 2rem);
+  box-sizing: border-box;
+}
+
+.auth-wrapper--modal {
+  width: min(520px, 100%);
+  min-height: auto;
+  max-height: calc(100dvh - 2rem);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  overflow-y: auto;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.auth-wrapper--modal .auth-card {
+  width: 100%;
 }
 
 /* ============================================================
@@ -118,6 +95,7 @@
    ============================================================ */
 
 .auth-card {
+  width: 100%;
   padding: clamp(1rem, 2.5vh, 1.75rem) clamp(1rem, 2vw, 1.5rem);
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -747,58 +725,6 @@
   z-index: var(--z-modal, 60);
 }
 
-.auth-modal-card {
-  width: min(520px, 100%);
-  /* Never taller than the viewport — inner content is self-contained */
-  max-height: calc(100dvh - 2rem);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg, 18px);
-  box-shadow: var(--shadow-xl);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.auth-modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8rem 1.125rem;
-  background: color-mix(in srgb, var(--bg-secondary) 88%, var(--bg-primary));
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0;
-}
-
-.auth-modal-title {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-.auth-modal-close {
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-  transition: color 0.18s ease;
-}
-
-.auth-modal-close:hover { color: var(--text-primary); }
-
-.auth-modal-body {
-  padding: clamp(0.875rem, 2.5vw, 1.375rem);
-  /* Allow internal scroll ONLY inside the modal body as absolute last resort */
-  overflow-y: auto;
-  flex: 1;
-}
-
-.auth-modal-body .auth-wrapper { max-width: none; }
-
 /* ============================================================
    QUICK LOGIN HELPERS (dev/demo)
    ============================================================ */
@@ -853,14 +779,6 @@
    ============================================================ */
 
 @media (max-width: 900px) {
-  .auth-split {
-    grid-template-columns: 1fr;
-    padding: 1.25rem 1rem;
-    gap: 0;
-    align-items: center;
-    min-height: 100dvh;
-  }
-
   .auth-panel--hero {
     padding: 1rem 1.25rem;
     border-radius: var(--radius-md, 14px);
@@ -875,12 +793,9 @@
     gap: 0.4rem;
   }
 
-  .auth-panel--form {
-    justify-content: center;
-    padding: 1.25rem 0;
+  .auth-wrapper:not(.auth-wrapper--modal) {
+    padding: 1.25rem 1rem;
   }
-
-  .auth-wrapper { max-width: 100%; }
 }
 
 /* ============================================================
@@ -889,25 +804,19 @@
    ============================================================ */
 
 @media (max-width: 640px) {
-  .auth-split {
-    width: 100%;
-    padding: 0;
-    gap: 0;
-  }
-
   .auth-panel--hero { display: none; }
 
-  .auth-panel--form {
+  .auth-wrapper:not(.auth-wrapper--modal) {
     width: 100%;
     min-height: 100dvh;
     justify-content: center;
     padding: 1.25rem 0.875rem;
-    box-sizing: border-box;
   }
 
-  .auth-wrapper {
-    max-width: 100%;
+  .auth-wrapper--modal {
     width: 100%;
+    max-height: calc(100dvh - 1.5rem);
+    padding: 1rem;
   }
 
   .auth-card {
@@ -943,8 +852,6 @@
 
 @media (max-height: 680px) and (min-width: 901px) {
   .auth-panel--hero { display: none; }
-  .auth-split { grid-template-columns: 1fr; }
-  .auth-split--single { align-items: center; }
 }
 
 /* ============================================================
@@ -954,15 +861,8 @@
 @media (max-height: 560px) and (max-width: 900px) {
   .auth-panel--hero { display: none; }
 
-  .auth-split {
-    grid-template-columns: 1fr;
-    padding: 0.75rem;
-    min-height: 100dvh;
-    align-items: center;
-  }
-
-  .auth-panel--form {
-    padding: 0.5rem 0;
+  .auth-wrapper:not(.auth-wrapper--modal) {
+    padding: 0.5rem 0.75rem;
     justify-content: center;
   }
 
@@ -986,7 +886,7 @@
    ============================================================ */
 
 @media (max-width: 360px) {
-  .auth-panel--form {
+  .auth-wrapper:not(.auth-wrapper--modal) {
     padding: 1rem 0.625rem;
   }
 

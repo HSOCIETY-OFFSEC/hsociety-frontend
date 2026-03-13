@@ -178,9 +178,9 @@ const Login = ({
 
   const content = (
     <section
-      className={`auth-panel auth-panel--form ${layout === 'modal' ? 'auth-panel--modal' : ''}`}
+      className={`auth-wrapper ${layout === 'modal' ? 'auth-wrapper--modal' : ''}`}
+      onClick={layout === 'modal' ? (event) => event.stopPropagation() : undefined}
     >
-      <div className="auth-wrapper">
         <Card className="auth-card">
           {/* Step indicator for 2FA flow */}
           {step === 2 && (
@@ -350,7 +350,6 @@ const Login = ({
             {copy.notice}
           </p>
         </div>
-      </div>
     </section>
   );
 
@@ -358,7 +357,7 @@ const Login = ({
 
   return (
     <div className="auth-container">
-      <div className="auth-split auth-split--single">{content}</div>
+      {content}
     </div>
   );
 };
