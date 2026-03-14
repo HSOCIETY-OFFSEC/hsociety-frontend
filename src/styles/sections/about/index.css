@@ -1,45 +1,36 @@
 /* ============================================================
-   ABOUT PAGE — HSOCIETY
-   Aesthetic: Tactical-Industrial / Operative Briefing
-   Dark signal, surgical grid, zero decorative fat
+   FILE: src/styles/sections/about/index.css
+   GitHub-style minimal — neon green as accent only
    ============================================================ */
 
-/* ── Page Shell ─────────────────────────────────────────────── */
 @import '../../mobile-dashboard-fixes.css';
+
+/* ── Page shell ── */
 .about-page {
   min-height: 100vh;
   color: var(--text-primary);
-  padding-bottom: 8rem;
-  position: relative;
+  background: var(--bg-primary);
 }
 
-/* ── Hero ───────────────────────────────────────────────────── */
+/* ════════════════════════════════════════
+   HERO
+════════════════════════════════════════ */
 .about-hero {
   border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   position: relative;
   overflow: hidden;
 }
 
-/* Subtle scanline texture behind hero */
+/* Remove scanline pseudo-element */
 .about-hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    color-mix(in srgb, var(--text-primary) 1.5%, transparent) 3px,
-    color-mix(in srgb, var(--text-primary) 1.5%, transparent) 4px
-  );
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 .about-hero-inner {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   position: relative;
   z-index: 1;
 }
@@ -49,117 +40,123 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 0;
+  padding: 1rem 0;
   border-bottom: 1px solid var(--border-color);
 }
 
 .about-tag {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .about-tag--dim {
   color: var(--text-tertiary);
 }
 
-/* ── Hero Body ── */
+/* ── Hero body ── */
 .about-hero-body {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 4rem;
+  gap: 3.5rem;
   align-items: center;
-  padding: 4.5rem 0 3.5rem;
+  padding: 4rem 0 3rem;
 }
 
 .about-hero-left {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
-/* Kicker */
+/* Kicker — muted, monospace */
 .about-kicker {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   margin: 0;
   font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--primary-color);
+  color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
 }
 
+/* Only the glyph gets the green accent */
 .about-kicker-glyph {
+  color: var(--primary-color);
   font-size: 0.75rem;
   line-height: 1;
 }
 
-/* Title */
+/* Title — tighter, lighter weight than original */
 .about-hero-title {
   margin: 0;
-  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 1.02;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
   color: var(--text-primary);
 }
 
-/* Description */
+/* Description — neutral left border, not green */
 .about-hero-desc {
   margin: 0;
   color: var(--text-secondary);
-  line-height: 1.72;
-  font-size: 0.95rem;
-  max-width: 500px;
-  border-left: 2px solid var(--primary-color);
-  padding-left: 1rem;
+  line-height: 1.7;
+  font-size: 0.9rem;
+  max-width: 480px;
+  border-left: 2px solid var(--border-color);
+  padding-left: 0.875rem;
 }
 
-/* ── Hero Right: Stats ── */
+/* ── Stats aside ── */
 .about-hero-right {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0;
+  align-items: stretch;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
-  min-width: 140px;
+  min-width: 128px;
 }
 
 .about-stat-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  padding: 1.5rem 2rem;
-  width: 100%;
+  gap: 0.35rem;
+  padding: 1.25rem 1.5rem;
   text-align: center;
-  background: color-mix(in srgb, var(--card-bg) 60%, transparent);
+  background: var(--bg-primary);
+  transition: background 0.15s ease;
+}
+
+.about-stat-block:hover {
+  background: var(--bg-tertiary);
 }
 
 .about-stat-num {
-  font-size: 2.4rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .about-stat-label {
-  font-size: 0.55rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-tertiary);
   line-height: 1.5;
-  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .about-stat-divider {
@@ -168,57 +165,65 @@
   background: var(--border-color);
 }
 
-/* ── Hero Bottom Strip ── */
+/* ── Bottom strip ── */
 .about-hero-strip {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1rem 0;
+  gap: 1rem;
+  padding: 0.875rem 0;
   border-top: 1px solid var(--border-color);
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.25em;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-tertiary);
   overflow-x: auto;
   white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
 }
 
+/* Green dot separators — accent only */
 .strip-dot {
   width: 3px;
   height: 3px;
   border-radius: 50%;
   background: var(--primary-color);
   flex-shrink: 0;
+  opacity: 0.5;
 }
 
-/* ── Section Shell ──────────────────────────────────────────── */
+/* ════════════════════════════════════════
+   SECTION SHELL
+════════════════════════════════════════ */
 .about-section {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 5rem 2rem;
+  padding: 4rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
 }
 
 .about-section:last-child {
   border-bottom: none;
+  padding-bottom: 6rem;
 }
 
-/* Section label row: SYS::XX + rule */
+/* Section label: SYS::XX + horizontal rule */
 .about-section-label {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
+/* Green accent on the code label only */
 .section-code {
   font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--primary-color);
   white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
 }
 
@@ -229,61 +234,77 @@
   background: var(--border-color);
 }
 
-/* Section body: intro + content side-by-side on desktop */
+/* Two-column: sticky intro left + content right */
 .about-section-body {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 4rem;
+  grid-template-columns: 240px 1fr;
+  gap: 3.5rem;
   align-items: start;
 }
 
 .about-section-intro {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
   position: sticky;
-  top: 5rem;
+  top: calc(var(--navbar-height, 64px) + 1.5rem);
 }
 
 .about-section-intro h2 {
   margin: 0;
-  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   color: var(--text-primary);
 }
 
 .about-section-intro p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 0.88rem;
+  font-size: 0.83rem;
   line-height: 1.7;
 }
 
-/* ── Cycle List ─────────────────────────────────────────────── */
+/* ════════════════════════════════════════
+   CYCLE LIST — bordered table rows
+════════════════════════════════════════ */
 .about-cycle-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  /* 1px gap trick: container is border-color, items are bg-secondary */
+  background: var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 1px;
 }
 
 .about-cycle-item {
   display: flex;
   align-items: stretch;
-  gap: 1.25rem;
+  gap: 0;
+  background: var(--bg-secondary);
+  transition: background 0.15s ease;
 }
 
-/* Vertical connector line */
+.about-cycle-item:hover {
+  background: var(--bg-tertiary);
+}
+
+/* Left column: connector line + node */
 .cycle-connector {
   display: flex;
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  width: 16px;
+  width: 44px;
+  padding: 1rem 0;
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-primary);
 }
 
 .cycle-node {
@@ -291,109 +312,112 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1.5px solid var(--primary-color);
-  background: color-mix(in srgb, var(--primary-color) 20%, transparent);
-  margin-top: 1.05rem;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-secondary);
   flex-shrink: 0;
-  transition: background 0.2s ease;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
+/* Node turns green on row hover — accent */
 .about-cycle-item:hover .cycle-node {
-  background: var(--primary-color);
+  border-color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
 }
 
 .cycle-line {
   display: block;
   flex: 1;
   width: 1px;
-  background: color-mix(in srgb, var(--border-color) 70%, transparent);
+  background: var(--border-color);
   margin: 4px 0;
 }
 
-/* Cycle content */
+/* Content cell */
 .cycle-content {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.85rem 1.1rem;
-  border-radius: 6px;
-  border: 1px solid transparent;
+  gap: 0.18rem;
+  padding: 0.9rem 1.1rem;
   flex: 1;
-  transition: border-color 0.2s ease, background 0.2s ease;
-  margin-bottom: 0.4rem;
+  /* Remove the original hover border/background — now handled by parent row */
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0;
+  transition: none;
+  margin-bottom: 0;
 }
 
-.about-cycle-item:hover .cycle-content {
-  border-color: var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 70%, transparent);
-}
-
+/* Green only on the phase label — not the title */
 .cycle-index {
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--primary-color);
+  font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
 }
 
 .cycle-title {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--text-primary);
   line-height: 1.4;
 }
 
-/* ── Experience Cards ───────────────────────────────────────── */
+/* ════════════════════════════════════════
+   EXPERIENCE CARDS — same grid pattern
+════════════════════════════════════════ */
 .about-points-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   background: var(--border-color);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 .about-point-card {
-  background: var(--bg-primary);
-  padding: 1.75rem 1.5rem;
+  background: var(--bg-secondary);
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.55rem;
   position: relative;
-  transition: background 0.2s ease;
-  animation-delay: calc(var(--card-index, 0) * 60ms);
+  transition: background 0.15s ease;
+  /* Remove animation-delay — no entrance animations */
+  animation: none;
 }
 
 .about-point-card:hover {
-  background: color-mix(in srgb, var(--card-bg) 80%, transparent);
+  background: var(--bg-tertiary);
 }
 
-/* Top-right corner bracket decoration */
 .card-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 0.25rem;
 }
 
 .card-index {
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   color: var(--text-tertiary);
+  font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
 }
 
+/* Corner bracket — green accent, visible only on hover */
 .card-corner {
   display: block;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-top: 1.5px solid var(--primary-color);
   border-right: 1.5px solid var(--primary-color);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.15s ease;
 }
 
 .about-point-card:hover .card-corner {
@@ -402,8 +426,8 @@
 
 .about-point-card h3 {
   margin: 0;
-  font-size: 0.98rem;
-  font-weight: 700;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.01em;
   line-height: 1.3;
@@ -412,55 +436,70 @@
 .about-point-card p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   line-height: 1.65;
 }
 
-/* ── Principle List ─────────────────────────────────────────── */
+/* ════════════════════════════════════════
+   PRINCIPLES LIST — bordered rows
+════════════════════════════════════════ */
 .about-principle-list {
   list-style: none;
-  margin: 0 0 2.5rem;
+  margin: 0 0 1.25rem;
   padding: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .about-principle-item {
   display: grid;
-  grid-template-columns: 32px 1fr auto;
+  grid-template-columns: 28px 1fr auto;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-  border-radius: 4px;
-  transition: background 0.15s ease, padding-left 0.2s ease;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: var(--bg-secondary);
+  /* Remove padding-left shift animation — not GitHub-like */
+  transition: background 0.15s ease;
   cursor: default;
+  /* Override original border-bottom — the gap trick handles dividers */
+  border-bottom: none;
+  border-radius: 0;
 }
 
 .about-principle-item:first-child {
-  border-top: 1px solid var(--border-color);
+  border-top: none;
 }
 
 .about-principle-item:hover {
-  background: color-mix(in srgb, var(--primary-color) 4%, transparent);
+  background: var(--bg-tertiary);
+  /* Remove original padding-left shift */
   padding-left: 1rem;
 }
 
+/* Green only on the index number */
 .principle-index {
-  font-size: 0.6rem;
-  font-weight: 800;
+  font-size: 0.57rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--primary-color);
+  font-family: 'JetBrains Mono', monospace;
   font-variant-numeric: tabular-nums;
 }
 
 .principle-text {
-  font-size: 0.92rem;
+  font-size: 0.875rem;
   color: var(--text-primary);
   line-height: 1.5;
   font-weight: 500;
 }
 
 .principle-arrow {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-tertiary);
   opacity: 0;
   transition: opacity 0.15s ease, color 0.15s ease;
@@ -471,78 +510,74 @@
   color: var(--primary-color);
 }
 
-/* ── Doctrine Callout ───────────────────────────────────────── */
+/* ── Doctrine callout ── */
 .about-doctrine {
   margin: 0;
-  padding: 1.5rem 1.75rem;
-  background: color-mix(in srgb, var(--primary-color) 6%, transparent);
-  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+  padding: 1.1rem 1.4rem;
+  /* Neutral background — remove original green tint */
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  /* Only the left border accent gets the green */
   border-left: 3px solid var(--primary-color);
-  border-radius: 4px;
+  border-radius: 0 6px 6px 0;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.45rem;
 }
 
 .doctrine-marker {
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--primary-color);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .about-doctrine p {
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.6;
-  letter-spacing: -0.01em;
+  line-height: 1.65;
 }
 
-/* ── Social Links ─────────────────────────────────────────── */
+/* ── Social section ── */
 .about-social-section .about-section-body {
-  display: grid;
-  gap: 1.5rem;
+  grid-template-columns: 240px 1fr;
 }
 
 .about-social-links {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
-
-/* Large tablet */
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .about-section-body {
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 200px 1fr;
     gap: 2.5rem;
-  }
-
-  .about-points-grid {
-    grid-template-columns: 1fr 1fr;
   }
 }
 
-/* Tablet portrait */
 @media (max-width: 860px) {
   .about-hero-body {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding: 3.5rem 0 2.5rem;
+    gap: 2rem;
+    padding: 3rem 0 2.5rem;
   }
 
   .about-hero-right {
     flex-direction: row;
     min-width: unset;
-    max-width: 280px;
+    max-width: 220px;
   }
 
   .about-stat-divider {
     width: 1px;
     height: auto;
-    min-height: 60px;
+    min-height: 52px;
     align-self: stretch;
   }
 
@@ -554,20 +589,15 @@
   .about-section-intro {
     position: static;
   }
+
+  .about-social-section .about-section-body {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* Mobile landscape */
 @media (max-width: 640px) {
-  .about-hero {
-    padding: 0;
-  }
-
   .about-hero-inner {
-    padding: 0 1.25rem;
-  }
-
-  .about-hero-body {
-    padding: 3rem 0 2rem;
+    padding: 0 1rem;
   }
 
   .about-hero-right {
@@ -575,7 +605,11 @@
   }
 
   .about-section {
-    padding: 3.5rem 1.25rem;
+    padding: 3rem 1rem;
+  }
+
+  .about-section-label {
+    margin-bottom: 1.75rem;
   }
 
   .about-points-grid {
@@ -583,60 +617,41 @@
   }
 
   .about-principle-item {
-    grid-template-columns: 28px 1fr auto;
-    gap: 0.75rem;
+    grid-template-columns: 24px 1fr auto;
+    gap: 0.65rem;
+    padding: 0.75rem 0.875rem;
   }
 
-  .about-section-label {
-    margin-bottom: 2rem;
+  .about-principle-item:hover {
+    padding-left: 0.875rem;
   }
 }
 
-/* Mobile portrait */
 @media (max-width: 480px) {
   .about-hero-title {
-    font-size: 2.1rem;
-  }
-
-  .about-section {
-    padding: 3rem 1rem;
-  }
-
-  .about-point-card {
-    padding: 1.4rem 1.1rem;
-  }
-
-  .about-doctrine {
-    padding: 1.25rem 1.25rem;
-  }
-
-  .about-doctrine p {
-    font-size: 0.95rem;
-  }
-}
-
-/* Very small */
-@media (max-width: 360px) {
-  .about-hero-inner {
-    padding: 0 1rem;
+    font-size: 1.85rem;
   }
 
   .about-section {
     padding: 2.5rem 1rem;
   }
+
+  .about-doctrine {
+    padding: 1rem 1.1rem;
+  }
 }
 
-/* Reduced motion */
+@media (max-width: 360px) {
+  .about-hero-inner {
+    padding: 0 0.875rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .about-cycle-item,
-  .about-cycle-content,
   .about-point-card,
-  .about-principle-item {
+  .about-principle-item,
+  .about-stat-block {
     transition: none !important;
-  }
-
-  .about-cycle-item:hover .cycle-content,
-  .about-point-card:hover {
-    transform: none;
   }
 }
