@@ -1,7 +1,28 @@
 /* ============================================================
    FILE: src/styles/landing/hero.css
    HERO SECTION — GitHub-style minimal, neon green as accent only
+
+   Layout fixes applied:
+   ─────────────────────────────────────────────────────────────
+   DESKTOP (≥1024px)
+   • hero-container is a max-width: 1280px centred row — both panels
+     share the same vertical bounds, so text and logo stay in line
+   • hero-content-panel has padding-top: clamp(5rem,8vh,7rem) to create
+     breathing room below the fixed navbar (the section itself sits at
+     top: 0 under the navbar, so the panel owns the gap)
+
+   MOBILE (<1024px)
+   • hero-container becomes a single column; content-panel fills the
+     full width at normal flow — NO position:absolute on the logo
+   • hero-visual-panel is position:absolute, top: var(--navbar-height),
+     right: 1.25rem — the logo appears as a small badge pinned to the
+     top-right corner of the viewport, entirely inside the section
+   • The logo itself is capped at 72px so it never overwhelms the text
    ============================================================ */
+
+/* ═══════════════════════════════════════════════
+   SECTION SHELL
+   ═══════════════════════════════════════════════ */
 
 .hero-section {
   position: relative;
@@ -15,14 +36,11 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-/* Veil removed — no backdrop-filter blur on the whole section */
-.hero-section::before {
-  display: none;
-}
+.hero-section::before { display: none; }
 
-/* ═══════════════════════════════════════
-   BINARY RAIN — subtle, barely visible
-   ═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   BINARY RAIN
+   ═══════════════════════════════════════════════ */
 
 .hero-binary-stream {
   position: absolute;
@@ -50,7 +68,6 @@
   opacity: 0.06;
 }
 
-/* Same positions as before, but unified color — just border-color-tinted */
 .hero-binary-stream-col:nth-child(1)  { left: 2%;  animation-duration: 14s; animation-delay: -2s; }
 .hero-binary-stream-col:nth-child(2)  { left: 5%;  animation-duration: 10s; animation-delay: -5s; }
 .hero-binary-stream-col:nth-child(3)  { left: 8%;  animation-duration: 17s; animation-delay: -8s; }
@@ -85,13 +102,11 @@
 .hero-binary-stream-col:nth-child(32) { left: 95%; animation-duration: 18s; animation-delay: -5s; }
 .hero-binary-stream-col:nth-child(33) { left: 98%; animation-duration: 11s; animation-delay: 0s; }
 
-/* Light theme — even more subtle */
 [data-theme="light"] .hero-binary-stream-col {
   opacity: 0.04;
   color: var(--text-primary);
 }
 
-/* Fade mask */
 .hero-binary-stream::after {
   content: '';
   position: absolute;
@@ -112,7 +127,7 @@
   to   { transform: translateY(200vh); }
 }
 
-/* ── Grid overlay — very faint, GitHub-doc-style */
+/* ── Grid overlay ── */
 .hero-grid-overlay {
   position: absolute;
   inset: 0;
@@ -126,49 +141,85 @@
   mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0.4) 70%, transparent 100%);
 }
 
-[data-theme="light"] .hero-grid-overlay {
-  opacity: 0.12;
-}
-
+[data-theme="light"] .hero-grid-overlay { opacity: 0.12; }
 .hero-grid-overlay::before,
-.hero-grid-overlay::after {
-  display: none;
-}
+.hero-grid-overlay::after { display: none; }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
    MAIN CONTAINER
-   ═══════════════════════════════════════ */
+   ─────────────────────────────────────────────
+   Single source of truth for the two-panel layout.
+   Both panels live inside this centred row so they
+   always share the same vertical axis.
+   ═══════════════════════════════════════════════ */
 
 .hero-container {
   position: relative;
   z-index: 3;
+
+  /*
+   * Centred, max-width constrained — same as every other page shell.
+   * This ensures the text column and the logo column are aligned to
+   * the same horizontal frame on all screen sizes.
+   */
   width: 100%;
-  max-width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+
+  /*
+   * On mobile: single column, content fills the width normally.
+   * On desktop (≥1024px): side-by-side row.
+   */
   display: flex;
   flex-direction: column;
   align-items: stretch;
+
+  /*
+   * The section itself has min-height: calc(100svh - navbar).
+   * The container stretches to that height so the panels can
+   * centre vertically inside it.
+   */
   min-height: calc(100svh - var(--navbar-height));
 }
 
-@media (min-width: 1024px) {
-  .hero-container {
-    flex-direction: row;
-  }
+/* ═══════════════════════════════════════════════
+   LEFT PANEL — Content
+   ═══════════════════════════════════════════════ */
+
+.hero-content-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.4rem;
+
+  /*
+   * Horizontal gutters match the page-shell clamp pattern.
+   * Vertical: top padding creates the breathing room between
+   * the navbar and the first line of text. The section starts
+   * right at the top of the viewport (below the navbar via the
+   * layout shell), so the panel owns this gap.
+   */
+  padding: clamp(4.5rem, 8vh, 7rem) clamp(2rem, 5vw, 5rem) clamp(3rem, 6vh, 5rem) clamp(2rem, 5vw, 6rem);
 }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
    RIGHT PANEL — Logo
-   ═══════════════════════════════════════ */
+   ═══════════════════════════════════════════════ */
 
 .hero-visual-panel {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 2rem 2rem;
-  flex: 0 0 42%;
-  overflow: hidden;
+
+  /*
+   * On desktop: takes up ~40% of the row, vertically centred.
+   * On mobile: absolutely positioned as a corner badge (see below).
+   */
+  padding: 2rem;
 }
 
 .hero-logo-wrap {
@@ -176,24 +227,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
 }
 
-/* Remove heavy glow */
 .hero-logo-halo {
   position: absolute;
   width: clamp(160px, 22vw, 280px);
   height: clamp(160px, 22vw, 280px);
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--primary-color) 10%, transparent), transparent 70%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--primary-color) 10%, transparent),
+    transparent 70%
+  );
   filter: blur(32px);
   pointer-events: none;
   opacity: 0.5;
 }
 
-.hero-logo-binary {
-  display: none;
-}
+.hero-logo-binary { display: none; }
 
 .hero-logo-minimal {
   position: relative;
@@ -210,21 +261,10 @@
   opacity: 0.92;
 }
 
-/* ═══════════════════════════════════════
-   LEFT PANEL — Content
-   ═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   KICKER
+   ═══════════════════════════════════════════════ */
 
-.hero-content-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1.4rem;
-  padding: clamp(3rem, 8vh, 6rem) clamp(2rem, 6vw, 5rem) clamp(2.5rem, 6vh, 5rem) clamp(2rem, 6vw, 6rem);
-}
-
-/* Kicker line */
 .hero-kicker {
   margin: 0;
   font-family: 'JetBrains Mono', monospace;
@@ -235,13 +275,11 @@
   animation: fadeInUp 0.5s ease forwards;
 }
 
-.hero-kicker::after {
-  display: none;
-}
+.hero-kicker::after { display: none; }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
    TITLE — typewriter
-   ═══════════════════════════════════════ */
+   ═══════════════════════════════════════════════ */
 
 .hero-title {
   font-size: clamp(2rem, 4vw, 3.4rem);
@@ -253,21 +291,10 @@
   min-height: calc(1.15em * 2);
 }
 
-.hero-typed-line {
-  display: inline;
-  white-space: pre-wrap;
-}
+.hero-typed-line  { display: inline; white-space: pre-wrap; }
+.hero-typed-text  { display: inline; }
+.hero-hacker-word { color: var(--primary-color); }
 
-.hero-typed-text {
-  display: inline;
-}
-
-/* Accent — green only on the keyword */
-.hero-hacker-word {
-  color: var(--primary-color);
-}
-
-/* Cursor */
 .hero-type-cursor {
   display: inline-block;
   width: 2px;
@@ -295,16 +322,11 @@
   50%, 95%      { opacity: 0; }
 }
 
-.title-word        { display: none !important; }
-.title-word-inner  { display: none !important; }
+.title-word, .title-word-inner { display: none !important; }
 .ani-type          { clip-path: none !important; animation: none !important; }
 .ani-type::before  { display: none !important; }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-type-cursor { display: none; }
-}
-
-/* Description */
+/* ── Description ── */
 .hero-description {
   font-size: 1rem;
   line-height: 1.7;
@@ -314,7 +336,7 @@
   animation: fadeInUp 0.6s ease 0.2s both;
 }
 
-/* CTAs */
+/* ── CTAs ── */
 .hero-cta {
   display: flex;
   flex-direction: row;
@@ -330,7 +352,7 @@
   white-space: nowrap;
 }
 
-/* Socials */
+/* ── Social links ── */
 .hero-socials {
   display: flex;
   gap: 0.5rem;
@@ -358,12 +380,9 @@
   background: color-mix(in srgb, var(--primary-color) 8%, var(--bg-secondary));
 }
 
-.hero-social-link svg {
-  width: 16px;
-  height: 16px;
-}
+.hero-social-link svg { width: 16px; height: 16px; }
 
-/* Scroll cue */
+/* ── Scroll cue ── */
 .hero-scroll-cue {
   display: none;
   align-items: center;
@@ -391,14 +410,12 @@
   50%       { transform: translateY(5px) rotate(45deg); opacity: 0.9; }
 }
 
-/* Remove unused hero elements */
+/* ── Strip unused legacy elements ── */
 .hero-badge, .hero-highlights, .hero-highlight,
 .hero-proof, .hero-proof-item, .proof-value, .proof-label,
 .trust-indicators, .trust-item, .trust-icon,
 .hero-title-accent, .hero-word-accent,
-.hero-logo-binary, .badge-dot {
-  display: none;
-}
+.hero-logo-binary, .badge-dot { display: none; }
 
 /* ── Shared keyframes ── */
 @keyframes fadeInUp {
@@ -406,27 +423,83 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ═══════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   DESKTOP  ≥ 1024px
+   Two-column row: content left, logo right.
+   Both panels are direct flex children of the same
+   centred container → they share the same vertical
+   alignment automatically.
+   ═══════════════════════════════════════════════ */
+
+@media (min-width: 1024px) {
+  .hero-container {
+    flex-direction: row;
+    align-items: stretch;   /* panels fill the same row height */
+  }
+
+  .hero-content-panel {
+    /*
+     * Left column: ~58% of container width.
+     * Top padding gives the breathing room from the navbar
+     * that was missing before.
+     */
+    flex: 0 0 58%;
+    padding: clamp(4.5rem, 8vh, 7rem) 2rem clamp(3rem, 6vh, 5rem) clamp(2rem, 5vw, 6rem);
+  }
+
+  .hero-visual-panel {
+    /*
+     * Right column: remaining ~42%.
+     * Normal in-flow positioning — no position:absolute.
+     * Vertically centred within the same row as the text.
+     */
+    flex: 0 0 42%;
+    position: static;       /* ensure no accidental absolute leakage */
+    padding: 2rem 2rem 2rem 0;
+  }
+
+  .hero-logo-minimal .logo-image {
+    width: clamp(180px, 20vw, 300px);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   TABLET  768px – 1023px
+   Single column. Logo badge in top-right corner.
+   ═══════════════════════════════════════════════ */
 
 @media (max-width: 1023px) {
   .hero-container {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .hero-visual-panel {
-    display: none;
+    /*
+     * No position:relative here — we want the badge anchored to
+     * .hero-section (which is already position:relative), so it
+     * pins to the absolute top-right corner of the full rectangle,
+     * not to the narrower centred container.
+     */
   }
 
   .hero-content-panel {
+    /*
+     * Full width, normal padding.
+     * No extra padding-right — the badge floats over the section
+     * corner, outside the text flow.
+     */
     width: 100%;
-    padding: 2.5rem 2rem;
+    padding: clamp(4rem, 7vh, 6rem) clamp(1.25rem, 4vw, 2rem) clamp(2.5rem, 5vh, 4rem) clamp(1.25rem, 4vw, 2rem);
     box-sizing: border-box;
-    justify-content: center;
+  }
+
+  /* Hidden on mobile — desktop only */
+  .hero-visual-panel {
+    display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════
+   SMALL MOBILE  ≤ 640px
+   ═══════════════════════════════════════════════ */
 
 @media (max-width: 640px) {
   .hero-section {
@@ -434,7 +507,7 @@
   }
 
   .hero-content-panel {
-    padding: 2rem 1.25rem;
+    padding: clamp(3.5rem, 7vh, 5rem) clamp(1.25rem, 4vw, 2rem) clamp(2rem, 4vh, 3rem) 1.25rem;
     gap: 1.1rem;
   }
 
@@ -457,17 +530,19 @@
     flex: 1 1 auto;
   }
 
-  .hero-scroll-cue {
-    display: flex;
-  }
+  .hero-scroll-cue { display: flex; }
 
-  .hero-binary-stream-col:nth-child(n+18) {
-    display: none;
-  }
+  /* Reduce binary rain columns on small screens */
+  .hero-binary-stream-col:nth-child(n+18) { display: none; }
 }
 
+/* ═══════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════ */
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-binary-stream { display: none; }
+  .hero-binary-stream    { display: none; }
   .hero-logo-minimal .logo-image { animation: none; }
-  .hero-type-cursor { display: none; }
+  .hero-type-cursor      { display: none; }
+  .hero-scroll-arrow     { animation: none; }
 }
