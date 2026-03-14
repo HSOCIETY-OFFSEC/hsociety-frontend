@@ -1,3 +1,13 @@
+/**
+ * Navbar Component
+ * Location: src/shared/components/layout/Navbar.jsx
+ *
+ * GitHub header UI:
+ *   logo | desktop-nav (centered) | right (stats · theme · notif · user · hamburger)
+ *
+ * Zero logic changes — only class names updated to match the new CSS.
+ */
+
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -12,7 +22,7 @@ import {
   LuEllipsis,
   LuMessageCircle,
   LuShield,
-  LuX
+  LuX,
 } from 'react-icons/lu';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
@@ -28,58 +38,43 @@ import '../../../styles/shared/components/layout/Navbar.css';
 
 const NAV_COLLAPSE_WIDTH = 1024;
 const MENU_IDS = {
-  more: 'navbar-more-menu',
-  student: 'navbar-student-menu',
+  more:          'navbar-more-menu',
+  student:       'navbar-student-menu',
   notifications: 'navbar-notifications',
-  mobile: 'navbar-mobile-menu'
+  mobile:        'navbar-mobile-menu',
 };
 
-/**
- * Navbar Component
- * Location: src/shared/components/layout/Navbar.jsx
- * 
- * Features:
- * - Sticky header
- * - Logo with home navigation
- * - Theme toggle
- * - Navigation links (for authenticated users)
- * - User menu with logout
- * - Mobile responsive
- * - Active route highlighting
- */
-
 const Navbar = ({ sticky = true }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate  = useNavigate();
+  const location  = useLocation();
   const { openAuthModal } = useAuthModal();
   const { user, isAuthenticated, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [studentLearnOpen, setStudentLearnOpen] = useState(false);
-  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+
+  const [mobileMenuOpen,       setMobileMenuOpen]       = useState(false);
+  const [userMenuOpen,         setUserMenuOpen]         = useState(false);
+  const [studentLearnOpen,     setStudentLearnOpen]     = useState(false);
+  const [moreMenuOpen,         setMoreMenuOpen]         = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
-  const [mobileSectionsOpen, setMobileSectionsOpen] = useState({
-    primary: true,
-    learning: true,
-    secondary: false
+  const [mobileSectionsOpen,   setMobileSectionsOpen]   = useState({
+    primary: true, learning: true, secondary: false,
   });
-  const moreMenuRef = useRef(null);
-  const notificationMenuRef = useRef(null);
-  const studentMenuRef = useRef(null);
-  const userMenuRef = useRef(null);
-  const moreCloseTimerRef = useRef(null);
-  const studentCloseTimerRef = useRef(null);
-  const userCloseTimerRef = useRef(null);
+
+  const moreMenuRef            = useRef(null);
+  const notificationMenuRef    = useRef(null);
+  const studentMenuRef         = useRef(null);
+  const userMenuRef            = useRef(null);
+  const moreCloseTimerRef      = useRef(null);
+  const studentCloseTimerRef   = useRef(null);
+  const userCloseTimerRef      = useRef(null);
   const notificationCloseTimerRef = useRef(null);
+
   const [viewportMode, setViewportMode] = useState(() =>
-    typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop'
+    typeof window !== 'undefined' && window.innerWidth <= NAV_COLLAPSE_WIDTH
+      ? 'mobile'
+      : 'desktop'
   );
-  const {
-    notifications,
-    unreadCount,
-    markRead,
-    markAllRead,
-  } = useNotifications();
+
+  const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
 
   const avatarFallback = useMemo(
     () => getGithubAvatarDataUri(user?.email || user?.name || 'user'),
@@ -87,125 +82,77 @@ const Navbar = ({ sticky = true }) => {
   );
   const avatarSrc = user?.avatarUrl || avatarFallback;
 
-  const handleLogout = async () => {
-    await logout();
-  };
+  const handleLogout = async () => { await logout(); };
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
-
     const handleResize = () => {
-      const nextMode = window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop';
-      setViewportMode((prevMode) => {
-        if (prevMode !== nextMode) {
-          setMobileMenuOpen(false);
-          setUserMenuOpen(false);
-          return nextMode;
-        }
-        return prevMode;
+      const next = window.innerWidth <= NAV_COLLAPSE_WIDTH ? 'mobile' : 'desktop';
+      setViewportMode((prev) => {
+        if (prev !== next) { setMobileMenuOpen(false); setUserMenuOpen(false); }
+        return next;
       });
     };
-
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const role = user?.role === 'client' ? 'corporate' : user?.role;
-  const isStudent = role === 'student';
-  const showUserStats = isAuthenticated && Boolean(user?.id);
+  const role        = user?.role === 'client' ? 'corporate' : user?.role;
+  const isStudent   = role === 'student';
+  const showStats   = isAuthenticated && Boolean(user?.id);
   const { cpTotal, streakDays } = useUserStats(user?.id, role);
-  const mobileLinks = getMobileLinks(isAuthenticated, role);
+
+  const mobileLinks      = getMobileLinks(isAuthenticated, role);
   const desktopBasicLinks = getDesktopLinks(isAuthenticated, role);
-  const studentLearnLinks = useMemo(
-    () => [
-      { path: '/student-bootcamps', label: 'Bootcamp', icon: LuLayers },
-      { path: '/student-resources', label: 'Resources', icon: LuBookOpen },
-      { path: '/student-payments', label: 'Payments', icon: LuCreditCard },
-      { path: '/community', label: 'Community', icon: LuMessageCircle },
-    ],
-    []
-  );
-  const studentUtilityLinks = useMemo(
-    () => [],
-    []
-  );
-  const hiddenStudentNavPaths = useMemo(
-    () => new Set(studentLearnLinks.map((link) => link.path)),
+
+  const studentLearnLinks = useMemo(() => [
+    { path: '/student-bootcamps', label: 'Bootcamp',  icon: LuLayers      },
+    { path: '/student-resources', label: 'Resources', icon: LuBookOpen    },
+    { path: '/student-payments',  label: 'Payments',  icon: LuCreditCard  },
+    { path: '/community',         label: 'Community', icon: LuMessageCircle },
+  ], []);
+
+  const studentUtilityLinks    = useMemo(() => [], []);
+  const hiddenStudentNavPaths  = useMemo(
+    () => new Set(studentLearnLinks.map((l) => l.path)),
     [studentLearnLinks]
   );
+
   const roleOrder = useMemo(() => ({
-    student: [
-      '/student-dashboard',
-      '/student-bootcamps/overview',
-      '/student-bootcamps',
-      '/student-resources',
-      '/student-payments',
-      '/community'
-    ],
-    corporate: [
-      '/corporate-dashboard',
-      '/engagements',
-      '/reports',
-      '/remediation',
-      '/assets',
-      '/billing',
-      '/community',
-      '/leaderboard',
-      '/settings'
-    ],
-    pentester: [
-      '/pentester',
-      '/pentester/engagements',
-      '/pentester/reports',
-      '/pentester/profiles',
-      '/community',
-      '/leaderboard',
-      '/settings'
-    ],
-    admin: [
-      '/mr-robot',
-      '/community',
-      '/leaderboard',
-      '/settings'
-    ]
+    student:   ['/student-dashboard','/student-bootcamps/overview','/student-bootcamps','/student-resources','/student-payments','/community'],
+    corporate: ['/corporate-dashboard','/engagements','/reports','/remediation','/assets','/billing','/community','/leaderboard','/settings'],
+    pentester: ['/pentester','/pentester/engagements','/pentester/reports','/pentester/profiles','/community','/leaderboard','/settings'],
+    admin:     ['/mr-robot','/community','/leaderboard','/settings'],
   }), []);
 
   const orderedDesktopLinks = useMemo(() => {
-    const baseLinks = isStudent
-      ? desktopBasicLinks.filter((link) => !hiddenStudentNavPaths.has(link.path))
+    const base  = isStudent
+      ? desktopBasicLinks.filter((l) => !hiddenStudentNavPaths.has(l.path))
       : desktopBasicLinks;
     const order = roleOrder[role] || [];
-    return [...baseLinks].sort((a, b) => {
-      const aIdx = order.indexOf(a.path);
-      const bIdx = order.indexOf(b.path);
-      if (aIdx === -1 && bIdx === -1) return 0;
-      if (aIdx === -1) return 1;
-      if (bIdx === -1) return -1;
-      return aIdx - bIdx;
+    return [...base].sort((a, b) => {
+      const ai = order.indexOf(a.path), bi = order.indexOf(b.path);
+      if (ai === -1 && bi === -1) return 0;
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
     });
   }, [desktopBasicLinks, hiddenStudentNavPaths, isStudent, role, roleOrder]);
 
-  // Keep desktop nav compact: no more than two buttons + dropdowns.
-  const maxDesktopLinks = isAuthenticated ? (isStudent ? 1 : 2) : 4;
-  const visibleDesktopLinks = orderedDesktopLinks.slice(0, maxDesktopLinks);
+  const maxDesktopLinks    = isAuthenticated ? (isStudent ? 1 : 2) : 4;
+  const visibleDesktopLinks  = orderedDesktopLinks.slice(0, maxDesktopLinks);
   const overflowDesktopLinks = orderedDesktopLinks.slice(maxDesktopLinks);
 
-  const mobileSections = useMemo(() => {
-    const primary = isStudent
-      ? mobileLinks.filter((link) => !hiddenStudentNavPaths.has(link.path))
-      : mobileLinks;
-    const learning = isStudent ? studentLearnLinks : [];
-    const secondary = isStudent ? studentUtilityLinks : [];
-    return { primary, learning, secondary };
-  }, [isStudent, mobileLinks, hiddenStudentNavPaths, studentLearnLinks, studentUtilityLinks]);
+  const mobileSections = useMemo(() => ({
+    primary:   isStudent ? mobileLinks.filter((l) => !hiddenStudentNavPaths.has(l.path)) : mobileLinks,
+    learning:  isStudent ? studentLearnLinks  : [],
+    secondary: isStudent ? studentUtilityLinks : [],
+  }), [isStudent, mobileLinks, hiddenStudentNavPaths, studentLearnLinks, studentUtilityLinks]);
 
   const isActive = (path) => location.pathname === path;
 
   const clearCloseTimer = useCallback((ref) => {
-    if (ref.current) {
-      window.clearTimeout(ref.current);
-      ref.current = null;
-    }
+    if (ref.current) { window.clearTimeout(ref.current); ref.current = null; }
   }, []);
 
   const scheduleClose = useCallback((ref, setter) => {
@@ -219,7 +166,6 @@ const Navbar = ({ sticky = true }) => {
   }, [clearCloseTimer]);
 
   useEffect(() => {
-    // Always reset transient nav UI when route changes.
     setMobileMenuOpen(false);
     setUserMenuOpen(false);
     setStudentLearnOpen(false);
@@ -229,84 +175,79 @@ const Navbar = ({ sticky = true }) => {
 
   useEffect(() => {
     if (!moreMenuOpen) return undefined;
-    const handleOutsideClick = (event) => {
-      if (!moreMenuRef.current || moreMenuRef.current.contains(event.target)) return;
-      setMoreMenuOpen(false);
+    const handler = (e) => {
+      if (!moreMenuRef.current?.contains(e.target)) setMoreMenuOpen(false);
     };
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, [moreMenuOpen]);
 
   useEffect(() => {
     if (!notificationMenuOpen) return undefined;
-    const handleOutsideClick = (event) => {
-      if (!notificationMenuRef.current || notificationMenuRef.current.contains(event.target)) return;
-      setNotificationMenuOpen(false);
+    const handler = (e) => {
+      if (!notificationMenuRef.current?.contains(e.target)) setNotificationMenuOpen(false);
     };
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, [notificationMenuOpen]);
 
-  const handleEscape = (event, setter) => {
-    if (event.key === 'Escape') setter(false);
-  };
+  const handleEscape = (e, setter) => { if (e.key === 'Escape') setter(false); };
 
   return (
-    <nav className="navbar">
-      <div className="container navbar-inner">
-        {/* Logo */}
+    <nav className="gh-nav">
+      <div className="gh-nav-inner">
+
+        {/* ── Logo ─────────────────────────────────── */}
         <button
           type="button"
-          className="navbar-logo"
+          className="gh-nav-logo"
           onClick={() => navigate('/')}
           aria-label="Go to home"
         >
           <Logo size="medium" />
         </button>
 
-        {/* Desktop Basic Navigation */}
-        <div className="desktop-nav">
+        {/* ── Desktop nav links ────────────────────── */}
+        <div className="gh-nav-links">
           {visibleDesktopLinks.map((link) => (
             <button
               key={link.path}
               type="button"
               onClick={() => navigate(link.path)}
-              className={`desktop-nav-link ${isActive(link.path) ? 'active' : ''}`}
+              className={`gh-nav-link${isActive(link.path) ? ' is-active' : ''}`}
               aria-current={isActive(link.path) ? 'page' : undefined}
             >
-              <link.icon size={16} />
+              <link.icon size={15} />
               <span>{link.label}</span>
             </button>
           ))}
 
+          {/* More dropdown */}
           {overflowDesktopLinks.length > 0 && (
             <div
-              className="navbar-more-dropdown"
+              className="gh-dropdown"
               ref={moreMenuRef}
               onMouseEnter={() => openMenu(moreCloseTimerRef, setMoreMenuOpen)}
               onMouseLeave={() => scheduleClose(moreCloseTimerRef, setMoreMenuOpen)}
-              onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget)) {
-                  setMoreMenuOpen(false);
-                }
-              }}
+              onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setMoreMenuOpen(false); }}
             >
               <button
                 type="button"
-                onClick={() => setMoreMenuOpen((prev) => !prev)}
-                className="desktop-nav-link navbar-more-trigger"
+                className="gh-nav-link"
+                onClick={() => setMoreMenuOpen((p) => !p)}
                 aria-haspopup="menu"
                 aria-expanded={moreMenuOpen}
                 aria-controls={MENU_IDS.more}
-                onKeyDown={(event) => handleEscape(event, setMoreMenuOpen)}
+                onKeyDown={(e) => handleEscape(e, setMoreMenuOpen)}
               >
-                <LuEllipsis size={16} />
+                <LuEllipsis size={15} />
                 <span>More</span>
-                <LuChevronDown size={14} />
+                <LuChevronDown size={13} />
               </button>
+
               {moreMenuOpen && (
                 <div
-                  className="navbar-more-menu"
+                  className="gh-dropdown-menu"
                   id={MENU_IDS.more}
                   role="menu"
                   onMouseEnter={() => openMenu(moreCloseTimerRef, setMoreMenuOpen)}
@@ -316,14 +257,11 @@ const Navbar = ({ sticky = true }) => {
                     <button
                       key={link.path}
                       type="button"
-                      onClick={() => {
-                        navigate(link.path);
-                        setMoreMenuOpen(false);
-                      }}
-                      className={`navbar-more-item ${isActive(link.path) ? 'active' : ''}`}
+                      className={`gh-dropdown-item${isActive(link.path) ? ' is-active' : ''}`}
                       role="menuitem"
+                      onClick={() => { navigate(link.path); setMoreMenuOpen(false); }}
                     >
-                      <link.icon size={16} />
+                      <link.icon size={15} />
                       <span>{link.label}</span>
                     </button>
                   ))}
@@ -332,34 +270,32 @@ const Navbar = ({ sticky = true }) => {
             </div>
           )}
 
+          {/* Student Learn dropdown */}
           {isStudent && (
             <div
-              className="student-learn-dropdown"
+              className="gh-dropdown"
               ref={studentMenuRef}
               onMouseEnter={() => openMenu(studentCloseTimerRef, setStudentLearnOpen)}
               onMouseLeave={() => scheduleClose(studentCloseTimerRef, setStudentLearnOpen)}
-              onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget)) {
-                  setStudentLearnOpen(false);
-                }
-              }}
+              onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setStudentLearnOpen(false); }}
             >
               <button
                 type="button"
-                onClick={() => setStudentLearnOpen((prev) => !prev)}
-                className="desktop-nav-link student-learn-trigger"
+                className="gh-nav-link gh-nav-link--pill"
+                onClick={() => setStudentLearnOpen((p) => !p)}
                 aria-haspopup="menu"
                 aria-expanded={studentLearnOpen}
                 aria-controls={MENU_IDS.student}
-                onKeyDown={(event) => handleEscape(event, setStudentLearnOpen)}
+                onKeyDown={(e) => handleEscape(e, setStudentLearnOpen)}
               >
-                <LuLayers size={16} />
+                <LuLayers size={15} />
                 <span>Learn</span>
-                <LuChevronDown size={14} />
+                <LuChevronDown size={13} />
               </button>
+
               {studentLearnOpen && (
                 <div
-                  className="student-learn-menu"
+                  className="gh-dropdown-menu"
                   id={MENU_IDS.student}
                   role="menu"
                   onMouseEnter={() => openMenu(studentCloseTimerRef, setStudentLearnOpen)}
@@ -369,11 +305,11 @@ const Navbar = ({ sticky = true }) => {
                     <button
                       key={link.path}
                       type="button"
-                      onClick={() => navigate(link.path)}
-                      className={`student-learn-item ${isActive(link.path) ? 'active' : ''}`}
+                      className={`gh-dropdown-item${isActive(link.path) ? ' is-active' : ''}`}
                       role="menuitem"
+                      onClick={() => navigate(link.path)}
                     >
-                      <link.icon size={16} />
+                      <link.icon size={15} />
                       <span>{link.label}</span>
                     </button>
                   ))}
@@ -383,81 +319,79 @@ const Navbar = ({ sticky = true }) => {
           )}
         </div>
 
-        {/* Right Section */}
-        <div className="navbar-right">
-          {showUserStats && (
-            <div className="navbar-landing-stats">
-              <div className="navbar-stat-chip" title="Compromised Points">
-                <img src={cpIcon} alt="CP" className="navbar-stat-icon" />
+        {/* ── Right cluster ────────────────────────── */}
+        <div className="gh-nav-right">
+
+          {/* CP + streak stat chips */}
+          {showStats && (
+            <div className="gh-stat-group">
+              <span className="gh-stat-chip" title="Compromised Points">
+                <img src={cpIcon} alt="CP" className="gh-stat-cp-icon" />
                 <span>{cpTotal}</span>
-              </div>
-              <div className="navbar-stat-chip" title="Learning streak">
-                <IoFlameOutline size={16} />
-                <span>{streakDays} Streak</span>
-              </div>
+              </span>
+              <span className="gh-stat-chip" title="Learning streak">
+                <IoFlameOutline size={14} />
+                <span>{streakDays}d</span>
+              </span>
             </div>
           )}
 
-          {/* Theme Toggle */}
-          <span className="navbar-theme">
+          {/* Theme toggle */}
+          <span className="gh-nav-theme">
             <ThemeToggle />
           </span>
 
+          {/* Notifications */}
           {isAuthenticated && (
             <div
-              className="navbar-notification-wrap"
+              className="gh-dropdown"
               ref={notificationMenuRef}
               onMouseEnter={() => openMenu(notificationCloseTimerRef, setNotificationMenuOpen)}
               onMouseLeave={() => scheduleClose(notificationCloseTimerRef, setNotificationMenuOpen)}
-              onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget)) {
-                  setNotificationMenuOpen(false);
-                }
-              }}
+              onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setNotificationMenuOpen(false); }}
             >
               <button
                 type="button"
-                className="navbar-notification-btn"
-                onClick={() => setNotificationMenuOpen((prev) => !prev)}
+                className="gh-icon-btn"
+                onClick={() => setNotificationMenuOpen((p) => !p)}
                 aria-label="Notifications"
                 aria-haspopup="menu"
                 aria-expanded={notificationMenuOpen}
                 aria-controls={MENU_IDS.notifications}
-                onKeyDown={(event) => handleEscape(event, setNotificationMenuOpen)}
+                onKeyDown={(e) => handleEscape(e, setNotificationMenuOpen)}
               >
                 <LuBell size={16} />
                 {unreadCount > 0 && (
-                  <span className="navbar-notification-badge">{unreadCount}</span>
+                  <span className="gh-notif-badge">{unreadCount}</span>
                 )}
               </button>
 
               {notificationMenuOpen && (
                 <div
-                  className="navbar-notification-menu"
+                  className="gh-dropdown-menu gh-notif-menu"
                   id={MENU_IDS.notifications}
                   onMouseEnter={() => openMenu(notificationCloseTimerRef, setNotificationMenuOpen)}
                   onMouseLeave={() => scheduleClose(notificationCloseTimerRef, setNotificationMenuOpen)}
                 >
-                  <div className="navbar-notification-head">
+                  <div className="gh-notif-head">
                     <strong>Notifications</strong>
                     <button
                       type="button"
-                      onClick={async () => {
-                        await markAllRead();
-                      }}
+                      className="gh-notif-read-all"
+                      onClick={async () => { await markAllRead(); }}
                     >
                       Mark all read
                     </button>
                   </div>
 
                   {notifications.length === 0 ? (
-                    <p className="navbar-notification-empty">No notifications yet.</p>
+                    <p className="gh-notif-empty">No notifications yet.</p>
                   ) : (
                     notifications.slice(0, 8).map((item) => (
                       <button
                         key={item.id}
                         type="button"
-                        className={`navbar-notification-item ${item.read ? '' : 'unread'}`}
+                        className={`gh-notif-item${item.read ? '' : ' is-unread'}`}
                         onClick={async () => {
                           await markRead(item.id);
                           if (item.metadata?.meetUrl) {
@@ -475,142 +409,129 @@ const Navbar = ({ sticky = true }) => {
             </div>
           )}
 
-          {/* Auth Actions (Desktop, Public) */}
+          {/* Register button (public, desktop) */}
           {!isAuthenticated && viewportMode === 'desktop' && (
-            <div className="navbar-right-actions">
-              <button
-                type="button"
-                onClick={() => openAuthModal('register')}
-                className="navbar-auth-button navbar-auth-primary"
-              >
-                Register
-              </button>
-            </div>
+            <button
+              type="button"
+              className="gh-btn gh-btn-primary"
+              onClick={() => openAuthModal('register')}
+            >
+              Register
+            </button>
           )}
 
-          {/* User Menu (Desktop) */}
+          {/* User menu (authenticated, desktop) */}
           {isAuthenticated && user && (
             <div
-              className="desktop-user-menu"
+              className="gh-dropdown"
               ref={userMenuRef}
               onMouseEnter={() => openMenu(userCloseTimerRef, setUserMenuOpen)}
               onMouseLeave={() => scheduleClose(userCloseTimerRef, setUserMenuOpen)}
-              onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget)) {
-                  setUserMenuOpen(false);
-                }
-              }}
+              onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setUserMenuOpen(false); }}
             >
               <button
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="navbar-user-button"
+                type="button"
+                className="gh-user-btn"
+                onClick={() => setUserMenuOpen((p) => !p)}
                 aria-haspopup="menu"
                 aria-expanded={userMenuOpen}
-                onKeyDown={(event) => handleEscape(event, setUserMenuOpen)}
+                onKeyDown={(e) => handleEscape(e, setUserMenuOpen)}
               >
-                <span className="navbar-user-avatar">
+                <span className="gh-user-avatar">
                   <img
                     src={avatarSrc}
                     alt="Profile"
-                    className="navbar-user-avatar-img"
                     onError={(e) => {
-                      if (e.currentTarget.src !== avatarFallback) {
-                        e.currentTarget.src = avatarFallback;
-                      }
+                      if (e.currentTarget.src !== avatarFallback) e.currentTarget.src = avatarFallback;
                     }}
                   />
                 </span>
-                <span>{user.name || user.email}</span>
-                <span className="navbar-user-chevron">
-                  <LuChevronDown size={14} />
-                </span>
+                <LuChevronDown size={13} className="gh-user-chevron" />
               </button>
 
-              {/* Dropdown Menu */}
               {userMenuOpen && (
                 <div
-                  className="navbar-user-menu"
+                  className="gh-dropdown-menu gh-user-menu"
                   role="menu"
                   onMouseEnter={() => openMenu(userCloseTimerRef, setUserMenuOpen)}
                   onMouseLeave={() => scheduleClose(userCloseTimerRef, setUserMenuOpen)}
                 >
-                  <div className="navbar-user-menu-header">
-                    <p className="navbar-user-menu-label">
-                      Signed in as
-                    </p>
-                    <p className="navbar-user-menu-email">
-                      {user.email}
-                    </p>
+                  {/* Header */}
+                  <div className="gh-user-menu-header">
+                    <p className="gh-user-menu-hint">Signed in as</p>
+                    <p className="gh-user-menu-email">{user.email}</p>
                   </div>
+
+                  <div className="gh-dropdown-divider" />
+
                   <button
-                    onClick={() => navigate('/settings')}
-                    className="navbar-user-logout"
+                    type="button"
+                    className="gh-dropdown-item"
                     role="menuitem"
+                    onClick={() => navigate('/settings')}
                   >
-                    <span className="navbar-user-icon">
-                      <LuShield size={16} />
-                    </span>
+                    <LuShield size={15} />
                     <span>Account Settings</span>
                   </button>
 
+                  <div className="gh-dropdown-divider" />
+
                   <button
-                    onClick={handleLogout}
-                    className="navbar-user-logout"
+                    type="button"
+                    className="gh-dropdown-item gh-dropdown-item--danger"
                     role="menuitem"
+                    onClick={handleLogout}
                   >
-                    <span className="navbar-user-icon">
-                      <LuLogOut size={16} />
-                    </span>
-                    <span>Logout</span>
+                    <LuLogOut size={15} />
+                    <span>Sign out</span>
                   </button>
                 </div>
               )}
             </div>
           )}
 
-          {/* Mobile Menu Button */}
+          {/* Hamburger (mobile) */}
           {viewportMode === 'mobile' && (
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="mobile-menu-button"
+              type="button"
+              className="gh-hamburger"
+              onClick={() => setMobileMenuOpen((p) => !p)}
               aria-label="Toggle navigation"
               aria-expanded={mobileMenuOpen}
               aria-controls={MENU_IDS.mobile}
             >
-              {mobileMenuOpen ? <LuX /> : <LuMenu />}
+              {mobileMenuOpen ? <LuX size={18} /> : <LuMenu size={18} />}
             </button>
           )}
         </div>
       </div>
 
-          {/* Mobile Menu */}
-          {viewportMode === 'mobile' && mobileMenuOpen && (
-            <div className="mobile-menu" id={MENU_IDS.mobile}>
-              <div className="mobile-menu-inner">
-            <div className="mobile-menu-section">
+      {/* ── Mobile drawer ────────────────────────── */}
+      {viewportMode === 'mobile' && mobileMenuOpen && (
+        <div className="gh-mobile-menu" id={MENU_IDS.mobile}>
+          <div className="gh-mobile-menu-inner">
+
+            {/* Primary section */}
+            <div className="gh-mobile-section">
               <button
                 type="button"
-                className="mobile-menu-section-toggle"
-                onClick={() => setMobileSectionsOpen((prev) => ({ ...prev, primary: !prev.primary }))}
+                className="gh-mobile-section-toggle"
+                onClick={() => setMobileSectionsOpen((p) => ({ ...p, primary: !p.primary }))}
                 aria-expanded={mobileSectionsOpen.primary}
               >
                 <span>Primary</span>
-                <LuChevronDown size={16} />
+                <LuChevronDown size={15} />
               </button>
               {mobileSectionsOpen.primary && (
-                <div className="mobile-menu-group">
+                <div className="gh-mobile-group">
                   {mobileSections.primary.map((link) => (
                     <button
                       key={link.path}
-                      onClick={() => {
-                        navigate(link.path);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
+                      type="button"
+                      className={`gh-mobile-link${isActive(link.path) ? ' is-active' : ''}`}
+                      onClick={() => { navigate(link.path); setMobileMenuOpen(false); }}
                     >
-                      <span className="mobile-menu-icon">
-                        <link.icon size={18} />
-                      </span>
+                      <link.icon size={16} />
                       <span>{link.label}</span>
                     </button>
                   ))}
@@ -618,31 +539,28 @@ const Navbar = ({ sticky = true }) => {
               )}
             </div>
 
+            {/* Learning section (student) */}
             {isStudent && (
-              <div className="mobile-menu-section">
+              <div className="gh-mobile-section">
                 <button
                   type="button"
-                  className="mobile-menu-section-toggle"
-                  onClick={() => setMobileSectionsOpen((prev) => ({ ...prev, learning: !prev.learning }))}
+                  className="gh-mobile-section-toggle"
+                  onClick={() => setMobileSectionsOpen((p) => ({ ...p, learning: !p.learning }))}
                   aria-expanded={mobileSectionsOpen.learning}
                 >
                   <span>Learning</span>
-                  <LuChevronDown size={16} />
+                  <LuChevronDown size={15} />
                 </button>
                 {mobileSectionsOpen.learning && (
-                  <div className="mobile-menu-group">
+                  <div className="gh-mobile-group">
                     {mobileSections.learning.map((link) => (
                       <button
                         key={link.path}
-                        onClick={() => {
-                          navigate(link.path);
-                          setMobileMenuOpen(false);
-                        }}
-                        className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
+                        type="button"
+                        className={`gh-mobile-link${isActive(link.path) ? ' is-active' : ''}`}
+                        onClick={() => { navigate(link.path); setMobileMenuOpen(false); }}
                       >
-                        <span className="mobile-menu-icon">
-                          <link.icon size={18} />
-                        </span>
+                        <link.icon size={16} />
                         <span>{link.label}</span>
                       </button>
                     ))}
@@ -651,31 +569,28 @@ const Navbar = ({ sticky = true }) => {
               </div>
             )}
 
+            {/* Utilities section (student) */}
             {isStudent && mobileSections.secondary.length > 0 && (
-              <div className="mobile-menu-section">
+              <div className="gh-mobile-section">
                 <button
                   type="button"
-                  className="mobile-menu-section-toggle"
-                  onClick={() => setMobileSectionsOpen((prev) => ({ ...prev, secondary: !prev.secondary }))}
+                  className="gh-mobile-section-toggle"
+                  onClick={() => setMobileSectionsOpen((p) => ({ ...p, secondary: !p.secondary }))}
                   aria-expanded={mobileSectionsOpen.secondary}
                 >
                   <span>Utilities</span>
-                  <LuChevronDown size={16} />
+                  <LuChevronDown size={15} />
                 </button>
                 {mobileSectionsOpen.secondary && (
-                  <div className="mobile-menu-group">
+                  <div className="gh-mobile-group">
                     {mobileSections.secondary.map((link) => (
                       <button
                         key={link.path}
-                        onClick={() => {
-                          navigate(link.path);
-                          setMobileMenuOpen(false);
-                        }}
-                        className={`mobile-menu-link ${isActive(link.path) ? 'active' : ''}`}
+                        type="button"
+                        className={`gh-mobile-link${isActive(link.path) ? ' is-active' : ''}`}
+                        onClick={() => { navigate(link.path); setMobileMenuOpen(false); }}
                       >
-                        <span className="mobile-menu-icon">
-                          <link.icon size={18} />
-                        </span>
+                        <link.icon size={16} />
                         <span>{link.label}</span>
                       </button>
                     ))}
@@ -684,69 +599,61 @@ const Navbar = ({ sticky = true }) => {
               </div>
             )}
 
-            <div className="mobile-menu-divider" />
+            <div className="gh-mobile-divider" />
 
+            {/* Auth row */}
             {isAuthenticated ? (
               <button
+                type="button"
+                className="gh-mobile-link gh-mobile-link--danger"
                 onClick={handleLogout}
-                className="mobile-menu-logout"
               >
-                <span className="mobile-menu-icon">
-                  <LuLogOut size={18} />
-                </span>
-                <span>Logout</span>
+                <LuLogOut size={16} />
+                <span>Sign out</span>
               </button>
             ) : (
               <>
                 <button
-                  onClick={() => {
-                    openAuthModal('login');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="mobile-menu-login"
+                  type="button"
+                  className="gh-mobile-link"
+                  onClick={() => { openAuthModal('login'); setMobileMenuOpen(false); }}
                 >
-                  <span className="mobile-menu-icon">
-                    <LuLogIn size={18} />
-                  </span>
+                  <LuLogIn size={16} />
                   <span>Login</span>
                 </button>
                 <button
-                  onClick={() => {
-                    openAuthModal('register');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="mobile-menu-register"
+                  type="button"
+                  className="gh-mobile-link gh-mobile-link--accent"
+                  onClick={() => { openAuthModal('register'); setMobileMenuOpen(false); }}
                 >
-                  <span className="mobile-menu-icon">
-                    <LuShield size={18} />
-                  </span>
+                  <LuShield size={16} />
                   <span>Register</span>
                 </button>
               </>
             )}
           </div>
-            </div>
-          )}
+        </div>
+      )}
 
+      {/* ── Mobile action dock (unauthenticated, menu closed) ── */}
       {viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && (
-        <div className="mobile-action-dock" role="navigation" aria-label="Quick actions">
+        <div className="gh-mobile-dock" role="navigation" aria-label="Quick actions">
           <button
             type="button"
-            className="mobile-action-btn mobile-action-login"
+            className="gh-mobile-dock-btn"
             onClick={() => openAuthModal('login')}
           >
             Login
           </button>
           <button
             type="button"
-            className="mobile-action-btn mobile-action-register"
+            className="gh-mobile-dock-btn gh-mobile-dock-btn--primary"
             onClick={() => openAuthModal('register')}
           >
             Register
           </button>
         </div>
       )}
-
     </nav>
   );
 };

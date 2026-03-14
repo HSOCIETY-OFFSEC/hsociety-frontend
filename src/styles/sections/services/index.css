@@ -1,424 +1,548 @@
-/* ============================================================
-   SERVICES PAGE — Editorial Luxury
-   ============================================================ */
+/*
+ * Services Page — GitHub UI
+ * Location: src/styles/sections/services/index.css
+ *
+ * Site tokens only. No ambient blobs, no image-card masonry,
+ * no scale/translate hover theatrics.
+ * Pattern: svc-page-header → svc-layout (main + 296px sidebar)
+ */
 
-@import '../../mobile-dashboard-fixes.css';
-.services-page {
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
-  padding-bottom: 5rem;
-}
+/* ═══════════════════════════════════════════════
+   PAGE SHELL
+   ═══════════════════════════════════════════════ */
 
-/* ── Hero ───────────────────────────────────────────────── */
-.services-hero {
-  position: relative;
-  padding: 5rem 0 3rem;
-}
-
-.services-hero-inner {
-  width: min(1140px, 92vw);
+.svc-page {
+  max-width: 1280px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 3rem;
-  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 4vw, 2rem) 4rem;
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+               Helvetica, Arial, sans-serif;
 }
 
-.services-eyebrow {
+/* ═══════════════════════════════════════════════
+   PAGE HEADER
+   ═══════════════════════════════════════════════ */
+
+.svc-page-header {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+}
+
+.svc-page-header-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Left: icon + breadcrumb */
+.svc-header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.svc-header-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.svc-header-icon { color: var(--primary-color); }
+
+.svc-header-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1.1rem;
+  font-weight: 400;
+  flex-wrap: wrap;
+  line-height: 1.3;
+}
+
+.svc-breadcrumb-org  { color: var(--text-secondary); font-weight: 400; }
+.svc-breadcrumb-sep  { color: var(--text-tertiary);  font-weight: 300; }
+.svc-breadcrumb-page { color: var(--primary-color);  font-weight: 600; }
+
+.svc-header-visibility {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.15rem 0.55rem;
+  border-radius: 2em;
+  border: 1px solid var(--border-color);
+  color: var(--text-tertiary);
+  margin-left: 0.25rem;
+  line-height: 1.4;
+}
+
+.svc-header-desc {
+  margin: 0.3rem 0 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  max-width: 480px;
+}
+
+/* Right: buttons */
+.svc-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ── Shared button ── */
+.svc-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.35rem 0.85rem 0.35rem 0.5rem;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--primary-color) 10%, var(--card-bg));
-  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
-  color: var(--text-secondary);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 700;
-  width: fit-content;
-  margin-bottom: 1.25rem;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  text-decoration: none;
+  line-height: 1;
+  min-height: 32px;
 }
 
-.services-hero-text h1 {
-  font-size: clamp(2.4rem, 3.5vw, 3.4rem);
-  font-weight: 900;
-  letter-spacing: -0.035em;
-  line-height: 1.08;
-  margin: 0 0 1.1rem;
+.svc-btn-secondary {
+  background: var(--bg-secondary);
   color: var(--text-primary);
 }
 
-.services-hero-text p {
-  margin: 0 0 2rem;
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.75;
-  max-width: 500px;
+.svc-btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--text-tertiary);
 }
 
-.services-hero-actions {
+.svc-btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+.svc-btn-primary:hover {
+  background: var(--primary-color-hover);
+  border-color: var(--primary-color-hover);
+}
+
+/* ── Meta pill row (trust signals) ── */
+.svc-header-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
 }
 
-/* Hero right panel */
-.services-hero-panel {
-  padding: 2rem 1.75rem;
-  border-radius: 20px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.services-hero-index {
-  font-size: 2.5rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  color: var(--primary-color);
-  opacity: 0.5;
-  line-height: 1;
-}
-
-.services-hero-list {
-  display: grid;
-  gap: 0.6rem;
-}
-
-.services-hero-pill {
-  display: flex;
+.svc-meta-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
-  padding: 0.6rem 0.85rem;
-  border-radius: 10px;
-  background: var(--bg-tertiary);
+  gap: 0.4rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 500;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  padding: 0.3rem 0.7rem;
 }
 
-.services-hero-pill .pill-dot {
+.svc-meta-dot {
   width: 7px;
   height: 7px;
-  border-radius: 999px;
-  flex-shrink: 0;
+  border-radius: 50%;
   background: var(--primary-color);
-  box-shadow: 0 0 8px var(--accent-glow);
+  flex-shrink: 0;
 }
 
-/* ── Services list block ─────────────────────────────────── */
-.services-list {
-  width: min(1140px, 92vw);
-  margin: 0 auto;
+/* ═══════════════════════════════════════════════
+   TWO-COLUMN LAYOUT
+   ═══════════════════════════════════════════════ */
+
+.svc-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 296px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ═══════════════════════════════════════════════
+   MAIN COLUMN
+   ═══════════════════════════════════════════════ */
+
+.svc-main {
   display: flex;
   flex-direction: column;
-  gap: 2.75rem;
+  min-width: 0;
 }
 
-.services-section-header {
+.svc-section {
+  padding: 1.5rem 0;
+}
+
+.svc-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem;
+}
+
+.svc-section-icon {
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.svc-section-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 1.25rem;
+}
+
+.svc-divider {
+  height: 1px;
+  background: var(--border-color);
+}
+
+/* ── Service card list ── */
+.svc-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+/* Card row — GitHub issue/PR list item */
+.svc-card {
+  background: var(--bg-secondary);
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background 0.12s ease;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
 }
 
-.services-section-header h2 {
-  margin: 0;
-  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: var(--text-primary);
+.svc-card:last-child {
+  border-bottom: none;
 }
 
-.services-section-header p {
-  margin: 0;
-  color: var(--text-tertiary);
-  font-size: 0.95rem;
+.svc-card:hover {
+  background: var(--bg-tertiary);
 }
 
-/* ── Services grid — editorial asymmetric ──────────────── */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: 420px;
-  gap: 1.25rem;
-}
-
-/* First card: wide feature slot */
-.services-card:nth-child(1) {
-  grid-column: span 7;
-}
-
-/* Second card fills remaining */
-.services-card:nth-child(2) {
-  grid-column: span 5;
-}
-
-/* Third and fourth: equal halves */
-.services-card:nth-child(3) {
-  grid-column: span 5;
-}
-
-.services-card:nth-child(4) {
-  grid-column: span 7;
-}
-
-/* Any extras fall to auto */
-.services-card:nth-child(n+5) {
-  grid-column: span 6;
-}
-
-/* ── Individual card ──────────────────────────────────── */
-.services-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 18px;
-  border: 1px solid var(--border-color);
-  background: var(--card-bg);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  transition:
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.3s ease;
-}
-
-.services-card--link:hover {
-  transform: translateY(-5px);
-  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
-  box-shadow:
-    var(--shadow-xl),
-    0 0 0 1px color-mix(in srgb, var(--primary-color) 18%, transparent);
-}
-
-/* Image fills the top portion of the card */
-.services-card-image {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  min-height: 0;
-}
-
-.services-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transform: scale(1.03);
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.services-card--link:hover .services-card-image img {
-  transform: scale(1.09);
-}
-
-/* Gradient scrim over image — pulls card body out of image */
-.services-card-image::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 35%,
-    color-mix(in srgb, var(--card-bg) 85%, transparent) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Card body — pinned to bottom */
-.services-card-body {
-  flex-shrink: 0;
-  padding: 1.5rem 1.75rem 1.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  position: relative;
-  z-index: 2;
-  /* Subtle top rule */
-  border-top: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
-}
-
-.services-card-title {
+/* Card header: icon + title + arrow */
+.svc-card-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
 }
 
-.services-card-icon {
-  width: 38px;
-  height: 38px;
+.svc-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+/* Icon box */
+.svc-card-icon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-xs);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--primary-color);
   flex-shrink: 0;
+}
+
+.svc-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.svc-card:hover .svc-card-title {
+  color: var(--primary-color);
+}
+
+.svc-card-arrow {
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+  transition: color 0.12s ease;
+}
+
+.svc-card:hover .svc-card-arrow {
+  color: var(--primary-color);
+}
+
+/* Description */
+.svc-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Feature tags — GitHub topic tags */
+.svc-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-top: 0.4rem;
+}
+
+.svc-tag {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.18rem 0.55rem;
+  border-radius: 2em;
+  background: var(--primary-color-alpha);
+  color: var(--primary-color);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+  white-space: nowrap;
+}
+
+/* ── CTA section ── */
+.svc-cta-section {
+  padding-top: 1.5rem;
+}
+
+.svc-cta-body {
+  max-width: 580px;
+}
+
+.svc-cta-eyebrow {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--primary-color) 12%, var(--bg-tertiary));
-  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, transparent);
-  color: var(--primary-color);
-  transition: background 0.3s ease;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.75rem;
 }
 
-.services-card--link:hover .services-card-icon {
-  background: color-mix(in srgb, var(--primary-color) 20%, var(--bg-tertiary));
-}
+.svc-cta-eyebrow svg { color: var(--primary-color); }
 
-.services-card-body h3 {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+.svc-cta-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
+  margin: 0 0 0.6rem;
 }
 
-.services-card-body p {
-  margin: 0;
+.svc-cta-desc {
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  font-size: 0.875rem;
   line-height: 1.65;
-  /* Clamp to 2 lines on smaller cards */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  margin: 0 0 1.25rem;
 }
 
-/* First (wide) card gets more lines */
-.services-card:nth-child(1) .services-card-body p,
-.services-card:nth-child(4) .services-card-body p {
-  -webkit-line-clamp: 3;
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════════════ */
+
+.svc-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: sticky;
+  top: calc(var(--navbar-height, 72px) + 1.5rem);
 }
 
-.services-card-body ul {
+.svc-sidebar-box {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.1rem;
+  background: var(--bg-secondary);
+}
+
+.svc-sidebar-heading {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 0.6rem;
+}
+
+.svc-sidebar-about {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.svc-sidebar-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 0.75rem 0;
+}
+
+.svc-sidebar-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.svc-sidebar-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.svc-sidebar-icon {
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+/* Status box */
+.svc-status-box { background: var(--bg-primary); }
+
+.svc-status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.svc-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  flex-shrink: 0;
+  animation: svc-dot-pulse 2.4s ease-in-out infinite;
+}
+
+.svc-status-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.svc-status-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.svc-status-track {
+  width: 100%;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.svc-status-fill {
+  width: 60%;
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 2px;
+}
+
+.svc-status-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  line-height: 1.55;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Topics */
+.svc-topics {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
 }
 
-.services-card-body li {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  padding: 0.22rem 0.6rem;
-  border-radius: 5px;
+.svc-topic {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2em;
+  background: var(--primary-color-alpha);
+  color: var(--primary-color);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+  cursor: default;
 }
 
-/* ── CTA section ─────────────────────────────────────────── */
-.services-cta {
-  width: min(1140px, 92vw);
-  margin: 0 auto;
+/* ── Keyframe ── */
+@keyframes svc-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
 }
 
-.services-cta-card {
-  border-radius: 20px;
-  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, var(--border-color));
-  background: linear-gradient(
-    130deg,
-    color-mix(in srgb, var(--primary-color) 8%, var(--card-bg)) 0%,
-    var(--card-bg) 60%
-  );
-  box-shadow: var(--shadow-lg);
-}
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
 
-.services-cta-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.services-cta-content h3 {
-  margin: 0 0 0.4rem;
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-
-.services-cta-content p {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-/* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .services-hero-inner {
+  .svc-layout {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
   }
-
-  .services-hero-panel {
-    max-width: 480px;
-  }
-
-  /* Flatten to 2 equal columns on tablet */
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 380px;
-  }
-
-  .services-card:nth-child(n) {
-    grid-column: span 1;
+  .svc-sidebar {
+    position: static;
   }
 }
 
-@media (max-width: 720px) {
-  .services-hero {
-    padding: 3.5rem 0 2rem;
+@media (max-width: 640px) {
+  .svc-page {
+    padding: 1.25rem 1rem 3rem;
   }
-
-  .services-hero-actions {
+  .svc-page-header-inner {
     flex-direction: column;
-    align-items: stretch;
   }
-
-  .services-cta-content {
-    flex-direction: column;
-    align-items: flex-start;
+  .svc-header-actions {
+    width: 100%;
   }
-}
-
-@media (max-width: 600px) {
-  .services-page {
-    gap: 3.5rem;
-  }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-    grid-auto-rows: 360px;
-  }
-
-  .services-card:nth-child(n) {
-    grid-column: span 1;
-  }
-
-  .services-hero-text h1 {
-    font-size: clamp(2rem, 9vw, 2.6rem);
+  .svc-btn {
+    flex: 1;
+    justify-content: center;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .services-card,
-  .services-card-image img {
-    transition: none;
-    transform: none;
-  }
+  .svc-status-dot { animation: none; }
 }

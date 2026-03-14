@@ -1,3 +1,11 @@
+/**
+ * Services Page
+ * Location: src/features/services/Services.jsx
+ *
+ * GitHub repo-page layout:
+ *   page header (breadcrumb + actions) → two-column (main + sidebar)
+ */
+
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthModal from '../../shared/hooks/useAuthModal';
@@ -11,18 +19,14 @@ import {
   FiCheckCircle,
   FiTerminal,
   FiLock,
-  FiMessageSquare
+  FiMessageSquare,
+  FiArrowUpRight,
+  FiZap,
 } from 'react-icons/fi';
 import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa';
 import landingContent from '../../data/landing.json';
-import Logo from '../../shared/components/common/Logo';
-import Button from '../../shared/components/ui/Button';
-import Card from '../../shared/components/ui/Card';
 import useRequestPentest from '../../shared/hooks/useRequestPentest';
 import { slugify } from '../../shared/utils/slugify';
-import terminalWallpaper from '../../assets/services-images/beginner-offsec-training.webp';
-import greenBinaryWallpaper from '../../assets/services-images/community-integration.webp';
-import hackerLaptop from '../../assets/services-images/penetration-tests.webp';
 import '../../styles/sections/services/index.css';
 
 const Services = () => {
@@ -32,29 +36,10 @@ const Services = () => {
 
   const iconMap = useMemo(
     () => ({
-      FiShield,
-      FiFileText,
-      FiTarget,
-      FiClipboard,
-      FiSearch,
-      FiLayers,
-      FiCheckCircle,
-      FiTerminal,
-      FiLock,
-      FiMessageSquare,
-      FaGraduationCap,
-      FaUsers,
-      FaShieldAlt,
-      FaRocket
-    }),
-    []
-  );
-
-  const imageMap = useMemo(
-    () => ({
-      terminal: terminalWallpaper,
-      binary: greenBinaryWallpaper,
-      hacker: hackerLaptop
+      FiShield, FiFileText, FiTarget, FiClipboard,
+      FiSearch, FiLayers, FiCheckCircle, FiTerminal,
+      FiLock, FiMessageSquare, FaGraduationCap,
+      FaUsers, FaShieldAlt, FaRocket,
     }),
     []
   );
@@ -62,133 +47,198 @@ const Services = () => {
   const services = landingContent.services.map((item) => ({
     ...item,
     icon: iconMap[item.icon],
-    image: item.imageKey ? imageMap[item.imageKey] : item.image
   }));
 
   const heroTrust = landingContent.hero?.trust || [];
   const cta = landingContent.cta;
 
   const handleRoute = (route) => {
-    if (route === '/corporate/pentest') {
-      requestPentest();
-      return;
-    }
-    if (route) {
-      navigate(route);
-    }
+    if (route === '/corporate/pentest') { requestPentest(); return; }
+    if (route) navigate(route);
   };
 
   return (
-    <div className="services-page">
+    <div className="svc-page">
       {requestPentestModal}
-      <header className="services-hero reveal-on-scroll">
-        <div className="services-hero-inner">
-          <div className="services-hero-text">
-            <div className="services-eyebrow">
-              <Logo size="small" />
-              <span>Offensive Capabilities</span>
+
+      {/* ── PAGE HEADER ─────────────────────────────── */}
+      <header className="svc-page-header">
+        <div className="svc-page-header-inner">
+
+          <div className="svc-header-left">
+            <div className="svc-header-icon-wrap">
+              <FiShield size={20} className="svc-header-icon" />
             </div>
-            <h1>Services built for real-world risk.</h1>
-            <p>
-              From targeted penetration tests to red team simulations, we deliver
-              evidence-driven security work with reporting that maps directly to fixes.
-            </p>
-            <div className="services-hero-actions">
-              <Button
-                variant="primary"
-                size="large"
-                onClick={requestPentest}
-              >
-                Request a Pentest
-              </Button>
-              <Button
-                variant="ghost"
-                size="large"
-                onClick={() => openAuthModal('register-corporate')}
-              >
-                Join the Training Cycle
-              </Button>
+            <div>
+              <div className="svc-header-breadcrumb">
+                <span className="svc-breadcrumb-org">HSOCIETY</span>
+                <span className="svc-breadcrumb-sep">/</span>
+                <span className="svc-breadcrumb-page">services</span>
+                <span className="svc-header-visibility">Public</span>
+              </div>
+              <p className="svc-header-desc">
+                Evidence-driven security work with reporting that maps directly to fixes.
+              </p>
             </div>
           </div>
 
-          <div className="services-hero-panel">
-            <span className="services-hero-index">01</span>
-            <div className="services-hero-list">
-              {heroTrust.map((item) => (
-                <div key={item} className="services-hero-pill">
-                  <span className="pill-dot" aria-hidden="true" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
+          <div className="svc-header-actions">
+            <button
+              className="svc-btn svc-btn-secondary"
+              onClick={() => openAuthModal('register-corporate')}
+            >
+              Join training cycle
+            </button>
+            <button
+              className="svc-btn svc-btn-primary"
+              onClick={requestPentest}
+            >
+              <FiZap size={14} />
+              Request pentest
+            </button>
           </div>
+        </div>
+
+        {/* Trust pills row */}
+        <div className="svc-header-meta">
+          {heroTrust.map((item) => (
+            <span key={item} className="svc-meta-pill">
+              <span className="svc-meta-dot" />
+              {item}
+            </span>
+          ))}
         </div>
       </header>
 
-      <section className="services-list reveal-on-scroll">
-        <div className="services-section-header">
-          <Logo size="small" />
-          <h2>Core Services</h2>
-          <p>Built to surface risk, validate impact, and accelerate remediation.</p>
-        </div>
+      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
+      <div className="svc-layout">
 
-        <div className="services-grid">
-          {services.map((service) => (
-            <Card
-              key={service.title}
-              padding="none"
-              className="services-card services-card--link"
-              onClick={() => navigate(`/services/${slugify(service.title)}`)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  navigate(`/services/${slugify(service.title)}`);
-                }
-              }}
-            >
-              {service.image && (
-                <div className="services-card-image">
-                  <img src={service.image} alt={service.title} loading="lazy" />
-                </div>
-              )}
-              <div className="services-card-body">
-                <div className="services-card-title">
-                  <div className="services-card-icon">
-                    <service.icon size={22} />
+        {/* ── MAIN COLUMN ─────────────────────────── */}
+        <main className="svc-main">
+
+          {/* Section: services list */}
+          <section className="svc-section">
+            <h2 className="svc-section-title">
+              <FiLayers size={15} className="svc-section-icon" />
+              Core services
+            </h2>
+            <p className="svc-section-desc">
+              Built to surface risk, validate impact, and accelerate remediation.
+            </p>
+
+            <div className="svc-card-list">
+              {services.map((service) => (
+                <article
+                  key={service.title}
+                  className="svc-card"
+                  onClick={() => navigate(`/services/${slugify(service.title)}`)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      navigate(`/services/${slugify(service.title)}`);
+                    }
+                  }}
+                >
+                  {/* Card header */}
+                  <div className="svc-card-header">
+                    <div className="svc-card-header-left">
+                      <span className="svc-card-icon">
+                        {service.icon && <service.icon size={16} />}
+                      </span>
+                      <h3 className="svc-card-title">{service.title}</h3>
+                    </div>
+                    <FiArrowUpRight size={14} className="svc-card-arrow" />
                   </div>
-                  <h3>{service.title}</h3>
-                </div>
-                <p>{service.description}</p>
-                <ul>
-                  {service.features.map((feature) => (
-                    <li key={feature}>{feature}</li>
-                  ))}
-                </ul>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </section>
 
-      <section className="services-cta reveal-on-scroll">
-        <Card padding="large" className="services-cta-card">
-          <div className="services-cta-content">
-            <div>
-              <h3>{cta?.right?.title}</h3>
-              <p>{cta?.right?.description}</p>
+                  {/* Description */}
+                  <p className="svc-card-desc">{service.description}</p>
+
+                  {/* Feature tags — GitHub topic tags */}
+                  <div className="svc-card-footer">
+                    {service.features.map((f) => (
+                      <span key={f} className="svc-tag">{f}</span>
+                    ))}
+                  </div>
+                </article>
+              ))}
             </div>
-            <Button
-              variant={cta?.right?.variant || 'secondary'}
-              size="large"
-              onClick={() => handleRoute(cta?.right?.route || '/corporate/pentest')}
-            >
-              {cta?.right?.button || 'Request Pentest'}
-            </Button>
+          </section>
+
+          <div className="svc-divider" />
+
+          {/* CTA section */}
+          <section className="svc-section svc-cta-section">
+            <div className="svc-cta-body">
+              <p className="svc-cta-eyebrow">
+                <FiCheckCircle size={13} />
+                Ready to engage
+              </p>
+              <h2 className="svc-cta-title">
+                {cta?.right?.title || 'Start a security engagement.'}
+              </h2>
+              <p className="svc-cta-desc">
+                {cta?.right?.description || 'Talk to our team about your attack surface.'}
+              </p>
+              <button
+                className="svc-btn svc-btn-primary"
+                onClick={() => handleRoute(cta?.right?.route || '/corporate/pentest')}
+              >
+                {cta?.right?.button || 'Request Pentest'}
+                <FiArrowUpRight size={14} />
+              </button>
+            </div>
+          </section>
+
+        </main>
+
+        {/* ── SIDEBAR ─────────────────────────────── */}
+        <aside className="svc-sidebar">
+
+          {/* About */}
+          <div className="svc-sidebar-box">
+            <h3 className="svc-sidebar-heading">About</h3>
+            <p className="svc-sidebar-about">
+              HSOCIETY delivers offensive security services: penetration tests, red team
+              operations, and training engagements for real-world risk reduction.
+            </p>
+            <div className="svc-sidebar-divider" />
+            <ul className="svc-sidebar-list">
+              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Evidence-driven reports</li>
+              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Direct remediation mapping</li>
+              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Supervised pentest engagements</li>
+              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Beginner-to-advanced training</li>
+            </ul>
           </div>
-        </Card>
-      </section>
+
+          {/* Status box */}
+          <div className="svc-sidebar-box svc-status-box">
+            <div className="svc-status-row">
+              <span className="svc-status-dot" />
+              <span className="svc-status-label">ENGAGEMENTS</span>
+            </div>
+            <strong className="svc-status-value">OPEN</strong>
+            <div className="svc-status-track">
+              <div className="svc-status-fill" />
+            </div>
+            <p className="svc-status-note">
+              Accepting new clients. SLA-backed delivery.
+            </p>
+          </div>
+
+          {/* Topics */}
+          <div className="svc-sidebar-box">
+            <h3 className="svc-sidebar-heading">Topics</h3>
+            <div className="svc-topics">
+              {['pentesting', 'red-team', 'offsec', 'training', 'vulnerability', 'remediation'].map(
+                (t) => <span key={t} className="svc-topic">{t}</span>
+              )}
+            </div>
+          </div>
+
+        </aside>
+      </div>
     </div>
   );
 };

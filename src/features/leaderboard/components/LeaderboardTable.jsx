@@ -1,3 +1,11 @@
+/**
+ * LeaderboardTable
+ * Location: src/features/leaderboard/components/LeaderboardTable.jsx
+ *
+ * GitHub-style bordered table list.
+ * Top-3 rows get data-rank="1/2/3" for medal styling via CSS only.
+ */
+
 import React, { useMemo } from 'react';
 import { IoFlameOutline } from 'react-icons/io5';
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
@@ -10,45 +18,45 @@ const LeaderboardTable = ({
   entries = [],
   limit = null,
   emptyMessage = 'Leaderboard data is loading.',
-  loading = false
+  loading = false,
 }) => {
   const rows = useMemo(() => {
     const sorted = buildLeaderboard(entries || []);
-    if (limit) return sorted.slice(0, limit);
-    return sorted;
+    return limit ? sorted.slice(0, limit) : sorted;
   }, [entries, limit]);
 
+  /* ── Skeleton state ── */
   if (loading) {
-    const skeletonCount = limit || 6;
+    const count = limit || 6;
     return (
-      <div className="leaderboard-table" role="table" aria-label="Leaderboard">
-        <div className="leaderboard-row leaderboard-header" role="row">
-          <div className="leaderboard-col leaderboard-position" role="columnheader">#</div>
-          <div className="leaderboard-col leaderboard-profile" role="columnheader">Hacker</div>
-          <div className="leaderboard-col leaderboard-rank" role="columnheader">Rank</div>
-          <div className="leaderboard-col leaderboard-metrics" role="columnheader">CP + Streak</div>
+      <div className="lb-table" role="table" aria-label="Leaderboard">
+
+        {/* Header */}
+        <div className="lb-table-header" role="row">
+          <div className="lb-col lb-col-pos"   role="columnheader">#</div>
+          <div className="lb-col lb-col-user"  role="columnheader">Operator</div>
+          <div className="lb-col lb-col-rank"  role="columnheader">Rank</div>
+          <div className="lb-col lb-col-score" role="columnheader">CP · Streak</div>
         </div>
 
-        {Array.from({ length: skeletonCount }).map((_, index) => (
-          <div key={`skeleton-${index}`} className="leaderboard-row is-skeleton" role="row">
-            <div className="leaderboard-col leaderboard-position" role="cell">
-              <Skeleton className="leaderboard-skeleton-value" />
-              <Skeleton className="leaderboard-skeleton-label" />
+        {Array.from({ length: count }).map((_, i) => (
+          <div key={`sk-${i}`} className="lb-row lb-row-skeleton" role="row">
+            <div className="lb-col lb-col-pos" role="cell">
+              <Skeleton className="lb-sk-num" />
             </div>
-            <div className="leaderboard-col leaderboard-profile" role="cell">
-              <Skeleton variant="circle" className="leaderboard-skeleton-avatar" />
-              <div className="leaderboard-profile-text">
-                <Skeleton className="leaderboard-skeleton-line" />
-                <Skeleton className="leaderboard-skeleton-line short" />
+            <div className="lb-col lb-col-user" role="cell">
+              <Skeleton variant="circle" className="lb-sk-avatar" />
+              <div className="lb-sk-text">
+                <Skeleton className="lb-sk-line" />
+                <Skeleton className="lb-sk-line lb-sk-short" />
               </div>
             </div>
-            <div className="leaderboard-col leaderboard-rank" role="cell">
-              <Skeleton className="leaderboard-skeleton-line" />
-              <Skeleton className="leaderboard-skeleton-label" />
+            <div className="lb-col lb-col-rank" role="cell">
+              <Skeleton className="lb-sk-line" />
             </div>
-            <div className="leaderboard-col leaderboard-metrics" role="cell">
-              <Skeleton className="leaderboard-skeleton-metric" />
-              <Skeleton className="leaderboard-skeleton-metric short" />
+            <div className="lb-col lb-col-score" role="cell">
+              <Skeleton className="lb-sk-chip" />
+              <Skeleton className="lb-sk-chip lb-sk-short" />
             </div>
           </div>
         ))}
@@ -56,67 +64,78 @@ const LeaderboardTable = ({
     );
   }
 
+  /* ── Empty state ── */
   if (!rows.length) {
-    return <div className="leaderboard-empty">{emptyMessage}</div>;
+    return (
+      <div className="lb-empty" role="status">
+        {emptyMessage}
+      </div>
+    );
   }
 
+  /* ── Data rows ── */
   return (
-    <div className="leaderboard-table" role="table" aria-label="Leaderboard">
-      <div className="leaderboard-row leaderboard-header" role="row">
-        <div className="leaderboard-col leaderboard-position" role="columnheader">#</div>
-        <div className="leaderboard-col leaderboard-profile" role="columnheader">Hacker</div>
-        <div className="leaderboard-col leaderboard-rank" role="columnheader">Rank</div>
-        <div className="leaderboard-col leaderboard-metrics" role="columnheader">CP + Streak</div>
+    <div className="lb-table" role="table" aria-label="Leaderboard">
+
+      {/* Header */}
+      <div className="lb-table-header" role="row">
+        <div className="lb-col lb-col-pos"   role="columnheader">#</div>
+        <div className="lb-col lb-col-user"  role="columnheader">Operator</div>
+        <div className="lb-col lb-col-rank"  role="columnheader">Rank</div>
+        <div className="lb-col lb-col-score" role="columnheader">CP · Streak</div>
       </div>
 
       {rows.map((entry) => {
         const avatarFallback = getGithubAvatarDataUri(entry.handle || entry.name || 'member');
-        const handle = entry.handle ? `@${entry.handle}` : 'Handle unavailable';
-        const highlightClass = entry.position <= 3 ? 'is-top' : '';
+        const handle = entry.handle ? `@${entry.handle}` : '—';
+        const rankAttr = entry.position <= 3 ? String(entry.position) : undefined;
 
         return (
           <div
             key={entry.id || entry.position}
-            className={`leaderboard-row ${highlightClass}`}
+            className="lb-row"
+            data-rank={rankAttr}
             role="row"
           >
-            <div className="leaderboard-col leaderboard-position" role="cell">
-              <span className="leaderboard-position-value">#{entry.position}</span>
-              <span className="leaderboard-position-label">Position</span>
+            {/* Position */}
+            <div className="lb-col lb-col-pos" role="cell">
+              <span className="lb-pos-value">#{entry.position}</span>
             </div>
 
-            <div className="leaderboard-col leaderboard-profile" role="cell">
-              <div className="leaderboard-avatar">
+            {/* Profile */}
+            <div className="lb-col lb-col-user" role="cell">
+              <div className="lb-avatar">
                 <img
                   src={entry.avatarUrl || avatarFallback}
                   alt={entry.name}
-                  onError={(event) => {
-                    if (event.currentTarget.src !== avatarFallback) {
-                      event.currentTarget.src = avatarFallback;
+                  onError={(e) => {
+                    if (e.currentTarget.src !== avatarFallback) {
+                      e.currentTarget.src = avatarFallback;
                     }
                   }}
                 />
               </div>
-              <div className="leaderboard-profile-text">
-                <p className="leaderboard-handle">{handle}</p>
-                <h4>{entry.name || 'Name unavailable'}</h4>
+              <div className="lb-user-text">
+                <span className="lb-name">{entry.name || 'Unknown'}</span>
+                <span className="lb-handle">{handle}</span>
               </div>
             </div>
 
-            <div className="leaderboard-col leaderboard-rank" role="cell">
-              <span className="leaderboard-rank-label">Rank</span>
-              <strong>{entry.rankTitle || '—'}</strong>
+            {/* Rank title */}
+            <div className="lb-col lb-col-rank" role="cell">
+              <span className="lb-rank-title">{entry.rankTitle || '—'}</span>
             </div>
 
-            <div className="leaderboard-col leaderboard-metrics" role="cell">
-              <div className="leaderboard-metric leaderboard-metric-cp">
-                <img src={cpIcon} alt="CP" className="leaderboard-cp-icon" />
-                <span className="leaderboard-cp-value">{entry.totalXp ?? '—'}</span>
-              </div>
-              <div className="leaderboard-metric">
-                <IoFlameOutline size={16} />
-                <span>{entry.streakDays ?? '—'} Streak</span>
-              </div>
+            {/* Metrics */}
+            <div className="lb-col lb-col-score" role="cell">
+              <span className="lb-chip lb-chip-cp">
+                <img src={cpIcon} alt="CP" className="lb-cp-icon" />
+                <span>{entry.totalXp ?? '—'}</span>
+              </span>
+              <span className="lb-chip">
+                <IoFlameOutline size={14} />
+                <span>{entry.streakDays ?? '—'}d</span>
+              </span>
             </div>
           </div>
         );

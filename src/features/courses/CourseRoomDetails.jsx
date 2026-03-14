@@ -1,9 +1,19 @@
+/**
+ * Course Room Details Page
+ * Location: src/features/courses/CourseRoomDetails.jsx
+ */
+
 import React, { useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../shared/hooks/useAuthModal';
-import { FiArrowLeft, FiArrowRight, FiCheckCircle, FiChevronRight, FiTerminal } from 'react-icons/fi';
-import Card from '../../shared/components/ui/Card';
-import Button from '../../shared/components/ui/Button';
+import {
+  FiArrowLeft,
+  FiCheckCircle,
+  FiTerminal,
+  FiChevronRight,
+  FiZap,
+  FiList,
+} from 'react-icons/fi';
 import { getHackerProtocolModule, getHackerProtocolRoom } from '../../data/bootcamps/hackerProtocolData';
 import { useAuth } from '../../core/auth/AuthContext';
 import '../../styles/sections/courses/index.css';
@@ -14,7 +24,8 @@ const CourseRoomDetails = () => {
   const { openAuthModal } = useAuthModal();
   const { isAuthenticated } = useAuth();
   const module = getHackerProtocolModule(Number(moduleId));
-  const room = getHackerProtocolRoom(Number(moduleId), Number(roomId));
+  const room   = getHackerProtocolRoom(Number(moduleId), Number(roomId));
+
   const handleEnroll = useCallback(() => {
     if (!isAuthenticated) {
       openAuthModal('register', { redirect: '/student-bootcamps' });
@@ -25,116 +36,176 @@ const CourseRoomDetails = () => {
 
   if (bootcampId !== 'hacker-protocol' || !module || !room) {
     return (
-      <section className="courses-page reveal-on-scroll">
-        <Card padding="medium"><h2>Room not found</h2></Card>
-      </section>
+      <div className="crs-page">
+        <div className="crs-not-found">Room not found.</div>
+      </div>
     );
   }
 
   return (
-    <section className="courses-page reveal-on-scroll">
-      <header
-        className="courses-hero courses-hero--module"
-        style={{ '--module-color': module.color }}
-      >
-        <div className="courses-hero-glow" aria-hidden="true" />
-        <div className="courses-hero-grid" aria-hidden="true" />
+    <div className="crs-page">
 
-        <div className="courses-module-hero-layout">
-          <div className="courses-hero-inner">
-            <span
-              className="courses-eyebrow"
-              style={{
-                color: module.color,
-                borderColor: `color-mix(in srgb, ${module.color} 35%, transparent)`,
-                background: `color-mix(in srgb, ${module.color} 10%, transparent)`
-              }}
-            >
-              <FiTerminal size={12} />
-              {module.codename} · Room {room.roomId}
-            </span>
-            <h1 className="courses-hero-title">{room.title}</h1>
-            <p className="courses-hero-sub">{room.overview}</p>
-            <div className="courses-actions">
-              <Button
-                variant="ghost"
-                size="small"
-                onClick={() => navigate(`/courses/hacker-protocol/modules/${module.moduleId}`)}
-              >
-                <FiArrowLeft size={14} />
-                Back to Module
-              </Button>
-              <Button variant="primary" size="small" onClick={handleEnroll}>
-                Enroll Now
-                <FiArrowRight size={14} />
-              </Button>
+      {/* ── PAGE HEADER ─────────────────────────────── */}
+      <header className="crs-page-header">
+        <div className="crs-page-header-inner">
+          <div className="crs-header-left">
+            <div className="crs-header-icon-wrap">
+              <img src={module.emblem} alt={module.codename} className="crs-header-emblem" />
+            </div>
+            <div>
+              <div className="crs-header-breadcrumb">
+                <button className="crs-breadcrumb-link" onClick={() => navigate('/courses')}>
+                  courses
+                </button>
+                <span className="crs-breadcrumb-sep">/</span>
+                <button
+                  className="crs-breadcrumb-link"
+                  onClick={() => navigate('/courses/hacker-protocol')}
+                >
+                  hacker-protocol
+                </button>
+                <span className="crs-breadcrumb-sep">/</span>
+                <button
+                  className="crs-breadcrumb-link"
+                  onClick={() => navigate(`/courses/hacker-protocol/modules/${module.moduleId}`)}
+                >
+                  {module.codename.toLowerCase()}
+                </button>
+                <span className="crs-breadcrumb-sep">/</span>
+                <span className="crs-breadcrumb-page">room-{room.roomId}</span>
+              </div>
+              <p className="crs-header-desc">{room.overview}</p>
             </div>
           </div>
 
-          <div className="courses-module-hero-emblem-wrap">
-            <div className="courses-module-hero-emblem-glow" aria-hidden="true" />
-            <span className="cfc-bracket cfc-bracket--tl" aria-hidden="true" />
-            <span className="cfc-bracket cfc-bracket--tr" aria-hidden="true" />
-            <span className="cfc-bracket cfc-bracket--bl" aria-hidden="true" />
-            <span className="cfc-bracket cfc-bracket--br" aria-hidden="true" />
-            <img
-              src={module.emblem}
-              alt={`${module.codename} emblem`}
-              className="courses-module-hero-emblem"
-            />
+          <div className="crs-header-actions">
+            <button
+              className="crs-btn crs-btn-secondary"
+              onClick={() => navigate(`/courses/hacker-protocol/modules/${module.moduleId}`)}
+            >
+              <FiArrowLeft size={14} />
+              Back to module
+            </button>
+            <button className="crs-btn crs-btn-primary" onClick={handleEnroll}>
+              <FiZap size={14} />
+              Enroll now
+            </button>
           </div>
+        </div>
+
+        <div className="crs-header-meta">
+          <span className="crs-meta-pill">
+            <FiTerminal size={13} className="crs-meta-icon" />
+            <span className="crs-meta-label">Phase</span>
+            <strong className="crs-meta-value">{module.codename}</strong>
+          </span>
+          <span className="crs-meta-pill">
+            <span className="crs-meta-dot" />
+            <span>Room {room.roomId}</span>
+          </span>
         </div>
       </header>
 
-      <div className="courses-debrief-grid">
-        <div className="courses-debrief-panel">
-          <div className="courses-debrief-panel-header">
-            <FiCheckCircle size={15} style={{ color: 'var(--primary-color)' }} />
-            <h3>Room Objectives</h3>
-            <span className="courses-debrief-count">Module {module.moduleId}</span>
+      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
+      <div className="crs-layout">
+        <main className="crs-main">
+
+          {/* Objectives */}
+          <section className="crs-section">
+            <h2 className="crs-section-title">
+              <FiCheckCircle size={15} className="crs-section-icon" />
+              Room objectives
+            </h2>
+
+            <div className="crs-objectives-list">
+              <div className="crs-objective-item">
+                <strong className="crs-obj-title">{room.title}</strong>
+                <p className="crs-obj-desc">{room.overview}</p>
+                {room.bullets?.length > 0 && (
+                  <ul className="crs-obj-bullets">
+                    {room.bullets.map((bullet) => (
+                      <li key={bullet}>
+                        <FiCheckCircle size={11} className="crs-obj-bullet-icon" />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </section>
+
+          <div className="crs-divider" />
+
+          {/* Other rooms in module */}
+          <section className="crs-section">
+            <h2 className="crs-section-title">
+              <FiList size={15} className="crs-section-icon" />
+              Other rooms in this module
+            </h2>
+
+            <div className="crs-room-list">
+              {module.rooms.map((r, i) => (
+                <Link
+                  key={r.roomId}
+                  className={`crs-room-row${r.roomId === room.roomId ? ' is-active' : ''}`}
+                  to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${r.roomId}`}
+                >
+                  <span className="crs-room-num">{String(i + 1).padStart(2, '0')}</span>
+                  <FiCheckCircle size={13} className="crs-room-check" />
+                  <div className="crs-room-text">
+                    <strong className="crs-room-title">Room {r.roomId} · {r.title}</strong>
+                  </div>
+                  <FiChevronRight size={13} className="crs-room-arrow" />
+                </Link>
+              ))}
+            </div>
+          </section>
+
+        </main>
+
+        <aside className="crs-sidebar">
+          <div className="crs-sidebar-box">
+            <h3 className="crs-sidebar-heading">About this room</h3>
+            <p className="crs-sidebar-about">{room.overview}</p>
+            <div className="crs-sidebar-divider" />
+            <ul className="crs-sidebar-list">
+              <li>
+                <FiCheckCircle size={13} className="crs-sidebar-icon" />
+                Part of {module.codename}
+              </li>
+              {room.bullets?.slice(0, 3).map((b) => (
+                <li key={b}>
+                  <FiCheckCircle size={13} className="crs-sidebar-icon" />
+                  {b}
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="courses-objectives-list">
-            <div className="courses-room-objective">
-              <strong className="courses-obj-title">{room.title}</strong>
-              <p className="courses-obj-desc">{room.overview}</p>
-              {room.bullets?.length > 0 && (
-                <ul className="courses-obj-bullets">
-                  {room.bullets.map((bullet) => (
-                    <li key={bullet}>
-                      <FiCheckCircle size={11} />
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
+
+          <div className="crs-sidebar-box crs-status-box">
+            <div className="crs-status-row">
+              <span className="crs-status-dot" />
+              <span className="crs-status-label">ROOM STATUS</span>
+            </div>
+            <strong className="crs-status-value">READY</strong>
+            <div className="crs-status-track">
+              <div className="crs-status-fill" />
+            </div>
+            <p className="crs-status-note">Enroll to unlock this room.</p>
+          </div>
+
+          <div className="crs-sidebar-box">
+            <h3 className="crs-sidebar-heading">Topics</h3>
+            <div className="crs-topics">
+              {['pentesting', 'offsec', module.codename.toLowerCase(), 'room'].map(
+                (t) => <span key={t} className="crs-topic">{t}</span>
               )}
             </div>
           </div>
-        </div>
-
-        <div className="courses-debrief-panel courses-debrief-panel--objectives">
-          <div className="courses-debrief-panel-header">
-            <FiTerminal size={15} style={{ color: 'var(--primary-color)' }} />
-            <h3>Other Rooms In This Module</h3>
-          </div>
-          <div className="courses-room-list">
-            {module.rooms.map((roomItem, i) => (
-              <Link
-                key={roomItem.roomId}
-                className={`courses-room-item ${roomItem.roomId === room.roomId ? 'is-active' : ''}`}
-                to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${roomItem.roomId}`}
-              >
-                <span className="courses-room-index">{String(i + 1).padStart(2, '0')}</span>
-                <div className="courses-room-item-text">
-                  <strong>Room {roomItem.roomId}</strong>
-                  <small>{roomItem.title}</small>
-                </div>
-                <FiChevronRight size={13} className="courses-room-arrow" />
-              </Link>
-            ))}
-          </div>
-        </div>
+        </aside>
       </div>
-    </section>
+    </div>
   );
 };
 
