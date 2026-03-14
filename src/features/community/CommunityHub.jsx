@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiHash } from 'react-icons/fi';
+import { FiUsers, FiMessageSquare, FiSettings } from 'react-icons/fi';
 import { useAuth } from '../../core/auth/AuthContext';
 import {
   createCommunitySocket,
@@ -10,17 +10,14 @@ import {
 import CommunityHeader from './components/header/CommunityHeader';
 import CommunityMessageList from './components/messages/CommunityMessageList';
 import CommunityCompose from './components/compose/CommunityCompose';
-import SocialLinks from '../../shared/components/common/SocialLinks';
 import { getUserAvatar } from './utils/community.utils';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { getProfile } from '../account/account.service';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_HUB_DATA } from '../../data/community/communityHubData';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
-import '@styles/sections/community/base.css';
+import '@styles/sections/community/index.css';
 import '@styles/sections/community/header.css';
-import '@styles/sections/community/messages.css';
-import '@styles/sections/community/compose.css';
 
 const CommunityHub = () => {
   const { user } = useAuth();
@@ -89,7 +86,6 @@ const CommunityHub = () => {
     socket.on('receiveMessage', (message) => {
       if (message.room !== room) return;
       setMessages((prev) => {
-        // If this is a server-confirmed version of an optimistic message, replace it.
         if (message.tempId) {
           const index = prev.findIndex((item) => item.id === message.tempId);
           if (index >= 0) {
@@ -122,8 +118,6 @@ const CommunityHub = () => {
                   const existing = item.comments || [];
                   const incoming = payload.comment;
                   if (existing.some((c) => c.id && c.id === incoming.id)) return existing;
-
-                  // Replace optimistic comment if it matches current user + content.
                   if (incoming.userId && incoming.content) {
                     const tempIndex = existing.findIndex(
                       (c) =>
@@ -137,7 +131,6 @@ const CommunityHub = () => {
                       return next;
                     }
                   }
-
                   return [...existing, incoming];
                 })(),
               }
@@ -207,9 +200,7 @@ const CommunityHub = () => {
       setCpTotal(Number(response.data?.xpSummary?.totalXp || 0));
     };
     loadProfilePoints();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, [user?.id]);
 
   /* ── Send ── */
@@ -221,7 +212,6 @@ const CommunityHub = () => {
 
     const tempId = `temp-${Date.now()}`;
 
-    // Optimistically add the message so the sender sees it immediately.
     setMessages((prev) => [
       ...prev,
       {
@@ -275,7 +265,6 @@ const CommunityHub = () => {
         })
       );
     }
-
     socketRef.current?.emit('likeMessage', { messageId });
   };
 
@@ -297,7 +286,6 @@ const CommunityHub = () => {
         )
       );
     }
-
     socketRef.current?.emit('addComment', { messageId, content });
   };
 
@@ -305,6 +293,7 @@ const CommunityHub = () => {
     overview.reactionConfig?.maxPerUser || COMMUNITY_HUB_DATA.defaults.reactionLimit
   );
   const fallbackReactions = COMMUNITY_HUB_DATA.defaults.reactions;
+
   const handleReact = (messageId, emoji) => {
     if (!messageId || !emoji || !currentUserId) return;
     setMessages((prev) =>
@@ -326,10 +315,7 @@ const CommunityHub = () => {
           ...item,
           reactions: {
             ...reactions,
-            [emoji]: {
-              count: nextCount,
-              users: nextUsers,
-            },
+            [emoji]: { count: nextCount, users: nextUsers },
           },
         };
       })
@@ -337,7 +323,6 @@ const CommunityHub = () => {
     socketRef.current?.emit('reactMessage', { messageId, emoji });
   };
 
-  /* ── Room change ── */
   const handleRoomChange = (newRoom) => {
     setRoom(normalizeRoomId(newRoom));
   };
@@ -345,9 +330,7 @@ const CommunityHub = () => {
   const activeChannels = useMemo(() => {
     const source = overview.channels?.length
       ? overview.channels
-      : [
-          ...COMMUNITY_HUB_DATA.defaults.roomFallbackChannels,
-        ];
+      : [...COMMUNITY_HUB_DATA.defaults.roomFallbackChannels];
 
     return source
       .map((channel) => ({
@@ -361,21 +344,91 @@ const CommunityHub = () => {
   useEffect(() => {
     if (!activeChannels.length) return;
     const exists = activeChannels.some((channel) => channel.id === room);
-    if (!exists) {
-      setRoom(activeChannels[0].id);
-    }
+    if (!exists) setRoom(activeChannels[0].id);
   }, [activeChannels, room]);
+
+  const currentReactionEmojis = (() => {
+    const channel = activeChannels.find((ch) => ch.id === room);
+    if (channel?.emojis?.length) return channel.emojis;
+    if (overview.reactionConfig?.emojis?.length) return overview.reactionConfig.emojis;
+    return fallbackReactions;
+  })();
 
   return (
     <div className="community-root">
 
-      {/* ── Main feed column ── */}
+      {/* ── MAIN FEED (X/Twitter style) ── */}
       <main className="community-main" aria-label={`#${displayRoom(room)} channel`}>
+
+        <div className="community-main-meta">
+          <div className="community-aside-widget">
+            <div className="community-aside-widget-header">
+              <FiUsers size={14} aria-hidden="true" />
+              <span>{COMMUNITY_HUB_DATA.aside.communityTitle}</span>
+            </div>
+            <div className="community-aside-stats-grid">
+              <div className="community-aside-stat-cell">
+                <strong>{Number(overview.stats?.learners || 0).toLocaleString()}</strong>
+                <span>{COMMUNITY_HUB_DATA.aside.onlineNowLabel}</span>
+              </div>
+              <div className="community-aside-stat-cell">
+                <strong>{Number(overview.stats?.questions || 0).toLocaleString()}</strong>
+                <span>{COMMUNITY_HUB_DATA.aside.totalPostsLabel}</span>
+              </div>
+            </div>
+          </div>
+          {user && (
+            <button
+              type="button"
+              className="community-aside-user-card"
+              onClick={() => navigate('/settings')}
+              aria-label={COMMUNITY_HUB_DATA.userCard.openAccountAria}
+            >
+              <img
+                src={currentUserAvatar}
+                alt={user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
+                className="community-aside-user-avatar"
+                onError={(e) => {
+                  if (e.currentTarget.src !== currentUserAvatarFallback) {
+                    e.currentTarget.src = currentUserAvatarFallback;
+                  }
+                }}
+              />
+              <div className="community-aside-user-info">
+                <span className="community-aside-user-name">
+                  {user?.name || user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
+                </span>
+                <span className="community-aside-user-meta">
+                  <span className="community-aside-user-role">{role}</span>
+                  <span className="community-aside-user-cp">
+                    <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
+                    {cpTotal}
+                  </span>
+                </span>
+              </div>
+              <div className="community-aside-user-right">
+                <span className="community-aside-user-cp">
+                  <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
+                  {cpTotal}
+                </span>
+                <FiSettings size={13} className="community-aside-settings-icon" aria-hidden="true" />
+              </div>
+            </button>
+          )}
+        </div>
+
+
+        {/* Sticky header with channel tabs */}
         <CommunityHeader
+          activeChannels={activeChannels}
+          room={room}
+          onRoomChange={handleRoomChange}
           overviewStats={overview.stats}
           connected={connected}
+          onBack={() => navigate(-1)}
         />
 
+        {/* Message feed */}
         <CommunityMessageList
           messages={messages}
           loading={loading}
@@ -385,66 +438,12 @@ const CommunityHub = () => {
           onLike={handleLike}
           onAddComment={handleAddComment}
           onReact={handleReact}
-          reactionEmojis={(() => {
-            const channel = activeChannels.find((ch) => ch.id === room);
-            if (channel?.emojis?.length) return channel.emojis;
-            if (overview.reactionConfig?.emojis?.length) return overview.reactionConfig.emojis;
-            return fallbackReactions;
-          })()}
+          reactionEmojis={currentReactionEmojis}
           reactionLimit={reactionLimit}
           currentUserId={currentUserId}
         />
 
-        {/* ── Mobile channel switcher bar (replaces header tabs on mobile) ── */}
-        {activeChannels.length > 1 && (
-          <div className="community-mobile-channel-bar" role="tablist" aria-label="Channels">
-            {activeChannels.map((ch) => (
-              <button
-                key={ch.id}
-                type="button"
-                className={`community-mobile-channel-tab${room === ch.id ? ' active' : ''}`}
-                onClick={() => handleRoomChange(ch.id)}
-                role="tab"
-                aria-selected={room === ch.id}
-              >
-                <FiHash size={12} aria-hidden="true" />
-                {ch.name || ch.id}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {user && (
-          <button
-            type="button"
-            className="community-aside-user community-aside-user-mobile"
-            onClick={() => navigate('/settings')}
-            aria-label={COMMUNITY_HUB_DATA.userCard.openAccountAria}
-          >
-            <img
-              src={currentUserAvatar}
-              alt={user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
-              className="community-aside-user-avatar"
-              onError={(e) => {
-                if (e.currentTarget.src !== currentUserAvatarFallback) {
-                  e.currentTarget.src = currentUserAvatarFallback;
-                }
-              }}
-            />
-            <div className="community-aside-user-info">
-              <span className="community-aside-user-name">
-                {user?.name || user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
-              </span>
-              <span className="community-aside-user-role">{role}</span>
-              <span className="community-aside-user-cp">
-                <img src={cpIcon} alt="CP" className="community-aside-user-cp-icon" />
-                {cpTotal}
-              </span>
-            </div>
-            <span className={`community-status-dot ${connected ? 'online' : 'offline'}`} />
-          </button>
-        )}
-
+        {/* Compose bar */}
         <CommunityCompose
           user={user}
           room={room}
@@ -457,80 +456,6 @@ const CommunityHub = () => {
           onImageError={setImageError}
         />
       </main>
-
-      {/* ── Right aside (desktop ≥1024px only) ── */}
-      <aside className="community-aside" id="community-stats">
-        <div className="community-aside-card">
-          <h2 className="community-aside-title">{COMMUNITY_HUB_DATA.aside.communityTitle}</h2>
-          <div className="community-aside-stats">
-            <div className="community-aside-stat">
-              <span className="community-aside-stat-value">
-                {Number(overview.stats?.learners || 0).toLocaleString()}
-              </span>
-              <span className="community-aside-stat-label">{COMMUNITY_HUB_DATA.aside.onlineNowLabel}</span>
-            </div>
-            <div className="community-aside-stat">
-              <span className="community-aside-stat-value">
-                {Number(overview.stats?.questions || 0).toLocaleString()}
-              </span>
-              <span className="community-aside-stat-label">{COMMUNITY_HUB_DATA.aside.totalPostsLabel}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="community-aside-card">
-          <h2 className="community-aside-title">{COMMUNITY_HUB_DATA.aside.channelsTitle}</h2>
-          <div className="community-aside-channels">
-            {activeChannels.map((ch) => (
-              <button
-                key={ch.id}
-                type="button"
-                className={`community-aside-channel ${room === ch.id ? 'active' : ''}`}
-                onClick={() => handleRoomChange(ch.id)}
-              >
-                <span className="community-aside-hash">#</span>
-                {ch.name || ch.id}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="community-aside-card">
-          <h2 className="community-aside-title">{COMMUNITY_HUB_DATA.aside.socialTitle}</h2>
-          <SocialLinks className="community-aside-social" />
-        </div>
-
-        {user && (
-          <button
-            type="button"
-            className="community-aside-user"
-            onClick={() => navigate('/settings')}
-            aria-label={COMMUNITY_HUB_DATA.userCard.openAccountAria}
-          >
-            <img
-              src={currentUserAvatar}
-              alt={user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
-              className="community-aside-user-avatar"
-              onError={(e) => {
-                if (e.currentTarget.src !== currentUserAvatarFallback) {
-                  e.currentTarget.src = currentUserAvatarFallback;
-                }
-              }}
-            />
-            <div className="community-aside-user-info">
-              <span className="community-aside-user-name">
-                {user?.name || user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
-              </span>
-              <span className="community-aside-user-role">{role}</span>
-              <span className="community-aside-user-cp">
-                <img src={cpIcon} alt="CP" className="community-aside-user-cp-icon" />
-                {cpTotal}
-              </span>
-            </div>
-            <span className={`community-status-dot ${connected ? 'online' : 'offline'}`} />
-          </button>
-        )}
-      </aside>
 
     </div>
   );

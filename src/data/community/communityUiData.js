@@ -4,6 +4,7 @@ export const COMMUNITY_UI = {
     title: 'Community',
     learnersSuffix: 'online',
     postsSuffix: 'posts',
+    defaultChannel: 'general',
     channelsLabel: 'Channels',
   },
   sidebar: {

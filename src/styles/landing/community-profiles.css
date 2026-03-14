@@ -1,398 +1,174 @@
 /* ============================================================
-   COMMUNITY PROFILES — Enhanced with 3D / Glass aesthetic
-   Follows common.css theme variables
+   FILE: src/styles/landing/threat-map-section.css
    ============================================================ */
 
-/* ── Section shell ──────────────────────────────────────────── */
-.community-profiles {
+.landing-threatmap {
   position: relative;
-  padding: 6rem 1.5rem;
+  padding: 5rem 1.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
   overflow: hidden;
-  isolation: isolate;
 }
 
-/* Three.js canvas lives behind everything */
-.cp-orb-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.85;
-}
-
-/* Subtle radial vignette to blend canvas edges */
-.community-profiles::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 80% 60% at 50% 50%,
-    transparent 30%,
-    var(--bg-primary) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-
-.community-profiles-inner {
-  position: relative;
-  z-index: 2;
-  max-width: 1200px;
+.landing-threatmap-inner {
+  width: min(1140px, 92vw);
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.landing-threatmap-copy {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 0.75rem;
 }
 
-/* ── Header ──────────────────────────────────────────────────── */
-.community-profiles-header {
-  max-width: 640px;
-}
-
-.cp-eyebrow {
-  display: inline-block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--primary-color);
-  background: var(--primary-color-alpha);
-  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
-  border-radius: 999px;
-  padding: 0.28rem 0.85rem;
-  margin-bottom: 1rem;
-}
-
-.cp-heading {
-  font-size: clamp(2rem, 3vw, 3rem);
-  font-weight: 800;
-  line-height: 1.15;
-  margin: 0 0 0.75rem;
-  letter-spacing: -0.03em;
-  background: linear-gradient(
-    135deg,
-    var(--text-primary) 40%,
-    color-mix(in srgb, var(--primary-color) 70%, var(--text-primary)) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.cp-sub {
-  color: var(--text-secondary);
+.landing-threatmap-kicker {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.65;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 
-/* ── Carousel shell ──────────────────────────────────────────── */
-.community-profiles-carousel {
-  position: relative;
-  overflow: hidden;
-  border-radius: 28px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 70%, var(--primary-color) 30%);
-  background: color-mix(in srgb, var(--bg-secondary) 72%, transparent);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--primary-color) 10%, transparent),
-    0 32px 64px -20px color-mix(in srgb, var(--bg-primary) 50%, transparent),
-    inset 0 1px 0 color-mix(in srgb, #ffffff 8%, transparent);
-}
-
-.community-profiles-viewport {
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 2.25rem;
-  scrollbar-width: none;
-}
-
-.community-profiles-viewport::-webkit-scrollbar {
-  display: none;
-}
-
-.community-profiles-track {
-  display: flex;
-  gap: 1.25rem;
-  align-items: stretch;
-  will-change: transform;
-  flex-wrap: nowrap;
-}
-
-/* ── Profile card ─────────────────────────────────────────────── */
-.community-profile-card {
-  position: relative;
-  padding: 1.6rem;
-  border-radius: 20px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 80%, var(--primary-color) 20%);
-  background: color-mix(in srgb, var(--bg-primary) 85%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: grid;
-  gap: 1rem;
-  transform-style: preserve-3d;
-  /* initial 3D resting state */
-  transform: perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px);
-  transition: transform 0.5s cubic-bezier(0.16, 0.64, 0.2, 1),
-              box-shadow 0.4s ease,
-              border-color 0.3s ease;
-  cursor: default;
-  overflow: hidden;
-  flex: 0 0 clamp(240px, 28vw, 320px);
-  min-height: 320px;
-}
-
-.community-profile-card.is-link {
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-}
-
-.community-profile-card.is-link:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--primary-color) 70%, transparent);
-  outline-offset: 3px;
-}
-
-.community-profile-card:hover {
-  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--primary-color) 20%, transparent),
-    0 24px 48px -12px color-mix(in srgb, var(--primary-color) 20%, transparent),
-    0 8px 24px -8px rgba(0,0,0,0.3);
-}
-
-/* Moving glint highlight that follows card tilt */
-.cp-card-glint {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, #ffffff 12%, transparent) 0%,
-    transparent 55%
-  );
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-  z-index: 0;
-}
-
-.community-profile-card:hover .cp-card-glint {
-  opacity: 1;
-}
-
-/* Ensure card content sits above glint */
-.community-profile-card > *:not(.cp-card-glint) {
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Avatar ───────────────────────────────────────────────────── */
-.community-profile-card header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.cp-avatar-wrap {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.cp-avatar-wrap img {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  border: 2px solid color-mix(in srgb, var(--border-color) 60%, var(--primary-color) 40%);
-  object-fit: cover;
-  display: block;
-  transition: border-color 0.3s ease;
-}
-
-.community-profile-card:hover .cp-avatar-wrap img {
-  border-color: var(--primary-color);
-}
-
-/* Animated ring */
-.cp-avatar-ring {
-  position: absolute;
-  inset: -5px;
-  border-radius: 22px;
-  border: 1.5px solid color-mix(in srgb, var(--primary-color) 45%, transparent);
-  opacity: 0;
-  transform: scale(0.88);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
-}
-
-.community-profile-card:hover .cp-avatar-ring {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ── Text ─────────────────────────────────────────────────────── */
-.community-profile-card h3 {
-  margin: 0.3rem 0 0.25rem;
-  font-size: 1.05rem;
+.landing-threatmap-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
 }
 
-.community-profile-handle {
-  margin: 0;
-  font-weight: 600;
-  font-size: 0.78rem;
-  color: var(--primary-color);
-  letter-spacing: 0.01em;
-}
-
-.community-profile-role {
-  text-transform: uppercase;
-  font-size: 0.64rem;
-  letter-spacing: 0.1em;
-  color: var(--text-tertiary);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 0.15rem 0.5rem;
-  display: inline-block;
-}
-
-.community-profile-bio {
+.landing-threatmap-subtitle {
   margin: 0;
   color: var(--text-secondary);
-  line-height: 1.65;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
 }
 
-/* ── Metrics ──────────────────────────────────────────────────── */
-.community-profile-metrics {
-  display: grid;
-  gap: 0.35rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
-}
-
-.community-profile-metrics div {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-}
-
-.community-profile-cp {
-  color: color-mix(in srgb, #22c55e 80%, var(--text-primary)) !important;
-  font-weight: 700;
-  font-size: 1rem !important;
-}
-
-.community-profile-cp-icon {
-  width: 26px;
-  height: 26px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 6px color-mix(in srgb, #22c55e 50%, transparent));
-}
-
-/* ── Controls ────────────────────────────────────────────────── */
-.community-profiles-controls {
+.landing-threatmap-visual {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 0 2.25rem 1.75rem;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
-.community-profiles-control {
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
-  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+.landing-threatmap-frame {
+  position: relative;
+  width: 100%;
+  height: min(50vh, 480px);
+  min-height: 280px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+
+.landing-threatmap-frame .threat-globe-wrap {
+  height: 100%;
+  min-height: 0;
+  background: transparent;
+}
+
+.landing-threatmap-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--primary-color) 8%, transparent), transparent 55%);
+}
+
+.landing-threatmap-caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.landing-threatmap-open {
+  align-self: flex-start;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
   color: var(--text-secondary);
-  display: inline-flex;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.landing-threatmap-open:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: none;
+  box-shadow: none;
+}
+
+.landing-threatmap-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  z-index: 999;
+  padding: 1.5rem;
 }
 
-@media (max-width: 480px) {
-  .community-profiles-control {
-    width: 44px;
-    height: 44px;
+.landing-threatmap-modal-card {
+  width: min(1100px, 94vw);
+  height: min(860px, 90vh);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.landing-threatmap-modal-close {
+  align-self: flex-end;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.landing-threatmap-modal-close:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.landing-threatmap-modal-frame {
+  flex: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+@media (max-width: 900px) {
+  .landing-threatmap-inner {
+    grid-template-columns: 1fr;
   }
 }
 
-.community-profiles-control:hover {
-  color: var(--primary-color);
-  border-color: color-mix(in srgb, var(--primary-color) 55%, transparent);
-  transform: translateY(-1px);
-}
-
-/* ── Empty / error ───────────────────────────────────────────── */
-.community-profiles-empty {
-  border: 1px dashed var(--border-color);
-  padding: 2rem;
-  border-radius: 18px;
-  color: var(--text-tertiary);
-  text-align: center;
-}
-
-/* ── Skeleton ────────────────────────────────────────────────── */
-.community-profiles-skeleton {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
-}
-
-.cp-skeleton-card {
-  cursor: default;
-  pointer-events: none;
-}
-
-.community-profile-avatar-skeleton {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-}
-
-.community-profile-skeleton-text {
-  display: grid;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.community-profile-skeleton-line        { width: 100%; height: 11px; }
-.community-profile-skeleton-line.short  { width: 55%; }
-.community-profile-skeleton-line.long   { width: 80%; }
-.community-profile-skeleton-metric      { width: 90px; height: 11px; }
-
-/* ── Responsive ──────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .community-profiles-viewport   { padding: 1.75rem; }
-  .community-profile-card        { flex-basis: clamp(220px, 42vw, 300px); }
-  .community-profiles-skeleton   { grid-template-columns: repeat(2, 1fr); }
-}
-
 @media (max-width: 640px) {
-  .community-profiles             { padding: 4rem 1rem; }
-  .community-profiles-viewport    { padding: 1.25rem; }
-  .community-profiles-controls    { justify-content: center; padding: 0 1.25rem 1.5rem; }
-  .community-profiles-skeleton    { grid-template-columns: 1fr; }
-  .community-profile-card         { padding: 1.2rem; flex-basis: 80vw; }
-  .community-profile-card header  { flex-direction: column; align-items: flex-start; }
-  .cp-avatar-wrap img             { width: 56px; height: 56px; }
-}
-
-/* ── Reduced motion ──────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .community-profiles-track,
-  .community-profile-card,
-  .cp-avatar-ring,
-  .community-profiles-dot       { transition: none; }
-  .cp-orb-canvas                { display: none; }
+  .landing-threatmap { padding: 3.5rem 1rem; }
+  .landing-threatmap-frame { height: 280px; }
+  .landing-threatmap-modal { padding: 1rem; }
+  .landing-threatmap-modal-card { padding: 0.85rem; }
 }

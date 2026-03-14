@@ -1,14 +1,11 @@
+/* FILE: src/features/landing/sections/CycleSection.jsx */
 import React, { useState, useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { motion } from 'framer-motion';
 import Logo from '../../../shared/components/common/Logo';
 import '../../../styles/landing/cycle.css';
 
-/* ─────────────────────────────────────────
-   Distribute N points evenly on a circle
-   in 3D space (tilted ellipse for depth)
-───────────────────────────────────────── */
+/* Distribute N points on a circle */
 const getOrbitPositions = (count, rx = 155, ry = 55, rz = 155) => {
   return Array.from({ length: count }, (_, i) => {
     const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
@@ -28,25 +25,27 @@ const OrbitNodes = ({ steps, activeIdx, onHover, pausedRef }) => {
   useFrame((state, delta) => {
     if (!groupRef.current) return;
     if (!pausedRef.current) {
-      groupRef.current.rotation.y += delta * 0.35;
+      groupRef.current.rotation.y += delta * 0.3;
     }
-    groupRef.current.rotation.x = -0.35 + Math.sin(state.clock.elapsedTime * 0.4) * 0.08;
+    groupRef.current.rotation.x = -0.3 + Math.sin(state.clock.elapsedTime * 0.35) * 0.06;
   });
 
   return (
     <group ref={groupRef}>
+      {/* Orbit rings — subtle, border-color toned */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <ringGeometry args={[2.3, 2.32, 80]} />
-        <meshBasicMaterial color="#10b981" transparent opacity={0.2} />
+        <meshBasicMaterial color="#94a3b8" transparent opacity={0.15} />
       </mesh>
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <ringGeometry args={[1.6, 1.62, 80]} />
-        <meshBasicMaterial color="#10b981" transparent opacity={0.14} />
+        <meshBasicMaterial color="#94a3b8" transparent opacity={0.1} />
       </mesh>
 
       {positions.map((pos, i) => {
         const isActive = activeIdx === i;
-        const color = new THREE.Color(isActive ? '#10b981' : '#1f2937');
+        /* Active = primary-color green, inactive = neutral */
+        const color = new THREE.Color(isActive ? '#1fbf8f' : '#64748b');
         return (
           <mesh
             key={steps[i]?.title || i}
@@ -59,13 +58,13 @@ const OrbitNodes = ({ steps, activeIdx, onHover, pausedRef }) => {
               pausedRef.current = false;
             }}
           >
-            <sphereGeometry args={[0.28, 32, 32]} />
+            <sphereGeometry args={[0.24, 32, 32]} />
             <meshStandardMaterial
               color={color}
               emissive={color}
-              emissiveIntensity={isActive ? 0.6 : 0.2}
-              roughness={0.35}
-              metalness={0.4}
+              emissiveIntensity={isActive ? 0.4 : 0.1}
+              roughness={0.5}
+              metalness={0.3}
             />
           </mesh>
         );
@@ -84,12 +83,10 @@ const Orbit3D = ({ steps, activeIdx, onHover }) => {
         className="orbit-canvas"
         camera={{ position: [0, 0, 7], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
-        onPointerLeave={() => {
-          pausedRef.current = false;
-        }}
+        onPointerLeave={() => { pausedRef.current = false; }}
       >
-        <ambientLight intensity={0.55} />
-        <pointLight position={[4, 4, 6]} intensity={1.2} />
+        <ambientLight intensity={0.6} />
+        <pointLight position={[4, 4, 6]} intensity={0.9} />
         <OrbitNodes steps={steps} activeIdx={activeIdx} onHover={onHover} pausedRef={pausedRef} />
       </Canvas>
 
@@ -99,8 +96,6 @@ const Orbit3D = ({ steps, activeIdx, onHover }) => {
           <Logo size="small" className="orbit-core-logo" />
         </div>
       </div>
-
-      <div className="orbit-ground-shadow" />
     </div>
   );
 };
@@ -115,7 +110,6 @@ const CycleSection = ({ steps = [] }) => {
   return (
     <section className="cycle-section reveal-on-scroll">
       <div className="section-container">
-
         {/* Header */}
         <div className="section-header-center">
           <div className="section-eyebrow">
@@ -130,7 +124,6 @@ const CycleSection = ({ steps = [] }) => {
 
         {/* Two-column layout */}
         <div className="cycle-layout">
-
           {/* LEFT — 3D orbit */}
           <div className="cycle-orbit-col">
             <Orbit3D steps={steps} activeIdx={activeIdx} onHover={setActiveIdx} />
@@ -138,34 +131,28 @@ const CycleSection = ({ steps = [] }) => {
 
           {/* RIGHT — Step list */}
           <div className="cycle-list-col">
-
-            {/* Active step detail card */}
+            {/* Active step detail */}
             {activeStep && (
-              <motion.div
-                className="cycle-detail-card"
-                key={activeIdx}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.28 }}
-              >
+              <div className="cycle-detail-card">
                 <div className="cycle-detail-eyebrow">
                   <span className="cycle-detail-num">0{activeIdx + 1}</span>
                   <span className="cycle-detail-tag">ACTIVE PHASE</span>
                 </div>
                 <h3 className="cycle-detail-title">{activeStep.title}</h3>
                 <p className="cycle-detail-desc">{activeStep.description}</p>
-              </motion.div>
+              </div>
             )}
 
             {/* Step index list */}
             <div className="cycle-list">
               {steps.map((step, index) => (
-                <motion.div
+                <div
                   key={step.title}
-                  className={`cycle-item ${activeIdx === index ? 'cycle-item--active' : ''}`}
+                  className={`cycle-item${activeIdx === index ? ' cycle-item--active' : ''}`}
                   onClick={() => setActiveIdx(index)}
-                  whileHover={{ x: 5 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setActiveIdx(index); }}
                 >
                   <div className="cycle-index">
                     <span>{String(index + 1).padStart(2, '0')}</span>
@@ -174,10 +161,9 @@ const CycleSection = ({ steps = [] }) => {
                     <h3>{step.title}</h3>
                   </div>
                   <div className="cycle-item-arrow">›</div>
-                </motion.div>
+                </div>
               ))}
             </div>
-
           </div>
         </div>
       </div>

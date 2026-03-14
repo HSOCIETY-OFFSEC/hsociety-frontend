@@ -1,3 +1,4 @@
+/* FILE: src/features/landing/sections/CommunityProfilesSection.jsx */
 import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight, FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
@@ -5,146 +6,409 @@ import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_PROFILES_DATA } from '../../../data/landing/communityProfilesData';
-import '../../../styles/landing/community-profiles.css';
 
 const SCROLL_SPEED_PX = COMMUNITY_PROFILES_DATA.scrollSpeedPx ?? 22;
+const CARD_WIDTH = 272; // px — fixed card width used for scroll math
 
-/* ─── Lightweight canvas orb background ────────────────────────────────────── */
-const OrbCanvas = () => {
-  const canvasRef = useRef(null);
-  const animRef = useRef(null);
+/* ─────────────────────────────────────────────────────────────
+   STYLE TOKENS — all inline, no CSS file dependency
+───────────────────────────────────────────────────────────── */
+const S = {
+  section: {
+    padding: '5rem 1.5rem',
+    borderTop: '1px solid var(--border-color)',
+    background: 'var(--bg-primary)',
+    width: '100%',
+    boxSizing: 'border-box',
+    position: 'relative',
+  },
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return undefined;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return undefined;
+  inner: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2rem',
+  },
 
-    const dots = Array.from({ length: 80 }).map(() => ({
-      x: Math.random(),
-      y: Math.random(),
-      r: Math.random() * 2.2 + 0.8,
-      speedX: (Math.random() - 0.5) * 0.00035,
-      speedY: (Math.random() - 0.5) * 0.00035,
-      alpha: Math.random() * 0.35 + 0.1,
-      color: Math.random() > 0.5 ? '45,212,191' : '31,191,143',
-    }));
+  header: {
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '0.65rem',
+  },
 
-    const resize = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      const width = canvas.offsetWidth;
-      const height = canvas.offsetHeight;
-      canvas.width = Math.max(1, Math.floor(width * ratio));
-      canvas.height = Math.max(1, Math.floor(height * ratio));
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    };
+  eyebrow: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    padding: '0.22rem 0.75rem',
+    borderRadius: '999px',
+    border: '1px solid var(--border-color)',
+    color: 'var(--text-tertiary)',
+    fontSize: '0.65rem',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '0.18em',
+  },
 
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
+  heading: {
+    margin: 0,
+    fontSize: 'clamp(1.4rem, 3vw, 2rem)',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    letterSpacing: '-0.025em',
+    lineHeight: 1.2,
+  },
 
-    const drawGlow = (width, height, time) => {
-      const cx1 = width * 0.78 + Math.sin(time * 0.0005) * 24;
-      const cy1 = height * 0.38 + Math.cos(time * 0.0004) * 20;
-      const g1 = ctx.createRadialGradient(cx1, cy1, 4, cx1, cy1, 140);
-      g1.addColorStop(0, 'rgba(31,191,143,0.16)');
-      g1.addColorStop(1, 'rgba(31,191,143,0)');
-      ctx.fillStyle = g1;
-      ctx.fillRect(0, 0, width, height);
+  subtitle: {
+    margin: 0,
+    fontSize: '0.9rem',
+    color: 'var(--text-secondary)',
+    lineHeight: 1.65,
+    maxWidth: '480px',
+  },
 
-      const cx2 = width * 0.22 + Math.cos(time * 0.00055) * 20;
-      const cy2 = height * 0.62 + Math.sin(time * 0.00045) * 18;
-      const g2 = ctx.createRadialGradient(cx2, cy2, 2, cx2, cy2, 120);
-      g2.addColorStop(0, 'rgba(45,212,191,0.14)');
-      g2.addColorStop(1, 'rgba(45,212,191,0)');
-      ctx.fillStyle = g2;
-      ctx.fillRect(0, 0, width, height);
-    };
+  // Viewport clips the scrolling track
+  viewport: {
+    width: '100%',
+    overflowX: 'auto',
+    overflowY: 'hidden',
+    border: '1px solid var(--border-color)',
+    borderRadius: '8px',
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
+  },
 
-    const tick = (time) => {
-      const width = canvas.offsetWidth;
-      const height = canvas.offsetHeight;
-      ctx.clearRect(0, 0, width, height);
-      drawGlow(width, height, time);
+  // Track: one long horizontal row
+  track: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    width: 'max-content',
+  },
 
-      dots.forEach((dot) => {
-        dot.x += dot.speedX;
-        dot.y += dot.speedY;
-        if (dot.x < -0.05) dot.x = 1.05;
-        if (dot.x > 1.05) dot.x = -0.05;
-        if (dot.y < -0.05) dot.y = 1.05;
-        if (dot.y > 1.05) dot.y = -0.05;
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${dot.color}, ${dot.alpha})`;
-        ctx.arc(dot.x * width, dot.y * height, dot.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
+  // Each card
+  card: (hovered) => ({
+    flexShrink: 0,
+    width: `${CARD_WIDTH}px`,
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.85rem',
+    padding: '1.25rem',
+    background: hovered ? 'var(--bg-tertiary)' : 'var(--bg-secondary)',
+    borderRight: '1px solid var(--border-color)',
+    textDecoration: 'none',
+    color: 'inherit',
+    cursor: 'pointer',
+    transition: 'background 0.15s ease',
+    outline: 'none',
+  }),
 
-      animRef.current = window.requestAnimationFrame(tick);
-    };
+  cardLast: {
+    borderRight: 'none',
+  },
 
-    animRef.current = window.requestAnimationFrame(tick);
-    return () => {
-      window.removeEventListener('resize', resize);
-      if (animRef.current) window.cancelAnimationFrame(animRef.current);
-    };
-  }, []);
+  cardHeader: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '0.75rem',
+    flexShrink: 0,
+  },
 
-  return <canvas ref={canvasRef} className="cp-orb-canvas" aria-hidden="true" />;
+  avatarWrap: {
+    flexShrink: 0,
+    width: '38px',
+    height: '38px',
+    minWidth: '38px',
+    minHeight: '38px',
+    borderRadius: '50%',
+    overflow: 'hidden',
+    border: '1px solid var(--border-color)',
+    background: 'var(--bg-primary)',
+  },
+
+  avatarImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    display: 'block',
+  },
+
+  nameBlock: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.1rem',
+    minWidth: 0,
+    flex: 1,
+    overflow: 'hidden',
+  },
+
+  handle: {
+    margin: 0,
+    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: '0.67rem',
+    color: 'var(--text-tertiary)',
+    letterSpacing: '0.04em',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+
+  name: {
+    margin: 0,
+    fontSize: '0.85rem',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+    lineHeight: 1.25,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+
+  role: {
+    fontSize: '0.67rem',
+    color: 'var(--text-tertiary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+
+  bio: {
+    margin: 0,
+    fontSize: '0.8rem',
+    color: 'var(--text-secondary)',
+    lineHeight: 1.6,
+    flex: 1,
+    display: '-webkit-box',
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+  },
+
+  metrics: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.3rem',
+    paddingTop: '0.75rem',
+    borderTop: '1px solid var(--border-color)',
+    marginTop: 'auto',
+    flexShrink: 0,
+  },
+
+  metricRow: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    fontSize: '0.74rem',
+    color: 'var(--text-secondary)',
+  },
+
+  metricCp: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    fontSize: '0.76rem',
+    fontWeight: 600,
+    color: 'var(--primary-color)',
+  },
+
+  cpIcon: {
+    width: '13px',
+    height: '13px',
+    objectFit: 'contain',
+    flexShrink: 0,
+    display: 'block',
+  },
+
+  controls: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '0.4rem',
+    marginTop: '0.6rem',
+  },
+
+  ctrlBtn: (hovered) => ({
+    width: '32px',
+    height: '32px',
+    borderRadius: '6px',
+    border: hovered ? '1px solid var(--primary-color)' : '1px solid var(--border-color)',
+    background: 'var(--bg-secondary)',
+    color: hovered ? 'var(--primary-color)' : 'var(--text-secondary)',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    transition: 'border-color 0.15s ease, color 0.15s ease',
+    padding: 0,
+    flexShrink: 0,
+  }),
+
+  empty: {
+    textAlign: 'center',
+    padding: '3rem 1.5rem',
+    color: 'var(--text-tertiary)',
+    fontSize: '0.875rem',
+    border: '1px solid var(--border-color)',
+    borderRadius: '8px',
+    background: 'var(--bg-secondary)',
+  },
+
+  skeletonGrid: (cols) => ({
+    display: 'grid',
+    gridTemplateColumns: `repeat(${cols}, 1fr)`,
+    gap: '1px',
+    background: 'var(--border-color)',
+    border: '1px solid var(--border-color)',
+    borderRadius: '8px',
+    overflow: 'hidden',
+  }),
+
+  skeletonCard: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.85rem',
+    padding: '1.25rem',
+    background: 'var(--bg-secondary)',
+    boxSizing: 'border-box',
+  },
+
+  skeletonHeaderRow: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '0.75rem',
+  },
+
+  skeletonTextBlock: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.4rem',
+    flex: 1,
+  },
 };
 
-/* ─── Tilt card wrapper ──────────────────────────────────────────────────────── */
-const TiltCard = ({ children, className, to, ariaLabel, ...rest }) => {
-  const cardRef = useRef(null);
-  const Component = to ? Link : 'article';
-  const [enableTilt, setEnableTilt] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setEnableTilt(window.innerWidth >= 1024 && !reduceMotion);
-  }, []);
-
-  const handleMove = useCallback((e) => {
-    if (!enableTilt) return;
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 18;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -18;
-    el.style.transform = `perspective(800px) rotateY(${x}deg) rotateX(${y}deg) translateZ(8px)`;
-    el.style.transition = 'transform 0.08s linear';
-  }, [enableTilt]);
-
-  const handleLeave = useCallback(() => {
-    if (!enableTilt) return;
-    const el = cardRef.current;
-    if (!el) return;
-    el.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
-    el.style.transition = 'transform 0.5s cubic-bezier(0.16,0.64,0.2,1)';
-  }, [enableTilt]);
-
-  const componentProps = {
-    ref: cardRef,
-    className: `community-profile-card ${to ? 'is-link' : ''} ${className || ''}`,
-    onMouseMove: handleMove,
-    onMouseLeave: handleLeave,
-    ...rest
-  };
-
-  if (to) componentProps.to = to;
-  if (ariaLabel) componentProps['aria-label'] = ariaLabel;
-
+/* ─── Control button with local hover ─── */
+const CtrlBtn = ({ onClick, ariaLabel, children }) => {
+  const [hovered, setHovered] = useState(false);
   return (
-    <Component {...componentProps}>
+    <button
+      type="button"
+      style={S.ctrlBtn(hovered)}
+      onClick={onClick}
+      aria-label={ariaLabel}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       {children}
-    </Component>
+    </button>
   );
 };
 
-/* ─── Main section ───────────────────────────────────────────────────────────── */
-const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = false, error = '' }) => {
+/* ─── Single profile card ─── */
+const ProfileCard = ({ profile, isLast, onEnter, onLeave, fmt }) => {
+  const [hovered, setHovered] = useState(false);
+
+  const avatarFallback = getGithubAvatarDataUri(
+    profile.name || profile.hackerHandle || profile.id || 'member'
+  );
+
+  const rawHandle = profile.hackerHandle
+    ? profile.hackerHandle
+    : profile.name
+    ? profile.name.split(' ')[0].toLowerCase()
+    : '';
+  const normalizedHandle = rawHandle
+    ? String(rawHandle).trim().replace(/^@/, '').toLowerCase().replace(/[^a-z0-9._-]/g, '')
+    : '';
+  const handle = normalizedHandle ? `@${normalizedHandle}` : 'Handle unavailable';
+  const profileUrl = normalizedHandle ? `/@${normalizedHandle}` : null;
+
+  const cardStyle = {
+    ...S.card(hovered),
+    ...(isLast ? S.cardLast : {}),
+  };
+
+  const handlers = {
+    onMouseEnter: () => { setHovered(true); onEnter(); },
+    onMouseLeave: () => { setHovered(false); onLeave(); },
+    onFocus: onEnter,
+    onBlur: onLeave,
+    style: cardStyle,
+  };
+
+  const body = (
+    <>
+      {/* Avatar + name row */}
+      <div style={S.cardHeader}>
+        <div style={S.avatarWrap}>
+          <img
+            src={profile.avatarUrl || avatarFallback}
+            alt={profile.name || 'Community member'}
+            style={S.avatarImg}
+            onError={(e) => {
+              if (e.currentTarget.src !== avatarFallback)
+                e.currentTarget.src = avatarFallback;
+            }}
+          />
+        </div>
+        <div style={S.nameBlock}>
+          <p style={S.handle}>{handle}</p>
+          <p style={S.name}>{profile.name || 'Name unavailable'}</p>
+          <span style={S.role}>{profile.role || 'Role unavailable'}</span>
+        </div>
+      </div>
+
+      {/* Bio */}
+      <p style={S.bio}>{profile.bio || 'Bio unavailable.'}</p>
+
+      {/* Metrics */}
+      <div style={S.metrics}>
+        <div style={S.metricCp}>
+          <img src={cpIcon} alt="" style={S.cpIcon} />
+          <span>{fmt(profile.xpSummary?.totalXp)} CP</span>
+        </div>
+        <div style={S.metricRow}>
+          <FiMessageSquare size={12} color="var(--text-tertiary)" />
+          <span>{fmt(profile.stats?.messages)} messages</span>
+        </div>
+        <div style={S.metricRow}>
+          <FiHeart size={12} color="var(--text-tertiary)" />
+          <span>{fmt(profile.stats?.likesReceived)} likes</span>
+        </div>
+        <div style={S.metricRow}>
+          <FiMessageCircle size={12} color="var(--text-tertiary)" />
+          <span>{fmt(profile.stats?.commentsMade)} comments</span>
+        </div>
+      </div>
+    </>
+  );
+
+  if (profileUrl) {
+    return (
+      <Link to={profileUrl} aria-label={`View ${handle} profile`} {...handlers}>
+        {body}
+      </Link>
+    );
+  }
+
+  return <article {...handlers}>{body}</article>;
+};
+
+/* ─────────────────────────────────────────────────────────────
+   MAIN COMPONENT
+───────────────────────────────────────────────────────────── */
+const CommunityProfilesSection = ({
+  title,
+  subtitle,
+  profiles = [],
+  loading = false,
+  error = '',
+}) => {
   const [cardsPerView, setCardsPerView] = useState(3);
-  const [showOrb, setShowOrb] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const reduceMotionRef = useRef(false);
   const carouselRef = useRef(null);
@@ -155,241 +419,143 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], loading = fa
   const slides = useMemo(() => profiles.filter(Boolean), [profiles]);
   const count = slides.length;
 
+  /* Cards-per-view (for skeleton count only) */
   useEffect(() => {
-    const calcCards = () => {
+    const calc = () => {
       const w = window.innerWidth;
       if (w < 640) return 1;
       if (w < 1024) return 2;
       return 3;
     };
-    const update = () => setCardsPerView(calcCards());
+    const update = () => setCardsPerView(calc());
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
 
+  /* Detect reduced motion once */
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const onDesktop = window.innerWidth >= 1024;
-    setShowOrb(onDesktop && !reduceMotion);
-    reduceMotionRef.current = reduceMotion;
+    if (typeof window !== 'undefined')
+      reduceMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  const loopSlides = useMemo(() => {
-    if (!count) return [];
-    return [...slides, ...slides];
-  }, [count, slides]);
+  /* Duplicate slides for seamless loop */
+  const loopSlides = useMemo(() => (!count ? [] : [...slides, ...slides]), [count, slides]);
 
   const pauseCarousel = useCallback(() => setIsPaused(true), []);
   const resumeCarousel = useCallback(() => setIsPaused(false), []);
 
+  /* RAF scroll loop */
   useEffect(() => {
     if (!count || reduceMotionRef.current) return undefined;
     const el = carouselRef.current;
     const track = trackRef.current;
     if (!el || !track) return undefined;
 
-    const normalizeScroll = () => {
-      const maxScroll = track.scrollWidth / 2;
-      if (maxScroll <= 0) return;
-      if (el.scrollLeft >= maxScroll) {
-        el.scrollLeft -= maxScroll;
-      } else if (el.scrollLeft < 0) {
-        el.scrollLeft += maxScroll;
-      }
+    const normalize = () => {
+      const half = track.scrollWidth / 2;
+      if (half <= 0) return;
+      if (el.scrollLeft >= half) el.scrollLeft -= half;
+      else if (el.scrollLeft < 0) el.scrollLeft += half;
     };
 
-    const tick = (time) => {
-      if (!lastTimeRef.current) lastTimeRef.current = time;
-      const delta = time - lastTimeRef.current;
-      lastTimeRef.current = time;
-
-      if (!isPaused) {
-        const next = el.scrollLeft + (SCROLL_SPEED_PX * delta) / 1000;
-        el.scrollLeft = next;
-        normalizeScroll();
-      }
-
-      rafRef.current = window.requestAnimationFrame(tick);
+    const tick = (t) => {
+      if (!lastTimeRef.current) lastTimeRef.current = t;
+      const dt = t - lastTimeRef.current;
+      lastTimeRef.current = t;
+      if (!isPaused) { el.scrollLeft += (SCROLL_SPEED_PX * dt) / 1000; normalize(); }
+      rafRef.current = requestAnimationFrame(tick);
     };
 
-    rafRef.current = window.requestAnimationFrame(tick);
-    const onScroll = () => normalizeScroll();
-    el.addEventListener('scroll', onScroll, { passive: true });
+    rafRef.current = requestAnimationFrame(tick);
+    el.addEventListener('scroll', normalize, { passive: true });
+
     return () => {
-      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       lastTimeRef.current = null;
-      el.removeEventListener('scroll', onScroll);
+      el.removeEventListener('scroll', normalize);
     };
   }, [count, isPaused, loopSlides]);
 
-  const scrollByCards = useCallback((direction = 1) => {
-    const el = carouselRef.current;
-    const track = trackRef.current;
-    if (!el || !track) return;
-    const card = el.querySelector('.community-profile-card');
-    const styles = window.getComputedStyle(track);
-    const gap = parseFloat(styles.columnGap || styles.gap || '24') || 24;
-    const amount = card ? card.offsetWidth + gap : el.clientWidth * 0.85;
-    el.scrollBy({ left: amount * direction, behavior: 'smooth' });
-    window.requestAnimationFrame(() => {
-      const maxScroll = track.scrollWidth / 2;
-      if (maxScroll > 0 && el.scrollLeft >= maxScroll) el.scrollLeft -= maxScroll;
-    });
+  const scrollBy = useCallback((dir) => {
+    carouselRef.current?.scrollBy({ left: CARD_WIDTH * dir, behavior: 'smooth' });
   }, []);
 
-  const fmt = (v) => (v === null || v === undefined || Number.isNaN(v) ? '—' : v);
+  const fmt = (v) => (v == null || Number.isNaN(v) ? '—' : v);
 
   return (
-    <section className="community-profiles" id="community-profiles">
-      {/* Background canvas */}
-      {showOrb && <OrbCanvas />}
+    <section style={S.section} id="community-profiles" className="reveal-on-scroll">
+      {/* Inject one-liner to hide webkit scrollbar — no external CSS needed */}
+      <style>{`.cp-vp::-webkit-scrollbar{display:none}`}</style>
 
-      <div className="community-profiles-inner">
-        {/* Header */}
-        <div className="community-profiles-header reveal-on-scroll">
-          <span className="eyebrow cp-eyebrow">{COMMUNITY_PROFILES_DATA.sectionEyebrow}</span>
-          <h2 className="cp-heading">{title}</h2>
-          <p className="cp-sub">{subtitle}</p>
+      <div style={S.inner}>
+        {/* ── Header ── */}
+        <div style={S.header}>
+          <span style={S.eyebrow}>{COMMUNITY_PROFILES_DATA.sectionEyebrow}</span>
+          <h2 style={S.heading}>{title}</h2>
+          <p style={S.subtitle}>{subtitle}</p>
         </div>
 
-        {/* Loading */}
+        {/* ── Loading ── */}
         {loading ? (
-          <div className="community-profiles-skeleton">
+          <div style={S.skeletonGrid(cardsPerView)}>
             {Array.from({ length: cardsPerView }).map((_, i) => (
-              <div key={`sk-${i}`} className="community-profile-card cp-skeleton-card">
-                <header>
-                  <Skeleton variant="circle" className="community-profile-avatar-skeleton" />
-                  <div className="community-profile-skeleton-text">
-                    <Skeleton className="community-profile-skeleton-line" />
-                    <Skeleton className="community-profile-skeleton-line short" />
+              <div key={i} style={S.skeletonCard}>
+                <div style={S.skeletonHeaderRow}>
+                  <Skeleton style={{ width: 38, height: 38, borderRadius: '50%', flexShrink: 0 }} />
+                  <div style={S.skeletonTextBlock}>
+                    <Skeleton style={{ height: 11, width: '75%', borderRadius: 3 }} />
+                    <Skeleton style={{ height: 11, width: '48%', borderRadius: 3 }} />
                   </div>
-                </header>
-                <Skeleton className="community-profile-skeleton-line" />
-                <Skeleton className="community-profile-skeleton-line long" />
-                <div className="community-profile-metrics">
-                  {Array.from({ length: 3 }).map((_, mi) => (
-                    <Skeleton key={`m-${mi}`} className="community-profile-skeleton-metric" />
+                </div>
+                <Skeleton style={{ height: 11, width: '90%', borderRadius: 3 }} />
+                <Skeleton style={{ height: 11, width: '100%', borderRadius: 3 }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.5rem' }}>
+                  {[0, 1, 2].map((mi) => (
+                    <Skeleton key={mi} style={{ height: 9, width: '60%', borderRadius: 3 }} />
                   ))}
                 </div>
               </div>
             ))}
           </div>
 
-        /* Empty */
+        /* ── Empty ── */
         ) : count === 0 ? (
-          <div className="community-profiles-empty">
-            {error || COMMUNITY_PROFILES_DATA.emptyStateText}
-          </div>
+          <div style={S.empty}>{error || COMMUNITY_PROFILES_DATA.emptyStateText}</div>
 
-        /* Carousel */
+        /* ── Carousel ── */
         ) : (
-          <div
-            className={`community-profiles-carousel ${isPaused ? 'is-paused' : ''}`}
-            role="region"
-            aria-label="Community profiles"
-          >
+          <div role="region" aria-label="Community profiles">
+            {/* Scrollable viewport */}
             <div
               ref={carouselRef}
-              className="community-profiles-viewport"
+              className="cp-vp"
+              style={S.viewport}
               aria-live="polite"
             >
-              <div
-              ref={trackRef}
-              className="community-profiles-track"
-            >
-              {loopSlides.map((profile, gi) => {
-                const avatarFallback = getGithubAvatarDataUri(
-                  profile.name || profile.hackerHandle || profile.id || 'member'
-                );
-                const rawHandle = profile.hackerHandle
-                  ? profile.hackerHandle
-                  : profile.name
-                  ? profile.name.split(' ')[0].toLowerCase()
-                  : '';
-                const normalizedHandle = rawHandle
-                  ? String(rawHandle).trim().replace(/^@/, '').toLowerCase().replace(/[^a-z0-9._-]/g, '')
-                  : '';
-                const handle = normalizedHandle ? `@${normalizedHandle}` : 'Handle unavailable';
-                const profileUrl = normalizedHandle ? `/@${normalizedHandle}` : null;
-
-                return (
-                  <TiltCard
-                    key={`${profile.id || handle}-${gi}`}
-                    to={profileUrl}
-                    ariaLabel={profileUrl ? `View ${handle} profile` : undefined}
-                    onMouseEnter={pauseCarousel}
-                    onMouseLeave={resumeCarousel}
-                    onFocus={pauseCarousel}
-                    onBlur={resumeCarousel}
-                  >
-                    {/* Glint overlay */}
-                    <div className="cp-card-glint" aria-hidden="true" />
-
-                    <header>
-                      <div className="cp-avatar-wrap">
-                        <img
-                          src={profile.avatarUrl || avatarFallback}
-                          alt={profile.name || 'Community member'}
-                          onError={(e) => {
-                            if (e.currentTarget.src !== avatarFallback)
-                              e.currentTarget.src = avatarFallback;
-                          }}
-                        />
-                        <div className="cp-avatar-ring" aria-hidden="true" />
-                      </div>
-                      <div>
-                        <p className="community-profile-handle">{handle}</p>
-                        <h3>{profile.name || 'Name unavailable'}</h3>
-                        <span className="community-profile-role">{profile.role || 'Role unavailable'}</span>
-                      </div>
-                    </header>
-
-                    <p className="community-profile-bio">{profile.bio || 'Bio unavailable.'}</p>
-
-                    <div className="community-profile-metrics">
-                      <div className="community-profile-cp">
-                        <img src={cpIcon} alt="CP" className="community-profile-cp-icon" />
-                        <span>{fmt(profile.xpSummary?.totalXp)}</span>
-                      </div>
-                      <div>
-                        <FiMessageSquare size={13} />
-                        <span>{fmt(profile.stats?.messages)} messages</span>
-                      </div>
-                      <div>
-                        <FiHeart size={13} />
-                        <span>{fmt(profile.stats?.likesReceived)} likes</span>
-                      </div>
-                      <div>
-                        <FiMessageCircle size={13} />
-                        <span>{fmt(profile.stats?.commentsMade)} comments</span>
-                      </div>
-                    </div>
-                  </TiltCard>
-                );
-              })}
-            </div>
+              <div ref={trackRef} style={S.track}>
+                {loopSlides.map((profile, gi) => (
+                  <ProfileCard
+                    key={`${profile.id || profile.name || gi}-${gi}`}
+                    profile={profile}
+                    isLast={gi === loopSlides.length - 1}
+                    onEnter={pauseCarousel}
+                    onLeave={resumeCarousel}
+                    fmt={fmt}
+                  />
+                ))}
+              </div>
             </div>
 
-            <div className="community-profiles-controls" aria-label="Carousel controls">
-              <button
-                type="button"
-                className="community-profiles-control"
-                onClick={() => scrollByCards(-1)}
-                aria-label="Scroll profiles left"
-              >
-                <FiChevronLeft size={18} />
-              </button>
-              <button
-                type="button"
-                className="community-profiles-control"
-                onClick={() => scrollByCards(1)}
-                aria-label="Scroll profiles right"
-              >
-                <FiChevronRight size={18} />
-              </button>
+            {/* Controls */}
+            <div style={S.controls}>
+              <CtrlBtn onClick={() => scrollBy(-1)} ariaLabel="Scroll profiles left">
+                <FiChevronLeft size={16} />
+              </CtrlBtn>
+              <CtrlBtn onClick={() => scrollBy(1)} ariaLabel="Scroll profiles right">
+                <FiChevronRight size={16} />
+              </CtrlBtn>
             </div>
           </div>
         )}

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FiImage, FiSend, FiSmile, FiX } from 'react-icons/fi';
 import { uploadCommunityImage } from '../../community.service';
-import { getDisplayName, getUserAvatar } from '../../utils/community.utils';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
 import { getPublicErrorMessage } from '../../../../shared/utils/publicError';
 
@@ -21,7 +19,6 @@ const CommunityCompose = ({
   imageError,
   onImageError,
 }) => {
-  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const emojiRef = useRef(null);
   const [uploading, setUploading] = useState(false);
@@ -81,24 +78,6 @@ const CommunityCompose = ({
 
   return (
     <div className="community-compose" role="form" aria-label="Send a message">
-      <button
-        type="button"
-        className="community-compose-avatar"
-        onClick={() => navigate('/settings')}
-        aria-label="Open account settings"
-      >
-        <img
-          src={getUserAvatar(user)}
-          alt={getDisplayName(user?.name || user?.username)}
-          onError={(e) => {
-            e.currentTarget.style.display = 'none';
-            e.currentTarget.parentElement.setAttribute(
-              'data-initials',
-              (user?.name || user?.username || 'U')[0].toUpperCase()
-            );
-          }}
-        />
-      </button>
 
       <div className="community-compose-stack">
         <div className="community-compose-inner">

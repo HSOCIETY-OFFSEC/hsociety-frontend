@@ -1,3 +1,4 @@
+/* FILE: src/features/landing/sections/ThreatMapSection.jsx */
 import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import '../../../styles/landing/threat-map-section.css';
 
@@ -17,9 +18,7 @@ const ThreatMapSection = () => {
   useEffect(() => {
     if (!expanded) return undefined;
     setShouldLoadGlobe(true);
-    const handleKey = (event) => {
-      if (event.key === 'Escape') setExpanded(false);
-    };
+    const handleKey = (e) => { if (e.key === 'Escape') setExpanded(false); };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [expanded]);
@@ -28,7 +27,6 @@ const ThreatMapSection = () => {
     if (shouldLoadGlobe || typeof window === 'undefined') return undefined;
     const section = sectionRef.current;
     if (!section) return undefined;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -54,6 +52,7 @@ const ThreatMapSection = () => {
             rapid pattern recognition and executive briefings.
           </p>
         </div>
+
         <div className="landing-threatmap-visual" aria-hidden="true">
           <div className="landing-threatmap-frame">
             <div className="landing-threatmap-overlay" />
@@ -66,7 +65,7 @@ const ThreatMapSection = () => {
             )}
           </div>
           <div className="landing-threatmap-caption">
-            Simulated data • Not a live threat intelligence feed
+            Simulated data · Not a live threat intelligence feed
           </div>
           <button
             type="button"

@@ -1,18 +1,17 @@
-/* ========================================
-   LANDING THREAT MAP STRIP
-   ======================================== */
+/* ============================================================
+   FILE: src/styles/landing/threat-map-section.css
+   ============================================================ */
 
 .landing-threatmap {
   position: relative;
-  padding: 5rem 0 6rem;
-  background:
-    radial-gradient(ellipse at 20% 10%, rgba(16, 185, 129, 0.12), transparent 55%),
-    linear-gradient(180deg, color-mix(in srgb, var(--bg-primary) 85%, var(--bg-secondary) 15%), var(--bg-primary));
+  padding: 5rem 1.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
   overflow: hidden;
 }
 
 .landing-threatmap-inner {
-  width: min(1200px, 92vw);
+  width: min(1140px, 92vw);
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
@@ -23,22 +22,22 @@
 .landing-threatmap-copy {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.75rem;
 }
 
 .landing-threatmap-kicker {
   margin: 0;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.28em;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--primary-color, #10b981);
+  color: var(--text-tertiary);
 }
 
 .landing-threatmap-title {
   margin: 0;
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
-  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
 }
@@ -46,28 +45,24 @@
 .landing-threatmap-subtitle {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.7;
-  max-width: 440px;
 }
 
 .landing-threatmap-visual {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.65rem;
 }
 
 .landing-threatmap-frame {
   position: relative;
   width: 100%;
-  height: min(55vh, 520px);
-  min-height: 320px;
-  border-radius: 18px;
-  border: 1px solid color-mix(in srgb, var(--primary-color, #10b981) 25%, transparent);
-  background: color-mix(in srgb, var(--bg-secondary) 82%, transparent);
-  box-shadow:
-    0 30px 70px rgba(2, 6, 23, 0.45),
-    0 0 0 1px rgba(16, 185, 129, 0.08) inset;
+  height: min(50vh, 480px);
+  min-height: 280px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
   overflow: hidden;
 }
 
@@ -82,115 +77,98 @@
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.15), transparent 55%),
-    radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.1), transparent 60%);
-  mix-blend-mode: screen;
-  opacity: 0.8;
+  background: radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--primary-color) 8%, transparent), transparent 55%);
 }
 
 .landing-threatmap-caption {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-tertiary);
 }
 
 .landing-threatmap-open {
   align-self: flex-start;
-  padding: 0.55rem 0.9rem;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
-  background: color-mix(in srgb, var(--bg-primary) 80%, transparent);
-  color: var(--text-primary);
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 .landing-threatmap-open:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 26px rgba(2, 6, 23, 0.28);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: none;
+  box-shadow: none;
 }
 
 .landing-threatmap-modal {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.65);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .landing-threatmap-modal-card {
-  width: min(1200px, 94vw);
-  height: min(900px, 92vh);
-  background: color-mix(in srgb, var(--bg-secondary) 90%, transparent);
-  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
-  border-radius: 22px;
-  box-shadow: var(--shadow-xl);
-  padding: 1.5rem;
+  width: min(1100px, 94vw);
+  height: min(860px, 90vh);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .landing-threatmap-modal-close {
   align-self: flex-end;
-  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
-  background: color-mix(in srgb, var(--bg-primary) 80%, transparent);
-  color: var(--text-primary);
-  font-size: 0.7rem;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding: 0.4rem 0.7rem;
-  border-radius: 10px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
   cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.landing-threatmap-modal-close:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .landing-threatmap-modal-frame {
   flex: 1;
-  border-radius: 18px;
+  border-radius: 6px;
   overflow: hidden;
-  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
-  border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 900px) {
   .landing-threatmap-inner {
     grid-template-columns: 1fr;
-  }
-
-  .landing-threatmap-subtitle {
-    max-width: 100%;
   }
 }
 
 @media (max-width: 640px) {
-  .landing-threatmap {
-    padding: 4rem 0 4.5rem;
-  }
-
-  .landing-threatmap-inner {
-    width: min(92vw, 560px);
-    gap: 2rem;
-  }
-
-  .landing-threatmap-frame {
-    height: 320px;
-  }
-
-  .landing-threatmap-modal {
-    padding: 1rem;
-  }
-
-  .landing-threatmap-modal-card {
-    padding: 1rem;
-  }
+  .landing-threatmap { padding: 3.5rem 1rem; }
+  .landing-threatmap-frame { height: 280px; }
+  .landing-threatmap-modal { padding: 1rem; }
+  .landing-threatmap-modal-card { padding: 0.85rem; }
 }

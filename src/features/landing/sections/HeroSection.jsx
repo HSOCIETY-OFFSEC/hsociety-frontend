@@ -1,10 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+/* FILE: src/features/landing/sections/HeroSection.jsx */
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  FiArrowUpRight,
-  FiArrowRight,
-  FiTerminal
-} from 'react-icons/fi';
+import { FiArrowUpRight, FiArrowRight, FiTerminal } from 'react-icons/fi';
 import { getSocialLinks } from '../../../config/social.config';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
@@ -15,24 +12,18 @@ import { ROUTES } from '../../../app/routes';
 import '../../../styles/landing/hero.css';
 
 /* ══════════════════════════════════════════════════════════
-   BINARY RAIN — streams of 0s and 1s scrolling vertically.
-   Pure CSS animation; no JS timers or canvas needed.
+   BINARY RAIN — sparse, low-opacity columns
    ══════════════════════════════════════════════════════════ */
-
-// Generate a random binary string of given length
 function makeBinaryString(len) {
   let s = '';
   for (let i = 0; i < len; i++) {
     s += Math.random() > 0.5 ? '1' : '0';
-    // Occasionally inject a space for readability / variety
     if (i > 0 && i % 8 === 7) s += ' ';
   }
   return s;
 }
 
-// One scrolling column: a long text block that CSS scrolls downward
 const BinaryStreamCol = ({ index }) => {
-  // Each column gets a unique seed so they all look different
   const text = useMemo(() => makeBinaryString(220), []);
   return (
     <div
@@ -45,7 +36,7 @@ const BinaryStreamCol = ({ index }) => {
   );
 };
 
-const STREAM_COUNT = 33; // matches CSS nth-child rules above
+const STREAM_COUNT = 33;
 
 const BinaryRain = () => (
   <div className="hero-binary-stream" aria-hidden="true">
@@ -60,7 +51,7 @@ const BinaryRain = () => (
    ══════════════════════════════════════════════════════════ */
 function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
   const [displayed, setDisplayed] = useState('');
-  const [isDone, setIsDone]       = useState(false);
+  const [isDone, setIsDone] = useState(false);
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -92,7 +83,7 @@ function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   COLOR "Hacker" / "Hackers" wherever they appear in text.
+   COLOR "Hacker" / "Hackers" — accent only
    ══════════════════════════════════════════════════════════ */
 const HACKER_RE = /(Hackers?)/g;
 
@@ -113,20 +104,16 @@ const ColoredText = ({ text }) => {
    TYPED TITLE
    ══════════════════════════════════════════════════════════ */
 const TypedTitle = ({ line1, line2 }) => {
-  const { displayed: text1, isDone: done1 } = useTypewriter(line1, {
-    speed: 28,
-    startDelay: 200,
-  });
-
+  const { displayed: text1, isDone: done1 } = useTypewriter(line1, { speed: 28, startDelay: 200 });
   const { displayed: text2, isDone: done2 } = useTypewriter(
     done1 ? (line2 || '') : '',
     { speed: 28, startDelay: 80 }
   );
 
-  const showLine2    = Boolean(line2);
+  const showLine2 = Boolean(line2);
   const cursorOnLine1 = !done1;
   const cursorOnLine2 = done1 && showLine2 && !done2;
-  const cursorIdle    = done1 && (!showLine2 || done2);
+  const cursorIdle = done1 && (!showLine2 || done2);
 
   return (
     <h1 className="hero-title">
@@ -158,11 +145,10 @@ const TypedTitle = ({ line1, line2 }) => {
    MAIN COMPONENT
    ══════════════════════════════════════════════════════════ */
 const HeroSection = ({ content }) => {
-  const heroRef = useRef(null);
   const navigate = useNavigate();
   const { requestPentest, requestPentestModal } = useRequestPentest();
   const { openAuthModal } = useAuthModal();
-  const { badge, ctas, title, description } = content;
+  const { ctas, title, description } = content;
 
   const defaultTitles = [
     'Train like a Hacker.|Prepare for Hackers',
@@ -187,35 +173,32 @@ const HeroSection = ({ content }) => {
   const [titleLine1, titleLine2] = String(resolvedTitle || '').split('|');
 
   return (
-    <section className="hero-section" ref={heroRef}>
-
-      {/* ── Binary rain — bottom-most layer ── */}
+    <section className="hero-section">
+      {/* Binary rain */}
       <BinaryRain />
 
-      {/* ── Grid overlay — sits above binary rain ── */}
+      {/* Grid overlay */}
       <div className="hero-grid-overlay" aria-hidden="true" />
 
       <div className="hero-container">
-
-        {/* ── LEFT: Content ── */}
+        {/* LEFT: Content */}
         <div className="hero-content-panel">
 
-          {/* Kicker */}
           <p className="hero-kicker">
-            <FiTerminal size={14} style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
+            <FiTerminal size={13} style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
             Real Attacks. Real Security.
           </p>
 
-          {/* ── TYPED TITLE ── */}
-          <TypedTitle line1={titleLine1 || title || 'Train like a Hacker.'} line2={titleLine2} />
+          <TypedTitle
+            line1={titleLine1 || title || 'Train like a Hacker.'}
+            line2={titleLine2}
+          />
 
-          {/* Description */}
           <p className="hero-description">
             {description ||
               'HSOCIETY is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.'}
           </p>
 
-          {/* CTAs */}
           <div className="hero-cta">
             {ctas.map((cta, index) => (
               <Button
@@ -225,14 +208,14 @@ const HeroSection = ({ content }) => {
                 onClick={() => {
                   trackEvent('landing_cta_click', { location: 'hero', route: cta.route });
                   if (cta.route === ROUTES.CORPORATE_PENTEST) { requestPentest(); return; }
-                  if (cta.route === ROUTES.LOGIN)             { openAuthModal('login'); return; }
-                  if (cta.route === ROUTES.REGISTER)          { openAuthModal('register'); return; }
-                  if (cta.route === ROUTES.CORPORATE_REGISTER){ openAuthModal('register-corporate'); return; }
+                  if (cta.route === ROUTES.LOGIN)              { openAuthModal('login'); return; }
+                  if (cta.route === ROUTES.REGISTER)           { openAuthModal('register'); return; }
+                  if (cta.route === ROUTES.CORPORATE_REGISTER) { openAuthModal('register-corporate'); return; }
                   navigate(cta.route);
                 }}
               >
                 {cta.label}
-                {index === 0 ? <FiArrowUpRight size={17} /> : <FiArrowRight size={17} />}
+                {index === 0 ? <FiArrowUpRight size={16} /> : <FiArrowRight size={16} />}
               </Button>
             ))}
           </div>
@@ -249,7 +232,7 @@ const HeroSection = ({ content }) => {
                   aria-label={link.label}
                   className="hero-social-link"
                 >
-                  <Icon size={18} />
+                  <Icon size={16} />
                 </a>
               );
             })}
@@ -259,19 +242,17 @@ const HeroSection = ({ content }) => {
             <span className="hero-scroll-text">Scroll</span>
             <span className="hero-scroll-arrow" />
           </div>
-
         </div>
 
-        {/* ── RIGHT: Logo visual ── */}
+        {/* RIGHT: Logo */}
         <div className="hero-visual-panel">
           <div className="hero-logo-wrap">
             <div className="hero-logo-halo" />
-            <div className="hero-logo-binary" aria-hidden="true" />
             <Logo size="xlarge" className="hero-logo-minimal" />
           </div>
         </div>
-
       </div>
+
       {requestPentestModal}
     </section>
   );

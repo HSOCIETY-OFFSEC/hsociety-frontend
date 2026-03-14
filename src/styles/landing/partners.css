@@ -1,70 +1,58 @@
 /* ============================================================
-   PARTNERS SECTION
-   Full-bleed infinite logo carousel — no cards, logos only
+   FILE: src/styles/landing/partners.css
    ============================================================ */
 
 .partners-section {
-  padding: 3.5rem 0 3rem;
+  padding: 2.5rem 0 2rem;
   width: 100%;
   overflow: hidden;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-primary);
 }
 
-/* ── Header: rule + kicker + rule ── */
 .partners-header {
   display: flex;
   align-items: center;
   gap: 1.25rem;
   max-width: 1200px;
-  margin: 0 auto 2.25rem;
-  padding: 0 2rem;
+  margin: 0 auto 1.75rem;
+  padding: 0 1.5rem;
 }
 
 .partners-rule {
   flex: 1;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--border-color) 40%,
-    var(--border-color) 60%,
-    transparent
-  );
+  background: var(--border-color);
 }
 
 .partners-kicker {
   flex-shrink: 0;
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   color: var(--text-tertiary);
   white-space: nowrap;
   margin: 0;
 }
 
-/* ── Carousel shell ── */
 .partners-carousel {
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
   cursor: grab;
-  -webkit-overflow-scrolling: touch;
 }
 
-.partners-carousel::-webkit-scrollbar {
-  display: none;
-}
+.partners-carousel::-webkit-scrollbar { display: none; }
 
-/* ── Scrolling track ── */
 .partners-track {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  gap: 3.5rem;
   width: max-content;
-  padding: 0.5rem 0;
-  animation: partners-scroll 28s linear infinite;
-  animation-direction: normal;
+  padding: 0.25rem 0;
+  animation: partners-scroll 32s linear infinite;
   will-change: transform;
 }
 
@@ -72,101 +60,61 @@
   animation-play-state: paused;
 }
 
-/* ── Individual logo slot — no card, no border ── */
 .partner-logo {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  height: 130px;
+  height: 100px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.partners-carousel:hover .partner-logo:hover {
+  opacity: 1;
 }
 
 .partner-logo img {
   height: 100%;
   width: auto;
-  max-width: 260px;
+  max-width: 220px;
   object-fit: contain;
   display: block;
-  filter: none;
+  filter: grayscale(20%);
   user-select: none;
   -webkit-user-drag: none;
 }
 
-/* Text fallback when no image is present */
 .partner-logo-text {
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
   white-space: nowrap;
 }
 
-/* Empty state */
 .partners-empty {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 2rem 0;
+  padding: 0.5rem 1.5rem;
   text-align: center;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
 }
 
-/* ── Scroll animation ── */
 @keyframes partners-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(calc(-100% / 3)); }
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 900px) {
-  .partners-header {
-    padding: 0 1.5rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .partners-track {
-    gap: 3rem;
-    animation-duration: 22s;
-  }
-
-  .partner-logo {
-    height: 64px;
-  }
+@media (max-width: 640px) {
+  .partners-section { padding: 2rem 0 1.5rem; }
+  .partner-logo { height: 60px; }
+  .partner-logo img { max-width: 160px; }
+  .partners-track { gap: 2.5rem; }
 }
 
-@media (max-width: 600px) {
-  .partners-section {
-    padding: 2.5rem 0 2rem;
-  }
-
-  .partners-track {
-    gap: 2.25rem;
-    animation-duration: 18s;
-  }
-
-  .partner-logo {
-    height: 50px;
-  }
-
-  .partner-logo img {
-    max-width: 180px;
-  }
-}
-
-/* ── Reduced motion: allow manual horizontal scroll ── */
 @media (prefers-reduced-motion: reduce) {
-  .partners-carousel {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .partners-track {
-    animation: none;
-    width: auto;
-    flex-wrap: nowrap;
-    padding: 0.5rem 2rem;
-  }
+  .partners-track { animation: none; width: auto; flex-wrap: nowrap; padding: 0.5rem 1.5rem; }
 }

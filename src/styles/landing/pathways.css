@@ -1,88 +1,51 @@
-/* ========================================
-   PATHWAYS SECTION
-   ======================================== */
+/* ============================================================
+   FILE: src/styles/landing/pathways.css
+   ============================================================ */
 
 .pathways-section {
-  padding: 7rem 2rem;
-  background:
-    radial-gradient(ellipse 900px 400px at 8% 20%, rgba(16, 185, 129, 0.1), transparent 58%),
-    radial-gradient(ellipse 700px 350px at 92% 80%, rgba(6, 182, 212, 0.08), transparent 55%),
-    var(--bg-tertiary);
+  padding: 5rem 1.5rem;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
   position: relative;
-  overflow: hidden;
 }
 
-/* Subtle scanline texture overlay */
 .pathways-section::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(16, 185, 129, 0.008) 3px,
-    rgba(16, 185, 129, 0.008) 4px
-  );
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
-/* ── Grid ── */
 .pathways-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.75rem;
-  position: relative;
-  z-index: 1;
+  gap: 1rem;
 }
 
-/* ════════════════════════════════════════
-   CARD SHELL
-════════════════════════════════════════ */
+/* Card */
 .pathway-card {
   border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--card-bg) 94%, transparent);
-  border-radius: 18px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  position: relative;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform;
+  box-shadow: none;
+  transition: border-color 0.15s ease;
 }
 
 .pathway-card:hover {
-  border-color: color-mix(in srgb, var(--accent, #10b981) 45%, transparent);
-  box-shadow:
-    0 24px 60px -16px rgba(0, 0, 0, 0.45),
-    0 0 0 1px color-mix(in srgb, var(--accent, #10b981) 18%, transparent);
+  border-color: var(--primary-color);
+  box-shadow: none;
 }
 
-/* Hover glow layer */
-.pathway-card__glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 70% 60% at 50% 0%,
-    color-mix(in srgb, var(--accent, #10b981) 14%, transparent),
-    transparent 65%
-  );
-  pointer-events: none;
-  z-index: 2;
-  border-radius: inherit;
-}
+.pathway-card__glow { display: none; }
 
-/* ════════════════════════════════════════
-   IMAGE BLOCK
-════════════════════════════════════════ */
+/* Image */
 .pathway-card__image-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .pathway-card__image {
@@ -91,182 +54,87 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  will-change: transform;
+  transition: transform 0.4s ease;
 }
 
-/* Bottom fade — blends image into card body */
+.pathway-card:hover .pathway-card__image {
+  transform: scale(1.02);
+}
+
 .pathway-card__image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.06) 0%,
-    transparent 45%,
-    color-mix(in srgb, var(--card-bg) 95%, transparent) 100%
-  );
+  background: linear-gradient(to bottom, transparent 50%, color-mix(in srgb, var(--bg-secondary) 60%, transparent) 100%);
   pointer-events: none;
 }
 
-/* Corner badge */
-.pathway-card__badge {
-  position: absolute;
-  top: 0.85rem;
-  left: 0.85rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.38rem;
-  padding: 0.3rem 0.7rem;
-  border-radius: 5px;
-  background: rgba(2, 6, 8, 0.72);
-  border: 1px solid color-mix(in srgb, var(--accent, #10b981) 35%, transparent);
-  color: var(--accent, #10b981);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  backdrop-filter: blur(8px);
-  z-index: 3;
-}
+.pathway-card__badge { display: none; }
 
-/* ════════════════════════════════════════
-   CARD BODY
-════════════════════════════════════════ */
+/* Body */
 .pathway-card__body {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
-  padding: 1.5rem 1.6rem 1.75rem;
+  gap: 1rem;
+  padding: 1.5rem;
   flex: 1;
+}
+
+/* Title comes from h3 inside body */
+.pathway-card__body h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .pathway-card__title {
   margin: 0;
-  font-family: 'Sora', sans-serif;
-  font-size: 1.45rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-primary);
-  letter-spacing: 0.01em;
-  line-height: 1.2;
 }
 
-/* Animated accent divider */
-.pathway-card__divider {
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent, #10b981), transparent);
-  border-radius: 2px;
-  transform-origin: left;
-  flex-shrink: 0;
-}
+.pathway-card__divider { display: none; }
 
-/* ── Checklist ── */
+/* List */
 .pathway-list {
   margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
   flex: 1;
 }
 
-.pathway-list__item {
+.pathway-list li {
   display: flex;
   align-items: flex-start;
-  gap: 0.6rem;
-  font-family: 'Sora', sans-serif;
-  font-size: 0.97rem;
-  font-weight: 500;
+  gap: 0.5rem;
+  font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  letter-spacing: 0.01em;
 }
 
-.pathway-list__check {
+.pathway-list li::before {
+  content: '—';
+  color: var(--text-tertiary);
   flex-shrink: 0;
-  margin-top: 2px;
-  width: 18px;
-  height: 18px;
-  border-radius: 5px;
-  background: color-mix(in srgb, var(--accent, #10b981) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent, #10b981) 30%, transparent);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent, #10b981);
+  line-height: 1.5;
 }
 
-/* ── CTA button row ── */
-.pathway-card__cta {
-  padding-top: 0.25rem;
-}
+.pathway-list__item,
+.pathway-list__check { display: none; }
 
-.pathway-btn {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 0.4rem;
-}
+.pathway-card__cta { padding-top: 0.25rem; }
 
-/* ════════════════════════════════════════
-   RESPONSIVE — TABLET
-════════════════════════════════════════ */
-@media (max-width: 860px) {
-  .pathways-section {
-    padding: 5rem 1.5rem;
-  }
-
+/* Responsive */
+@media (max-width: 760px) {
+  .pathways-section { padding: 3.5rem 1rem; }
   .pathways-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-    max-width: 520px;
+    max-width: 480px;
     margin-inline: auto;
-  }
-}
-
-/* ════════════════════════════════════════
-   RESPONSIVE — MOBILE
-════════════════════════════════════════ */
-@media (max-width: 540px) {
-  .pathways-section {
-    padding: 4rem 1rem;
-  }
-
-  .pathways-grid {
-    max-width: 100%;
-    gap: 1.25rem;
-  }
-
-  /* Shorter image on small screens — less scrolling needed */
-  .pathway-card__image-wrapper {
-    aspect-ratio: 16 / 7;
-  }
-
-  .pathway-card__body {
-    padding: 1.25rem 1.25rem 1.5rem;
-    gap: 0.9rem;
-  }
-
-  .pathway-card__title {
-    font-size: 1.25rem;
-  }
-
-  .pathway-list__item {
-    font-size: 0.9rem;
-  }
-
-  .pathway-card__cta .pathway-btn,
-  .pathway-card__cta button {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* ── Reduced motion ── */
-@media (prefers-reduced-motion: reduce) {
-  .pathway-card {
-    transition: none;
-  }
-
-  .pathway-card__image {
-    transition: none;
   }
 }
