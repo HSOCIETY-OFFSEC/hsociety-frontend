@@ -1,18 +1,35 @@
+/**
+ * Terms & Conditions Page
+ * Location: src/features/terms/Terms.jsx
+ *
+ * GitHub repo-page layout:
+ *   page header (breadcrumb + meta pills) → two-column (main + sidebar)
+ */
+
 import React, { useEffect, useMemo, useState } from 'react';
-import { FiAlertCircle, FiClipboard, FiFileText, FiShield, FiUsers } from 'react-icons/fi';
+import {
+  FiAlertCircle,
+  FiClipboard,
+  FiFileText,
+  FiShield,
+  FiUsers,
+  FiCheckCircle,
+  FiCalendar,
+  FiGlobe,
+} from 'react-icons/fi';
 import PageLoader from '../../shared/components/ui/PageLoader';
 import { getTermsContent } from './terms.service';
 import '../../styles/sections/terms/index.css';
 
+/* ── fallback data ─────────────────────────────── */
 const FALLBACK_TERMS = {
-  effectiveDate: 'loading',
-  lastUpdated: 'loading',
-  jurisdiction: 'loading',
+  effectiveDate: '—',
+  lastUpdated: '—',
+  jurisdiction: '—',
   sections: [
     {
       title: 'Introduction',
-      body:
-        'Welcome to HSOCIETY. By accessing or using our services—including training programs, community platforms, and penetration testing services—you agree to comply with these Terms and Conditions. HSOCIETY operates a cycle-based offensive security ecosystem designed to train, integrate, and deploy penetration testing talent through real-world engagements. If you do not agree to these terms, you may not use our services.'
+      body: 'Welcome to HSOCIETY. By accessing or using our services—including training programs, community platforms, and penetration testing services—you agree to comply with these Terms and Conditions. HSOCIETY operates a cycle-based offensive security ecosystem designed to train, integrate, and deploy penetration testing talent through real-world engagements. If you do not agree to these terms, you may not use our services.'
     },
     {
       title: 'Services Overview',
@@ -40,7 +57,7 @@ const FALLBACK_TERMS = {
         'Engage in illegal hacking, unauthorized system access, or malicious activities.',
         'Share confidential client data outside authorized channels.',
         'Harass or harm other community members.',
-        'Circumvent, exploit, or disrupt HSOCIETY’s systems or services.',
+        'Circumvent, exploit, or disrupt HSOCIETY\'s systems or services.',
         'HSOCIETY reserves the right to suspend or terminate accounts for violations.'
       ]
     },
@@ -87,16 +104,17 @@ const FALLBACK_TERMS = {
     },
     {
       title: 'Governing Law',
-      body:
-        'These Terms are governed by the laws of [Insert Jurisdiction]. Disputes shall be resolved through negotiation, mediation, or binding arbitration, as applicable.'
+      body: 'These Terms are governed by the laws of [Insert Jurisdiction]. Disputes shall be resolved through negotiation, mediation, or binding arbitration, as applicable.'
     },
     {
       title: 'Changes to Terms',
-      body:
-        'HSOCIETY may update these Terms periodically. Users are responsible for reviewing the latest version. Continued use constitutes acceptance.'
+      body: 'HSOCIETY may update these Terms periodically. Users are responsible for reviewing the latest version. Continued use constitutes acceptance.'
     }
   ]
 };
+
+/* ── icon rotation ─────────────────────────────── */
+const SECTION_ICONS = [FiClipboard, FiUsers, FiShield, FiAlertCircle, FiFileText];
 
 const Terms = () => {
   const [loading, setLoading] = useState(true);
@@ -112,19 +130,17 @@ const Terms = () => {
         const data = response.data?.terms || {};
         setTerms({
           effectiveDate: data.effectiveDate || FALLBACK_TERMS.effectiveDate,
-          lastUpdated: data.lastUpdated || FALLBACK_TERMS.lastUpdated,
-          jurisdiction: data.jurisdiction || FALLBACK_TERMS.jurisdiction,
+          lastUpdated:   data.lastUpdated   || FALLBACK_TERMS.lastUpdated,
+          jurisdiction:  data.jurisdiction  || FALLBACK_TERMS.jurisdiction,
           sections: Array.isArray(data.sections) && data.sections.length
             ? data.sections
-            : FALLBACK_TERMS.sections
+            : FALLBACK_TERMS.sections,
         });
       }
       setLoading(false);
     };
     load();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
   const sections = useMemo(() => terms.sections || [], [terms.sections]);
@@ -132,67 +148,175 @@ const Terms = () => {
   if (loading) return <PageLoader message="Loading terms..." durationMs={0} />;
 
   return (
-    <div className="terms-page">
-      <header className="terms-hero">
-        <p className="terms-kicker">Legal</p>
-        <h1>Terms & Conditions</h1>
-        <p className="terms-subtitle">
-          Please review the terms that govern access to HSOCIETY training, services, and
-          community platforms.
-        </p>
-        <div className="terms-meta">
-          <span className="terms-chip">
-            <FiFileText size={14} />
-            Last updated: {terms.lastUpdated || FALLBACK_TERMS.lastUpdated}
+    <div className="trm-page">
+
+      {/* ── PAGE HEADER ─────────────────────────────── */}
+      <header className="trm-page-header">
+        <div className="trm-page-header-inner">
+          <div className="trm-header-left">
+            <div className="trm-header-icon-wrap">
+              <FiFileText size={20} className="trm-header-icon" />
+            </div>
+            <div>
+              <div className="trm-header-breadcrumb">
+                <span className="trm-breadcrumb-org">HSOCIETY</span>
+                <span className="trm-breadcrumb-sep">/</span>
+                <span className="trm-breadcrumb-page">terms</span>
+                <span className="trm-header-visibility">Public</span>
+              </div>
+              <p className="trm-header-desc">
+                Terms and conditions governing access to HSOCIETY training,
+                services, and community platforms.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Meta pills */}
+        <div className="trm-header-meta">
+          <span className="trm-meta-pill">
+            <FiCalendar size={13} className="trm-meta-icon" />
+            <span className="trm-meta-label">Last updated</span>
+            <strong className="trm-meta-value">{terms.lastUpdated}</strong>
           </span>
-          <span className="terms-chip">
-            <FiShield size={14} />
-            Applies to all HSOCIETY users
+          <span className="trm-meta-pill">
+            <FiCalendar size={13} className="trm-meta-icon" />
+            <span className="trm-meta-label">Effective</span>
+            <strong className="trm-meta-value">{terms.effectiveDate}</strong>
+          </span>
+          <span className="trm-meta-pill">
+            <FiGlobe size={13} className="trm-meta-icon" />
+            <span className="trm-meta-label">Jurisdiction</span>
+            <strong className="trm-meta-value">{terms.jurisdiction}</strong>
+          </span>
+          <span className="trm-meta-pill">
+            <FiShield size={13} className="trm-meta-icon" />
+            <span>Applies to all HSOCIETY users</span>
           </span>
         </div>
       </header>
 
-      {sections.map((section, index) => {
-        const icon =
-          index % 5 === 0 ? FiClipboard :
-          index % 5 === 1 ? FiUsers :
-          index % 5 === 2 ? FiShield :
-          index % 5 === 3 ? FiAlertCircle :
-          FiFileText;
-        const Icon = icon;
-        const isGoverningLaw = String(section.title || '').toLowerCase().includes('governing law');
-        return (
-          <section key={`${section.title}-${index}`} className="terms-section">
-            <h2>
-              <Icon size={18} />
-              {section.title}
-            </h2>
-            {section.body && (
-              <p>
-                {isGoverningLaw
-                  ? section.body.replace('[Insert Jurisdiction]', terms.jurisdiction || FALLBACK_TERMS.jurisdiction)
-                  : section.body}
-              </p>
-            )}
-            {Array.isArray(section.bullets) && section.bullets.length > 0 && (
-              <ul className="terms-list">
-                {section.bullets.map((bullet, bulletIndex) => (
-                  <li key={`${section.title}-bullet-${bulletIndex}`}>{bullet}</li>
-                ))}
-              </ul>
-            )}
-          </section>
-        );
-      })}
+      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
+      <div className="trm-layout">
 
-      <section className="terms-section terms-section--last">
-        <h2>
-          <FiFileText size={18} />
-          Effective Dates
-        </h2>
-        <p>Effective Date: {terms.effectiveDate || FALLBACK_TERMS.effectiveDate}</p>
-        <p>Last Updated: {terms.lastUpdated || FALLBACK_TERMS.lastUpdated}</p>
-      </section>
+        {/* ── MAIN COLUMN — sections list ─────────── */}
+        <main className="trm-main">
+          {sections.map((section, index) => {
+            const Icon = SECTION_ICONS[index % SECTION_ICONS.length];
+            const isGoverningLaw = String(section.title || '').toLowerCase().includes('governing law');
+            const bodyText = isGoverningLaw
+              ? (section.body || '').replace('[Insert Jurisdiction]', terms.jurisdiction || '—')
+              : section.body;
+
+            return (
+              <article key={`${section.title}-${index}`} className="trm-section">
+                {/* Section header row */}
+                <div className="trm-section-header">
+                  <span className="trm-section-num">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="trm-section-icon-wrap">
+                    <Icon size={13} />
+                  </span>
+                  <h2 className="trm-section-title">{section.title}</h2>
+                </div>
+
+                {/* Body text */}
+                {bodyText && (
+                  <p className="trm-section-body">{bodyText}</p>
+                )}
+
+                {/* Bullet list */}
+                {Array.isArray(section.bullets) && section.bullets.length > 0 && (
+                  <ul className="trm-bullets">
+                    {section.bullets.map((bullet, bi) => (
+                      <li key={`${section.title}-${bi}`}>
+                        <FiCheckCircle size={11} className="trm-bullet-icon" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            );
+          })}
+
+          {/* Effective dates row */}
+          <article className="trm-section trm-section--last">
+            <div className="trm-section-header">
+              <span className="trm-section-num">
+                {String(sections.length + 1).padStart(2, '0')}
+              </span>
+              <span className="trm-section-icon-wrap">
+                <FiCalendar size={13} />
+              </span>
+              <h2 className="trm-section-title">Effective Dates</h2>
+            </div>
+            <ul className="trm-bullets">
+              <li>
+                <FiCheckCircle size={11} className="trm-bullet-icon" />
+                <span>Effective Date: {terms.effectiveDate}</span>
+              </li>
+              <li>
+                <FiCheckCircle size={11} className="trm-bullet-icon" />
+                <span>Last Updated: {terms.lastUpdated}</span>
+              </li>
+            </ul>
+          </article>
+        </main>
+
+        {/* ── SIDEBAR ─────────────────────────────── */}
+        <aside className="trm-sidebar">
+
+          {/* Table of contents — GitHub wiki sidebar */}
+          <div className="trm-sidebar-box">
+            <h3 className="trm-sidebar-heading">Table of contents</h3>
+            <nav className="trm-toc">
+              {sections.map((section, index) => (
+                <span key={section.title} className="trm-toc-item">
+                  <span className="trm-toc-num">{String(index + 1).padStart(2, '0')}</span>
+                  {section.title}
+                </span>
+              ))}
+            </nav>
+          </div>
+
+          {/* Meta box */}
+          <div className="trm-sidebar-box">
+            <h3 className="trm-sidebar-heading">Document info</h3>
+            <div className="trm-sidebar-divider" />
+            <ul className="trm-sidebar-list">
+              <li>
+                <FiCalendar size={13} className="trm-sidebar-icon" />
+                <span>Updated: <strong>{terms.lastUpdated}</strong></span>
+              </li>
+              <li>
+                <FiCalendar size={13} className="trm-sidebar-icon" />
+                <span>Effective: <strong>{terms.effectiveDate}</strong></span>
+              </li>
+              <li>
+                <FiGlobe size={13} className="trm-sidebar-icon" />
+                <span>Jurisdiction: <strong>{terms.jurisdiction}</strong></span>
+              </li>
+              <li>
+                <FiShield size={13} className="trm-sidebar-icon" />
+                <span>Applies to all users</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Topics */}
+          <div className="trm-sidebar-box">
+            <h3 className="trm-sidebar-heading">Topics</h3>
+            <div className="trm-topics">
+              {['legal', 'terms', 'privacy', 'conduct', 'security', 'hsociety'].map(
+                (t) => <span key={t} className="trm-topic">{t}</span>
+              )}
+            </div>
+          </div>
+
+        </aside>
+      </div>
     </div>
   );
 };
