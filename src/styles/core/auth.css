@@ -1,40 +1,30 @@
 /**
- * Authentication Pages Styling
+ * Authentication Pages Styling — GitHub UI
  * Location: src/styles/core/auth.css
  *
- * Design principles:
+ * Design principles (unchanged):
  * ─────────────────────────────────────────────────────────────────────────────
- * 1. VIEWPORT-CONTAINED — the auth card must never require the user to scroll,
- *    either as a modal overlay or as a standalone page. Every measurement is
- *    relative to the viewport (dvh/dvw/clamp) so the form fits on any device.
+ * 1. VIEWPORT-CONTAINED — the auth card never requires scrolling.
+ * 2. MODAL-FIRST — these components live inside modals.
+ * 3. THEME-CONSISTENT — all colours reference variables from common.css.
+ * 4. DENSITY COMPRESSION — 2-col rows for Name+Org and Password+Confirm.
  *
- * 2. MODAL-FIRST — these components live inside modals. A modal that scrolls
- *    internally is a broken UX pattern. We eliminate overflow wherever possible
- *    and use CSS min() / clamp() to compress padding and font-sizes gracefully.
- *
- * 3. THEME-CONSISTENT — all colours reference variables from common.css:
- *    --bg-primary / --bg-secondary / --card-bg / --border-color /
- *    --text-primary / --text-secondary / --text-tertiary /
- *    --primary-color / --primary-color-hover / --primary-color-alpha /
- *    --input-bg / --input-bg-focus / --input-bg-disabled /
- *    --shadow-lg / --shadow-xl / --notice-bg
- *
- * 4. DENSITY COMPRESSION — Registration has many fields. We use a 2-col row
- *    for (Name + Org) and (Password + Confirm) to cut form height nearly in
- *    half on ≥480 px screens. On narrow phones they stack back to 1-col.
+ * GitHub UI changes applied:
+ * ─────────────────────────────────────────────────────────────────────────────
+ * • auth-card: flat border, no box-shadow hover lift, no transform
+ * • auth-panel--hero: gradient/glow removed → plain bordered panel
+ * • auth-error: flat red border + tint, no animation
+ * • form-input: GitHub input style — bg-secondary, radius-xs, no shadow on focus (outline only)
+ * • auth-toggle: flat segmented control, GitHub-style active state
+ * • auth-step-line: simple 1px border-color line
+ * • All border-radius values use site variables (radius-xs, radius-sm)
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
 /* ============================================================
-   AUTH CONTAINER & SPLIT (standalone page mode)
+   AUTH CONTAINER (standalone page mode)
    ============================================================ */
 
-/*
- * Full-viewport shell. When used as a page (not modal) this fills the screen.
- * align-items: center vertically centres the card on tall viewports.
- * On short viewports the card is allowed to anchor to the top (align-items
- * falls back to flex-start via the inner panel rules).
- */
 .auth-container {
   min-height: 100dvh;
   width: 100vw;
@@ -47,20 +37,14 @@
 
 @media (max-width: 767px) {
   .auth-container {
-    padding-bottom: calc(1rem + var(--bottom-nav-height, 64px) + 56px);
+    padding-bottom: calc(1rem + var(--bottom-nav-height, 0px) + 56px);
   }
 }
 
 /* ============================================================
-   AUTH WRAPPER (card + notice stack)
+   AUTH WRAPPER
    ============================================================ */
 
-/*
- * The wrapper holds the card and the security notice underneath.
- * max-height: 100dvh - padding keeps the whole stack inside the viewport.
- * We do NOT use overflow-y: auto here — if content truly overflows something
- * is wrong with the layout, not the scroll budget.
- */
 .auth-wrapper {
   width: 100%;
   min-height: 100dvh;
@@ -86,9 +70,7 @@
   justify-content: center;
 }
 
-.auth-wrapper--modal .auth-card {
-  width: 100%;
-}
+.auth-wrapper--modal .auth-card { width: 100%; }
 
 /* ============================================================
    AUTH CARD
@@ -97,31 +79,22 @@
 .auth-card {
   width: 100%;
   padding: clamp(1rem, 2.5vh, 1.75rem) clamp(1rem, 2vw, 1.5rem);
-  background: var(--card-bg);
+
+  /* GitHub card: flat bg-secondary, 1px border, radius-sm — no shadow, no hover lift */
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md, 14px);
-  box-shadow: var(--shadow-lg);
-  /* Let the card grow with content but never overflow the viewport */
+  border-radius: var(--radius-sm);
+
   display: flex;
   flex-direction: column;
   gap: clamp(0.6rem, 1.4vh, 1rem);
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
-}
-
-@media (hover: hover) {
-  .auth-card:hover {
-    box-shadow: var(--shadow-xl);
-    transform: translateY(-1px);
-  }
 }
 
 /* ============================================================
    HEADER
    ============================================================ */
 
-.auth-header {
-  text-align: center;
-}
+.auth-header { text-align: center; }
 
 .auth-header h1 {
   font-size: clamp(1.1rem, 2.2vh, 1.5rem);
@@ -139,11 +112,11 @@
   margin: 0;
 }
 
-/* Inline email pill shown in step 2 subtitle */
+/* Email pill in step-2 subtitle */
 .auth-email-pill {
   display: inline-block;
   padding: 0.1em 0.5em;
-  border-radius: 999px;
+  border-radius: 2em;
   background: var(--primary-color-alpha);
   color: var(--primary-color);
   font-size: 0.85em;
@@ -154,10 +127,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: middle;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
 }
 
 /* ============================================================
-   STEP INDICATOR (2FA flow)
+   STEP INDICATOR (2FA)
    ============================================================ */
 
 .auth-step-indicator {
@@ -169,33 +143,28 @@
 }
 
 .auth-step-dot {
-  width: 8px;
-  height: 8px;
+  width: 8px; height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  transition: background 0.3s ease;
 }
 
 .auth-step-dot--done {
   background: var(--primary-color);
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
 .auth-step-dot--active {
   background: var(--primary-color);
-  width: 10px;
-  height: 10px;
+  width: 10px; height: 10px;
+  /* GitHub-style: plain ring, no glow */
   box-shadow: 0 0 0 3px var(--primary-color-alpha);
 }
 
+/* Simple 1px line — no gradient */
 .auth-step-line {
-  height: 2px;
+  height: 1px;
   width: 32px;
-  background: linear-gradient(
-    90deg,
-    var(--primary-color) 0%,
-    color-mix(in srgb, var(--primary-color) 30%, var(--border-color)) 100%
-  );
+  background: var(--border-color);
   margin: 0 4px;
 }
 
@@ -208,24 +177,24 @@
   align-items: flex-start;
   gap: 0.6rem;
   padding: 0.6rem 0.85rem;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.28);
-  border-radius: var(--radius-sm, 8px);
-  color: #ef4444;
+  background: rgba(207, 34, 46, 0.06);
+  border: 1px solid rgba(207, 34, 46, 0.3);
+  border-radius: var(--radius-xs);
+  color: #cf222e;
   font-size: clamp(0.78rem, 1.4vh, 0.85rem);
   line-height: 1.4;
-  animation: authSlideDown 0.22s ease;
+}
+
+[data-theme="black"] .auth-error {
+  background: rgba(255, 123, 114, 0.08);
+  border-color: rgba(255, 123, 114, 0.28);
+  color: #ff7b72;
 }
 
 .error-icon {
   flex-shrink: 0;
   display: inline-flex;
   margin-top: 0.05rem;
-}
-
-@keyframes authSlideDown {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================================
@@ -244,11 +213,8 @@
   gap: 0.6rem;
 }
 
-/* Suppress browser-native input minimum height interference */
 .auth-card input,
-.auth-card button {
-  min-height: unset;
-}
+.auth-card button { min-height: unset; }
 
 .form-group {
   display: flex;
@@ -263,7 +229,6 @@
   letter-spacing: 0.01em;
 }
 
-/* Row holding label + "Forgot password?" side-by-side */
 .form-label-row {
   display: flex;
   align-items: baseline;
@@ -277,16 +242,15 @@
   font-size: clamp(0.72rem, 1.3vh, 0.78rem);
   cursor: pointer;
   padding: 0;
-  transition: color 0.18s ease;
+  transition: color 0.14s ease;
   text-decoration: none;
+  font-family: inherit;
 }
 
-.auth-link-muted:hover {
-  color: var(--primary-color);
-}
+.auth-link-muted:hover { color: var(--primary-color); }
 
 /* ============================================================
-   INPUTS
+   INPUTS — GitHub flat style
    ============================================================ */
 
 .form-input {
@@ -295,18 +259,21 @@
   font-size: clamp(0.82rem, 1.5vh, 0.9rem);
   color: var(--text-primary);
   background: var(--input-bg);
-  border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-sm, 8px);
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  transition: border-color 0.14s ease, background 0.14s ease;
   outline: none;
   box-sizing: border-box;
   line-height: 1.4;
+  font-family: inherit;
 }
 
 .form-input:focus {
   border-color: var(--primary-color);
   background: var(--input-bg-focus);
-  box-shadow: 0 0 0 3px var(--primary-color-alpha);
+  /* GitHub uses a plain outline, not a box-shadow ring */
+  outline: 2px solid var(--primary-color-alpha);
+  outline-offset: 0;
 }
 
 .form-input:disabled {
@@ -315,11 +282,8 @@
   background: var(--input-bg-disabled);
 }
 
-.form-input::placeholder {
-  color: var(--text-tertiary);
-}
+.form-input::placeholder { color: var(--text-tertiary); }
 
-/* Compact hint text below inputs */
 .form-hint {
   font-size: clamp(0.7rem, 1.2vh, 0.775rem);
   color: var(--text-tertiary);
@@ -327,22 +291,10 @@
 }
 
 @media (max-width: 480px) {
-  .auth-card {
-    padding: 1.25rem 1rem;
-    gap: 1rem;
-  }
-
-  .auth-form {
-    gap: 0.9rem;
-  }
-
-  .form-group {
-    gap: 0.45rem;
-  }
-
-  .form-group label {
-    font-size: 0.95rem;
-  }
+  .auth-card { padding: 1.25rem 1rem; gap: 1rem; }
+  .auth-form { gap: 0.9rem; }
+  .form-group { gap: 0.45rem; }
+  .form-group label { font-size: 0.95rem; }
 
   .form-input {
     min-height: 44px;
@@ -351,60 +303,30 @@
   }
 
   .form-hint,
-  .auth-link-muted {
-    font-size: 0.875rem;
-  }
+  .auth-link-muted { font-size: 0.875rem; }
 
-  .auth-toggle button {
-    min-height: 44px;
-    font-size: 0.9rem;
-  }
+  .auth-toggle button { min-height: 44px; font-size: 0.9rem; }
 
-  .form-label-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-  }
+  .form-label-row { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
 
   .auth-link-muted,
   .auth-link,
-  .auth-link-inline {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-  }
+  .auth-link-inline { min-height: 44px; display: inline-flex; align-items: center; }
 
   .auth-mobile-actions {
     position: sticky;
     bottom: 0;
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     padding-top: 0.5rem;
     padding-bottom: 0.25rem;
   }
 
-  .auth-footer p {
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
+  .auth-footer p { font-size: 0.9rem; line-height: 1.6; }
 }
 
-@media (max-width: 420px) {
-  .auth-card {
-    padding: 1.15rem 0.95rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .auth-card {
-    padding: 1rem 0.85rem;
-  }
-}
-
-@media (max-width: 320px) {
-  .auth-card {
-    padding: 0.9rem 0.8rem;
-  }
-}
+@media (max-width: 420px) { .auth-card { padding: 1.15rem 0.95rem; } }
+@media (max-width: 360px) { .auth-card { padding: 1rem 0.85rem; } }
+@media (max-width: 320px) { .auth-card { padding: 0.9rem 0.8rem; } }
 
 /* ============================================================
    OTP / 2FA INPUT
@@ -415,65 +337,67 @@
   letter-spacing: 0.45em;
   text-align: center;
   font-weight: 700;
-  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   padding-top: clamp(0.55rem, 1.4vh, 0.75rem);
   padding-bottom: clamp(0.55rem, 1.4vh, 0.75rem);
 }
 
 /* ============================================================
-   ACCOUNT TYPE TOGGLE
+   ACCOUNT TYPE TOGGLE — GitHub segmented control
    ============================================================ */
 
 .auth-toggle {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.4rem;
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  background: var(--bg-tertiary);
 }
 
 .auth-toggle button {
-  border: 1.5px solid var(--border-color);
-  background: var(--input-bg);
+  border: none;
+  border-right: 1px solid var(--border-color);
+  background: transparent;
   color: var(--text-secondary);
   padding: clamp(0.35rem, 1vh, 0.5rem) 0.6rem;
-  border-radius: var(--radius-sm, 8px);
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: background 0.14s ease, color 0.14s ease;
   font-size: clamp(0.78rem, 1.4vh, 0.85rem);
   font-family: inherit;
   line-height: 1.3;
 }
 
+.auth-toggle button:last-child { border-right: none; }
+
 .auth-toggle button.active {
-  background: var(--primary-color-alpha);
-  color: var(--primary-color);
-  border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .auth-toggle button:hover:not(.active):not(:disabled) {
-  border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
+  background: var(--bg-secondary);
   color: var(--text-primary);
 }
 
-.auth-toggle button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
+.auth-toggle button:disabled { opacity: 0.55; cursor: not-allowed; }
 
-/* Fixed account type label (non-switchable forms) */
+/* Fixed account type label */
 .auth-account-label {
   font-size: clamp(0.78rem, 1.4vh, 0.85rem);
   color: var(--text-secondary);
   padding: 0.3rem 0.6rem;
-  border-radius: var(--radius-sm, 8px);
-  background: var(--bg-secondary);
-  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   width: fit-content;
 }
 
 /* ============================================================
    TWO-COLUMN FORM ROW
-   (Name + Org  /  Password + Confirm)
    ============================================================ */
 
 .auth-form-row {
@@ -482,11 +406,8 @@
   gap: 0.6rem;
 }
 
-/* Stack to single column on very narrow screens */
 @media (max-width: 420px) {
-  .auth-form-row {
-    grid-template-columns: 1fr;
-  }
+  .auth-form-row { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
@@ -505,8 +426,7 @@
 
 .auth-checkbox input[type="checkbox"] {
   margin-top: 0.1rem;
-  width: 15px;
-  height: 15px;
+  width: 15px; height: 15px;
   min-height: unset;
   flex-shrink: 0;
   accent-color: var(--primary-color);
@@ -514,15 +434,8 @@
 }
 
 @media (max-width: 480px) {
-  .auth-checkbox {
-    min-height: 44px;
-    padding: 0.25rem 0;
-  }
-
-  .auth-checkbox input[type="checkbox"] {
-    width: 22px;
-    height: 22px;
-  }
+  .auth-checkbox { min-height: 44px; padding: 0.25rem 0; }
+  .auth-checkbox input[type="checkbox"] { width: 22px; height: 22px; }
 }
 
 /* ============================================================
@@ -537,21 +450,14 @@
   cursor: pointer;
   padding: 0.3rem;
   text-align: center;
-  transition: color 0.18s ease, text-decoration 0.18s ease;
+  transition: color 0.14s ease;
   text-decoration: underline;
   text-underline-offset: 3px;
   font-family: inherit;
 }
 
-.auth-link:hover:not(:disabled) {
-  color: var(--primary-color-hover);
-  text-decoration: none;
-}
-
-.auth-link:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
+.auth-link:hover:not(:disabled) { color: var(--primary-color-hover); text-decoration: none; }
+.auth-link:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .auth-link-inline {
   background: none;
@@ -562,21 +468,15 @@
   padding: 0;
   text-decoration: underline;
   text-underline-offset: 2px;
-  transition: color 0.18s ease;
+  transition: color 0.14s ease;
   font-family: inherit;
 }
 
-.auth-link-inline:hover:not(:disabled) {
-  color: var(--primary-color-hover);
-}
-
-.auth-link-inline:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
+.auth-link-inline:hover:not(:disabled) { color: var(--primary-color-hover); }
+.auth-link-inline:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* ============================================================
-   FOOTER (navigation links below the card)
+   FOOTER
    ============================================================ */
 
 .auth-footer {
@@ -602,9 +502,9 @@
 .auth-notice {
   text-align: center;
   padding: clamp(0.4rem, 1vh, 0.6rem) clamp(0.6rem, 1.2vw, 0.875rem);
-  background: var(--notice-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm, 8px);
+  border-radius: var(--radius-xs);
   font-size: clamp(0.7rem, 1.25vh, 0.775rem);
   color: var(--text-secondary);
 }
@@ -618,11 +518,7 @@
   justify-content: center;
 }
 
-.notice-icon {
-  display: inline-flex;
-  color: var(--primary-color);
-  flex-shrink: 0;
-}
+.notice-icon { display: inline-flex; color: var(--primary-color); flex-shrink: 0; }
 
 /* ============================================================
    AUTH NOTE (optional info banner)
@@ -631,38 +527,25 @@
 .auth-note {
   margin: 0;
   padding: 0.55rem 0.875rem;
-  border-radius: var(--radius-sm, 8px);
-  border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
+  border-radius: var(--radius-xs);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, var(--border-color));
+  background: var(--primary-color-alpha);
   color: var(--text-primary);
   font-size: clamp(0.78rem, 1.4vh, 0.85rem);
   line-height: 1.45;
 }
 
 /* ============================================================
-   HERO PANEL (kept for dual-column page layouts)
+   HERO PANEL — GitHub flat panel, no gradient
    ============================================================ */
 
 .auth-panel--hero {
   position: relative;
   padding: clamp(1.25rem, 3vh, 2.5rem) clamp(1.25rem, 2.5vw, 2rem);
-  border-radius: var(--radius-lg, 18px);
-  background:
-    radial-gradient(circle at 10% 10%, color-mix(in srgb, var(--primary-color) 18%, transparent), transparent 55%),
-    radial-gradient(circle at 90% 80%, color-mix(in srgb, var(--primary-color) 14%, transparent), transparent 65%),
-    linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 90%, var(--bg-primary)), var(--bg-secondary));
-  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.22);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   overflow: hidden;
-}
-
-@media (prefers-color-scheme: light) {
-  .auth-panel--hero {
-    background:
-      radial-gradient(circle at 10% 10%, color-mix(in srgb, var(--primary-color) 28%, transparent), transparent 55%),
-      radial-gradient(circle at 90% 80%, color-mix(in srgb, var(--primary-color) 20%, transparent), transparent 65%),
-      linear-gradient(180deg, var(--bg-secondary), color-mix(in srgb, var(--bg-secondary) 90%, var(--bg-primary)));
-  }
 }
 
 .auth-hero-content { display: flex; flex-direction: column; gap: 1.125rem; }
@@ -671,15 +554,16 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(0, 255, 170, 0.22);
-  color: var(--text-secondary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2em;
+  background: var(--primary-color-alpha);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+  color: var(--primary-color);
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   width: fit-content;
+  font-weight: 600;
 }
 
 .auth-hero-toggle { position: absolute; top: 1rem; right: 1rem; }
@@ -689,6 +573,8 @@
   font-size: clamp(1.4rem, 2.2vw, 2.25rem);
   color: var(--text-primary);
   line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 .auth-hero-subtitle {
@@ -702,22 +588,22 @@
 
 .auth-hero-item {
   padding: 0.5rem 0.8rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(0, 255, 170, 0.1);
+  border-radius: var(--radius-xs);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
   font-size: 0.85rem;
 }
 
 /* ============================================================
-   MODAL SHELL (when auth is opened inside a dialog)
+   MODAL SHELL
    ============================================================ */
 
 .auth-modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(7, 12, 18, 0.65);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -726,22 +612,18 @@
 }
 
 /* ============================================================
-   QUICK LOGIN HELPERS (dev/demo)
+   QUICK LOGIN HELPERS
    ============================================================ */
 
 .auth-quick-logins {
   margin-top: 0.5rem;
   padding: 0.75rem;
-  border-radius: var(--radius-sm, 8px);
+  border-radius: var(--radius-xs);
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
 }
 
-.auth-quick-logins p {
-  margin: 0 0 0.5rem;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
+.auth-quick-logins p { margin: 0 0 0.5rem; font-size: 0.8rem; color: var(--text-secondary); }
 
 .auth-quick-grid {
   display: grid;
@@ -751,19 +633,18 @@
 
 .auth-quick-item {
   padding: 0.45rem 0.55rem;
-  border-radius: var(--radius-sm, 8px);
+  border-radius: var(--radius-xs);
   border: 1px solid var(--border-color);
-  background: var(--card-bg);
+  background: var(--bg-secondary);
   font-weight: 600;
   font-size: 0.78rem;
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: border-color 0.14s ease, color 0.14s ease;
   font-family: inherit;
 }
 
 .auth-quick-item:hover {
-  transform: translateY(-1px);
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
@@ -775,14 +656,12 @@
 
 /* ============================================================
    RESPONSIVE — TABLET (≤ 900px)
-   Single column; hero shrinks or hides.
    ============================================================ */
 
 @media (max-width: 900px) {
   .auth-panel--hero {
     padding: 1rem 1.25rem;
-    border-radius: var(--radius-md, 14px);
-    overflow: visible;
+    border-radius: var(--radius-sm);
   }
 
   .auth-hero-content { gap: 0.75rem; }
@@ -793,14 +672,11 @@
     gap: 0.4rem;
   }
 
-  .auth-wrapper:not(.auth-wrapper--modal) {
-    padding: 1.25rem 1rem;
-  }
+  .auth-wrapper:not(.auth-wrapper--modal) { padding: 1.25rem 1rem; }
 }
 
 /* ============================================================
    RESPONSIVE — MOBILE (≤ 640px)
-   Hero hidden; form fills screen.
    ============================================================ */
 
 @media (max-width: 640px) {
@@ -819,29 +695,16 @@
     padding: 1rem;
   }
 
-  .auth-card {
-    border-radius: var(--radius-sm, 10px);
-  }
+  .auth-card { border-radius: var(--radius-xs); }
+  .auth-header h1 { font-size: clamp(1rem, 5vw, 1.25rem); }
+  .auth-form { gap: clamp(0.45rem, 1.8vw, 0.7rem); }
 
-  .auth-header h1 {
-    font-size: clamp(1rem, 5vw, 1.25rem);
-  }
-
-  .auth-form {
-    gap: clamp(0.45rem, 1.8vw, 0.7rem);
-  }
-
-  .otp-input {
-    font-size: 1.15rem;
-    letter-spacing: 0.3em;
-  }
-
+  .otp-input { font-size: 1.15rem; letter-spacing: 0.3em; }
   .auth-quick-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
-   SHORT VIEWPORT — Desktop height constraints
-   Compress non-essential hero content so form stays visible.
+   SHORT VIEWPORT
    ============================================================ */
 
 @media (max-height: 780px) and (min-width: 901px) {
@@ -850,12 +713,10 @@
   .auth-hero-item { padding: 0.4rem 0.55rem; font-size: 0.78rem; }
 }
 
-@media (max-height: 680px) and (min-width: 901px) {
-  .auth-panel--hero { display: none; }
-}
+@media (max-height: 680px) and (min-width: 901px) { .auth-panel--hero { display: none; } }
 
 /* ============================================================
-   LANDSCAPE MOBILE (short + narrow)
+   LANDSCAPE MOBILE
    ============================================================ */
 
 @media (max-height: 560px) and (max-width: 900px) {
@@ -866,46 +727,25 @@
     justify-content: center;
   }
 
-  .auth-card {
-    gap: 0.4rem;
-    padding: 0.875rem 1rem;
-  }
-
+  .auth-card { gap: 0.4rem; padding: 0.875rem 1rem; }
   .auth-form { gap: 0.4rem; }
-
   .auth-header { margin-bottom: 0; }
   .auth-header h1 { font-size: 1rem; }
   .auth-subtitle { font-size: 0.72rem; }
-
   .auth-footer { gap: 0.1rem; }
   .auth-notice { padding: 0.3rem 0.6rem; }
 }
 
 /* ============================================================
-   VERY SMALL SCREENS (≤ 360px)
+   VERY SMALL (≤ 360px)
    ============================================================ */
 
 @media (max-width: 360px) {
-  .auth-wrapper:not(.auth-wrapper--modal) {
-    padding: 1rem 0.625rem;
-  }
-
-  .auth-card {
-    padding: 1rem 0.875rem;
-    gap: 0.5rem;
-  }
-
+  .auth-wrapper:not(.auth-wrapper--modal) { padding: 1rem 0.625rem; }
+  .auth-card { padding: 1rem 0.875rem; gap: 0.5rem; }
   .auth-header h1 { font-size: 1rem; }
-
-  .form-input {
-    padding: 0.5rem 0.65rem;
-    font-size: 0.85rem;
-  }
-
-  .otp-input {
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-  }
+  .form-input { padding: 0.5rem 0.65rem; font-size: 0.85rem; }
+  .otp-input { font-size: 1rem; letter-spacing: 0.2em; }
 }
 
 @media (max-width: 480px) {
@@ -913,7 +753,5 @@
   .auth-link,
   .auth-link-inline,
   .auth-link-muted,
-  .auth-hero-item {
-    font-size: 0.875rem;
-  }
+  .auth-hero-item { font-size: 0.875rem; }
 }
