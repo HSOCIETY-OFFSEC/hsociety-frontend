@@ -3,7 +3,7 @@
  * Location: src/styles/shared/components/layout/PublicLayout.css
  *
  * Public-facing informational pages — About, Team, Blog, Careers, etc.
- * Content is constrained to a comfortable reading width.
+ * Width is governed by each page shell (no global container clamp).
  * Scroll-reveal animations are scoped to .public-layout.
  */
 
@@ -13,9 +13,21 @@
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  /* Vertical breathing room; horizontal handled by .container */
+  /* Vertical breathing room; horizontal handled by page shells */
   padding-top: calc(var(--navbar-height) + 2rem);
   padding-bottom: 5rem;
+}
+
+/*
+ * Public pages should use the full viewport width by default, avoiding
+ * the centered "boxed" look on large screens. Individual pages can still
+ * opt into narrower content via their own inner wrappers.
+ */
+.public-layout .public-main > * {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 /*
