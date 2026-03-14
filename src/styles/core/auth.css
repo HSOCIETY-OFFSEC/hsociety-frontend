@@ -602,8 +602,8 @@
 .auth-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(7, 12, 18, 0.65);
-  backdrop-filter: blur(6px);
+  background: var(--modal-overlay-bg, rgba(0, 0, 0, 0.72));
+  backdrop-filter: var(--modal-overlay-blur, blur(4px));
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,89 +1,161 @@
 /**
  * Common Styles
  * Location: src/styles/shared/common.css
- * 
- * Covers:
- * - Theme variables
- * - Base element resets
+ *
+ * Three-color system: primary green · black/dark · white/light
+ * ─────────────────────────────────────────────────────────────
+ * Every colour in the UI derives from exactly three sources:
+ *   1. Primary  — #1fbf8f (green, the brand accent)
+ *   2. Dark     — pure black → near-black greys (for backgrounds, text, borders)
+ *   3. Light    — off-white → cool grey (for backgrounds, text, borders)
+ *
+ * Light theme: darker than before — off-white bg, near-black text,
+ *              true grey borders so cards read clearly without shadows.
+ * Black theme: pure-black bg, single-step grey card, tight borders,
+ *              same primary green (not teal).
+ * Modal overlay: near-black rgba, no blue tint, minimal blur.
  */
 
-/* ========================================
-   THEME VARIABLES
-   ======================================== */
+/* ═══════════════════════════════════════════════
+   LIGHT THEME  (default)
+   ═══════════════════════════════════════════════ */
 
-/* Light Theme (default) */
 :root {
   --navbar-height: 72px;
-  --bg-primary: #f7f9fb;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #eef2f6;
-  --card-bg: #ffffff;
-  --border-color: #e2e8f0;
-  --text-primary: #0b1220;
-  --text-secondary: #4b5563;
-  --text-tertiary: #94a3b8;
-  --input-bg: #f1f5f9;
-  --input-bg-focus: #ffffff;
-  --input-bg-disabled: #e2e8f0;
-  --notice-bg: #f0fdf4;
-  --primary-color: #1fbf8f;
-  --primary-color-hover: #14a779;
+
+  /* ── Backgrounds ──
+     Stepped from cool off-white → slightly warm mid-grey.
+     Enough contrast that cards are visible without shadows.      */
+  --bg-primary:   #f2f4f7;   /* page background — noticeably grey, not white  */
+  --bg-secondary: #ffffff;   /* cards, panels                                  */
+  --bg-tertiary:  #e8ecf1;   /* inputs, hover rows, inset areas                */
+  --card-bg:      #ffffff;
+
+  /* ── Borders ──
+     Darker than before so card edges are crisp on the grey bg.  */
+  --border-color: #c8d0db;
+
+  /* ── Text ──
+     Primary = near-black for maximum contrast.
+     Secondary = dark charcoal — readable without being harsh.
+     Tertiary = medium grey for labels and hints.                 */
+  --text-primary:   #0a0e14;   /* near-black   */
+  --text-secondary: #2e3a4a;   /* dark charcoal */
+  --text-tertiary:  #6b7685;   /* medium grey   */
+
+  /* ── Inputs ── */
+  --input-bg:          #edf0f4;
+  --input-bg-focus:    #ffffff;
+  --input-bg-disabled: #dde2e9;
+
+  /* ── Notice ── */
+  --notice-bg: #edfaf4;   /* very light green tint — only place green touches bg */
+
+  /* ── Primary (brand green) ── */
+  --primary-color:       #1fbf8f;
+  --primary-color-hover: #17a87d;
   --primary-color-alpha: rgba(31, 191, 143, 0.12);
-  --accent-ink: #0b1220;
-  --accent-glow: rgba(31, 191, 143, 0.25);
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.12);
-  --shadow-lg: 0 18px 40px -20px rgba(15, 23, 42, 0.35);
-  --shadow-xl: 0 30px 60px -30px rgba(15, 23, 42, 0.45);
+
+  /* ── Accent helpers ── */
+  --accent-ink:  #0a0e14;   /* text on primary-color buttons  */
+  --accent-glow: rgba(31, 191, 143, 0.20);
+
+  /* ── Shadows — darker than before for contrast on lighter bg ── */
+  --shadow-sm: 0 1px 3px  rgba(10, 14, 20, 0.10);
+  --shadow-md: 0 4px 12px rgba(10, 14, 20, 0.14);
+  --shadow-lg: 0 18px 40px -20px rgba(10, 14, 20, 0.30);
+  --shadow-xl: 0 30px 60px -30px rgba(10, 14, 20, 0.40);
+
+  /* ── Radii ── */
   --radius-xs: 6px;
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 18px;
   --radius-xl: 24px;
+
+  /* ── Scrollbar ── */
   --scrollbar-track: transparent;
-  --scrollbar-thumb: color-mix(in srgb, var(--primary-color) 35%, transparent);
+  --scrollbar-thumb:       color-mix(in srgb, var(--primary-color) 30%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--primary-color) 50%, transparent);
+  --scrollbar-size: 8px;
+
+  /* ── Z-index ── */
+  --z-sticky: 50;
+
+  /* ── Modal overlay — near-black, no colour cast ──
+     Used in auth.css .auth-modal-backdrop and any other modal shell.
+     backdrop-filter is intentionally kept short (4px) — just enough
+     to visually separate the modal without blurring the content blue. */
+  --modal-overlay-bg:    rgba(0, 0, 0, 0.72);
+  --modal-overlay-blur:  blur(4px);
+}
+
+/* ═══════════════════════════════════════════════
+   BLACK THEME
+   ═══════════════════════════════════════════════ */
+
+[data-theme="black"] {
+  /* ── Backgrounds ──
+     True black page → single-step dark card → slightly lighter inset.
+     The gap between bg-primary and bg-secondary is intentionally small
+     so cards read as dark-on-black, not grey-on-grey.              */
+  --bg-primary:   #000000;   /* page background           */
+  --bg-secondary: #0d0d0d;   /* cards, panels             */
+  --bg-tertiary:  #1a1a1a;   /* inputs, hover rows, inset */
+  --card-bg:      #0d0d0d;
+
+  /* ── Borders — visible but not glaring ── */
+  --border-color: #2a2a2a;
+
+  /* ── Text ── */
+  --text-primary:   #f5f7fa;   /* near-white             */
+  --text-secondary: #a8b4c0;   /* cool mid-grey           */
+  --text-tertiary:  #5c6878;   /* dark grey for hints     */
+
+  /* ── Inputs ── */
+  --input-bg:          #111111;
+  --input-bg-focus:    #181818;
+  --input-bg-disabled: #0a0a0a;
+
+  /* ── Notice ── */
+  --notice-bg: #051a12;   /* very dark green tint */
+
+  /* ── Primary (same green — no teal drift) ── */
+  --primary-color:       #1fbf8f;
+  --primary-color-hover: #17a87d;
+  --primary-color-alpha: rgba(31, 191, 143, 0.16);
+
+  /* ── Accent helpers ── */
+  --accent-ink:  #000000;
+  --accent-glow: rgba(31, 191, 143, 0.22);
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 3px  rgba(0, 0, 0, 0.55);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 18px 40px -22px rgba(0, 0, 0, 0.85);
+  --shadow-xl: 0 30px 60px -30px rgba(0, 0, 0, 0.90);
+
+  /* ── Radii (unchanged) ── */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  /* ── Scrollbar ── */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb:       color-mix(in srgb, var(--primary-color) 35%, transparent);
   --scrollbar-thumb-hover: color-mix(in srgb, var(--primary-color) 55%, transparent);
   --scrollbar-size: 8px;
-  --z-sticky: 50;
+
+  /* ── Modal overlay ── */
+  --modal-overlay-bg:   rgba(0, 0, 0, 0.85);
+  --modal-overlay-blur: blur(4px);
 }
 
-/* Black Theme */
-[data-theme="black"] {
-  --bg-primary: #000000;
-  --bg-secondary: #050505;
-  --bg-tertiary: #000000;
-  --card-bg: #000000;
-  --border-color: #121212;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
-  --input-bg: #050505;
-  --input-bg-focus: #0b0b0b;
-  --input-bg-disabled: #080808;
-  --notice-bg: #062a1d;
-  --primary-color: #2dd4bf;
-  --primary-color-hover: #22c3af;
-  --primary-color-alpha: rgba(45, 212, 191, 0.22);
-  --accent-ink: #ffffff;
-  --accent-glow: rgba(45, 212, 191, 0.35);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 18px 40px -22px rgba(0, 0, 0, 0.8);
-  --shadow-xl: 0 30px 60px -30px rgba(0, 0, 0, 0.85);
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --scrollbar-track: transparent;
-  --scrollbar-thumb: color-mix(in srgb, var(--primary-color) 45%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--primary-color) 65%, transparent);
-  --scrollbar-size: 8px;
-}
-
-/* ========================================
+/* ═══════════════════════════════════════════════
    BASE STYLES
-   ======================================== */
+   ═══════════════════════════════════════════════ */
 
 * {
   box-sizing: border-box;
@@ -91,30 +163,17 @@
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-*::-webkit-scrollbar {
-  width: var(--scrollbar-size);
-  height: var(--scrollbar-size);
-}
-
-*::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
-}
-
-*::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar        { width: var(--scrollbar-size); height: var(--scrollbar-size); }
+*::-webkit-scrollbar-track  { background: var(--scrollbar-track); }
+*::-webkit-scrollbar-thumb  {
   background-color: var(--scrollbar-thumb);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
+*::-webkit-scrollbar-thumb:hover { background-color: var(--scrollbar-thumb-hover); }
 
-*::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-thumb-hover);
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-}
+html, body { margin: 0; padding: 0; }
 
 html {
   scroll-behavior: smooth;
@@ -123,19 +182,26 @@ html {
 }
 
 body {
-  font-family: 'Sora', 'Segoe UI', sans-serif;
+  /*
+   * Font stack: GitHub system stack first, Sora as a named fallback
+   * so the design stays consistent if Sora isn't loaded yet.
+   */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+               Helvetica, Arial, 'Sora', sans-serif;
   background-color: var(--bg-primary);
+
+  /*
+   * Light theme: the brand watermark is very subtle because we've darkened
+   * the bg. Keep it but reduce the overlay opacity slightly.
+   */
   background-image:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(241, 245, 249, 0.96)),
+    linear-gradient(135deg, rgba(242, 244, 247, 0.95), rgba(232, 236, 241, 0.97)),
     url('../../assets/brand-images/brand-image-white.webp');
-  background-size:
-    cover,
-    cover;
+  background-size: cover, cover;
   background-position: center;
-  background-repeat:
-    no-repeat,
-    no-repeat;
+  background-repeat: no-repeat, no-repeat;
   background-attachment: scroll;
+
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
@@ -144,27 +210,17 @@ body {
 [data-theme="black"] body {
   background-color: var(--bg-primary);
   background-image: none;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
 }
 
-body.workspace-lock-scroll {
-  overflow: hidden;
-}
+body.workspace-lock-scroll { overflow: hidden; }
 
 code, pre, .mono {
-  font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  font-family: ui-monospace, 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
+img { max-width: 100%; height: auto; }
 
-button, input, textarea, select {
-  font-family: inherit;
-}
+button, input, textarea, select { font-family: inherit; }
 
 button:focus-visible,
 a:focus-visible,
@@ -175,44 +231,68 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-/* Scroll reveal */
+/* ═══════════════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════════════ */
+
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(var(--reveal-distance, 22px)) scale(0.985);
-  filter: blur(6px);
+  transform: translateY(var(--reveal-distance, 16px));
   transition:
-    opacity var(--reveal-duration, 680ms) ease,
-    transform var(--reveal-duration, 680ms) cubic-bezier(0.16, 0.64, 0.2, 1),
-    filter var(--reveal-duration, 680ms) ease;
+    opacity   var(--reveal-duration, 560ms) ease,
+    transform var(--reveal-duration, 560ms) cubic-bezier(0.16, 0.64, 0.2, 1);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
 
+/*
+ * Removed filter: blur(6px) — it causes a visual glitch on Safari and
+ * adds GPU overhead for no perceptible benefit at the new subtler
+ * reveal distance (16px vs 22px).
+ */
+
 .reveal-on-scroll.is-visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════
+   GLOBAL MODAL OVERLAY
+   ─────────────────────────────────────────────
+   Any component that renders a full-screen modal
+   backdrop should use these variables so the
+   overlay is consistent with the theme.
+
+   Usage in component CSS:
+     background: var(--modal-overlay-bg);
+     backdrop-filter: var(--modal-overlay-blur);
+   ═══════════════════════════════════════════════ */
+
+/* auth.css .auth-modal-backdrop already consumes these — no rule needed here.
+   Listed as a reference comment so other modal authors know to use the vars. */
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  body {
+    /* On mobile drop the brand watermark — too subtle to matter, saves paint */
+    background-image: linear-gradient(
+      180deg,
+      rgba(242, 244, 247, 0.98),
+      rgba(232, 236, 241, 0.99)
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
 
   .reveal-on-scroll {
     opacity: 1;
     transform: none;
-    filter: none;
     transition: none;
     will-change: auto;
   }
-}
-
-@media (max-width: 900px) {
-  body {
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.98));
-    background-attachment: scroll;
-  }
-
-  
 }
