@@ -71,30 +71,21 @@ export const fetchQuizForScope = async ({ type, id, courseId }) => {
  * Currently scored locally; later this can be delegated to the backend.
  */
 export const submitQuizAnswers = async (quiz, answers) => {
-  const total = quiz.questions.length;
-  const correct = quiz.questions.reduce((acc, q) => {
-    const answerIndex = answers[q.id];
-    return acc + (answerIndex === q.correctIndex ? 1 : 0);
-  }, 0);
-
-  const score = Math.round((correct / total) * 100);
-
-  // Placeholder API call – safe to ignore failure in dev
-  await apiClient.post(API_ENDPOINTS.STUDENT.QUIZ, {
+  const response = await apiClient.post(API_ENDPOINTS.STUDENT.QUIZ, {
     scope: quiz.scope,
-    score,
-    total,
-    correct
+    answers
   });
 
+  if (response.success) {
+    return {
+      success: true,
+      data: response.data
+    };
+  }
+
   return {
-    success: true,
-    data: {
-      score,
-      total,
-      correct,
-      passed: score >= 70
-    }
+    success: false,
+    error: response.error || 'Quiz submission failed'
   };
 };
 
@@ -102,4 +93,3 @@ export default {
   fetchQuizForScope,
   submitQuizAnswers
 };
-

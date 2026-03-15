@@ -35,17 +35,23 @@ const StudentLearning = () => {
       setLoading(true);
       setError('');
       try {
-        const [courseResponse, overviewResponse, notificationResponse] = await Promise.all([
-          getStudentCourse(),
+        const requests = [
           getStudentOverview(),
           listNotifications(),
-        ]);
+        ];
+        if (hasAccess) {
+          requests.unshift(getStudentCourse());
+        }
+        const responses = await Promise.all(requests);
+        const [courseResponse, overviewResponse, notificationResponse] = hasAccess
+          ? responses
+          : [null, responses[0], responses[1]];
 
         if (!isMounted) return;
-        if (courseResponse.success) setCourse(courseResponse.data);
+        if (courseResponse?.success) setCourse(courseResponse.data);
         if (overviewResponse.success) setOverview(overviewResponse.data);
 
-        if (notificationResponse.success) {
+        if (notificationResponse?.success) {
           const meeting = (notificationResponse.data || []).find(
             (item) => item.type === 'bootcamp_meeting' && item.metadata?.meetUrl
           );
@@ -63,7 +69,7 @@ const StudentLearning = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [hasAccess]);
 
   const moduleProgressMap = useMemo(() => {
     if (!overview?.modules) return {};

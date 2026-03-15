@@ -113,11 +113,9 @@ export const deriveProfileFromCourseState = (course, progressState) => {
  * Placeholder for future backend call to persist progress / profile.
  */
 export const syncProfileProgress = async (profileSnapshot) => {
-  try {
-    await apiClient.post(API_ENDPOINTS.STUDENT.PROFILE, profileSnapshot);
-  } catch {
-    // Best-effort only in current frontend-only implementation
-  }
+  // Direct snapshot writes are disabled on the backend for security.
+  // Progress updates now use specific completion endpoints.
+  return { success: false };
 };
 
 export default {
@@ -126,4 +124,3 @@ export default {
   deriveProfileFromCourseState,
   syncProfileProgress
 };
-

@@ -5,7 +5,8 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getStudentCourse } from './course.service';
-import { deriveProfileFromCourseState, syncProfileProgress } from '../profile/profile.service';
+import { deriveProfileFromCourseState } from '../profile/profile.service';
+import { completeLearningRoom, completeLearningCtf } from '../../dashboards/student/student.service';
 import { QuizPanel } from '../quizzes/QuizPanel';
 import useBootcampAccess from '../hooks/useBootcampAccess';
 import StudentAccessModal from '../components/StudentAccessModal';
@@ -165,7 +166,7 @@ export const CourseLearning = () => {
   }, [isRegistered, isPaid]);
 
   useEffect(() => {
-    if (!isRegistered) {
+    if (!isRegistered || !isPaid) {
       setLoading(false);
       return;
     }
@@ -196,7 +197,7 @@ export const CourseLearning = () => {
     };
 
     loadCourse();
-  }, [isRegistered]);
+  }, [isRegistered, isPaid]);
 
   const courseProgress = useMemo(
     () => computeCourseProgress(course, progressState),
@@ -210,12 +211,7 @@ export const CourseLearning = () => {
 
   useEffect(() => {
     if (!course) return;
-    syncProfileProgress({
-      courseId: course.id,
-      progressState,
-      derived: profileSnapshot,
-      updatedAt: new Date().toISOString(),
-    });
+    // Progress updates are persisted via explicit completion endpoints.
   }, [course, progressState, profileSnapshot]);
 
   const handleContinueLearning = () => {
@@ -230,7 +226,7 @@ export const CourseLearning = () => {
     }
   };
 
-  const handleToggleRoomComplete = (moduleId, roomId) => {
+  const handleToggleRoomComplete = async (moduleId, roomId) => {
     if (!course) return;
     if (!hasAccess) {
       triggerAccessModal();
@@ -240,26 +236,27 @@ export const CourseLearning = () => {
     const state = getModuleState(course, progressState, moduleId);
     if (state === 'locked') return;
 
-    setProgressState((prev) => {
-      const moduleProgress = prev.modules[moduleId] || { rooms: {}, ctfCompleted: false };
-      const current = !!moduleProgress.rooms[roomId];
+    const moduleProgress = progressState.modules[moduleId] || { rooms: {}, ctfCompleted: false };
+    if (moduleProgress.rooms?.[roomId]) return;
 
-      return {
-        modules: {
-          ...prev.modules,
-          [moduleId]: {
-            ...moduleProgress,
-            rooms: {
-              ...moduleProgress.rooms,
-              [roomId]: !current
-            }
+    const response = await completeLearningRoom(moduleId, roomId);
+    if (!response.success) return;
+
+    setProgressState((prev) => ({
+      modules: {
+        ...prev.modules,
+        [moduleId]: {
+          ...(prev.modules[moduleId] || { rooms: {}, ctfCompleted: false }),
+          rooms: {
+            ...(prev.modules[moduleId]?.rooms || {}),
+            [roomId]: true
           }
         }
-      };
-    });
+      }
+    }));
   };
 
-  const handleCtfComplete = (moduleId) => {
+  const handleCtfComplete = async (moduleId) => {
     if (!course) return;
     if (!hasAccess) {
       triggerAccessModal();
@@ -273,6 +270,9 @@ export const CourseLearning = () => {
       module.rooms.every((room) => moduleProgress.rooms[room.roomId]);
 
     if (!allRoomsCompleted) return; // CTF unlock gated by module completion
+
+    const response = await completeLearningCtf(moduleId);
+    if (!response.success) return;
 
     setProgressState((prev) => ({
       modules: {

@@ -67,6 +67,27 @@ export const completeLearningModule = async (moduleId) => {
   return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
 };
 
+export const completeLearningRoom = async (moduleId, roomId) => {
+  const endpoint = buildEndpoint(API_ENDPOINTS.STUDENT.COMPLETE_ROOM, { moduleId, roomId });
+  const response = await apiClient.post(endpoint, {});
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
+};
+
+export const completeLearningCtf = async (moduleId) => {
+  const endpoint = buildEndpoint(API_ENDPOINTS.STUDENT.COMPLETE_CTF, { moduleId });
+  const response = await apiClient.post(endpoint, {});
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
+};
+
+export const completeLearningCtfById = async (ctfId) => {
+  const endpoint = buildEndpoint(API_ENDPOINTS.STUDENT.COMPLETE_CTF_BY_ID, { ctfId });
+  const response = await apiClient.post(endpoint, {});
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
+};
+
 export const joinStudentCommunity = async () => {
   const response = await apiClient.post(API_ENDPOINTS.STUDENT.JOIN_COMMUNITY, {});
   if (response.success) return { success: true, data: response.data };
@@ -96,6 +117,9 @@ export default {
   registerBootcamp,
   enrollTraining,
   completeLearningModule,
+  completeLearningRoom,
+  completeLearningCtf,
+  completeLearningCtfById,
   joinStudentCommunity,
   getSupervisedEngagements,
   refreshStudentSkills,
