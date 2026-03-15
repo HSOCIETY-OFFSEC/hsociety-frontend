@@ -37,6 +37,42 @@
 
 @keyframes loader-spin { to { transform: rotate(360deg); } }
 
+.loader.loader-lg {
+  width: auto;
+  height: auto;
+  min-width: var(--loader-size);
+  min-height: var(--loader-size);
+}
+
+.loader-terminal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--color-text-secondary);
+}
+
+.loader-terminal-prompt {
+  white-space: pre;
+}
+
+.loader-terminal-cursor {
+  width: 11px;
+  height: 22px;
+  border-radius: 1px;
+  background: var(--color-text-primary);
+  opacity: 0.85;
+  animation: cursor-blink 1.06s step-start infinite;
+}
+
+@keyframes cursor-blink {
+  0% { opacity: 0.85; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .loader-ring { animation: none; }
+  .loader-terminal-cursor { animation: none; opacity: 0.85; }
 }

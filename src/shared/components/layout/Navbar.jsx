@@ -423,13 +423,22 @@ const Navbar = ({ sticky = true }) => {
 
           {/* Register button (public, desktop) */}
           {!isAuthenticated && viewportMode === 'desktop' && (
-            <button
-              type="button"
-              className="gh-btn gh-btn-primary"
-              onClick={() => openAuthModal('register')}
-            >
-              Register
-            </button>
+            <>
+              <button
+                type="button"
+                className="gh-btn"
+                onClick={() => openAuthModal('login')}
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                className="gh-btn gh-btn-primary"
+                onClick={() => openAuthModal('register')}
+              >
+                Register
+              </button>
+            </>
           )}
 
           {/* User menu (authenticated, desktop) */}

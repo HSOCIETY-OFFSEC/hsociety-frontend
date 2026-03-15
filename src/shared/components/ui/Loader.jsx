@@ -2,6 +2,8 @@ import React from 'react';
 import '../../../styles/shared/components/ui/Loader.css';
 
 const Loader = ({ size = 'md', className = '', label = 'Loading' }) => {
+  const isTerminal = size === 'lg';
+
   return (
     <div
       className={`loader loader-${size} ${className}`}
@@ -9,7 +11,14 @@ const Loader = ({ size = 'md', className = '', label = 'Loading' }) => {
       aria-live="polite"
       aria-label={label}
     >
-      <div className="loader-ring" aria-hidden="true" />
+      {isTerminal ? (
+        <div className="loader-terminal" aria-hidden="true">
+          <span className="loader-terminal-prompt">root@shell:~$ </span>
+          <span className="loader-terminal-cursor" />
+        </div>
+      ) : (
+        <div className="loader-ring" aria-hidden="true" />
+      )}
     </div>
   );
 };
