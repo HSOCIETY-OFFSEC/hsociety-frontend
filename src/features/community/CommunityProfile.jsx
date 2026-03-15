@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCommunityProfile } from './community.service';
+import RankBadge from '../../shared/components/ui/RankBadge';
+import { useRankBadge } from '../../shared/providers/RankBadgeProvider';
 import '@styles/sections/community/profile.css';
 
 const formatCount = (value) => Number(value || 0).toLocaleString();
@@ -13,6 +15,11 @@ const CommunityProfile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [profileData, setProfileData] = useState(null);
+  const { getBadgeForProfile } = useRankBadge();
+  const profileBadge = useMemo(
+    () => getBadgeForProfile(profileData),
+    [getBadgeForProfile, profileData]
+  );
 
   const loadProfile = useCallback(async () => {
     if (!handle) return;
@@ -82,6 +89,9 @@ const CommunityProfile = () => {
                 @{profileData.user.hackerHandle || profileData.user.id}
               </p>
               <h2>{profileData.user.name || 'Community member'}</h2>
+              {profileBadge && (
+                <RankBadge badge={profileBadge} size="compact" className="community-profile-badge" />
+              )}
               {profileData.user.organization && (
                 <p className="community-profile-meta">{profileData.user.organization}</p>
               )}

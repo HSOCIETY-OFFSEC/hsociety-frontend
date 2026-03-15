@@ -25,6 +25,8 @@ import PageLoader from '../../shared/components/ui/PageLoader';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { getPublicProfileByHandle } from './publicProfile.service';
 import '../../styles/sections/public-profile/index.css';
+import RankBadge from '../../shared/components/ui/RankBadge';
+import { useRankBadge } from '../../shared/providers/RankBadgeProvider';
 
 /* ── Helpers ─────────────────────────────────────────────── */
 
@@ -144,6 +146,8 @@ const PublicProfile = () => {
   const visitDates = Array.isArray(profile?.activity?.visitDates) ? profile.activity.visitDates : [];
   const contributionData = useMemo(() => buildContributionGrid(visitDates, 364), [visitDates]);
   const monthLabels = useMemo(() => buildMonthLabels(contributionData.weeks), [contributionData.weeks]);
+  const { getBadgeForProfile } = useRankBadge();
+  const profileBadge = useMemo(() => getBadgeForProfile(profile), [getBadgeForProfile, profile]);
 
   if (loading) return <PageLoader message="Loading profile..." durationMs={0} />;
 
@@ -207,7 +211,12 @@ const PublicProfile = () => {
 
             {/* Identity */}
             <div className="pp-identity">
-              <h1 className="pp-name">{profile?.name || 'Community Member'}</h1>
+              <h1 className="pp-name">
+                {profile?.name || 'Community Member'}
+                {profileBadge && (
+                  <RankBadge badge={profileBadge} size="compact" className="pp-rank-badge" />
+                )}
+              </h1>
               <p className="pp-handle">{displayHandle}</p>
               {profile?.bio && <p className="pp-bio">{profile.bio}</p>}
             </div>

@@ -22,6 +22,8 @@ import {
   updateProfile,
 } from './account.service';
 import { listNotifications, markNotificationRead } from '../student/services/notifications.service';
+import RankBadge from '../../shared/components/ui/RankBadge';
+import { useRankBadge } from '../../shared/providers/RankBadgeProvider';
 import '../../styles/sections/account/index.css';
 import '../../styles/sections/public-profile/index.css';
 
@@ -66,6 +68,12 @@ const AccountSettings = () => {
   const isPentester = user?.role === 'pentester';
   const normalizedHandle = normalizeHandle(profile.hackerHandle || user?.hackerHandle);
   const publicProfilePath = normalizedHandle ? `/@${normalizedHandle}` : '';
+  const { getBadgeForProfile } = useRankBadge();
+  const accountSubject = useMemo(() => ({ ...user, ...profile }), [user, profile]);
+  const accountBadge = useMemo(
+    () => getBadgeForProfile(accountSubject),
+    [accountSubject, getBadgeForProfile]
+  );
 
   useEffect(() => {
     if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -262,7 +270,12 @@ const AccountSettings = () => {
           </div>
 
           <div className="pp-identity">
-            <h1 className="pp-name">{profile.name || user?.name || 'Account Settings'}</h1>
+            <h1 className="pp-name">
+              {profile.name || user?.name || 'Account Settings'}
+              {accountBadge && (
+                <RankBadge badge={accountBadge} size="compact" className="pp-rank-badge" />
+              )}
+            </h1>
             <p className="pp-handle">{normalizedHandle ? `@${normalizedHandle}` : user?.email || '—'}</p>
             {profile.bio && <p className="pp-bio">{profile.bio}</p>}
           </div>

@@ -6,6 +6,7 @@ import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
 import CookieConsent from '../shared/components/ui/CookieConsent';
 import NotificationConsent from '../shared/components/ui/NotificationConsent';
 import { runSecurityScan } from '../core/security-tests/scan.runner';
+import RankBadgeProvider from '../shared/providers/RankBadgeProvider';
 import { NotificationProvider } from '../shared/notifications/NotificationProvider';
 import { envConfig } from '../config/env.config';
 
@@ -49,14 +50,16 @@ const App = () => {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <NotificationProvider>
-          <div className="app-shell">
-            <AppRouter />
-            <PwaUpdatePrompt />
-            <CookieConsent />
-            <NotificationConsent />
-          </div>
-        </NotificationProvider>
+        <RankBadgeProvider>
+          <NotificationProvider>
+            <div className="app-shell">
+              <AppRouter />
+              <PwaUpdatePrompt />
+              <CookieConsent />
+              <NotificationConsent />
+            </div>
+          </NotificationProvider>
+        </RankBadgeProvider>
       </AuthProvider>
     </ThemeProvider>
   );

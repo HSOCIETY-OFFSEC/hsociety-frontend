@@ -59,6 +59,10 @@
   color: var(--text-primary);
 }
 
+.community-profile-badge {
+  margin-top: 0.3rem;
+}
+
 .community-profile-metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

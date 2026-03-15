@@ -78,6 +78,13 @@
   color: var(--text-primary);
   letter-spacing: -0.02em;
   line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pp-rank-badge {
+  margin-left: 0.3rem;
 }
 
 .pp-handle {

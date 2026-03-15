@@ -474,6 +474,11 @@
   white-space: nowrap;
 }
 
+.workspace-profile-badge {
+  margin-left: 0.3rem;
+  flex-shrink: 0;
+}
+
 /* ── Avatar ─────────────────────────────────────────────────── */
 .workspace-avatar {
   width: 28px;
