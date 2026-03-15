@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FiMessageSquare } from 'react-icons/fi';
 import CommunityMessage from './CommunityMessage';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
+import Skeleton from '../../../../shared/components/ui/Skeleton';
 
 const CommunityMessageList = ({
   messages,
@@ -76,9 +77,17 @@ const CommunityMessageList = ({
     >
       {loading ? (
         <div className="community-msg-state">
-          <span className="community-loading-dots">
-            <span /><span /><span />
-          </span>
+          <div className="community-loading-skeleton" aria-hidden="true">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={`skeleton-${index}`} className="community-skeleton-row">
+                <Skeleton variant="circle" className="community-skeleton-avatar" />
+                <div className="community-skeleton-body">
+                  <Skeleton variant="line" className="community-skeleton-line" />
+                  <Skeleton variant="line" className="community-skeleton-line short" />
+                </div>
+              </div>
+            ))}
+          </div>
           <p>{COMMUNITY_UI.messages.loadingText}</p>
         </div>
       ) : messages.length === 0 ? (

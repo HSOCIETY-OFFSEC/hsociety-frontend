@@ -10,7 +10,6 @@ const Loader = ({ size = 'md', className = '', label = 'Loading' }) => {
       aria-label={label}
     >
       <div className="loader-ring" aria-hidden="true" />
-      <div className="loader-core" aria-hidden="true" />
     </div>
   );
 };

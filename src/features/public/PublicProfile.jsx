@@ -12,6 +12,14 @@ import {
   FiCalendar,
   FiActivity,
 } from 'react-icons/fi';
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaRedditAlien,
+  FaTelegramPlane,
+  FaWhatsapp,
+} from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import PageLoader from '../../shared/components/ui/PageLoader';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
@@ -159,12 +167,12 @@ const PublicProfile = () => {
   const encodedText = encodeURIComponent(shareText);
 
   const shareLinks = [
-    { label: 'X (Twitter)', href: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}` },
-    { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}` },
-    { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}` },
-    { label: 'Reddit', href: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}` },
-    { label: 'WhatsApp', href: `https://wa.me/?text=${encodedText}%20${encodedUrl}` },
-    { label: 'Telegram', href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}` },
+    { label: 'X (Twitter)', href: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`, icon: FaXTwitter },
+    { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, icon: FaLinkedinIn },
+    { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, icon: FaFacebookF },
+    { label: 'Reddit', href: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`, icon: FaRedditAlien },
+    { label: 'WhatsApp', href: `https://wa.me/?text=${encodedText}%20${encodedUrl}`, icon: FaWhatsapp },
+    { label: 'Telegram', href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`, icon: FaTelegramPlane },
   ];
 
   const handleShare = async () => {
@@ -419,15 +427,34 @@ const PublicProfile = () => {
 
             <div className="pp-share-links">
               {shareLinks.map((link) => (
-                <a key={link.label} className="pp-share-link" href={link.href} target="_blank" rel="noreferrer">
-                  {link.label}
+                <a
+                  key={link.label}
+                  className="pp-share-link"
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.label}
+                  title={link.label}
+                >
+                  <link.icon size={16} aria-hidden="true" />
                 </a>
               ))}
-              <a className="pp-share-link" href={`mailto:?subject=${encodedTitle}&body=${encodedText}%0A${encodedUrl}`}>
-                <FiMail size={13} /> Email
+              <a
+                className="pp-share-link"
+                href={`mailto:?subject=${encodedTitle}&body=${encodedText}%0A${encodedUrl}`}
+                aria-label="Email"
+                title="Email"
+              >
+                <FiMail size={16} aria-hidden="true" />
               </a>
-              <button type="button" className="pp-share-link" onClick={handleCopy}>
-                <FiCopy size={13} /> {copied ? 'Copied!' : 'Copy link'}
+              <button
+                type="button"
+                className="pp-share-link"
+                onClick={handleCopy}
+                aria-label={copied ? 'Copied' : 'Copy link'}
+                title={copied ? 'Copied' : 'Copy link'}
+              >
+                <FiCopy size={16} aria-hidden="true" />
               </button>
             </div>
 

@@ -615,7 +615,7 @@
 
 .pp-share-links {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
   gap: 0.5rem;
 }
 
@@ -624,14 +624,16 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.5rem 0.65rem;
+  padding: 0.5rem;
+  min-height: 44px;
+  min-width: 44px;
   border-radius: 6px;
   border: 1px solid var(--pp-border);
   background: color-mix(in srgb, var(--bg-secondary) 80%, transparent);
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   cursor: pointer;
   font-family: inherit;
   transition: border-color 0.18s ease, color 0.18s ease;
