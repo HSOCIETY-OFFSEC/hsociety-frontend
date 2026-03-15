@@ -5,6 +5,8 @@
  * Canonical registration DTO for backend integration.
  */
 
+import { validatePassword } from '../../core/validation/input.validator';
+
 const normalizeAccountType = (accountType) =>
   accountType === 'student' ? 'student' : 'corporate';
 
@@ -41,12 +43,8 @@ export const validateRegisterForm = (form) => {
   if (!form.companyOrSchool || form.companyOrSchool.trim().length < 2) return false;
 
   // SECURITY UPDATE IMPLEMENTED: Strong password (8+ chars, upper, lower, number, special)
-  if (!form.password) return false;
-  if (form.password.length < 8) return false;
-  if (!/[A-Z]/.test(form.password)) return false;
-  if (!/[a-z]/.test(form.password)) return false;
-  if (!/[0-9]/.test(form.password)) return false;
-  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(form.password)) return false;
+  const { isValid: isPasswordValid } = validatePassword(form.password);
+  if (!isPasswordValid) return false;
 
   if (form.password !== form.confirmPassword) return false;
 

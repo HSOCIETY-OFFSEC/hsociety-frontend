@@ -28,7 +28,7 @@ export const PASSWORD_CONFIG = {
   requireLowercase: true,
   requireNumbers: true,
   requireSpecialChars: true,
-  specialChars: '!@#$%^&*()_+-=[]{}|;:,.<>?',
+  specialChars: '!@#$%^&*()_+-=[]{}|;:,.<>?~`',
   
   // Password strength levels
   strength: {

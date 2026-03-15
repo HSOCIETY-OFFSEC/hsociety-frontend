@@ -7,6 +7,7 @@ import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
+import { validatePassword } from '../../core/validation/input.validator';
 import { registerUser } from './register.service';
 import '../../styles/core/auth.css';
 
@@ -64,6 +65,21 @@ const RegistrationForm = ({
     () => validateRegisterForm({ ...form, accountType }),
     [form, accountType]
   );
+  const passwordValidation = useMemo(
+    () => validatePassword(form.password),
+    [form.password]
+  );
+  const passwordError = useMemo(() => {
+    if (!form.password) return '';
+    if (passwordValidation.isValid) return '';
+    return passwordValidation.errors[0] || 'Password does not meet requirements.';
+  }, [form.password, passwordValidation]);
+  const confirmError = useMemo(() => {
+    if (!form.confirmPassword) return '';
+    if (!form.password) return '';
+    if (form.password === form.confirmPassword) return '';
+    return 'Passwords do not match.';
+  }, [form.password, form.confirmPassword]);
 
   const handleChange = (field) => (event) => {
     const value =
@@ -208,6 +224,7 @@ const RegistrationForm = ({
             <input
               type="text"
               id="full-name"
+              name="name"
               value={form.name}
               onChange={handleChange('name')}
               onInput={handleChange('name')}
@@ -224,6 +241,7 @@ const RegistrationForm = ({
             <input
               type="text"
               id="org"
+              name="organization"
               value={form.companyOrSchool}
               onChange={handleChange('companyOrSchool')}
               onInput={handleChange('companyOrSchool')}
@@ -242,6 +260,7 @@ const RegistrationForm = ({
           <input
             type="email"
             id="email"
+            name="email"
             value={form.email}
             onChange={handleChange('email')}
             onInput={handleChange('email')}
@@ -260,6 +279,7 @@ const RegistrationForm = ({
             <label htmlFor="password">{copy.fields.password.label}</label>
             <PasswordInput
               id="password"
+              name="password"
               value={form.password}
               onChange={handleChange('password')}
               onInput={handleChange('password')}
@@ -270,11 +290,17 @@ const RegistrationForm = ({
               autoComplete="new-password"
               ref={passwordRef}
             />
+            {passwordError && (
+              <span className="form-hint form-error" role="status">
+                {passwordError}
+              </span>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="confirm-password">{copy.fields.confirmPassword.label}</label>
             <PasswordInput
               id="confirm-password"
+              name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange('confirmPassword')}
               onInput={handleChange('confirmPassword')}
@@ -285,6 +311,11 @@ const RegistrationForm = ({
               autoComplete="new-password"
               ref={confirmRef}
             />
+            {confirmError && (
+              <span className="form-hint form-error" role="status">
+                {confirmError}
+              </span>
+            )}
           </div>
         </div>
 

@@ -102,8 +102,8 @@ export const validatePassword = (password) => {
     strength += 20;
   }
 
-  // Special character check
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+  // Special character check (accept a broad, non-alphanumeric set)
+  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password)) {
     errors.push('Password must contain at least one special character');
   } else {
     strength += 20;
