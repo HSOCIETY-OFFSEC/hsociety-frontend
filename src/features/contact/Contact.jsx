@@ -7,76 +7,22 @@
  */
 
 import {
-  FiMail,
-  FiPhone,
-  FiMapPin,
-  FiClock,
   FiMessageSquare,
-  FiGithub,
-  FiTwitter,
-  FiLinkedin,
-  FiGlobe,
   FiArrowUpRight,
   FiCheckCircle,
-  FiCalendar,
-  FiSend,
 } from 'react-icons/fi';
 import '../../styles/sections/contact/index.css';
-
-/* ─── static data ─────────────────────────────────────── */
-
-const CONTACT_CARDS = [
-  {
-    icon: <FiMail size={16} />,
-    label: 'Email',
-    value: 'hello@hsociety.io',
-    sub: 'We reply within 24 hours',
-    accent: 'alpha',
-    tag: 'Primary',
-  },
-  {
-    icon: <FiPhone size={16} />,
-    label: 'Phone',
-    value: '+1 (555) 000-0000',
-    sub: 'Mon – Fri, 9 am – 6 pm EST',
-    accent: 'beta',
-    tag: 'Voice',
-  },
-  {
-    icon: <FiMapPin size={16} />,
-    label: 'Office',
-    value: '123 Innovation Drive',
-    sub: 'San Francisco, CA 94105',
-    accent: 'gamma',
-    tag: 'HQ',
-  },
-  {
-    icon: <FiClock size={16} />,
-    label: 'Response SLA',
-    value: '< 4 hours',
-    sub: 'Average first-reply time',
-    accent: 'delta',
-    tag: 'SLA',
-  },
-];
-
-const STATS = [
-  { value: '< 4h', label: 'Avg. response' },
-  { value: '98%',  label: 'Satisfaction'  },
-  { value: '24/7', label: 'Support desk'  },
-  { value: '50+',  label: 'Countries'     },
-];
-
-const SOCIAL_LINKS = [
-  { icon: <FiTwitter  size={14} />, label: 'Twitter',  href: '#' },
-  { icon: <FiGithub   size={14} />, label: 'GitHub',   href: '#' },
-  { icon: <FiLinkedin size={14} />, label: 'LinkedIn', href: '#' },
-  { icon: <FiGlobe    size={14} />, label: 'Website',  href: '#' },
-];
-
-/* ─── component ─────────────────────────────────────── */
+import {
+  CONTACT_HERO,
+  CONTACT_CHANNELS,
+  CONTACT_STATS,
+  CONTACT_SOCIAL_LINKS,
+} from '../../config/contact.config';
 
 export default function Contact() {
+  const hero = CONTACT_HERO;
+  const PrimaryActionIcon = hero.primaryAction.icon;
+  const SecondaryActionIcon = hero.secondaryAction.icon;
   return (
     <div className="contact-page">
 
@@ -96,27 +42,25 @@ export default function Contact() {
                 <span className="contact-breadcrumb-page">contact</span>
                 <span className="contact-header-visibility">Public</span>
               </div>
-              <p className="contact-header-desc">
-                Have a question, idea, or project in mind? Our team responds fast.
-              </p>
+              <p className="contact-header-desc">{hero.description}</p>
             </div>
           </div>
 
           {/* Right: CTAs */}
           <div className="contact-header-actions">
             <a
-              href="#schedule"
-              className="contact-btn contact-btn-secondary"
-            >
-              <FiCalendar size={14} />
-              Book a call
-            </a>
-            <a
-              href="mailto:hello@hsociety.io"
+              href={hero.primaryAction.href}
               className="contact-btn contact-btn-primary"
             >
-              <FiSend size={14} />
-              Send email
+              <PrimaryActionIcon size={14} />
+              {hero.primaryAction.label}
+            </a>
+            <a
+              href={hero.secondaryAction.href}
+              className="contact-btn contact-btn-secondary"
+            >
+              <SecondaryActionIcon size={14} />
+              {hero.secondaryAction.label}
             </a>
           </div>
         </div>
@@ -125,10 +69,9 @@ export default function Contact() {
         <div className="contact-header-meta">
           <span className="contact-meta-pill contact-meta-status">
             <span className="contact-status-dot" />
-            <span>Team online</span>
-            <strong>Available now</strong>
+            <span>{hero.availability}</span>
           </span>
-          {STATS.map((s) => (
+          {CONTACT_STATS.map((s) => (
             <span key={s.label} className="contact-meta-pill">
               <strong className="contact-meta-value">{s.value}</strong>
               <span className="contact-meta-label">{s.label}</span>
@@ -151,25 +94,30 @@ export default function Contact() {
             </h2>
 
             <div className="contact-card-grid">
-              {CONTACT_CARDS.map((card) => (
-                <article
-                  key={card.label}
-                  className={`contact-card contact-card-${card.accent}`}
-                >
-                  <div className="contact-card-header">
-                    <span className="contact-card-icon">{card.icon}</span>
-                    <span className={`contact-label contact-label-${card.accent}`}>
-                      {card.tag}
-                    </span>
-                  </div>
-                  <h3 className="contact-card-title">{card.label}</h3>
-                  <p className="contact-card-value">{card.value}</p>
-                  <div className="contact-card-footer">
-                    <span className={`contact-lang-dot contact-lang-dot-${card.accent}`} />
-                    <span className="contact-lang-label">{card.sub}</span>
-                  </div>
-                </article>
-              ))}
+              {CONTACT_CHANNELS.map((card) => {
+                const Icon = card.icon;
+                return (
+                  <article
+                    key={card.label}
+                    className={`contact-card contact-card-${card.accent}`}
+                  >
+                    <div className="contact-card-header">
+                      <span className="contact-card-icon">
+                        <Icon size={18} />
+                      </span>
+                      <span className={`contact-label contact-label-${card.accent}`}>
+                        {card.tag}
+                      </span>
+                    </div>
+                    <h3 className="contact-card-title">{card.label}</h3>
+                    <p className="contact-card-value">{card.value}</p>
+                    <div className="contact-card-footer">
+                      <span className={`contact-lang-dot contact-lang-dot-${card.accent}`} />
+                      <span className="contact-lang-label">{card.sub}</span>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </section>
 
@@ -186,19 +134,22 @@ export default function Contact() {
               and industry insights across our channels.
             </p>
             <div className="contact-social-links">
-              {SOCIAL_LINKS.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="contact-social-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {link.icon}
-                  {link.label}
-                  <FiArrowUpRight size={12} className="contact-social-arrow" />
-                </a>
-              ))}
+              {CONTACT_SOCIAL_LINKS.map((link) => {
+                const SocialIcon = link.icon;
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="contact-social-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SocialIcon size={14} />
+                    {link.label}
+                    <FiArrowUpRight size={12} className="contact-social-arrow" />
+                  </a>
+                );
+              })}
             </div>
           </section>
 

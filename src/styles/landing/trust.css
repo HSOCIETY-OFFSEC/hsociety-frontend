@@ -3,19 +3,20 @@
    ============================================================ */
 
 .trust-section {
-  padding: 5rem 1.5rem;
+  padding: 5rem 1.5rem 6rem;
   border-top: 1px solid var(--border-color);
   background: var(--bg-primary);
 }
 
 .trust-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1px;
   background: var(--border-color);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
+  grid-auto-rows: minmax(min-content, auto);
 }
 
 .trust-card {
@@ -25,7 +26,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 1.75rem;
+  padding: 1.75rem 1.5rem;
   position: relative;
   overflow: hidden;
   transition: background 0.15s ease;
@@ -77,10 +78,22 @@
 }
 
 @media (max-width: 860px) {
-  .trust-grid { grid-template-columns: 1fr 1fr; }
+  .trust-grid {
+    gap: 0.5rem;
+  }
 }
 
-@media (max-width: 540px) {
-  .trust-section { padding: 3.5rem 1rem; }
-  .trust-grid { grid-template-columns: 1fr; }
+@media (max-width: 640px) {
+  .trust-section {
+    padding: 3.75rem 1rem 4.5rem;
+  }
+  .trust-card {
+    padding: 1.4rem 1.1rem;
+  }
+  .trust-card h3 {
+    font-size: 0.9rem;
+  }
+  .trust-card p {
+    font-size: 0.82rem;
+  }
 }

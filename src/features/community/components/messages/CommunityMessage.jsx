@@ -28,13 +28,15 @@ const CommunityMessage = ({
   const likes = Number(message?.likes || 0);
   const comments = message?.comments || [];
   const liked = currentUserId ? message?.likedBy?.includes(currentUserId) : false;
-  const profileTarget = message?.hackerHandle || message?.userId || '';
+  const profileTarget = message?.hackerHandle || message?.user?.hackerHandle || message?.username || message?.user?.username || '';
   const reactions = message?.reactions || {};
   const reactionPool = [...new Set([...(reactionEmojis || []), ...Object.keys(reactions || {})])];
   const userReactionCount = Object.values(reactions).filter(
     (entry) => currentUserId && Array.isArray(entry.users) && entry.users.includes(currentUserId)
   ).length;
   const [supportsHover, setSupportsHover] = useState(false);
+  const hoverCloseTimer = useRef(null);
+  const HOVER_CLOSE_DELAY_MS = 220;
 
   useEffect(() => {
     if (!reactionOpen) return undefined;
@@ -46,6 +48,14 @@ const CommunityMessage = ({
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [reactionOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (hoverCloseTimer.current) {
+        clearTimeout(hoverCloseTimer.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return undefined;
@@ -69,13 +79,11 @@ const CommunityMessage = ({
   };
 
   const handleOpenProfile = () => {
-    const handleValue =
-      profileTarget ||
-      message?.user?.hackerHandle ||
-      message?.user?.username ||
-      message?.username ||
-      '';
-    if (!handleValue) return;
+    const handleValue = profileTarget
+      || message?.user?.hackerHandle
+      || message?.user?.username
+      || message?.username
+      || '';
     const normalized = String(handleValue).trim().replace(/^@/, '');
     if (!normalized) return;
     navigate(`/@${encodeURIComponent(normalized)}`);
@@ -200,13 +208,32 @@ const CommunityMessage = ({
           <div
             className="community-post-reaction-picker"
             ref={reactionRef}
-            onMouseEnter={() => { if (supportsHover) setReactionOpen(true); }}
-            onMouseLeave={() => { if (supportsHover) setReactionOpen(false); }}
+            onMouseEnter={() => { if (supportsHover) { if (hoverCloseTimer.current) { clearTimeout(hoverCloseTimer.current); hoverCloseTimer.current = null; } setReactionOpen(true); } }}
+            onMouseLeave={() => {
+              if (!supportsHover) return;
+              if (hoverCloseTimer.current) {
+                clearTimeout(hoverCloseTimer.current);
+              }
+              hoverCloseTimer.current = window.setTimeout(() => {
+                setReactionOpen(false);
+                hoverCloseTimer.current = null;
+              }, HOVER_CLOSE_DELAY_MS);
+            }}
           >
             <button
               type="button"
               className={`community-post-action-btn react ${reactionOpen ? 'active' : ''}`}
-              onClick={() => { if (!supportsHover) setReactionOpen((prev) => !prev); }}
+              onClick={() => {
+                if (hoverCloseTimer.current) {
+                  clearTimeout(hoverCloseTimer.current);
+                  hoverCloseTimer.current = null;
+                }
+                if (reactionOpen) {
+                  setReactionOpen(false);
+                  return;
+                }
+                setReactionOpen(true);
+              }}
               onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); setReactionOpen(false); } }}
               aria-label={COMMUNITY_UI.reactions.moreLabel}
               aria-expanded={reactionOpen}
