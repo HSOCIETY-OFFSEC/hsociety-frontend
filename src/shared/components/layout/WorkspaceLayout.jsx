@@ -44,6 +44,7 @@ const WorkspaceLayout = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [communityMenuOpen, setCommunityMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
+  const [overflowMenuOpen, setOverflowMenuOpen] = useState(false);
   const [learnOpen, setLearnOpen] = useState(false);
   const {
     notifications,
@@ -55,6 +56,7 @@ const WorkspaceLayout = () => {
   const menuRef = useRef(null);
   const communityMenuRef = useRef(null);
   const notificationMenuRef = useRef(null);
+  const overflowMenuRef = useRef(null);
 
   const pathname = location.pathname || '';
   const isLessonWorkspace = pathname.startsWith('/student-bootcamps/modules/');
@@ -84,6 +86,7 @@ const WorkspaceLayout = () => {
     setLearnOpen(false);
     setCommunityMenuOpen(false);
     setNotificationMenuOpen(false);
+    setOverflowMenuOpen(false);
     setMobileSidebarOpen(false);
   }, [location.pathname]);
 
@@ -157,6 +160,16 @@ const WorkspaceLayout = () => {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [notificationMenuOpen]);
 
+  useEffect(() => {
+    if (!overflowMenuOpen) return undefined;
+    const handleClick = (event) => {
+      if (!overflowMenuRef.current || overflowMenuRef.current.contains(event.target)) return;
+      setOverflowMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [overflowMenuOpen]);
+
 
   const isMobile = navMode === 'mobile';
   const showSidebar = !isLessonWorkspace && !isMobile;
@@ -169,9 +182,17 @@ const WorkspaceLayout = () => {
     setSidebarCollapsed(next);
     window?.sessionStorage?.setItem('hsociety.sidebar.collapsed', String(next));
   };
-  const bottomNavLinks = useMemo(
+  const mobileNavLinks = useMemo(
     () => (navMode === 'mobile' ? getMobileLinks(true, role || 'student') : []),
     [navMode, role]
+  );
+  const bottomNavLinks = useMemo(
+    () => (navMode === 'mobile' ? mobileNavLinks.slice(0, 3) : []),
+    [navMode, mobileNavLinks]
+  );
+  const overflowNavLinks = useMemo(
+    () => (navMode === 'mobile' ? mobileNavLinks.slice(3) : []),
+    [navMode, mobileNavLinks]
   );
 
   const profileNav = useMemo(
@@ -193,7 +214,7 @@ const WorkspaceLayout = () => {
       }`}
       style={{
         '--sidebar-collapsed-width': '84px',
-        '--bottom-nav-height': '64px',
+        '--bottom-nav-height': isMobile ? '90px' : '64px',
       }}
     >
       {showSidebar && isMobile && (
@@ -221,7 +242,7 @@ const WorkspaceLayout = () => {
                   onClick={handleSidebarToggle}
                   aria-label={isMobile ? 'Toggle sidebar' : sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 >
-                  {isMobile ? <BsThreeDotsVertical size={16} /> : <LuMenu size={16} />}
+                  <LuMenu size={16} />
                 </button>
               )}
               <button
@@ -364,6 +385,46 @@ const WorkspaceLayout = () => {
                   </div>
                 )}
               </div>
+
+              {isMobile && overflowNavLinks.length > 0 && (
+                <div
+                  className="workspace-overflow"
+                  ref={overflowMenuRef}
+                  onMouseLeave={() => setOverflowMenuOpen(false)}
+                >
+                  <button
+                    type="button"
+                    className="workspace-overflow-btn"
+                    onClick={() => setOverflowMenuOpen((prev) => !prev)}
+                    aria-label="More"
+                    aria-haspopup="menu"
+                    aria-expanded={overflowMenuOpen}
+                  >
+                  <BsThreeDotsVertical size={18} />
+                  </button>
+                  {overflowMenuOpen && (
+                    <div className="workspace-overflow-menu" role="menu">
+                      {overflowNavLinks.map((link) => (
+                        <button
+                          key={link.path}
+                          type="button"
+                          role="menuitem"
+                          className={`workspace-overflow-item ${
+                            pathname === link.path ? 'active' : ''
+                          }`}
+                          onClick={() => {
+                            setOverflowMenuOpen(false);
+                            navigate(link.path);
+                          }}
+                        >
+                          <link.icon size={16} />
+                          <span>{link.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {isCommunity && (
                 <div
