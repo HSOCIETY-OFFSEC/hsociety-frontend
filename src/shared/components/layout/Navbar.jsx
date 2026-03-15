@@ -79,8 +79,8 @@ const Navbar = ({ sticky = true }) => {
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
 
   const avatarFallback = useMemo(
-    () => getGithubAvatarDataUri(user?.email || user?.name || 'user'),
-    [user?.email, user?.name]
+    () => getGithubAvatarDataUri(user?.name || 'user'),
+    [user?.name]
   );
   const avatarSrc = user?.avatarUrl || avatarFallback;
 
@@ -98,6 +98,15 @@ const Navbar = ({ sticky = true }) => {
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+    const shouldShowDock = viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen;
+    document.body.classList.toggle('has-auth-dock', shouldShowDock);
+    return () => {
+      document.body.classList.remove('has-auth-dock');
+    };
+  }, [viewportMode, isAuthenticated, mobileMenuOpen]);
 
   const role        = user?.role === 'client' ? 'corporate' : user?.role;
   const isStudent   = role === 'student';

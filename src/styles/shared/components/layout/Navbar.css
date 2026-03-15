@@ -630,6 +630,10 @@
   border-top: 1px solid var(--border-color);
 }
 
+body.has-auth-dock {
+  --mobile-action-dock-height: 64px;
+}
+
 .gh-mobile-dock-btn {
   flex: 1;
   min-height: 36px;

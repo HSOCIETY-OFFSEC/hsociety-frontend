@@ -6,6 +6,7 @@
   align-items: flex-end;
   justify-content: center;
   padding: 1.5rem;
+  padding-bottom: calc(1.5rem + var(--mobile-action-dock-height, 0px) + env(safe-area-inset-bottom));
   z-index: var(--z-modal, 60);
   pointer-events: none;
 }

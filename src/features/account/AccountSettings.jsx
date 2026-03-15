@@ -150,8 +150,8 @@ const AccountSettings = () => {
   }, []);
 
   const identiconFallback = useMemo(
-    () => getGithubAvatarDataUri(profile.name || user?.email || 'User'),
-    [profile.name, user?.email]
+    () => getGithubAvatarDataUri(user?.name || 'user'),
+    [user?.name]
   );
 
   const handleProfileSave = async () => {

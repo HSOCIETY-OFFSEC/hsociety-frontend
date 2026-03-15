@@ -5,6 +5,7 @@
   align-items: flex-end;
   justify-content: flex-end;
   padding: 1.2rem;
+  padding-bottom: calc(1.2rem + var(--mobile-action-dock-height, 0px) + env(safe-area-inset-bottom));
   z-index: 1100;
   pointer-events: none;
 }

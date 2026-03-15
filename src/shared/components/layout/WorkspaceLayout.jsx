@@ -125,8 +125,8 @@ const WorkspaceLayout = () => {
   }, [navMode]);
 
   const avatarFallback = useMemo(
-    () => getGithubAvatarDataUri(user?.email || user?.name || 'user'),
-    [user?.email, user?.name]
+    () => getGithubAvatarDataUri(user?.name || 'user'),
+    [user?.name]
   );
   const avatarSrc = user?.avatarUrl || avatarFallback;
 
