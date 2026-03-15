@@ -260,70 +260,14 @@
   cursor: not-allowed;
 }
 
-.community-post-reactions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.35rem;
-}
-
-.community-post-reaction-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.55rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
-}
-
-.community-post-reaction-pill:hover {
-  color: var(--text-primary);
-  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
-}
-
-.community-post-reaction-pill.active {
-  color: var(--primary-color);
-  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
-  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
-}
-
-.community-post-reaction-count {
-  font-weight: 600;
-}
-
 .community-post-reaction-picker {
   position: relative;
-}
-
-.community-post-reaction-more {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
-}
-
-.community-post-reaction-more:hover,
-.community-post-reaction-more.active {
-  color: var(--text-primary);
-  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
 }
 
 .community-post-reaction-panel {
   position: absolute;
   top: 36px;
-  right: 0;
+  left: 0;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -336,15 +280,18 @@
 }
 
 .community-post-reaction-panel-item {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 44px;
+  height: 32px;
+  border-radius: 10px;
   border: none;
   background: transparent;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 0.2rem;
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
 }
 
 .community-post-reaction-panel-item:hover {
@@ -354,6 +301,12 @@
 .community-post-reaction-panel-item:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.community-post-reaction-count {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
 }
 
 .community-post-comments {

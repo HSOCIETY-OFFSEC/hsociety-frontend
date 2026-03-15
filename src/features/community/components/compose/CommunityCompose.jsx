@@ -14,6 +14,7 @@ const CommunityCompose = ({
   draft,
   onDraftChange,
   onSend,
+  onTyping,
   imageUrl,
   onImageChange,
   imageError,
@@ -23,6 +24,7 @@ const CommunityCompose = ({
   const emojiRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
+  const typingTimerRef = useRef(null);
   const charsLeft = MAX - draft.length;
   const nearLimit = charsLeft < 80;
   const canSend = Boolean(draft.trim() || imageUrl);
@@ -38,6 +40,10 @@ const CommunityCompose = ({
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, [emojiOpen]);
+
+  useEffect(() => () => {
+    if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
+  }, []);
 
   const handlePickImage = () => {
     if (fileInputRef.current) fileInputRef.current.click();
@@ -74,6 +80,16 @@ const CommunityCompose = ({
       setUploading(false);
       event.target.value = '';
     }
+  };
+
+  const handleTyping = (value) => {
+    onDraftChange(value);
+    if (!onTyping) return;
+    onTyping(true);
+    if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
+    typingTimerRef.current = window.setTimeout(() => {
+      onTyping(false);
+    }, 1200);
   };
 
   return (
@@ -131,7 +147,7 @@ const CommunityCompose = ({
 
           <input
             value={draft}
-            onChange={(e) => onDraftChange(e.target.value)}
+            onChange={(e) => handleTyping(e.target.value)}
             placeholder={`Message #${roomLabel}`}
             aria-label={`Message #${roomLabel}`}
             maxLength={MAX}
@@ -141,6 +157,7 @@ const CommunityCompose = ({
                 onSend();
               }
             }}
+            onBlur={() => onTyping?.(false)}
           />
 
           {nearLimit && draft.length > 0 && (

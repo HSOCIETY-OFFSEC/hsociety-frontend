@@ -80,6 +80,21 @@ export const NotificationProvider = ({ children }) => {
     playTone(ctx, { frequency: 460, duration: 0.12, type: 'sine', gain: 0.045 });
   };
 
+  const showBrowserNotification = (payload = {}) => {
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+    if (Notification.permission !== 'granted') return;
+    if (!document.hidden) return;
+    try {
+      new Notification(payload.title || 'HSOCIETY', {
+        body: payload.message || 'You have new activity.',
+        icon: '/FAVICON_HSOCIETY_BLACK/android-chrome-192x192.png',
+        tag: payload.tag || 'hsociety-notification',
+      });
+    } catch {
+      // ignore
+    }
+  };
+
   const showToast = (payload = {}) => {
     const duration = Number(payload.duration || 3600);
     const nextToast = {
@@ -96,6 +111,7 @@ export const NotificationProvider = ({ children }) => {
     }, duration);
     if (payload.tone === 'notify') {
       playNotificationSound();
+      showBrowserNotification(payload);
     } else {
       playSuccessSound();
     }

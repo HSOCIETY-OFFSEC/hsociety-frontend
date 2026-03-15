@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FiHeart, FiMessageSquare, FiMoreHorizontal, FiSend, FiRepeat, FiBookmark } from 'react-icons/fi';
+import { FiHeart, FiMessageSquare, FiSend, FiRepeat, FiBookmark, FiSmile } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
 import { sanitizeText } from '../../../../shared/utils/sanitize';
@@ -31,8 +31,6 @@ const CommunityMessage = ({
   const profileTarget = message?.hackerHandle || message?.userId || '';
   const reactions = message?.reactions || {};
   const reactionPool = [...new Set([...(reactionEmojis || []), ...Object.keys(reactions || {})])];
-  const inlineReactionPool = reactionPool.slice(0, COMMUNITY_UI.reactions.inlineVisibleCount);
-  const overflowReactionPool = reactionPool.slice(COMMUNITY_UI.reactions.inlineVisibleCount);
   const userReactionCount = Object.values(reactions).filter(
     (entry) => currentUserId && Array.isArray(entry.users) && entry.users.includes(currentUserId)
   ).length;
@@ -157,80 +155,6 @@ const CommunityMessage = ({
           )}
         </div>
 
-        {/* Reactions row (emoji pills) */}
-        {(inlineReactionPool.length > 0 || Object.keys(reactions).some((e) => reactions[e]?.count > 0)) && (
-          <div className="community-post-reactions" role="group" aria-label="Reactions">
-            {inlineReactionPool.map((emoji) => {
-              const data = reactions[emoji] || { count: 0, users: [] };
-              const reacted =
-                currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
-              return (
-                <button
-                  key={emoji}
-                  type="button"
-                  className={`community-post-reaction-pill ${reacted ? 'active' : ''}`}
-                  onClick={() => onReact?.(message.id, emoji)}
-                  aria-pressed={reacted}
-                  aria-label={`React with ${emoji}${data.count > 0 ? `, ${data.count}` : ''}`}
-                >
-                  <span>{emoji}</span>
-                  {data.count > 0 && <span className="community-post-reaction-count">{data.count}</span>}
-                </button>
-              );
-            })}
-            {overflowReactionPool.length > 0 && (
-              <div
-                className="community-post-reaction-picker"
-                ref={reactionRef}
-                onMouseEnter={() => { if (supportsHover) setReactionOpen(true); }}
-                onMouseLeave={() => { if (supportsHover) setReactionOpen(false); }}
-              >
-                <button
-                  type="button"
-                  className={`community-post-reaction-more ${reactionOpen ? 'active' : ''}`}
-                  onClick={() => { if (!supportsHover) setReactionOpen((prev) => !prev); }}
-                  onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); setReactionOpen(false); } }}
-                  aria-label={COMMUNITY_UI.reactions.moreLabel}
-                  aria-expanded={reactionOpen}
-                >
-                  <FiMoreHorizontal size={13} />
-                </button>
-                {reactionOpen && (
-                  <div
-                    className="community-post-reaction-panel"
-                    role="listbox"
-                    aria-label={COMMUNITY_UI.reactions.panelLabel}
-                    onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); setReactionOpen(false); } }}
-                  >
-                    {overflowReactionPool.map((emoji) => {
-                      const data = reactions[emoji] || { count: 0, users: [] };
-                      const reacted =
-                        currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
-                      const blocked = !reacted && userReactionCount >= reactionLimit;
-                      return (
-                        <button
-                          key={emoji}
-                          type="button"
-                          className="community-post-reaction-panel-item"
-                          onClick={() => {
-                            if (blocked) return;
-                            onReact?.(message.id, emoji);
-                            setReactionOpen(false);
-                          }}
-                          disabled={blocked}
-                          aria-label={`React with ${emoji}`}
-                        >
-                          {emoji}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
         {/* Action bar — X/Twitter style icon row */}
         <div className="community-post-actions">
           <button
@@ -264,6 +188,58 @@ const CommunityMessage = ({
             <FiHeart size={15} />
             {likes > 0 && <span>{likes}</span>}
           </button>
+
+          <div
+            className="community-post-reaction-picker"
+            ref={reactionRef}
+            onMouseEnter={() => { if (supportsHover) setReactionOpen(true); }}
+            onMouseLeave={() => { if (supportsHover) setReactionOpen(false); }}
+          >
+            <button
+              type="button"
+              className={`community-post-action-btn react ${reactionOpen ? 'active' : ''}`}
+              onClick={() => { if (!supportsHover) setReactionOpen((prev) => !prev); }}
+              onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); setReactionOpen(false); } }}
+              aria-label={COMMUNITY_UI.reactions.moreLabel}
+              aria-expanded={reactionOpen}
+            >
+              <FiSmile size={15} />
+            </button>
+            {reactionOpen && (
+              <div
+                className="community-post-reaction-panel"
+                role="listbox"
+                aria-label={COMMUNITY_UI.reactions.panelLabel}
+                onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); setReactionOpen(false); } }}
+              >
+                {reactionPool.map((emoji) => {
+                  const data = reactions[emoji] || { count: 0, users: [] };
+                  const reacted =
+                    currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
+                  const blocked = !reacted && userReactionCount >= reactionLimit;
+                  return (
+                    <button
+                      key={emoji}
+                      type="button"
+                      className="community-post-reaction-panel-item"
+                      onClick={() => {
+                        if (blocked) return;
+                        onReact?.(message.id, emoji);
+                        setReactionOpen(false);
+                      }}
+                      disabled={blocked}
+                      aria-label={`React with ${emoji}`}
+                    >
+                      <span>{emoji}</span>
+                      {data.count > 0 && (
+                        <span className="community-post-reaction-count">{data.count}</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
 
           <button
             type="button"

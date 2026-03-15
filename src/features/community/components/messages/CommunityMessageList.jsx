@@ -15,6 +15,7 @@ const CommunityMessageList = ({
   reactionEmojis,
   reactionLimit,
   currentUserId,
+  typingUsers = [],
 }) => {
   const initialVisibleCount = Number(COMMUNITY_UI.messages.initialVisibleCount || 40);
   const loadMoreStep = Number(COMMUNITY_UI.messages.loadMoreStep || 40);
@@ -106,6 +107,19 @@ const CommunityMessageList = ({
           )}
           {renderList(visibleNormalMessages)}
         </>
+      )}
+
+      {typingUsers.length > 0 && (
+        <div className="community-typing" role="status" aria-live="polite">
+          <span className="community-typing-label">
+            {typingUsers.length === 1
+              ? `${typingUsers[0].username} is typing`
+              : `${typingUsers.length} people are typing`}
+          </span>
+          <span className="community-typing-dots" aria-hidden="true">
+            <span /><span /><span />
+          </span>
+        </div>
       )}
 
       {error && (

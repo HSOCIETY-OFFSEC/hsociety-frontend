@@ -3,6 +3,8 @@ import { AuthProvider } from '../core/auth/AuthContext';
 import { ThemeProvider } from './providers';
 import AppRouter from './router';
 import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
+import CookieConsent from '../shared/components/ui/CookieConsent';
+import NotificationConsent from '../shared/components/ui/NotificationConsent';
 import { runSecurityScan } from '../core/security-tests/scan.runner';
 import { NotificationProvider } from '../shared/notifications/NotificationProvider';
 import { envConfig } from '../config/env.config';
@@ -51,6 +53,8 @@ const App = () => {
           <div className="app-shell">
             <AppRouter />
             <PwaUpdatePrompt />
+            <CookieConsent />
+            <NotificationConsent />
           </div>
         </NotificationProvider>
       </AuthProvider>

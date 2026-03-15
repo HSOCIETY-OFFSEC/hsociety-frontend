@@ -36,6 +36,8 @@ const CommunityHub = () => {
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
   const initialRoomLoadRef = useRef(true);
+  const [typingUsers, setTypingUsers] = useState([]);
+  const typingTimersRef = useRef(new Map());
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -152,6 +154,34 @@ const CommunityHub = () => {
         )
       );
     });
+    socket.on('typing', (payload) => {
+      if (payload.room !== room) return;
+      if (!payload.userId || payload.userId === user?.id) return;
+      setTypingUsers((prev) => {
+        const exists = prev.some((item) => item.userId === payload.userId);
+        if (payload.isTyping) {
+          if (exists) {
+            return prev.map((item) =>
+              item.userId === payload.userId ? { ...item, username: payload.username } : item
+            );
+          }
+          return [...prev, { userId: payload.userId, username: payload.username }];
+        }
+        return prev.filter((item) => item.userId !== payload.userId);
+      });
+
+      if (payload.isTyping) {
+        const timers = typingTimersRef.current;
+        if (timers.has(payload.userId)) {
+          window.clearTimeout(timers.get(payload.userId));
+        }
+        const timeout = window.setTimeout(() => {
+          setTypingUsers((prev) => prev.filter((item) => item.userId !== payload.userId));
+          timers.delete(payload.userId);
+        }, 2400);
+        timers.set(payload.userId, timeout);
+      }
+    });
 
     return () => {
       mounted = false;
@@ -167,6 +197,7 @@ const CommunityHub = () => {
     const loadRoom = async () => {
       setLoading(true);
       setMessages([]);
+      setTypingUsers([]);
       const msgRes = await getCommunityMessages(room, 50);
       if (!msgRes.success) {
         setError(getPublicErrorMessage({ action: 'load', response: msgRes }));
@@ -243,6 +274,7 @@ const CommunityHub = () => {
     ]);
 
     socket.emit('sendMessage', { room, content, imageUrl: imagePayload, tempId });
+    socket.emit('typing', { room, isTyping: false });
 
     setDraft('');
     setImageUrl('');
@@ -389,6 +421,7 @@ const CommunityHub = () => {
           reactionEmojis={currentReactionEmojis}
           reactionLimit={reactionLimit}
           currentUserId={currentUserId}
+          typingUsers={typingUsers}
         />
 
         {/* Compose bar */}
@@ -398,6 +431,9 @@ const CommunityHub = () => {
           draft={draft}
           onDraftChange={setDraft}
           onSend={sendMessage}
+          onTyping={(isTyping) => {
+            socketRef.current?.emit('typing', { room, isTyping });
+          }}
           imageUrl={imageUrl}
           onImageChange={setImageUrl}
           imageError={imageError}
