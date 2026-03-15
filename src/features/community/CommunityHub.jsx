@@ -35,6 +35,8 @@ const CommunityHub = () => {
   const [cpTotal, setCpTotal] = useState(0);
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
+  const stickToBottomRef = useRef(true);
+  const pendingMessageScrollRef = useRef(null);
   const initialRoomLoadRef = useRef(true);
   const [typingUsers, setTypingUsers] = useState([]);
   const typingTimersRef = useRef(new Map());
@@ -56,6 +58,21 @@ const CommunityHub = () => {
     const safe = normalizeRoomId(value);
     return safe || COMMUNITY_HUB_DATA.defaults.room;
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search || '');
+    const messageId = params.get('messageId');
+    const roomParam = params.get('room');
+    if (roomParam) {
+      const normalized = normalizeRoomId(roomParam);
+      if (normalized && normalized !== room) {
+        setRoom(normalized);
+      }
+    }
+    if (messageId) {
+      pendingMessageScrollRef.current = String(messageId);
+    }
+  }, [location.search]);
 
   /* ── Initial load + socket ── */
   useEffect(() => {
@@ -218,9 +235,36 @@ const CommunityHub = () => {
 
   /* ── Auto-scroll on new messages ── */
   useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return undefined;
+
+    const updateStickiness = () => {
+      const distance = container.scrollHeight - container.scrollTop - container.clientHeight;
+      stickToBottomRef.current = distance < 120;
+    };
+
+    updateStickiness();
+    container.addEventListener('scroll', updateStickiness, { passive: true });
+    return () => container.removeEventListener('scroll', updateStickiness);
+  }, []);
+
+  /* ── Auto-scroll on new messages ── */
+  useEffect(() => {
     if (!scrollRef.current) return;
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (stickToBottomRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messages]);
+
+  useEffect(() => {
+    if (!pendingMessageScrollRef.current) return;
+    const messageId = pendingMessageScrollRef.current;
+    const element = document.getElementById(`community-message-${messageId}`);
+    if (!element) return;
+    stickToBottomRef.current = false;
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    pendingMessageScrollRef.current = null;
+  }, [messages, room]);
 
   /* ── Hash navigation to stats ── */
   useEffect(() => {

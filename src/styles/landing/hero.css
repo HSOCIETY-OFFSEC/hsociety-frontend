@@ -33,7 +33,7 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
+  /* border-bottom: 1px solid var(--border-color); */
 }
 
 .hero-section::before { display: none; }

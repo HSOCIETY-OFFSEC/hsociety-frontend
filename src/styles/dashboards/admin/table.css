@@ -51,6 +51,8 @@ table.admin-table tbody tr:hover {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .admin-row {
@@ -62,6 +64,7 @@ table.admin-table tbody tr:hover {
   border-radius: 12px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
+  min-width: 0;
 }
 
 .admin-row-header {
@@ -79,7 +82,8 @@ table.admin-table tbody tr:hover {
 }
 
 .admin-row-users {
-  grid-template-columns: 0.4fr 1.2fr 1.6fr 1.2fr 0.8fr 0.9fr 0.8fr 0.7fr 0.7fr 1.2fr;
+  grid-template-columns: 0.4fr 1.2fr 1.6fr 1.2fr 0.8fr 0.9fr 0.8fr 0.7fr 0.7fr 1.6fr;
+  min-width: 980px;
 }
 
 .admin-row-users-lite {
@@ -105,6 +109,18 @@ table.admin-table tbody tr:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.admin-row > div {
+  min-width: 0;
+}
+
+.admin-row > div span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }
 
 .admin-select-cell {

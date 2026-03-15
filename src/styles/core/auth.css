@@ -608,7 +608,7 @@
   align-items: center;
   justify-content: center;
   padding: clamp(0.75rem, 3vw, 2rem);
-  z-index: var(--z-modal, 60);
+  z-index: var(--z-modal, 10001);
 }
 
 /* ============================================================

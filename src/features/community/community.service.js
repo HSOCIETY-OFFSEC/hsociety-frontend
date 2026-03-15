@@ -44,10 +44,20 @@ export const getCommunityProfile = async (handle) => {
   return { success: true, data: response.data || {} };
 };
 
+export const getCommunityProfilesList = async (limit = 12) => {
+  const params = new URLSearchParams({ limit: String(limit) }).toString();
+  const response = await apiClient.get(`${API_ENDPOINTS.PUBLIC.COMMUNITY_PROFILES}?${params}`);
+  if (!response.success) {
+    return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
+  }
+  return { success: true, data: response.data || [] };
+};
+
 export default {
   getCommunityOverview,
   getCommunityMessages,
   createCommunitySocket,
   uploadCommunityImage,
   getCommunityProfile,
+  getCommunityProfilesList,
 };

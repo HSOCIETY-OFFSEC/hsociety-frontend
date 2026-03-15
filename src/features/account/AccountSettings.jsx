@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiAlertTriangle, FiAward, FiLock, FiMail, FiMapPin, FiTrash2, FiTrendingUp, FiUser } from 'react-icons/fi';
 import { IoFlameOutline } from 'react-icons/io5';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
@@ -8,6 +8,7 @@ import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
+import { openNotificationTarget } from '../../shared/utils/notificationNavigation';
 import { validatePassword } from '../../core/validation/input.validator';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import AccountNotificationsList from './components/AccountNotificationsList';
@@ -30,6 +31,7 @@ const normalizeHandle = (handle) => {
 };
 
 const AccountSettings = () => {
+  const navigate = useNavigate();
   const { user, logout, updateUser } = useAuth();
   const [confirmText, setConfirmText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -63,7 +65,7 @@ const AccountSettings = () => {
   });
   const isPentester = user?.role === 'pentester';
   const normalizedHandle = normalizeHandle(profile.hackerHandle || user?.hackerHandle);
-  const publicProfilePath = normalizedHandle ? `/@${normalizedHandle}` : '/community';
+  const publicProfilePath = normalizedHandle ? `/@${normalizedHandle}` : '';
 
   useEffect(() => {
     if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -274,9 +276,20 @@ const AccountSettings = () => {
             >
               {profileSaving ? 'Saving…' : 'Save Profile'}
             </button>
-            <Link className="pp-btn pp-btn--ghost" to={publicProfilePath}>
-              View Profile
-            </Link>
+            {publicProfilePath ? (
+              <Link className="pp-btn pp-btn--ghost" to={publicProfilePath}>
+                View Profile
+              </Link>
+            ) : (
+              <button
+                type="button"
+                className="pp-btn pp-btn--ghost"
+                disabled
+                title="Add a hacker handle to view your public profile."
+              >
+                View Profile
+              </button>
+            )}
           </div>
 
           <ul className="pp-meta-list">
@@ -396,9 +409,7 @@ const AccountSettings = () => {
                         entry.id === item.id ? { ...entry, read: true } : entry
                       )
                     );
-                    if (item.metadata?.meetUrl) {
-                      window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
-                    }
+                    openNotificationTarget(item, navigate);
                   }}
                 />
               </div>

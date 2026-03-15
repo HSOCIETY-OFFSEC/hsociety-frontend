@@ -66,6 +66,9 @@ const PentesterProfiles = React.lazy(() =>
 );
 const CommunityHub = React.lazy(() => import('../features/community/CommunityHub'));
 const CommunityProfile = React.lazy(() => import('../features/community/CommunityProfile'));
+const CommunityProfiles = React.lazy(() => import('../features/community/CommunityProfiles'));
+const CommunityMedia = React.lazy(() => import('../features/community/CommunityMedia'));
+const NotificationsInbox = React.lazy(() => import('../features/notifications/NotificationsInbox'));
 const PublicProfile = React.lazy(() => import('../features/public/PublicProfile'));
 const AccountSettings = React.lazy(() => import('../features/account/AccountSettings'));
 const Careers = React.lazy(() => import('../features/careers/Careers'));
@@ -210,6 +213,30 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
                   <CommunityHub />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="community/profiles"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                  <CommunityProfiles />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="community/media"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                  <CommunityMedia />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="notifications"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                  <NotificationsInbox />
                 </RoleRoute>
               }
             />

@@ -146,9 +146,11 @@ const Dashboard = () => {
           </div>
           <div className="cd-header-actions">
             <button type="button" className="cd-btn cd-btn-primary" onClick={() => navigate('/engagements')}>
+              <FiShield size={14} />
               Run Security Scan
             </button>
             <button type="button" className="cd-btn cd-btn-secondary" onClick={() => navigate('/reports')}>
+              <FiFileText size={14} />
               View Reports
             </button>
           </div>

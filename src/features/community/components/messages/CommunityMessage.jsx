@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
 import { sanitizeText } from '../../../../shared/utils/sanitize';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
+import { useNotifications } from '../../../../shared/notifications/NotificationProvider';
 
 const CommunityMessage = ({
   message,
@@ -34,9 +35,13 @@ const CommunityMessage = ({
   const userReactionCount = Object.values(reactions).filter(
     (entry) => currentUserId && Array.isArray(entry.users) && entry.users.includes(currentUserId)
   ).length;
+  const reactionEntries = Object.entries(reactions)
+    .filter(([, data]) => Number(data?.count || 0) > 0)
+    .sort((a, b) => Number(b[1]?.count || 0) - Number(a[1]?.count || 0));
   const [supportsHover, setSupportsHover] = useState(false);
   const hoverCloseTimer = useRef(null);
   const HOVER_CLOSE_DELAY_MS = 220;
+  const { showToast } = useNotifications();
 
   useEffect(() => {
     if (!reactionOpen) return undefined;
@@ -96,9 +101,29 @@ const CommunityMessage = ({
     setCommentDraft('');
   };
 
+  const handleRepost = async () => {
+    const messageId = message?.id;
+    const room = message?.room || '';
+    if (!messageId) return;
+    const params = new URLSearchParams({ room, messageId });
+    const link = `${window.location.origin}/community?${params.toString()}`;
+    try {
+      await navigator.clipboard.writeText(link);
+      showToast({
+        variant: 'info',
+        title: 'Link copied',
+        message: 'Message link copied to clipboard.',
+        duration: 2400,
+      });
+    } catch (err) {
+      window.prompt('Copy this link:', link);
+    }
+  };
+
   return (
     <article
       className={`community-post ${own ? 'own' : ''} ${grouped ? 'grouped' : ''}`}
+      id={message?.id ? `community-message-${message.id}` : undefined}
     >
       {/* Avatar column — always visible (X/Twitter style, not hidden in grouped) */}
       <div className="community-post-avatar-col">
@@ -189,7 +214,7 @@ const CommunityMessage = ({
             type="button"
             className="community-post-action-btn repost"
             aria-label="Repost"
-            disabled
+            onClick={handleRepost}
           >
             <FiRepeat size={15} />
           </button>
@@ -285,6 +310,28 @@ const CommunityMessage = ({
             <FiBookmark size={15} />
           </button>
         </div>
+
+        {reactionEntries.length > 0 && (
+          <div className="community-msg-reactions" aria-label="Reactions">
+            {reactionEntries.map(([emoji, data]) => {
+              const reacted =
+                currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
+              return (
+                <button
+                  key={emoji}
+                  type="button"
+                  className={`community-msg-reaction ${reacted ? 'active' : ''}`}
+                  onClick={() => onReact?.(message.id, emoji)}
+                  aria-pressed={reacted}
+                  aria-label={`React with ${emoji}`}
+                >
+                  <span className="community-msg-reaction-emoji">{emoji}</span>
+                  <span className="community-msg-reaction-count">{data.count}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Comments thread */}
         {commentOpen && (

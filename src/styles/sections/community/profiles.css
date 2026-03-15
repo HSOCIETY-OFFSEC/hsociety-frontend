@@ -1,0 +1,358 @@
+/**
+ * Community Profiles (GitHub UI)
+ * Location: src/styles/sections/community/profiles.css
+ */
+
+.cpr-page {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 4vw, 2rem) 4rem;
+}
+
+.cpr-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cpr-page-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.cpr-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cpr-header-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  display: grid;
+  place-items: center;
+}
+
+.cpr-header-icon {
+  color: var(--primary-color);
+}
+
+.cpr-header-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cpr-breadcrumb-org,
+.cpr-breadcrumb-page {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.cpr-breadcrumb-sep {
+  color: var(--text-tertiary);
+}
+
+.cpr-header-visibility {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 2em;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+}
+
+.cpr-header-desc {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.cpr-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.cpr-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  background: var(--bg-secondary);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.cpr-meta-icon {
+  color: var(--text-tertiary);
+}
+
+.cpr-meta-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.cpr-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 296px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.cpr-main {
+  min-width: 0;
+}
+
+.cpr-sidebar {
+  position: sticky;
+  top: calc(var(--navbar-height, 72px) + 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cpr-section {
+  padding: 1.5rem 0;
+}
+
+.cpr-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+
+.cpr-section-desc {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.cpr-item-list {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.cpr-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cpr-item-row:last-child {
+  border-bottom: none;
+}
+
+.cpr-item-row:hover {
+  background: var(--bg-tertiary);
+}
+
+.cpr-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.cpr-item-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cpr-item-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.cpr-item-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.cpr-empty {
+  padding: 1rem;
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  background: var(--bg-secondary);
+}
+
+.cpr-profile-main {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cpr-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  flex-shrink: 0;
+}
+
+.cpr-profile-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cpr-metric-pill {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.cpr-metric-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
+.cpr-sidebar-box {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  padding: 1rem;
+}
+
+.cpr-sidebar-heading {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.cpr-sidebar-about {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.cpr-sidebar-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 0.85rem 0;
+}
+
+.cpr-sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.cpr-sidebar-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cpr-sidebar-icon {
+  color: var(--primary-color);
+}
+
+.cpr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  line-height: 1;
+  min-height: 32px;
+  background: transparent;
+}
+
+.cpr-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cpr-btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.cpr-btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--text-tertiary);
+}
+
+@media (max-width: 1024px) {
+  .cpr-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cpr-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .cpr-page {
+    padding: 1.25rem 1rem 3rem;
+  }
+
+  .cpr-page-header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cpr-header-left {
+    align-items: flex-start;
+  }
+
+  .cpr-item-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cpr-item-meta {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

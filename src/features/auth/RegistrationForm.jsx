@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
@@ -39,6 +39,11 @@ const RegistrationForm = ({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const nameRef = useRef(null);
+  const orgRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmRef = useRef(null);
 
   const headerSubtitle = useMemo(() => {
     if (accountType === 'corporate') return copy.header.subtitle.corporate;
@@ -65,6 +70,42 @@ const RegistrationForm = ({
       field === 'agree' ? event.target.checked : event.target.value;
     setForm((prev) => ({ ...prev, [field]: value }));
   };
+
+  const syncFormFromDom = useCallback(() => {
+    setForm((prev) => {
+      let changed = false;
+      const next = { ...prev };
+
+      if (nameRef.current && nameRef.current.value !== prev.name) {
+        next.name = nameRef.current.value;
+        changed = true;
+      }
+      if (orgRef.current && orgRef.current.value !== prev.companyOrSchool) {
+        next.companyOrSchool = orgRef.current.value;
+        changed = true;
+      }
+      if (emailRef.current && emailRef.current.value !== prev.email) {
+        next.email = emailRef.current.value;
+        changed = true;
+      }
+      if (passwordRef.current && passwordRef.current.value !== prev.password) {
+        next.password = passwordRef.current.value;
+        changed = true;
+      }
+      if (confirmRef.current && confirmRef.current.value !== prev.confirmPassword) {
+        next.confirmPassword = confirmRef.current.value;
+        changed = true;
+      }
+
+      return changed ? next : prev;
+    });
+  }, []);
+
+  useEffect(() => {
+    syncFormFromDom();
+    const interval = window.setInterval(syncFormFromDom, 500);
+    return () => window.clearInterval(interval);
+  }, [syncFormFromDom]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -169,11 +210,13 @@ const RegistrationForm = ({
               id="full-name"
               value={form.name}
               onChange={handleChange('name')}
+              onInput={handleChange('name')}
               placeholder={copy.fields.name.placeholder}
               required
               disabled={loading}
               className="form-input"
               autoComplete="name"
+              ref={nameRef}
             />
           </div>
           <div className="form-group">
@@ -183,11 +226,13 @@ const RegistrationForm = ({
               id="org"
               value={form.companyOrSchool}
               onChange={handleChange('companyOrSchool')}
+              onInput={handleChange('companyOrSchool')}
               placeholder={orgFieldPlaceholder}
               required
               disabled={loading}
               className="form-input"
               autoComplete="organization"
+              ref={orgRef}
             />
           </div>
         </div>
@@ -199,12 +244,14 @@ const RegistrationForm = ({
             id="email"
             value={form.email}
             onChange={handleChange('email')}
+            onInput={handleChange('email')}
             placeholder={copy.fields.email.placeholder}
             required
             disabled={loading}
             className="form-input"
             autoComplete="email"
             inputMode="email"
+            ref={emailRef}
           />
         </div>
 
@@ -215,11 +262,13 @@ const RegistrationForm = ({
               id="password"
               value={form.password}
               onChange={handleChange('password')}
+              onInput={handleChange('password')}
               placeholder={copy.fields.password.placeholder}
               required
               disabled={loading}
               className="form-input"
               autoComplete="new-password"
+              ref={passwordRef}
             />
           </div>
           <div className="form-group">
@@ -228,11 +277,13 @@ const RegistrationForm = ({
               id="confirm-password"
               value={form.confirmPassword}
               onChange={handleChange('confirmPassword')}
+              onInput={handleChange('confirmPassword')}
               placeholder={copy.fields.confirmPassword.placeholder}
               required
               disabled={loading}
               className="form-input"
               autoComplete="new-password"
+              ref={confirmRef}
             />
           </div>
         </div>

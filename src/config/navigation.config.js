@@ -7,6 +7,7 @@
 import {
   LuChartBar,
   LuBriefcase,
+  LuBell,
   LuCreditCard,
   LuFileText,
   LuMessageCircle,
@@ -32,6 +33,7 @@ export const NAV_LINKS = {
       { path: '/remediation', label: 'Vulnerabilities', icon: LuWrench },
       { path: '/assets', label: 'Assets', icon: LuLayers },
       { path: '/billing', label: 'Billing', icon: LuCreditCard },
+      { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/community', label: 'Community', icon: LuMessageCircle }
     ],
     pentester: [
@@ -39,11 +41,13 @@ export const NAV_LINKS = {
       { path: '/pentester/engagements', label: 'Engagements', icon: LuShield },
       { path: '/pentester/reports', label: 'Reports', icon: LuFileText },
       { path: '/pentester/profiles', label: 'Pentester Profiles', icon: LuUsers },
+      { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/community', label: 'Community', icon: LuMessageCircle },
       { path: '/settings', label: 'Settings', icon: LuUsers }
     ],
     admin: [
       { path: '/mr-robot', label: 'Mr. Robot', icon: LuCpu },
+      { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/community', label: 'Community', icon: LuMessageCircle },
       { path: '/settings', label: 'Settings', icon: LuUsers }
     ],
@@ -52,6 +56,7 @@ export const NAV_LINKS = {
       { path: '/student-bootcamps', label: 'Bootcamp', icon: LuLayers, group: 'default' },
       { path: '/student-resources', label: 'Resources', icon: LuBookOpen, group: 'default' },
       { path: '/student-payments', label: 'Payments', icon: LuCreditCard, group: 'default' },
+      { path: '/notifications', label: 'Notifications', icon: LuBell, group: 'default' },
       { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'default' }
     ]
   },
@@ -79,6 +84,7 @@ export const NAV_LINKS = {
       { path: '/remediation', label: 'Remediation', icon: LuWrench },
       { path: '/assets', label: 'Assets', icon: LuLayers },
       { path: '/billing', label: 'Billing', icon: LuCreditCard },
+      { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/about', label: 'About Us', icon: LuUsers },
@@ -94,6 +100,7 @@ export const NAV_LINKS = {
       { path: '/pentester/engagements', label: 'Engagements', icon: LuShield },
       { path: '/pentester/reports', label: 'Reports', icon: LuFileText },
       { path: '/pentester/profiles', label: 'Pentester Profiles', icon: LuUsers },
+      { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
@@ -104,6 +111,7 @@ export const NAV_LINKS = {
     admin: [
       { path: '/', label: 'Home', icon: LuShield },
       { path: '/mr-robot', label: 'Mr. Robot', icon: LuCpu },
+      { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
@@ -118,6 +126,7 @@ export const NAV_LINKS = {
       { path: '/student-resources', label: 'Resources', icon: LuBookOpen, group: 'learn' },
       { path: '/student-payments', label: 'Payments', icon: LuCreditCard, group: 'learn' },
       { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'learn' },
+      { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },

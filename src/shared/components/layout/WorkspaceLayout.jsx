@@ -16,6 +16,7 @@ import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import ThemeToggle from '../common/ThemeToggle';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
+import { openNotificationTarget } from '../../utils/notificationNavigation';
 import { getMobileLinks, getSidebarLinks } from '../../../config/navigation.config';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
@@ -311,14 +312,25 @@ const WorkspaceLayout = () => {
                   <div className="workspace-notification-menu">
                     <div className="workspace-notification-head">
                       <strong>{WORKSPACE_UI.notifications.title}</strong>
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          await markAllRead();
-                        }}
-                      >
-                        {WORKSPACE_UI.notifications.markAllRead}
-                      </button>
+                      <div className="workspace-notification-actions">
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            await markAllRead();
+                          }}
+                        >
+                          {WORKSPACE_UI.notifications.markAllRead}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setNotificationMenuOpen(false);
+                            navigate('/notifications');
+                          }}
+                        >
+                          View all
+                        </button>
+                      </div>
                     </div>
 
                     {notifications.length === 0 ? (
@@ -329,13 +341,11 @@ const WorkspaceLayout = () => {
                           key={item.id}
                           type="button"
                           className={`workspace-notification-item ${item.read ? '' : 'unread'}`}
-                          onClick={async () => {
-                            await markRead(item.id);
-                            if (item.metadata?.meetUrl) {
-                              window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
-                            }
-                          }}
-                        >
+                        onClick={async () => {
+                          await markRead(item.id);
+                          openNotificationTarget(item, navigate);
+                        }}
+                      >
                           <strong>{item.title}</strong>
                           <span>{item.message}</span>
                         </button>
@@ -354,12 +364,11 @@ const WorkspaceLayout = () => {
                     type="button"
                     className="workspace-community-tool-btn"
                     onClick={() => setCommunityMenuOpen((prev) => !prev)}
+                    aria-label={WORKSPACE_UI.topbar.community}
                     aria-haspopup="menu"
                     aria-expanded={communityMenuOpen}
                   >
                     <LuChartBar size={16} />
-                    <span>{WORKSPACE_UI.topbar.community}</span>
-                    <LuChevronDown size={14} />
                   </button>
                   {communityMenuOpen && (
                     <div className="workspace-community-menu" role="menu">
@@ -368,22 +377,22 @@ const WorkspaceLayout = () => {
                         role="menuitem"
                         onClick={() => {
                           setCommunityMenuOpen(false);
-                          navigate('/community#stats');
+                          navigate('/community/profiles');
                         }}
                       >
                         <LuChartBar size={16} />
-                        {WORKSPACE_UI.topbar.stats}
+                        Profiles
                       </button>
                       <button
                         type="button"
                         role="menuitem"
                         onClick={() => {
                           setCommunityMenuOpen(false);
-                          navigate('/settings');
+                          navigate('/community/media');
                         }}
                       >
-                        <LuUser size={16} />
-                        {WORKSPACE_UI.topbar.accountSettings}
+                        <LuLayers size={16} />
+                        Media
                       </button>
                     </div>
                   )}

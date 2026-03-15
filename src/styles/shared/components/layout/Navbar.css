@@ -156,6 +156,15 @@
   gap: 0;
 }
 
+@media (max-width: 640px) {
+  .gh-notif-menu {
+    right: -0.5rem;
+    min-width: auto;
+    width: calc(100vw - 1.5rem);
+    max-width: calc(100vw - 1.5rem);
+  }
+}
+
 /* Dropdown item */
 .gh-dropdown-item {
   display: flex;
@@ -391,6 +400,12 @@
   padding: 0.2rem 0.4rem 0.5rem;
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 0.35rem;
+}
+
+.gh-notif-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .gh-notif-head strong {

@@ -31,6 +31,7 @@ import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.conf
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
 import { getGithubAvatarDataUri } from '../../utils/avatar';
+import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { useNotifications } from '../../notifications/NotificationProvider';
 import { useUserStats } from '../../hooks/useUserStats';
@@ -375,13 +376,25 @@ const Navbar = ({ sticky = true }) => {
                 >
                   <div className="gh-notif-head">
                     <strong>Notifications</strong>
-                    <button
-                      type="button"
-                      className="gh-notif-read-all"
-                      onClick={async () => { await markAllRead(); }}
-                    >
-                      Mark all read
-                    </button>
+                    <div className="gh-notif-head-actions">
+                      <button
+                        type="button"
+                        className="gh-notif-read-all"
+                        onClick={async () => { await markAllRead(); }}
+                      >
+                        Mark all read
+                      </button>
+                      <button
+                        type="button"
+                        className="gh-notif-read-all"
+                        onClick={() => {
+                          setNotificationMenuOpen(false);
+                          navigate('/notifications');
+                        }}
+                      >
+                        View all
+                      </button>
+                    </div>
                   </div>
 
                   {notifications.length === 0 ? (
@@ -394,9 +407,7 @@ const Navbar = ({ sticky = true }) => {
                         className={`gh-notif-item${item.read ? '' : ' is-unread'}`}
                         onClick={async () => {
                           await markRead(item.id);
-                          if (item.metadata?.meetUrl) {
-                            window.open(item.metadata.meetUrl, '_blank', 'noopener,noreferrer');
-                          }
+                          openNotificationTarget(item, navigate);
                         }}
                       >
                         <strong>{item.title}</strong>
