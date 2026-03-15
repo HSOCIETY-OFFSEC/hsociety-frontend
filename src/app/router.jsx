@@ -30,7 +30,6 @@ const Team = React.lazy(() => import('../features/team/Team'));
 const Developer = React.lazy(() => import('../features/developer/Developer'));
 const Contact = React.lazy(() => import('../features/contact/Contact'));
 const ServiceDetail = React.lazy(() => import('../features/services/ServiceDetail'));
-const ThreatMap = React.lazy(() => import('../features/threat-map/ThreatMap'));
 const StudentDashboard = loadDashboard('StudentDashboard');
 const StudentResources = React.lazy(() => import('../features/student/StudentResources'));
 const StudentQuizMaterial = React.lazy(() => import('../features/student/StudentQuizMaterial'));
@@ -473,7 +472,6 @@ const AppRouter = () => {
           <Route path="case-studies" element={<CaseStudies />} />
           <Route path="blog" element={<Blog />} />
           <Route path="pricing" element={<Pricing />} />
-          <Route path="threat-map" element={<ThreatMap />} />
           <Route path="courses" element={<Courses />} />
           <Route path="courses/:bootcampId" element={<CourseDetails />} />
           <Route path="courses/:bootcampId/modules/:moduleId" element={<CourseModuleDetails />} />

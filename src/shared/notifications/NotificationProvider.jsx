@@ -11,25 +11,6 @@ import { createAuthSocket } from '../services/socket.client';
 
 const NotificationContext = createContext(undefined);
 
-const createAudioContext = () => {
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  return AudioCtx ? new AudioCtx() : null;
-};
-
-const playTone = (ctx, { frequency = 520, duration = 0.12, type = 'sine', gain = 0.06 }) => {
-  if (!ctx) return;
-  const osc = ctx.createOscillator();
-  const gainNode = ctx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(frequency, ctx.currentTime);
-  gainNode.gain.setValueAtTime(gain, ctx.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-  osc.connect(gainNode);
-  gainNode.connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime + duration);
-};
-
 export const NotificationProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const [notifications, setNotifications] = useState([]);
@@ -41,44 +22,6 @@ export const NotificationProvider = ({ children }) => {
   const lastIdsRef = useRef(new Set());
   const firstLoadRef = useRef(true);
   const socketRef = useRef(null);
-  const audioRef = useRef(null);
-  const lastClickRef = useRef(0);
-
-  const ensureAudio = async () => {
-    if (typeof window === 'undefined') return null;
-    if (!audioRef.current) audioRef.current = createAudioContext();
-    if (!audioRef.current) return null;
-    if (audioRef.current.state === 'suspended') {
-      try {
-        await audioRef.current.resume();
-      } catch (err) {
-        return null;
-      }
-    }
-    return audioRef.current;
-  };
-
-  const playClickSound = async () => {
-    const now = performance.now();
-    if (now - lastClickRef.current < 60) return;
-    lastClickRef.current = now;
-    const ctx = await ensureAudio();
-    if (!ctx) return;
-    playTone(ctx, { frequency: 620, duration: 0.06, type: 'triangle', gain: 0.03 });
-  };
-
-  const playSuccessSound = async () => {
-    const ctx = await ensureAudio();
-    if (!ctx) return;
-    playTone(ctx, { frequency: 520, duration: 0.1, type: 'sine', gain: 0.05 });
-    playTone(ctx, { frequency: 760, duration: 0.08, type: 'sine', gain: 0.03 });
-  };
-
-  const playNotificationSound = async () => {
-    const ctx = await ensureAudio();
-    if (!ctx) return;
-    playTone(ctx, { frequency: 460, duration: 0.12, type: 'sine', gain: 0.045 });
-  };
 
   const showBrowserNotification = (payload = {}) => {
     if (typeof window === 'undefined' || !('Notification' in window)) return;
@@ -110,10 +53,7 @@ export const NotificationProvider = ({ children }) => {
       setToast(null);
     }, duration);
     if (payload.tone === 'notify') {
-      playNotificationSound();
       showBrowserNotification(payload);
-    } else {
-      playSuccessSound();
     }
   };
 
@@ -162,20 +102,6 @@ export const NotificationProvider = ({ children }) => {
     () => notifications.filter((item) => !item.read).length,
     [notifications]
   );
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    const handleClick = (event) => {
-      const target = event.target;
-      const clickable = target.closest('button, a, [role="button"]');
-      if (!clickable) return;
-      if (clickable.disabled || clickable.getAttribute('aria-disabled') === 'true') return;
-      if (clickable.closest('[data-sound="off"]')) return;
-      playClickSound();
-    };
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
-  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;

@@ -17,7 +17,6 @@ import {
   LuCode,
   LuBookOpen,
   LuLayers,
-  LuGlobe,
   LuDollarSign,
   LuCpu,
   LuTrophy
@@ -69,7 +68,6 @@ export const NAV_LINKS = {
     { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
     { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
     { path: '/about', label: 'About', icon: LuUsers },
-    { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
     { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
     { path: '/terms', label: 'Terms', icon: LuFileText }
   ],
@@ -90,7 +88,6 @@ export const NAV_LINKS = {
       { path: '/about', label: 'About Us', icon: LuUsers },
       { path: '/team', label: 'Meet the Team', icon: LuUsers },
       { path: '/developer', label: 'Meet the Developer', icon: LuCode },
-      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
       { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
       { path: '/terms', label: 'Terms', icon: LuFileText }
     ],
@@ -104,7 +101,6 @@ export const NAV_LINKS = {
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
-      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
       { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
       { path: '/terms', label: 'Terms', icon: LuFileText }
     ],
@@ -115,7 +111,6 @@ export const NAV_LINKS = {
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
-      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
       { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
       { path: '/terms', label: 'Terms', icon: LuFileText }
     ],
@@ -130,7 +125,6 @@ export const NAV_LINKS = {
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
-      { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
       { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
       { path: '/terms', label: 'Terms', icon: LuFileText }
     ]
@@ -145,7 +139,6 @@ export const NAV_LINKS = {
     { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
     { path: '/about', label: 'About', icon: LuUsers },
     { path: '/careers', label: 'Careers', icon: LuBriefcase },
-    { path: '/threat-map', label: 'Threat Map', icon: LuGlobe },
     { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
     { path: '/terms', label: 'Terms', icon: LuFileText }
   ]
