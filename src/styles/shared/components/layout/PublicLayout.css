@@ -19,9 +19,8 @@
 }
 
 /*
- * Public pages should use the full viewport width by default, avoiding
- * the centered "boxed" look on large screens. Individual pages can still
- * opt into narrower content via their own inner wrappers.
+ * Public pages use full viewport width by default.
+ * Individual pages opt into narrower content via their own shells.
  */
 .public-layout .public-main > * {
   width: 100%;
@@ -65,5 +64,12 @@
 
   .public-layout .public-main > section + section {
     margin-top: 6rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-layout .public-main {
+    padding-top: calc(var(--navbar-height, 64px) + 1.25rem);
+    padding-bottom: 4rem;
   }
 }
