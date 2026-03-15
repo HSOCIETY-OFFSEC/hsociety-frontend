@@ -1,15 +1,58 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import Card from '../../../shared/components/ui/Card';
+import { FiActivity, FiCheckCircle, FiVideo } from 'react-icons/fi';
 import { listNotifications } from '../services/notifications.service';
 import { getStudentCourse } from '../courses/course.service';
 import { getStudentOverview } from '../../dashboards/student/student.service';
 import BootcampAccessGate from './components/BootcampAccessGate';
-import BootcampRightPanel from './components/BootcampRightPanel';
 import LiveClassCard from './components/LiveClassCard';
 
+const buildStatusMeta = (overview) => {
+  const modules = overview?.modules || [];
+  const totalRooms = modules.reduce((sum, module) => sum + (Number(module.roomsTotal) || 0), 0);
+  const completedRooms = modules.reduce((sum, module) => sum + (Number(module.roomsCompleted) || 0), 0);
+  const progress = totalRooms ? Math.round((completedRooms / totalRooms) * 100) : 0;
+  const isPaused = overview?.bootcampStatus === 'not_enrolled'
+    || overview?.bootcampPaymentStatus === 'unpaid';
+
+  if (isPaused) {
+    return {
+      label: 'BOOTCAMP STATUS',
+      value: 'PAUSED',
+      note: 'Complete enrollment to unlock phases.',
+      fill: 20,
+      paused: true,
+      progress,
+      completedRooms,
+      totalRooms
+    };
+  }
+
+  if (progress >= 100 && totalRooms) {
+    return {
+      label: 'BOOTCAMP STATUS',
+      value: 'COMPLETE',
+      note: 'All phases completed. Ready for advanced tracks.',
+      fill: 100,
+      paused: false,
+      progress,
+      completedRooms,
+      totalRooms
+    };
+  }
+
+  return {
+    label: 'BOOTCAMP STATUS',
+    value: progress > 0 ? 'ACTIVE' : 'OPEN',
+    note: progress > 0 ? 'Current phase in progress.' : 'Choose a phase to begin.',
+    fill: progress > 0 ? 70 : 40,
+    paused: false,
+    progress,
+    completedRooms,
+    totalRooms
+  };
+};
+
 const BootcampLiveClass = () => {
-  const { setRightPanel } = useOutletContext() || {};
   const [overview, setOverview] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [course, setCourse] = useState(null);
@@ -33,12 +76,6 @@ const BootcampLiveClass = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!setRightPanel) return undefined;
-    setRightPanel(<BootcampRightPanel overview={overview} />);
-    return () => setRightPanel(null);
-  }, [overview, setRightPanel]);
-
   const notificationClasses = useMemo(() =>
     (notifications || []).filter((item) => item.type === 'bootcamp_meeting'),
   [notifications]);
@@ -55,45 +92,119 @@ const BootcampLiveClass = () => {
       }));
   }, [course]);
 
+  const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
+
   return (
-    <section className="bootcamp-page">
-      <BootcampAccessGate>
-        <header className="bootcamp-page-header">
-          <div>
-            <h1>Live Class</h1>
-            <p>Join instructor-led sessions. Links appear when instructors publish them.</p>
+    <BootcampAccessGate>
+      <div className="bc-page">
+        <header className="bc-page-header">
+          <div className="bc-page-header-inner">
+            <div className="bc-header-left">
+              <div className="bc-header-icon-wrap">
+                <FiVideo size={20} className="bc-header-icon" />
+              </div>
+              <div>
+                <div className="bc-header-breadcrumb">
+                  <span className="bc-breadcrumb-org">HSOCIETY</span>
+                  <span className="bc-breadcrumb-sep">/</span>
+                  <span className="bc-breadcrumb-page">bootcamp-live-class</span>
+                  <span className="bc-header-visibility">Private</span>
+                </div>
+                <p className="bc-header-desc">Join instructor-led sessions. Links appear when instructors publish them.</p>
+              </div>
+            </div>
+          </div>
+          <div className="bc-header-meta">
+            <span className="bc-meta-pill">
+              <FiVideo size={13} className="bc-meta-icon" />
+              <span className="bc-meta-label">Sessions</span>
+              <strong className="bc-meta-value">{notificationClasses.length + roomClasses.length}</strong>
+            </span>
+            <span className="bc-meta-pill">
+              <FiActivity size={13} className="bc-meta-icon" />
+              <span className="bc-meta-label">Status</span>
+              <strong className="bc-meta-value">{statusMeta.value}</strong>
+            </span>
           </div>
         </header>
 
-        <div className="bootcamp-live-grid">
-          {(notificationClasses.length === 0 && roomClasses.length === 0) && (
-            <Card padding="medium" className="bootcamp-status-card">
-              <p>Live class schedules will appear here when posted.</p>
-            </Card>
-          )}
+        <div className="bc-layout">
+          <main className="bc-main">
+            <section className="bc-section">
+              <h2 className="bc-section-title">
+                <FiVideo size={15} className="bc-section-icon" />
+                Live Sessions
+              </h2>
+              <p className="bc-section-desc">Join live classes or review upcoming room sessions.</p>
+              <div className="bc-section-grid">
+                {(notificationClasses.length === 0 && roomClasses.length === 0) && (
+                  <div className="bc-panel">
+                    <p>Live class schedules will appear here when posted.</p>
+                  </div>
+                )}
 
-          {notificationClasses.map((item) => (
-            <LiveClassCard
-              key={item.id}
-              title={item.title}
-              instructor={item.metadata?.instructor || 'Admin'}
-              time={item.metadata?.time}
-              link={item.metadata?.meetUrl}
-            />
-          ))}
+                {notificationClasses.map((item) => (
+                  <LiveClassCard
+                    key={item.id}
+                    title={item.title}
+                    instructor={item.metadata?.instructor || 'Admin'}
+                    time={item.metadata?.time}
+                    link={item.metadata?.meetUrl}
+                  />
+                ))}
 
-          {roomClasses.map((item, index) => (
-            <LiveClassCard
-              key={`room-class-${index}`}
-              title={item.title}
-              instructor={item.instructor}
-              time={item.time}
-              link={item.link}
-            />
-          ))}
+                {roomClasses.map((item, index) => (
+                  <LiveClassCard
+                    key={`room-class-${index}`}
+                    title={item.title}
+                    instructor={item.instructor}
+                    time={item.time}
+                    link={item.link}
+                  />
+                ))}
+              </div>
+            </section>
+          </main>
+
+          <aside className="bc-sidebar">
+            <div className="bc-sidebar-box">
+              <h3 className="bc-sidebar-heading">About</h3>
+              <p className="bc-sidebar-about">
+                Instructor-led sessions are posted here with meeting links and session timing.
+              </p>
+              <div className="bc-sidebar-divider" />
+              <ul className="bc-sidebar-list">
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Live class links</li>
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Room schedule</li>
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Instructor updates</li>
+              </ul>
+            </div>
+
+            <div className={`bc-sidebar-box bc-status-box ${statusMeta.paused ? 'bc-status-paused' : ''}`}>
+              <div className="bc-status-row">
+                <span className="bc-status-dot" />
+                <span className="bc-status-label">{statusMeta.label}</span>
+              </div>
+              <strong className="bc-status-value">{statusMeta.value}</strong>
+              <div className="bc-status-track">
+                <div className="bc-status-fill" style={{ width: `${statusMeta.fill}%` }} />
+              </div>
+              <p className="bc-status-note">{statusMeta.note}</p>
+            </div>
+
+            <div className="bc-sidebar-box">
+              <h3 className="bc-sidebar-heading">Topics</h3>
+              <div className="bc-topics">
+                <span className="bc-topic">live-class</span>
+                <span className="bc-topic">instructors</span>
+                <span className="bc-topic">sessions</span>
+                <span className="bc-topic">schedule</span>
+              </div>
+            </div>
+          </aside>
         </div>
-      </BootcampAccessGate>
-    </section>
+      </div>
+    </BootcampAccessGate>
   );
 };
 

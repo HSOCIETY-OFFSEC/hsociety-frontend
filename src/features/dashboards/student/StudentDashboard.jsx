@@ -1,16 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowRight, FiCheckCircle, FiCompass, FiLock, FiMessageSquare } from 'react-icons/fi';
-import Card from '../../../shared/components/ui/Card';
-import Button from '../../../shared/components/ui/Button';
-import Skeleton from '../../../shared/components/ui/Skeleton';
+import {
+  FiActivity,
+  FiArrowRight,
+  FiBell,
+  FiBookOpen,
+  FiCheckCircle,
+  FiCompass,
+  FiLock,
+  FiMessageSquare,
+  FiShield,
+  FiTarget
+} from 'react-icons/fi';
 import { getStudentOverview } from './student.service';
 import { listNotifications } from '../../student/services/notifications.service';
 import StudentXpSummaryCard from './components/StudentXpSummaryCard';
 import StudentRecentNotificationsCard from './components/StudentRecentNotificationsCard';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
 import SkillProgressCard from './components/SkillProgressCard';
-import '../../../styles/student/components.css';
 import '../../../styles/dashboards/student/index.css';
 
 const StudentDashboard = () => {
@@ -49,8 +56,6 @@ const StudentDashboard = () => {
   useEffect(() => {
     loadStudentData();
   }, [loadStudentData]);
-
-  // Backend registration remains handled in the bootcamp flow.
 
   const continueModule = useMemo(() => {
     if (data.learningPath?.length) {
@@ -117,156 +122,304 @@ const StudentDashboard = () => {
     }));
   }, [data.learningPath, data.modules]);
 
+  const xpTotal = Number(data.xpSummary?.totalXp || 0);
+  const moduleCount = data.learningPath?.length || data.modules?.length || 0;
+
+  const statusMeta = useMemo(() => {
+    const isPaused = data.bootcampStatus === 'not_enrolled' || data.bootcampPaymentStatus === 'unpaid';
+    const hasActive = bootcampProgressItems.some((item) => {
+      const status = String(item.status || '').toLowerCase();
+      return status === 'in-progress' || status === 'current';
+    });
+    const avgProgress = bootcampProgressItems.length
+      ? Math.round(bootcampProgressItems.reduce((sum, item) => sum + (Number(item.progress) || 0), 0) / bootcampProgressItems.length)
+      : 0;
+
+    if (isPaused) {
+      return {
+        label: 'BOOTCAMP STATUS',
+        value: 'PAUSED',
+        note: 'Complete enrollment to unlock phases.',
+        fill: 20,
+        paused: true
+      };
+    }
+
+    if (avgProgress >= 100) {
+      return {
+        label: 'BOOTCAMP STATUS',
+        value: 'COMPLETE',
+        note: 'All phases completed. Ready for advanced tracks.',
+        fill: 100,
+        paused: false
+      };
+    }
+
+    return {
+      label: 'BOOTCAMP STATUS',
+      value: hasActive ? 'ACTIVE' : 'OPEN',
+      note: hasActive ? 'Current phase in progress.' : 'Choose a phase to begin.',
+      fill: hasActive ? 70 : 40,
+      paused: false
+    };
+  }, [bootcampProgressItems, data.bootcampPaymentStatus, data.bootcampStatus]);
+
   return (
-    <div className="student-page">
-      <div className="dashboard-shell">
-        <header className="student-hero dashboard-shell-header reveal-on-scroll">
-          <div>
-            <p className="student-kicker dashboard-shell-kicker">Student Dashboard</p>
-            <h1 className="dashboard-shell-title">Your training command center</h1>
-            <p className="dashboard-shell-subtitle">Action first. Progress always visible.</p>
+    <div className="sd-page">
+      <header className="sd-page-header">
+        <div className="sd-page-header-inner">
+          <div className="sd-header-left">
+            <div className="sd-header-icon-wrap">
+              <FiCompass size={20} className="sd-header-icon" />
+            </div>
+            <div>
+              <div className="sd-header-breadcrumb">
+                <span className="sd-breadcrumb-org">HSOCIETY</span>
+                <span className="sd-breadcrumb-sep">/</span>
+                <span className="sd-breadcrumb-page">student-dashboard</span>
+                <span className="sd-header-visibility">Private</span>
+              </div>
+              <p className="sd-header-desc">Your training command center for guided offensive security growth.</p>
+            </div>
           </div>
-          <div className="dashboard-shell-actions">
-            <Button
-              variant="primary"
-              size="large"
+          <div className="sd-header-actions">
+            <button
+              type="button"
+              className="sd-btn sd-btn-primary"
               onClick={handleResumeLesson}
+              disabled={loading}
             >
-              <FiCompass size={18} />
+              <FiCompass size={16} />
               Resume Lesson
-            </Button>
+            </button>
           </div>
-        </header>
+        </div>
+        <div className="sd-header-meta">
+          <span className="sd-meta-pill">
+            <FiTarget size={13} className="sd-meta-icon" />
+            <span className="sd-meta-label">XP</span>
+            <strong className="sd-meta-value">{xpTotal}</strong>
+          </span>
+          <span className="sd-meta-pill">
+            <FiBookOpen size={13} className="sd-meta-icon" />
+            <span className="sd-meta-label">Modules</span>
+            <strong className="sd-meta-value">{moduleCount}</strong>
+          </span>
+          <span className="sd-meta-pill">
+            <FiBell size={13} className="sd-meta-icon" />
+            <span className="sd-meta-label">Alerts</span>
+            <strong className="sd-meta-value">{notifications.length}</strong>
+          </span>
+          <span className="sd-meta-pill">
+            <FiActivity size={13} className="sd-meta-icon" />
+            <span className="sd-meta-label">Bootcamp</span>
+            <strong className="sd-meta-value">{statusMeta.value}</strong>
+          </span>
+        </div>
+      </header>
 
-        {loading && (
-          <div className="student-loading-text">Loading your training data...</div>
-        )}
-
-        {error && (
-          <Card padding="medium" className="student-card student-error-card">
-            <h3>Something went wrong</h3>
-            <p>We couldn't load your training dashboard.</p>
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={loadStudentData}
-            >
-              Reload Dashboard
-            </Button>
-          </Card>
-        )}
-
-        {!error && (
-          <>
-            {loading ? (
-              <div className="student-dashboard-grid">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Card key={`sk-${index}`} padding="medium" className="student-card">
-                    <Skeleton className="skeleton-line" style={{ width: '45%' }} />
-                    <Skeleton className="skeleton-line" style={{ width: '80%', marginTop: '0.75rem' }} />
-                    <Skeleton className="skeleton-line" style={{ width: '60%', marginTop: '0.75rem' }} />
-                  </Card>
+      <div className="sd-layout">
+        <main className="sd-main">
+          {loading && (
+            <div className="sd-loading">
+              <p>Loading your training data...</p>
+              <div className="sd-loading-list">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div key={`sd-load-${index}`} className="sd-loading-item" />
                 ))}
               </div>
-            ) : (
-              <>
-                {/* 1. Continue Learning */}
-                <section className="student-section">
-                  <Card padding="large" className="student-card continue-learning-card">
-                    <div className="continue-learning-header">
-                      <p className="continue-learning-kicker">Continue Learning</p>
-                      <h2>{continueModule?.title || 'Start your bootcamp'}</h2>
-                      <p className="continue-learning-module">
-                        Phase {continueModule?.id || '1'}
-                        {continueModule?.roomsTotal
-                          ? ` · Rooms ${continueModule?.roomsCompleted || 0}/${continueModule?.roomsTotal}`
-                          : ''}
-                      </p>
-                      <span className="continue-learning-progress-pill">
-                        Progress {Math.round(continueModule?.progress || 0)}%
-                      </span>
-                    </div>
-                    <Button
-                      variant="primary"
-                      size="large"
-                      className="continue-learning-button"
-                      onClick={handleResumeLesson}
-                    >
-                      Resume Lesson <FiArrowRight size={16} />
-                    </Button>
-                  </Card>
-                </section>
+            </div>
+          )}
 
-                {/* 2. Bootcamp Progress */}
-                <section className="student-section">
-                  <Card padding="large" className="student-card bootcamp-progress-card">
-                    <div className="bootcamp-progress-header">
-                      <h3>Bootcamp Progress</h3>
-                      <span className="bootcamp-progress-subtitle">Phase-by-phase completion</span>
+          {error && !loading && (
+            <div className="sd-panel sd-error">
+              <div className="sd-panel-header">
+                <FiShield size={18} />
+                <h3>Something went wrong</h3>
+              </div>
+              <p>We couldn&apos;t load your training dashboard.</p>
+              <button
+                type="button"
+                className="sd-btn sd-btn-secondary"
+                onClick={loadStudentData}
+              >
+                Reload Dashboard
+              </button>
+            </div>
+          )}
+
+          {!error && !loading && (
+            <>
+              <section className="sd-section">
+                <h2 className="sd-section-title">
+                  <FiCompass size={15} className="sd-section-icon" />
+                  Continue Learning
+                </h2>
+                <p className="sd-section-desc">Jump straight back into the next phase of your bootcamp journey.</p>
+                <div className="sd-panel sd-continue-panel">
+                  <div className="sd-continue-main">
+                    <p className="sd-continue-kicker">Current Focus</p>
+                    <h3 className="sd-continue-title">{continueModule?.title || 'Start your bootcamp'}</h3>
+                    <p className="sd-continue-meta">
+                      Phase {continueModule?.id || '1'}
+                      {continueModule?.roomsTotal
+                        ? ` · Rooms ${continueModule?.roomsCompleted || 0}/${continueModule?.roomsTotal}`
+                        : ''}
+                    </p>
+                    <div className="sd-progress-bar" role="presentation">
+                      <span
+                        className="sd-progress-fill"
+                        style={{ width: `${Math.round(continueModule?.progress || 0)}%` }}
+                      />
                     </div>
-                    <div className="bootcamp-progress-list">
-                      {bootcampProgressItems.map((phase) => {
-                        const progress = Number(phase.progress) || 0;
-                        const status = String(phase.status || '').toLowerCase();
-                        const isCompleted = status === 'done' || progress >= 100;
-                        const isCurrent = status === 'in-progress' || status === 'current';
-                        return (
-                          <div key={phase.id} className={`bootcamp-progress-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}>
-                            <span className="bootcamp-progress-phase">Phase {phase.phaseNumber}</span>
-                            <span className="bootcamp-progress-title">{phase.title}</span>
-                            <span className="bootcamp-progress-status">
+                    <span className="sd-progress-note">
+                      Progress {Math.round(continueModule?.progress || 0)}%
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="sd-btn sd-btn-primary"
+                    onClick={handleResumeLesson}
+                  >
+                    Resume Lesson <FiArrowRight size={14} />
+                  </button>
+                </div>
+              </section>
+              <div className="sd-divider" />
+
+              <section className="sd-section">
+                <h2 className="sd-section-title">
+                  <FiBookOpen size={15} className="sd-section-icon" />
+                  Bootcamp Progress
+                </h2>
+                <p className="sd-section-desc">Track completion across every phase of your offensive journey.</p>
+                <div className="sd-item-list">
+                  {bootcampProgressItems.length === 0 ? (
+                    <div className="sd-empty">No bootcamp phases yet.</div>
+                  ) : (
+                    bootcampProgressItems.map((phase) => {
+                      const progress = Number(phase.progress) || 0;
+                      const status = String(phase.status || '').toLowerCase();
+                      const isCompleted = status === 'done' || progress >= 100;
+                      const isCurrent = status === 'in-progress' || status === 'current';
+                      const labelClass = isCompleted
+                        ? 'sd-label-beta'
+                        : isCurrent
+                          ? 'sd-label-alpha'
+                          : 'sd-label-gamma';
+
+                      return (
+                        <article key={phase.id} className="sd-item-row">
+                          <div className="sd-item-main">
+                            <span className="sd-item-title">Phase {phase.phaseNumber}</span>
+                            <span className="sd-item-subtitle">{phase.title}</span>
+                          </div>
+                          <div className="sd-item-meta">
+                            <span className={`sd-label ${labelClass}`}>
                               {isCompleted ? (
                                 <>
-                                  <FiCheckCircle size={14} />
+                                  <FiCheckCircle size={12} />
                                   Completed
                                 </>
                               ) : isCurrent ? (
                                 <>
-                                  <FiArrowRight size={14} />
+                                  <FiArrowRight size={12} />
                                   Current
                                 </>
                               ) : (
                                 <>
-                                  <FiLock size={14} />
+                                  <FiLock size={12} />
                                   Locked
                                 </>
                               )}
                             </span>
+                            <span className="sd-item-progress">{progress}%</span>
                           </div>
-                        );
-                      })}
-                    </div>
-                  </Card>
-                </section>
+                        </article>
+                      );
+                    })
+                  )}
+                </div>
+              </section>
+              <div className="sd-divider" />
 
-                {/* 3. Progress */}
-                <section className="student-section student-section-grid">
+              <section className="sd-section">
+                <h2 className="sd-section-title">
+                  <FiActivity size={15} className="sd-section-icon" />
+                  Progress Overview
+                </h2>
+                <p className="sd-section-desc">Monitor XP growth and core skill pillars in one glance.</p>
+                <div className="sd-section-grid">
                   <StudentXpSummaryCard xpSummary={data.xpSummary} />
                   <SkillProgressCard pillars={skillPillars} />
-                </section>
+                </div>
+              </section>
+              <div className="sd-divider" />
 
-                {/* 4. Notifications */}
-                <section className="student-section student-section-grid">
+              <section className="sd-section">
+                <h2 className="sd-section-title">
+                  <FiMessageSquare size={15} className="sd-section-icon" />
+                  Community & Updates
+                </h2>
+                <p className="sd-section-desc">Stay aligned with mentor updates and the student community.</p>
+                <div className="sd-section-grid">
                   <StudentRecentNotificationsCard notifications={notifications} />
-                  <Card padding="medium" className="student-card">
-                    <div className="student-card-header">
-                      <FiMessageSquare size={20} />
+                  <div className="sd-panel sd-community-panel">
+                    <div className="sd-panel-header">
+                      <FiMessageSquare size={18} />
                       <h3>Community</h3>
                     </div>
                     <p>Join the HSOCIETY community to share wins, get feedback, and learn together.</p>
-                    <Button
-                      variant="secondary"
-                      size="small"
+                    <button
+                      type="button"
+                      className="sd-btn sd-btn-secondary"
                       onClick={() => navigate('/community')}
                     >
                       Open Community
-                    </Button>
-                  </Card>
-                </section>
-              </>
-            )}
-          </>
-        )}
+                    </button>
+                  </div>
+                </div>
+              </section>
+            </>
+          )}
+        </main>
+
+        <aside className="sd-sidebar">
+          <div className="sd-sidebar-box">
+            <h3 className="sd-sidebar-heading">About</h3>
+            <p className="sd-sidebar-about">
+              Track bootcamp phases, XP milestones, and mentor updates from a single command center.
+            </p>
+            <div className="sd-sidebar-divider" />
+            <ul className="sd-sidebar-list">
+              <li><FiCheckCircle size={13} className="sd-sidebar-icon" />Phase tracking</li>
+              <li><FiCheckCircle size={13} className="sd-sidebar-icon" />Skill pillar health</li>
+              <li><FiCheckCircle size={13} className="sd-sidebar-icon" />Mentor alerts</li>
+            </ul>
+          </div>
+
+          <div className={`sd-sidebar-box sd-status-box ${statusMeta.paused ? 'sd-status-paused' : ''}`}>
+            <div className="sd-status-row">
+              <span className="sd-status-dot" />
+              <span className="sd-status-label">{statusMeta.label}</span>
+            </div>
+            <strong className="sd-status-value">{statusMeta.value}</strong>
+            <div className="sd-status-track">
+              <div className="sd-status-fill" style={{ width: `${statusMeta.fill}%` }} />
+            </div>
+            <p className="sd-status-note">{statusMeta.note}</p>
+          </div>
+
+          <div className="sd-sidebar-box">
+            <h3 className="sd-sidebar-heading">Topics</h3>
+            <div className="sd-topics">
+              <span className="sd-topic">student</span>
+              <span className="sd-topic">bootcamp</span>
+              <span className="sd-topic">xp</span>
+              <span className="sd-topic">community</span>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );

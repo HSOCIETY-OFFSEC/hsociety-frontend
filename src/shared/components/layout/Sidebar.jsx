@@ -53,7 +53,6 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
       className={`app-sidebar-link ${isActive(link.path) ? 'active' : ''} ${
         collapsed ? 'is-collapsed' : ''
       }`}
-      data-tooltip={collapsed ? link.label : undefined}
       aria-label={link.label}
       onClick={() => navigate(link.path)}
     >
@@ -72,7 +71,6 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
           className="app-sidebar-logo"
           onClick={() => navigate('/')}
           aria-label="Go to home"
-          data-tooltip={collapsed ? 'Home' : undefined}
         >
           <Logo size="small" />
           <div className="app-sidebar-brand">
@@ -143,7 +141,6 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
               className="app-sidebar-collapse"
               onClick={onToggleCollapse}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              data-tooltip={collapsed ? 'Expand' : 'Collapse'}
             >
               {collapsed ? <LuChevronsRight size={16} /> : <LuChevronsLeft size={16} />}
               <span className="app-sidebar-label">

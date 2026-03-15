@@ -3,7 +3,7 @@
    ============================================================ */
 
 .community-messages {
-  flex: 1;
+  flex: 1 1 0;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0.875rem 1.25rem 0.75rem;
@@ -12,7 +12,7 @@
   gap: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
-  min-height: 0; /* critical: allows flex child to shrink inside flex column */
+  min-height: 240px; /* keeps empty state visible */
 }
 
 .community-messages::-webkit-scrollbar {
@@ -213,6 +213,254 @@
     font-size: 0.9rem;
     padding: 0.4rem 0;
     min-height: 44px;
+  }
+}
+
+/* ── Post actions, reactions, comments (CommunityMessage.jsx) ── */
+.community-post-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.2rem 0 0.4rem;
+  color: var(--text-tertiary);
+  flex-wrap: wrap;
+}
+
+.community-post-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.community-post-action-btn span {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.community-post-action-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.community-post-action-btn.like.active {
+  color: var(--primary-color);
+}
+
+.community-post-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.community-post-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.community-post-reaction-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+
+.community-post-reaction-pill:hover {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
+}
+
+.community-post-reaction-pill.active {
+  color: var(--primary-color);
+  border-color: color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
+}
+
+.community-post-reaction-count {
+  font-weight: 600;
+}
+
+.community-post-reaction-picker {
+  position: relative;
+}
+
+.community-post-reaction-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.community-post-reaction-more:hover,
+.community-post-reaction-more.active {
+  color: var(--text-primary);
+  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
+}
+
+.community-post-reaction-panel {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.25rem;
+  box-shadow: var(--shadow-md);
+  z-index: 20;
+}
+
+.community-post-reaction-panel-item {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.community-post-reaction-panel-item:hover {
+  background: var(--bg-tertiary);
+}
+
+.community-post-reaction-panel-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.community-post-comments {
+  margin-top: 0.6rem;
+  padding: 0.6rem 0.75rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.community-post-no-comments {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.community-post-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.community-post-comment-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+}
+
+.community-post-comment-author {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.community-post-comment-time {
+  color: var(--text-tertiary);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.community-post-comment-body {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.community-post-comment-compose {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.community-post-comment-compose input {
+  flex: 1;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  border-radius: var(--radius-xs);
+  padding: 0.35rem 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.community-post-comment-compose input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.community-post-comment-compose button {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.community-post-comment-compose button:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.community-post-comment-compose button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .community-post-actions {
+    gap: 0.55rem;
+  }
+
+  .community-post-comments {
+    padding: 0.55rem 0.6rem 0.65rem;
+  }
+
+  .community-post-comment-compose input {
+    font-size: 0.9rem;
   }
 }
 

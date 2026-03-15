@@ -1,7 +1,6 @@
 /* ===========================================================
-   WorkspaceLayout.css — updated sidebar integration
+   WorkspaceLayout.css — GitHub-style dashboard shell
    Location: src/styles/shared/components/layout/WorkspaceLayout.css
-   (append or replace the layout shell section)
    =========================================================== */
 
 /* ── Layout shell ───────────────────────────────────────────── */
@@ -9,60 +8,73 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* Shift content right by the sidebar width on tablet+ */
-  padding-left: 0;
-  transition: padding-left 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Community: lock page scroll so only the feed scrolls */
 .workspace-layout.community-mode {
   height: 100vh;
   overflow: hidden;
 }
 
-@media (min-width: 768px) {
-  .workspace-layout {
-    padding-left: var(--sidebar-width, 260px);
-  }
-
-  /* When sidebar is collapsed, the CSS variable is updated by JS.
-     The transition on padding-left handles the smooth shift. */
+/* Mobile sidebar overlay */
+.workspace-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+  z-index: 700;
+  border: none;
 }
 
-/* No sidebar pages (admin, lesson workspace, etc.) */
-.workspace-layout.no-sidebar {
-  padding-left: 0 !important;
+.workspace-sidebar-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-/* Main content */
+/* ── Main content ───────────────────────────────────────────── */
 .workspace-main {
   flex: 1;
-  padding: 1.5rem 1rem;
-  min-width: 0; /* prevent overflow bleed */
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: calc(var(--navbar-height, 64px) + 1.5rem) 1.5rem 2rem;
   overflow-x: hidden;
 }
 
-.workspace-layout.community-mode .workspace-main {
-  padding: 0;
-  overflow: hidden;
-  height: calc(100vh - var(--workspace-topbar-height, 56px));
-}
+@media (min-width: 768px) {
+  .workspace-main {
+    padding-left: calc(var(--sidebar-width, 260px) + 1.5rem);
+    padding-right: 1.5rem;
+  }
 
-.workspace-layout.community-mode .app-sidebar-inner {
-  overflow: hidden;
-}
+  .workspace-layout.no-sidebar .workspace-main {
+    padding-left: 1.5rem;
+  }
 
-.workspace-layout.lesson-only .workspace-main {
-  padding: 0;
+  .workspace-layout.community-mode .workspace-main {
+    padding-left: calc(var(--sidebar-width, 260px) + 1.5rem);
+    padding-right: 1.5rem;
+  }
+
+  .workspace-layout.community-mode.no-sidebar .workspace-main {
+    padding-left: 1.5rem;
+  }
 }
 
 .workspace-layout.no-sidebar .workspace-main {
-  padding: 0;
+  padding-left: 1.5rem;
 }
 
-.workspace-layout.no-sidebar .workspace-topbar {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+.workspace-layout.lesson-only .workspace-main {
+  padding: calc(var(--navbar-height, 64px) + 0.75rem) 0 0;
+}
+
+.workspace-layout.community-mode .workspace-main {
+  padding-top: calc(var(--navbar-height, 64px) + 1rem);
+  padding-bottom: 1.5rem;
+  overflow: hidden;
+  height: calc(100vh - var(--navbar-height, 64px));
 }
 
 /* Bottom nav spacing on mobile */
@@ -71,26 +83,25 @@
 }
 
 .workspace-layout.community-mode.mobile .workspace-main {
-  padding-bottom: 0;
-  height: calc(
-    100vh - var(--workspace-topbar-height, 56px) - var(--bottom-nav-height, 64px)
-  );
+  padding: calc(var(--navbar-height, 64px) + 1rem) 1rem 1rem;
+  height: calc(100vh - var(--navbar-height, 64px) - var(--bottom-nav-height, 64px));
 }
 
 /* ── Topbar ─────────────────────────────────────────────────── */
 .workspace-topbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 900;
-  min-height: var(--workspace-topbar-height, 56px);
+  height: var(--navbar-height, 64px);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   padding: 0 1.25rem;
-  backdrop-filter: blur(12px);
-  background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
 }
 
 .workspace-topbar-content {
@@ -108,7 +119,26 @@
   min-width: 0;
 }
 
-/* ── Community nav (horizontal pills in topbar) ─────────────── */
+.workspace-collapse-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.workspace-collapse-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* ── Community nav (topbar links) ───────────────────────────── */
 .workspace-community-nav {
   display: flex;
   align-items: center;
@@ -122,10 +152,10 @@
   align-items: center;
   gap: 0.35rem;
   border: 1px solid var(--border-color);
-  background: transparent;
+  background: var(--bg-secondary);
   color: var(--text-secondary);
   padding: 0.3rem 0.75rem;
-  border-radius: 999px;
+  border-radius: var(--radius-xs);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
@@ -135,13 +165,12 @@
 
 .workspace-community-link:hover {
   color: var(--text-primary);
-  background: var(--input-bg);
-  border-color: color-mix(in srgb, var(--text-primary) 20%, var(--border-color));
+  background: var(--bg-tertiary);
 }
 
 .workspace-community-link.active {
-  background: color-mix(in srgb, var(--primary-color) 10%, var(--card-bg));
-  color: var(--primary-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
   border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
 }
 
@@ -156,10 +185,10 @@
   align-items: center;
   gap: 0.35rem;
   border: 1px solid var(--border-color);
-  background: transparent;
+  background: var(--bg-secondary);
   color: var(--text-secondary);
   padding: 0.3rem 0.75rem;
-  border-radius: 999px;
+  border-radius: var(--radius-xs);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
@@ -169,8 +198,7 @@
 
 .workspace-community-tool-btn:hover {
   color: var(--text-primary);
-  background: var(--input-bg);
-  border-color: color-mix(in srgb, var(--text-primary) 20%, var(--border-color));
+  background: var(--bg-tertiary);
 }
 
 @keyframes workspace-dropdown-pop {
@@ -184,8 +212,8 @@
   left: 0;
   min-width: 220px;
   width: min(90vw, 280px);
-  background: var(--card-bg);
-  border-radius: 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
   padding: 0.4rem;
@@ -213,7 +241,7 @@
   font-size: 0.88rem;
   font-weight: 500;
   padding: 0.6rem 0.8rem;
-  border-radius: 8px;
+  border-radius: var(--radius-xs);
   cursor: pointer;
   text-align: left;
   width: 100%;
@@ -223,7 +251,7 @@
 .workspace-community-item:hover,
 .workspace-community-item.active,
 .workspace-community-menu button:hover {
-  background: var(--input-bg);
+  background: var(--bg-tertiary);
   color: var(--text-primary);
 }
 
@@ -233,10 +261,10 @@
   align-items: center;
   gap: 0.4rem;
   border: 1px solid var(--border-color);
-  background: var(--input-bg);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   padding: 0.35rem 0.75rem;
-  border-radius: 999px;
+  border-radius: var(--radius-xs);
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
@@ -246,7 +274,7 @@
 }
 
 .workspace-home-button:hover {
-  background: color-mix(in srgb, var(--input-bg) 65%, var(--primary-color) 35%);
+  background: var(--bg-tertiary);
 }
 
 /* ── Topbar actions ─────────────────────────────────────────── */
@@ -263,10 +291,10 @@
   align-items: center;
   gap: 0.45rem;
   border: 1px solid color-mix(in srgb, #22c55e 40%, var(--border-color));
-  background: color-mix(in srgb, #22c55e 10%, var(--card-bg));
+  background: color-mix(in srgb, #22c55e 10%, var(--bg-secondary));
   color: color-mix(in srgb, #22c55e 80%, var(--text-primary));
   padding: 0.28rem 0.7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-xs);
   font-size: 0.88rem;
   font-weight: 700;
   white-space: nowrap;
@@ -283,10 +311,10 @@
   align-items: center;
   gap: 0.3rem;
   border: 1px solid color-mix(in srgb, #fb923c 35%, var(--border-color));
-  background: color-mix(in srgb, #fb923c 10%, var(--card-bg));
+  background: color-mix(in srgb, #fb923c 10%, var(--bg-secondary));
   color: var(--text-primary);
   padding: 0.25rem 0.55rem;
-  border-radius: 999px;
+  border-radius: var(--radius-xs);
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;
@@ -298,24 +326,25 @@
 }
 
 .workspace-notification-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
   border: 1px solid var(--border-color);
-  background: var(--input-bg);
+  background: transparent;
   color: var(--text-secondary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   position: relative;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.12s ease;
   flex-shrink: 0;
 }
 
 .workspace-notification-btn:hover {
   color: var(--text-primary);
   border-color: color-mix(in srgb, var(--text-primary) 25%, var(--border-color));
+  background: var(--bg-tertiary);
 }
 
 .workspace-notification-badge {
@@ -342,8 +371,8 @@
   width: min(90vw, 320px);
   max-height: 400px;
   overflow: auto;
-  background: var(--card-bg);
-  border-radius: 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
   padding: 0.6rem;
@@ -380,7 +409,7 @@
   width: 100%;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
-  border-radius: 10px;
+  border-radius: var(--radius-xs);
   padding: 0.5rem 0.65rem;
   text-align: left;
   cursor: pointer;
@@ -417,17 +446,17 @@
   align-items: center;
   gap: 0.5rem;
   border: 1px solid var(--border-color);
-  background: var(--input-bg);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   padding: 0.28rem 0.6rem 0.28rem 0.32rem;
-  border-radius: 999px;
+  border-radius: var(--radius-xs);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
   white-space: nowrap;
 }
 
 .workspace-profile-button:hover {
-  background: color-mix(in srgb, var(--input-bg) 65%, var(--primary-color) 35%);
+  background: var(--bg-tertiary);
   border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
 }
 
@@ -470,8 +499,8 @@
   right: 0;
   min-width: 220px;
   width: min(90vw, 260px);
-  background: var(--card-bg);
-  border-radius: 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
   padding: 0.4rem;
@@ -490,7 +519,7 @@
   font-weight: 500;
   text-align: left;
   padding: 0.65rem 0.85rem;
-  border-radius: 9px;
+  border-radius: var(--radius-xs);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -500,38 +529,11 @@
 }
 
 .workspace-profile-menu button:hover {
-  background: var(--input-bg);
+  background: var(--bg-tertiary);
   color: var(--text-primary);
 }
 
-/* ── Overlay (mobile) ───────────────────────────────────────── */
-.workspace-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.22s ease;
-  z-index: 950;
-}
-
-.workspace-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 /* ── Responsive ─────────────────────────────────────────────── */
-@media (min-width: 900px) {
-  .workspace-main {
-    padding: 1.75rem 2rem;
-  }
-
-  .workspace-overlay,
-  .workspace-fab {
-    display: none;
-  }
-}
-
 @media (max-width: 900px) {
   .workspace-community-nav {
     overflow-x: auto;
@@ -546,21 +548,12 @@
 }
 
 @media (max-width: 767px) {
-  .workspace-topbar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    padding: 0 1rem;
-    backdrop-filter: none;
-    background: var(--card-bg);
-  }
-
   .workspace-main {
-    padding-top: calc(1rem + var(--workspace-topbar-height, 56px));
+    padding: calc(var(--navbar-height, 64px) + 1rem) 1rem 2rem;
   }
 
   .workspace-layout.no-sidebar .workspace-main {
-    padding-top: calc(1rem + var(--workspace-topbar-height, 56px));
+    padding: calc(var(--navbar-height, 64px) + 1rem) 1rem 2rem;
   }
 }
 
@@ -576,10 +569,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .workspace-topbar {
-    backdrop-filter: none;
-  }
-
   .workspace-community-menu,
   .workspace-profile-menu,
   .workspace-notification-menu {

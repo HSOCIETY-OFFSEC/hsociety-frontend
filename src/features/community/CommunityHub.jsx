@@ -18,6 +18,8 @@ import { COMMUNITY_HUB_DATA } from '../../data/community/communityHubData';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import '@styles/sections/community/index.css';
 import '@styles/sections/community/header.css';
+import '@styles/sections/community/messages.css';
+import '@styles/sections/community/compose.css';
 
 const CommunityHub = () => {
   const { user } = useAuth();
@@ -33,6 +35,7 @@ const CommunityHub = () => {
   const [cpTotal, setCpTotal] = useState(0);
   const socketRef = useRef(null);
   const scrollRef = useRef(null);
+  const initialRoomLoadRef = useRef(true);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -71,6 +74,7 @@ const CommunityHub = () => {
       else setError(getPublicErrorMessage({ action: 'load', response: msgRes }));
 
       setLoading(false);
+      initialRoomLoadRef.current = false;
     };
 
     load();
@@ -159,14 +163,18 @@ const CommunityHub = () => {
 
   /* ── Room switch ── */
   useEffect(() => {
+    if (initialRoomLoadRef.current) return;
     const loadRoom = async () => {
+      setLoading(true);
       setMessages([]);
       const msgRes = await getCommunityMessages(room, 50);
       if (!msgRes.success) {
         setError(getPublicErrorMessage({ action: 'load', response: msgRes }));
+        setLoading(false);
         return;
       }
       setMessages(msgRes.data.messages || []);
+      setLoading(false);
     };
 
     loadRoom();
@@ -356,68 +364,8 @@ const CommunityHub = () => {
 
   return (
     <div className="community-root">
-
       {/* ── MAIN FEED (X/Twitter style) ── */}
       <main className="community-main" aria-label={`#${displayRoom(room)} channel`}>
-
-        <div className="community-main-meta">
-          <div className="community-aside-widget">
-            <div className="community-aside-widget-header">
-              <FiUsers size={14} aria-hidden="true" />
-              <span>{COMMUNITY_HUB_DATA.aside.communityTitle}</span>
-            </div>
-            <div className="community-aside-stats-grid">
-              <div className="community-aside-stat-cell">
-                <strong>{Number(overview.stats?.learners || 0).toLocaleString()}</strong>
-                <span>{COMMUNITY_HUB_DATA.aside.onlineNowLabel}</span>
-              </div>
-              <div className="community-aside-stat-cell">
-                <strong>{Number(overview.stats?.questions || 0).toLocaleString()}</strong>
-                <span>{COMMUNITY_HUB_DATA.aside.totalPostsLabel}</span>
-              </div>
-            </div>
-          </div>
-          {user && (
-            <button
-              type="button"
-              className="community-aside-user-card"
-              onClick={() => navigate('/settings')}
-              aria-label={COMMUNITY_HUB_DATA.userCard.openAccountAria}
-            >
-              <img
-                src={currentUserAvatar}
-                alt={user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
-                className="community-aside-user-avatar"
-                onError={(e) => {
-                  if (e.currentTarget.src !== currentUserAvatarFallback) {
-                    e.currentTarget.src = currentUserAvatarFallback;
-                  }
-                }}
-              />
-              <div className="community-aside-user-info">
-                <span className="community-aside-user-name">
-                  {user?.name || user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
-                </span>
-                <span className="community-aside-user-meta">
-                  <span className="community-aside-user-role">{role}</span>
-                  <span className="community-aside-user-cp">
-                    <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
-                    {cpTotal}
-                  </span>
-                </span>
-              </div>
-              <div className="community-aside-user-right">
-                <span className="community-aside-user-cp">
-                  <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
-                  {cpTotal}
-                </span>
-                <FiSettings size={13} className="community-aside-settings-icon" aria-hidden="true" />
-              </div>
-            </button>
-          )}
-        </div>
-
-
         {/* Sticky header with channel tabs */}
         <CommunityHeader
           activeChannels={activeChannels}
@@ -457,6 +405,83 @@ const CommunityHub = () => {
         />
       </main>
 
+      <aside className="community-aside" aria-label="Community overview">
+        <div className="community-aside-widget" id="community-stats">
+          <div className="community-aside-widget-header">
+            <FiUsers size={14} aria-hidden="true" />
+            <span>{COMMUNITY_HUB_DATA.aside.communityTitle}</span>
+          </div>
+          <div className="community-aside-stats-grid">
+            <div className="community-aside-stat-cell">
+              <strong>{Number(overview.stats?.learners || 0).toLocaleString()}</strong>
+              <span>{COMMUNITY_HUB_DATA.aside.onlineNowLabel}</span>
+            </div>
+            <div className="community-aside-stat-cell">
+              <strong>{Number(overview.stats?.questions || 0).toLocaleString()}</strong>
+              <span>{COMMUNITY_HUB_DATA.aside.totalPostsLabel}</span>
+            </div>
+          </div>
+        </div>
+
+        {user && (
+          <button
+            type="button"
+            className="community-aside-user-card"
+            onClick={() => navigate('/settings')}
+            aria-label={COMMUNITY_HUB_DATA.userCard.openAccountAria}
+          >
+            <img
+              src={currentUserAvatar}
+              alt={user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
+              className="community-aside-user-avatar"
+              onError={(e) => {
+                if (e.currentTarget.src !== currentUserAvatarFallback) {
+                  e.currentTarget.src = currentUserAvatarFallback;
+                }
+              }}
+            />
+            <div className="community-aside-user-info">
+              <span className="community-aside-user-name">
+                {user?.name || user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
+              </span>
+              <span className="community-aside-user-meta">
+                <span className="community-aside-user-role">{role}</span>
+                <span className="community-aside-user-cp">
+                  <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
+                  {cpTotal}
+                </span>
+              </span>
+            </div>
+            <div className="community-aside-user-right">
+              <span className="community-aside-user-cp">
+                <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
+                {cpTotal}
+              </span>
+              <FiSettings size={13} className="community-aside-settings-icon" aria-hidden="true" />
+            </div>
+          </button>
+        )}
+
+        <div className="community-aside-widget">
+          <div className="community-aside-widget-header">
+            <FiMessageSquare size={14} aria-hidden="true" />
+            <span>Channels</span>
+          </div>
+          <div className="community-aside-channel-list">
+            {activeChannels.map((channel) => (
+              <button
+                key={channel.id}
+                type="button"
+                className={`community-aside-channel-item ${channel.id === room ? 'active' : ''}`}
+                onClick={() => handleRoomChange(channel.id)}
+              >
+                <span className="community-aside-channel-hash">#</span>
+                <span className="community-aside-channel-item-name">{channel.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </aside>
     </div>
   );
 };

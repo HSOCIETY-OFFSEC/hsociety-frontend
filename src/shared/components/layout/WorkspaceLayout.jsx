@@ -7,6 +7,7 @@ import {
   LuHouse,
   LuLayers,
   LuLogOut,
+  LuMenu,
   LuUser,
 } from 'react-icons/lu';
 import { IoFlameOutline } from 'react-icons/io5';
@@ -37,6 +38,7 @@ const WorkspaceLayout = () => {
   const { user, logout } = useAuth();
   const [navMode, setNavMode] = useState('desktop');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [communityMenuOpen, setCommunityMenuOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
@@ -80,6 +82,7 @@ const WorkspaceLayout = () => {
     setLearnOpen(false);
     setCommunityMenuOpen(false);
     setNotificationMenuOpen(false);
+    setMobileSidebarOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -153,37 +156,63 @@ const WorkspaceLayout = () => {
   }, [notificationMenuOpen]);
 
 
-  const showSidebar = role !== 'admin' && !isLessonWorkspace && navMode !== 'mobile';
+  const showSidebar = !isLessonWorkspace;
+  const isMobile = navMode === 'mobile';
+  const handleSidebarToggle = () => {
+    if (isMobile) {
+      setMobileSidebarOpen((prev) => !prev);
+      return;
+    }
+    const next = !sidebarCollapsed;
+    setSidebarCollapsed(next);
+    window?.sessionStorage?.setItem('hsociety.sidebar.collapsed', String(next));
+  };
   const bottomNavLinks = useMemo(
-    () => (navMode === 'mobile' ? getMobileLinks(true, role || 'student') : []),
-    [navMode, role]
+    () => (navMode === 'mobile' && !showSidebar ? getMobileLinks(true, role || 'student') : []),
+    [navMode, role, showSidebar]
   );
 
   return (
     <div
       className={`workspace-layout app-shell ${showSidebar ? '' : 'no-sidebar'} ${
         isLessonWorkspace ? 'lesson-only' : ''
-      } ${navMode} ${isCommunity ? 'community-mode' : ''} ${isDashboardTheme ? 'pp-dashboard-theme' : ''}`}
+      } ${navMode} ${isCommunity ? 'community-mode' : ''} ${isDashboardTheme ? 'pp-dashboard-theme' : ''} ${
+        mobileSidebarOpen ? 'sidebar-open' : ''
+      }`}
       style={{
         '--sidebar-width': sidebarCollapsed ? '84px' : '260px',
         '--sidebar-collapsed-width': '84px',
         '--bottom-nav-height': '64px',
       }}
     >
+      {showSidebar && isMobile && (
+        <button
+          type="button"
+          className={`workspace-sidebar-overlay ${mobileSidebarOpen ? 'open' : ''}`}
+          onClick={() => setMobileSidebarOpen(false)}
+          aria-label="Close sidebar"
+        />
+      )}
       {showSidebar && (
         <Sidebar
           collapsed={sidebarCollapsed}
-          onToggleCollapse={() => {
-            const next = !sidebarCollapsed;
-            setSidebarCollapsed(next);
-            window?.sessionStorage?.setItem('hsociety.sidebar.collapsed', String(next));
-          }}
+          onToggleCollapse={handleSidebarToggle}
         />
       )}
       {!isLessonWorkspace && (
         <header className="workspace-topbar">
           <div className="workspace-topbar-content">
             <div className="workspace-topbar-left">
+              {showSidebar && (
+                <button
+                  type="button"
+                  className="workspace-collapse-btn"
+                  onClick={handleSidebarToggle}
+                  aria-label={isMobile ? 'Toggle sidebar' : sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                >
+                  <LuMenu size={16} />
+                </button>
+              )}
               <button
                 type="button"
                 className="workspace-home-button"

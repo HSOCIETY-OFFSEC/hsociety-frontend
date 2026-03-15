@@ -6,49 +6,50 @@ import {
   FiMessageSquare,
   FiShield
 } from 'react-icons/fi';
-import Card from '../../../../shared/components/ui/Card';
 
 const TYPE_CONFIG = {
-  XP_EARNED: { label: 'XP', icon: FiAward, className: 'type-xp' },
-  LAB_UNLOCKED: { label: 'Lab', icon: FiBookOpen, className: 'type-lab' },
-  BOOTCAMP_UPDATE: { label: 'Bootcamp', icon: FiShield, className: 'type-bootcamp' },
-  MENTOR_MESSAGE: { label: 'Mentor', icon: FiMessageSquare, className: 'type-mentor' },
-  DEFAULT: { label: 'Update', icon: FiBell, className: 'type-default' }
+  XP_EARNED: { label: 'XP', icon: FiAward, className: 'sd-label-beta' },
+  LAB_UNLOCKED: { label: 'Lab', icon: FiBookOpen, className: 'sd-label-alpha' },
+  BOOTCAMP_UPDATE: { label: 'Bootcamp', icon: FiShield, className: 'sd-label-delta' },
+  MENTOR_MESSAGE: { label: 'Mentor', icon: FiMessageSquare, className: 'sd-label-alpha' },
+  DEFAULT: { label: 'Update', icon: FiBell, className: 'sd-label-alpha' }
 };
 
 const StudentRecentNotificationsCard = ({ notifications = [] }) => (
-  <Card padding="medium" className="student-card notifications-card">
-    <div className="student-card-header">
-      <FiBell size={20} />
+  <div className="sd-panel sd-notifications-panel">
+    <div className="sd-panel-header">
+      <FiBell size={18} />
       <h3>Notifications</h3>
     </div>
     {notifications.length === 0 ? (
-      <p className="student-muted-text">No notifications yet.</p>
+      <p className="sd-muted">No notifications yet.</p>
     ) : (
-      notifications.slice(0, 5).map((item) => {
-        const typeKey = item.type || item.category || item.kind || 'DEFAULT';
-        const config = TYPE_CONFIG[typeKey] || TYPE_CONFIG.DEFAULT;
-        const Icon = config.icon;
+      <div className="sd-item-list">
+        {notifications.slice(0, 5).map((item) => {
+          const typeKey = item.type || item.category || item.kind || 'DEFAULT';
+          const config = TYPE_CONFIG[typeKey] || TYPE_CONFIG.DEFAULT;
+          const Icon = config.icon;
 
-        return (
-          <div key={item.id} className={`student-notification-item ${config.className}`}>
-            <span className="student-notification-indicator" aria-hidden="true" />
-            <div className="student-notification-body">
-              <div className="student-notification-head">
-                <Icon size={14} />
-                <strong className="student-notification-title">
+          return (
+            <article key={item.id} className="sd-item-row">
+              <div className="sd-item-main">
+                <span className="sd-item-title">
+                  <Icon size={12} />
                   {item.title || config.label}
-                </strong>
+                </span>
+                <span className="sd-item-subtitle">
+                  {item.message || 'New update available.'}
+                </span>
               </div>
-              <span className="student-notification-message">
-                {item.message || 'New update available.'}
-              </span>
-            </div>
-          </div>
-        );
-      })
+              <div className="sd-item-meta">
+                <span className={`sd-label ${config.className}`}>{config.label}</span>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     )}
-  </Card>
+  </div>
 );
 
 export default StudentRecentNotificationsCard;

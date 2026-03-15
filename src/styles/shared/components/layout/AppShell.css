@@ -12,6 +12,12 @@
   --workspace-topbar-height: 56px;
 }
 
+@media (min-width: 1200px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+}
+
 .app-shell {
   min-height: 100vh;
   position: relative;
@@ -43,4 +49,3 @@
   );
   opacity: 0.12;
 }
-

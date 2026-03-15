@@ -1,6 +1,5 @@
 import React from 'react';
 import cpIcon from '../../../../assets/icons/CP/cp-icon.webp';
-import Card from '../../../../shared/components/ui/Card';
 
 const LEVELS = [
   { min: 0, max: 500, title: 'Script Kiddie', next: 'Exploit Apprentice' },
@@ -32,20 +31,20 @@ const StudentXpSummaryCard = ({ xpSummary }) => {
   const { levelTitle, nextLevel, currentXp, nextXp, progress } = getLevelInfo(xpSummary.totalXp);
 
   return (
-    <Card padding="medium" className="student-card xp-summary-card">
-      <div className="student-card-header">
-        <img src={cpIcon} alt="CP" className="student-cp-icon" />
+    <div className="sd-panel sd-xp-panel">
+      <div className="sd-panel-header">
+        <img src={cpIcon} alt="CP" className="sd-cp-icon" />
         <h3>Progress</h3>
       </div>
-      <p className="xp-summary-level">Level: <strong>{levelTitle}</strong></p>
-      <p className="xp-summary-line">
+      <p className="sd-xp-line">Level: <strong>{levelTitle}</strong></p>
+      <p className="sd-xp-line">
         XP: <strong>{currentXp}</strong> / {nextXp}
       </p>
-      <div className="student-progress-bar">
-        <span className="student-progress-fill" style={{ width: `${progress}%` }} />
+      <div className="sd-progress-bar" role="presentation">
+        <span className="sd-progress-fill" style={{ width: `${progress}%` }} />
       </div>
-      <p className="xp-summary-next">Next Level: {nextLevel}</p>
-    </Card>
+      <p className="sd-xp-next">Next Level: {nextLevel}</p>
+    </div>
   );
 };
 

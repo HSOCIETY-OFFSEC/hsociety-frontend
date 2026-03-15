@@ -1,22 +1,73 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import { FiArrowLeft, FiChevronLeft, FiChevronRight, FiLock } from 'react-icons/fi';
-import Card from '../../../shared/components/ui/Card';
-import Button from '../../../shared/components/ui/Button';
-import Skeleton from '../../../shared/components/ui/Skeleton';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  FiArrowLeft,
+  FiChevronLeft,
+  FiChevronRight,
+  FiCheckCircle,
+  FiFileText,
+  FiLayers,
+  FiLock,
+  FiMessageSquare,
+  FiTarget
+} from 'react-icons/fi';
 import { getStudentCourse } from '../courses/course.service';
 import { getStudentOverview } from '../../dashboards/student/student.service';
 import { listNotifications } from '../services/notifications.service';
 import { QuizPanel } from '../quizzes/QuizPanel';
 import { getHackerProtocolModule, getHackerProtocolRoom } from '../../../data/bootcamps/hackerProtocolData';
 import BootcampAccessGate from './components/BootcampAccessGate';
-import BootcampRightPanel from './components/BootcampRightPanel';
 import LiveClassCard from './components/LiveClassCard';
+
+const buildStatusMeta = (overview) => {
+  const modules = overview?.modules || [];
+  const totalRooms = modules.reduce((sum, module) => sum + (Number(module.roomsTotal) || 0), 0);
+  const completedRooms = modules.reduce((sum, module) => sum + (Number(module.roomsCompleted) || 0), 0);
+  const progress = totalRooms ? Math.round((completedRooms / totalRooms) * 100) : 0;
+  const isPaused = overview?.bootcampStatus === 'not_enrolled'
+    || overview?.bootcampPaymentStatus === 'unpaid';
+
+  if (isPaused) {
+    return {
+      label: 'BOOTCAMP STATUS',
+      value: 'PAUSED',
+      note: 'Complete enrollment to unlock phases.',
+      fill: 20,
+      paused: true,
+      progress,
+      completedRooms,
+      totalRooms
+    };
+  }
+
+  if (progress >= 100 && totalRooms) {
+    return {
+      label: 'BOOTCAMP STATUS',
+      value: 'COMPLETE',
+      note: 'All phases completed. Ready for advanced tracks.',
+      fill: 100,
+      paused: false,
+      progress,
+      completedRooms,
+      totalRooms
+    };
+  }
+
+  return {
+    label: 'BOOTCAMP STATUS',
+    value: progress > 0 ? 'ACTIVE' : 'OPEN',
+    note: progress > 0 ? 'Current phase in progress.' : 'Choose a phase to begin.',
+    fill: progress > 0 ? 70 : 40,
+    paused: false,
+    progress,
+    completedRooms,
+    totalRooms
+  };
+};
 
 const BootcampRoom = () => {
   const { moduleId: moduleIdParam, roomId: roomIdParam } = useParams();
   const navigate = useNavigate();
-  const { setRightPanel } = useOutletContext() || {};
 
   const moduleId = Number(moduleIdParam);
   const roomId = Number(roomIdParam);
@@ -56,12 +107,6 @@ const BootcampRoom = () => {
       mounted = false;
     };
   }, []);
-
-  useEffect(() => {
-    if (!setRightPanel) return undefined;
-    setRightPanel(<BootcampRightPanel overview={overview} />);
-    return () => setRightPanel(null);
-  }, [overview, setRightPanel]);
 
   useEffect(() => {
     setQuizPassed(false);
@@ -104,157 +149,253 @@ const BootcampRoom = () => {
     };
   }, [liveClassNotification, room, roomMeta]);
 
+  const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
+
   if (loading) {
     return (
-      <section className="bootcamp-page">
-        <Card padding="large" className="bootcamp-status-card">
-          <Skeleton className="skeleton-line" style={{ width: '40%' }} />
-          <Skeleton className="skeleton-line" style={{ width: '80%', marginTop: '0.75rem' }} />
-        </Card>
-      </section>
+      <BootcampAccessGate>
+        <div className="bc-page">
+          <div className="bc-panel">
+            <div className="bc-skeleton" style={{ width: '40%' }} />
+            <div className="bc-skeleton" style={{ width: '80%' }} />
+          </div>
+        </div>
+      </BootcampAccessGate>
     );
   }
 
   if (error || !module || !room || !moduleMeta || !roomMeta) {
     return (
-      <section className="bootcamp-page">
-        <Card padding="large" className="bootcamp-status-card">
-          <h2>Room unavailable</h2>
-          <p>{error || 'We could not load this lesson.'}</p>
-          <Button variant="ghost" size="small" onClick={() => navigate('/student-bootcamps/modules')}>
-            <FiArrowLeft size={14} />
-            Back to Modules
-          </Button>
-        </Card>
-      </section>
+      <BootcampAccessGate>
+        <div className="bc-page">
+          <div className="bc-panel bc-alert">
+            <h3 className="bc-panel-title">Room unavailable</h3>
+            <p>{error || 'We could not load this lesson.'}</p>
+            <button
+              type="button"
+              className="bc-btn bc-btn-secondary"
+              onClick={() => navigate('/student-bootcamps/modules')}
+            >
+              <FiArrowLeft size={14} />
+              Back to Modules
+            </button>
+          </div>
+        </div>
+      </BootcampAccessGate>
     );
   }
 
   return (
-    <section className="bootcamp-page">
-      <BootcampAccessGate>
-        <header className="bootcamp-room-header">
-          <div>
-            <p className="bootcamp-kicker">Phase {moduleMeta.moduleId} · Room {room.roomId}</p>
-            <h1>{room.title}</h1>
-            <p>{roomMeta.overview}</p>
+    <BootcampAccessGate>
+      <div className="bc-page">
+        <header className="bc-page-header">
+          <div className="bc-page-header-inner">
+            <div className="bc-header-left">
+              <div className="bc-header-icon-wrap">
+                <FiFileText size={20} className="bc-header-icon" />
+              </div>
+              <div>
+                <div className="bc-header-breadcrumb">
+                  <span className="bc-breadcrumb-org">HSOCIETY</span>
+                  <span className="bc-breadcrumb-sep">/</span>
+                  <span className="bc-breadcrumb-page">phase-{moduleMeta.moduleId}-room-{room.roomId}</span>
+                  <span className="bc-header-visibility">Private</span>
+                </div>
+                <p className="bc-header-desc">{roomMeta.overview}</p>
+              </div>
+            </div>
+            <div className="bc-header-actions">
+              <button
+                type="button"
+                className="bc-btn bc-btn-secondary"
+                onClick={() => navigate(`/student-bootcamps/modules/${moduleId}`)}
+              >
+                <FiArrowLeft size={14} />
+                Back to Module
+              </button>
+            </div>
           </div>
-          <div className="bootcamp-room-header-actions">
-            <Button variant="ghost" size="small" onClick={() => navigate(`/student-bootcamps/modules/${moduleId}`)}>
-              <FiArrowLeft size={14} />
-              Back to Module
-            </Button>
+          <div className="bc-header-meta">
+            <span className="bc-meta-pill">
+              <FiLayers size={13} className="bc-meta-icon" />
+              <span className="bc-meta-label">Phase</span>
+              <strong className="bc-meta-value">{moduleMeta.moduleId}</strong>
+            </span>
+            <span className="bc-meta-pill">
+              <FiTarget size={13} className="bc-meta-icon" />
+              <span className="bc-meta-label">Room</span>
+              <strong className="bc-meta-value">{room.roomId}</strong>
+            </span>
           </div>
         </header>
 
-        {isLocked && (
-          <Card padding="medium" className="bootcamp-status-card">
-            <FiLock size={16} />
-            <p>Complete the previous room quiz to unlock this lesson.</p>
-          </Card>
-        )}
+        <div className="bc-layout">
+          <main className="bc-main">
+            {isLocked && (
+              <div className="bc-panel bc-alert">
+                <FiLock size={16} />
+                <p>Complete the previous room quiz to unlock this lesson.</p>
+              </div>
+            )}
 
-        {statusMessage && (
-          <Card padding="medium" className="bootcamp-status-card">
-            <p>{statusMessage}</p>
-          </Card>
-        )}
+            {statusMessage && (
+              <div className="bc-panel bc-alert">
+                <p>{statusMessage}</p>
+              </div>
+            )}
 
-        <div className="bootcamp-room-grid">
-          <div className="bootcamp-room-main">
-            <LiveClassCard
-              title={liveClass?.title || `Today's class session`}
-              instructor={liveClass?.instructor || 'Admin'}
-              time={liveClass?.time}
-              link={liveClass?.link}
-            />
+            <section className="bc-section">
+              <h2 className="bc-section-title">
+                <FiMessageSquare size={15} className="bc-section-icon" />
+                Live Class
+              </h2>
+              <p className="bc-section-desc">Join instructor-led sessions tied to this room.</p>
+              <LiveClassCard
+                title={liveClass?.title || `Today's class session`}
+                instructor={liveClass?.instructor || 'Admin'}
+                time={liveClass?.time}
+                link={liveClass?.link}
+              />
+            </section>
+            <div className="bc-divider" />
 
-            <Card padding="large" className="bootcamp-room-card">
-              <h2>Lesson Content</h2>
-              <p>{roomMeta.overview}</p>
-              <h3>Reading materials & guides</h3>
-              <ul>
-                {(roomMeta.bullets || []).map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <div className="bootcamp-room-tools">
+            <section className="bc-section">
+              <h2 className="bc-section-title">
+                <FiFileText size={15} className="bc-section-icon" />
+                Lesson Content
+              </h2>
+              <p className="bc-section-desc">Review the core material before attempting the quiz.</p>
+              <div className="bc-panel">
+                <h3 className="bc-panel-title">Overview</h3>
+                <p>{roomMeta.overview}</p>
+                <div className="bc-panel-divider" />
+                <h4 className="bc-panel-subtitle">Reading materials & guides</h4>
+                <ul className="bc-list">
+                  {(roomMeta.bullets || []).map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="bc-panel-divider" />
                 <strong>Tools & playbooks</strong>
                 <p>Check the Resources tab for playbooks, tooling, and walkthroughs.</p>
               </div>
-            </Card>
+            </section>
+            <div className="bc-divider" />
 
-            <Card padding="medium" className="bootcamp-room-card">
-              <h2>Quiz</h2>
-              <p>Quizzes validate progression and unlock the next room.</p>
-              <Button
-                variant="primary"
-                size="small"
-                onClick={() => setQuizContext({
-                  scope: {
-                    type: 'room',
-                    id: room.roomId,
-                    moduleId: module.moduleId,
-                    courseId: course.id
-                  },
-                  title: room.title
-                })}
-                disabled={isLocked}
+            <section className="bc-section">
+              <h2 className="bc-section-title">
+                <FiCheckCircle size={15} className="bc-section-icon" />
+                Quiz
+              </h2>
+              <p className="bc-section-desc">Quizzes validate progression and unlock the next room.</p>
+              <div className="bc-panel">
+                <p>Submit the quiz to unlock the next lesson.</p>
+                <button
+                  type="button"
+                  className="bc-btn bc-btn-primary"
+                  onClick={() => setQuizContext({
+                    scope: {
+                      type: 'room',
+                      id: room.roomId,
+                      moduleId: module.moduleId,
+                      courseId: course.id
+                    },
+                    title: room.title
+                  })}
+                  disabled={isLocked}
+                >
+                  Start Quiz
+                </button>
+              </div>
+            </section>
+
+            <div className="bc-room-nav">
+              <button
+                type="button"
+                className="bc-btn bc-btn-secondary"
+                onClick={() => {
+                  if (!previousRoom) return;
+                  navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${previousRoom.roomId}`);
+                }}
+                disabled={!previousRoom}
               >
-                Start Quiz
-              </Button>
-            </Card>
-          </div>
-        </div>
+                <FiChevronLeft size={14} />
+                Previous Room
+              </button>
+              <button
+                type="button"
+                className="bc-btn bc-btn-primary"
+                onClick={() => {
+                  if (!nextRoom) return;
+                  if (!canAdvance) {
+                    setStatusMessage('Complete the room quiz to unlock the next lesson.');
+                    return;
+                  }
+                  navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${nextRoom.roomId}`);
+                }}
+                disabled={!nextRoom}
+              >
+                Next Room
+                <FiChevronRight size={14} />
+              </button>
+            </div>
+          </main>
 
-        <div className="bootcamp-room-nav">
-          <Button
-            variant="ghost"
-            size="small"
-            onClick={() => {
-              if (!previousRoom) return;
-              navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${previousRoom.roomId}`);
-            }}
-            disabled={!previousRoom}
-          >
-            <FiChevronLeft size={14} />
-            Previous Room
-          </Button>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={() => {
-              if (!nextRoom) return;
-              if (!canAdvance) {
-                setStatusMessage('Complete the room quiz to unlock the next lesson.');
-                return;
-              }
-              navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${nextRoom.roomId}`);
-            }}
-            disabled={!nextRoom}
-          >
-            Next Room
-            <FiChevronRight size={14} />
-          </Button>
-        </div>
+          <aside className="bc-sidebar">
+            <div className="bc-sidebar-box">
+              <h3 className="bc-sidebar-heading">About</h3>
+              <p className="bc-sidebar-about">
+                Complete the quiz to unlock the next room and keep your progress moving forward.
+              </p>
+              <div className="bc-sidebar-divider" />
+              <ul className="bc-sidebar-list">
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Quiz gating</li>
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Live class access</li>
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Resources + playbooks</li>
+              </ul>
+            </div>
 
-        {quizContext && (
-          <QuizPanel
-            scope={quizContext.scope}
-            title={quizContext.title}
-            onClose={() => setQuizContext(null)}
-            onComplete={(result) => {
-              if (result?.passed) {
-                setQuizPassed(true);
-                setStatusMessage('Quiz passed. Next room unlocked.');
-              } else {
-                setStatusMessage('Quiz submitted. Review and retry.');
-              }
-            }}
-          />
-        )}
-      </BootcampAccessGate>
-    </section>
+            <div className={`bc-sidebar-box bc-status-box ${statusMeta.paused ? 'bc-status-paused' : ''}`}>
+              <div className="bc-status-row">
+                <span className="bc-status-dot" />
+                <span className="bc-status-label">{statusMeta.label}</span>
+              </div>
+              <strong className="bc-status-value">{statusMeta.value}</strong>
+              <div className="bc-status-track">
+                <div className="bc-status-fill" style={{ width: `${statusMeta.fill}%` }} />
+              </div>
+              <p className="bc-status-note">{statusMeta.note}</p>
+            </div>
+
+            <div className="bc-sidebar-box">
+              <h3 className="bc-sidebar-heading">Topics</h3>
+              <div className="bc-topics">
+                <span className="bc-topic">room-{room.roomId}</span>
+                <span className="bc-topic">module-{moduleMeta.moduleId}</span>
+                <span className="bc-topic">quiz</span>
+                <span className="bc-topic">live-class</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      {quizContext && (
+        <QuizPanel
+          scope={quizContext.scope}
+          title={quizContext.title}
+          onClose={() => setQuizContext(null)}
+          onComplete={(result) => {
+            if (result?.passed) {
+              setQuizPassed(true);
+              setStatusMessage('Quiz passed. Next room unlocked.');
+            } else {
+              setStatusMessage('Quiz submitted. Review and retry.');
+            }
+          }}
+        />
+      )}
+    </BootcampAccessGate>
   );
 };
 

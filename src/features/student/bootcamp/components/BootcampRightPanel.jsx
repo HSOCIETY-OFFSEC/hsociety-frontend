@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { FiCheckCircle, FiTarget } from 'react-icons/fi';
-import Card from '../../../../shared/components/ui/Card';
 import { HACKER_PROTOCOL_PHASES } from '../../../../data/bootcamps/hackerProtocolData';
 
 const BootcampRightPanel = ({ overview }) => {
@@ -32,24 +31,26 @@ const BootcampRightPanel = ({ overview }) => {
 
   return (
     <div className="bootcamp-right-inner">
-      <Card padding="medium" className="bootcamp-right-card">
-        <div className="bootcamp-right-header">
-          <FiTarget size={16} />
-          <h3>Your Progress</h3>
+      <div className="bc-sidebar-box">
+        <h3 className="bc-sidebar-heading">Your Progress</h3>
+        <p className="bc-sidebar-about">Track overall completion and next lesson.</p>
+        <div className="bc-sidebar-divider" />
+        <div className="bc-item-main">
+          <span className="bc-item-title">
+            <FiTarget size={14} />
+            {summary.progress}% complete
+          </span>
+          <span className="bc-item-subtitle">{summary.completedRooms} / {summary.totalRooms} rooms complete</span>
         </div>
-        <div className="bootcamp-right-stat">
-          <strong>{summary.progress}%</strong>
-          <span>Bootcamp completion</span>
+        <div className="bc-panel-divider" />
+        <div className="bc-item-main">
+          <span className="bc-item-title">
+            <FiCheckCircle size={14} />
+            {summary.nextLabel}
+          </span>
+          <span className="bc-item-subtitle">{summary.moduleTitle}</span>
         </div>
-        <div className="bootcamp-right-sub">
-          <span>{summary.completedRooms} / {summary.totalRooms} rooms complete</span>
-        </div>
-        <div className="bootcamp-right-next">
-          <FiCheckCircle size={14} />
-          <span>{summary.nextLabel}</span>
-        </div>
-        <p className="bootcamp-right-module">{summary.moduleTitle}</p>
-      </Card>
+      </div>
     </div>
   );
 };

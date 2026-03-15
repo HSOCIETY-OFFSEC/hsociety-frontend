@@ -10,6 +10,9 @@
   border-top: 1px solid var(--border-color);
   flex-shrink: 0;
   background: var(--bg-primary);
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Sender avatar ──────────────────────────────────────────── */
@@ -281,6 +284,34 @@
 
   .community-compose-avatar {
     display: none;
+  }
+
+  .community-compose-inner {
+    flex-wrap: wrap;
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.6rem 0.35rem;
+  }
+
+  .community-compose-inner input {
+    order: 1;
+    flex: 1 1 100%;
+    padding: 0.55rem 0.1rem 0.45rem;
+  }
+
+  .community-attach-btn {
+    order: 2;
+  }
+
+  .community-emoji {
+    order: 3;
+  }
+
+  .community-compose-counter {
+    order: 4;
+  }
+
+  .community-send-btn {
+    order: 5;
   }
 
   .community-compose-inner input {

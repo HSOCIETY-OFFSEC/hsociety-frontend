@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  FiActivity,
+  FiAlertTriangle,
+  FiBarChart2,
+  FiCheckCircle,
+  FiFileText,
+  FiShield
+} from 'react-icons/fi';
 import { getDashboardOverview } from './dashboard.service';
 import { getPublicErrorMessage } from '../../../shared/utils/publicError';
-import Card from '../../../shared/components/ui/Card';
-import Button from '../../../shared/components/ui/Button';
-import Skeleton from '../../../shared/components/ui/Skeleton';
 import SecurityCommandCenterCard from './components/SecurityCommandCenterCard';
 import SecurityActionCenterCard from './components/SecurityActionCenterCard';
 import SecurityIndicatorsCard from './components/SecurityIndicatorsCard';
@@ -40,30 +45,6 @@ const Dashboard = () => {
   useEffect(() => {
     loadDashboardData();
   }, [loadDashboardData]);
-
-  if (loading) {
-    return (
-      <div className="dashboard-container">
-        <div className="dashboard-wrapper dashboard-shell">
-          <div className="dashboard-header">
-            <div>
-              <Skeleton className="skeleton-title" />
-              <Skeleton className="skeleton-subtitle" />
-            </div>
-          </div>
-          <div className="status-grid">
-            {['status', 'action', 'reports'].map((section) => (
-              <div key={section} className="skeleton-card">
-                <Skeleton className="skeleton-title short" />
-                <Skeleton className="skeleton-line" />
-                <Skeleton className="skeleton-line short" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const engagementStatus = overview?.status?.engagementStatus
     || (overview?.stats?.activeEngagements ? 'active' : 'none');
@@ -118,79 +99,213 @@ const Dashboard = () => {
     }))
   ), [overview]);
 
+  const statusMeta = useMemo(() => {
+    if (engagementStatus === 'active') {
+      return {
+        label: 'ENGAGEMENT STATUS',
+        value: 'ACTIVE',
+        note: 'Engagement in progress. Monitor milestones.',
+        fill: 70
+      };
+    }
+    if (engagementStatus === 'completed') {
+      return {
+        label: 'ENGAGEMENT STATUS',
+        value: 'COMPLETE',
+        note: 'Reports ready. Review and remediate.',
+        fill: 100
+      };
+    }
+    return {
+      label: 'ENGAGEMENT STATUS',
+      value: 'OPEN',
+      note: 'Request an engagement to begin.',
+      fill: 40
+    };
+  }, [engagementStatus]);
+
+  const activeEngagements = Number(overview?.stats?.activeEngagements ?? 0);
+
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-wrapper dashboard-shell">
-        {loading && (
-          <div className="corp-loading-text">Loading your security dashboard...</div>
-        )}
+    <div className="cd-page">
+      <header className="cd-page-header">
+        <div className="cd-page-header-inner">
+          <div className="cd-header-left">
+            <div className="cd-header-icon-wrap">
+              <FiShield size={20} className="cd-header-icon" />
+            </div>
+            <div>
+              <div className="cd-header-breadcrumb">
+                <span className="cd-breadcrumb-org">HSOCIETY</span>
+                <span className="cd-breadcrumb-sep">/</span>
+                <span className="cd-breadcrumb-page">corporate-dashboard</span>
+                <span className="cd-header-visibility">Private</span>
+              </div>
+              <p className="cd-header-desc">Security overview for engagements, vulnerabilities, and reports.</p>
+            </div>
+          </div>
+          <div className="cd-header-actions">
+            <button type="button" className="cd-btn cd-btn-primary" onClick={() => navigate('/engagements')}>
+              Run Security Scan
+            </button>
+            <button type="button" className="cd-btn cd-btn-secondary" onClick={() => navigate('/reports')}>
+              View Reports
+            </button>
+          </div>
+        </div>
+        <div className="cd-header-meta">
+          <span className="cd-meta-pill">
+            <FiBarChart2 size={13} className="cd-meta-icon" />
+            <span className="cd-meta-label">Security Score</span>
+            <strong className="cd-meta-value">{securityScore}</strong>
+          </span>
+          <span className="cd-meta-pill">
+            <FiActivity size={13} className="cd-meta-icon" />
+            <span className="cd-meta-label">Engagements</span>
+            <strong className="cd-meta-value">{activeEngagements}</strong>
+          </span>
+          <span className="cd-meta-pill">
+            <FiAlertTriangle size={13} className="cd-meta-icon" />
+            <span className="cd-meta-label">Critical</span>
+            <strong className="cd-meta-value">{criticalCount}</strong>
+          </span>
+          <span className="cd-meta-pill">
+            <FiFileText size={13} className="cd-meta-icon" />
+            <span className="cd-meta-label">Last Scan</span>
+            <strong className="cd-meta-value">{lastScan}</strong>
+          </span>
+        </div>
+      </header>
 
-        {error && (
-          <Card padding="medium" className="corp-card corp-error-card">
-            <h3>Dashboard Unavailable</h3>
-            <p>We couldn't load your security data.</p>
-            <Button variant="secondary" size="small" onClick={loadDashboardData}>
-              Retry
-            </Button>
-          </Card>
-        )}
-
-        {!error && (
-          <>
-            {loading ? (
-              <div className="corp-skeleton-grid">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <div key={`sk-${index}`} className="corp-skeleton-card" />
+      <div className="cd-layout">
+        <main className="cd-main">
+          {loading && (
+            <div className="cd-loading">
+              <p>Loading your security dashboard...</p>
+              <div className="cd-loading-list">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <div key={`cd-load-${index}`} className="cd-skeleton" />
                 ))}
               </div>
-            ) : (
-              <>
-                {/* 1. Security Command Center */}
-                <section className="corp-section">
-                  <SecurityCommandCenterCard
-                    securityScore={securityScore}
-                    riskLevel={riskLevel}
-                    lastScan={lastScan}
-                    onRunScan={() => navigate('/engagements')}
-                    onViewReports={() => navigate('/reports')}
-                  />
-                </section>
+            </div>
+          )}
 
-                {/* 2. Action Center */}
-                <section className="corp-section corp-section-grid">
+          {error && !loading && (
+            <div className="cd-panel cd-alert">
+              <h3 className="cd-panel-title">Dashboard Unavailable</h3>
+              <p>We couldn&apos;t load your security data.</p>
+              <button type="button" className="cd-btn cd-btn-secondary" onClick={loadDashboardData}>
+                Retry
+              </button>
+            </div>
+          )}
+
+          {!error && !loading && (
+            <>
+              <section className="cd-section">
+                <h2 className="cd-section-title">
+                  <FiShield size={15} className="cd-section-icon" />
+                  Security Command Center
+                </h2>
+                <p className="cd-section-desc">Monitor risk level, security score, and last scan status.</p>
+                <SecurityCommandCenterCard
+                  securityScore={securityScore}
+                  riskLevel={riskLevel}
+                  lastScan={lastScan}
+                  onRunScan={() => navigate('/engagements')}
+                  onViewReports={() => navigate('/reports')}
+                />
+              </section>
+              <div className="cd-divider" />
+
+              <section className="cd-section">
+                <h2 className="cd-section-title">
+                  <FiActivity size={15} className="cd-section-icon" />
+                  Action Center
+                </h2>
+                <p className="cd-section-desc">Launch or review security engagements.</p>
+                <div className="cd-section-grid">
                   <SecurityActionCenterCard
                     status={engagementStatus}
                     onNavigate={(route) => navigate(route)}
                   />
-                  {/* 3. Security Indicators */}
                   <SecurityIndicatorsCard
                     securityScore={securityScore}
                     riskLevel={riskLevel}
                     criticalCount={criticalCount}
                   />
-                </section>
+                </div>
+              </section>
+              <div className="cd-divider" />
 
-                {/* 4. Vulnerability Snapshot */}
-                <section className="corp-section">
-                  <VulnerabilitySnapshotCard
-                    breakdown={vulnerabilityBreakdown}
-                    onView={() => navigate('/remediation')}
-                  />
-                </section>
+              <section className="cd-section">
+                <h2 className="cd-section-title">
+                  <FiAlertTriangle size={15} className="cd-section-icon" />
+                  Vulnerability Snapshot
+                </h2>
+                <p className="cd-section-desc">Critical vulnerabilities are prioritized for remediation.</p>
+                <VulnerabilitySnapshotCard
+                  breakdown={vulnerabilityBreakdown}
+                  onView={() => navigate('/remediation')}
+                />
+              </section>
+              <div className="cd-divider" />
 
-                {/* 5. Activity & Reports */}
-                <section className="corp-section corp-section-grid">
+              <section className="cd-section">
+                <h2 className="cd-section-title">
+                  <FiFileText size={15} className="cd-section-icon" />
+                  Activity & Reports
+                </h2>
+                <p className="cd-section-desc">Review recent reports and security activity.</p>
+                <div className="cd-section-grid">
                   <ReportsListCard
                     reports={reports}
                     onViewReport={() => navigate('/reports')}
                     onDownloadReport={() => navigate('/reports')}
                   />
                   <SecurityActivityFeedCard activity={activityFeed} />
-                </section>
-              </>
-            )}
-          </>
-        )}
+                </div>
+              </section>
+            </>
+          )}
+        </main>
+
+        <aside className="cd-sidebar">
+          <div className="cd-sidebar-box">
+            <h3 className="cd-sidebar-heading">About</h3>
+            <p className="cd-sidebar-about">
+              Corporate security overview tracking engagement status, vulnerabilities, and reports.
+            </p>
+            <div className="cd-sidebar-divider" />
+            <ul className="cd-sidebar-list">
+              <li><FiCheckCircle size={13} className="cd-sidebar-icon" />Engagement tracking</li>
+              <li><FiCheckCircle size={13} className="cd-sidebar-icon" />Risk monitoring</li>
+              <li><FiCheckCircle size={13} className="cd-sidebar-icon" />Report access</li>
+            </ul>
+          </div>
+
+          <div className="cd-sidebar-box cd-status-box">
+            <div className="cd-status-row">
+              <span className="cd-status-dot" />
+              <span className="cd-status-label">{statusMeta.label}</span>
+            </div>
+            <strong className="cd-status-value">{statusMeta.value}</strong>
+            <div className="cd-status-track">
+              <div className="cd-status-fill" style={{ width: `${statusMeta.fill}%` }} />
+            </div>
+            <p className="cd-status-note">{statusMeta.note}</p>
+          </div>
+
+          <div className="cd-sidebar-box">
+            <h3 className="cd-sidebar-heading">Topics</h3>
+            <div className="cd-topics">
+              <span className="cd-topic">engagements</span>
+              <span className="cd-topic">reports</span>
+              <span className="cd-topic">vulnerabilities</span>
+              <span className="cd-topic">risk</span>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );

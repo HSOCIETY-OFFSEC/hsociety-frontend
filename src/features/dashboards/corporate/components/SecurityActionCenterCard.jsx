@@ -1,6 +1,5 @@
 import React from 'react';
-import Card from '../../../../shared/components/ui/Card';
-import Button from '../../../../shared/components/ui/Button';
+import { FiArrowRight } from 'react-icons/fi';
 
 const SecurityActionCenterCard = ({ status, onNavigate }) => {
   let title = 'Start Security Assessment';
@@ -8,6 +7,7 @@ const SecurityActionCenterCard = ({ status, onNavigate }) => {
   let actionLabel = 'Start Engagement';
   let route = '/engagements';
   let statusLabel = 'No active engagement';
+  let statusClass = 'cd-label-gamma';
 
   if (status === 'active') {
     title = 'Active Security Engagement';
@@ -15,29 +15,31 @@ const SecurityActionCenterCard = ({ status, onNavigate }) => {
     actionLabel = 'View Engagement';
     route = '/engagements';
     statusLabel = 'In Progress';
+    statusClass = 'cd-label-alpha';
   } else if (status === 'completed') {
     title = 'Engagement Completed';
     description = 'Security reports available.';
     actionLabel = 'View Security Reports';
     route = '/reports';
     statusLabel = 'Completed';
+    statusClass = 'cd-label-beta';
   }
 
   return (
-    <Card padding="medium" className="corp-card corp-action-card">
-      {/* Section 2: Action Center */}
-      <div className="corp-card-header">
+    <div className="cd-panel cd-action-panel">
+      <div className="cd-panel-header">
         <div>
-          <p className="corp-card-kicker">Action Center</p>
-          <h3 className="corp-card-title">{title}</h3>
+          <p className="cd-panel-kicker">Action Center</p>
+          <h3 className="cd-panel-title">{title}</h3>
         </div>
-        <span className={`corp-status-pill status-${status}`}>{statusLabel}</span>
+        <span className={`cd-label ${statusClass}`}>{statusLabel}</span>
       </div>
-      <p className="corp-card-body">{description}</p>
-      <Button variant="primary" size="medium" onClick={() => onNavigate(route)}>
+      <p className="cd-panel-desc">{description}</p>
+      <button type="button" className="cd-btn cd-btn-primary" onClick={() => onNavigate(route)}>
         {actionLabel}
-      </Button>
-    </Card>
+        <FiArrowRight size={14} />
+      </button>
+    </div>
   );
 };
 

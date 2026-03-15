@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FiCreditCard, FiShield } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Card from '../../shared/components/ui/Card';
-import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import '../../styles/student/base.css';
 import '../../styles/student/components.css';
 import '../../styles/student/pages/payments.css';
 import { verifyBootcampPayment } from '../dashboards/student/student.service';
@@ -57,51 +54,118 @@ const StudentPayments = () => {
   }, [location.search, updateUser]);
 
   return (
-    <div className="student-page">
-      <div className="dashboard-shell">
-        <header className="student-hero dashboard-shell-header reveal-on-scroll">
-          <div>
-            <p className="student-kicker dashboard-shell-kicker">Payments</p>
-            <h1 className="dashboard-shell-title">Manage your bootcamp payment.</h1>
-            <p className="dashboard-shell-subtitle">
-              Payment unlocks all course modules, quizzes, and resources.
-            </p>
+    <div className="sp-page">
+      <header className="sp-page-header">
+        <div className="sp-page-header-inner">
+          <div className="sp-header-left">
+            <div className="sp-header-icon-wrap">
+              <FiCreditCard size={20} className="sp-header-icon" />
+            </div>
+            <div>
+              <div className="sp-header-breadcrumb">
+                <span className="sp-breadcrumb-org">HSOCIETY</span>
+                <span className="sp-breadcrumb-sep">/</span>
+                <span className="sp-breadcrumb-page">student-payments</span>
+                <span className="sp-header-visibility">Private</span>
+              </div>
+              <p className="sp-header-desc">Manage your bootcamp payment and unlock full access.</p>
+            </div>
           </div>
-        </header>
-
-        <div className="student-grid">
-          {statusMessage && (
-            <Card padding="medium" className="student-card reveal-on-scroll">
-              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{statusMessage}</p>
-            </Card>
-          )}
-          <Card padding="medium" className="student-card reveal-on-scroll">
-            <div className="student-card-header">
-              <FiCreditCard size={20} />
-              <h3>Bootcamp Access</h3>
-            </div>
-            <p>{isPaid ? 'Payment complete. Full access unlocked.' : 'Payment required to unlock the bootcamp.'}</p>
-            <Button
-              variant="primary"
-              size="small"
-              onClick={handleOpenPayment}
-              disabled={isPaid}
-            >
-              {isPaid ? 'Paid' : 'Pay Now'}
-            </Button>
-          </Card>
-
-          <Card padding="medium" className="student-card reveal-on-scroll">
-            <div className="student-card-header">
-              <FiShield size={20} />
-              <h3>Secure Checkout</h3>
-            </div>
-            <p>
-              Payments are securely processed. Reach out to support if you need assistance with
-              billing.
-            </p>
-          </Card>
         </div>
+        <div className="sp-header-meta">
+          <span className="sp-meta-pill">
+            <FiCreditCard size={13} className="sp-meta-icon" />
+            <span className="sp-meta-label">Payment</span>
+            <strong className="sp-meta-value">{isPaid ? 'PAID' : 'PENDING'}</strong>
+          </span>
+          <span className="sp-meta-pill">
+            <FiShield size={13} className="sp-meta-icon" />
+            <span className="sp-meta-label">Registration</span>
+            <strong className="sp-meta-value">{isRegistered ? 'ENROLLED' : 'REQUIRED'}</strong>
+          </span>
+        </div>
+      </header>
+
+      <div className="sp-layout">
+        <main className="sp-main">
+          <section className="sp-section">
+            <h2 className="sp-section-title">
+              <FiCreditCard size={15} className="sp-section-icon" />
+              Bootcamp Access
+            </h2>
+            <p className="sp-section-desc">Payment unlocks all course modules, quizzes, and resources.</p>
+
+            {statusMessage && (
+              <div className="sp-panel sp-alert">
+                <p>{statusMessage}</p>
+              </div>
+            )}
+
+            <div className="sp-item-list">
+              <article className="sp-item-row">
+                <div className="sp-item-main">
+                  <span className="sp-item-title">Bootcamp Access</span>
+                  <span className="sp-item-subtitle">
+                    {isPaid ? 'Payment complete. Full access unlocked.' : 'Payment required to unlock the bootcamp.'}
+                  </span>
+                </div>
+                <div className="sp-item-meta">
+                  <button
+                    type="button"
+                    className="sp-btn sp-btn-primary"
+                    onClick={handleOpenPayment}
+                    disabled={isPaid}
+                  >
+                    {isPaid ? 'Paid' : 'Pay Now'}
+                  </button>
+                </div>
+              </article>
+              <article className="sp-item-row">
+                <div className="sp-item-main">
+                  <span className="sp-item-title">Secure Checkout</span>
+                  <span className="sp-item-subtitle">
+                    Payments are securely processed. Reach out to support if you need assistance.
+                  </span>
+                </div>
+              </article>
+            </div>
+          </section>
+        </main>
+
+        <aside className="sp-sidebar">
+          <div className="sp-sidebar-box">
+            <h3 className="sp-sidebar-heading">About</h3>
+            <p className="sp-sidebar-about">
+              Confirm your registration and complete payment to unlock the full bootcamp journey.
+            </p>
+            <div className="sp-sidebar-divider" />
+            <ul className="sp-sidebar-list">
+              <li>Secure checkout</li>
+              <li>Instant access</li>
+              <li>Support available</li>
+            </ul>
+          </div>
+
+          <div className="sp-sidebar-box sp-status-box">
+            <div className="sp-status-row">
+              <span className="sp-status-dot" />
+              <span className="sp-status-label">PAYMENT STATUS</span>
+            </div>
+            <strong className="sp-status-value">{isPaid ? 'ACTIVE' : 'PENDING'}</strong>
+            <div className="sp-status-track"><div className="sp-status-fill" /></div>
+            <p className="sp-status-note">{isPaid ? 'Access unlocked.' : 'Awaiting confirmation.'}</p>
+          </div>
+
+          <div className="sp-sidebar-box">
+            <h3 className="sp-sidebar-heading">Topics</h3>
+            <div className="sp-topics">
+              <span className="sp-topic">payments</span>
+              <span className="sp-topic">bootcamp</span>
+              <span className="sp-topic">billing</span>
+              <span className="sp-topic">support</span>
+            </div>
+          </div>
+        </aside>
       </div>
 
       {showPaymentModal && (

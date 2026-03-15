@@ -191,36 +191,6 @@ const AppRouter = () => {
           </Route>
 
           {/* Bootcamp learning app (standalone layout) */}
-          <Route
-            path="student-bootcamps"
-            element={
-              <RoleRoute allowedRoles={['student']}>
-                <BootcampLayout />
-              </RoleRoute>
-            }
-          >
-            <Route index element={<Navigate to="overview" replace />} />
-            <Route path="overview" element={<BootcampOverview />} />
-            <Route path="modules" element={<BootcampModules />} />
-            <Route path="modules/:moduleId" element={<BootcampModule />} />
-            <Route path="modules/:moduleId/rooms/:roomId" element={<BootcampRoom />} />
-            <Route path="live-class" element={<BootcampLiveClass />} />
-            <Route path="resources" element={<BootcampResources />} />
-            <Route path="progress" element={<BootcampProgress />} />
-            <Route
-              path="hacker-protocol/dashboard"
-              element={<Navigate to="/student-bootcamps/overview" replace />}
-            />
-            <Route
-              path="hacker-protocol/modules/:moduleId"
-              element={<LegacyBootcampModuleRedirect />}
-            />
-            <Route
-              path="hacker-protocol/module/:moduleId/room/:roomId"
-              element={<LegacyBootcampRoomRedirect />}
-            />
-          </Route>
-
           {/* Workspace pages - dashboard and student learning */}
           <Route element={<WorkspaceLayout />}>
             <Route
@@ -371,6 +341,35 @@ const AppRouter = () => {
                 </RoleRoute>
               }
             />
+            <Route
+              path="student-bootcamps"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <BootcampLayout />
+                </RoleRoute>
+              }
+            >
+              <Route index element={<Navigate to="overview" replace />} />
+              <Route path="overview" element={<BootcampOverview />} />
+              <Route path="modules" element={<BootcampModules />} />
+              <Route path="modules/:moduleId" element={<BootcampModule />} />
+              <Route path="modules/:moduleId/rooms/:roomId" element={<BootcampRoom />} />
+              <Route path="live-class" element={<BootcampLiveClass />} />
+              <Route path="resources" element={<BootcampResources />} />
+              <Route path="progress" element={<BootcampProgress />} />
+              <Route
+                path="hacker-protocol/dashboard"
+                element={<Navigate to="/student-bootcamps/overview" replace />}
+              />
+              <Route
+                path="hacker-protocol/modules/:moduleId"
+                element={<LegacyBootcampModuleRedirect />}
+              />
+              <Route
+                path="hacker-protocol/module/:moduleId/room/:roomId"
+                element={<LegacyBootcampRoomRedirect />}
+              />
+            </Route>
             <Route
               path="student-learning"
               element={

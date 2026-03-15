@@ -1,44 +1,115 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
-import Card from '../../../shared/components/ui/Card';
+import { FiBookOpen, FiCheckCircle, FiLayers, FiTool } from 'react-icons/fi';
 import BootcampAccessGate from './components/BootcampAccessGate';
-import BootcampRightPanel from './components/BootcampRightPanel';
 
 const BootcampResources = () => {
-  const { setRightPanel } = useOutletContext() || {};
-
-  React.useEffect(() => {
-    if (!setRightPanel) return undefined;
-    setRightPanel(<BootcampRightPanel overview={null} />);
-    return () => setRightPanel(null);
-  }, [setRightPanel]);
-
   return (
-    <section className="bootcamp-page">
-      <BootcampAccessGate>
-        <header className="bootcamp-page-header">
-          <div>
-            <h1>Resources</h1>
-            <p>Guides, tools, and playbooks supporting each room.</p>
+    <BootcampAccessGate>
+      <div className="bc-page">
+        <header className="bc-page-header">
+          <div className="bc-page-header-inner">
+            <div className="bc-header-left">
+              <div className="bc-header-icon-wrap">
+                <FiBookOpen size={20} className="bc-header-icon" />
+              </div>
+              <div>
+                <div className="bc-header-breadcrumb">
+                  <span className="bc-breadcrumb-org">HSOCIETY</span>
+                  <span className="bc-breadcrumb-sep">/</span>
+                  <span className="bc-breadcrumb-page">bootcamp-resources</span>
+                  <span className="bc-header-visibility">Private</span>
+                </div>
+                <p className="bc-header-desc">Guides, tools, and playbooks supporting each room.</p>
+              </div>
+            </div>
+          </div>
+          <div className="bc-header-meta">
+            <span className="bc-meta-pill">
+              <FiLayers size={13} className="bc-meta-icon" />
+              <span className="bc-meta-label">Libraries</span>
+              <strong className="bc-meta-value">3</strong>
+            </span>
+            <span className="bc-meta-pill">
+              <FiTool size={13} className="bc-meta-icon" />
+              <span className="bc-meta-label">Tooling</span>
+              <strong className="bc-meta-value">Curated</strong>
+            </span>
           </div>
         </header>
 
-        <div className="bootcamp-resources-grid">
-          <Card padding="medium" className="bootcamp-resource-card">
-            <h3>Bootcamp Playbooks</h3>
-            <p>Step-by-step guidance aligned to each module.</p>
-          </Card>
-          <Card padding="medium" className="bootcamp-resource-card">
-            <h3>Tooling Library</h3>
-            <p>Curated tool stacks for reconnaissance, analysis, and reporting.</p>
-          </Card>
-          <Card padding="medium" className="bootcamp-resource-card">
-            <h3>Reading Material</h3>
-            <p>Deep dives, checklists, and quick references.</p>
-          </Card>
+        <div className="bc-layout">
+          <main className="bc-main">
+            <section className="bc-section">
+              <h2 className="bc-section-title">
+                <FiBookOpen size={15} className="bc-section-icon" />
+                Resource Library
+              </h2>
+              <p className="bc-section-desc">Downloadable guides and playbooks aligned to each phase.</p>
+              <div className="bc-item-list">
+                <article className="bc-item-row">
+                  <div className="bc-item-main">
+                    <span className="bc-item-title">Bootcamp Playbooks</span>
+                    <span className="bc-item-subtitle">Step-by-step guidance aligned to each module.</span>
+                  </div>
+                  <span className="bc-label bc-label-alpha">Core</span>
+                </article>
+                <article className="bc-item-row">
+                  <div className="bc-item-main">
+                    <span className="bc-item-title">Tooling Library</span>
+                    <span className="bc-item-subtitle">Curated tool stacks for reconnaissance, analysis, and reporting.</span>
+                  </div>
+                  <span className="bc-label bc-label-delta">Tools</span>
+                </article>
+                <article className="bc-item-row">
+                  <div className="bc-item-main">
+                    <span className="bc-item-title">Reading Material</span>
+                    <span className="bc-item-subtitle">Deep dives, checklists, and quick references.</span>
+                  </div>
+                  <span className="bc-label bc-label-beta">Docs</span>
+                </article>
+              </div>
+            </section>
+          </main>
+
+          <aside className="bc-sidebar">
+            <div className="bc-sidebar-box">
+              <h3 className="bc-sidebar-heading">About</h3>
+              <p className="bc-sidebar-about">
+                Everything you need to research, execute, and report during each bootcamp phase.
+              </p>
+              <div className="bc-sidebar-divider" />
+              <ul className="bc-sidebar-list">
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Playbooks</li>
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Tooling</li>
+                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />References</li>
+              </ul>
+            </div>
+
+            <div className="bc-sidebar-box bc-status-box">
+              <div className="bc-status-row">
+                <span className="bc-status-dot" />
+                <span className="bc-status-label">RESOURCE STATUS</span>
+              </div>
+              <strong className="bc-status-value">ACTIVE</strong>
+              <div className="bc-status-track">
+                <div className="bc-status-fill" style={{ width: '70%' }} />
+              </div>
+              <p className="bc-status-note">Resources update weekly.</p>
+            </div>
+
+            <div className="bc-sidebar-box">
+              <h3 className="bc-sidebar-heading">Topics</h3>
+              <div className="bc-topics">
+                <span className="bc-topic">playbooks</span>
+                <span className="bc-topic">tooling</span>
+                <span className="bc-topic">research</span>
+                <span className="bc-topic">references</span>
+              </div>
+            </div>
+          </aside>
         </div>
-      </BootcampAccessGate>
-    </section>
+      </div>
+    </BootcampAccessGate>
   );
 };
 

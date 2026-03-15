@@ -22,7 +22,7 @@ const links = [
 const BootcampSidebar = ({ collapsed = false, onToggleCollapse = null }) => {
   return (
     <div className={`bootcamp-sidebar-inner ${collapsed ? 'collapsed' : ''}`}>
-      <div className="bootcamp-sidebar-brand" data-tooltip={collapsed ? 'Bootcamp' : undefined}>
+      <div className="bootcamp-sidebar-brand">
         <span className="bootcamp-sidebar-kicker">Bootcamp</span>
         <strong>{HACKER_PROTOCOL_BOOTCAMP.title}</strong>
       </div>
@@ -34,7 +34,6 @@ const BootcampSidebar = ({ collapsed = false, onToggleCollapse = null }) => {
             className={({ isActive }) =>
               `bootcamp-nav-link ${isActive ? 'active' : ''}`
             }
-            data-tooltip={collapsed ? link.label : undefined}
             aria-label={link.label}
           >
             <link.icon size={16} />
@@ -49,7 +48,6 @@ const BootcampSidebar = ({ collapsed = false, onToggleCollapse = null }) => {
             className="bootcamp-sidebar-collapse"
             onClick={onToggleCollapse}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            data-tooltip={collapsed ? 'Expand' : 'Collapse'}
           >
             {collapsed ? <LuChevronsRight size={16} /> : <LuChevronsLeft size={16} />}
             <span className="bootcamp-nav-label">

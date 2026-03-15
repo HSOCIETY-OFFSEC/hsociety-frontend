@@ -1,25 +1,24 @@
 import React from 'react';
-import Card from '../../../../shared/components/ui/Card';
 
 const SkillProgressCard = ({ pillars = [] }) => (
-  <Card padding="medium" className="student-card skill-progress-card">
-    <div className="student-card-header">
+  <div className="sd-panel sd-skill-panel">
+    <div className="sd-panel-header">
       <h3>Skill Progress</h3>
     </div>
-    <div className="skill-progress-list">
+    <div className="sd-skill-list">
       {pillars.map((pillar) => (
-        <div key={pillar.key} className="skill-progress-item">
-          <div className="skill-progress-label">
+        <div key={pillar.key} className="sd-skill-item">
+          <div className="sd-skill-label">
             <span>{pillar.label}</span>
-            <span className="skill-progress-value">{pillar.progress}%</span>
+            <span className="sd-skill-value">{pillar.progress}%</span>
           </div>
-          <div className="student-progress-bar">
-            <span className="student-progress-fill" style={{ width: `${pillar.progress}%` }} />
+          <div className="sd-progress-bar" role="presentation">
+            <span className="sd-progress-fill" style={{ width: `${pillar.progress}%` }} />
           </div>
         </div>
       ))}
     </div>
-  </Card>
+  </div>
 );
 
 export default SkillProgressCard;

@@ -471,7 +471,7 @@ const Navbar = ({ sticky = true }) => {
                     onClick={() => navigate('/settings')}
                   >
                     <LuShield size={15} />
-                    <span>Account Settings</span>
+                    <span>Profile</span>
                   </button>
 
                   <div className="gh-dropdown-divider" />

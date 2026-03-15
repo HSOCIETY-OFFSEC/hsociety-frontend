@@ -280,7 +280,7 @@ export const CSP_CONFIG = {
     'style-src-elem': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://paystack.com'],
     'img-src': ["'self'", 'data:', 'https:'],
     'font-src': ["'self'", 'data:', 'https://fonts.gstatic.com'],
-    'connect-src': ["'self'", 'https:', 'wss:', 'https://localhost:*', 'https://hsociety-backend.onrender.com', envConfig.api.baseURL],
+    'connect-src': ["'self'", 'https:', 'wss:', 'ws:', 'https://localhost:*', 'https://hsociety-backend.onrender.com', envConfig.api.baseURL],
     'frame-src': ["'self'", 'https://checkout.paystack.com', 'https://paystack.com'],
     'object-src': ["'none'"],
     'base-uri': ["'self'"],
