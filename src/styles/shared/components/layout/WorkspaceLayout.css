@@ -634,9 +634,14 @@
 
 @media (max-width: 640px) {
   .workspace-notification-menu {
-    right: -0.5rem;
-    width: calc(100vw - 1.5rem);
-    max-width: calc(100vw - 1.5rem);
+    position: fixed;
+    left: 50%;
+    right: auto;
+    top: calc(var(--navbar-height, 64px) + 0.5rem);
+    transform: translateX(-50%);
+    width: min(92vw, 360px);
+    max-width: 360px;
+    max-height: calc(100vh - var(--navbar-height, 64px) - 2rem);
   }
 }
 

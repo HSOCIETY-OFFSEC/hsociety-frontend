@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getCommunityProfile } from './community.service';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges } from '../../shared/utils/profileBadges';
+import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import '@styles/sections/community/profile.css';
 
 const formatCount = (value) => Number(value || 0).toLocaleString();
@@ -92,7 +93,10 @@ const CommunityProfile = () => {
         <>
           <section className="community-profile-hero">
             <img
-              src={profileData.user.avatarUrl || '/FAVICON_HSOCIETY_BLACK/android-chrome-192x192.png'}
+              src={
+                profileData.user.avatarUrl ||
+                getGithubAvatarDataUri(profileData.user.hackerHandle || profileData.user.email || profileData.user.id)
+              }
               alt={profileData.user.name || profileData.user.hackerHandle}
             />
             <div>
