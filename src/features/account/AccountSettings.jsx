@@ -13,6 +13,8 @@ import { validatePassword } from '../../core/validation/input.validator';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import AccountNotificationsList from './components/AccountNotificationsList';
 import { ACCOUNT_UI } from '../../data/account/accountUiData';
+import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
+import { buildProfileBadges, normalizeBadges } from '../../shared/utils/profileBadges';
 import {
   changePassword as changePasswordService,
   deleteAccount,
@@ -22,8 +24,6 @@ import {
   updateProfile,
 } from './account.service';
 import { listNotifications, markNotificationRead } from '../student/services/notifications.service';
-import RankBadge from '../../shared/components/ui/RankBadge';
-import { useRankBadge } from '../../shared/providers/RankBadgeProvider';
 import '../../styles/sections/account/index.css';
 import '../../styles/sections/public-profile/index.css';
 
@@ -46,6 +46,9 @@ const AccountSettings = () => {
   const [avatarFileName, setAvatarFileName] = useState('');
   const [passwordSaving, setPasswordSaving] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [earnedBadges, setEarnedBadges] = useState(() =>
+    normalizeBadges(user?.badges || user?.unlockedBadges || [])
+  );
   const [xpSummary, setXpSummary] = useState({
     totalXp: 0,
     rank: 'Candidate',
@@ -68,11 +71,9 @@ const AccountSettings = () => {
   const isPentester = user?.role === 'pentester';
   const normalizedHandle = normalizeHandle(profile.hackerHandle || user?.hackerHandle);
   const publicProfilePath = normalizedHandle ? `/@${normalizedHandle}` : '';
-  const { getBadgeForProfile } = useRankBadge();
-  const accountSubject = useMemo(() => ({ ...user, ...profile }), [user, profile]);
-  const accountBadge = useMemo(
-    () => getBadgeForProfile(accountSubject),
-    [accountSubject, getBadgeForProfile]
+  const badgeList = useMemo(
+    () => buildProfileBadges({ xpSummary, badges: earnedBadges, rankTitle: xpSummary.rank }),
+    [earnedBadges, xpSummary]
   );
 
   useEffect(() => {
@@ -87,6 +88,10 @@ const AccountSettings = () => {
       bio: user?.bio || '',
     });
   }, [user?.name, user?.organization, user?.hackerHandle, user?.bio]);
+
+  useEffect(() => {
+    setEarnedBadges(normalizeBadges(user?.badges || user?.unlockedBadges || []));
+  }, [user?.badges, user?.unlockedBadges]);
 
   useEffect(() => {
     let mounted = true;
@@ -116,6 +121,11 @@ const AccountSettings = () => {
           : [],
         graduationUnlocked: Boolean(data?.emblems?.graduationUnlocked),
       });
+      setEarnedBadges(
+        normalizeBadges(
+          data?.badges || data?.achievements?.badges || data?.unlockedBadges || []
+        )
+      );
       updateUser(data);
       setProfileLoading(false);
     };
@@ -165,6 +175,14 @@ const AccountSettings = () => {
             ? response.data.emblems.graduationUnlocked
             : emblems.graduationUnlocked,
       });
+      setEarnedBadges(
+        normalizeBadges(
+          response.data?.badges ||
+            response.data?.achievements?.badges ||
+            response.data?.unlockedBadges ||
+            earnedBadges
+        )
+      );
     } else {
       setError(getPublicErrorMessage({ action: 'save', response }));
     }
@@ -272,9 +290,6 @@ const AccountSettings = () => {
           <div className="pp-identity">
             <h1 className="pp-name">
               {profile.name || user?.name || 'Account Settings'}
-              {accountBadge && (
-                <RankBadge badge={accountBadge} size="compact" className="pp-rank-badge" />
-              )}
             </h1>
             <p className="pp-handle">{normalizedHandle ? `@${normalizedHandle}` : user?.email || '—'}</p>
             {profile.bio && <p className="pp-bio">{profile.bio}</p>}
@@ -310,6 +325,11 @@ const AccountSettings = () => {
             <li><FiMail size={14} /><span>{user?.email || '—'}</span></li>
             <li><FiMapPin size={14} /><span>{profile.organization || 'Independent'}</span></li>
           </ul>
+
+          <div className="pp-badge-section" aria-label="Profile badges">
+            <p className="pp-badge-title">Badges</p>
+            <ProfileBadgeSection badges={badgeList} />
+          </div>
 
           <div className="pp-stats-card">
             <div className="pp-stat-row">

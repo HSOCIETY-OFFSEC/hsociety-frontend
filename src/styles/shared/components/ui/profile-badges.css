@@ -1,0 +1,60 @@
+.profile-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.profile-badge {
+  display: grid;
+  justify-items: start;
+  gap: 0.45rem;
+  text-align: left;
+  color: #ccd6e5;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.profile-badge-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.profile-badge-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.profile-badge-name {
+  color: inherit;
+}
+
+.profile-badges-empty {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 680px) {
+  .profile-badges {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 0.7rem;
+  }
+
+  .profile-badge-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-badge-name {
+    font-size: 0.7rem;
+  }
+}

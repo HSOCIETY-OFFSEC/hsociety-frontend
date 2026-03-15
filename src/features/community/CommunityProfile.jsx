@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCommunityProfile } from './community.service';
-import RankBadge from '../../shared/components/ui/RankBadge';
-import { useRankBadge } from '../../shared/providers/RankBadgeProvider';
+import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
+import { buildProfileBadges } from '../../shared/utils/profileBadges';
 import '@styles/sections/community/profile.css';
 
 const formatCount = (value) => Number(value || 0).toLocaleString();
@@ -15,10 +15,21 @@ const CommunityProfile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [profileData, setProfileData] = useState(null);
-  const { getBadgeForProfile } = useRankBadge();
-  const profileBadge = useMemo(
-    () => getBadgeForProfile(profileData),
-    [getBadgeForProfile, profileData]
+  const profileXpSummary = useMemo(() => {
+    if (profileData?.xpSummary) return profileData.xpSummary;
+    if (profileData?.stats?.totalXp != null) {
+      return { totalXp: profileData.stats.totalXp, rank: profileData?.xpSummary?.rank };
+    }
+    return null;
+  }, [profileData]);
+
+  const profileBadges = useMemo(
+    () => buildProfileBadges({
+      xpSummary: profileXpSummary,
+      rankTitle: profileXpSummary?.rank,
+      badges: profileData?.badges || profileData?.achievements?.badges || profileData?.unlockedBadges || [],
+    }),
+    [profileData, profileXpSummary]
   );
 
   const loadProfile = useCallback(async () => {
@@ -89,9 +100,10 @@ const CommunityProfile = () => {
                 @{profileData.user.hackerHandle || profileData.user.id}
               </p>
               <h2>{profileData.user.name || 'Community member'}</h2>
-              {profileBadge && (
-                <RankBadge badge={profileBadge} size="compact" className="community-profile-badge" />
-              )}
+              <div className="community-profile-badges" aria-label="Profile badges">
+                <p className="community-profile-badges-title">Badges</p>
+                <ProfileBadgeSection badges={profileBadges} />
+              </div>
               {profileData.user.organization && (
                 <p className="community-profile-meta">{profileData.user.organization}</p>
               )}

@@ -64,6 +64,19 @@
   display: block;
 }
 
+/* Badge section */
+.pp-badge-section {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.pp-badge-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pp-muted);
+}
+
 /* Identity */
 .pp-identity {
   display: flex;

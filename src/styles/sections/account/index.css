@@ -523,3 +523,18 @@
     padding: 0;
   }
 }
+
+/* ── Badge Section ─────────────────────────────────────────── */
+
+.pp-badge-section {
+  margin: 1rem 0 1.25rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.pp-badge-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}

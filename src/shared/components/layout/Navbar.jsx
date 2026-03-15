@@ -24,6 +24,7 @@ import {
   LuShield,
   LuX,
 } from 'react-icons/lu';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import useAuthModal from '../../hooks/useAuthModal';
@@ -511,7 +512,7 @@ const Navbar = ({ sticky = true }) => {
               aria-expanded={mobileMenuOpen}
               aria-controls={MENU_IDS.mobile}
             >
-              {mobileMenuOpen ? <LuX size={18} /> : <LuMenu size={18} />}
+              {mobileMenuOpen ? <LuX size={18} /> : <BsThreeDotsVertical size={18} />}
             </button>
           )}
         </div>

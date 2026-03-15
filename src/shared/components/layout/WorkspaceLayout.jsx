@@ -10,6 +10,7 @@ import {
   LuMenu,
   LuUser,
 } from 'react-icons/lu';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
@@ -23,8 +24,6 @@ import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
 import { useNotifications } from '../../notifications/NotificationProvider';
 import useScrollReveal from '../../hooks/useScrollReveal';
 import { useUserStats } from '../../hooks/useUserStats';
-import RankBadge from '../ui/RankBadge';
-import { useRankBadge } from '../../providers/RankBadgeProvider';
 import '../../../styles/shared/components/layout/AppShell.css';
 import '../../../styles/shared/components/layout/WorkspaceLayout.css';
 import '../../../styles/shared/dashboard-public-profile.css';
@@ -63,8 +62,6 @@ const WorkspaceLayout = () => {
   const isDashboardTheme = !isCommunity && !isLessonWorkspace;
   const role = user?.role === 'client' ? 'corporate' : user?.role;
   const { cpTotal, streakDays } = useUserStats(user?.id, role);
-  const { getBadgeForProfile } = useRankBadge();
-  const profileBadge = getBadgeForProfile(user);
 
   const communityLinks = useMemo(() => {
     if (!isCommunity) return [];
@@ -214,7 +211,7 @@ const WorkspaceLayout = () => {
                   onClick={handleSidebarToggle}
                   aria-label={isMobile ? 'Toggle sidebar' : sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 >
-                  <LuMenu size={16} />
+                  {isMobile ? <BsThreeDotsVertical size={16} /> : <LuMenu size={16} />}
                 </button>
               )}
               <button
@@ -425,9 +422,6 @@ const WorkspaceLayout = () => {
                   </span>
                   <span className="workspace-profile-name">
                     {user?.name || user?.email || WORKSPACE_UI.topbar.userFallback}
-                    {profileBadge && (
-                      <RankBadge badge={profileBadge} size="tiny" className="workspace-profile-badge" />
-                    )}
                   </span>
                   <LuChevronDown size={16} />
                 </button>

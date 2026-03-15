@@ -25,8 +25,8 @@ import PageLoader from '../../shared/components/ui/PageLoader';
 import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
 import { getPublicProfileByHandle } from './publicProfile.service';
 import '../../styles/sections/public-profile/index.css';
-import RankBadge from '../../shared/components/ui/RankBadge';
-import { useRankBadge } from '../../shared/providers/RankBadgeProvider';
+import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
+import { buildProfileBadges } from '../../shared/utils/profileBadges';
 
 /* ── Helpers ─────────────────────────────────────────────── */
 
@@ -146,8 +146,22 @@ const PublicProfile = () => {
   const visitDates = Array.isArray(profile?.activity?.visitDates) ? profile.activity.visitDates : [];
   const contributionData = useMemo(() => buildContributionGrid(visitDates, 364), [visitDates]);
   const monthLabels = useMemo(() => buildMonthLabels(contributionData.weeks), [contributionData.weeks]);
-  const { getBadgeForProfile } = useRankBadge();
-  const profileBadge = useMemo(() => getBadgeForProfile(profile), [getBadgeForProfile, profile]);
+  const profileXpSummary = useMemo(() => {
+    if (profile?.xpSummary) return profile.xpSummary;
+    if (profile?.stats?.totalXp != null) {
+      return { totalXp: profile.stats.totalXp, rank: profile?.xpSummary?.rank };
+    }
+    return null;
+  }, [profile]);
+
+  const profileBadges = useMemo(
+    () => buildProfileBadges({
+      xpSummary: profileXpSummary,
+      rankTitle: profileXpSummary?.rank,
+      badges: profile?.badges || profile?.unlockedBadges || profile?.achievements?.badges || [],
+    }),
+    [profile, profileXpSummary]
+  );
 
   if (loading) return <PageLoader message="Loading profile..." durationMs={0} />;
 
@@ -213,9 +227,6 @@ const PublicProfile = () => {
             <div className="pp-identity">
               <h1 className="pp-name">
                 {profile?.name || 'Community Member'}
-                {profileBadge && (
-                  <RankBadge badge={profileBadge} size="compact" className="pp-rank-badge" />
-                )}
               </h1>
               <p className="pp-handle">{displayHandle}</p>
               {profile?.bio && <p className="pp-bio">{profile.bio}</p>}
@@ -243,6 +254,11 @@ const PublicProfile = () => {
                 <li><FiCalendar size={14} /><span>Joined {new Date(profile.joinedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span></li>
               )}
             </ul>
+
+            <div className="pp-badge-section" aria-label="Profile badges">
+              <p className="pp-badge-title">Badges</p>
+              <ProfileBadgeSection badges={profileBadges} />
+            </div>
 
             {/* Stats sidebar card */}
             <div className="pp-stats-card">

@@ -59,8 +59,18 @@
   color: var(--text-primary);
 }
 
-.community-profile-badge {
-  margin-top: 0.3rem;
+.community-profile-badges {
+  margin-top: 0.5rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.community-profile-badges-title {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
 }
 
 .community-profile-metrics {
