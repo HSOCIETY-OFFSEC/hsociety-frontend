@@ -181,7 +181,6 @@ const WorkspaceLayout = () => {
         mobileSidebarOpen ? 'sidebar-open' : ''
       }`}
       style={{
-        '--sidebar-width': sidebarCollapsed ? '84px' : '260px',
         '--sidebar-collapsed-width': '84px',
         '--bottom-nav-height': '64px',
       }}

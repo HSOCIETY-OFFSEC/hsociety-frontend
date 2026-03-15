@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getSidebarLinks } from '../../../config/navigation.config';
@@ -35,6 +35,8 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
   const links = getSidebarLinks(true, resolvedRole);
   const isActive = (path) => location.pathname === path;
   const [learnOpen, setLearnOpen] = useState(false);
+  const sidebarRef = useRef(null);
+  const innerRef = useRef(null);
 
   const bootcampLinks = useMemo(
     () => links.filter((link) => link.group === 'learn'),
@@ -45,6 +47,70 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
     () => links.filter((link) => link.group !== 'learn'),
     [links]
   );
+
+  const labelList = useMemo(() => {
+    const labels = links.map((link) => link.label);
+    if (bootcampLinks.length > 0) labels.push('Learn');
+    labels.push('Collapse');
+    return labels;
+  }, [links, bootcampLinks.length]);
+
+  useEffect(() => {
+    const sidebar = sidebarRef.current;
+    const inner = innerRef.current;
+    if (!sidebar || !inner) return undefined;
+
+    const root = sidebar.closest('.workspace-layout') || document.documentElement;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return undefined;
+
+    const getFont = () => {
+      const sample = inner.querySelector('.app-sidebar-link');
+      const style = window.getComputedStyle(sample || inner);
+      const weight = style.fontWeight || '500';
+      const size = style.fontSize || '14px';
+      const family = style.fontFamily || 'sans-serif';
+      return `${weight} ${size} ${family}`;
+    };
+
+    const updateWidth = () => {
+      if (collapsed) {
+        const fallback = getComputedStyle(root)
+          .getPropertyValue('--sidebar-collapsed-width')
+          .trim() || '84px';
+        root.style.setProperty('--sidebar-width', fallback);
+        return;
+      }
+
+      const sample = inner.querySelector('.app-sidebar-link');
+      const style = window.getComputedStyle(sample || inner);
+      const paddingLeft = parseFloat(style.paddingLeft || '0');
+      const paddingRight = parseFloat(style.paddingRight || '0');
+      const gap = parseFloat(style.columnGap || style.gap || '0');
+      const iconWidth = 18;
+      const breathing = 20;
+
+      ctx.font = getFont();
+      const maxLabelWidth = Math.max(
+        ...labelList.map((label) => Math.ceil(ctx.measureText(String(label)).width))
+      );
+      const measured = paddingLeft + paddingRight + iconWidth + gap + maxLabelWidth + breathing;
+      const clamped = Math.min(320, Math.max(200, Math.ceil(measured)));
+      root.style.setProperty('--sidebar-width', `${clamped}px`);
+    };
+
+    updateWidth();
+    const handleResize = () => updateWidth();
+    window.addEventListener('resize', handleResize);
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(inner);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [collapsed, labelList]);
 
   const renderLink = (link) => (
     <button
@@ -64,8 +130,8 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
   );
 
   return (
-    <aside className={`app-sidebar ${collapsed ? 'collapsed' : ''}`} aria-label="Sidebar navigation">
-      <div className="app-sidebar-inner">
+    <aside ref={sidebarRef} className={`app-sidebar ${collapsed ? 'collapsed' : ''}`} aria-label="Sidebar navigation">
+      <div className="app-sidebar-inner" ref={innerRef}>
         <button
           type="button"
           className="app-sidebar-logo"
