@@ -142,6 +142,18 @@ const PublicHandleRoute = () => {
   return <PublicProfile />;
 };
 
+const CommunityProfileRedirect = () => {
+  const { handle } = useParams();
+  if (!handle) {
+    return <Navigate to="/community" replace />;
+  }
+  const normalized = String(handle).trim().replace(/^@/, '');
+  if (!normalized) {
+    return <Navigate to="/community" replace />;
+  }
+  return <Navigate to={`/@${normalized}`} replace />;
+};
+
 const LegacyBootcampModuleRedirect = () => {
   const { moduleId } = useParams();
   return <Navigate to={`/student-bootcamps/modules/${moduleId}`} replace />;
@@ -205,7 +217,7 @@ const AppRouter = () => {
               path="community/profile/:handle"
               element={
                 <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
-                  <CommunityProfile />
+                  <CommunityProfileRedirect />
                 </RoleRoute>
               }
             />

@@ -1,67 +1,135 @@
-import React from 'react';
-import { FiHash, FiMessageSquare, FiUsers } from 'react-icons/fi';
-import { COMMUNITY_UI } from '../../data/community/communityUiData';
-import '@styles/sections/community/header.css';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCommunityProfile } from './community.service';
+import '@styles/sections/community/profile.css';
 
-const CommunityProfile = ({
-  activeChannels = [],
-  room,
-  onRoomChange,
-  overviewStats,
-  connected = false,
-}) => {
-  const learners = Number(overviewStats?.learners || 0).toLocaleString();
-  const posts = Number(overviewStats?.questions || 0).toLocaleString();
+const formatCount = (value) => Number(value || 0).toLocaleString();
+const formatDate = (value) =>
+  value ? new Date(value).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Unknown';
+
+const CommunityProfile = () => {
+  const { handle } = useParams();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [profileData, setProfileData] = useState(null);
+
+  const loadProfile = useCallback(async () => {
+    if (!handle) return;
+    setLoading(true);
+    setError('');
+    try {
+      const response = await getCommunityProfile(handle);
+      if (!response.success) {
+        setError(response.error || 'Profile not found');
+        setProfileData(null);
+        return;
+      }
+      setProfileData(response.data || null);
+    } finally {
+      setLoading(false);
+    }
+  }, [handle]);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
+
+  const metrics = useMemo(() => {
+    if (!profileData?.stats) return [];
+    return [
+      { label: 'Messages', value: formatCount(profileData.stats.messages) },
+      { label: 'Likes received', value: formatCount(profileData.stats.likesReceived) },
+      { label: 'Comments', value: formatCount(profileData.stats.commentsMade) },
+      { label: 'Images shared', value: formatCount(profileData.stats.imagesShared) },
+      { label: 'Rooms active', value: formatCount(profileData.stats.roomsActive) },
+    ];
+  }, [profileData]);
+
+  const xpDetails = useMemo(() => {
+    if (!profileData?.xpSummary) return [];
+    return [
+      { label: 'Total XP', value: formatCount(profileData.xpSummary.totalXp) },
+      { label: 'Rank', value: profileData.xpSummary.rank || 'Candidate' },
+      { label: 'Streak', value: `${profileData.xpSummary.streakDays || 0} days` },
+      { label: 'Visits', value: formatCount(profileData.xpSummary.visits) },
+    ];
+  }, [profileData]);
+
+  const handleBack = () => navigate('/community');
 
   return (
-    <header className="community-header">
-      <div className="community-header-top">
-        <div className="community-header-title-group">
-          <p className="community-header-eyebrow">{COMMUNITY_UI.header.brand}</p>
-          <h1 className="community-header-title">{COMMUNITY_UI.header.title}</h1>
-        </div>
-
-        <div className="community-header-right">
-          <span className="community-header-stat">
-            <FiUsers size={12} aria-hidden="true" />
-            {learners}
-          </span>
-          <span className="community-header-stat">
-            <FiMessageSquare size={12} aria-hidden="true" />
-            {posts}
-          </span>
-          <span
-            className={`community-header-live-badge${connected ? ' live' : ''}`}
-            aria-label={connected ? 'Connected — live' : 'Connecting'}
-          >
-            <span className="community-header-live-dot" aria-hidden="true" />
-            {connected ? 'Live' : 'Connecting'}
-          </span>
-        </div>
+    <div className="community-profile">
+      <div className="community-profile-head">
+        <button type="button" className="community-profile-back" onClick={handleBack}>
+          ← Back to community
+        </button>
+        <h1>Community profile</h1>
       </div>
 
-      {activeChannels.length > 0 && (
-        <nav
-          className="community-header-tabs"
-          role="tablist"
-          aria-label={COMMUNITY_UI.header.channelsLabel}
-        >
-          {activeChannels.map((channel) => (
-            <button
-              key={channel.id}
-              type="button"
-              role="tab"
-              aria-selected={room === channel.id}
-              className={`community-header-tab${room === channel.id ? ' active' : ''}`}
-              onClick={() => onRoomChange(channel.id)}
-            >
-              <FiHash size={12} aria-hidden="true" />
-              {channel.name || channel.id}
-            </button>
-          ))}
-        </nav>
+      {loading && <p className="community-profile-state">Loading profile…</p>}
+      {error && <p className="community-profile-state error">{error}</p>}
+
+      {!loading && !error && profileData && (
+        <>
+          <section className="community-profile-hero">
+            <img
+              src={profileData.user.avatarUrl || '/FAVICON_HSOCIETY_BLACK/android-chrome-192x192.png'}
+              alt={profileData.user.name || profileData.user.hackerHandle}
+            />
+            <div>
+              <p className="community-profile-handle">
+                @{profileData.user.hackerHandle || profileData.user.id}
+              </p>
+              <h2>{profileData.user.name || 'Community member'}</h2>
+              {profileData.user.organization && (
+                <p className="community-profile-meta">{profileData.user.organization}</p>
+              )}
+              <p className="community-profile-meta">
+                Joined {formatDate(profileData.user.joinedAt)}
+              </p>
+              {profileData.user.bio && (
+                <p className="community-profile-bio">{profileData.user.bio}</p>
+              )}
+            </div>
+          </section>
+
+          <section className="community-profile-metrics" aria-label="Interaction metrics">
+            {metrics.map((metric) => (
+              <article key={metric.label}>
+                <strong>{metric.value}</strong>
+                <span>{metric.label}</span>
+              </article>
+            ))}
+          </section>
+
+          <section className="community-profile-xp" aria-label="XP summary">
+            <h3>XP streak & rank</h3>
+            <div className="community-profile-xp-grid">
+              {xpDetails.map((item) => (
+                <article key={item.label}>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="community-profile-emblems" aria-label="Unlocked emblems">
+            <h3>Unlocked emblems</h3>
+            <p>
+              {profileData.emblems?.unlockedModules?.length
+                ? `${profileData.emblems.unlockedModules.length} modules unlocked`
+                : 'No emblems earned yet.'}
+            </p>
+          </section>
+        </>
       )}
-    </header>
+
+      {!loading && !error && !profileData && (
+        <p className="community-profile-state">No profile data available.</p>
+      )}
+    </div>
   );
 };
 

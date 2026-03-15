@@ -93,10 +93,13 @@ export const AuthProvider = ({ children }) => {
       timeout: envConfig.auth.inactivityTimeout,
       onTimeout: async () => {
         console.log('Session timed out due to inactivity');
-        trackSecurityEvent({
-          eventType: 'session_timeout',
-          action: 'auto_logout',
-        });
+        trackSecurityEvent(
+          {
+            eventType: 'session_timeout',
+            action: 'auto_logout',
+          },
+          { forceSend: true }
+        );
         await logout(true);
       },
       events: ['mousedown', 'keydown', 'scroll', 'touchstart', 'click', 'mousemove']
@@ -128,11 +131,14 @@ export const AuthProvider = ({ children }) => {
 
       // Setup auto logout monitoring
       setupInactivityMonitor();
-      trackSecurityEvent({
-        eventType: 'auth_activity',
-        action: 'login_success',
-        path: typeof window !== 'undefined' ? window.location.pathname : '',
-      });
+      trackSecurityEvent(
+        {
+          eventType: 'auth_activity',
+          action: 'login_success',
+          path: typeof window !== 'undefined' ? window.location.pathname : '',
+        },
+        { forceSend: true }
+      );
 
       return { success: true };
     } catch (error) {
@@ -175,11 +181,14 @@ export const AuthProvider = ({ children }) => {
         });
       }
 
-      trackSecurityEvent({
-        eventType: 'auth_activity',
-        action: isAutoLogout ? 'logout_inactivity' : 'logout_manual',
-        path: typeof window !== 'undefined' ? window.location.pathname : '',
-      });
+      trackSecurityEvent(
+        {
+          eventType: 'auth_activity',
+          action: isAutoLogout ? 'logout_inactivity' : 'logout_manual',
+          path: typeof window !== 'undefined' ? window.location.pathname : '',
+        },
+        { forceSend: true }
+      );
 
       // Redirect to login
       if (typeof window !== 'undefined') {

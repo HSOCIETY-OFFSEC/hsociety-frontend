@@ -69,8 +69,16 @@ const CommunityMessage = ({
   };
 
   const handleOpenProfile = () => {
-    if (!profileTarget) return;
-    navigate(`/community/profile/${encodeURIComponent(profileTarget)}`);
+    const handleValue =
+      profileTarget ||
+      message?.user?.hackerHandle ||
+      message?.user?.username ||
+      message?.username ||
+      '';
+    if (!handleValue) return;
+    const normalized = String(handleValue).trim().replace(/^@/, '');
+    if (!normalized) return;
+    navigate(`/@${encodeURIComponent(normalized)}`);
   };
 
   const handleSubmitComment = () => {
