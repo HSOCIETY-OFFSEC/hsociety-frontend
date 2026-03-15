@@ -33,9 +33,10 @@
 }
 
 .bottom-nav-item {
-  width: 44px;
-  height: 44px;
+  min-width: 64px;
+  height: auto;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 14px;
@@ -43,6 +44,10 @@
   border: 1px solid transparent;
   transition: color 0.18s ease, background 0.18s ease, border 0.18s ease;
   flex: 0 0 auto;
+  gap: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  text-align: center;
+  text-decoration: none;
 }
 
 .bottom-nav-item:hover {
@@ -54,6 +59,34 @@
   color: var(--primary-color);
   background: color-mix(in srgb, var(--primary-color) 12%, transparent);
   border-color: color-mix(in srgb, var(--primary-color) 30%, transparent);
+}
+
+.bottom-nav-label {
+  font-size: 0.62rem;
+  line-height: 1;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.bottom-nav-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
+  background: var(--bg-tertiary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-nav-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 @media (max-width: 767px) {

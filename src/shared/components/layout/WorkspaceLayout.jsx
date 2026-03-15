@@ -158,8 +158,8 @@ const WorkspaceLayout = () => {
   }, [notificationMenuOpen]);
 
 
-  const showSidebar = !isLessonWorkspace;
   const isMobile = navMode === 'mobile';
+  const showSidebar = !isLessonWorkspace && !isMobile;
   const handleSidebarToggle = () => {
     if (isMobile) {
       setMobileSidebarOpen((prev) => !prev);
@@ -170,8 +170,18 @@ const WorkspaceLayout = () => {
     window?.sessionStorage?.setItem('hsociety.sidebar.collapsed', String(next));
   };
   const bottomNavLinks = useMemo(
-    () => (navMode === 'mobile' && !showSidebar ? getMobileLinks(true, role || 'student') : []),
-    [navMode, role, showSidebar]
+    () => (navMode === 'mobile' ? getMobileLinks(true, role || 'student') : []),
+    [navMode, role]
+  );
+
+  const profileNav = useMemo(
+    () => ({
+      path: '/settings',
+      label: 'Profile',
+      avatarSrc,
+      avatarFallback,
+    }),
+    [avatarSrc, avatarFallback]
   );
 
   return (
@@ -401,67 +411,69 @@ const WorkspaceLayout = () => {
 
               {isCommunity && <ThemeToggle />}
 
-              <div ref={menuRef}>
-                <button
-                  type="button"
-                  className="workspace-profile-button"
-                  onClick={() => setMenuOpen((prev) => !prev)}
-                  aria-haspopup="menu"
-                  aria-expanded={menuOpen}
-                >
-                  <span className="workspace-avatar">
-                    <img
-                      src={avatarSrc}
-                      alt="Profile"
-                      onError={(e) => {
-                        if (e.currentTarget.src !== avatarFallback) {
-                          e.currentTarget.src = avatarFallback;
-                        }
-                      }}
-                    />
-                  </span>
-                  <span className="workspace-profile-name">
-                    {user?.name || user?.email || WORKSPACE_UI.topbar.userFallback}
-                  </span>
-                  <LuChevronDown size={16} />
-                </button>
-                {menuOpen && (
-                  <div className="workspace-profile-menu" role="menu">
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        navigate('/settings');
-                      }}
-                    >
-                      <LuUser size={16} />
-                      {WORKSPACE_UI.topbar.profile}
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={() => {
-                        setMenuOpen(false);
-                        navigate('/settings');
-                      }}
-                    >
-                      {WORKSPACE_UI.topbar.accountSettings}
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={async () => {
-                        setMenuOpen(false);
-                        await logout();
-                      }}
-                    >
-                      <LuLogOut size={16} />
-                      {WORKSPACE_UI.topbar.logout}
-                    </button>
-                  </div>
-                )}
-              </div>
+              {!isMobile && (
+                <div ref={menuRef}>
+                  <button
+                    type="button"
+                    className="workspace-profile-button"
+                    onClick={() => setMenuOpen((prev) => !prev)}
+                    aria-haspopup="menu"
+                    aria-expanded={menuOpen}
+                  >
+                    <span className="workspace-avatar">
+                      <img
+                        src={avatarSrc}
+                        alt="Profile"
+                        onError={(e) => {
+                          if (e.currentTarget.src !== avatarFallback) {
+                            e.currentTarget.src = avatarFallback;
+                          }
+                        }}
+                      />
+                    </span>
+                    <span className="workspace-profile-name">
+                      {user?.name || user?.email || WORKSPACE_UI.topbar.userFallback}
+                    </span>
+                    <LuChevronDown size={16} />
+                  </button>
+                  {menuOpen && (
+                    <div className="workspace-profile-menu" role="menu">
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          navigate('/settings');
+                        }}
+                      >
+                        <LuUser size={16} />
+                        {WORKSPACE_UI.topbar.profile}
+                      </button>
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          navigate('/settings');
+                        }}
+                      >
+                        {WORKSPACE_UI.topbar.accountSettings}
+                      </button>
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={async () => {
+                          setMenuOpen(false);
+                          await logout();
+                        }}
+                      >
+                        <LuLogOut size={16} />
+                        {WORKSPACE_UI.topbar.logout}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </header>
@@ -471,7 +483,12 @@ const WorkspaceLayout = () => {
         <Outlet />
       </main>
 
-      {navMode === 'mobile' && <BottomNav links={bottomNavLinks} />}
+      {navMode === 'mobile' && (
+        <BottomNav
+          links={bottomNavLinks}
+          profile={user?.id ? profileNav : null}
+        />
+      )}
     </div>
   );
 };
