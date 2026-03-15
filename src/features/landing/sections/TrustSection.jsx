@@ -17,18 +17,39 @@ const TrustSection = ({ signals = [] }) => (
         </p>
       </div>
 
-      <div className="trust-grid">
-        {signals.map((item) => (
-          <Card key={item.title} padding="large" className="trust-card reveal-on-scroll">
-            {item.icon && (
-              <div className="trust-icon">
-                <item.icon size={24} />
-              </div>
-            )}
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </Card>
-        ))}
+      <div className="trust-carousel" role="presentation">
+        <div className="trust-track">
+          {signals.map((item, index) => (
+            <Card
+              key={`${item.title}-${index}`}
+              padding="large"
+              className="trust-card reveal-on-scroll"
+            >
+              {item.icon && (
+                <div className="trust-icon">
+                  <item.icon size={24} />
+                </div>
+              )}
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </Card>
+          ))}
+          {signals.map((item, index) => (
+            <Card
+              key={`${item.title}-${index}-dup`}
+              padding="large"
+              className="trust-card reveal-on-scroll"
+            >
+              {item.icon && (
+                <div className="trust-icon">
+                  <item.icon size={24} />
+                </div>
+              )}
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   </section>

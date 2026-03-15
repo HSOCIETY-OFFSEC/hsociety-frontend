@@ -27,8 +27,9 @@
 .hero-section {
   position: relative;
   overflow: hidden;
-  min-height: calc(100svh - var(--navbar-height));
-  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,7 +181,7 @@
    * The container stretches to that height so the panels can
    * centre vertically inside it.
    */
-  min-height: calc(100svh - var(--navbar-height));
+  min-height: 100svh;
 }
 
 /* ═══════════════════════════════════════════════
@@ -503,7 +504,7 @@
 
 @media (max-width: 640px) {
   .hero-section {
-    min-height: calc(100svh - var(--navbar-height));
+    min-height: 100svh;
   }
 
   .hero-content-panel {
