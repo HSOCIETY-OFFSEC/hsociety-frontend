@@ -8,7 +8,7 @@
 
 import React, { useMemo } from 'react';
 import { IoFlameOutline } from 'react-icons/io5';
-import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
+import { resolveProfileAvatar } from '../../../shared/utils/profileAvatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { buildLeaderboard } from '../leaderboard.utils';
@@ -86,7 +86,7 @@ const LeaderboardTable = ({
       </div>
 
       {rows.map((entry) => {
-        const avatarFallback = getGithubAvatarDataUri(entry.handle || entry.name || 'member');
+        const { src: avatarSrc, fallback: avatarFallback } = resolveProfileAvatar(entry);
         const handle = entry.handle ? `@${entry.handle}` : '—';
         const rankAttr = entry.position <= 3 ? String(entry.position) : undefined;
 
@@ -106,7 +106,7 @@ const LeaderboardTable = ({
             <div className="lb-col lb-col-user" role="cell">
               <div className="lb-avatar">
                 <img
-                  src={entry.avatarUrl || avatarFallback}
+                  src={avatarSrc}
                   alt={entry.name}
                   onError={(e) => {
                     if (e.currentTarget.src !== avatarFallback) {

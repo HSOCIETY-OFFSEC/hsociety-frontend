@@ -22,7 +22,7 @@ import {
 import { FaXTwitter } from 'react-icons/fa6';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import PageLoader from '../../shared/components/ui/PageLoader';
-import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
+import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
 import { getPublicProfileByHandle } from './publicProfile.service';
 import '../../styles/sections/public-profile/index.css';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
@@ -142,7 +142,7 @@ const PublicProfile = () => {
     setShareUrl(`${window.location.origin}${handlePath}`);
   }, [normalizedHandle]);
 
-  const fallbackAvatar = getGithubAvatarDataUri(profile?.name || profile?.hackerHandle || profile?.id || 'member');
+  const { src: avatarSrc, fallback: fallbackAvatar } = resolveProfileAvatar(profile);
   const visitDates = Array.isArray(profile?.activity?.visitDates) ? profile.activity.visitDates : [];
   const contributionData = useMemo(() => buildContributionGrid(visitDates, 364), [visitDates]);
   const monthLabels = useMemo(() => buildMonthLabels(contributionData.weeks), [contributionData.weeks]);
@@ -216,7 +216,7 @@ const PublicProfile = () => {
             <div className="pp-avatar-wrap">
               <div className="pp-avatar">
                 <img
-                  src={profile?.avatarUrl || fallbackAvatar}
+                  src={avatarSrc}
                   alt={profile?.name || 'Member'}
                   onError={(e) => { if (e.currentTarget.src !== fallbackAvatar) e.currentTarget.src = fallbackAvatar; }}
                 />
@@ -438,7 +438,7 @@ const PublicProfile = () => {
             <div className="pp-share-preview">
               <div className="pp-share-avatar">
                 <img
-                  src={profile?.avatarUrl || fallbackAvatar}
+                  src={avatarSrc}
                   alt={profile?.name || 'Member'}
                   onError={(e) => { if (e.currentTarget.src !== fallbackAvatar) e.currentTarget.src = fallbackAvatar; }}
                 />

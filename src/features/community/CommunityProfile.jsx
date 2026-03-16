@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getCommunityProfile } from './community.service';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges } from '../../shared/utils/profileBadges';
-import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
+import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
 import '@styles/sections/community/profile.css';
 
 const formatCount = (value) => Number(value || 0).toLocaleString();
@@ -32,6 +32,7 @@ const CommunityProfile = () => {
     }),
     [profileData, profileXpSummary]
   );
+  const { src: heroAvatarSrc, fallback: heroAvatarFallback } = resolveProfileAvatar(profileData?.user);
 
   const loadProfile = useCallback(async () => {
     if (!handle) return;
@@ -93,11 +94,13 @@ const CommunityProfile = () => {
         <>
           <section className="community-profile-hero">
             <img
-              src={
-                profileData.user.avatarUrl ||
-                getGithubAvatarDataUri(profileData.user.hackerHandle || profileData.user.email || profileData.user.id)
-              }
+              src={heroAvatarSrc}
               alt={profileData.user.name || profileData.user.hackerHandle}
+              onError={(e) => {
+                if (e.currentTarget.src !== heroAvatarFallback) {
+                  e.currentTarget.src = heroAvatarFallback;
+                }
+              }}
             />
             <div>
               <p className="community-profile-handle">

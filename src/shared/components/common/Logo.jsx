@@ -17,20 +17,24 @@ import '../../../styles/shared/components/common/Logo.css';
  * - size: 'small' | 'medium' | 'large' | 'xlarge'
  * - clickable: boolean (default: false)
  * - className: additional CSS classes
+ * - src: optional direct logo path (overrides theme-based selection)
  */
 
-const Logo = ({ 
-  size = 'medium', 
-  clickable = false, 
+const Logo = ({
+  size = 'medium',
+  clickable = false,
   className = '',
-  onClick = null 
+  onClick = null,
+  src = null,
 }) => {
   const { theme } = useTheme();
   
   // Select logo based on current theme
-  const logoSrc = theme === 'light'
-    ? '/hsociety-logo-black.png'
-    : '/hsociety-logo-white.png';
+  const logoSrc = src
+    ? src
+    : theme === 'light'
+      ? '/hsociety-logo-black.png'
+      : '/hsociety-logo-white.png';
   
   // Size configurations
  const sizeMap = {

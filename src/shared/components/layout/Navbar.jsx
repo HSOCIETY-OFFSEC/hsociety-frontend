@@ -31,7 +31,7 @@ import useAuthModal from '../../hooks/useAuthModal';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
 import ThemeToggle from '../common/ThemeToggle';
-import { getGithubAvatarDataUri } from '../../utils/avatar';
+import { resolveProfileAvatar } from '../../utils/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { useNotifications } from '../../notifications/NotificationProvider';
@@ -46,7 +46,7 @@ const MENU_IDS = {
   mobile:        'navbar-mobile-menu',
 };
 
-const Navbar = ({ sticky = true }) => {
+const Navbar = ({ sticky = true, logoSrc = null }) => {
   const navigate  = useNavigate();
   const location  = useLocation();
   const { openAuthModal } = useAuthModal();
@@ -78,11 +78,10 @@ const Navbar = ({ sticky = true }) => {
 
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
 
-  const avatarFallback = useMemo(
-    () => getGithubAvatarDataUri(user?.name || 'user'),
-    [user?.name]
+  const { src: avatarSrc, fallback: avatarFallback } = useMemo(
+    () => resolveProfileAvatar(user),
+    [user]
   );
-  const avatarSrc = user?.avatarUrl || avatarFallback;
 
   const handleLogout = async () => { await logout(); };
 
@@ -215,7 +214,7 @@ const Navbar = ({ sticky = true }) => {
           onClick={() => navigate('/')}
           aria-label="Go to home"
         >
-          <Logo size="medium" />
+          <Logo size="large" src={logoSrc} />
         </button>
 
         {/* ── Desktop nav links ────────────────────── */}

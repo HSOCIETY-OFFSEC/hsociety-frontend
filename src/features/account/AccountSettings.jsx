@@ -7,7 +7,7 @@ import Button from '../../shared/components/ui/Button';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
 import { useAuth } from '../../core/auth/AuthContext';
-import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
+import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
 import { openNotificationTarget } from '../../shared/utils/notificationNavigation';
 import { validatePassword } from '../../core/validation/input.validator';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
@@ -150,8 +150,8 @@ const AccountSettings = () => {
   }, []);
 
   const identiconFallback = useMemo(
-    () => getGithubAvatarDataUri(user?.name || 'user'),
-    [user?.name]
+    () => resolveProfileAvatar(user).fallback,
+    [user]
   );
 
   const handleProfileSave = async () => {

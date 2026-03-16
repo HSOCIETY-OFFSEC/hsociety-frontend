@@ -16,7 +16,7 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import ThemeToggle from '../common/ThemeToggle';
-import { getGithubAvatarDataUri } from '../../utils/avatar';
+import { resolveProfileAvatar } from '../../utils/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import { getMobileLinks, getSidebarLinks } from '../../../config/navigation.config';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
@@ -124,11 +124,10 @@ const WorkspaceLayout = () => {
     return () => document.body.classList.remove('workspace-lock-scroll');
   }, [navMode]);
 
-  const avatarFallback = useMemo(
-    () => getGithubAvatarDataUri(user?.name || 'user'),
-    [user?.name]
+  const { src: avatarSrc, fallback: avatarFallback } = useMemo(
+    () => resolveProfileAvatar(user),
+    [user]
   );
-  const avatarSrc = user?.avatarUrl || avatarFallback;
 
   useEffect(() => {
     if (!menuOpen) return undefined;

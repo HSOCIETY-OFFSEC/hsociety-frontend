@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FiMessageSquare, FiStar, FiUsers } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getCommunityProfilesList } from './community.service';
-import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
+import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
 import { getPublicErrorMessage } from '../../shared/utils/publicError';
 import '@styles/sections/community/profiles.css';
 
@@ -95,17 +95,17 @@ const CommunityProfiles = () => {
               )}
               {!loading && !error && profiles.map((profile) => {
                 const handle = String(profile.hackerHandle || '').trim();
-                const fallback = getGithubAvatarDataUri(profile.name || profile.email || 'user');
+                const { src: avatarSrc, fallback: avatarFallback } = resolveProfileAvatar(profile);
                 return (
                   <article key={profile.id || handle} className="cpr-item-row">
                     <div className="cpr-item-main cpr-profile-main">
                       <img
-                        src={profile.avatarUrl || fallback}
+                        src={avatarSrc}
                         alt={profile.name}
                         className="cpr-avatar"
                         onError={(e) => {
-                          if (e.currentTarget.src !== fallback) {
-                            e.currentTarget.src = fallback;
+                          if (e.currentTarget.src !== avatarFallback) {
+                            e.currentTarget.src = avatarFallback;
                           }
                         }}
                       />

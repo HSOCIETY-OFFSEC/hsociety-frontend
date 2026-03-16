@@ -11,6 +11,9 @@
 .process-carousel {
   position: relative;
   overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--border-color);
 }
 
 .process-carousel::before,
@@ -18,27 +21,22 @@
   display: none;
 }
 
-.process-grid {
+.process-viewport {
   display: flex;
-  gap: 0;
   overflow-x: auto;
-  padding: 0;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--border-color);
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
-.process-grid::-webkit-scrollbar {
-  height: 4px;
+.process-viewport::-webkit-scrollbar {
+  display: none;
 }
 
-.process-grid::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 999px;
+.process-track {
+  display: flex;
+  gap: 1px;
+  width: max-content;
 }
 
 .process-card {
@@ -50,7 +48,6 @@
   gap: 0.75rem;
   min-width: 260px;
   max-width: 300px;
-  scroll-snap-align: start;
   flex: 0 0 auto;
   padding: 1.5rem;
   border-radius: 0;
@@ -109,6 +106,15 @@
   color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-viewport {
+    scroll-snap-type: x mandatory;
+  }
+  .process-card {
+    scroll-snap-align: start;
+  }
 }
 
 @media (max-width: 640px) {

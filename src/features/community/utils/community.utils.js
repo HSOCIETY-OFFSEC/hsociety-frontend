@@ -1,4 +1,5 @@
 import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
+import { getProfileFallbackSeed, getProfileAvatarUrl } from '../../../shared/utils/profileAvatar';
 
 export const formatMessageTime = (ts) => {
   if (!ts) return '';
@@ -21,17 +22,16 @@ export const getAvatarSrc = (value, fallbackSeed) => {
 };
 
 export const getUserAvatar = (user) =>
-  getAvatarSrc(
-    user?.avatarUrl || user?.photoUrl || user?.imageUrl || user?.profilePhoto,
-    user?.email || user?.name || user?.username
-  );
+  getAvatarSrc(getProfileAvatarUrl(user), getProfileFallbackSeed(user));
 
 export const getMessageAvatar = (message) =>
   getAvatarSrc(
-    message?.avatarUrl ||
-      message?.userAvatar ||
-      message?.profilePhoto ||
-      message?.user?.avatarUrl ||
-      message?.user?.photoUrl,
-    message?.username || message?.user?.name || message?.user?.username
+    getProfileAvatarUrl(message) || getProfileAvatarUrl(message?.user),
+    (() => {
+      const messageSeed = getProfileFallbackSeed(message);
+      if (messageSeed === 'user' && message?.user) {
+        return getProfileFallbackSeed(message.user);
+      }
+      return messageSeed;
+    })()
   );

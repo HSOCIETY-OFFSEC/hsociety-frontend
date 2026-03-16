@@ -10,8 +10,7 @@ import {
 import CommunityHeader from './components/header/CommunityHeader';
 import CommunityMessageList from './components/messages/CommunityMessageList';
 import CommunityCompose from './components/compose/CommunityCompose';
-import { getUserAvatar } from './utils/community.utils';
-import { getGithubAvatarDataUri } from '../../shared/utils/avatar';
+import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
 import { getProfile } from '../account/account.service';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_HUB_DATA } from '../../data/community/communityHubData';
@@ -328,10 +327,7 @@ const CommunityHub = () => {
   const isOwn = (msg) => msg.userId === user?.id || msg.username === user?.username;
   const currentUserId = user?.id;
   const currentUsername = user?.name || user?.username || 'You';
-  const currentUserAvatar = getUserAvatar(user);
-  const currentUserAvatarFallback = getGithubAvatarDataUri(
-    user?.email || user?.name || user?.username || 'user'
-  );
+  const { src: currentUserAvatar, fallback: currentUserAvatarFallback } = resolveProfileAvatar(user);
 
   const handleLike = (messageId) => {
     if (!messageId) return;

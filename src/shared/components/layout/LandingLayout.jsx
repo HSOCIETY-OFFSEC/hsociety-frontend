@@ -26,7 +26,7 @@ const LandingLayout = () => {
 
   return (
     <div className="landing-layout">
-      <Navbar sticky={true} />
+      <Navbar sticky={true} logoSrc="/logo-nav-banner.png" />
       <main className="landing-main">
         <Outlet />
       </main>

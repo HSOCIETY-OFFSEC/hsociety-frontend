@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight, FiHeart, FiMessageCircle, FiMessageSquare } from 'react-icons/fi';
-import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
+import { resolveProfileAvatar } from '../../../shared/utils/profileAvatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_PROFILES_DATA } from '../../../data/landing/communityProfilesData';
@@ -312,9 +312,7 @@ const CtrlBtn = ({ onClick, ariaLabel, children }) => {
 const ProfileCard = ({ profile, isLast, onEnter, onLeave, fmt }) => {
   const [hovered, setHovered] = useState(false);
 
-  const avatarFallback = getGithubAvatarDataUri(
-    profile.name || profile.hackerHandle || profile.id || 'member'
-  );
+  const { src: avatarSrc, fallback: avatarFallback } = resolveProfileAvatar(profile);
 
   const rawHandle = profile.hackerHandle
     ? profile.hackerHandle
@@ -346,7 +344,7 @@ const ProfileCard = ({ profile, isLast, onEnter, onLeave, fmt }) => {
       <div style={S.cardHeader}>
         <div style={S.avatarWrap}>
           <img
-            src={profile.avatarUrl || avatarFallback}
+            src={avatarSrc}
             alt={profile.name || 'Community member'}
             style={S.avatarImg}
             onError={(e) => {
