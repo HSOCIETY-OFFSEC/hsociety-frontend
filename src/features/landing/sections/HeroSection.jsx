@@ -1,7 +1,6 @@
-/* FILE: src/features/landing/sections/HeroSection.jsx */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowUpRight, FiArrowRight, FiTerminal } from 'react-icons/fi';
+import { FiArrowRight, FiTerminal, FiChevronDown } from 'react-icons/fi';
 import { getSocialLinks } from '../../../config/social.config';
 import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
@@ -11,9 +10,9 @@ import { trackEvent } from '../../../shared/services/analytics.service';
 import { ROUTES } from '../../../app/routes';
 import '../../../styles/landing/hero.css';
 
-/* ══════════════════════════════════════════════════════════
-   BINARY RAIN — sparse, low-opacity columns
-   ══════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════
+   BINARY RAIN
+════════════════════════════════════════ */
 function makeBinaryString(len) {
   let s = '';
   for (let i = 0; i < len; i++) {
@@ -46,10 +45,10 @@ const BinaryRain = () => (
   </div>
 );
 
-/* ══════════════════════════════════════════════════════════
+/* ════════════════════════════════════════
    TYPEWRITER HOOK
-   ══════════════════════════════════════════════════════════ */
-function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
+════════════════════════════════════════ */
+function useTypewriter(text, { speed = 38, startDelay = 300 } = {}) {
   const [displayed, setDisplayed] = useState('');
   const [isDone, setIsDone] = useState(false);
   const timerRef = useRef(null);
@@ -58,21 +57,19 @@ function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
     setDisplayed('');
     setIsDone(false);
     let index = 0;
-
     const startTimer = setTimeout(() => {
       const tick = () => {
         index += 1;
         setDisplayed(text.slice(0, index));
         if (index < text.length) {
-          const jitter = speed + (Math.random() * 28 - 14);
-          timerRef.current = setTimeout(tick, Math.max(16, jitter));
+          const jitter = speed + (Math.random() * 20 - 10);
+          timerRef.current = setTimeout(tick, Math.max(14, jitter));
         } else {
           setIsDone(true);
         }
       };
       tick();
     }, startDelay);
-
     return () => {
       clearTimeout(startTimer);
       clearTimeout(timerRef.current);
@@ -82,9 +79,9 @@ function useTypewriter(text, { speed = 45, startDelay = 350 } = {}) {
   return { displayed, isDone };
 }
 
-/* ══════════════════════════════════════════════════════════
-   COLOR "Hacker" / "Hackers" — accent only
-   ══════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════
+   COLOR "Hacker/Hackers" — accent only
+════════════════════════════════════════ */
 const HACKER_RE = /(Hackers?)/g;
 
 const ColoredText = ({ text }) => {
@@ -100,59 +97,19 @@ const ColoredText = ({ text }) => {
   );
 };
 
-/* ══════════════════════════════════════════════════════════
-   TYPED TITLE
-   ══════════════════════════════════════════════════════════ */
-const TypedTitle = ({ line1, line2 }) => {
-  const { displayed: text1, isDone: done1 } = useTypewriter(line1, { speed: 28, startDelay: 200 });
-  const { displayed: text2, isDone: done2 } = useTypewriter(
-    done1 ? (line2 || '') : '',
-    { speed: 28, startDelay: 80 }
-  );
-
-  const showLine2 = Boolean(line2);
-  const cursorOnLine1 = !done1;
-  const cursorOnLine2 = done1 && showLine2 && !done2;
-  const cursorIdle = done1 && (!showLine2 || done2);
-
-  return (
-    <h1 className="hero-title">
-      <span className="hero-typed-line">
-        <span className="hero-typed-text"><ColoredText text={text1} /></span>
-        {cursorOnLine1 && <span className="hero-type-cursor" aria-hidden="true" />}
-        {cursorIdle && !showLine2 && (
-          <span className="hero-type-cursor hero-type-cursor--idle" aria-hidden="true" />
-        )}
-      </span>
-
-      {showLine2 && done1 && (
-        <>
-          <br />
-          <span className="hero-typed-line">
-            <span className="hero-typed-text"><ColoredText text={text2} /></span>
-            {cursorOnLine2 && <span className="hero-type-cursor" aria-hidden="true" />}
-            {cursorIdle && (
-              <span className="hero-type-cursor hero-type-cursor--idle" aria-hidden="true" />
-            )}
-          </span>
-        </>
-      )}
-    </h1>
-  );
-};
-
-/* ══════════════════════════════════════════════════════════
+/* ════════════════════════════════════════
    MAIN COMPONENT
-   ══════════════════════════════════════════════════════════ */
+════════════════════════════════════════ */
 const HeroSection = ({ content }) => {
   const navigate = useNavigate();
   const { requestPentest, requestPentestModal } = useRequestPentest();
   const { openAuthModal } = useAuthModal();
   const { ctas, title, description } = content;
 
+  /* ── Title cycling ── */
   const defaultTitles = [
-    'Train like a Hacker.|Prepare for Hackers',
-    'Train like a Hacker.|Become a Hacker',
+    'Train like a|Hacker.',
+    'Prepare for|Hackers.',
   ];
   const [titleIndex, setTitleIndex] = useState(0);
 
@@ -161,7 +118,7 @@ const HeroSection = ({ content }) => {
     if (hasOverride) return undefined;
     const timer = window.setInterval(() => {
       setTitleIndex((prev) => (prev + 1) % defaultTitles.length);
-    }, 2000);
+    }, 3800);
     return () => window.clearInterval(timer);
   }, [title]);
 
@@ -170,86 +127,148 @@ const HeroSection = ({ content }) => {
     return defaultTitles[titleIndex];
   }, [title, titleIndex]);
 
-  const [titleLine1, titleLine2] = String(resolvedTitle || '').split('|');
+  /* Split on | for two lines */
+  const [line1, line2] = String(resolvedTitle || '').split('|');
+  const singleLineTitle = String(resolvedTitle || '').replace('|', ' ');
+
+  /* Typewriter for each line */
+  const { displayed: text1, isDone: done1 } = useTypewriter(line1 || '', { speed: 32, startDelay: 250 });
+  const { displayed: text2, isDone: done2 } = useTypewriter(
+    done1 ? (line2 || '') : '',
+    { speed: 32, startDelay: 100 }
+  );
+  const { displayed: singleText, isDone: singleDone } = useTypewriter(singleLineTitle, { speed: 28, startDelay: 200 });
+
+  const cursorOnLine1 = !done1;
+  const cursorOnLine2 = done1 && line2 && !done2;
+  const cursorIdle    = done1 && (!line2 || done2);
+  const cursorSingle  = !singleDone;
+
+  /* Scroll-down arrow pulse */
+  const [pulse, setPulse] = useState(false);
+  useEffect(() => {
+    const id = setTimeout(() => setPulse(true), 2200);
+    return () => clearTimeout(id);
+  }, []);
+
+  /* Handle CTA click */
+  const handleCta = (cta) => {
+    trackEvent('landing_cta_click', { location: 'hero', route: cta.route });
+    if (cta.route === ROUTES.CORPORATE_PENTEST) { requestPentest(); return; }
+    if (cta.route === ROUTES.LOGIN)              { openAuthModal('login'); return; }
+    if (cta.route === ROUTES.REGISTER)           { openAuthModal('register'); return; }
+    if (cta.route === ROUTES.CORPORATE_REGISTER) { openAuthModal('register-corporate'); return; }
+    navigate(cta.route);
+  };
 
   return (
-    <section className="hero-section">
-      {/* Binary rain */}
+    <section className="hero-section hero-section--centered">
       <BinaryRain />
-
-      {/* Grid overlay */}
       <div className="hero-grid-overlay" aria-hidden="true" />
 
-      <div className="hero-container">
-        {/* LEFT: Content */}
-        <div className="hero-content-panel">
+      {/* ── Radial glow behind title ── */}
+      <div className="hero-center-glow" aria-hidden="true" />
 
-          <p className="hero-kicker">
-            <FiTerminal size={13} style={{ marginRight: '0.4rem', verticalAlign: 'middle' }} />
-            Real Attacks. Real Security.
-          </p>
+      {/* ── Logo silhouette watermark ── */}
+      <div className="hero-logo-silhouette" aria-hidden="true">
+        <Logo size="xlarge" className="hero-logo-silhouette-img" />
+      </div>
 
-          <TypedTitle
-            line1={titleLine1 || title || 'Train like a Hacker.'}
-            line2={titleLine2}
-          />
+      <div className="hero-centered-container">
 
-          <p className="hero-description">
-            {description ||
-              'HSOCIETY is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.'}
-          </p>
+        {/* KICKER */}
+        <p className="hero-kicker hero-kicker--center hs-reveal">
+          <FiTerminal size={12} aria-hidden="true" />
+          Real Attacks. Real Security.
+        </p>
 
-          <div className="hero-cta">
-            {ctas.map((cta, index) => (
-              <Button
-                key={cta.label}
-                variant={cta.variant}
-                size="large"
-                onClick={() => {
-                  trackEvent('landing_cta_click', { location: 'hero', route: cta.route });
-                  if (cta.route === ROUTES.CORPORATE_PENTEST) { requestPentest(); return; }
-                  if (cta.route === ROUTES.LOGIN)              { openAuthModal('login'); return; }
-                  if (cta.route === ROUTES.REGISTER)           { openAuthModal('register'); return; }
-                  if (cta.route === ROUTES.CORPORATE_REGISTER) { openAuthModal('register-corporate'); return; }
-                  navigate(cta.route);
-                }}
-              >
-                {cta.label}
-                {index === 0 ? <FiArrowUpRight size={16} /> : <FiArrowRight size={16} />}
-              </Button>
-            ))}
-          </div>
+        {/* TITLE */}
+        <div className="hero-title-block hs-reveal hs-reveal--delay-1">
+          {/* Single-line (desktop) */}
+          <h1 className="hero-title-mega hero-title-mega--single">
+            <span className="hero-typed-text">
+              <ColoredText text={singleText} />
+            </span>
+            {cursorSingle && (
+              <span className="hero-type-cursor" aria-hidden="true" />
+            )}
+            {!cursorSingle && (
+              <span className="hero-type-cursor hero-type-cursor--idle" aria-hidden="true" />
+            )}
+          </h1>
 
-          <div className="hero-socials">
-            {getSocialLinks().map((link) => {
-              const Icon = link.icon;
-              return (
-                <a
-                  key={link.key}
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={link.label}
-                  className="hero-social-link"
-                >
-                  <Icon size={16} />
-                </a>
-              );
-            })}
-          </div>
+          {/* Line 1 */}
+          <h1 className="hero-title-mega hero-title-mega--line1">
+            <span className="hero-typed-text">
+              <ColoredText text={text1} />
+            </span>
+            {cursorOnLine1 && (
+              <span className="hero-type-cursor" aria-hidden="true" />
+            )}
+          </h1>
 
-          <div className="hero-scroll-cue" aria-hidden="true">
-            <span className="hero-scroll-text">Scroll</span>
-            <span className="hero-scroll-arrow" />
-          </div>
+          {/* Line 2 */}
+          {line2 && (
+            <h1
+              className={`hero-title-mega hero-title-mega--line2 hs-reveal ${done1 ? '' : 'hero-title-mega--ghost'}`}
+              aria-hidden={!done1}
+            >
+              <span className="hero-typed-text">
+                <ColoredText text={done1 ? text2 : line2} />
+              </span>
+              {cursorOnLine2 && (
+                <span className="hero-type-cursor" aria-hidden="true" />
+              )}
+              {cursorIdle && (
+                <span className="hero-type-cursor hero-type-cursor--idle" aria-hidden="true" />
+              )}
+            </h1>
+          )}
         </div>
 
-        {/* RIGHT: Logo */}
-        <div className="hero-visual-panel">
-          <div className="hero-logo-wrap">
-            <div className="hero-logo-halo" />
-            <Logo size="xlarge" className="hero-logo-minimal" />
-          </div>
+        {/* DESCRIPTION */}
+        <p className="hero-desc-centered hs-reveal hs-reveal--delay-2">
+          {description ||
+            'HSOCIETY is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.'}
+        </p>
+
+        {/* CTAs */}
+        <div className="hero-cta-centered hs-reveal hs-reveal--delay-3">
+          {ctas.map((cta, index) => (
+            <Button
+              key={cta.label}
+              variant={index === 0 ? 'primary' : 'secondary'}
+              size="large"
+              onClick={() => handleCta(cta)}
+            >
+              {cta.label}
+              <FiArrowRight size={15} />
+            </Button>
+          ))}
+        </div>
+
+        {/* SOCIAL LINKS */}
+        <div className="hero-socials-centered hs-reveal hs-reveal--delay-4">
+          {getSocialLinks().map((link) => {
+            const Icon = link.icon;
+            return (
+              <a
+                key={link.key}
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={link.label}
+                className="hero-social-link"
+              >
+                <Icon size={16} />
+              </a>
+            );
+          })}
+        </div>
+
+        {/* SCROLL CUE */}
+        <div className={`hero-scroll-cue-centered ${pulse ? 'hero-scroll-cue-centered--visible' : ''}`} aria-hidden="true">
+          <FiChevronDown size={18} />
         </div>
       </div>
 
