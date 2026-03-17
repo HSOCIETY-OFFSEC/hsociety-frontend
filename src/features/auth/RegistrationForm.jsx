@@ -21,6 +21,7 @@ const RegistrationForm = ({
   allowAccountTypeSwitch = true,
   note = null,
   prefillEmail = '',
+  useCard = true,
   onSuccessRedirect = null,
   onLoginRedirect = null,
 }) => {
@@ -144,6 +145,13 @@ const RegistrationForm = ({
       const response = await registerUser(payload);
 
       if (!response.success) {
+        if (response.errorCode === 'USER_EXISTS') {
+          setError('Account already exists. Log in instead.');
+          if (onLoginRedirect) {
+            onLoginRedirect({ email: form.email });
+            return;
+          }
+        }
         setError(response.error || 'Registration failed. Please try again.');
         return;
       }
@@ -176,8 +184,8 @@ const RegistrationForm = ({
     }
   };
 
-  return (
-    <Card className="auth-card">
+  const formContent = (
+    <>
       <div className="auth-header">
         <h1>{copy.header.title}</h1>
         <p className="auth-subtitle">{headerSubtitle}</p>
@@ -360,6 +368,16 @@ const RegistrationForm = ({
         </div>
       </form>
 
+    </>
+  );
+
+  if (!useCard) {
+    return <div className="auth-panel">{formContent}</div>;
+  }
+
+  return (
+    <Card className="auth-card">
+      {formContent}
     </Card>
   );
 };

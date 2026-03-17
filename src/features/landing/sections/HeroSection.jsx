@@ -5,7 +5,6 @@ import Logo from '../../../shared/components/common/Logo';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import { validateEmail } from '../../../core/validation/input.validator';
-import { checkEmailExists } from '../../../core/auth/auth.service';
 import '../../../styles/landing/hero.css';
 
 /* ════════════════════════════════════════
@@ -104,7 +103,6 @@ const HeroSection = ({ content }) => {
   const { ctas, title, description } = content;
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [emailLoading, setEmailLoading] = useState(false);
 
   /* ── Title cycling ── */
   const defaultTitles = [
@@ -160,23 +158,7 @@ const HeroSection = ({ content }) => {
       setEmailError('Enter a valid email address to continue.');
       return;
     }
-
-    setEmailLoading(true);
-    const result = await checkEmailExists(normalized);
-    if (!result.success) {
-      setEmailError(result.message || 'Unable to verify that email. Please try again.');
-      setEmailLoading(false);
-      return;
-    }
-
-    if (result.exists) {
-      setEmailError('This email already has an account. Sign in instead.');
-      setEmailLoading(false);
-      return;
-    }
-
     openAuthModal('register', { email: normalized, payload: { email: normalized } });
-    setEmailLoading(false);
   };
 
   const heroCtaLabel = ctas?.[0]?.label || 'Sign up for HSOCIETY';
@@ -273,9 +255,8 @@ const HeroSection = ({ content }) => {
               <button
                 type="submit"
                 className="hero-email-button"
-                disabled={emailLoading}
               >
-                {emailLoading ? 'Checking...' : heroCtaLabel}
+                {heroCtaLabel}
               </button>
             </div>
           </form>

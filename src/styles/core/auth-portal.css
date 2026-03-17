@@ -77,10 +77,18 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  padding-top: clamp(2rem, 6vh, 4rem);
 }
 
 .auth-portal-card {
   padding: 0;
+}
+
+.auth-panel {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 
 .auth-portal-questionnaire {
@@ -191,11 +199,16 @@
   }
 
   .auth-portal-marketing {
-    display: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .auth-portal-panel {
     padding: clamp(1.5rem, 6vw, 2.5rem);
     align-items: flex-start;
+  }
+
+  .auth-portal-panel-inner {
+    padding-top: calc(var(--navbar-height, 72px) + 1.5rem);
   }
 }

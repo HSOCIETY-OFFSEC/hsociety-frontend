@@ -27,6 +27,7 @@ const Login = ({
   onRequestModeChange = null,
   prefillEmail = '',
   redirect = null,
+  useCard = true,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -176,12 +177,8 @@ const Login = ({
     setError('');
   };
 
-  const content = (
-    <section
-      className={`auth-wrapper ${layout === 'modal' ? 'auth-wrapper--modal' : ''}`}
-      onClick={layout === 'modal' ? (event) => event.stopPropagation() : undefined}
-    >
-        <Card className="auth-card">
+  const formContent = (
+    <>
           {/* Step indicator for 2FA flow */}
           {step === 2 && (
             <div className="auth-step-indicator">
@@ -342,7 +339,19 @@ const Login = ({
               </button>
             </p>
           </div>
-        </Card>
+    </>
+  );
+
+  const content = (
+    <section
+      className={`auth-wrapper ${layout === 'modal' ? 'auth-wrapper--modal' : ''}`}
+      onClick={layout === 'modal' ? (event) => event.stopPropagation() : undefined}
+    >
+      {useCard ? (
+        <Card className="auth-card">{formContent}</Card>
+      ) : (
+        <div className="auth-panel">{formContent}</div>
+      )}
 
         <div className="auth-notice">
           <p>

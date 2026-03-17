@@ -397,7 +397,7 @@
 .hero-email-input {
   width: 100%;
   padding: 0.95rem 11.5rem 0.95rem 1.2rem;
-  border-radius: 999px;
+  border-radius: 16px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
   color: var(--text-primary);
@@ -417,7 +417,7 @@
   right: 0.4rem;
   transform: translateY(-50%);
   border: none;
-  border-radius: 999px;
+  border-radius: 12px;
   padding: 0.7rem 1.2rem;
   background: var(--primary-color);
   color: #0b0b0b;

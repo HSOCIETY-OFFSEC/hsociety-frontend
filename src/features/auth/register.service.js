@@ -29,6 +29,14 @@ export const registerUser = async (payload) => {
       };
     }
 
+    if (response.status === 409 || response.data?.error?.toLowerCase?.().includes('already')) {
+      return {
+        success: false,
+        error: 'Account already exists. Log in instead.',
+        errorCode: 'USER_EXISTS'
+      };
+    }
+
     return {
       success: false,
       error: response.status === 0
