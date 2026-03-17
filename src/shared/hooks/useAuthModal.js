@@ -10,6 +10,7 @@ const getAuthPayload = (state) => state?.authModal || null;
 
 const allowedAuthModes = new Set(Object.values(AUTH_MODAL_MODES));
 const normalizeAuthMode = (mode) => (allowedAuthModes.has(mode) ? mode : null);
+const AUTH_PORTAL_ROUTE = '/posts';
 
 const useAuthModal = () => {
   const location = useLocation();
@@ -21,7 +22,7 @@ const useAuthModal = () => {
   const payload = getAuthPayload(location.state);
 
   const openAuthModal = (nextMode, options = {}) => {
-    const nextParams = new URLSearchParams(location.search);
+    const nextParams = new URLSearchParams();
     const normalizedMode = normalizeAuthMode(nextMode);
     if (normalizedMode) {
       nextParams.set(AUTH_QUERY_KEY, normalizedMode);
@@ -41,6 +42,12 @@ const useAuthModal = () => {
       nextParams.delete('reason');
     }
 
+    if (options.email) {
+      nextParams.set('email', options.email);
+    } else {
+      nextParams.delete('email');
+    }
+
     const hasPayload = Object.prototype.hasOwnProperty.call(options, 'payload');
     const nextPayload = hasPayload
       ? options.payload
@@ -52,7 +59,7 @@ const useAuthModal = () => {
 
     navigate(
       {
-        pathname: options.pathname || location.pathname,
+        pathname: options.pathname || AUTH_PORTAL_ROUTE,
         search: getSearchString(nextParams),
       },
       {

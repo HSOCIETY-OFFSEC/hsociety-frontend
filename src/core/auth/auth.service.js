@@ -157,6 +157,36 @@ export const register = async (userData) => {
 };
 
 /**
+ * Check if an email already exists in the system.
+ * @param {string} email
+ * @returns {Promise<Object>} - { success, exists, message }
+ */
+export const checkEmailExists = async (email) => {
+  try {
+    if (!validateEmail(email)) {
+      return { success: false, message: 'Please enter a valid email address.' };
+    }
+
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.CHECK_EMAIL, { email });
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: getPublicAuthMessage('register', response)
+      };
+    }
+
+    return { success: true, exists: Boolean(response.data?.exists) };
+  } catch (error) {
+    console.error('[AUTH] Email check failed:', error);
+    return {
+      success: false,
+      message: getPublicAuthMessage('register', error)
+    };
+  }
+};
+
+/**
  * Logout user
  * @param {string} token - Auth token
  * @returns {Promise<Object>} - { success, message }
@@ -367,6 +397,7 @@ export const updateProfile = async (updates) => {
 export default {
   login,
   register,
+  checkEmailExists,
   logout,
   requestPasswordReset,
   resetPassword,

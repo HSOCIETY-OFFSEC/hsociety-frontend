@@ -24,13 +24,11 @@ import {
   LuShield,
   LuX,
 } from 'react-icons/lu';
-import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import useAuthModal from '../../hooks/useAuthModal';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
-import ThemeToggle from '../common/ThemeToggle';
 import { resolveProfileAvatar } from '../../utils/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
@@ -46,7 +44,7 @@ const MENU_IDS = {
   mobile:        'navbar-mobile-menu',
 };
 
-const Navbar = ({ sticky = true, logoSrc = null }) => {
+const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => {
   const navigate  = useNavigate();
   const location  = useLocation();
   const { openAuthModal } = useAuthModal();
@@ -75,6 +73,7 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
       ? 'mobile'
       : 'desktop'
   );
+  const [isAtTop, setIsAtTop] = useState(true);
 
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
 
@@ -106,6 +105,14 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
       document.body.classList.remove('has-auth-dock');
     };
   }, [viewportMode, isAuthenticated, mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!transparentOnTop || typeof window === 'undefined') return undefined;
+    const update = () => setIsAtTop(window.scrollY <= 2);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, [transparentOnTop, location.pathname]);
 
   const role        = user?.role === 'client' ? 'corporate' : user?.role;
   const isStudent   = role === 'student';
@@ -204,7 +211,7 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
   const handleEscape = (e, setter) => { if (e.key === 'Escape') setter(false); };
 
   return (
-    <nav className="gh-nav">
+    <nav className={`gh-nav${transparentOnTop && isAtTop ? ' gh-nav--transparent' : ''}`}>
       <div className="gh-nav-inner">
 
         {/* ── Logo ─────────────────────────────────── */}
@@ -346,11 +353,6 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
             </div>
           )}
 
-          {/* Theme toggle */}
-          <span className="gh-nav-theme">
-            <ThemeToggle />
-          </span>
-
           {/* Notifications */}
           {isAuthenticated && (
             <div
@@ -429,7 +431,7 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
             </div>
           )}
 
-          {/* Register button (public, desktop) */}
+          {/* Login button (public, desktop) */}
           {!isAuthenticated && viewportMode === 'desktop' && (
             <>
               <button
@@ -438,13 +440,6 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
                 onClick={() => openAuthModal('login')}
               >
                 Login
-              </button>
-              <button
-                type="button"
-                className="gh-btn gh-btn-primary"
-                onClick={() => openAuthModal('register')}
-              >
-                Register
               </button>
             </>
           )}
@@ -529,7 +524,7 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
               aria-expanded={mobileMenuOpen}
               aria-controls={MENU_IDS.mobile}
             >
-              {mobileMenuOpen ? <LuX size={18} /> : <BsThreeDotsVertical size={18} />}
+              {mobileMenuOpen ? <LuX size={18} /> : <LuMenu size={18} />}
             </button>
           )}
         </div>
@@ -650,14 +645,6 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
                   <LuLogIn size={16} />
                   <span>Login</span>
                 </button>
-                <button
-                  type="button"
-                  className="gh-mobile-link gh-mobile-link--accent"
-                  onClick={() => { openAuthModal('register'); setMobileMenuOpen(false); }}
-                >
-                  <LuShield size={16} />
-                  <span>Register</span>
-                </button>
               </>
             )}
           </div>
@@ -673,13 +660,6 @@ const Navbar = ({ sticky = true, logoSrc = null }) => {
             onClick={() => openAuthModal('login')}
           >
             Login
-          </button>
-          <button
-            type="button"
-            className="gh-mobile-dock-btn gh-mobile-dock-btn--primary"
-            onClick={() => openAuthModal('register')}
-          >
-            Register
           </button>
         </div>
       )}

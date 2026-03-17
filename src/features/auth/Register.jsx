@@ -34,7 +34,7 @@ const Register = ({
           {copy.footer.loginPrompt}{' '}
           <button
             onClick={() =>
-              onRequestModeChange ? onRequestModeChange('login') : navigate('/login')
+              onRequestModeChange ? onRequestModeChange('login') : navigate('/posts?auth=login')
             }
             className="auth-link-inline"
           >
@@ -49,7 +49,7 @@ const Register = ({
             onClick={() =>
               onRequestModeChange
                 ? onRequestModeChange('register-corporate')
-                : navigate('/register/corporate')
+                : navigate('/posts?auth=register-corporate')
             }
           >
             {copy.footer.corporateAction}

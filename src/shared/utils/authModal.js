@@ -12,5 +12,6 @@ export const buildAuthModalUrl = (mode = AUTH_MODAL_MODES.LOGIN, options = {}) =
   params.set(AUTH_QUERY_KEY, mode);
   if (options.reason) params.set('reason', options.reason);
   if (options.redirect) params.set('redirect', options.redirect);
-  return `/?${params.toString()}`;
+  if (options.email) params.set('email', options.email);
+  return `/posts?${params.toString()}`;
 };

@@ -18,17 +18,12 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
-  const themeOrder = ['light', 'black'];
+  const getPreferredTheme = () => {
+    if (typeof window === 'undefined') return 'black';
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'black';
+  };
 
-  // Initialize theme from localStorage or default to 'black'
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('hsociety-theme');
-      if (savedTheme === 'dark') return 'black';
-      return themeOrder.includes(savedTheme) ? savedTheme : 'black';
-    }
-    return 'black';
-  });
+  const [theme, setTheme] = useState(getPreferredTheme);
 
   // Apply theme to document root on mount and when theme changes
   useEffect(() => {
@@ -39,9 +34,6 @@ export const ThemeProvider = ({ children }) => {
       root.setAttribute('data-theme', theme);
     }
     root.style.colorScheme = theme === 'light' ? 'light' : 'dark';
-    
-    // Save to localStorage
-    localStorage.setItem('hsociety-theme', theme);
     
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -56,6 +48,15 @@ export const ThemeProvider = ({ children }) => {
     // Keep a single favicon set across themes.
     updateFavicon();
   }, [theme]);
+
+  // Sync with browser preference changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+    const handleChange = () => setTheme(getPreferredTheme());
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   // Keep favicon assets on a single canonical path.
   const updateFavicon = () => {
@@ -73,26 +74,8 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  // Toggle between light and black
-  const toggleTheme = () => {
-    setTheme(prevTheme => {
-      const currentIndex = themeOrder.indexOf(prevTheme);
-      const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % themeOrder.length;
-      return themeOrder[nextIndex];
-    });
-  };
-
-  // Set specific theme
-  const setThemeMode = (mode) => {
-    if (themeOrder.includes(mode)) {
-      setTheme(mode);
-    }
-  };
-
   const value = {
     theme,
-    toggleTheme,
-    setTheme: setThemeMode,
     isDark: theme === 'black',
     isLight: theme === 'light',
     isBlack: theme === 'black'

@@ -15,7 +15,6 @@ import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
-import ThemeToggle from '../common/ThemeToggle';
 import { resolveProfileAvatar } from '../../utils/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import { getMobileLinks, getSidebarLinks } from '../../../config/navigation.config';
@@ -469,7 +468,6 @@ const WorkspaceLayout = () => {
                 </div>
               )}
 
-              {isCommunity && <ThemeToggle />}
 
               {!isMobile && (
                 <div ref={menuRef}>

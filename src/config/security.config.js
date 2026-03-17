@@ -157,6 +157,7 @@ export const CSRF_CONFIG = {
   exemptPaths: [
     '/api/auth/login',
     '/api/auth/register',
+    '/api/auth/check-email',
     '/api/feedback'
   ]
 };

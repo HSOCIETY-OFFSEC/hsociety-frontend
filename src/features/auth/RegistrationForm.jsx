@@ -20,6 +20,7 @@ const RegistrationForm = ({
   defaultAccountType = 'student',
   allowAccountTypeSwitch = true,
   note = null,
+  prefillEmail = '',
   onSuccessRedirect = null,
   onLoginRedirect = null,
 }) => {
@@ -33,7 +34,7 @@ const RegistrationForm = ({
   const [form, setForm] = useState({
     name: '',
     companyOrSchool: '',
-    email: '',
+    email: prefillEmail || '',
     password: '',
     confirmPassword: '',
     agree: false,
@@ -123,6 +124,11 @@ const RegistrationForm = ({
     return () => window.clearInterval(interval);
   }, [syncFormFromDom]);
 
+  useEffect(() => {
+    if (!prefillEmail) return;
+    setForm((prev) => (prev.email ? prev : { ...prev, email: prefillEmail }));
+  }, [prefillEmail]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
@@ -162,7 +168,7 @@ const RegistrationForm = ({
         return;
       }
 
-      navigate('/login', { state: redirectPayload });
+      navigate('/posts', { state: redirectPayload, search: '?auth=login' });
     } catch (err) {
       setError('Registration failed. Please try again.');
     } finally {

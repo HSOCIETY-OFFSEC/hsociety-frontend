@@ -58,6 +58,7 @@ const DEFAULT_API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
+    CHECK_EMAIL: '/auth/check-email',
     LOGOUT: '/auth/logout',
     REFRESH: '/auth/refresh',
     VERIFY: '/auth/verify',

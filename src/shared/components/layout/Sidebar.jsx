@@ -4,7 +4,6 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { getSidebarLinks } from '../../../config/navigation.config';
 import { LuChevronDown, LuChevronsLeft, LuChevronsRight, LuLayers } from 'react-icons/lu';
 import Logo from '../common/Logo';
-import ThemeToggle from '../common/ThemeToggle';
 import '../../../styles/shared/components/layout/Sidebar.css';
 
 /**
@@ -214,7 +213,6 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
               </span>
             </button>
           )}
-          <ThemeToggle />
         </div>
       </div>
     </aside>

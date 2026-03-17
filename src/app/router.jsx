@@ -9,7 +9,7 @@ import PublicLayout from '../shared/components/layout/PublicLayout';
 import RouteEffects from '../shared/components/layout/RouteEffects';
 import StudentRoleBlocker from '../features/student/components/StudentRoleBlocker';
 import Landing from '../features/landing/Landing';
-import AuthModal from '../features/auth/AuthModal';
+import AuthPortal from '../features/auth/AuthPortal';
 import { AUTH_MODAL_MODES } from '../shared/utils/authModal';
 
 // Lazy load components
@@ -175,7 +175,6 @@ const AppRouter = () => {
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <RouteEffects />
-      <AuthModal />
       <React.Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Landing - full-width marketing layout */}
@@ -187,20 +186,21 @@ const AppRouter = () => {
           <Route element={<AuthLayout />}>
             <Route
               path="login"
-              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.LOGIN}` }} replace />}
+              element={<Navigate to={{ pathname: '/posts', search: `?auth=${AUTH_MODAL_MODES.LOGIN}` }} replace />}
             />
             <Route
               path="pentester-login"
-              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.PENTESTER_LOGIN}` }} replace />}
+              element={<Navigate to={{ pathname: '/posts', search: `?auth=${AUTH_MODAL_MODES.PENTESTER_LOGIN}` }} replace />}
             />
             <Route
               path="register"
-              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.REGISTER}` }} replace />}
+              element={<Navigate to={{ pathname: '/posts', search: `?auth=${AUTH_MODAL_MODES.REGISTER}` }} replace />}
             />
             <Route
               path="register/corporate"
-              element={<Navigate to={{ pathname: '/', search: `?auth=${AUTH_MODAL_MODES.CORPORATE_REGISTER}` }} replace />}
+              element={<Navigate to={{ pathname: '/posts', search: `?auth=${AUTH_MODAL_MODES.CORPORATE_REGISTER}` }} replace />}
             />
+            <Route path="posts" element={<AuthPortal />} />
             <Route path="change-password" element={<ForcePasswordChange />} />
           </Route>
 

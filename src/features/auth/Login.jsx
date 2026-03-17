@@ -319,7 +319,7 @@ const Login = ({
                 onClick={() =>
                   onRequestModeChange
                     ? onRequestModeChange('register')
-                    : navigate('/register')
+                    : navigate('/posts?auth=register')
                 }
                 className="auth-link-inline"
                 disabled={loading}
@@ -333,7 +333,7 @@ const Login = ({
                 onClick={() =>
                   onRequestModeChange
                     ? onRequestModeChange('register-corporate')
-                    : navigate('/register/corporate')
+                    : navigate('/posts?auth=register-corporate')
                 }
                 className="auth-link-inline"
                 disabled={loading}

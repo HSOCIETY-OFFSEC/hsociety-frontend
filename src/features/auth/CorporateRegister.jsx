@@ -13,7 +13,7 @@ const CorporateRegister = ({
   const location = useLocation();
   const navigate = useNavigate();
   const query = new URLSearchParams(location.search);
-  const redirectRoute = query.get('redirect') || '/login';
+  const redirectRoute = query.get('redirect') || '/posts?auth=login';
   const copy = AUTH_FORM_CONTENT.register;
 
   const content = (
@@ -37,7 +37,7 @@ const CorporateRegister = ({
             onClick={() =>
               onRequestModeChange
                 ? onRequestModeChange('register')
-                : navigate('/register')
+                : navigate('/posts?auth=register')
             }
           >
             {copy.footer.studentAction}

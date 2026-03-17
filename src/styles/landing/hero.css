@@ -377,17 +377,76 @@
 
 .hero-cta-centered {
   display: flex;
-  flex-direction: row;
-  gap: 0.8rem;
+  flex-direction: column;
+  gap: 0.6rem;
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 2rem;
 }
 
-.hero-cta-centered button {
-  min-width: 150px;
+.hero-email-form {
+  width: min(720px, 100%);
+}
+
+.hero-email-shell {
+  position: relative;
+  width: 100%;
+}
+
+.hero-email-input {
+  width: 100%;
+  padding: 0.95rem 11.5rem 0.95rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hero-email-input:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--primary-color) 50%, var(--border-color));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+
+.hero-email-button {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  background: var(--primary-color);
+  color: #0b0b0b;
+  font-weight: 600;
+  cursor: pointer;
   white-space: nowrap;
+}
+
+.hero-email-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.hero-email-error {
+  color: #e25c5c;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.hero-email-signin {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.hero-email-signin:hover {
+  color: var(--text-primary);
 }
 
 /* ═══════════════════════════════════════════════
@@ -482,6 +541,17 @@
    ═══════════════════════════════════════════════ */
 
 @media (max-width: 1023px) {
+  .hero-section {
+    align-items: flex-start;
+    padding-top: 0;
+    box-sizing: border-box;
+  }
+
+  .hero-centered-container {
+    padding-top: calc(var(--navbar-height, 64px) + 2rem);
+    padding-bottom: clamp(3rem, 8vh, 5rem);
+  }
+
   .hero-title-mega {
     font-size: clamp(2.4rem, 9vw, 4rem);
     white-space: normal;
@@ -534,13 +604,22 @@
   }
 
   .hero-cta-centered {
-    flex-direction: column;
-    align-items: stretch;
+    width: 100%;
   }
 
-  .hero-cta-centered button {
+  .hero-email-form {
     width: 100%;
-    min-width: 0;
+  }
+
+  .hero-email-input {
+    padding-right: 1.1rem;
+  }
+
+  .hero-email-button {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-top: 0.6rem;
   }
 
   .hero-logo-silhouette {

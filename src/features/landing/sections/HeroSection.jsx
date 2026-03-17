@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiArrowRight, FiTerminal, FiChevronDown } from 'react-icons/fi';
+import { FiTerminal, FiChevronDown } from 'react-icons/fi';
 import { getSocialLinks } from '../../../config/social.config';
-import Button from '../../../shared/components/ui/Button';
 import Logo from '../../../shared/components/common/Logo';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
-import { trackEvent } from '../../../shared/services/analytics.service';
-import { ROUTES } from '../../../app/routes';
+import { validateEmail } from '../../../core/validation/input.validator';
+import { checkEmailExists } from '../../../core/auth/auth.service';
 import '../../../styles/landing/hero.css';
 
 /* ════════════════════════════════════════
@@ -101,10 +99,12 @@ const ColoredText = ({ text }) => {
    MAIN COMPONENT
 ════════════════════════════════════════ */
 const HeroSection = ({ content }) => {
-  const navigate = useNavigate();
-  const { requestPentest, requestPentestModal } = useRequestPentest();
+  const { requestPentestModal } = useRequestPentest();
   const { openAuthModal } = useAuthModal();
   const { ctas, title, description } = content;
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [emailLoading, setEmailLoading] = useState(false);
 
   /* ── Title cycling ── */
   const defaultTitles = [
@@ -152,14 +152,34 @@ const HeroSection = ({ content }) => {
   }, []);
 
   /* Handle CTA click */
-  const handleCta = (cta) => {
-    trackEvent('landing_cta_click', { location: 'hero', route: cta.route });
-    if (cta.route === ROUTES.CORPORATE_PENTEST) { requestPentest(); return; }
-    if (cta.route === ROUTES.LOGIN)              { openAuthModal('login'); return; }
-    if (cta.route === ROUTES.REGISTER)           { openAuthModal('register'); return; }
-    if (cta.route === ROUTES.CORPORATE_REGISTER) { openAuthModal('register-corporate'); return; }
-    navigate(cta.route);
+  const handleEmailSubmit = async (event) => {
+    event.preventDefault();
+    setEmailError('');
+    const normalized = String(email || '').trim().toLowerCase();
+    if (!validateEmail(normalized)) {
+      setEmailError('Enter a valid email address to continue.');
+      return;
+    }
+
+    setEmailLoading(true);
+    const result = await checkEmailExists(normalized);
+    if (!result.success) {
+      setEmailError(result.message || 'Unable to verify that email. Please try again.');
+      setEmailLoading(false);
+      return;
+    }
+
+    if (result.exists) {
+      setEmailError('This email already has an account. Sign in instead.');
+      setEmailLoading(false);
+      return;
+    }
+
+    openAuthModal('register', { email: normalized, payload: { email: normalized } });
+    setEmailLoading(false);
   };
+
+  const heroCtaLabel = ctas?.[0]?.label || 'Sign up for HSOCIETY';
 
   return (
     <section className="hero-section hero-section--centered">
@@ -234,17 +254,41 @@ const HeroSection = ({ content }) => {
 
         {/* CTAs */}
         <div className="hero-cta-centered hs-reveal hs-reveal--delay-3">
-          {ctas.map((cta, index) => (
-            <Button
-              key={cta.label}
-              variant={index === 0 ? 'primary' : 'secondary'}
-              size="large"
-              onClick={() => handleCta(cta)}
-            >
-              {cta.label}
-              <FiArrowRight size={15} />
-            </Button>
-          ))}
+          <form className="hero-email-form" onSubmit={handleEmailSubmit} noValidate>
+            <div className="hero-email-shell">
+              <input
+                type="email"
+                name="hero-email"
+                aria-label="Email address"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  if (emailError) setEmailError('');
+                }}
+                autoComplete="email"
+                inputMode="email"
+                className="hero-email-input"
+              />
+              <button
+                type="submit"
+                className="hero-email-button"
+                disabled={emailLoading}
+              >
+                {emailLoading ? 'Checking...' : heroCtaLabel}
+              </button>
+            </div>
+          </form>
+          {emailError && (
+            <p className="hero-email-error" role="alert">{emailError}</p>
+          )}
+          <button
+            type="button"
+            className="hero-email-signin"
+            onClick={() => openAuthModal('login', { email: String(email || '').trim().toLowerCase() || undefined })}
+          >
+            Already have an account? Sign in.
+          </button>
         </div>
 
         {/* SOCIAL LINKS */}
