@@ -17,6 +17,7 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding-bottom: 0.5rem;
+  padding-top: 0.4rem;
 }
 
 .module-tile {

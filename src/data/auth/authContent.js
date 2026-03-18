@@ -82,6 +82,11 @@ export const AUTH_FORM_CONTENT = {
         label: 'Full Name',
         placeholder: 'Wunpini Andani',
       },
+      handle: {
+        label: 'Handle',
+        placeholder: 'wsuits6',
+        hint: 'This becomes your public profile URL: /@handle',
+      },
       org: {
         studentLabel: 'School / Program',
         corporateLabel: 'Company',

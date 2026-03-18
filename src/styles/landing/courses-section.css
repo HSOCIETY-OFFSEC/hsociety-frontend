@@ -165,6 +165,12 @@
   box-shadow: 0 0 60px rgba(0,0,0,0.9) inset;
 }
 
+@media (min-width: 1024px) {
+  .cs-screen {
+    min-height: clamp(460px, 62vh, 700px);
+  }
+}
+
 /* ── OS menu bar ── */
 .cs-menubar {
   display: flex;

@@ -36,6 +36,7 @@ const RegistrationForm = ({
     name: '',
     companyOrSchool: '',
     email: prefillEmail || '',
+    handle: '',
     password: '',
     confirmPassword: '',
     agree: false,
@@ -45,6 +46,7 @@ const RegistrationForm = ({
   const nameRef = useRef(null);
   const orgRef = useRef(null);
   const emailRef = useRef(null);
+  const handleRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmRef = useRef(null);
 
@@ -89,6 +91,13 @@ const RegistrationForm = ({
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  const normalizeHandleInput = (value = '') =>
+    String(value)
+      .trim()
+      .replace(/^@/, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9._-]/g, '');
+
   const syncFormFromDom = useCallback(() => {
     setForm((prev) => {
       let changed = false;
@@ -104,6 +113,10 @@ const RegistrationForm = ({
       }
       if (emailRef.current && emailRef.current.value !== prev.email) {
         next.email = emailRef.current.value;
+        changed = true;
+      }
+      if (handleRef.current && handleRef.current.value !== prev.handle) {
+        next.handle = handleRef.current.value;
         changed = true;
       }
       if (passwordRef.current && passwordRef.current.value !== prev.password) {
@@ -129,6 +142,13 @@ const RegistrationForm = ({
     if (!prefillEmail) return;
     setForm((prev) => (prev.email ? prev : { ...prev, email: prefillEmail }));
   }, [prefillEmail]);
+
+  useEffect(() => {
+    if (!form.name || form.handle) return;
+    const suggested = normalizeHandleInput(form.name);
+    if (!suggested) return;
+    setForm((prev) => (prev.handle ? prev : { ...prev, handle: suggested }));
+  }, [form.name, form.handle]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -250,23 +270,48 @@ const RegistrationForm = ({
               ref={nameRef}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="org">{orgFieldLabel}</label>
-            <input
-              type="text"
-              id="org"
-              name="organization"
-              value={form.companyOrSchool}
-              onChange={handleChange('companyOrSchool')}
-              onInput={handleChange('companyOrSchool')}
-              placeholder={orgFieldPlaceholder}
-              required
-              disabled={loading}
-              className="form-input"
-              autoComplete="organization"
-              ref={orgRef}
-            />
-          </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="handle">{copy.fields.handle.label}</label>
+          <input
+            type="text"
+            id="handle"
+            name="handle"
+            value={form.handle}
+            onChange={handleChange('handle')}
+            onInput={handleChange('handle')}
+            onBlur={(e) => {
+              const normalized = normalizeHandleInput(e.target.value);
+              if (normalized !== e.target.value) {
+                setForm((prev) => ({ ...prev, handle: normalized }));
+              }
+            }}
+            placeholder={copy.fields.handle.placeholder}
+            disabled={loading}
+            className="form-input"
+            autoComplete="username"
+            ref={handleRef}
+          />
+          <span className="form-hint">{copy.fields.handle.hint}</span>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="org">{orgFieldLabel}</label>
+          <input
+            type="text"
+            id="org"
+            name="organization"
+            value={form.companyOrSchool}
+            onChange={handleChange('companyOrSchool')}
+            onInput={handleChange('companyOrSchool')}
+            placeholder={orgFieldPlaceholder}
+            required
+            disabled={loading}
+            className="form-input"
+            autoComplete="organization"
+            ref={orgRef}
+          />
         </div>
 
         <div className="form-group">

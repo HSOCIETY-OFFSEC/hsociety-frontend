@@ -17,7 +17,8 @@ export const buildRegisterDTO = (form) => {
     role,
     profile: {
       fullName: form.name.trim(),
-      organization: form.companyOrSchool.trim()
+      organization: form.companyOrSchool.trim(),
+      handle: (form.handle || '').trim()
     },
     credentials: {
       email: form.email.trim().toLowerCase(),
@@ -41,6 +42,11 @@ export const validateRegisterForm = (form) => {
   if (!emailRegex.test(form.email || '')) return false;
 
   if (!form.companyOrSchool || form.companyOrSchool.trim().length < 2) return false;
+
+  if (form.handle) {
+    const handleRegex = /^[a-z0-9._-]{3,30}$/i;
+    if (!handleRegex.test(form.handle.trim())) return false;
+  }
 
   // SECURITY UPDATE IMPLEMENTED: Strong password (8+ chars, upper, lower, number, special)
   const { isValid: isPasswordValid } = validatePassword(form.password);
