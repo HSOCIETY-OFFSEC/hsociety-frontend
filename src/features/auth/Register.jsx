@@ -1,3 +1,4 @@
+// DEPRECATED — superseded by AuthPortal.jsx. Safe to delete once routes confirmed.
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiLock } from 'react-icons/fi';
