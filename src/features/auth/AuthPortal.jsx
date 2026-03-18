@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Login from './Login';
 import RegistrationForm from './RegistrationForm';
+import AuthLeftPanel from './components/AuthLeftPanel';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import { AUTH_MODAL_MODES, AUTH_QUERY_KEY } from '../../shared/utils/auth/authModal';
 import '../../styles/features/auth/auth.css';
@@ -61,26 +62,7 @@ const AuthPortal = () => {
 
   return (
     <div className="auth-portal">
-      <aside className="auth-portal-marketing" aria-hidden="true">
-        <div className="auth-portal-marketing-inner">
-          <p className="auth-portal-eyebrow">HSOCIETY ACCESS</p>
-          <h2>Build your security edge before the next breach.</h2>
-          <p className="auth-portal-lead">
-            Choose the path that matches your mission. We tailor onboarding for students
-            who want hands-on training and teams that need real-world defense.
-          </p>
-          <div className="auth-portal-stats">
-            <div>
-              <strong>Real-world labs</strong>
-              <span>Operator-led training with live tooling.</span>
-            </div>
-            <div>
-              <strong>Team defense</strong>
-              <span>Corporate workflows built for rapid hardening.</span>
-            </div>
-          </div>
-        </div>
-      </aside>
+      <AuthLeftPanel />
 
       <section className="auth-portal-panel">
         <div className="auth-portal-panel-inner">
