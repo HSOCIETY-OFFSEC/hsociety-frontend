@@ -1,0 +1,758 @@
+/**
+ * Authentication Pages Styling — GitHub UI
+ * Location: src/styles/core/auth.css
+ *
+ * Design principles (unchanged):
+ * ─────────────────────────────────────────────────────────────────────────────
+ * 1. VIEWPORT-CONTAINED — the auth card never requires scrolling.
+ * 2. MODAL-FIRST — these components live inside modals.
+ * 3. THEME-CONSISTENT — all colours reference variables from common.css.
+ * 4. DENSITY COMPRESSION — 2-col rows for Name+Org and Password+Confirm.
+ *
+ * GitHub UI changes applied:
+ * ─────────────────────────────────────────────────────────────────────────────
+ * • auth-card: flat border, no box-shadow hover lift, no transform
+ * • auth-panel--hero: gradient/glow removed → plain bordered panel
+ * • auth-error: flat red border + tint, no animation
+ * • form-input: GitHub input style — bg-secondary, radius-xs, no shadow on focus (outline only)
+ * • auth-toggle: flat segmented control, GitHub-style active state
+ * • auth-step-line: simple 1px border-color line
+ * • All border-radius values use site variables (radius-xs, radius-sm)
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ============================================================
+   AUTH CONTAINER (standalone page mode)
+   ============================================================ */
+
+.auth-container {
+  min-height: 100dvh;
+  height: 100dvh;
+  width: 100vw;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  overflow-y: auto;
+  background: var(--bg-primary);
+}
+
+@media (max-width: 767px) {
+  .auth-container {
+    padding-bottom: calc(1rem + var(--bottom-nav-height, 0px) + 56px);
+  }
+}
+
+/* ============================================================
+   AUTH WRAPPER
+   ============================================================ */
+
+.auth-wrapper {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.4rem, 1vh, 0.75rem);
+  padding: clamp(0.75rem, 2.5vh, 2rem) clamp(0.75rem, 3vw, 2rem);
+  box-sizing: border-box;
+}
+
+.auth-wrapper--modal {
+  width: min(520px, 100%);
+  min-height: auto;
+  max-height: calc(100dvh - 2rem);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  overflow-y: auto;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.auth-wrapper--modal .auth-card { width: 100%; }
+
+/* ============================================================
+   AUTH CARD
+   ============================================================ */
+
+.auth-card {
+  width: 100%;
+  padding: clamp(1rem, 2.5vh, 1.75rem) clamp(1rem, 2vw, 1.5rem);
+
+  /* GitHub card: flat bg-secondary, 1px border, radius-sm — no shadow, no hover lift */
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.4vh, 1rem);
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.auth-header { text-align: center; }
+
+.auth-header h1 {
+  font-size: clamp(1.1rem, 2.2vh, 1.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.auth-subtitle {
+  font-size: clamp(0.78rem, 1.5vh, 0.875rem);
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Email pill in step-2 subtitle */
+.auth-email-pill {
+  display: inline-block;
+  padding: 0.1em 0.5em;
+  border-radius: 2em;
+  background: var(--primary-color-alpha);
+  color: var(--primary-color);
+  font-size: 0.85em;
+  font-weight: 600;
+  letter-spacing: 0;
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+}
+
+/* ============================================================
+   STEP INDICATOR (2FA)
+   ============================================================ */
+
+.auth-step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 0.25rem;
+}
+
+.auth-step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.auth-step-dot--done {
+  background: var(--primary-color);
+  opacity: 0.5;
+}
+
+.auth-step-dot--active {
+  background: var(--primary-color);
+  width: 10px; height: 10px;
+  /* GitHub-style: plain ring, no glow */
+  box-shadow: 0 0 0 3px var(--primary-color-alpha);
+}
+
+/* Simple 1px line — no gradient */
+.auth-step-line {
+  height: 1px;
+  width: 32px;
+  background: var(--border-color);
+  margin: 0 4px;
+}
+
+/* ============================================================
+   ERROR BANNER
+   ============================================================ */
+
+.auth-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.6rem 0.85rem;
+  background: rgba(207, 34, 46, 0.06);
+  border: 1px solid rgba(207, 34, 46, 0.3);
+  border-radius: var(--radius-xs);
+  color: #cf222e;
+  font-size: clamp(0.78rem, 1.4vh, 0.85rem);
+  line-height: 1.4;
+}
+
+[data-theme="black"] .auth-error {
+  background: rgba(255, 123, 114, 0.08);
+  border-color: rgba(255, 123, 114, 0.28);
+  color: #ff7b72;
+}
+
+.error-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  margin-top: 0.05rem;
+}
+
+/* ============================================================
+   FORM BASE
+   ============================================================ */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.55rem, 1.3vh, 0.875rem);
+}
+
+.auth-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.auth-card input,
+.auth-card button { min-height: unset; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-group label {
+  font-size: clamp(0.75rem, 1.4vh, 0.8125rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.form-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.auth-link-muted {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: clamp(0.72rem, 1.3vh, 0.78rem);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.14s ease;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.auth-link-muted:hover { color: var(--primary-color); }
+
+/* ============================================================
+   INPUTS — GitHub flat style
+   ============================================================ */
+
+.form-input {
+  width: 100%;
+  padding: clamp(0.45rem, 1.2vh, 0.6rem) clamp(0.6rem, 1.4vw, 0.85rem);
+  font-size: clamp(0.82rem, 1.5vh, 0.9rem);
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  transition: border-color 0.14s ease, background 0.14s ease;
+  outline: none;
+  box-sizing: border-box;
+  line-height: 1.4;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  background: var(--input-bg-focus);
+  /* GitHub uses a plain outline, not a box-shadow ring */
+  outline: 2px solid var(--primary-color-alpha);
+  outline-offset: 0;
+}
+
+.form-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: var(--input-bg-disabled);
+}
+
+.form-input::placeholder { color: var(--text-tertiary); }
+
+.form-hint {
+  font-size: clamp(0.7rem, 1.2vh, 0.775rem);
+  color: var(--text-tertiary);
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: 1.25rem 1rem; gap: 1rem; }
+  .auth-form { gap: 0.9rem; }
+  .form-group { gap: 0.45rem; }
+  .form-group label { font-size: 0.95rem; }
+
+  .form-input {
+    min-height: 44px;
+    padding: 0.75rem 0.9rem;
+    font-size: 1rem;
+  }
+
+  .form-hint,
+  .auth-link-muted { font-size: 0.875rem; }
+
+  .auth-toggle button { min-height: 44px; font-size: 0.9rem; }
+
+  .form-label-row { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+
+  .auth-link-muted,
+  .auth-link,
+  .auth-link-inline { min-height: 44px; display: inline-flex; align-items: center; }
+
+  .auth-mobile-actions {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-secondary);
+    padding-top: 0.5rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .auth-footer p { font-size: 0.9rem; line-height: 1.6; }
+}
+
+@media (max-width: 420px) { .auth-card { padding: 1.15rem 0.95rem; } }
+@media (max-width: 360px) { .auth-card { padding: 1rem 0.85rem; } }
+@media (max-width: 320px) { .auth-card { padding: 0.9rem 0.8rem; } }
+
+/* ============================================================
+   OTP / 2FA INPUT
+   ============================================================ */
+
+.otp-input {
+  font-size: clamp(1.2rem, 3vh, 1.5rem);
+  letter-spacing: 0.45em;
+  text-align: center;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  padding-top: clamp(0.55rem, 1.4vh, 0.75rem);
+  padding-bottom: clamp(0.55rem, 1.4vh, 0.75rem);
+}
+
+/* ============================================================
+   ACCOUNT TYPE TOGGLE — GitHub segmented control
+   ============================================================ */
+
+.auth-toggle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.auth-toggle button {
+  border: none;
+  border-right: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  padding: clamp(0.35rem, 1vh, 0.5rem) 0.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease;
+  font-size: clamp(0.78rem, 1.4vh, 0.85rem);
+  font-family: inherit;
+  line-height: 1.3;
+}
+
+.auth-toggle button:last-child { border-right: none; }
+
+.auth-toggle button.active {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.auth-toggle button:hover:not(.active):not(:disabled) {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.auth-toggle button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* Fixed account type label */
+.auth-account-label {
+  font-size: clamp(0.78rem, 1.4vh, 0.85rem);
+  color: var(--text-secondary);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-xs);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  width: fit-content;
+}
+
+/* ============================================================
+   TWO-COLUMN FORM ROW
+   ============================================================ */
+
+.auth-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+@media (max-width: 420px) {
+  .auth-form-row { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   CHECKBOX / AGREE
+   ============================================================ */
+
+.auth-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: clamp(0.75rem, 1.35vh, 0.8rem);
+  cursor: pointer;
+  line-height: 1.45;
+}
+
+.auth-checkbox input[type="checkbox"] {
+  margin-top: 0.1rem;
+  width: 15px; height: 15px;
+  min-height: unset;
+  flex-shrink: 0;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .auth-checkbox { min-height: 44px; padding: 0.25rem 0; }
+  .auth-checkbox input[type="checkbox"] { width: 22px; height: 22px; }
+}
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+
+.auth-link {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: clamp(0.78rem, 1.4vh, 0.85rem);
+  cursor: pointer;
+  padding: 0.3rem;
+  text-align: center;
+  transition: color 0.14s ease;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-family: inherit;
+}
+
+.auth-link:hover:not(:disabled) { color: var(--primary-color-hover); text-decoration: none; }
+.auth-link:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.auth-link-inline {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.14s ease;
+  font-family: inherit;
+}
+
+.auth-link-inline:hover:not(:disabled) { color: var(--primary-color-hover); }
+.auth-link-inline:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.auth-footer {
+  padding-top: clamp(0.4rem, 1vh, 0.6rem);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.auth-footer p {
+  margin: 0;
+  font-size: clamp(0.74rem, 1.3vh, 0.8rem);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   SECURITY NOTICE
+   ============================================================ */
+
+.auth-notice {
+  text-align: center;
+  padding: clamp(0.4rem, 1vh, 0.6rem) clamp(0.6rem, 1.2vw, 0.875rem);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  font-size: clamp(0.7rem, 1.25vh, 0.775rem);
+  color: var(--text-secondary);
+}
+
+.auth-notice p {
+  margin: 0;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.notice-icon { display: inline-flex; color: var(--primary-color); flex-shrink: 0; }
+
+/* ============================================================
+   AUTH NOTE (optional info banner)
+   ============================================================ */
+
+.auth-note {
+  margin: 0;
+  padding: 0.55rem 0.875rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, var(--border-color));
+  background: var(--primary-color-alpha);
+  color: var(--text-primary);
+  font-size: clamp(0.78rem, 1.4vh, 0.85rem);
+  line-height: 1.45;
+}
+
+/* ============================================================
+   HERO PANEL — GitHub flat panel, no gradient
+   ============================================================ */
+
+.auth-panel--hero {
+  position: relative;
+  padding: clamp(1.25rem, 3vh, 2.5rem) clamp(1.25rem, 2.5vw, 2rem);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.auth-hero-content { display: flex; flex-direction: column; gap: 1.125rem; }
+
+.auth-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2em;
+  background: var(--primary-color-alpha);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, transparent);
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  width: fit-content;
+  font-weight: 600;
+}
+
+.auth-hero-toggle { position: absolute; top: 1rem; right: 1rem; }
+
+.auth-hero-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.2vw, 2.25rem);
+  color: var(--text-primary);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.auth-hero-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.auth-hero-list { display: grid; gap: 0.5rem; }
+
+.auth-hero-item {
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-xs);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ============================================================
+   MODAL SHELL
+   ============================================================ */
+
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay-bg, rgba(0, 0, 0, 0.72));
+  backdrop-filter: var(--modal-overlay-blur, blur(4px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 3vw, 2rem);
+  z-index: var(--z-modal, 10001);
+}
+
+/* ============================================================
+   QUICK LOGIN HELPERS
+   ============================================================ */
+
+.auth-quick-logins {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.auth-quick-logins p { margin: 0 0 0.5rem; font-size: 0.8rem; color: var(--text-secondary); }
+
+.auth-quick-grid {
+  display: grid;
+  gap: 0.35rem;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+}
+
+.auth-quick-item {
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color 0.14s ease, color 0.14s ease;
+  font-family: inherit;
+}
+
+.auth-quick-item:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.auth-quick-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* ============================================================
+   RESPONSIVE — TABLET (≤ 900px)
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .auth-panel--hero {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .auth-hero-content { gap: 0.75rem; }
+  .auth-hero-title { font-size: 1.35rem; }
+
+  .auth-hero-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+
+  .auth-wrapper:not(.auth-wrapper--modal) { padding: 1.25rem 1rem; }
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE (≤ 640px)
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .auth-panel--hero { display: none; }
+
+  .auth-wrapper:not(.auth-wrapper--modal) {
+    width: 100%;
+    min-height: 100dvh;
+    justify-content: center;
+    padding: 1.25rem 0.875rem;
+  }
+
+  .auth-wrapper--modal {
+    width: 100%;
+    max-height: calc(100dvh - 1.5rem);
+    padding: 1rem;
+  }
+
+  .auth-card { border-radius: var(--radius-xs); }
+  .auth-header h1 { font-size: clamp(1rem, 5vw, 1.25rem); }
+  .auth-form { gap: clamp(0.45rem, 1.8vw, 0.7rem); }
+
+  .otp-input { font-size: 1.15rem; letter-spacing: 0.3em; }
+  .auth-quick-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   SHORT VIEWPORT
+   ============================================================ */
+
+@media (max-height: 780px) and (min-width: 901px) {
+  .auth-hero-subtitle { display: none; }
+  .auth-hero-list { grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+  .auth-hero-item { padding: 0.4rem 0.55rem; font-size: 0.78rem; }
+}
+
+@media (max-height: 680px) and (min-width: 901px) { .auth-panel--hero { display: none; } }
+
+/* ============================================================
+   LANDSCAPE MOBILE
+   ============================================================ */
+
+@media (max-height: 560px) and (max-width: 900px) {
+  .auth-panel--hero { display: none; }
+
+  .auth-wrapper:not(.auth-wrapper--modal) {
+    padding: 0.5rem 0.75rem;
+    justify-content: center;
+  }
+
+  .auth-card { gap: 0.4rem; padding: 0.875rem 1rem; }
+  .auth-form { gap: 0.4rem; }
+  .auth-header { margin-bottom: 0; }
+  .auth-header h1 { font-size: 1rem; }
+  .auth-subtitle { font-size: 0.72rem; }
+  .auth-footer { gap: 0.1rem; }
+  .auth-notice { padding: 0.3rem 0.6rem; }
+}
+
+/* ============================================================
+   VERY SMALL (≤ 360px)
+   ============================================================ */
+
+@media (max-width: 360px) {
+  .auth-wrapper:not(.auth-wrapper--modal) { padding: 1rem 0.625rem; }
+  .auth-card { padding: 1rem 0.875rem; gap: 0.5rem; }
+  .auth-header h1 { font-size: 1rem; }
+  .form-input { padding: 0.5rem 0.65rem; font-size: 0.85rem; }
+  .otp-input { font-size: 1rem; letter-spacing: 0.2em; }
+}
+
+@media (max-width: 480px) {
+  .auth-subtitle,
+  .auth-link,
+  .auth-link-inline,
+  .auth-link-muted,
+  .auth-hero-item { font-size: 0.875rem; }
+}

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { FiCheckCircle, FiClipboard, FiSearch, FiShield, FiTarget, FiTool } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import methodologyContent from '../../data/static/methodology.json';
-import '../../styles/sections/methodology/index.css';
+import '../../styles/features/methodology/index.css';
 
 const Methodology = () => {
 

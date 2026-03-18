@@ -24,7 +24,7 @@ import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import PageLoader from '../../shared/components/ui/PageLoader';
 import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
 import { getPublicProfileByHandle } from './publicProfile.service';
-import '../../styles/sections/public-profile/index.css';
+import '../../styles/features/public-profile/index.css';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges } from '../../shared/utils/display/profileBadges';
 

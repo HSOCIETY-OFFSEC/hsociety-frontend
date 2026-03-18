@@ -11,7 +11,7 @@ import {
   FiArrowUpRight,
   FiCheckCircle,
 } from 'react-icons/fi';
-import '../../styles/sections/contact/index.css';
+import '../../styles/features/contact/index.css';
 import {
   CONTACT_HERO,
   CONTACT_CHANNELS,

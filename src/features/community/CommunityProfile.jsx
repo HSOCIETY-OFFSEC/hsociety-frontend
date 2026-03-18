@@ -4,7 +4,7 @@ import { getCommunityProfile } from './community.service';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges } from '../../shared/utils/display/profileBadges';
 import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
-import '@styles/sections/community/profile.css';
+import '@styles/features/community/index.css';
 
 const formatCount = (value) => Number(value || 0).toLocaleString();
 const formatDate = (value) =>

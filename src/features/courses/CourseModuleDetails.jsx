@@ -17,7 +17,7 @@ import {
 } from 'react-icons/fi';
 import { getHackerProtocolModule } from '../../data/bootcamps/hackerProtocolData';
 import { useAuth } from '../../core/auth/AuthContext';
-import '../../styles/sections/courses/index.css';
+import '../../styles/features/courses/index.css';
 
 const CourseModuleDetails = () => {
   const { bootcampId, moduleId } = useParams();

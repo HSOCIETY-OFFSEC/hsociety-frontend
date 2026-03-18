@@ -19,7 +19,7 @@ import {
 } from 'react-icons/fi';
 import PageLoader from '../../shared/components/ui/PageLoader';
 import { getTermsContent } from './terms.service';
-import '../../styles/sections/terms/index.css';
+import '../../styles/features/terms/index.css';
 
 /* ── fallback data ─────────────────────────────── */
 const FALLBACK_TERMS = {

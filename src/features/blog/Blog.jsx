@@ -18,7 +18,7 @@ import {
 import SocialLinks from '../../shared/components/common/SocialLinks';
 import { apiClient } from '../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../config/api.config';
-import '../../styles/sections/blog/index.css';
+import '../../styles/features/blog/index.css';
 
 const FALLBACK_POSTS = [
   {

@@ -30,7 +30,7 @@ import {
   PRICING_NOTE,
   PRICING_TIERS,
 } from '../../data/pricing/pricingData';
-import '../../styles/sections/pricing/index.css';
+import '../../styles/features/pricing/index.css';
 
 const TIER_ICONS = [
   <FiZap    size={16} />,

@@ -16,7 +16,7 @@ import {
   FiUsers,
   FiArrowUpRight,
 } from 'react-icons/fi';
-import '../../styles/sections/careers/index.css';
+import '../../styles/features/careers/index.css';
 
 const STATUS_CARDS = [
   {

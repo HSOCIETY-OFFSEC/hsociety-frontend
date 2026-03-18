@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiArrowLeft, FiMessageSquare, FiUsers } from 'react-icons/fi';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
-import '../../../../styles/sections/community/header.css';
+import '../../../../styles/features/community/index.css';
 
 const CommunityHeader = ({ overviewStats, connected = false, onBack }) => {
   const learners = Number(overviewStats?.learners || 0).toLocaleString();

@@ -4,7 +4,7 @@ import { FiChevronLeft, FiChevronRight, FiUsers, FiX } from 'react-icons/fi';
 import { getSidebarLinks } from '../../../../config/navigation.config';
 import Logo from '../../../../shared/components/common/Logo';
 import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
-import '../../../../styles/sections/community/sidebar.css';
+import '../../../../styles/features/community/index.css';
 
 const CommunitySidebar = ({
   role,

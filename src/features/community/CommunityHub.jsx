@@ -15,10 +15,10 @@ import { getProfile } from '../account/account.service';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_HUB_DATA } from '../../data/community/communityHubData';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
-import '@styles/sections/community/index.css';
-import '@styles/sections/community/header.css';
-import '@styles/sections/community/messages.css';
-import '@styles/sections/community/compose.css';
+import '@styles/features/community/index.css';
+import '@styles/features/community/index.css';
+import '@styles/features/community/index.css';
+import '@styles/features/community/index.css';
 
 const CommunityHub = () => {
   const { user } = useAuth();

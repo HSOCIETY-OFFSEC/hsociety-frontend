@@ -18,7 +18,7 @@ import {
   FiZap,
   FiMessageSquare,
 } from 'react-icons/fi';
-import '../../styles/sections/services/detail.css';
+import '../../styles/features/services/index.css';
 
 const slugify = (value) =>
   value
