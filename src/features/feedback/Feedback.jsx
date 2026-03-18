@@ -5,8 +5,8 @@ import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { validateForm } from '../../core/validation/input.validator';
 import { submitFeedback } from './feedback.service';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
-import feedbackContent from '../../data/feedback.json';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
+import feedbackContent from '../../data/static/feedback.json';
 import '../../styles/sections/feedback/index.css';
 
 /**

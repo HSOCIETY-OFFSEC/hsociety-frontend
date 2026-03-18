@@ -9,8 +9,8 @@ import {
   sendAdminNotification,
   updateAdminContent,
 } from './admin.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
-import defaultTeamContent from '../../../data/team.json';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import defaultTeamContent from '../../../data/static/team.json';
 import '../../../styles/dashboards/admin/index.css';
 
 const emptyPost = { title: '', date: '', summary: '' };

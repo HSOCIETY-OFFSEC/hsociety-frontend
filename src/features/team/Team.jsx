@@ -31,7 +31,7 @@ import {
   FaYoutube,
 } from 'react-icons/fa6';
 import ImageWithLoader from '../../shared/components/ui/ImageWithLoader';
-import teamContent from '../../data/team.json';
+import teamContent from '../../data/static/team.json';
 import { getTeamContent } from './team.service';
 import '../../styles/sections/team/index.css';
 

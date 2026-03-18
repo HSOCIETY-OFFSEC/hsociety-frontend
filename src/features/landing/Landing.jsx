@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import landingContent from '../../data/landing.json';
-import methodologyContent from '../../data/methodology.json';
+import landingContent from '../../data/static/landing.json';
+import methodologyContent from '../../data/static/methodology.json';
 import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import { getLeaderboard } from '../leaderboard/leaderboard.service';
 import { LEADERBOARD_FALLBACK } from '../../data/leaderboard/leaderboardData';

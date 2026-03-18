@@ -1,5 +1,5 @@
 import React from 'react';
-import aboutContent from '../../data/about.json';
+import aboutContent from '../../data/static/about.json';
 import SocialLinks from '../../shared/components/common/SocialLinks';
 import '../../styles/sections/about/index.css';
 

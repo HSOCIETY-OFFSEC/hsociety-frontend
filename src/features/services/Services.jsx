@@ -24,9 +24,9 @@ import {
   FiZap,
 } from 'react-icons/fi';
 import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa';
-import landingContent from '../../data/landing.json';
+import landingContent from '../../data/static/landing.json';
 import useRequestPentest from '../../shared/hooks/useRequestPentest';
-import { slugify } from '../../shared/utils/slugify';
+import { slugify } from '../../shared/utils/display/slugify';
 import '../../styles/sections/services/index.css';
 
 const Services = () => {

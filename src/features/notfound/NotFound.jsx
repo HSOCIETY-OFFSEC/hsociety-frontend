@@ -4,7 +4,7 @@ import { FiArrowLeft, FiCompass } from 'react-icons/fi';
 import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
-import notFoundContent from '../../data/notfound.json';
+import notFoundContent from '../../data/static/notfound.json';
 import '../../styles/sections/notfound/index.css';
 
 const NotFound = () => {

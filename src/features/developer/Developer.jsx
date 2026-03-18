@@ -4,7 +4,7 @@ import { FiActivity, FiCode, FiCpu, FiGitBranch, FiGithub, FiMessageSquare, FiSh
 import Logo from '../../shared/components/common/Logo';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
-import developerContent from '../../data/developer.json';
+import developerContent from '../../data/static/developer.json';
 import '../../styles/sections/developer/index.css';
 
 const Developer = () => {
