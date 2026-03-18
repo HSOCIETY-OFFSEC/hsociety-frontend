@@ -1,7 +1,7 @@
 .scroll-to-top {
   position: fixed;
   right: 28px;
-  bottom: 28px;
+  bottom: calc(64px + env(safe-area-inset-bottom));
   z-index: calc(var(--z-sticky, 50) + 2);
   display: inline-flex;
   align-items: center;
@@ -45,8 +45,7 @@
   .scroll-to-top {
     left: auto;
     right: 16px;
-    top: 18%;
-    bottom: auto;
+    bottom: calc(48px + env(safe-area-inset-bottom));
     transform: translateY(0) scale(0.98);
     padding: 10px 14px;
   }

@@ -1,118 +1,87 @@
-/* ============================================================
-   FILE: src/styles/landing/trust.css
-   ============================================================ */
+/* ==========================================================
+   TRUST SECTION
+   ========================================================== */
 
 .trust-section {
-  padding: 5rem 1.5rem 6rem;
-  border-top: 1px solid var(--border-color);
   background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  --reveal-distance: 24px;
+  padding: 4rem 0;
 }
 
-.trust-carousel {
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
+.trust-shell {
   border: 1px solid var(--border-color);
-  background: var(--border-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.trust-marquee {
+  overflow: hidden;
 }
 
 .trust-track {
   display: flex;
-  gap: 1px;
-  width: max-content;
-  animation: trust-scroll 36s linear infinite;
+  gap: 2.5rem;
+  animation: trustScroll 26s linear infinite;
 }
 
-.trust-carousel:hover .trust-track {
-  animation-play-state: paused;
+.trust-logo {
+  flex: 0 0 auto;
+  filter: grayscale(1);
+  opacity: 0.5;
+  transition: filter 0.2s ease, opacity 0.2s ease;
 }
 
-.trust-card {
-  background: var(--bg-secondary);
-  border: none;
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  padding: 1.75rem 1.5rem;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.15s ease;
-  animation: none;
-  will-change: auto;
-  box-shadow: none;
-  flex: 0 0 clamp(240px, 30vw, 320px);
+.trust-logo:hover {
+  filter: grayscale(0);
+  opacity: 1;
 }
 
-.trust-card::after { display: none; }
-
-.trust-card:hover {
-  transform: none;
-  border-color: transparent;
-  box-shadow: none;
-  background: var(--bg-tertiary);
+.trust-logo img {
+  display: block;
+  height: clamp(48px, 6vw, 68px);
+  width: auto;
 }
 
-.trust-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: transparent;
-  color: var(--primary-color);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.25rem;
+.trust-quotes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
 }
 
-.trust-card h3 {
-  margin: 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.trust-card p {
-  margin: 0;
+.trust-quote p {
+  margin: 0 0 0.5rem;
   color: var(--text-secondary);
-  line-height: 1.65;
-  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
-@keyframes trustFloat {}
-@keyframes trust-scroll {
+.trust-quote span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-tertiary);
+}
+
+@keyframes trustScroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
+@media (max-width: 900px) {
+  .trust-shell {
+    padding: 1.5rem;
+  }
+
+  .trust-quotes {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .trust-card { animation: none; }
-  .trust-track { animation: none; }
-  .trust-carousel {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-  .trust-card {
-    scroll-snap-align: start;
-  }
-}
-
-@media (max-width: 860px) {
-  .trust-track { gap: 0.5rem; }
-}
-
-@media (max-width: 640px) {
-  .trust-section {
-    padding: 3.75rem 1rem 4.5rem;
-  }
-  .trust-card {
-    padding: 1.4rem 1.1rem;
-  }
-  .trust-card h3 {
-    font-size: 0.9rem;
-  }
-  .trust-card p {
-    font-size: 0.82rem;
+  .trust-track {
+    animation: none;
   }
 }

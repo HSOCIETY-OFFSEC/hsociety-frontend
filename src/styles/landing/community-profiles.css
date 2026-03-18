@@ -1,0 +1,128 @@
+/* ==========================================================
+   COMMUNITY PROFILES
+   ========================================================== */
+
+.community-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  --reveal-distance: 24px;
+  padding: 4rem 0;
+}
+
+.community-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.community-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.community-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.community-cta {
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-primary);
+  padding: 0.75rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.community-error {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+.community-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.community-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--bg-primary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.community-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.community-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.community-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.community-meta h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.community-handle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.community-rank {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.community-empty {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  color: var(--text-tertiary);
+}
+
+@media (max-width: 900px) {
+  .community-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .community-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .community-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-card {
+    transition: none;
+  }
+}

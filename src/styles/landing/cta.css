@@ -1,104 +1,85 @@
-/* ============================================================
-   FILE: src/styles/landing/cta.css
-   ============================================================ */
+/* ==========================================================
+   CTA SECTION
+   ========================================================== */
 
 .cta-section {
-  padding: 5rem 1.5rem;
+  background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
-  background: var(--bg-primary);
+  --reveal-distance: 24px;
+  padding: 4rem 0;
 }
 
-.cta-container {
-  max-width: 1140px;
-  margin: 0 auto;
-}
-
-.cta-card {
-  border: 1px solid var(--border-color) !important;
-  background: var(--bg-secondary) !important;
-  border-radius: 8px !important;
-  box-shadow: none !important;
-}
-
-.cta-content {
-  display: flex;
-  gap: 0;
+.cta-shell {
   position: relative;
-}
-
-.cta-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 2.5rem;
-}
-
-.cta-media {
-  width: 48px;
-  height: 48px;
-  border-radius: 6px;
+  text-align: center;
+  padding: 3rem 1.5rem;
   border: 1px solid var(--border-color);
-  overflow: hidden;
-  background: var(--bg-primary);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
+  background: var(--bg-secondary);
+}
+
+.cta-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.cta-shell h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 3.4vw, 3.5rem);
+  color: var(--text-primary);
+}
+
+.cta-shell p {
+  margin: 0 0 2rem;
+  color: var(--text-secondary);
+}
+
+.cta-actions {
+  display: inline-flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
-.cta-media img {
-  width: 80%;
-  height: 80%;
-  object-fit: contain;
-  opacity: 0.8;
-}
-
-.cta-title {
-  margin: 0;
-  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+.cta-primary {
+  background: var(--primary-color);
+  color: #000;
+  border: none;
+  padding: 0.75rem 1.4rem;
+  border-radius: 6px;
   font-weight: 700;
+  cursor: pointer;
+}
+
+.cta-secondary {
+  background: transparent;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.cta-description {
-  margin: 0;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-.cta-divider {
-  width: 1px;
-  background: var(--border-color);
-  flex-shrink: 0;
-  align-self: stretch;
-  margin: 0;
-}
-
-/* Responsive */
-@media (max-width: 720px) {
-  .cta-content {
+@media (max-width: 600px) {
+  .cta-actions {
     flex-direction: column;
-    gap: 0;
+    width: 100%;
   }
 
-  .cta-divider {
-    width: auto;
-    height: 1px;
-    align-self: stretch;
-  }
-
-  .cta-panel {
-    padding: 1.75rem 1.5rem;
+  .cta-primary,
+  .cta-secondary {
+    width: 100%;
   }
 }
 
-@media (max-width: 480px) {
-  .cta-section { padding: 3.5rem 1rem; }
-  .cta-panel { padding: 1.5rem 1.25rem; }
-  .cta-title { font-size: 1.2rem; }
+@media (prefers-reduced-motion: reduce) {
+  .cta-grid {
+    animation: none;
+  }
 }

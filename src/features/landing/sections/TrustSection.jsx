@@ -1,58 +1,40 @@
 import React from 'react';
-import Logo from '../../../shared/components/common/Logo';
-import Card from '../../../shared/components/ui/Card';
 import '../../../styles/landing/trust.css';
 
-const TrustSection = ({ signals = [] }) => (
-  <section className="trust-section reveal-on-scroll">
-    <div className="section-container">
-      <div className="section-header-center">
-        <div className="section-eyebrow">
-          <Logo size="small" />
-          <span>Why Trust HSOCIETY</span>
-        </div>
-        <h2 className="section-title-large">Real Hacking For African Companies</h2>
-        <p className="section-subtitle-large">
-          We deliver high-value, affordable offensive security for teams that need clarity, speed, and proof.
-        </p>
-      </div>
+import SorbitLogo from '../../../assets/partners/sorbit.webp';
+import RedspectreAILogo from '../../../assets/partners/redspectre-ai.webp';
+import WSuitsIndustriesLogo from '../../../assets/partners/wsuits-industries.webp';
 
-      <div className="trust-carousel" role="presentation">
-        <div className="trust-track">
-          {signals.map((item, index) => (
-            <Card
-              key={`${item.title}-${index}`}
-              padding="large"
-              className="trust-card reveal-on-scroll"
-            >
-              {item.icon && (
-                <div className="trust-icon">
-                  <item.icon size={24} />
+const TrustSection = ({ signals = [] }) => {
+  const logos = [SorbitLogo, RedspectreAILogo, WSuitsIndustriesLogo];
+  const statements = signals.slice(0, 3);
+
+  return (
+    <section className="trust-section reveal-on-scroll" aria-label="Trusted by">
+      <div className="section-container">
+        <div className="trust-shell">
+          <div className="trust-marquee" aria-hidden="true">
+            <div className="trust-track">
+              {[...logos, ...logos].map((logo, index) => (
+                <div key={`${logo}-${index}`} className="trust-logo">
+                  <img src={logo} alt="" loading="lazy" width={140} height={40} />
                 </div>
-              )}
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-            </Card>
-          ))}
-          {signals.map((item, index) => (
-            <Card
-              key={`${item.title}-${index}-dup`}
-              padding="large"
-              className="trust-card reveal-on-scroll"
-            >
-              {item.icon && (
-                <div className="trust-icon">
-                  <item.icon size={24} />
-                </div>
-              )}
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-            </Card>
-          ))}
+              ))}
+            </div>
+          </div>
+
+          <div className="trust-quotes">
+            {statements.map((item) => (
+              <div key={item.title} className="trust-quote">
+                <p>{item.description}</p>
+                <span>{item.title}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default TrustSection;

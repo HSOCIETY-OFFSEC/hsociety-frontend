@@ -1,100 +1,86 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import Logo from '../../../shared/components/common/Logo';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
 import { SERVICES_SECTION_DATA } from '../../../data/landing/servicesSectionData';
 import ServiceCardSlide from '../components/services/ServiceCardSlide';
 import ServiceCarouselDots from '../components/services/ServiceCarouselDots';
+import { slugify } from '../../../shared/utils/slugify';
 import '../../../styles/landing/services.css';
 
 const ServicesSection = ({ services = [] }) => {
+  const navigate = useNavigate();
+  const items = services.slice(0, 3);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const trackRef = useRef(null);
   const slideRefs = useRef([]);
 
-  const touchStartX = useRef(null);
-  const touchEndX = useRef(null);
-  const SWIPE_THRESHOLD = 50;
+  const prev = () => setActiveIndex((i) => (i === 0 ? items.length - 1 : i - 1));
+  const next = () => setActiveIndex((i) => (i === items.length - 1 ? 0 : i + 1));
 
-  const prev = () => setActiveIndex((i) => (i === 0 ? services.length - 1 : i - 1));
-  const next = () => setActiveIndex((i) => (i === services.length - 1 ? 0 : i + 1));
-
-  const onTouchStart = (e) => {
-    touchStartX.current = e.changedTouches[0].clientX;
-    touchEndX.current = null;
-  };
-  const onTouchMove = (e) => {
-    touchEndX.current = e.changedTouches[0].clientX;
-  };
-  const onTouchEnd = () => {
-    if (touchStartX.current === null || touchEndX.current === null) return;
-    const delta = touchStartX.current - touchEndX.current;
-    if (Math.abs(delta) >= SWIPE_THRESHOLD) delta > 0 ? next() : prev();
-    touchStartX.current = null;
-    touchEndX.current = null;
-  };
-
-  const syncHeight = useCallback(() => {
+  useEffect(() => {
     const activeSlide = slideRefs.current[activeIndex];
     const track = trackRef.current;
     if (!activeSlide || !track) return;
-
     const card = activeSlide.querySelector('.service-card');
     if (!card) return;
-
     track.style.height = `${card.scrollHeight}px`;
   }, [activeIndex]);
 
-  useEffect(() => {
-    syncHeight();
-    const ro = new ResizeObserver(syncHeight);
-    if (slideRefs.current[activeIndex]) {
-      ro.observe(slideRefs.current[activeIndex]);
-    }
-    return () => ro.disconnect();
-  }, [activeIndex, syncHeight]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === 'ArrowLeft') prev();
-      if (e.key === 'ArrowRight') next();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, []);
+  if (!items.length) return null;
 
   return (
     <section className="services-section reveal-on-scroll" id="services">
-      <div className="services-bg-glow services-bg-glow--1" aria-hidden="true" />
-      <div className="services-bg-glow services-bg-glow--2" aria-hidden="true" />
-
       <div className="section-container">
-        <div className="section-header-center">
-          <div className="section-eyebrow">
-            <Logo size="small" />
-            <span>{SERVICES_SECTION_DATA.eyebrow}</span>
-          </div>
-          <h2 className="section-title-large">{SERVICES_SECTION_DATA.title}</h2>
-          <p className="section-subtitle-large">{SERVICES_SECTION_DATA.subtitle}</p>
+        <header className="section-header">
+          <p className="section-eyebrow"><span className="eyebrow-dot" />{SERVICES_SECTION_DATA.eyebrow}</p>
+          <h2 className="section-title">{SERVICES_SECTION_DATA.title}</h2>
+          <p className="section-subtitle">{SERVICES_SECTION_DATA.subtitle}</p>
+        </header>
+
+        {/* Desktop grid */}
+        <div className="services-grid" role="list">
+          {items.map((service) => (
+            <article key={service.title} className="service-card" role="listitem">
+              <div className="service-media">
+                <ImageWithLoader
+                  src={service.image}
+                  alt={service.title}
+                  srcSet={service.imageSrcSet}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className="service-body">
+                <span className="service-tag">{service.title.split(' ')[0]}</span>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+                <button
+                  type="button"
+                  className="service-link"
+                  onClick={() => navigate(`/services/${slugify(service.title)}`)}
+                  aria-label={`Learn more about ${service.title}`}
+                >
+                  Learn more &rarr;
+                </button>
+              </div>
+            </article>
+          ))}
         </div>
 
+        {/* Mobile carousel */}
         <div className="services-carousel" role="region" aria-label="Services carousel">
           <button
             className="carousel-btn carousel-btn--prev"
             onClick={prev}
             aria-label={SERVICES_SECTION_DATA.aria.previous}
           >
-            <FiChevronLeft size={22} />
+            Prev
           </button>
 
-          <div
-            className="carousel-track"
-            ref={trackRef}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            {services.map((service, index) => {
+          <div className="carousel-track" ref={trackRef}>
+            {items.map((service, index) => {
               const offset = index - activeIndex;
               return (
                 <ServiceCardSlide
@@ -103,7 +89,7 @@ const ServicesSection = ({ services = [] }) => {
                   service={service}
                   index={index}
                   offset={offset}
-                  total={services.length}
+                  total={items.length}
                 />
               );
             })}
@@ -114,19 +100,15 @@ const ServicesSection = ({ services = [] }) => {
             onClick={next}
             aria-label={SERVICES_SECTION_DATA.aria.next}
           >
-            <FiChevronRight size={22} />
+            Next
           </button>
         </div>
 
         <ServiceCarouselDots
-          total={services.length}
+          total={items.length}
           activeIndex={activeIndex}
           onChange={setActiveIndex}
         />
-
-        <p className="carousel-counter" aria-live="polite">
-          {activeIndex + 1} / {services.length}
-        </p>
       </div>
     </section>
   );

@@ -74,6 +74,11 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
       : 'desktop'
   );
   const [isAtTop, setIsAtTop] = useState(true);
+  const isAuthPage = location.pathname.startsWith('/posts')
+    || location.pathname.startsWith('/login')
+    || location.pathname.startsWith('/register')
+    || location.pathname.startsWith('/pentester-login')
+    || location.pathname.startsWith('/change-password');
 
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
 
@@ -432,7 +437,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
           )}
 
           {/* Login button (public, desktop) */}
-          {!isAuthenticated && viewportMode === 'desktop' && (
+          {!isAuthenticated && !isAuthPage && viewportMode === 'desktop' && (
             <>
               <button
                 type="button"
@@ -635,7 +640,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                 <LuLogOut size={16} />
                 <span>Sign out</span>
               </button>
-            ) : (
+            ) : !isAuthPage ? (
               <>
                 <button
                   type="button"
@@ -646,13 +651,13 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                   <span>Login</span>
                 </button>
               </>
-            )}
+            ) : null}
           </div>
         </div>
       )}
 
       {/* ── Mobile action dock (unauthenticated, menu closed) ── */}
-      {viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && (
+      {viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && !isAuthPage && (
         <div className="gh-mobile-dock" role="navigation" aria-label="Quick actions">
           <button
             type="button"

@@ -1,123 +1,109 @@
-/* ============================================================
-   FILE: src/styles/landing/process.css
-   ============================================================ */
+/* ==========================================================
+   PROCESS SECTION
+   ========================================================== */
 
 .process-section {
-  padding: 5rem 1.5rem;
-  background: var(--bg-primary);
+  background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
+  --reveal-distance: 24px;
+  padding: 4rem 0;
 }
 
-.process-carousel {
+.process-timeline {
   position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
+  margin: 3rem 0 0;
+  padding: 1rem 0 2rem;
+}
+
+.process-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
   background: var(--border-color);
+  transform: translateX(-50%);
 }
 
-.process-carousel::before,
-.process-carousel::after {
-  display: none;
-}
-
-.process-viewport {
+.process-step {
+  position: relative;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
+  margin: 2rem 0;
 }
 
-.process-viewport::-webkit-scrollbar {
-  display: none;
+.process-step.is-left {
+  justify-content: flex-end;
+  padding-right: calc(50% + 2rem);
 }
 
-.process-track {
-  display: flex;
-  gap: 1px;
-  width: max-content;
+.process-step.is-right {
+  justify-content: flex-start;
+  padding-left: calc(50% + 2rem);
+}
+
+.process-node {
+  position: absolute;
+  left: 50%;
+  top: 1.2rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color);
+  transform: translateX(-50%);
 }
 
 .process-card {
-  border: none;
-  border-right: 1px solid var(--border-color);
-  background: var(--bg-secondary);
+  max-width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  min-width: 260px;
-  max-width: 300px;
-  flex: 0 0 auto;
-  padding: 1.5rem;
-  border-radius: 0;
-  transition: background 0.15s ease;
+  gap: 0.5rem;
 }
 
-.process-card:last-child {
-  border-right: none;
-}
-
-.process-card:hover {
-  transform: none;
-  border-color: transparent;
-  box-shadow: none;
-  background: var(--bg-tertiary);
-}
-
-.process-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.process-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: transparent;
-  color: var(--primary-color);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.process-meta {
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.process-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
   color: var(--text-tertiary);
-  padding: 0.25rem 0.6rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-color);
-  background: transparent;
 }
 
-.process-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-primary);
+.process-card h3 {
   margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-primary);
 }
 
-.process-description {
-  font-size: 0.83rem;
+.process-card p {
+  margin: 0;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .process-line {
+    left: 1rem;
+    transform: none;
+  }
+
+  .process-step {
+    padding-left: 2rem;
+    justify-content: flex-start;
+  }
+
+  .process-step.is-left,
+  .process-step.is-right {
+    padding-right: 0;
+    padding-left: 2rem;
+  }
+
+  .process-node {
+    left: 1rem;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .process-viewport {
-    scroll-snap-type: x mandatory;
+  .process-node {
+    box-shadow: none;
   }
-  .process-card {
-    scroll-snap-align: start;
-  }
-}
-
-@media (max-width: 640px) {
-  .process-section { padding: 3.5rem 1rem; }
-  .process-card { min-width: 220px; }
 }

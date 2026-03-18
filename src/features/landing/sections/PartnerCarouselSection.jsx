@@ -5,48 +5,26 @@ import SorbitLogo from '../../../assets/partners/sorbit.webp';
 import RedspectreAILogo from '../../../assets/partners/redspectre-ai.webp';
 import WSuitsIndustriesLogo from '../../../assets/partners/wsuits-industries.webp';
 
-const PartnerLogo = ({ src, isDuplicate }) => (
-  <div className="partner-logo" aria-hidden={isDuplicate}>
-    <img src={src} alt="" loading="lazy" draggable="false" />
-  </div>
-);
-
 const PartnerCarouselSection = () => {
-  const partners = [
-    { src: SorbitLogo },
-    { src: RedspectreAILogo },
-    { src: WSuitsIndustriesLogo },
-  ];
-
-  const items = partners;
-  const trackItems = [...items, ...items, ...items];
-  const hasPartners = items.length > 0;
+  const partners = [SorbitLogo, RedspectreAILogo, WSuitsIndustriesLogo];
+  if (!partners.length) return null;
 
   return (
-    <section className="partners-section" aria-label="Partners">
-
-      <div className="partners-header">
-        <div className="partners-rule" />
-        <p className="partners-kicker">Trusted by security teams worldwide</p>
-        <div className="partners-rule" />
-      </div>
-
-      {hasPartners ? (
-        <div className="partners-carousel" role="presentation">
+    <section className="partners-section reveal-on-scroll" aria-label="Partners">
+      <div className="section-container">
+        <div className="partners-header">
+          <p className="section-eyebrow"><span className="eyebrow-dot" />Partners</p>
+        </div>
+        <div className="partners-marquee" aria-hidden="true">
           <div className="partners-track">
-            {trackItems.map((partner, index) => (
-              <PartnerLogo
-                key={`partner-${index}`}
-                src={partner.src}
-                isDuplicate={index >= items.length}
-              />
+            {[...partners, ...partners].map((logo, index) => (
+              <div key={`${logo}-${index}`} className="partner-logo">
+                <img src={logo} alt="" loading="lazy" width={140} height={40} />
+              </div>
             ))}
           </div>
         </div>
-      ) : (
-        <div className="partners-empty">Partner logos are unavailable right now.</div>
-      )}
-
+      </div>
     </section>
   );
 };

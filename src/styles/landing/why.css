@@ -1,126 +1,78 @@
-/* ============================================================
-   FILE: src/styles/landing/why.css
-   ============================================================ */
+/* ==========================================================
+   WHY SECTION
+   ========================================================== */
 
 .why-section {
-  padding: 5rem 1.5rem;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
+  --reveal-distance: 24px;
+  padding: 4rem 0;
 }
 
 .why-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 2.5rem;
 }
 
-/* Card */
-.why-item {
+.why-left {
+  position: sticky;
+  top: calc(var(--navbar-height, 64px) + 1.5rem);
+  align-self: flex-start;
+}
+
+.why-right {
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-  overflow: hidden;
-  transition: background 0.15s ease;
-  animation: none;
-  will-change: auto;
+  gap: 1.25rem;
 }
 
-.why-item::after { display: none; }
-
-.why-item:hover {
-  transform: none;
-  border-color: transparent;
-  box-shadow: none;
-  background: var(--bg-tertiary);
-}
-
-/* Media */
-.why-media {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 0;
-  overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
+.why-item {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--border-color);
 }
 
-.why-media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.18) 100%);
-  pointer-events: none;
+.why-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.why-media img {
+.why-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
 }
 
-.why-item:hover .why-media img {
-  transform: scale(1.03);
-}
-
-/* Icon */
-.why-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: transparent;
-  color: var(--primary-color);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1.25rem 1.25rem 0.75rem;
-  flex-shrink: 0;
-  transition: none;
-}
-
-.why-item:hover .why-icon {
-  transform: none;
-}
-
-.why-title {
-  font-size: 0.95rem;
-  font-weight: 600;
+.why-content h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
   color: var(--text-primary);
-  margin: 0 1.25rem 0.5rem;
-  line-height: 1.3;
 }
 
-.why-description {
-  font-size: 0.84rem;
+.why-content p {
+  margin: 0;
   color: var(--text-secondary);
-  line-height: 1.65;
-  margin: 0 1.25rem 1.5rem;
-  flex-grow: 1;
-}
-
-@keyframes whyFloat {}
-
-@media (prefers-reduced-motion: reduce) {
-  .why-item { animation: none; }
+  line-height: 1.6;
 }
 
 @media (max-width: 900px) {
-  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-left {
+    position: static;
+  }
 }
 
-@media (max-width: 600px) {
-  .why-section { padding: 3.5rem 1rem; }
-  .why-grid { grid-template-columns: 1fr; }
+@media (prefers-reduced-motion: reduce) {
+  .why-left {
+    position: static;
+  }
 }

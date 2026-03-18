@@ -1,46 +1,45 @@
 import React from 'react';
-import Logo from '../../../shared/components/common/Logo';
-import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
 import '../../../styles/landing/why.css';
 
-const WhySection = ({ items = [] }) => (
-  <section className="why-section reveal-on-scroll">
-    <div className="section-container">
-      <div className="section-header-center">
-        <div className="section-eyebrow">
-          <Logo size="small" />
-          <span>Why HSOCIETY</span>
-        </div>
-        <h2 className="section-title-large">Why Choose HSOCIETY?</h2>
-        <p className="section-subtitle-large">
-          Execution over marketing. Proof over promises.
-        </p>
-      </div>
+const WhySection = ({ items = [] }) => {
+  if (!items.length) return null;
 
-      <div className="why-grid">
-        {items.map((item) => (
-          <div key={item.title} className="why-item reveal-on-scroll">
-            {item.image && (
-              <div className="why-media">
-                <ImageWithLoader
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  decoding="async"
-                  loaderMessage="Loading highlight..."
-                />
-              </div>
-            )}
-            <div className="why-icon">
-              <item.icon size={28} />
-            </div>
-            <h4 className="why-title">{item.title}</h4>
-            <p className="why-description">{item.description}</p>
+  return (
+    <section className="why-section reveal-on-scroll" id="why">
+      <div className="section-container">
+        <div className="why-grid">
+          <div className="why-left">
+            <p className="section-eyebrow"><span className="eyebrow-dot" />Why HSOCIETY</p>
+            <h2 className="section-title">Built for operators, not spectators.</h2>
+            <p className="section-subtitle">
+              We combine beginner training, community feedback, and supervised
+              execution so skill converts into real-world outcomes.
+            </p>
           </div>
-        ))}
+
+          <div className="why-right">
+            {items.map((item, index) => (
+              <div key={item.title || index} className="why-item">
+                <div className="why-thumb">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    width={64}
+                    height={64}
+                    loading="lazy"
+                  />
+                </div>
+                <div className="why-content">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default WhySection;

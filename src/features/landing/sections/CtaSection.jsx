@@ -1,81 +1,42 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../../../shared/components/ui/Button';
-import Card from '../../../shared/components/ui/Card';
-import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
-import { trackEvent } from '../../../shared/services/analytics.service';
-import { ROUTES } from '../../../app/routes';
-import brandImageBlack from '../../../assets/brand-images/brand-image-black.webp';
-import brandImageWhite from '../../../assets/brand-images/brand-image-white.webp';
 import '../../../styles/landing/cta.css';
 
 const CtaSection = ({ content }) => {
   const navigate = useNavigate();
-  const { requestPentest, requestPentestModal } = useRequestPentest();
   const { openAuthModal } = useAuthModal();
-  const { left, right } = content;
+
   const handleRoute = (route) => {
-    trackEvent('landing_cta_click', { location: 'final_cta', route });
-    if (route === ROUTES.CORPORATE_PENTEST) {
-      requestPentest();
-      return;
-    }
-    if (route === ROUTES.LOGIN) {
-      openAuthModal('login');
-      return;
-    }
-    if (route === ROUTES.REGISTER) {
-      openAuthModal('register');
-      return;
-    }
-    if (route === ROUTES.CORPORATE_REGISTER) {
-      openAuthModal('register-corporate');
-      return;
-    }
+    if (route === '/register') { openAuthModal('register'); return; }
     navigate(route);
   };
 
   return (
-    <section className="cta-section reveal-on-scroll">
-      <div className="cta-container">
-        <Card padding="large" className="cta-card">
-          <div className="cta-content">
-            <div className="cta-panel">
-              <div className="cta-media dark">
-                <img src={brandImageBlack} alt="HSOCIETY brand mark" loading="lazy" />
-              </div>
-              <h2 className="cta-title">{left.title}</h2>
-              <p className="cta-description">{left.description}</p>
-              <Button
-                variant={left.variant}
-                size="large"
-                onClick={() => handleRoute(left.route)}
-              >
-                {left.button}
-              </Button>
-            </div>
-
-            <div className="cta-divider" aria-hidden="true" />
-
-            <div className="cta-panel">
-              <div className="cta-media light">
-                <img src={brandImageWhite} alt="HSOCIETY brand mark" loading="lazy" />
-              </div>
-              <h2 className="cta-title">{right.title}</h2>
-              <p className="cta-description">{right.description}</p>
-              <Button
-                variant={right.variant}
-                size="large"
-                onClick={() => handleRoute(right.route)}
-              >
-                {right.button}
-              </Button>
-            </div>
+    <section className="cta-section reveal-on-scroll" id="cta">
+      <div className="section-container">
+        <div className="cta-shell">
+          <div className="cta-grid" aria-hidden="true" />
+          <h2>{content?.left?.title || 'Ready to join HSOCIETY?'}</h2>
+          <p>{content?.left?.description || 'Launch your offensive security journey.'}</p>
+          <div className="cta-actions">
+            <button
+              type="button"
+              className="cta-primary"
+              onClick={() => handleRoute(content?.left?.route || '/register')}
+            >
+              {content?.left?.button || 'Join as Student'}
+            </button>
+            <button
+              type="button"
+              className="cta-secondary"
+              onClick={() => handleRoute(content?.right?.route || '/corporate/pentest')}
+            >
+              {content?.right?.button || 'Book Pentest'}
+            </button>
           </div>
-        </Card>
+        </div>
       </div>
-      {requestPentestModal}
     </section>
   );
 };

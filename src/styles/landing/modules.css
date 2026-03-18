@@ -1,229 +1,61 @@
-/* ============================================================
-   FILE: src/styles/landing/modules.css
-   ============================================================ */
+/* ==========================================================
+   MODULES SECTION
+   ========================================================== */
 
 .modules-section {
-  padding: 5rem 1.5rem;
-  border-top: 1px solid var(--border-color);
   background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  --reveal-distance: 24px;
+  padding: 4rem 0;
 }
 
-.modules-grid {
+.modules-strip {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(140px, 1fr);
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
 }
 
-/* ── Module card ── */
-.module-card {
-  position: relative;
+.module-tile {
+  scroll-snap-align: start;
+  width: 120px;
   display: flex;
   flex-direction: column;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.module-card {
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
   background: var(--bg-secondary);
-  cursor: pointer;
-  transition: background 0.15s ease;
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-}
-
-.module-card:hover {
-  transform: none;
-  border-color: transparent;
-  box-shadow: none;
-  background: var(--bg-tertiary);
-}
-
-/* Portal window — simplified */
-.module-portal {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 0.9;
-  background: var(--bg-primary);
-  overflow: hidden;
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--border-color);
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-.module-portal-glow { display: none; }
-
-.module-portal-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--border-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
-  background-size: 24px 24px;
-  opacity: 0.35;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Corner brackets — keep, but tone down */
-.mc-bracket {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  z-index: 4;
-  opacity: 0.3;
-  transition: opacity 0.2s ease;
-}
-
-.module-card:hover .mc-bracket {
-  opacity: 0.7;
-  width: 14px;
-  height: 14px;
-}
-
-.mc-bracket--tl { top: 10px; left: 10px; border-top: 1.5px solid var(--primary-color); border-left: 1.5px solid var(--primary-color); }
-.mc-bracket--tr { top: 10px; right: 10px; border-top: 1.5px solid var(--primary-color); border-right: 1.5px solid var(--primary-color); }
-.mc-bracket--bl { bottom: 10px; left: 10px; border-bottom: 1.5px solid var(--primary-color); border-left: 1.5px solid var(--primary-color); }
-.mc-bracket--br { bottom: 10px; right: 10px; border-bottom: 1.5px solid var(--primary-color); border-right: 1.5px solid var(--primary-color); }
-
-/* Emblem */
-.module-emblem {
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18% 22% 22%;
-  z-index: 3;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.module-emblem img,
-.module-emblem > * {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  opacity: 0.85;
-  transition: opacity 0.25s ease;
+.module-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
 }
 
-.module-card:hover .module-emblem img,
-.module-card:hover .module-emblem > * {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* Level badge */
-.module-level-badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 5;
-  font-size: 0.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  color: var(--text-tertiary);
-  margin-left: 0;
-}
-
-/* Info panel */
-.module-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 1rem 1.1rem 1.1rem;
-  margin-top: 0;
-  gap: 0.65rem;
-  background: transparent;
-}
-
-.module-info-top {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.module-title {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-  margin: 0;
-}
-
-.module-description {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  line-height: 1.55;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.module-info-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--border-color);
-}
-
-.module-duration-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.67rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-}
-
-.module-enter-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  font-size: 0.67rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+.module-tile span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-tertiary);
-  transition: color 0.15s ease;
-}
-
-.module-card:hover .module-enter-cta {
-  color: var(--primary-color);
-  gap: 0.3rem;
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-  .modules-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 760px) {
-  .modules-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 500px) {
-  .modules-section { padding: 3.5rem 1rem; }
-  .modules-grid { grid-template-columns: 1fr; }
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .module-card, .module-card:hover,
-  .module-emblem img, .module-card:hover .module-emblem img {
+  .module-card {
     transition: none;
-    transform: none;
   }
 }

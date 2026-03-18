@@ -22,7 +22,7 @@ import '../../../styles/shared/components/layout/LandingLayout.css';
  */
 const LandingLayout = () => {
   const location = useLocation();
-  useScrollReveal('.reveal-on-scroll', {}, [location.pathname], '.landing-layout');
+  useScrollReveal('.reveal-on-scroll', { threshold: 0.1 }, [location.pathname], '.landing-layout');
 
   return (
     <div className="landing-layout">

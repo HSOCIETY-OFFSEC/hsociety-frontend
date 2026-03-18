@@ -1,0 +1,103 @@
+/* ==========================================================
+   LEADERBOARD SECTION
+   ========================================================== */
+
+.leaderboard-section {
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  --reveal-distance: 24px;
+  padding: 4rem 0;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1.2fr) minmax(0, 0.6fr) minmax(0, 0.6fr);
+  gap: 1rem;
+  padding: 0.9rem 0;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.leaderboard-head {
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.65rem;
+  color: var(--text-tertiary);
+  border-top: none;
+}
+
+.leaderboard-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-primary);
+}
+
+.leaderboard-user img {
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+}
+
+.leaderboard-user span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.leaderboard-user em {
+  font-style: normal;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+}
+
+.leaderboard-rank {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-tertiary);
+}
+
+.leaderboard-rank.is-top {
+  color: var(--primary-color);
+}
+
+.leaderboard-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+}
+
+.leaderboard-link {
+  margin-top: 1rem;
+  margin-left: auto;
+  display: block;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .leaderboard-row {
+    grid-template-columns: 60px minmax(0, 1fr);
+  }
+
+  .leaderboard-row span:nth-child(3),
+  .leaderboard-row span:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaderboard-link {
+    transition: none;
+  }
+}

@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import landingContent from '../../data/landing.json';
+import methodologyContent from '../../data/methodology.json';
+import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
+import { getLeaderboard } from '../leaderboard/leaderboard.service';
+import { LEADERBOARD_FALLBACK } from '../../data/leaderboard/leaderboardData';
 import {
   getCommunityProfiles,
   getLandingCacheSnapshot,
@@ -8,36 +12,23 @@ import {
   getLandingStats,
 } from './landing.service';
 
-/**Sections importation  */
-/**========================== */
 import HeroSection from './sections/HeroSection';
-import CoursesSection from './sections/CoursesSection';
-import TrustSection from './sections/TrustSection';
 import StatsSection from './sections/StatsSection';
 import ServicesSection from './sections/ServicesSection';
+import WhySection from './sections/WhySection';
+import CycleSection from './sections/CycleSection';
 import ProcessSection from './sections/ProcessSection';
-import PartnerCarouselSection from './sections/PartnerCarouselSection';
+import CoursesSection from './sections/CoursesSection';
+import ModulesSection from './sections/ModulesSection';
+import PathwaysSection from './sections/PathwaysSection';
+import LeaderboardSection from './sections/LeaderboardSection';
 import CommunityProfilesSection from './sections/CommunityProfilesSection';
+import TrustSection from './sections/TrustSection';
+import DeliverablesSection from './sections/DeliverablesSection';
 import CtaSection from './sections/CtaSection';
 import FaqSection from './sections/FaqSection';
 import FooterSection from './sections/FooterSection';
 
-/**ICON importation */
-/**===================== */
-import { 
-  FiShield,
-  FiFileText, 
-  FiTarget, 
-  FiClipboard, 
-  FiSearch, 
-  FiLayers,
-  FiCheckCircle,
-  FiTerminal, 
-  FiMessageSquare
-} from 'react-icons/fi';
-
-/**Image importation */
-/**=========================== */
 import terminalWallpaper from '../../assets/services-images/beginner-offsec-training.webp';
 import greenBinaryWallpaper from '../../assets/services-images/community-integration.webp';
 import hackerLaptop from '../../assets/services-images/penetration-tests.webp';
@@ -45,7 +36,11 @@ import terminalWallpaperSm from '../../assets/services-images/beginner-offsec-tr
 import greenBinaryWallpaperSm from '../../assets/services-images/community-integration-sm.webp';
 import hackerLaptopSm from '../../assets/services-images/penetration-tests-sm.webp';
 
-/**ROOT CSS importation */
+import handsOnImage from '../../assets/why-choose-hsociety-images/hands-on-learning.webp';
+import communityImage from '../../assets/why-choose-hsociety-images/community-engagements.webp';
+import pentestsImage from '../../assets/why-choose-hsociety-images/supervised-pentests.webp';
+import pathwayImage from '../../assets/why-choose-hsociety-images/career-ready-pathway.webp';
+
 import '../../styles/landing/index.css';
 
 const Landing = ({ scrollToId = null }) => {
@@ -55,35 +50,23 @@ const Landing = ({ scrollToId = null }) => {
   const [landingOverrides, setLandingOverrides] = useState({});
   const [statsError, setStatsError] = useState('');
   const [profilesError, setProfilesError] = useState('');
+  const [leaderboardEntries, setLeaderboardEntries] = useState([]);
 
-  const iconMap = {
-    FiShield,
-    FiFileText,
-    FiTarget,
-    FiClipboard,
-    FiSearch,
-    FiLayers,
-    FiCheckCircle,
-    FiTerminal,
-    FiMessageSquare,
-  };
-
-  /**Image mapping variable */
   const imageMap = {
     terminal: terminalWallpaper,
     binary: greenBinaryWallpaper,
-    hacker: hackerLaptop
+    hacker: hackerLaptop,
   };
   const imageMapSm = {
     terminal: terminalWallpaperSm,
     binary: greenBinaryWallpaperSm,
-    hacker: hackerLaptopSm
+    hacker: hackerLaptopSm,
   };
 
-  /**Services mapping var */
-  const services = landingContent.services.map((item) => ({
+  const whyImageMap = [handsOnImage, communityImage, pentestsImage, pathwayImage];
+
+  const services = landingContent.services.slice(0, 3).map((item) => ({
     ...item,
-    icon: iconMap[item.icon],
     image: item.imageKey ? imageMap[item.imageKey] : item.image,
     imageSrcSet:
       item.imageKey && imageMapSm[item.imageKey]
@@ -91,15 +74,12 @@ const Landing = ({ scrollToId = null }) => {
         : undefined,
   }));
 
-  const engagementSteps = landingContent.process.map((item) => ({
+  const whyItems = landingContent.why.map((item, index) => ({
     ...item,
-    icon: iconMap[item.icon]
+    image: whyImageMap[index],
   }));
 
-  const trustSignals = landingContent.trust.map((item) => ({
-    ...item,
-    icon: item.icon ? iconMap[item.icon] : null
-  }));
+  const processSteps = methodologyContent.phases || [];
 
   useEffect(() => {
     let isMounted = true;
@@ -140,6 +120,22 @@ const Landing = ({ scrollToId = null }) => {
       }
     };
 
+    const loadLeaderboard = async () => {
+      try {
+        const response = await getLeaderboard(5);
+        if (!isMounted) return;
+        if (response.success) {
+          const live = response.data?.leaderboard || [];
+          setLeaderboardEntries(live.length ? live : LEADERBOARD_FALLBACK.slice(0, 5));
+          return;
+        }
+        setLeaderboardEntries(LEADERBOARD_FALLBACK.slice(0, 5));
+      } catch {
+        if (!isMounted) return;
+        setLeaderboardEntries(LEADERBOARD_FALLBACK.slice(0, 5));
+      }
+    };
+
     const loadContent = async () => {
       try {
         const contentResponse = await getLandingContent();
@@ -153,6 +149,7 @@ const Landing = ({ scrollToId = null }) => {
     };
 
     loadStats();
+    timeoutIds.push(window.setTimeout(loadLeaderboard, 200));
     timeoutIds.push(window.setTimeout(loadProfiles, 300));
     if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
       idleId = window.requestIdleCallback(loadContent, { timeout: 1500 });
@@ -194,14 +191,14 @@ const Landing = ({ scrollToId = null }) => {
   }, [location.hash, scrollToId]);
 
   const formatStatValue = (value, fallback, options = {}) => {
-      if (value === null || value === undefined || Number.isNaN(value)) return null;
-      if (typeof value === 'number') {
-        if (options.percent) return `${value}%`;
-        if (options.plus) return `${value.toLocaleString()}+`;
-        return value.toLocaleString();
-      }
-      return String(value);
-    };
+    if (value === null || value === undefined || Number.isNaN(value)) return fallback;
+    if (typeof value === 'number') {
+      if (options.percent) return `${value}%`;
+      if (options.plus) return `${value.toLocaleString()}+`;
+      return value.toLocaleString();
+    }
+    return String(value || fallback || '');
+  };
 
   const statsContent = useMemo(() => {
     const items = landingContent.stats.items.map((item) => {
@@ -245,53 +242,47 @@ const Landing = ({ scrollToId = null }) => {
   }, [statsData, landingOverrides]);
 
   const profileContent = useMemo(() => {
-    return communityProfiles;
+    if (communityProfiles.length) return communityProfiles;
+    return [];
   }, [communityProfiles]);
 
+  const moduleEmblems = useMemo(
+    () => HACKER_PROTOCOL_PHASES.map((phase) => ({
+      codename: phase.codename,
+      emblem: phase.emblem,
+    })),
+    []
+  );
+
   return (
-  <div className="landing-page">
-    {/* 1. Hook */}
-    <HeroSection content={heroContent} />
-
-    {/* 2. Early product entry */}
-    <CoursesSection />
-
-    {/* 3. Trust proof near fold */}
-    <TrustSection signals={trustSignals} />
-
-    {/* 4. Immediate credibility */}
-    <StatsSection content={statsContent} error={statsError} />
-
-    <PartnerCarouselSection />
-
-    {/* 5. Core offer */}
-    <ServicesSection services={services} />
-
-    {/* 6. How it works */}
-    <ProcessSection steps={engagementSteps} />
-
-    {/* 7. Community proof */}
+    <div className="landing-page">
+      <HeroSection content={heroContent} />
+      <StatsSection content={statsContent} error={statsError} />
+      <ServicesSection services={services} />
+      <WhySection items={whyItems} />
+      <CycleSection />
+      <ProcessSection steps={processSteps} />
+      <CoursesSection />
+      <ModulesSection modules={moduleEmblems} />
+      <PathwaysSection pathways={landingContent.pathways} />
+      <LeaderboardSection entries={leaderboardEntries.length ? leaderboardEntries : LEADERBOARD_FALLBACK.slice(0, 5)} />
       <CommunityProfilesSection
         title={landingContent.communityProfiles?.title || 'Community wins in the open'}
         subtitle={
-        landingOverrides.communitySubtitle ||
-        landingContent.communityProfiles?.subtitle ||
-        'Meet offensive learners already sharing findings, feedback, and collaboration.'
+          landingOverrides.communitySubtitle ||
+          landingContent.communityProfiles?.subtitle ||
+          'Meet offensive learners already sharing findings, feedback, and collaboration.'
         }
         profiles={profileContent}
         error={profilesError}
       />
-
-    {/* 7. Objections handling */}
-    <FaqSection content={landingContent.faq} />
-
-    {/* 8. Final conversion push */}
-    <CtaSection content={landingContent.cta} />
-
-    {/* 9. Closure */}
-    <FooterSection />
-  </div>
-);
+      <TrustSection signals={landingContent.trust} />
+      <DeliverablesSection items={landingContent.deliverables} />
+      <CtaSection content={landingContent.cta} />
+      <FaqSection content={landingContent.faq} />
+      <FooterSection />
+    </div>
+  );
 };
 
 export default Landing;
