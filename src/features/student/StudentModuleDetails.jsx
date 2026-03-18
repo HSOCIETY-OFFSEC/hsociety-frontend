@@ -9,10 +9,10 @@ import useBootcampAccess from './hooks/useBootcampAccess';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getStudentOverview } from '../dashboards/student/student.service';
 import {
+import './module-details.css';
   getHackerProtocolModule,
   HACKER_PROTOCOL_BOOTCAMP,
 } from '../../data/bootcamps/hackerProtocolData';
-import '../../styles/student/pages/module-details.css';
 
 const StudentModuleDetails = () => {
   const { moduleId } = useParams();

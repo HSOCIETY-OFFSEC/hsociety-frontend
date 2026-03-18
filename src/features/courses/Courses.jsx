@@ -18,7 +18,7 @@ import {
   FiBook,
 } from 'react-icons/fi';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
-import '../../styles/features/courses/index.css';
+import './courses.css';
 
 const Courses = () => {
   const navigate = useNavigate();

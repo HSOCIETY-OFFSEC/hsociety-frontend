@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/landing/cycle.css';
+import './cycle.css';
 
 const CycleSection = ({ steps }) => {
   const cycle = steps?.length

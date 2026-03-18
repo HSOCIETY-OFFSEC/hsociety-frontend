@@ -5,8 +5,8 @@ import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
 import { useAuth } from '../../core/auth/AuthContext';
-import '../../styles/student/components.css';
-import '../../styles/student/pages/quiz-material.css';
+import './components.css';
+import './quiz-material.css';
 
 const StudentQuizMaterial = () => {
   const navigate = useNavigate();

@@ -4,9 +4,9 @@ import { FiBookOpen, FiLayers, FiZap } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
 import { HACKER_PROTOCOL_BOOTCAMP } from '../../data/bootcamps/hackerProtocolData';
-import '../../styles/student/base.css';
-import '../../styles/student/components.css';
-import '../../styles/student/pages/learn-overview.css';
+import './base.css';
+import './components.css';
+import './learn-overview.css';
 
 const StudentLearnOverview = () => {
   const navigate = useNavigate();

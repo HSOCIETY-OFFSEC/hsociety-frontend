@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiBarChart2, FiCheckCircle, FiShield } from 'react-icons/fi';
 import Card from '../../shared/components/ui/Card';
 import Button from '../../shared/components/ui/Button';
-import '../../styles/features/case-studies/index.css';
+import './case-studies.css';
 
 const CaseStudies = () => {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getSecurityEvents, getSecuritySummary } from './admin.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
-import '../../../styles/dashboards/admin/index.css';
+import './index.css';
 
 const AdminSecurity = () => {
   const [loading, setLoading] = useState(true);

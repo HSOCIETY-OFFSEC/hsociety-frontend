@@ -4,7 +4,7 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { registerBootcamp } from '../../dashboards/student/student.service';
 import StudentAccessModal from '../components/StudentAccessModal';
 import useBootcampAccess from '../hooks/useBootcampAccess';
-import '../../../styles/student/bootcamp-app.css';
+import './bootcamp-app.css';
 
 const BootcampLayout = () => {
   const navigate = useNavigate();

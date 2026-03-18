@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvatar';
-import '../../../styles/landing/leaderboard.css';
+import './leaderboard.css';
 
 const LeaderboardSection = ({ entries = [] }) => {
   const navigate = useNavigate();

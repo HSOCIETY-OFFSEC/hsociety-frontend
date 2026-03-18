@@ -11,10 +11,10 @@ import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
 import {
+import './learning.css';
   HACKER_PROTOCOL_BOOTCAMP,
   HACKER_PROTOCOL_PHASES,
 } from '../../data/bootcamps/hackerProtocolData';
-import '../../styles/student/pages/learning.css';
 
 const StudentLearning = () => {
   const navigate = useNavigate();

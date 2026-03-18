@@ -33,7 +33,7 @@ import {
 import ImageWithLoader from '../../shared/components/ui/ImageWithLoader';
 import teamContent from '../../data/static/team.json';
 import { getTeamContent } from './team.service';
-import '../../styles/features/team/index.css';
+import './team.css';
 
 /* ── helpers ── */
 const ensureArray = (v, fallback = []) => (Array.isArray(v) ? v : fallback);

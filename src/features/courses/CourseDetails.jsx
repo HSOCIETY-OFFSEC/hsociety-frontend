@@ -19,7 +19,7 @@ import {
 } from 'react-icons/fi';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import { useAuth } from '../../core/auth/AuthContext';
-import '../../styles/features/courses/index.css';
+import './courses.css';
 
 const CourseDetails = () => {
   const { bootcampId } = useParams();

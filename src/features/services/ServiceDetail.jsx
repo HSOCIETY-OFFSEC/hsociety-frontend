@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../shared/hooks/useAuthModal';
 import landingContent from '../../data/static/landing.json';
 import {
+import './services.css';
   FiArrowLeft,
   FiArrowUpRight,
   FiCheckCircle,
@@ -18,7 +19,6 @@ import {
   FiZap,
   FiMessageSquare,
 } from 'react-icons/fi';
-import '../../styles/features/services/index.css';
 
 const slugify = (value) =>
   value

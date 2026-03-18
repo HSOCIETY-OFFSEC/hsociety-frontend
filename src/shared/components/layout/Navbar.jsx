@@ -34,7 +34,7 @@ import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { useNotifications } from '../../notifications/NotificationProvider';
 import { useUserStats } from '../../hooks/useUserStats';
-import '../../../styles/components/layout/Navbar.css';
+import './Navbar.css';
 
 const NAV_COLLAPSE_WIDTH = 1024;
 const MENU_IDS = {

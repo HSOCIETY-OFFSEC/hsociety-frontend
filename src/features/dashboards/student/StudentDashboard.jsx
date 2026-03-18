@@ -18,7 +18,7 @@ import StudentXpSummaryCard from './components/StudentXpSummaryCard';
 import StudentRecentNotificationsCard from './components/StudentRecentNotificationsCard';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import SkillProgressCard from './components/SkillProgressCard';
-import '../../../styles/dashboards/student/index.css';
+import './index.css';
 
 const StudentDashboard = () => {
   const navigate = useNavigate();

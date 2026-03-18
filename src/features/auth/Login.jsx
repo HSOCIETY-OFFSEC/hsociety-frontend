@@ -11,7 +11,7 @@ import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PublicError from '../../shared/components/ui/PublicError';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
-import '../../styles/features/auth/auth.css';
+import './auth.css';
 
 /**
  * Login Component

@@ -24,8 +24,8 @@ import {
   updateProfile,
 } from './account.service';
 import { listNotifications, markNotificationRead } from '../student/services/notifications.service';
-import '../../styles/features/account/index.css';
-import '../../styles/features/public-profile/index.css';
+import './account.css';
+import '../public/public-profile.css';
 
 const normalizeHandle = (handle) => {
   if (!handle) return '';

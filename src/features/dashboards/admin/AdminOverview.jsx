@@ -7,7 +7,7 @@ import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getAdminOverview } from './admin.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
-import '../../../styles/dashboards/admin/index.css';
+import './index.css';
 
 const AdminOverview = () => {
   const [loading, setLoading] = useState(true);

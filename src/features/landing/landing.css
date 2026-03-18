@@ -1,23 +1,23 @@
 /* ============================================================
-   FILE: src/styles/landing/index.css
+   FILE: src/features/landing/landing.css
    LANDING PAGE — GitHub-style minimal layout
    ============================================================ */
 
-@import '../mobile-dashboard-fixes.css';
-@import './stats.css';
-@import './services.css';
-@import './why.css';
-@import './cycle.css';
-@import './process.css';
-@import './modules.css';
-@import './pathways.css';
-@import './leaderboard.css';
-@import './community-profiles.css';
-@import './trust.css';
-@import './deliverables.css';
-@import './cta.css';
-@import './faq.css';
-@import './footer.css';
+@import '../../styles/mobile-dashboard-fixes.css';
+@import './sections/stats.css';
+@import './sections/services.css';
+@import './sections/why.css';
+@import './sections/cycle.css';
+@import './sections/process.css';
+@import './sections/modules.css';
+@import './sections/pathways.css';
+@import './sections/leaderboard.css';
+@import './sections/community-profiles.css';
+@import './sections/trust.css';
+@import './sections/deliverables.css';
+@import './sections/cta.css';
+@import './sections/faq.css';
+@import './sections/footer.css';
 
 .landing-page {
   min-height: 100vh;

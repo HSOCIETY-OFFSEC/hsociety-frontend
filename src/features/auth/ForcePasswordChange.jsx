@@ -15,7 +15,7 @@ import { validatePassword } from '../../core/validation/input.validator';
 import { apiClient } from '../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../config/api.config';
 import { buildAuthModalUrl } from '../../shared/utils/auth/authModal';
-import '../../styles/features/auth/auth.css';
+import './auth.css';
 
 export default function ForcePasswordChange() {
   const { login } = useAuth();

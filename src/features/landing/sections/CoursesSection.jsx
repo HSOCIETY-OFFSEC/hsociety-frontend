@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiTerminal, FiFolder, FiChevronRight } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../../data/bootcamps/hackerProtocolData';
-import '../../../styles/landing/courses-section.css';
+import './courses-section.css';
 
 const AUTO_INTERVAL = 3800;
 

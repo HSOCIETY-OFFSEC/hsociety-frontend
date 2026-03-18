@@ -5,7 +5,7 @@ import { SERVICES_SECTION_DATA } from '../../../data/landing/servicesSectionData
 import ServiceCardSlide from '../components/services/ServiceCardSlide';
 import ServiceCarouselDots from '../components/services/ServiceCarouselDots';
 import { slugify } from '../../../shared/utils/display/slugify';
-import '../../../styles/landing/services.css';
+import './services.css';
 
 const ServicesSection = ({ services = [] }) => {
   const navigate = useNavigate();

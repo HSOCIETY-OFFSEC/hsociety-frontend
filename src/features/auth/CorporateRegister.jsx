@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FiShield } from 'react-icons/fi';
 import RegistrationForm from './RegistrationForm';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
-import '../../styles/features/auth/auth.css';
+import './auth.css';
 
 const CorporateRegister = ({
   layout = 'page',

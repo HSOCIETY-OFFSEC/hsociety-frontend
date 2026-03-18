@@ -11,7 +11,7 @@ import {
 } from './admin.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import defaultTeamContent from '../../../data/static/team.json';
-import '../../../styles/dashboards/admin/index.css';
+import './index.css';
 
 const emptyPost = { title: '', date: '', summary: '' };
 const emptyResource = { title: '', description: '', url: '', type: 'link' };

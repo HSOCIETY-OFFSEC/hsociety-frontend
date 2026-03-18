@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import '../../../styles/components/ui/BinaryToast.css';
+import './BinaryToast.css';
 
 const buildParticles = () =>
   Array.from({ length: 26 }, () => {

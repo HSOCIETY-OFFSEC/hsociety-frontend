@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
-import '../../../styles/landing/cta.css';
+import './cta.css';
 
 const CtaSection = ({ content }) => {
   const navigate = useNavigate();

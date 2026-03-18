@@ -41,7 +41,7 @@ import communityImage from '../../assets/why-choose-hsociety-images/community-en
 import pentestsImage from '../../assets/why-choose-hsociety-images/supervised-pentests.webp';
 import pathwayImage from '../../assets/why-choose-hsociety-images/career-ready-pathway.webp';
 
-import '../../styles/landing/index.css';
+import './landing.css';
 
 const Landing = ({ scrollToId = null }) => {
   const location = useLocation();

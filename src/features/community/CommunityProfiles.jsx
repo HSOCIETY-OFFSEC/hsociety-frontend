@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCommunityProfilesList } from './community.service';
 import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
-import '@styles/features/community/index.css';
+import './community.css';
 
 const CommunityProfiles = () => {
   const navigate = useNavigate();

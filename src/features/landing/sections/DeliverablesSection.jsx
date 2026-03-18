@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/landing/deliverables.css';
+import './deliverables.css';
 
 const DeliverablesSection = ({ items = [] }) => {
   if (!items.length) return null;

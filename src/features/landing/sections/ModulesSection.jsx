@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/landing/modules.css';
+import './modules.css';
 
 const ModulesSection = ({ modules = [] }) => {
   if (!modules.length) return null;

@@ -3,7 +3,7 @@ import { FiActivity, FiClipboard, FiShield, FiUsers, FiWifi } from 'react-icons/
 import { useNavigate } from 'react-router-dom';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
-import '../../../styles/dashboards/admin/index.css';
+import './index.css';
 
 const AdminOperations = () => {
   const navigate = useNavigate();

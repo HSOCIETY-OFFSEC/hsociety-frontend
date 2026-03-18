@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { registerSW } from 'virtual:pwa-register';
 import Button from './Button';
-import '../../../styles/components/ui/PwaUpdatePrompt.css';
+import './PwaUpdatePrompt.css';
 
 /**
  * PWA Update Prompt

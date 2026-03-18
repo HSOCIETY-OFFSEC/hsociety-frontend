@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import '../../../styles/components/layout/AuthLayout.css';
-import '../../../styles/components/layout/PageLayout.css';
+import './AuthLayout.css';
+import './PageLayout.css';
 
 /**
  * Auth Layout

@@ -5,7 +5,7 @@ import Logo from '../../../shared/components/common/Logo';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import { validateEmail } from '../../../core/validation/input.validator';
-import '../../../styles/landing/hero.css';
+import './hero.css';
 
 /* ════════════════════════════════════════
    BINARY RAIN

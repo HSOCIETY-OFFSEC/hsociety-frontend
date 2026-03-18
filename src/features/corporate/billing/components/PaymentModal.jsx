@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FiX, FiCreditCard } from 'react-icons/fi';
 import Button from '../../../../shared/components/ui/Button';
-import '../../../../styles/components/billing/PaymentModal.css';
+import './PaymentModal.css';
 
 const PaymentModal = ({ invoice, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);

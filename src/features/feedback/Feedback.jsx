@@ -7,7 +7,7 @@ import { validateForm } from '../../core/validation/input.validator';
 import { submitFeedback } from './feedback.service';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import feedbackContent from '../../data/static/feedback.json';
-import '../../styles/features/feedback/index.css';
+import './feedback.css';
 
 /**
  * Feedback Component

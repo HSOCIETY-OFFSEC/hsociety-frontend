@@ -10,7 +10,7 @@ import {
   LuShield,
   LuUser,
 } from 'react-icons/lu';
-import '../../../styles/components/layout/BottomNav.css';
+import './BottomNav.css';
 
 const BottomNav = ({ links = [], profile = null }) => {
   if (!links.length && !profile) return null;

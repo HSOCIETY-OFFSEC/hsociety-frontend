@@ -1,7 +1,7 @@
 import React from 'react';
 import aboutContent from '../../data/static/about.json';
 import SocialLinks from '../../shared/components/common/SocialLinks';
-import '../../styles/features/about/index.css';
+import './about.css';
 
 const About = () => {
 

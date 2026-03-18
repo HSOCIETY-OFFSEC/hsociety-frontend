@@ -14,7 +14,7 @@ import { envConfig } from '../config/env.config';
 import '../styles/base/common.css';
 import '../styles/base/layout.css';
 import '../styles/base/ui.css';
-import '../styles/components/layout/AppShell.css';
+import '../shared/components/layout/AppShell.css';
 
 /**
  * Main App Component

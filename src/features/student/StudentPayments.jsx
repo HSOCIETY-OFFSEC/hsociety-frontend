@@ -5,10 +5,10 @@ import { useAuth } from '../../core/auth/AuthContext';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
-import '../../styles/student/components.css';
-import '../../styles/student/pages/payments.css';
 import { verifyBootcampPayment } from '../dashboards/student/student.service';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
+import './components.css';
+import './payments.css';
 
 const StudentPayments = () => {
   const { updateUser } = useAuth();

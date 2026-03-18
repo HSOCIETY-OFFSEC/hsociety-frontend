@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '@styles/components/ui/notification-consent.css';
+import '@./notification-consent.css';
 
 const STORAGE_KEY = 'hsociety_notification_consent';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/landing/why.css';
+import './why.css';
 
 const WhySection = ({ items = [] }) => {
   if (!items.length) return null;

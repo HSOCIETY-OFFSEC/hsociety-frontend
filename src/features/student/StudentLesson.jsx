@@ -12,12 +12,12 @@ import StudentPaymentModal from './components/StudentPaymentModal';
 import { useAuth } from '../../core/auth/AuthContext';
 import { QuizPanel } from './quizzes/QuizPanel';
 import {
+import './base.css';
+import './components.css';
+import './lesson.css';
   getHackerProtocolModule,
   getHackerProtocolRoom,
 } from '../../data/bootcamps/hackerProtocolData';
-import '../../styles/student/base.css';
-import '../../styles/student/components.css';
-import '../../styles/student/pages/lesson.css';
 
 const StudentLesson = () => {
   const navigate = useNavigate();

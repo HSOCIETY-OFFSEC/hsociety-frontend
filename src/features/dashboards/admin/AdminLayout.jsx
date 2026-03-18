@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import '../../../styles/dashboards/admin/index.css';
+import './index.css';
 
 const AdminLayout = () => {
   return (

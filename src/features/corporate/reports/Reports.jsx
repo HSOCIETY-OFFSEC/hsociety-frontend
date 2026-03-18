@@ -5,7 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getReports } from './reports.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
-import '../../../styles/corporate/pages/reports.css';
+import './reports.css';
 
 const Reports = () => {
   const [reports, setReports] = useState([]);

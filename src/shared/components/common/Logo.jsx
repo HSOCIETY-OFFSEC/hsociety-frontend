@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '../../../app/providers';
-import '../../../styles/components/common/Logo.css';
+import './Logo.css';
 
 /**
  * Logo Component

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../../styles/components/ui/Card.css';
+import './Card.css';
 
 /**
  * Card Component

@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../app/routes';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
-import '../../../styles/landing/pathways.css';
+import './pathways.css';
 
 const PathwaysSection = ({ pathways }) => {
   const navigate = useNavigate();

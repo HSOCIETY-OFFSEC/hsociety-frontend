@@ -9,6 +9,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+import './careers.css';
   FiMessageSquare,
   FiBriefcase,
   FiCheckCircle,
@@ -16,7 +17,6 @@ import {
   FiUsers,
   FiArrowUpRight,
 } from 'react-icons/fi';
-import '../../styles/features/careers/index.css';
 
 const STATUS_CARDS = [
   {

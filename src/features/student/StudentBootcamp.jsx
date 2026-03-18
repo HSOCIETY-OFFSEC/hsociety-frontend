@@ -7,11 +7,11 @@ import { getStudentOverview, registerBootcamp } from '../dashboards/student/stud
 import useBootcampAccess from './hooks/useBootcampAccess';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import {
+import './base.css';
+import './components.css';
+import './bootcamp.css';
   HACKER_PROTOCOL_BOOTCAMP,
 } from '../../data/bootcamps/hackerProtocolData';
-import '../../styles/student/base.css';
-import '../../styles/student/components.css';
-import '../../styles/student/pages/bootcamp.css';
 
 const StudentBootcamp = () => {
   const navigate = useNavigate();

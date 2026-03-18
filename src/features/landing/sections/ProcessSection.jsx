@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/landing/process.css';
+import './process.css';
 
 const ProcessSection = ({ steps = [] }) => {
   if (!steps.length) return null;

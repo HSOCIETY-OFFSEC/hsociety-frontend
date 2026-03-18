@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/landing/stats.css';
+import './stats.css';
 
 const StatsSection = ({ content, error = '' }) => {
   const items = (content?.items || []).slice(0, 4);

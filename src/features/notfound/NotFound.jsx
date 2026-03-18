@@ -5,7 +5,7 @@ import Navbar from '../../shared/components/layout/Navbar';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
 import notFoundContent from '../../data/static/notfound.json';
-import '../../styles/features/notfound/index.css';
+import './notfound.css';
 
 const NotFound = () => {
   const navigate = useNavigate();

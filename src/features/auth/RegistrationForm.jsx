@@ -11,7 +11,7 @@ import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
 import { validatePassword } from '../../core/validation/input.validator';
 import { registerUser } from './register.service';
-import '../../styles/features/auth/auth.css';
+import './auth.css';
 
 /**
  * Registration Form

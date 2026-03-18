@@ -12,7 +12,7 @@ import {
 } from 'react-icons/fi';
 import Button from '../../shared/components/ui/Button';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
-import '../../styles/cp-points/cp-points.css';
+import './cp-points.css';
 
 const CPPoints = () => {
   const navigate = useNavigate();

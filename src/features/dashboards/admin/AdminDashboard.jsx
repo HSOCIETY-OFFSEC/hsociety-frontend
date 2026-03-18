@@ -6,7 +6,7 @@ import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, getPentests, updatePentest } from './admin.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
-import '../../../styles/dashboards/admin/index.css';
+import './index.css';
 
 const ROLE_OPTIONS = [
   { value: 'student', label: 'Student' },

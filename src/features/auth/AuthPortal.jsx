@@ -5,8 +5,8 @@ import RegistrationForm from './RegistrationForm';
 import AuthLeftPanel from './components/AuthLeftPanel';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import { AUTH_MODAL_MODES, AUTH_QUERY_KEY } from '../../shared/utils/auth/authModal';
-import '../../styles/features/auth/auth.css';
-import '../../styles/features/auth/auth-portal.css';
+import './auth.css';
+import './auth-portal.css';
 
 const AUTH_PORTAL_ROUTE = '/posts';
 

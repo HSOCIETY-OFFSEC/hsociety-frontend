@@ -15,10 +15,7 @@ import { getProfile } from '../account/account.service';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_HUB_DATA } from '../../data/community/communityHubData';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
-import '@styles/features/community/index.css';
-import '@styles/features/community/index.css';
-import '@styles/features/community/index.css';
-import '@styles/features/community/index.css';
+import './community.css';
 
 const CommunityHub = () => {
   const { user } = useAuth();

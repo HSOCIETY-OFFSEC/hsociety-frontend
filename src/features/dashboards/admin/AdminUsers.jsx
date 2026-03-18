@@ -7,7 +7,7 @@ import { getUsers, updateUser, muteUser, sendBootcampRoomLink } from './admin.se
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
 import { HACKER_PROTOCOL_PHASES } from '../../../data/bootcamps/hackerProtocolData';
-import '../../../styles/dashboards/admin/index.css';
+import './index.css';
 
 const ROLE_OPTIONS = [
   { value: 'student', label: 'Student' },

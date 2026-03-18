@@ -1,7 +1,7 @@
 import React from 'react';
 import { LuMoon, LuSun } from 'react-icons/lu';
 import { useTheme } from '../../../app/providers';
-import '../../../styles/components/common/ThemeToggle.css';
+import './ThemeToggle.css';
 
 /**
  * Theme Toggle

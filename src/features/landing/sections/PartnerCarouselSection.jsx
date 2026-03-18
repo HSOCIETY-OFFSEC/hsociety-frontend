@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/landing/partners.css';
+import './partners.css';
 
 import SorbitLogo from '../../../assets/partners/sorbit.webp';
 import RedspectreAILogo from '../../../assets/partners/redspectre-ai.webp';

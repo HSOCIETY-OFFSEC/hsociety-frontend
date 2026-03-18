@@ -26,11 +26,11 @@ import {
   FiTag,
 } from 'react-icons/fi';
 import {
+import './pricing.css';
   PRICING_INCLUDED_ITEMS,
   PRICING_NOTE,
   PRICING_TIERS,
 } from '../../data/pricing/pricingData';
-import '../../styles/features/pricing/index.css';
 
 const TIER_ICONS = [
   <FiZap key="zap" size={16} />,

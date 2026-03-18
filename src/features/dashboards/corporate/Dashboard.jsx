@@ -16,7 +16,7 @@ import SecurityIndicatorsCard from './components/SecurityIndicatorsCard';
 import VulnerabilitySnapshotCard from './components/VulnerabilitySnapshotCard';
 import ReportsListCard from './components/ReportsListCard';
 import SecurityActivityFeedCard from './components/SecurityActivityFeedCard';
-import '../../../styles/dashboards/corporate/index.css';
+import './index.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();

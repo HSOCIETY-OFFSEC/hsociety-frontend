@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getCommunityMessages, getCommunityOverview } from './community.service';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
-import '@styles/features/community/index.css';
+import './community.css';
 
 const extractLinks = (text = '') => {
   const results = [];

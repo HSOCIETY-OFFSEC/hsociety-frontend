@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { LuCircle } from 'react-icons/lu';
 import Logo from '../../../shared/components/common/Logo';
 import { getSocialLinks } from '../../../config/social.config';
-import '../../../styles/landing/footer.css';
+import './footer.css';
 
 const FooterSection = () => {
   const navigate = useNavigate();

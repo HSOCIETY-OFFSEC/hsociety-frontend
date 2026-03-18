@@ -3,7 +3,7 @@ import { FiBell, FiCheckCircle, FiInbox, FiRefreshCcw } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
 import { openNotificationTarget } from '../../shared/utils/notificationNavigation';
-import '../../styles/features/notifications/index.css';
+import './notifications.css';
 
 const NotificationsInbox = () => {
   const navigate = useNavigate();
