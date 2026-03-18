@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '@./cookie-consent.css';
+import './cookie-consent.css';
 
 const STORAGE_KEY = 'hsociety_cookie_consent';
 
