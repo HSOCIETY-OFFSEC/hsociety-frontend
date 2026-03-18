@@ -1,6 +1,6 @@
 /**
  * PageLayout.css
- * Location: src/styles/shared/components/layout/PageLayout.css
+ * Location: src/styles/base/components/layout/PageLayout.css
  *
  * Shared base structure used by ALL layout wrappers.
  * Every layout root gets .page-container; every <main> gets .page-content.

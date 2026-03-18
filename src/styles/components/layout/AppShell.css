@@ -1,6 +1,6 @@
 /**
  * AppShell.css — updated
- * Location: src/styles/shared/components/layout/AppShell.css
+ * Location: src/styles/base/components/layout/AppShell.css
  *
  * Patch: defines sidebar CSS variables used by WorkspaceLayout
  * and ensures the layout shifts cleanly when sidebar is collapsed.

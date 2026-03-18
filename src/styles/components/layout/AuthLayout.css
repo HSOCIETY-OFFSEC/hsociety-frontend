@@ -1,6 +1,6 @@
 /**
  * AuthLayout.css
- * Location: src/styles/shared/components/layout/AuthLayout.css
+ * Location: src/styles/base/components/layout/AuthLayout.css
  *
  * Minimal centred layout for login, register, OTP, password-reset flows.
  * A decorative radial glow uses --accent-glow so it works across all themes.

@@ -1,6 +1,6 @@
 /*
  * Blog Page — GitHub UI
- * Location: src/styles/sections/blog/index.css
+ * Location: src/styles/features/blog/index.css
  *
  * Site tokens only. No radial-gradient background, no border-radius > radius-sm on cards.
  * Pattern: blg-page-header → blg-layout (main 1fr + 296px sidebar)

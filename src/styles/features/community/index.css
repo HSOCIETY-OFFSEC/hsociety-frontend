@@ -887,7 +887,7 @@
 
 /**
  * Community Header
- * Location: src/styles/sections/community/header.css
+ * Location: src/styles/features/community/header.css
  * Style: GitHub underline tabs + X/Twitter sticky top bar
  */
 
@@ -2309,7 +2309,7 @@
 
 /* ============================================================
    COMMUNITY SIDEBAR
-   Location: src/styles/sections/community/sidebar.css
+   Location: src/styles/features/community/sidebar.css
    Design: X (Twitter) — clean pill nav, smooth mobile drawer.
    Fixes:
     - No overflow/scroll issues on desktop.
@@ -2606,7 +2606,7 @@
 
 /**
  * Community Profiles (GitHub UI)
- * Location: src/styles/sections/community/profiles.css
+ * Location: src/styles/features/community/profiles.css
  */
 
 .cpr-page {
@@ -2965,7 +2965,7 @@
 
 /**
  * Community Media (GitHub UI)
- * Location: src/styles/sections/community/media.css
+ * Location: src/styles/features/community/media.css
  */
 
 .cmd-page {

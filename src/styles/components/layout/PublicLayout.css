@@ -1,6 +1,6 @@
 /**
  * PublicLayout.css
- * Location: src/styles/shared/components/layout/PublicLayout.css
+ * Location: src/styles/base/components/layout/PublicLayout.css
  *
  * Public-facing informational pages — About, Team, Blog, Careers, etc.
  * Width is governed by each page shell (no global container clamp).

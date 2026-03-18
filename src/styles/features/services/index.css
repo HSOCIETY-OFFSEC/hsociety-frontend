@@ -1,6 +1,6 @@
 /*
  * Services Page — GitHub UI
- * Location: src/styles/sections/services/index.css
+ * Location: src/styles/features/services/index.css
  *
  * Site tokens only. No ambient blobs, no image-card masonry,
  * no scale/translate hover theatrics.
@@ -549,7 +549,7 @@
 
 /*
  * Service Detail Page — GitHub UI
- * Location: src/styles/sections/services/detail.css
+ * Location: src/styles/features/services/detail.css
  *
  * Site tokens only. No pseudo-element glows, dot grids, or transform lifts.
  * Pattern: svc-detail-page-header → svc-detail-layout (main + 296px sidebar)
