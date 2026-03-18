@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
 import Button from '../../shared/components/ui/Button';
 import Card from '../../shared/components/ui/Card';
-import PasswordInput from '../../shared/components/ui/PasswordInput';
+import AccountToggle from './components/AccountToggle';
+import PasswordField from './components/PasswordField';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
 import { validatePassword } from '../../core/validation/input.validator';
@@ -219,24 +220,11 @@ const RegistrationForm = ({
       )}
 
       {allowAccountTypeSwitch ? (
-        <div className="auth-toggle" role="group" aria-label={copy.accountType.label}>
-          <button
-            type="button"
-            className={accountType === 'student' ? 'active' : ''}
-            onClick={() => setAccountType('student')}
-            disabled={loading}
-          >
-            {copy.accountType.studentLabel}
-          </button>
-          <button
-            type="button"
-            className={accountType === 'corporate' ? 'active' : ''}
-            onClick={() => setAccountType('corporate')}
-            disabled={loading}
-          >
-            {copy.accountType.corporateLabel}
-          </button>
-        </div>
+        <AccountToggle
+          value={accountType}
+          onChange={setAccountType}
+          disabled={loading}
+        />
       ) : (
         <div className="auth-account-label">
           {accountType === 'corporate'
@@ -337,7 +325,7 @@ const RegistrationForm = ({
         <div className="auth-form-row">
           <div className="form-group">
             <label htmlFor="password">{copy.fields.password.label}</label>
-            <PasswordInput
+            <PasswordField
               id="password"
               name="password"
               value={form.password}
@@ -358,7 +346,7 @@ const RegistrationForm = ({
           </div>
           <div className="form-group">
             <label htmlFor="confirm-password">{copy.fields.confirmPassword.label}</label>
-            <PasswordInput
+            <PasswordField
               id="confirm-password"
               name="confirmPassword"
               value={form.confirmPassword}
