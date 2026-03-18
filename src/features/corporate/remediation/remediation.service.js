@@ -9,7 +9,7 @@ import {
   normalizeRemediationSummary,
   normalizeRemediationReports
 } from './remediation.contract';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 const mockSummary = {
   totalVulnerabilities: 128,

@@ -9,7 +9,7 @@ import {
   normalizeAgreements,
   normalizeInvoices
 } from './billing.contract';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 const mockInvoices = [
   {

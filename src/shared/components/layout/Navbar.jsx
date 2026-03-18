@@ -29,7 +29,7 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import useAuthModal from '../../hooks/useAuthModal';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
 import Logo from '../common/Logo';
-import { resolveProfileAvatar } from '../../utils/profileAvatar';
+import { resolveProfileAvatar } from '../../utils/display/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { useNotifications } from '../../notifications/NotificationProvider';

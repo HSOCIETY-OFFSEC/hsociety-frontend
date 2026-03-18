@@ -12,7 +12,7 @@ import useBootcampAccess from '../hooks/useBootcampAccess';
 import StudentAccessModal from '../components/StudentAccessModal';
 import StudentPaymentModal from '../components/StudentPaymentModal';
 import { useAuth } from '../../../core/auth/AuthContext';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { ROUTES } from '../../../app/routes';
 import '../../../styles/student/pages/learning.css';
 

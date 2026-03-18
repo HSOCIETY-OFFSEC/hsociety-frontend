@@ -10,7 +10,7 @@ import RouteEffects from '../shared/components/layout/RouteEffects';
 import StudentRoleBlocker from '../features/student/components/StudentRoleBlocker';
 import Landing from '../features/landing/Landing';
 import AuthPortal from '../features/auth/AuthPortal';
-import { AUTH_MODAL_MODES } from '../shared/utils/authModal';
+import { AUTH_MODAL_MODES } from '../shared/utils/auth/authModal';
 
 // Lazy load components
 const loadDashboard = (key) =>

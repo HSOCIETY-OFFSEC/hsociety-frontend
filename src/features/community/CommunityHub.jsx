@@ -10,11 +10,11 @@ import {
 import CommunityHeader from './components/header/CommunityHeader';
 import CommunityMessageList from './components/messages/CommunityMessageList';
 import CommunityCompose from './components/compose/CommunityCompose';
-import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
+import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
 import { getProfile } from '../account/account.service';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_HUB_DATA } from '../../data/community/communityHubData';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import '@styles/sections/community/index.css';
 import '@styles/sections/community/header.css';
 import '@styles/sections/community/messages.css';

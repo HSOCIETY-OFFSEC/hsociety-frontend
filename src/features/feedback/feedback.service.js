@@ -5,7 +5,7 @@
 
 import { apiClient } from '../../shared/services/api.client';
 import { API_ENDPOINTS, buildEndpoint } from '../../config/api.config';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import { buildFeedbackDTO } from './feedback.contract';
 
 const mockHistory = [

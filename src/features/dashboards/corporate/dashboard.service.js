@@ -10,7 +10,7 @@ import {
   normalizeDashboardStats,
   normalizeRecentActivity
 } from './dashboard.contract';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 const mockStats = {
   activeEngagements: 4,

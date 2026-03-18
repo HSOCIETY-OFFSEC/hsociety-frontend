@@ -17,7 +17,7 @@ import {
 import LeaderboardTable from './components/LeaderboardTable';
 import { getLeaderboard } from './leaderboard.service';
 import { extractLeaderboardEntries } from './leaderboard.utils';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import '../../styles/leaderboard/leaderboard.css';
 
 const Leaderboard = () => {

@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCommunityProfile } from './community.service';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
-import { buildProfileBadges } from '../../shared/utils/profileBadges';
-import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
+import { buildProfileBadges } from '../../shared/utils/display/profileBadges';
+import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
 import '@styles/sections/community/profile.css';
 
 const formatCount = (value) => Number(value || 0).toLocaleString();

@@ -1,6 +1,6 @@
 import { API_ENDPOINTS, buildEndpoint } from '../../../config/api.config';
 import { apiClient } from '../../../shared/services/api.client';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 export const listNotifications = async () => {
   const response = await apiClient.get(API_ENDPOINTS.NOTIFICATIONS.LIST);

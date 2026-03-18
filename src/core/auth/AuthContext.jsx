@@ -5,7 +5,7 @@ import { refreshToken as refreshAuthToken, logout as logoutRequest } from './aut
 import { envConfig } from '../../config/env.config';
 import { trackSecurityEvent } from '../security-tests/security-events.service';
 import { setPendingToast } from '../../shared/notifications/toastStorage';
-import { buildAuthModalUrl } from '../../shared/utils/authModal';
+import { buildAuthModalUrl } from '../../shared/utils/auth/authModal';
 
 /**
  * Authentication Context

@@ -4,7 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, getPentests, updatePentest } from './admin.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 

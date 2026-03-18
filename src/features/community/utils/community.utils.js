@@ -1,5 +1,5 @@
-import { getGithubAvatarDataUri } from '../../../shared/utils/avatar';
-import { getProfileFallbackSeed, getProfileAvatarUrl } from '../../../shared/utils/profileAvatar';
+import { getGithubAvatarDataUri } from '../../../shared/utils/display/avatar';
+import { getProfileFallbackSeed, getProfileAvatarUrl } from '../../../shared/utils/display/profileAvatar';
 
 export const formatMessageTime = (ts) => {
   if (!ts) return '';

@@ -4,7 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { fetchQuizForScope, submitQuizAnswers } from './quiz.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 /**
  * QuizPanel

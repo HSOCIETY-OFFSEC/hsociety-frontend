@@ -11,7 +11,7 @@ import { API_ENDPOINTS } from '../../../config/api.config';
 import { apiClient } from '../../../shared/services/api.client';
 import { normalizeCoursePayload } from './course.contract';
 import mockCoursePayload from './mockCourseData.json';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 /**
  * Get primary student course (single-track for now)

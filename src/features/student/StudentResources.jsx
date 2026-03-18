@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FiBookOpen, FiExternalLink, FiInfo, FiLayers, FiShield } from 'react-icons/fi';
 import { getFreeResources } from './services/learn.service';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import '../../styles/student/pages/resources.css';
 
 const StudentResources = () => {

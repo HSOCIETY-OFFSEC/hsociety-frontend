@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 
 export const getLeaderboard = async (limit = 25) => {
   const endpoint = API_ENDPOINTS.PUBLIC?.LEADERBOARD || '/public/leaderboard';

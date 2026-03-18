@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { resolveProfileAvatar } from '../../../shared/utils/profileAvatar';
+import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvatar';
 import { COMMUNITY_PROFILES_DATA } from '../../../data/landing/communityProfilesData';
 import '../../../styles/landing/community-profiles.css';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageWithLoader from '../../../../shared/components/ui/ImageWithLoader';
 import { useNavigate } from 'react-router-dom';
-import { slugify } from '../../../../shared/utils/slugify';
+import { slugify } from '../../../../shared/utils/display/slugify';
 
 const ServiceCardSlide = ({ service, index, offset, slideRef, total }) => {
   const navigate = useNavigate();

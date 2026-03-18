@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from '../../../config/api.config';
 import { apiClient } from '../../../shared/services/api.client';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 export const getFreeResources = async () => {
   const response = await apiClient.get(API_ENDPOINTS.STUDENT.FREE_RESOURCES);

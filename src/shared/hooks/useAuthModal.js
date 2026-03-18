@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AUTH_MODAL_MODES, AUTH_QUERY_KEY } from '../utils/authModal';
+import { AUTH_MODAL_MODES, AUTH_QUERY_KEY } from '../utils/auth/authModal';
 
 const getSearchString = (params) => {
   const search = params.toString();

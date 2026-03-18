@@ -6,7 +6,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getEngagements } from './engagements.service';
 import PaymentModal from '../billing/components/PaymentModal';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import '../../../styles/corporate/pages/engagements.css';
 
 const statusMap = {

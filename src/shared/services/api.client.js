@@ -17,8 +17,8 @@
 
 import { sessionManager } from '../../core/auth/session.manager';
 import { envConfig } from '../../config/env.config';
-import { getPublicErrorMessage } from '../utils/publicError';
-import { buildAuthModalUrl } from '../utils/authModal';
+import { getPublicErrorMessage } from '../utils/errors/publicError';
+import { buildAuthModalUrl } from '../utils/auth/authModal';
 
 const API_BASE_URL = envConfig.api.baseURL;
 

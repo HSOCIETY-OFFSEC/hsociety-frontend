@@ -7,14 +7,14 @@ import Button from '../../shared/components/ui/Button';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
 import { useAuth } from '../../core/auth/AuthContext';
-import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
+import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
 import { openNotificationTarget } from '../../shared/utils/notificationNavigation';
 import { validatePassword } from '../../core/validation/input.validator';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import AccountNotificationsList from './components/AccountNotificationsList';
 import { ACCOUNT_UI } from '../../data/account/accountUiData';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
-import { buildProfileBadges, normalizeBadges } from '../../shared/utils/profileBadges';
+import { buildProfileBadges, normalizeBadges } from '../../shared/utils/display/profileBadges';
 import {
   changePassword as changePasswordService,
   deleteAccount,

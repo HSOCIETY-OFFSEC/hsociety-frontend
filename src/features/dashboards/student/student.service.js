@@ -6,7 +6,7 @@
 import { API_ENDPOINTS, buildEndpoint } from '../../../config/api.config';
 import { apiClient } from '../../../shared/services/api.client';
 import { normalizeStudentOverview } from './student.contract';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 /**
  * Get student dashboard overview

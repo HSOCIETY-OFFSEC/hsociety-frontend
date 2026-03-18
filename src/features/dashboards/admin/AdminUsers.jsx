@@ -4,7 +4,7 @@ import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, muteUser, sendBootcampRoomLink } from './admin.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
 import { HACKER_PROTOCOL_PHASES } from '../../../data/bootcamps/hackerProtocolData';
 import '../../../styles/dashboards/admin/index.css';

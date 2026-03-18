@@ -5,7 +5,7 @@ import Button from '../../shared/components/ui/Button';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getStudentOverview, registerBootcamp } from '../dashboards/student/student.service';
 import useBootcampAccess from './hooks/useBootcampAccess';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import {
   HACKER_PROTOCOL_BOOTCAMP,
 } from '../../data/bootcamps/hackerProtocolData';

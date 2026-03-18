@@ -5,7 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import PaymentModal from './components/PaymentModal';
 import { getAgreements, getInvoices } from './billing.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import '../../../styles/corporate/pages/billing.css';
 
 const Billing = () => {

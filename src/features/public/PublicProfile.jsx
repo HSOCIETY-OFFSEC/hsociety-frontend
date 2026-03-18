@@ -22,11 +22,11 @@ import {
 import { FaXTwitter } from 'react-icons/fa6';
 import cpIcon from '../../assets/icons/CP/cp-icon.webp';
 import PageLoader from '../../shared/components/ui/PageLoader';
-import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
+import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
 import { getPublicProfileByHandle } from './publicProfile.service';
 import '../../styles/sections/public-profile/index.css';
 import ProfileBadgeSection from '../../shared/components/ui/ProfileBadgeSection';
-import { buildProfileBadges } from '../../shared/utils/profileBadges';
+import { buildProfileBadges } from '../../shared/utils/display/profileBadges';
 
 /* ── Helpers ─────────────────────────────────────────────── */
 

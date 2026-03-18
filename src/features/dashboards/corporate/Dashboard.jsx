@@ -9,7 +9,7 @@ import {
   FiShield
 } from 'react-icons/fi';
 import { getDashboardOverview } from './dashboard.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import SecurityCommandCenterCard from './components/SecurityCommandCenterCard';
 import SecurityActionCenterCard from './components/SecurityActionCenterCard';
 import SecurityIndicatorsCard from './components/SecurityIndicatorsCard';

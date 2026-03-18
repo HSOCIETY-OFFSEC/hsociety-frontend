@@ -8,7 +8,7 @@ import StudentPaymentModal from './components/StudentPaymentModal';
 import '../../styles/student/components.css';
 import '../../styles/student/pages/payments.css';
 import { verifyBootcampPayment } from '../dashboards/student/student.service';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 
 const StudentPayments = () => {
   const { updateUser } = useAuth();

@@ -13,7 +13,7 @@ import {
   updateAdminCommunityPost,
   deleteAdminCommunityPost
 } from './admin.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 

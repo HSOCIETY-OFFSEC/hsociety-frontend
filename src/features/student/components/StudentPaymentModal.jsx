@@ -6,7 +6,7 @@ import { PAYMENT_METHODS } from '../../../config/payment-methods.config';
 import momoIcon from '../../../assets/icons/payment-icons/momo-icon.png';
 import telecelIcon from '../../../assets/icons/payment-icons/telecel-cash-logo.png';
 import btcIcon from '../../../assets/icons/payment-icons/Bitcoin-logo.png';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import '../../../styles/shared/components/billing/PaymentModal.css';
 
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';

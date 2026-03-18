@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
 import { createAuthSocket } from '../../shared/services/socket.client';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 
 export const getCommunityOverview = async (role = 'student', feed = 'popular') => {
   const params = new URLSearchParams({ role, feed }).toString();

@@ -15,7 +15,7 @@ import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
-import { resolveProfileAvatar } from '../../utils/profileAvatar';
+import { resolveProfileAvatar } from '../../utils/display/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import { getMobileLinks, getSidebarLinks } from '../../../config/navigation.config';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';

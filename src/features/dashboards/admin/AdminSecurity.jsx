@@ -3,7 +3,7 @@ import { FiActivity, FiAlertTriangle, FiGlobe, FiLock } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getSecurityEvents, getSecuritySummary } from './admin.service';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PublicError from '../../../shared/components/ui/PublicError';
 import '../../../styles/dashboards/admin/index.css';
 

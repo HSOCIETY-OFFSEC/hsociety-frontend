@@ -3,7 +3,7 @@ import Login from './Login';
 import Register from './Register';
 import CorporateRegister from './CorporateRegister';
 import useAuthModal from '../../shared/hooks/useAuthModal';
-import { AUTH_MODAL_MODES } from '../../shared/utils/authModal';
+import { AUTH_MODAL_MODES } from '../../shared/utils/auth/authModal';
 import '../../styles/core/auth.css';
 
 const AuthModal = () => {

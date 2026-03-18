@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Login from './Login';
 import RegistrationForm from './RegistrationForm';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
-import { AUTH_MODAL_MODES, AUTH_QUERY_KEY } from '../../shared/utils/authModal';
+import { AUTH_MODAL_MODES, AUTH_QUERY_KEY } from '../../shared/utils/auth/authModal';
 import '../../styles/core/auth.css';
 import '../../styles/core/auth-portal.css';
 

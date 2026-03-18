@@ -6,7 +6,7 @@
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../../config/api.config';
 import { normalizeAssets } from './assets.contract';
-import { getPublicErrorMessage } from '../../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 const mockAssets = [
   {

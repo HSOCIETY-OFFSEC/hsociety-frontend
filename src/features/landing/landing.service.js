@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from '../../config/api.config';
 import { apiClient } from '../../shared/services/api.client';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 
 const CACHE_PREFIX = 'hsociety_landing_v1';
 const TTL_MS = 10 * 60 * 1000;

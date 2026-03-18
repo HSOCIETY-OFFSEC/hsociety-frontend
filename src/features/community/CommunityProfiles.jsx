@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FiMessageSquare, FiStar, FiUsers } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getCommunityProfilesList } from './community.service';
-import { resolveProfileAvatar } from '../../shared/utils/profileAvatar';
-import { getPublicErrorMessage } from '../../shared/utils/publicError';
+import { resolveProfileAvatar } from '../../shared/utils/display/profileAvatar';
+import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
 import '@styles/sections/community/profiles.css';
 
 const CommunityProfiles = () => {
