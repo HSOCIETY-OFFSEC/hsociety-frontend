@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiLock } from 'react-icons/fi';
 import RegistrationForm from './RegistrationForm';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
-import '../../styles/core/auth.css';
+import '../../styles/features/auth/auth.css';
 
 /**
  * Register page / modal wrapper.

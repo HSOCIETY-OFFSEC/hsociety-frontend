@@ -4,7 +4,7 @@ import Register from './Register';
 import CorporateRegister from './CorporateRegister';
 import useAuthModal from '../../shared/hooks/useAuthModal';
 import { AUTH_MODAL_MODES } from '../../shared/utils/auth/authModal';
-import '../../styles/core/auth.css';
+import '../../styles/features/auth/auth.css';
 
 const AuthModal = () => {
   const { mode, payload, redirect, closeAuthModal, openAuthModal } = useAuthModal();
