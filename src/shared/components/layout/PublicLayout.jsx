@@ -3,8 +3,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import ScrollToTopButton from '../ui/ScrollToTopButton';
 import useScrollReveal from '../../hooks/useScrollReveal';
-import '../../../styles/shared/components/layout/PublicLayout.css';
-import '../../../styles/shared/components/layout/PageLayout.css';
+import '../../../styles/components/layout/PublicLayout.css';
+import '../../../styles/components/layout/PageLayout.css';
 
 /**
  * Public Layout

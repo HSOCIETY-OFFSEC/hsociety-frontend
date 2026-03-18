@@ -1,4 +1,4 @@
-import '../../../styles/shared/components/ui/Button.css';
+import '../../../styles/components/ui/Button.css';
 
 /**
  * Button Component

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/shared/components/ui/Loader.css';
+import '../../../styles/components/ui/Loader.css';
 
 const Loader = ({ size = 'md', className = '', label = 'Loading' }) => {
   const isTerminal = size === 'lg';

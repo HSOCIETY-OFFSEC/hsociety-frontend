@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import ScrollToTopButton from '../ui/ScrollToTopButton';
 import useScrollReveal from '../../hooks/useScrollReveal';
-import '../../../styles/shared/components/layout/LandingLayout.css';
+import '../../../styles/components/layout/LandingLayout.css';
 
 /**
  * Landing Layout

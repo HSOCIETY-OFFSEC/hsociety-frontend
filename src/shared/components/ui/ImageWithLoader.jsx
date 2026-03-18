@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Loader from './Loader';
-import '../../../styles/shared/components/ui/ImageWithLoader.css';
+import '../../../styles/components/ui/ImageWithLoader.css';
 
 const ImageWithLoader = ({
   src,

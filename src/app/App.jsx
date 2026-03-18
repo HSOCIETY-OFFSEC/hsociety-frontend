@@ -11,10 +11,10 @@ import { NotificationProvider } from '../shared/notifications/NotificationProvid
 import { envConfig } from '../config/env.config';
 
 // Import global styles
-import '../styles/shared/common.css';
-import '../styles/shared/layout.css';
-import '../styles/shared/ui.css';
-import '../styles/shared/components/layout/AppShell.css';
+import '../styles/base/common.css';
+import '../styles/base/layout.css';
+import '../styles/base/ui.css';
+import '../styles/components/layout/AppShell.css';
 
 /**
  * Main App Component

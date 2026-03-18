@@ -4,7 +4,7 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { getSidebarLinks } from '../../../config/navigation.config';
 import { LuChevronDown, LuChevronsLeft, LuChevronsRight, LuLayers } from 'react-icons/lu';
 import Logo from '../common/Logo';
-import '../../../styles/shared/components/layout/Sidebar.css';
+import '../../../styles/components/layout/Sidebar.css';
 
 /**
  * Sidebar Component (large screens only via CSS)

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Loader from '../ui/Loader';
 import { trackSecurityEvent } from '../../../core/security-tests/security-events.service';
 import { trackPageView } from '../../services/analytics.service';
-import '../../../styles/shared/components/layout/RouteEffects.css';
+import '../../../styles/components/layout/RouteEffects.css';
 
 const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
   const location = useLocation();

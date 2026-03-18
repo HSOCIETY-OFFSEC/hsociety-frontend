@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
-import '../../../styles/shared/components/ui/ScrollToTopButton.css';
+import '../../../styles/components/ui/ScrollToTopButton.css';
 
 const SHOW_AFTER_PX = 220;
 const MIN_SCROLLABLE_PX = 420;

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/shared/components/ui/profile-badges.css';
+import '../../../styles/components/ui/profile-badges.css';
 
 const ProfileBadgeItem = ({ badge }) => {
   const titleText = badge.description ? `${badge.name} — ${badge.description}` : badge.name;

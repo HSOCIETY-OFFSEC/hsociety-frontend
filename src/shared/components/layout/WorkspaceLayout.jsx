@@ -23,9 +23,9 @@ import { WORKSPACE_UI } from '../../../data/shared/workspaceUiData';
 import { useNotifications } from '../../notifications/NotificationProvider';
 import useScrollReveal from '../../hooks/useScrollReveal';
 import { useUserStats } from '../../hooks/useUserStats';
-import '../../../styles/shared/components/layout/AppShell.css';
-import '../../../styles/shared/components/layout/WorkspaceLayout.css';
-import '../../../styles/shared/dashboard-public-profile.css';
+import '../../../styles/components/layout/AppShell.css';
+import '../../../styles/components/layout/WorkspaceLayout.css';
+import '../../../styles/base/dashboard-public-profile.css';
 
 /**
  * Workspace Layout

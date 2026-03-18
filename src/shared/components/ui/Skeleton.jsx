@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/shared/components/ui/Skeleton.css';
+import '../../../styles/components/ui/Skeleton.css';
 
 /**
  * Skeleton Component

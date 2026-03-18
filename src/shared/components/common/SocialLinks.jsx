@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSocialLinks } from '../../../config/social.config';
-import '../../../styles/shared/social-links.css';
+import '../../../styles/base/social-links.css';
 
 const SocialLinks = ({ className = '', size = 18, showLabels = false, variant = 'inline' }) => {
   const links = getSocialLinks();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Loader from './Loader';
-import '../../../styles/shared/components/ui/PageLoader.css';
+import '../../../styles/components/ui/PageLoader.css';
 
 /**
  * Page Loader

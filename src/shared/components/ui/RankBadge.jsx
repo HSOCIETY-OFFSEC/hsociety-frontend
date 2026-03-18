@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/shared/components/ui/rank-badge.css';
+import '../../../styles/components/ui/rank-badge.css';
 
 const RankBadge = ({ badge, size = 'md', className = '' }) => {
   if (!badge) return null;
