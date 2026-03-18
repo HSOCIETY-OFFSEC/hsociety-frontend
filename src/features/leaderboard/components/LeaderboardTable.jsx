@@ -12,7 +12,7 @@ import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvata
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { buildLeaderboard } from '../leaderboard.utils';
-import '../../../../leaderboard.css';
+import '../leaderboard.css';
 
 const LeaderboardTable = ({
   entries = [],

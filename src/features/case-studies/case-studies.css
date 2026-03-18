@@ -2,7 +2,7 @@
  * Case Studies Page Styles
  */
 
-@import '../../mobile-dashboard-fixes.css';
+@import '../../styles/mobile-dashboard-fixes.css';
 .case-studies-page {
   min-height: 100vh;
   background: radial-gradient(900px 420px at 10% -10%, rgba(59, 130, 246, 0.16), transparent 60%),

@@ -2,7 +2,7 @@
    Account Settings — Responsive & Mobile-First
    ============================================================ */
 
-@import '../../mobile-dashboard-fixes.css';
+@import '../../styles/mobile-dashboard-fixes.css';
 .account-settings {
   --pp-border: color-mix(in srgb, var(--border-color) 90%, transparent);
   --pp-card: var(--bg-secondary);

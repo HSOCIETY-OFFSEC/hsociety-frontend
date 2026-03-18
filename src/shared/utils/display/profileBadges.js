@@ -1,4 +1,4 @@
-import { PROFILE_BADGE_MAP } from '../../data/badges/profileBadges';
+import { PROFILE_BADGE_MAP } from '../../../data/badges/profileBadges';
 
 const RANK_LEVELS = [
   { id: 'rank-1', min: 0, max: 500, title: 'Script Kiddie' },

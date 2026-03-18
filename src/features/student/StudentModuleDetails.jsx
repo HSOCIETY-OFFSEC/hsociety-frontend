@@ -8,8 +8,8 @@ import StudentAccessModal from './components/StudentAccessModal';
 import useBootcampAccess from './hooks/useBootcampAccess';
 import { useAuth } from '../../core/auth/AuthContext';
 import { getStudentOverview } from '../dashboards/student/student.service';
-import {
 import './module-details.css';
+import {
   getHackerProtocolModule,
   HACKER_PROTOCOL_BOOTCAMP,
 } from '../../data/bootcamps/hackerProtocolData';

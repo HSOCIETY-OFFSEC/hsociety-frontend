@@ -18,7 +18,7 @@ import LeaderboardTable from './components/LeaderboardTable';
 import { getLeaderboard } from './leaderboard.service';
 import { extractLeaderboardEntries } from './leaderboard.utils';
 import { getPublicErrorMessage } from '../../shared/utils/errors/publicError';
-import '../../../leaderboard.css';
+import './leaderboard.css';
 
 const Leaderboard = () => {
   const [entries, setEntries] = useState([]);

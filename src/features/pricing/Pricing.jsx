@@ -25,8 +25,8 @@ import {
   FiCheckCircle,
   FiTag,
 } from 'react-icons/fi';
-import {
 import './pricing.css';
+import {
   PRICING_INCLUDED_ITEMS,
   PRICING_NOTE,
   PRICING_TIERS,

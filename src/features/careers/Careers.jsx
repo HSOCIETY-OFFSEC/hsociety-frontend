@@ -8,8 +8,8 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
 import './careers.css';
+import {
   FiMessageSquare,
   FiBriefcase,
   FiCheckCircle,

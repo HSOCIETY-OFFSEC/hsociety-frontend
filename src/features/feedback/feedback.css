@@ -14,7 +14,7 @@
    FEEDBACK CONTAINER
    ======================================== */
 
-@import '../../mobile-dashboard-fixes.css';
+@import '../../styles/mobile-dashboard-fixes.css';
 .feedback-container {
   min-height: 100vh;
   background: var(--bg-primary);

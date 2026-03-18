@@ -11,10 +11,10 @@ import StudentAccessModal from './components/StudentAccessModal';
 import StudentPaymentModal from './components/StudentPaymentModal';
 import { useAuth } from '../../core/auth/AuthContext';
 import { QuizPanel } from './quizzes/QuizPanel';
-import {
 import './base.css';
 import './components.css';
 import './lesson.css';
+import {
   getHackerProtocolModule,
   getHackerProtocolRoom,
 } from '../../data/bootcamps/hackerProtocolData';

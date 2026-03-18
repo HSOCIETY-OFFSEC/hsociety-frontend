@@ -10,8 +10,8 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../shared/hooks/useAuthModal';
 import landingContent from '../../data/static/landing.json';
-import {
 import './services.css';
+import {
   FiArrowLeft,
   FiArrowUpRight,
   FiCheckCircle,
