@@ -204,7 +204,6 @@ const CommunityHub = () => {
       socket.emit('leaveRoom', room);
       socket.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [role]);
 
   /* ── Room switch ── */

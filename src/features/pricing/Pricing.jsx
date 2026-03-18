@@ -33,10 +33,10 @@ import {
 import '../../styles/features/pricing/index.css';
 
 const TIER_ICONS = [
-  <FiZap    size={16} />,
-  <FiShield size={16} />,
-  <FiAward  size={16} />,
-  <FiGlobe  size={16} />,
+  <FiZap key="zap" size={16} />,
+  <FiShield key="shield" size={16} />,
+  <FiAward key="award" size={16} />,
+  <FiGlobe key="globe" size={16} />,
 ];
 
 const TRUST_ITEMS = [

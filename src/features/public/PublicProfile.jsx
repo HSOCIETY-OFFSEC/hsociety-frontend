@@ -195,14 +195,25 @@ const PublicProfile = () => {
 
   const handleShare = async () => {
     if (navigator?.share) {
-      try { await navigator.share({ title: shareTitle, text: shareText, url: shareUrl }); return; } catch {}
+      try {
+        await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+        return;
+      } catch {
+        // no-op
+      }
     }
     setShareOpen(true);
   };
 
   const handleCopy = async () => {
     if (!shareUrl) return;
-    try { await navigator.clipboard.writeText(shareUrl); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {}
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // no-op
+    }
   };
 
   return (
