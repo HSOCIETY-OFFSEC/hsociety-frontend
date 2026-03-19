@@ -140,10 +140,6 @@
   padding-top: calc(var(--navbar-height, 64px) + clamp(2rem, 5vw, 3.5rem));
   border-left: 1px solid var(--border-color, #1fbf8f);
   background: var(--bg-primary, #f2f4f7);
-  background-image: url('../../assets/brand-images/brand-image-LOGO-black.png');
-  background-repeat: no-repeat;
-  background-position: right 8% center;
-  background-size: min(320px, 45vw) auto;
   min-height: 100vh;
   overflow-y: auto;
 }
@@ -164,10 +160,6 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-primary, #f2f4f7);
-  background-image: url('../../assets/brand-images/brand-image-LOGO-black.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: min(360px, 55vw) auto;
   padding: clamp(1.5rem, 4vw, 3rem);
   padding-top: calc(var(--navbar-height, 64px) + clamp(1.5rem, 4vw, 3rem));
 }
@@ -186,7 +178,7 @@
 }
 
 .ap-panel {
-  background: var(--bg-secondary, #fff);
+  background: transparent;
   border: 1px solid var(--border-color, #c8cdd5);
   border-radius: var(--radius-xs, 6px);
   padding: clamp(1rem, 2.5vh, 1.75rem) clamp(1rem, 2vw, 1.5rem);

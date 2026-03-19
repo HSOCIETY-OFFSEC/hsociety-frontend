@@ -81,8 +81,8 @@
   width: 100%;
   padding: clamp(1rem, 2.5vh, 1.75rem) clamp(1rem, 2vw, 1.5rem);
 
-  /* GitHub card: flat bg-secondary, 1px border, radius-sm — no shadow, no hover lift */
-  background: var(--bg-secondary);
+  /* GitHub card: transparent background, 1px border, radius-sm — no shadow, no hover lift */
+  background: transparent;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
 
