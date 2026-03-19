@@ -36,12 +36,14 @@ const StudentDashboard = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await getStudentOverview();
+      const [response, notificationsResponse] = await Promise.all([
+        getStudentOverview(),
+        listNotifications(),
+      ]);
       if (!response.success) {
         throw new Error(getPublicErrorMessage({ action: 'load', response }));
       }
       setData(response.data);
-      const notificationsResponse = await listNotifications();
       if (notificationsResponse.success) {
         setNotifications(notificationsResponse.data || []);
       }
@@ -250,6 +252,24 @@ const StudentDashboard = () => {
 
           {!error && !loading && (
             <>
+              {statusMeta.paused && (
+                <div className="sd-payment-banner">
+                  <div className="sd-payment-banner-left">
+                    <FiLock size={18} className="sd-payment-banner-icon" />
+                    <div>
+                      <strong>Bootcamp access paused</strong>
+                      <p>Your bootcamp is locked until payment is confirmed. Complete your enrollment to unlock all phases.</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="sd-btn sd-btn-pay"
+                    onClick={() => navigate('/student-bootcamps/payments')}
+                  >
+                    Pay Now <FiArrowRight size={14} />
+                  </button>
+                </div>
+              )}
               <section className="sd-section">
                 <h2 className="sd-section-title">
                   <FiCompass size={15} className="sd-section-icon" />

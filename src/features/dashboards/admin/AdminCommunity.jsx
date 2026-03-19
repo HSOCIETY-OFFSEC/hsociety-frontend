@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FiBookmark, FiSave, FiTrash2 } from 'react-icons/fi';
-import Card from '../../../shared/components/ui/Card';
+import { FiBookmark, FiMessageSquare, FiSave, FiTrash2 } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import {
@@ -17,27 +16,14 @@ import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError'
 import PublicError from '../../../shared/components/ui/PublicError';
 import './index.css';
 
-const channelsToText = (channels = []) =>
-  channels.map((ch) => `${ch.id}|${ch.name}`).join('\n');
-
+const channelsToText = (channels = []) => channels.map((ch) => `${ch.id}|${ch.name}`).join('\n');
 const textToChannels = (value) =>
-  String(value || '')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => {
-      const [id, name] = line.split('|').map((part) => part.trim());
-      return { id, name: name || id };
-    })
+  String(value || '').split('\n').map((l) => l.trim()).filter(Boolean)
+    .map((l) => { const [id, name] = l.split('|').map((p) => p.trim()); return { id, name: name || id }; })
     .filter((ch) => ch.id && ch.name);
-
 const tagsToText = (tags = []) => tags.join('\n');
-
 const textToTags = (value) =>
-  String(value || '')
-    .split(/\n|,/)
-    .map((tag) => tag.trim())
-    .filter(Boolean);
+  String(value || '').split(/\n|,/).map((t) => t.trim()).filter(Boolean);
 
 const AdminCommunity = () => {
   const [loading, setLoading] = useState(true);
@@ -76,26 +62,23 @@ const AdminCommunity = () => {
       setLoading(false);
     };
     load();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
-  const loadModeration = async () => {
-    setModerationLoading(true);
-    const [messagesRes, postsRes] = await Promise.all([
-      getAdminCommunityMessages(),
-      getAdminCommunityPosts()
-    ]);
-    if (messagesRes.success) setMessages(messagesRes.data || []);
-    if (postsRes.success) setPosts(postsRes.data || []);
-    if (!messagesRes.success || !postsRes.success) {
-      setError(messagesRes.error || postsRes.error || 'Failed to load moderation data');
-    }
-    setModerationLoading(false);
-  };
-
   useEffect(() => {
+    const loadModeration = async () => {
+      setModerationLoading(true);
+      const [messagesRes, postsRes] = await Promise.all([
+        getAdminCommunityMessages(),
+        getAdminCommunityPosts()
+      ]);
+      if (messagesRes.success) setMessages(messagesRes.data || []);
+      if (postsRes.success) setPosts(postsRes.data || []);
+      if (!messagesRes.success || !postsRes.success) {
+        setError(messagesRes.error || postsRes.error || 'Failed to load moderation data');
+      }
+      setModerationLoading(false);
+    };
     loadModeration();
   }, []);
 
@@ -108,212 +91,214 @@ const AdminCommunity = () => {
       stats: form.stats
     };
     const response = await updateCommunityConfig(payload);
-    if (!response.success) {
-      setError(getPublicErrorMessage({ action: 'save', response }));
-    }
+    if (!response.success) setError(getPublicErrorMessage({ action: 'save', response }));
     setSaving(false);
   };
 
   if (loading) return <PageLoader message="Loading community config..." durationMs={0} />;
 
   return (
-    <div className="admin-dashboard">
-      <div className="dashboard-shell">
-        <PublicError message={error} className="admin-alert" />
+    <div className="ad-page">
+      <header className="ad-page-header">
+        <div className="ad-page-header-inner">
+          <div className="ad-header-left">
+            <div className="ad-header-icon-wrap">
+              <FiMessageSquare size={20} className="ad-header-icon" />
+            </div>
+            <div>
+              <div className="ad-header-breadcrumb">
+                <span className="ad-breadcrumb-org">HSOCIETY</span>
+                <span className="ad-breadcrumb-sep">/</span>
+                <span className="ad-breadcrumb-page">community</span>
+                <span className="ad-header-visibility">Admin</span>
+              </div>
+              <p className="ad-header-desc">Configure channels, tags, stats, and moderate messages and posts.</p>
+            </div>
+          </div>
+          <div className="ad-header-actions">
+            <button type="button" className="ad-btn ad-btn-primary" onClick={handleSave} disabled={saving}>
+              <FiSave size={14} /> {saving ? 'Saving...' : 'Save Config'}
+            </button>
+          </div>
+        </div>
+        <div className="ad-header-meta">
+          <span className="ad-meta-pill">
+            <span className="ad-meta-label">Messages</span>
+            <strong className="ad-meta-value">{messages.length}</strong>
+          </span>
+          <span className="ad-meta-pill">
+            <span className="ad-meta-label">Posts</span>
+            <strong className="ad-meta-value">{posts.length}</strong>
+          </span>
+        </div>
+      </header>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Channels</h2>
-            <p>One per line. Format: <code>id|Name</code></p>
-          </div>
-          <textarea
-            className="admin-textarea"
-            rows={6}
-            value={form.channels}
-            onChange={(e) => setForm((prev) => ({ ...prev, channels: e.target.value }))}
-          />
-        </Card>
+      <div className="ad-layout">
+        <main className="ad-main">
+          <PublicError message={error} className="admin-alert" />
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Tags</h2>
-            <p>One per line or comma-separated.</p>
-          </div>
-          <textarea
-            className="admin-textarea"
-            rows={4}
-            value={form.tags}
-            onChange={(e) => setForm((prev) => ({ ...prev, tags: e.target.value }))}
-          />
-        </Card>
+          <section className="ad-section">
+            <h2 className="ad-section-title">
+              <FiMessageSquare size={15} className="ad-section-icon" />
+              Channels
+            </h2>
+            <p className="ad-section-desc">One per line. Format: <code>id|Name</code></p>
+            <textarea
+              className="admin-textarea"
+              rows={6}
+              value={form.channels}
+              onChange={(e) => setForm((prev) => ({ ...prev, channels: e.target.value }))}
+            />
+          </section>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Community Stats</h2>
-            <p>Optional manual overrides for display stats.</p>
-          </div>
-          <div className="admin-stats-form">
-            <label>
-              Learners
-              <input
-                className="admin-input"
-                type="number"
-                min="0"
-                value={form.stats.learners}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    stats: { ...prev.stats, learners: Number(e.target.value || 0) }
-                  }))
-                }
-              />
-            </label>
-            <label>
-              Questions
-              <input
-                className="admin-input"
-                type="number"
-                min="0"
-                value={form.stats.questions}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    stats: { ...prev.stats, questions: Number(e.target.value || 0) }
-                  }))
-                }
-              />
-            </label>
-            <label>
-              Answered
-              <input
-                className="admin-input"
-                type="number"
-                min="0"
-                value={form.stats.answered}
-                onChange={(e) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    stats: { ...prev.stats, answered: Number(e.target.value || 0) }
-                  }))
-                }
-              />
-            </label>
-          </div>
-          <div className="admin-actions admin-actions-right">
-            <Button variant="primary" size="small" onClick={handleSave} disabled={saving}>
-              <FiSave size={14} />
-              {saving ? 'Saving...' : 'Save Community Config'}
-            </Button>
-          </div>
-        </Card>
+          <div className="ad-divider" />
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Community Moderation</h2>
-            <p>Pin or remove messages and posts.</p>
-          </div>
-          {moderationLoading ? (
-            <PageLoader message="Loading moderation data..." durationMs={0} />
-          ) : (
-            <>
-              <div className="admin-table admin-table-compact">
-                <div className="admin-row admin-row-header admin-row-moderation">
-                  <span>Message</span>
-                  <span>Room</span>
-                  <span>User</span>
-                  <span>Pinned</span>
-                  <span>Actions</span>
-                </div>
-                {messages.slice(0, 25).map((message) => (
-                  <div key={message._id} className="admin-row admin-row-moderation">
-                    <span className="admin-truncate">{message.content || '[image]'}</span>
-                    <span>{message.room}</span>
-                    <span>{message.username}</span>
-                    <span>{message.pinned ? 'Yes' : 'No'}</span>
-                    <div className="admin-actions">
-                      <Button
-                        size="small"
-                        variant="ghost"
-                        onClick={async () => {
-                          const response = await updateAdminCommunityMessage(message._id, { pinned: !message.pinned });
-                          if (response.success) {
-                            setMessages((prev) =>
-                              prev.map((item) => (item._id === message._id ? response.data : item))
-                            );
-                          }
-                        }}
-                      >
-                        <FiBookmark size={14} />
-                        {message.pinned ? 'Unpin' : 'Pin'}
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="ghost"
-                        onClick={async () => {
+          <section className="ad-section">
+            <h2 className="ad-section-title">Tags</h2>
+            <p className="ad-section-desc">One per line or comma-separated.</p>
+            <textarea
+              className="admin-textarea"
+              rows={4}
+              value={form.tags}
+              onChange={(e) => setForm((prev) => ({ ...prev, tags: e.target.value }))}
+            />
+          </section>
+
+          <div className="ad-divider" />
+
+          <section className="ad-section">
+            <h2 className="ad-section-title">Community Stats</h2>
+            <p className="ad-section-desc">Optional manual overrides for display stats.</p>
+            <div className="admin-stats-form">
+              {['learners', 'questions', 'answered'].map((key) => (
+                <label key={key}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                  <input
+                    className="admin-input"
+                    type="number"
+                    min="0"
+                    value={form.stats[key]}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        stats: { ...prev.stats, [key]: Number(e.target.value || 0) }
+                      }))
+                    }
+                  />
+                </label>
+              ))}
+            </div>
+          </section>
+
+          <div className="ad-divider" />
+
+          <section className="ad-section">
+            <h2 className="ad-section-title">
+              <FiBookmark size={15} className="ad-section-icon" />
+              Moderation
+            </h2>
+            <p className="ad-section-desc">Pin or remove messages and posts.</p>
+
+            {moderationLoading ? (
+              <PageLoader message="Loading moderation data..." durationMs={0} />
+            ) : (
+              <>
+                <h3 className="ad-subsection-title">Messages</h3>
+                <div className="ad-list">
+                  <div className="ad-list-header ad-list-row-moderation">
+                    <span>Message</span>
+                    <span>Room</span>
+                    <span>User</span>
+                    <span>Pinned</span>
+                    <span>Actions</span>
+                  </div>
+                  {messages.slice(0, 25).map((message) => (
+                    <div key={message._id} className="ad-list-row ad-list-row-moderation">
+                      <span className="admin-truncate">{message.content || '[image]'}</span>
+                      <span>{message.room}</span>
+                      <span>{message.username}</span>
+                      <span>{message.pinned ? 'Yes' : 'No'}</span>
+                      <div className="admin-actions">
+                        <Button size="small" variant="ghost" onClick={async () => {
+                          const res = await updateAdminCommunityMessage(message._id, { pinned: !message.pinned });
+                          if (res.success) setMessages((prev) => prev.map((m) => m._id === message._id ? res.data : m));
+                        }}>
+                          <FiBookmark size={14} /> {message.pinned ? 'Unpin' : 'Pin'}
+                        </Button>
+                        <Button size="small" variant="ghost" onClick={async () => {
                           if (!window.confirm('Delete this message?')) return;
-                          const response = await deleteAdminCommunityMessage(message._id);
-                          if (response.success) {
-                            setMessages((prev) => prev.filter((item) => item._id !== message._id));
-                          }
-                        }}
-                      >
-                        <FiTrash2 size={14} />
-                        Delete
-                      </Button>
+                          const res = await deleteAdminCommunityMessage(message._id);
+                          if (res.success) setMessages((prev) => prev.filter((m) => m._id !== message._id));
+                        }}>
+                          <FiTrash2 size={14} /> Delete
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="admin-table admin-table-compact">
-                <div className="admin-row admin-row-header admin-row-moderation">
-                  <span>Post</span>
-                  <span>Role</span>
-                  <span>Pinned</span>
-                  <span>Actions</span>
+                  ))}
+                  {messages.length === 0 && <div className="ad-list-empty">No messages.</div>}
                 </div>
-                {posts.slice(0, 25).map((post) => (
-                  <div key={post._id} className="admin-row admin-row-moderation">
-                    <span className="admin-truncate">{post.title || 'Untitled'}</span>
-                    <span>{post.roleContext || post.authorRole || 'student'}</span>
-                    <span>{post.pinned ? 'Yes' : 'No'}</span>
-                    <div className="admin-actions">
-                      <Button
-                        size="small"
-                        variant="ghost"
-                        onClick={async () => {
-                          const response = await updateAdminCommunityPost(post._id, { pinned: !post.pinned });
-                          if (response.success) {
-                            setPosts((prev) =>
-                              prev.map((item) => (item._id === post._id ? response.data : item))
-                            );
-                          }
-                        }}
-                      >
-                        <FiBookmark size={14} />
-                        {post.pinned ? 'Unpin' : 'Pin'}
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="ghost"
-                        onClick={async () => {
-                          if (!window.confirm('Delete this post?')) return;
-                          const response = await deleteAdminCommunityPost(post._id);
-                          if (response.success) {
-                            setPosts((prev) => prev.filter((item) => item._id !== post._id));
-                          }
-                        }}
-                      >
-                        <FiTrash2 size={14} />
-                        Delete
-                      </Button>
-                    </div>
+
+                <h3 className="ad-subsection-title" style={{ marginTop: '1.5rem' }}>Posts</h3>
+                <div className="ad-list">
+                  <div className="ad-list-header ad-list-row-moderation-posts">
+                    <span>Post</span>
+                    <span>Role</span>
+                    <span>Pinned</span>
+                    <span>Actions</span>
                   </div>
-                ))}
-              </div>
-            </>
-          )}
-        </Card>
+                  {posts.slice(0, 25).map((post) => (
+                    <div key={post._id} className="ad-list-row ad-list-row-moderation-posts">
+                      <span className="admin-truncate">{post.title || 'Untitled'}</span>
+                      <span>{post.roleContext || post.authorRole || 'student'}</span>
+                      <span>{post.pinned ? 'Yes' : 'No'}</span>
+                      <div className="admin-actions">
+                        <Button size="small" variant="ghost" onClick={async () => {
+                          const res = await updateAdminCommunityPost(post._id, { pinned: !post.pinned });
+                          if (res.success) setPosts((prev) => prev.map((p) => p._id === post._id ? res.data : p));
+                        }}>
+                          <FiBookmark size={14} /> {post.pinned ? 'Unpin' : 'Pin'}
+                        </Button>
+                        <Button size="small" variant="ghost" onClick={async () => {
+                          if (!window.confirm('Delete this post?')) return;
+                          const res = await deleteAdminCommunityPost(post._id);
+                          if (res.success) setPosts((prev) => prev.filter((p) => p._id !== post._id));
+                        }}>
+                          <FiTrash2 size={14} /> Delete
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  {posts.length === 0 && <div className="ad-list-empty">No posts.</div>}
+                </div>
+              </>
+            )}
+          </section>
+        </main>
+
+        <aside className="ad-sidebar">
+          <div className="ad-sidebar-box">
+            <h3 className="ad-sidebar-heading">About</h3>
+            <p className="ad-sidebar-about">
+              Configure community channels, tags, and stats. Moderate messages and posts.
+            </p>
+            <div className="ad-sidebar-divider" />
+            <ul className="ad-sidebar-list">
+              <li><FiMessageSquare size={13} className="ad-sidebar-icon" />Channel config</li>
+              <li><FiBookmark size={13} className="ad-sidebar-icon" />Pin / remove content</li>
+            </ul>
+          </div>
+          <div className="ad-sidebar-box ad-status-box">
+            <div className="ad-status-row">
+              <span className="ad-status-dot" />
+              <span className="ad-status-label">MODERATION</span>
+            </div>
+            <strong className="ad-status-value">{messages.length + posts.length > 0 ? 'ACTIVE' : 'CLEAR'}</strong>
+            <div className="ad-status-track">
+              <div className="ad-status-fill" style={{ width: '100%' }} />
+            </div>
+            <p className="ad-status-note">{messages.length} messages · {posts.length} posts loaded.</p>
+          </div>
+        </aside>
       </div>
     </div>
   );

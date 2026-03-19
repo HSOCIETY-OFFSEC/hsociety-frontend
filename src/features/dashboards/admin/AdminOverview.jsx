@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FiMessageSquare, FiShield, FiUsers } from 'react-icons/fi';
+import { FiActivity, FiMessageSquare, FiShield, FiUsers } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../../shared/components/ui/Card';
-import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getAdminOverview } from './admin.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
@@ -30,9 +28,7 @@ const AdminOverview = () => {
       setLoading(false);
     };
     load();
-    return () => {
-      mounted = false;
-    };
+    return () => { mounted = false; };
   }, []);
 
   if (loading) return <PageLoader message="Loading admin overview..." durationMs={0} />;
@@ -41,120 +37,163 @@ const AdminOverview = () => {
   const community = overview?.community || {};
   const pentests = overview?.pentests || {};
 
+  const statCards = [
+    {
+      icon: <FiUsers size={16} />,
+      label: 'Total Users',
+      value: users.total || 0,
+      sub: `${users.byRole?.student || 0} students · ${users.byRole?.pentester || 0} pentesters`,
+      action: () => navigate('/mr-robot/users'),
+      actionLabel: 'Manage Users'
+    },
+    {
+      icon: <FiShield size={16} />,
+      label: 'Pentests',
+      value: pentests.total || 0,
+      sub: `${pentests.byStatus?.['in-progress'] || 0} active · ${pentests.byStatus?.completed || 0} done`,
+      action: () => navigate('/mr-robot/pentests'),
+      actionLabel: 'Manage Pentests'
+    },
+    {
+      icon: <FiMessageSquare size={16} />,
+      label: 'Community',
+      value: community.messages || 0,
+      sub: `${community.posts || 0} posts · ${community.comments || 0} comments`,
+      action: () => navigate('/mr-robot/community'),
+      actionLabel: 'Manage Community'
+    }
+  ];
+
   return (
-    <div className="admin-dashboard">
-      <div className="dashboard-shell">
-        <PublicError message={error} className="admin-alert" />
-
-        <div className="admin-overview-grid">
-          <Card className="admin-card" padding="medium">
-            <div className="admin-section-header">
-              <h2>Community Activity</h2>
-              <p>Live stats from community messaging.</p>
+    <div className="ad-page">
+      <header className="ad-page-header">
+        <div className="ad-page-header-inner">
+          <div className="ad-header-left">
+            <div className="ad-header-icon-wrap">
+              <FiActivity size={20} className="ad-header-icon" />
             </div>
-            <div className="admin-overview-stats">
-              <div>
-                <FiMessageSquare size={16} />
-                <span>Messages</span>
-                <strong>{community.messages || 0}</strong>
+            <div>
+              <div className="ad-header-breadcrumb">
+                <span className="ad-breadcrumb-org">HSOCIETY</span>
+                <span className="ad-breadcrumb-sep">/</span>
+                <span className="ad-breadcrumb-page">admin-overview</span>
+                <span className="ad-header-visibility">Admin</span>
               </div>
-              <div>
-                <FiMessageSquare size={16} />
-                <span>Comments</span>
-                <strong>{community.comments || 0}</strong>
-              </div>
-              <div>
-                <FiMessageSquare size={16} />
-                <span>Posts</span>
-                <strong>{community.posts || 0}</strong>
-              </div>
+              <p className="ad-header-desc">Platform-wide stats and quick access to management tools.</p>
             </div>
-            <div className="admin-overview-actions">
-              <Button variant="primary" size="small" onClick={() => navigate('/mr-robot/community')}>
-                Manage Community
-              </Button>
-            </div>
-          </Card>
-
-          <Card className="admin-card" padding="medium">
-            <div className="admin-section-header">
-              <h2>User Management</h2>
-              <p>Role distribution and bootcamp progress.</p>
-            </div>
-            <div className="admin-overview-stats">
-              <div>
-                <FiUsers size={16} />
-                <span>Students</span>
-                <strong>{users.byRole?.student || 0}</strong>
-              </div>
-              <div>
-                <FiUsers size={16} />
-                <span>Pentesters</span>
-                <strong>{users.byRole?.pentester || 0}</strong>
-              </div>
-              <div>
-                <FiUsers size={16} />
-                <span>Corporate</span>
-                <strong>{users.byRole?.corporate || 0}</strong>
-              </div>
-            </div>
-            <div className="admin-overview-actions">
-              <Button variant="primary" size="small" onClick={() => navigate('/mr-robot/users')}>
-                Manage Users
-              </Button>
-            </div>
-          </Card>
-
-          <Card className="admin-card" padding="medium">
-            <div className="admin-section-header">
-              <h2>Pentest Operations</h2>
-              <p>Keep engagements assigned and moving.</p>
-            </div>
-            <div className="admin-overview-stats">
-              <div>
-                <FiShield size={16} />
-                <span>Total Pentests</span>
-                <strong>{pentests.total || 0}</strong>
-              </div>
-              <div>
-                <FiShield size={16} />
-                <span>In Progress</span>
-                <strong>{pentests.byStatus?.['in-progress'] || 0}</strong>
-              </div>
-              <div>
-                <FiShield size={16} />
-                <span>Completed</span>
-                <strong>{pentests.byStatus?.completed || 0}</strong>
-              </div>
-            </div>
-            <div className="admin-overview-actions">
-              <Button variant="primary" size="small" onClick={() => navigate('/mr-robot/pentests')}>
-                Manage Pentests
-              </Button>
-            </div>
-          </Card>
+          </div>
         </div>
+        <div className="ad-header-meta">
+          <span className="ad-meta-pill">
+            <FiUsers size={13} className="ad-meta-icon" />
+            <span className="ad-meta-label">Users</span>
+            <strong className="ad-meta-value">{users.total || 0}</strong>
+          </span>
+          <span className="ad-meta-pill">
+            <FiShield size={13} className="ad-meta-icon" />
+            <span className="ad-meta-label">Pentests</span>
+            <strong className="ad-meta-value">{pentests.total || 0}</strong>
+          </span>
+          <span className="ad-meta-pill">
+            <FiMessageSquare size={13} className="ad-meta-icon" />
+            <span className="ad-meta-label">Messages</span>
+            <strong className="ad-meta-value">{community.messages || 0}</strong>
+          </span>
+        </div>
+      </header>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Management Hub</h2>
-            <p>Jump into the tools you need to update the platform.</p>
+      <div className="ad-layout">
+        <main className="ad-main">
+          <PublicError message={error} className="admin-alert" />
+
+          <section className="ad-section">
+            <h2 className="ad-section-title">
+              <FiActivity size={15} className="ad-section-icon" />
+              Platform Overview
+            </h2>
+            <p className="ad-section-desc">Live stats across users, pentests, and community activity.</p>
+            <div className="ad-stat-grid">
+              {statCards.map((card) => (
+                <div key={card.label} className="ad-stat-card">
+                  <div className="ad-stat-card-header">
+                    {card.icon}
+                    <span className="ad-stat-card-label">{card.label}</span>
+                  </div>
+                  <strong className="ad-stat-card-value">{card.value}</strong>
+                  <p className="ad-stat-card-sub">{card.sub}</p>
+                  <button
+                    type="button"
+                    className="ad-btn ad-btn-secondary"
+                    onClick={card.action}
+                  >
+                    {card.actionLabel}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <div className="ad-divider" />
+
+          <section className="ad-section">
+            <h2 className="ad-section-title">
+              <FiShield size={15} className="ad-section-icon" />
+              Quick Actions
+            </h2>
+            <p className="ad-section-desc">Jump into the tools you need to manage the platform.</p>
+            <div className="ad-quick-actions">
+              <button type="button" className="ad-btn ad-btn-primary" onClick={() => navigate('/mr-robot/users')}>
+                <FiUsers size={14} /> Users
+              </button>
+              <button type="button" className="ad-btn ad-btn-secondary" onClick={() => navigate('/mr-robot/pentests')}>
+                <FiShield size={14} /> Pentests
+              </button>
+              <button type="button" className="ad-btn ad-btn-secondary" onClick={() => navigate('/mr-robot/community')}>
+                <FiMessageSquare size={14} /> Community
+              </button>
+              <button type="button" className="ad-btn ad-btn-secondary" onClick={() => navigate('/mr-robot/security')}>
+                <FiActivity size={14} /> Security
+              </button>
+            </div>
+          </section>
+        </main>
+
+        <aside className="ad-sidebar">
+          <div className="ad-sidebar-box">
+            <h3 className="ad-sidebar-heading">About</h3>
+            <p className="ad-sidebar-about">
+              Admin control panel for managing users, pentests, community, and platform security.
+            </p>
+            <div className="ad-sidebar-divider" />
+            <ul className="ad-sidebar-list">
+              <li><FiUsers size={13} className="ad-sidebar-icon" />User management</li>
+              <li><FiShield size={13} className="ad-sidebar-icon" />Pentest operations</li>
+              <li><FiMessageSquare size={13} className="ad-sidebar-icon" />Community moderation</li>
+            </ul>
           </div>
-          <div className="admin-management-actions">
-            <Button variant="secondary" size="small" onClick={() => navigate('/mr-robot/community')}>
-              Community Config
-            </Button>
-            <Button variant="secondary" size="small" onClick={() => navigate('/mr-robot/users')}>
-              Users
-            </Button>
-            <Button variant="secondary" size="small" onClick={() => navigate('/mr-robot/pentests')}>
-              Pentests
-            </Button>
-            <Button variant="secondary" size="small" onClick={() => navigate('/mr-robot/security')}>
-              Security
-            </Button>
+
+          <div className="ad-sidebar-box ad-status-box">
+            <div className="ad-status-row">
+              <span className="ad-status-dot" />
+              <span className="ad-status-label">PLATFORM STATUS</span>
+            </div>
+            <strong className="ad-status-value">LIVE</strong>
+            <div className="ad-status-track">
+              <div className="ad-status-fill" style={{ width: '100%' }} />
+            </div>
+            <p className="ad-status-note">All systems operational.</p>
           </div>
-        </Card>
+
+          <div className="ad-sidebar-box">
+            <h3 className="ad-sidebar-heading">Topics</h3>
+            <div className="ad-topics">
+              <span className="ad-topic">admin</span>
+              <span className="ad-topic">users</span>
+              <span className="ad-topic">pentests</span>
+              <span className="ad-topic">community</span>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );

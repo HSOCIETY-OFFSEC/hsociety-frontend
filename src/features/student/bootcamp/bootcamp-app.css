@@ -270,7 +270,7 @@
 
 /* ── GitHub UI page styles ──────────────────────────────────── */
 .bc-page {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans", Helvetica, Arial, sans-serif;
   color: var(--text-primary);
   max-width: 1280px;
   margin: 0 auto;

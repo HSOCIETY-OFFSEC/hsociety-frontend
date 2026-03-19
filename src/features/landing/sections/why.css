@@ -19,6 +19,8 @@
   position: sticky;
   top: calc(var(--navbar-height, 64px) + 1.5rem);
   align-self: flex-start;
+  max-height: calc(100vh - var(--navbar-height, 64px) - 3rem);
+  overflow: hidden;
 }
 
 .why-right {

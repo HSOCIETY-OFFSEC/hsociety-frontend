@@ -4,6 +4,7 @@
    ============================================================ */
 
 /* ── Root grid ──────────────────────────────────────────────── */
+/* NOTE: Overridden by the GitHub-style layout section further below */
 .community-root {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 280px;
@@ -14,18 +15,16 @@
   height: 100%;
   background: var(--bg-primary);
   color: var(--text-primary);
-  overflow: hidden;
-  position: relative;
 }
 
 /* ── Main feed column ───────────────────────────────────────── */
+/* NOTE: Overridden by the GitHub-style layout section further below */
 .community-main {
   grid-area: main;
   display: flex;
   flex-direction: column;
   border-left: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
-  overflow: hidden;
   min-width: 0;
   background: var(--bg-primary);
 }
@@ -2610,7 +2609,7 @@
  */
 
 .cpr-page {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans", Helvetica, Arial, sans-serif;
   color: var(--text-primary);
   max-width: 1280px;
   margin: 0 auto;
@@ -2969,7 +2968,7 @@
  */
 
 .cmd-page {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans", Helvetica, Arial, sans-serif;
   color: var(--text-primary);
   max-width: 1280px;
   margin: 0 auto;

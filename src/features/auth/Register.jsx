@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiLock } from 'react-icons/fi';
 import RegistrationForm from './RegistrationForm';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
-import './auth.css';
+import './auth-portal.css';
 
 /**
  * Register page / modal wrapper.
@@ -21,7 +21,7 @@ const Register = ({
 
   const content = (
     <section
-      className={`auth-wrapper ${layout === 'modal' ? 'auth-wrapper--modal' : ''}`}
+      className={`ap-wrapper ${layout === 'modal' ? 'ap-wrapper--modal' : ''}`}
       onClick={layout === 'modal' ? (event) => event.stopPropagation() : undefined}
     >
       <RegistrationForm
@@ -30,14 +30,14 @@ const Register = ({
         onLoginRedirect={onLoginRedirect}
       />
 
-      <div className="auth-footer">
+      <div className="ap-footer">
         <p>
           {copy.footer.loginPrompt}{' '}
           <button
             onClick={() =>
               onRequestModeChange ? onRequestModeChange('login') : navigate('/posts?auth=login')
             }
-            className="auth-link-inline"
+            className="ap-link-inline"
           >
             {copy.footer.loginAction}
           </button>
@@ -46,7 +46,7 @@ const Register = ({
           {copy.footer.corporatePrompt}{' '}
           <button
             type="button"
-            className="auth-link-inline"
+            className="ap-link-inline"
             onClick={() =>
               onRequestModeChange
                 ? onRequestModeChange('register-corporate')
@@ -58,13 +58,9 @@ const Register = ({
         </p>
       </div>
 
-      <div className="auth-notice">
-        <p>
-          <span className="notice-icon">
-            <FiLock size={13} />
-          </span>
-          {copy.notice?.student ?? copy.notice}
-        </p>
+      <div className="ap-notice">
+        <FiLock size={13} />
+        {copy.notice?.student ?? copy.notice}
       </div>
     </section>
   );
@@ -72,7 +68,7 @@ const Register = ({
   if (layout === 'modal') return content;
 
   return (
-    <div className="auth-container">
+    <div className="ap-container">
       {content}
     </div>
   );

@@ -285,6 +285,19 @@
 
 .form-input::placeholder { color: var(--text-tertiary); }
 
+@keyframes hsociety-autofill-detect {
+  from { }
+  to { }
+}
+
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:focus,
+.form-input:-webkit-autofill:hover {
+  animation-name: hsociety-autofill-detect;
+  animation-duration: 0.001s;
+  animation-fill-mode: both;
+}
+
 .form-hint {
   font-size: clamp(0.7rem, 1.2vh, 0.775rem);
   color: var(--text-tertiary);

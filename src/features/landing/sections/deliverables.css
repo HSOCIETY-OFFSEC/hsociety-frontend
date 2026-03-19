@@ -23,6 +23,12 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+/* Remove bottom border from the last item in each column to avoid dangling lines */
+.deliverables-grid .deliverable-item:last-child,
+.deliverables-grid .deliverable-item:nth-last-child(2):nth-child(odd) {
+  border-bottom: none;
+}
+
 .deliverable-icon {
   color: var(--primary-color);
   font-weight: 700;

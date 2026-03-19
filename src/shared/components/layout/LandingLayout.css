@@ -1,57 +1,24 @@
 /**
- * PublicLayout.css
- * Location: src/styles/base/components/layout/PublicLayout.css
+ * LandingLayout.css
+ * Location: src/shared/components/layout/LandingLayout.css
  *
- * Public-facing informational pages — About, Team, Blog, Careers, etc.
- * Content is constrained to a comfortable reading width.
- * Scroll-reveal animations are scoped to .public-layout.
+ * Full-width landing layout with announcement banner and sticky nav.
  */
 
-/* ── Public main area ─────────────────────────────────────── */
-.public-layout .public-main {
+.landing-layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.landing-layout .gh-nav {
+  position: sticky;
+  top: 0;
+}
+
+.landing-main {
+  flex: 1 1 auto;
   width: 100%;
-  box-sizing: border-box;
-  /* Vertical breathing room; horizontal handled by .container */
-  padding-top: calc(var(--navbar-height) + 2rem);
-  padding-bottom: 5rem;
-}
-
-/*
- * Prose / article children get an optimal line-length cap so
- * long-form text stays comfortable to read at any viewport width.
- */
-.public-layout .public-main > article,
-.public-layout .public-main > .prose {
-  max-width: 72ch;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/*
- * Adjacent top-level sections get automatic vertical rhythm so
- * content authors don't need to repeat spacing utility classes.
- */
-.public-layout .public-main > section + section {
-  margin-top: 4rem;
-}
-
-/* ── Responsive tweaks ────────────────────────────────────── */
-@media (min-width: 768px) {
-  .public-layout .public-main {
-    padding-top: calc(var(--navbar-height) + 3rem);
-    padding-bottom: 6rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .public-layout .public-main {
-    padding-top: calc(var(--navbar-height) + 4rem);
-    padding-bottom: 8rem;
-  }
-
-  .public-layout .public-main > section + section {
-    margin-top: 6rem;
-  }
+  display: flex;
+  flex-direction: column;
 }

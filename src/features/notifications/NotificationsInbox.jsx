@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { FiBell, FiCheckCircle, FiInbox, FiRefreshCcw } from 'react-icons/fi';
+import { FiBell, FiCheckCircle, FiInbox, FiRefreshCcw, FiShield, FiMessageSquare, FiInfo } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
 import { openNotificationTarget } from '../../shared/utils/notificationNavigation';
@@ -30,6 +30,14 @@ const NotificationsInbox = () => {
   }, [notifications, filter]);
 
   const totalCount = notifications.length;
+
+  const typeCounts = useMemo(() => {
+    return notifications.reduce((acc, n) => {
+      const type = n.type || 'general';
+      acc[type] = (acc[type] || 0) + 1;
+      return acc;
+    }, {});
+  }, [notifications]);
 
   return (
     <div className="nb-page">
@@ -150,19 +158,6 @@ const NotificationsInbox = () => {
         </main>
 
         <aside className="nb-sidebar">
-          <div className="nb-sidebar-box">
-            <h3 className="nb-sidebar-heading">About</h3>
-            <p className="nb-sidebar-about">
-              Notifications track mentions, security events, and admin updates across HSOCIETY.
-            </p>
-            <div className="nb-sidebar-divider" />
-            <ul className="nb-sidebar-list">
-              <li><FiBell size={13} className="nb-sidebar-icon" />Mentions and comments</li>
-              <li><FiCheckCircle size={13} className="nb-sidebar-icon" />Security alerts</li>
-              <li><FiInbox size={13} className="nb-sidebar-icon" />Admin announcements</li>
-            </ul>
-          </div>
-
           <div className="nb-sidebar-box nb-status-box">
             <div className="nb-status-row">
               <span className="nb-status-dot" />
@@ -176,8 +171,67 @@ const NotificationsInbox = () => {
               />
             </div>
             <p className="nb-status-note">
-              {unreadCount > 0 ? 'Unread alerts waiting review.' : 'All caught up.'}
+              {unreadCount > 0 ? `${unreadCount} unread alert${unreadCount === 1 ? '' : 's'} waiting.` : 'All caught up.'}
             </p>
+          </div>
+
+          <div className="nb-sidebar-box">
+            <h3 className="nb-sidebar-heading">Summary</h3>
+            <div className="nb-sidebar-divider" />
+            <ul className="nb-sidebar-list">
+              <li>
+                <FiInbox size={13} className="nb-sidebar-icon" />
+                <span>Total</span>
+                <strong className="nb-sidebar-count">{totalCount}</strong>
+              </li>
+              <li>
+                <FiBell size={13} className="nb-sidebar-icon" />
+                <span>Unread</span>
+                <strong className="nb-sidebar-count">{unreadCount}</strong>
+              </li>
+              <li>
+                <FiCheckCircle size={13} className="nb-sidebar-icon" />
+                <span>Read</span>
+                <strong className="nb-sidebar-count">{totalCount - unreadCount}</strong>
+              </li>
+            </ul>
+          </div>
+
+          {Object.keys(typeCounts).length > 0 && (
+            <div className="nb-sidebar-box">
+              <h3 className="nb-sidebar-heading">By Type</h3>
+              <div className="nb-sidebar-divider" />
+              <ul className="nb-sidebar-list">
+                {Object.entries(typeCounts).map(([type, count]) => (
+                  <li key={type}>
+                    <FiInfo size={13} className="nb-sidebar-icon" />
+                    <span style={{ textTransform: 'capitalize' }}>{type}</span>
+                    <strong className="nb-sidebar-count">{count}</strong>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="nb-sidebar-box">
+            <h3 className="nb-sidebar-heading">Filters</h3>
+            <div className="nb-sidebar-divider" />
+            <div className="nb-sidebar-filters">
+              <button
+                type="button"
+                className={`nb-sidebar-filter-btn ${filter === 'all' ? 'active' : ''}`}
+                onClick={() => setFilter('all')}
+              >
+                <FiInbox size={13} /> All notifications
+              </button>
+              <button
+                type="button"
+                className={`nb-sidebar-filter-btn ${filter === 'unread' ? 'active' : ''}`}
+                onClick={() => setFilter('unread')}
+              >
+                <FiBell size={13} /> Unread only
+              </button>
+            </div>
           </div>
 
           <div className="nb-sidebar-box">
@@ -186,7 +240,7 @@ const NotificationsInbox = () => {
               <span className="nb-topic">mentions</span>
               <span className="nb-topic">alerts</span>
               <span className="nb-topic">community</span>
-              <span className="nb-topic">updates</span>
+              <span className="nb-topic">security</span>
             </div>
           </div>
         </aside>

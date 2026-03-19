@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FiEdit2, FiSave, FiShield, FiUsers } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
@@ -25,31 +25,26 @@ const AdminDashboard = () => {
   const [pentestEdits, setPentestEdits] = useState({});
   const [pentestSavingId, setPentestSavingId] = useState(null);
 
-  const loadUsers = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     setError('');
-    const response = await getUsers();
-    if (response.success) {
-      setUsers(response.data || []);
+    const [usersRes, pentestsRes] = await Promise.all([getUsers(), getPentests()]);
+    if (usersRes.success) {
+      setUsers(usersRes.data || []);
     } else {
-      setError(getPublicErrorMessage({ action: 'load', response }));
+      setError(getPublicErrorMessage({ action: 'load', response: usersRes }));
+    }
+    if (pentestsRes.success) {
+      setPentests(pentestsRes.data || []);
+    } else if (!usersRes.success) {
+      setError(getPublicErrorMessage({ action: 'load', response: pentestsRes }));
     }
     setLoading(false);
-  };
-
-  const loadPentests = async () => {
-    const response = await getPentests();
-    if (response.success) {
-      setPentests(response.data || []);
-    } else {
-      setError(getPublicErrorMessage({ action: 'load', response }));
-    }
-  };
+  }, []);
 
   useEffect(() => {
-    loadUsers();
-    loadPentests();
-  }, []);
+    loadData();
+  }, [loadData]);
 
   const startEdit = (user) => {
     setEditingId(user.id);

@@ -6,7 +6,6 @@ export const AUTH_FORM_CONTENT = {
     },
     subtitles: {
       step1: 'Enter your email or handle and password',
-      step2: 'Enter your 2FA authentication code',
     },
     fields: {
       email: {
@@ -17,17 +16,10 @@ export const AUTH_FORM_CONTENT = {
         label: 'Password',
         placeholder: 'Your password',
       },
-      twofa: {
-        label: 'Two-Factor Authentication',
-        placeholder: '000000',
-        hint: 'Enter the 6-digit code from your authenticator app',
-      },
     },
     buttons: {
       signIn: 'Sign In',
       signingIn: 'Signing in...',
-      verify: 'Verify 2FA',
-      verifying: 'Verifying...',
       useDifferent: 'Use a different account',
     },
     footer: {

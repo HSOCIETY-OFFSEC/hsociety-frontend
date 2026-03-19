@@ -12,59 +12,6 @@ import {
 } from './dashboard.contract';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
-const mockStats = {
-  activeEngagements: 4,
-  completedEngagements: 18,
-  pendingReports: 3,
-  vulnerabilitiesFound: 62,
-  remediationProgress: 72
-};
-
-const mockRecentActivity = [
-  {
-    id: '1',
-    type: 'engagement',
-    title: 'Enterprise Web Application',
-    status: 'exploitation',
-    date: Date.now() - (2 * 24 * 60 * 60 * 1000),
-    icon: 'shield'
-  },
-  {
-    id: '2',
-    type: 'report',
-    title: 'Secure API Report',
-    status: 'reporting',
-    date: Date.now() - (4 * 24 * 60 * 60 * 1000),
-    icon: 'file'
-  },
-  {
-    id: '3',
-    type: 'engagement',
-    title: 'Cloud Infrastructure',
-    status: 'recon',
-    date: Date.now() - (6 * 24 * 60 * 60 * 1000),
-    icon: 'target'
-  },
-  {
-    id: '4',
-    type: 'remediation',
-    title: 'Remediation Playbook',
-    status: 'completed',
-    date: Date.now() - (9 * 24 * 60 * 60 * 1000),
-    icon: 'tool'
-  }
-];
-
-const mockOverview = {
-  stats: mockStats,
-  recentActivity: mockRecentActivity,
-  quickStats: {
-    avgResponseTime: '24 hours',
-    securityScore: 85,
-    lastScan: Date.now() - (3 * 24 * 60 * 60 * 1000)
-  }
-};
-
 /**
  * Get dashboard statistics
  * @returns {Promise<Object>} - Dashboard stats
@@ -77,15 +24,6 @@ export const getDashboardStats = async () => {
       data: normalizeDashboardStats(response.data || {})
     };
   }
-
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeDashboardStats(mockStats),
-      isMock: true
-    };
-  }
-
   return {
     success: false,
     error: getPublicErrorMessage({ action: 'load', response })
@@ -108,15 +46,6 @@ export const getRecentActivity = async (limit = 10) => {
       data: normalizeRecentActivity(payload)
     };
   }
-
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeRecentActivity(mockRecentActivity.slice(0, limit)),
-      isMock: true
-    };
-  }
-
   return {
     success: false,
     error: getPublicErrorMessage({ action: 'load', response })
@@ -136,6 +65,7 @@ export const getDashboardOverview = async () => {
     };
   }
 
+  // Fallback: try individual endpoints in parallel
   const [statsRes, activityRes] = await Promise.all([
     getDashboardStats(),
     getRecentActivity()
@@ -154,14 +84,6 @@ export const getDashboardOverview = async () => {
         }
       }),
       isFallback: true
-    };
-  }
-
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeDashboardOverview(mockOverview),
-      isMock: true
     };
   }
 

@@ -3,15 +3,13 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FiAlertTriangle } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../shared/notifications/NotificationProvider';
-import Button from '../../shared/components/ui/Button';
-import Card from '../../shared/components/ui/Card';
 import AccountToggle from './components/AccountToggle';
 import PasswordField from './components/PasswordField';
 import { AUTH_FORM_CONTENT } from '../../data/auth/authContent';
 import { buildRegisterDTO, validateRegisterForm } from './register.contract';
 import { validatePassword } from '../../core/validation/input.validator';
 import { registerUser } from './register.service';
-import './auth.css';
+import './auth-portal.css';
 
 /**
  * Registration Form
@@ -90,6 +88,21 @@ const RegistrationForm = ({
   const handleChange = (field) => (event) => {
     const value =
       field === 'agree' ? event.target.checked : event.target.value;
+    // When the checkbox is toggled, sync all text fields from DOM first so
+    // autofilled values are captured before isValid is re-evaluated.
+    if (field === 'agree') {
+      setForm((prev) => {
+        const synced = { ...prev };
+        if (nameRef.current && nameRef.current.value) synced.name = nameRef.current.value;
+        if (orgRef.current && orgRef.current.value) synced.companyOrSchool = orgRef.current.value;
+        if (emailRef.current && emailRef.current.value) synced.email = emailRef.current.value;
+        if (handleRef.current && handleRef.current.value) synced.handle = handleRef.current.value;
+        if (passwordRef.current && passwordRef.current.value) synced.password = passwordRef.current.value;
+        if (confirmRef.current && confirmRef.current.value) synced.confirmPassword = confirmRef.current.value;
+        return { ...synced, agree: value };
+      });
+      return;
+    }
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -141,6 +154,17 @@ const RegistrationForm = ({
   }, [syncFormFromDom]);
 
   useEffect(() => {
+    const handleAnimation = (event) => {
+      if (event.animationName === 'hsociety-autofill-detect') {
+        syncFormFromDom();
+      }
+    };
+
+    document.addEventListener('animationstart', handleAnimation, true);
+    return () => document.removeEventListener('animationstart', handleAnimation, true);
+  }, [syncFormFromDom]);
+
+  useEffect(() => {
     if (!prefillEmail) return;
     setForm((prev) => (prev.email ? prev : { ...prev, email: prefillEmail }));
   }, [prefillEmail]);
@@ -148,8 +172,7 @@ const RegistrationForm = ({
   useEffect(() => {
     if (!form.name || form.handle) return;
     const suggested = normalizeHandleInput(form.name);
-    if (!suggested) return;
-    setForm((prev) => (prev.handle ? prev : { ...prev, handle: suggested }));
+    if (suggested.length >= 3) setForm((prev) => (prev.handle ? prev : { ...prev, handle: suggested }));
   }, [form.name, form.handle]);
 
   const handleSubmit = async (event) => {
@@ -208,13 +231,13 @@ const RegistrationForm = ({
 
   const formContent = (
     <>
-      <div className="auth-header">
-        <h1>{copy.header.title}</h1>
-        <p className="auth-subtitle">{headerSubtitle}</p>
+      <div className="ap-form-header">
+        <h1 className="ap-form-title">{copy.header.title}</h1>
+        <p className="ap-form-subtitle">{headerSubtitle}</p>
       </div>
 
       {note && (
-        <div className="auth-note">
+        <div className="ap-note">
           <p>{note}</p>
         </div>
       )}
@@ -226,7 +249,7 @@ const RegistrationForm = ({
           disabled={loading}
         />
       ) : (
-        <div className="auth-account-label">
+        <div className="ap-note">
           {accountType === 'corporate'
             ? copy.accountType.corporateLabel
             : copy.accountType.studentLabel}
@@ -234,15 +257,15 @@ const RegistrationForm = ({
       )}
 
       {error && (
-        <div className="auth-error" role="alert">
-          <span className="error-icon"><FiAlertTriangle size={15} /></span>
+        <div className="ap-error" role="alert">
+          <span className="ap-error-icon"><FiAlertTriangle size={15} /></span>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="auth-form" noValidate>
-        <div className="auth-form-row">
-          <div className="form-group">
+      <form onSubmit={handleSubmit} className="ap-form" noValidate>
+        <div className="ap-form-row">
+          <div className="ap-field">
             <label htmlFor="full-name">{copy.fields.name.label}</label>
             <input
               type="text"
@@ -254,14 +277,14 @@ const RegistrationForm = ({
               placeholder={copy.fields.name.placeholder}
               required
               disabled={loading}
-              className="form-input"
+              className="ap-input"
               autoComplete="name"
               ref={nameRef}
             />
           </div>
         </div>
 
-        <div className="form-group">
+        <div className="ap-field">
           <label htmlFor="handle">{copy.fields.handle.label}</label>
           <input
             type="text"
@@ -278,14 +301,14 @@ const RegistrationForm = ({
             }}
             placeholder={copy.fields.handle.placeholder}
             disabled={loading}
-            className="form-input"
+            className="ap-input"
             autoComplete="username"
             ref={handleRef}
           />
-          <span className="form-hint">{copy.fields.handle.hint}</span>
+          <span className="ap-hint">{copy.fields.handle.hint}</span>
         </div>
 
-        <div className="form-group">
+        <div className="ap-field">
           <label htmlFor="org">{orgFieldLabel}</label>
           <input
             type="text"
@@ -297,13 +320,13 @@ const RegistrationForm = ({
             placeholder={orgFieldPlaceholder}
             required
             disabled={loading}
-            className="form-input"
+            className="ap-input"
             autoComplete="organization"
             ref={orgRef}
           />
         </div>
 
-        <div className="form-group">
+        <div className="ap-field">
           <label htmlFor="email">{copy.fields.email.label}</label>
           <input
             type="email"
@@ -315,15 +338,15 @@ const RegistrationForm = ({
             placeholder={copy.fields.email.placeholder}
             required
             disabled={loading}
-            className="form-input"
+            className="ap-input"
             autoComplete="email"
             inputMode="email"
             ref={emailRef}
           />
         </div>
 
-        <div className="auth-form-row">
-          <div className="form-group">
+        <div className="ap-form-row">
+          <div className="ap-field">
             <label htmlFor="password">{copy.fields.password.label}</label>
             <PasswordField
               id="password"
@@ -334,17 +357,17 @@ const RegistrationForm = ({
               placeholder={copy.fields.password.placeholder}
               required
               disabled={loading}
-              className="form-input"
+              className="ap-input"
               autoComplete="new-password"
               ref={passwordRef}
             />
             {passwordError && (
-              <span className="form-hint form-error" role="status">
+              <span className="ap-hint" role="status">
                 {passwordError}
               </span>
             )}
           </div>
-          <div className="form-group">
+          <div className="ap-field">
             <label htmlFor="confirm-password">{copy.fields.confirmPassword.label}</label>
             <PasswordField
               id="confirm-password"
@@ -355,19 +378,19 @@ const RegistrationForm = ({
               placeholder={copy.fields.confirmPassword.placeholder}
               required
               disabled={loading}
-              className="form-input"
+              className="ap-input"
               autoComplete="new-password"
               ref={confirmRef}
             />
             {confirmError && (
-              <span className="form-hint form-error" role="status">
+              <span className="ap-hint" role="status">
                 {confirmError}
               </span>
             )}
           </div>
         </div>
 
-        <label className="auth-checkbox">
+        <label className="ap-checkbox">
           <input
             type="checkbox"
             checked={form.agree}
@@ -379,7 +402,7 @@ const RegistrationForm = ({
             {copy.fields.agree.prefix}{' '}
             <button
               type="button"
-              className="auth-link-inline"
+              className="ap-link-inline"
               onClick={() => navigate('/terms')}
               disabled={loading}
             >
@@ -389,16 +412,15 @@ const RegistrationForm = ({
           </span>
         </label>
 
-        <div className="auth-mobile-actions">
-          <Button
+        <div className="ap-form-actions">
+          <button
             type="submit"
-            variant="primary"
-            fullWidth
-            loading={loading}
+            className="ap-btn-primary"
             disabled={loading || !isValid}
           >
+            {loading ? <span className="ap-spinner" /> : null}
             {copy.button.create}
-          </Button>
+          </button>
         </div>
       </form>
 
@@ -406,13 +428,13 @@ const RegistrationForm = ({
   );
 
   if (!useCard) {
-    return <div className="auth-panel">{formContent}</div>;
+    return <div className="ap-panel">{formContent}</div>;
   }
 
   return (
-    <Card className="auth-card">
+    <div className="ap-panel">
       {formContent}
-    </Card>
+    </div>
   );
 };
 

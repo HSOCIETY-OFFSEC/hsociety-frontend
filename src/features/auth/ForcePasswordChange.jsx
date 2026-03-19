@@ -5,17 +5,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiLock } from 'react-icons/fi';
-import Button from '../../shared/components/ui/Button';
-import Card from '../../shared/components/ui/Card';
 import PasswordInput from '../../shared/components/ui/PasswordInput';
 import PasswordStrengthIndicator from '../../shared/components/ui/PasswordStrengthIndicator';
-import PublicError from '../../shared/components/ui/PublicError';
 import { useAuth } from '../../core/auth/AuthContext';
 import { validatePassword } from '../../core/validation/input.validator';
 import { apiClient } from '../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../config/api.config';
 import { buildAuthModalUrl } from '../../shared/utils/auth/authModal';
-import './auth.css';
+import './auth-portal.css';
 
 export default function ForcePasswordChange() {
   const { login } = useAuth();
@@ -71,22 +68,27 @@ export default function ForcePasswordChange() {
   };
 
   return (
-    <div className="auth-container">
-      <section className="auth-wrapper">
-        <Card className="auth-card" padding="medium">
-          <div className="auth-header">
-            <h1>Update your password</h1>
-            <p className="auth-subtitle">
+    <div className="ap-container">
+      <section className="ap-wrapper">
+        <div className="ap-panel">
+          <div className="ap-form-header">
+            <h1 className="ap-form-title">Update your password</h1>
+            <p className="ap-form-subtitle">
               Your password must meet security requirements: at least 8 characters, one uppercase, one lowercase, one number, and one special character.
             </p>
           </div>
-          <PublicError message={error} icon={<FiLock size={16} />} />
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="form-group">
+          {error && (
+            <div className="ap-error" role="alert">
+              <span className="ap-error-icon"><FiLock size={16} /></span>
+              {error}
+            </div>
+          )}
+          <form onSubmit={handleSubmit} className="ap-form">
+            <div className="ap-field">
               <label htmlFor="new-password">New password</label>
               <PasswordInput
                 id="new-password"
-                className="form-input"
+                className="ap-input"
                 autoComplete="new-password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -96,11 +98,11 @@ export default function ForcePasswordChange() {
               />
               <PasswordStrengthIndicator password={newPassword} />
             </div>
-            <div className="form-group">
+            <div className="ap-field">
               <label htmlFor="confirm-password">Confirm password</label>
               <PasswordInput
                 id="confirm-password"
-                className="form-input"
+                className="ap-input"
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -109,11 +111,14 @@ export default function ForcePasswordChange() {
                 disabled={loading}
               />
             </div>
-            <Button type="submit" variant="primary" fullWidth disabled={loading}>
-              {loading ? 'Updating…' : 'Update password'}
-            </Button>
+            <div className="ap-form-actions">
+              <button type="submit" className="ap-btn-primary" disabled={loading}>
+                {loading ? <span className="ap-spinner" /> : null}
+                {loading ? 'Updating…' : 'Update password'}
+              </button>
+            </div>
           </form>
-        </Card>
+        </div>
       </section>
     </div>
   );

@@ -4,7 +4,7 @@
  */
 
 .nb-page {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans", Helvetica, Arial, sans-serif;
   color: var(--text-primary);
   max-width: 1280px;
   margin: 0 auto;
@@ -282,6 +282,58 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.nb-sidebar-list li span:last-of-type {
+  flex: 1;
+}
+
+.nb-sidebar-count {
+  margin-left: auto;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 2em;
+  padding: 0.05rem 0.45rem;
+  flex-shrink: 0;
+}
+
+.nb-sidebar-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nb-sidebar-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-xs, 6px);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.nb-sidebar-filter-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.nb-sidebar-filter-btn.active {
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
+  color: var(--text-primary);
+  font-weight: 600;
+  border-color: color-mix(in srgb, var(--primary-color) 20%, var(--border-color));
 }
 
 .nb-sidebar-icon {

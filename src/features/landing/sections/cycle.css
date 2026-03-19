@@ -9,6 +9,7 @@
   padding: 4rem 0;
 }
 
+/* Fix cycle connector — use flex layout instead of absolute positioning */
 .cycle-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -47,11 +48,32 @@
   line-height: 1.6;
 }
 
+/* Connector sits after the circle, centered between nodes */
 .cycle-connector {
+  display: none;
+}
+
+/* Draw connectors via pseudo-elements on the row */
+.cycle-row::before,
+.cycle-row::after {
+  content: '';
   position: absolute;
-  right: -1.2rem;
-  top: 1.4rem;
-  color: var(--text-tertiary);
+  top: 22px; /* vertically centered on the 44px circle */
+  height: 1px;
+  background: var(--border-color);
+  pointer-events: none;
+}
+
+/* Line between node 1 and node 2 */
+.cycle-row::before {
+  left: calc(33.33% - 1rem);
+  right: calc(66.66% - 1rem);
+}
+
+/* Line between node 2 and node 3 */
+.cycle-row::after {
+  left: calc(66.66% - 1rem);
+  right: calc(0% + 1rem);
 }
 
 @media (max-width: 900px) {
@@ -59,15 +81,23 @@
     grid-template-columns: 1fr;
   }
 
+  .cycle-row::before,
+  .cycle-row::after {
+    display: none;
+  }
+
   .cycle-node {
     padding: 0;
   }
 
-  .cycle-connector {
-    position: static;
+  /* Show a simple vertical line between stacked nodes */
+  .cycle-node:not(:last-child)::after {
+    content: '';
     display: block;
-    margin: 1rem auto;
-    transform: rotate(90deg);
+    width: 1px;
+    height: 1.5rem;
+    background: var(--border-color);
+    margin: 0.75rem auto 0;
   }
 }
 

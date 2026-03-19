@@ -16,19 +16,6 @@ export const registerUser = async (payload) => {
       };
     }
 
-    // Dev fallback keeps local flow usable before backend is connected.
-    if (import.meta.env.DEV) {
-      return {
-        success: true,
-        data: {
-          id: `mock-${Date.now()}`,
-          email: payload.credentials.email,
-          role: payload.role
-        },
-        isMock: true
-      };
-    }
-
     if (response.status === 409 || response.data?.error?.toLowerCase?.().includes('already')) {
       return {
         success: false,

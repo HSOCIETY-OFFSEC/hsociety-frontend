@@ -9,13 +9,13 @@
    SECTION SHELL
    ═══════════════════════════════════════════════ */
 
+/* Fix hero section width — 100vw causes horizontal overflow when scrollbar is present */
 .hero-section {
   position: relative;
   overflow: hidden;
   min-height: 100vh;
   height: 100svh;
-  width: 100vw;
-  min-width: 100vw;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -573,9 +573,6 @@
     font-size: clamp(4rem, 8.5vw, 9rem);
     letter-spacing: -0.05em;
     white-space: nowrap;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
     text-align: center;
   }
 

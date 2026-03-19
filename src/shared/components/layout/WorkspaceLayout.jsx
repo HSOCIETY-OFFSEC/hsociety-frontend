@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { LuX } from 'react-icons/lu';
 import {
   LuChartBar,
   LuBell,
@@ -51,6 +52,21 @@ const WorkspaceLayout = () => {
     markRead,
     markAllRead,
   } = useNotifications();
+
+  // Payment reminder banner — shown for unpaid students
+  const PAYMENT_BANNER_KEY = 'hsociety.payment-banner.dismissed';
+  const [paymentBannerDismissed, setPaymentBannerDismissed] = useState(() => {
+    try { return !!sessionStorage.getItem(PAYMENT_BANNER_KEY); } catch { return false; }
+  });
+  const showPaymentBanner =
+    role === 'student' &&
+    !paymentBannerDismissed &&
+    user?.bootcampPaymentStatus === 'unpaid';
+
+  const dismissPaymentBanner = () => {
+    setPaymentBannerDismissed(true);
+    try { sessionStorage.setItem(PAYMENT_BANNER_KEY, '1'); } catch { /* ignore */ }
+  };
 
   const menuRef = useRef(null);
   const communityMenuRef = useRef(null);
@@ -537,7 +553,29 @@ const WorkspaceLayout = () => {
         </header>
       )}
 
-      <main className={`workspace-main ${isCommunity ? 'community-main' : ''}`}>
+      <main className={`workspace-main ${isCommunity ? 'community-main' : ''} ${showPaymentBanner ? 'has-payment-banner' : ''}`}>
+        {showPaymentBanner && (
+          <div className="workspace-payment-banner">
+            <span className="workspace-payment-banner-text">
+              Your bootcamp access is paused — complete payment to unlock all phases.
+            </span>
+            <button
+              type="button"
+              className="workspace-payment-banner-cta"
+              onClick={() => navigate('/student-bootcamps/payments')}
+            >
+              Pay Now
+            </button>
+            <button
+              type="button"
+              className="workspace-payment-banner-close"
+              onClick={dismissPaymentBanner}
+              aria-label="Dismiss"
+            >
+              <LuX size={14} />
+            </button>
+          </div>
+        )}
         <Outlet />
       </main>
 

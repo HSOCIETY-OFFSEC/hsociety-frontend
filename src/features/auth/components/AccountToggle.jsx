@@ -5,7 +5,7 @@ const AccountToggle = ({ value, onChange, disabled = false }) => {
   const copy = AUTH_FORM_CONTENT.register;
 
   return (
-    <div className="auth-toggle" role="group" aria-label={copy.accountType.label}>
+    <div className="ap-toggle" role="group" aria-label={copy.accountType.label}>
       <button
         type="button"
         className={value === 'student' ? 'active' : ''}

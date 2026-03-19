@@ -41,8 +41,10 @@
 
 .trust-logo img {
   display: block;
-  height: clamp(48px, 6vw, 68px);
+  height: 40px;
   width: auto;
+  max-width: 140px;
+  object-fit: contain;
 }
 
 .trust-quotes {

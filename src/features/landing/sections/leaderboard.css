@@ -76,13 +76,15 @@
 
 .leaderboard-link {
   margin-top: 1rem;
+  display: flex;
   margin-left: auto;
-  display: block;
+  width: fit-content;
   background: none;
   border: none;
   color: var(--text-primary);
   font-weight: 600;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 900px) {
@@ -100,4 +102,49 @@
   .leaderboard-link {
     transition: none;
   }
+}
+
+/* ==========================================================
+   SKELETON LOADER
+   ========================================================== */
+
+@keyframes lb-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.lb-skel {
+  display: inline-block;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    color-mix(in srgb, var(--border-color) 60%, transparent) 50%,
+    var(--border-color) 75%
+  );
+  background-size: 800px 100%;
+  animation: lb-shimmer 1.4s infinite linear;
+}
+
+.lb-skel--rank   { width: 32px; height: 14px; }
+.lb-skel--avatar { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+.lb-skel--name   { width: 90px; height: 12px; }
+.lb-skel--handle { width: 60px; height: 10px; }
+.lb-skel--score  { width: 70px; height: 12px; }
+.lb-skel--badge  { width: 55px; height: 12px; }
+
+.lb-skel-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lb-skel-user-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-skel { animation: none; }
 }

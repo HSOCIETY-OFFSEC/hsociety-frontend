@@ -55,6 +55,11 @@
   gap: 0.4rem;
 }
 
+.pathway-card ul li {
+  padding-left: 0.1rem;
+  font-size: 0.9rem;
+}
+
 .pathway-cta {
   margin-top: auto;
   border: 1px solid var(--border-color);
@@ -64,13 +69,29 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.pathway-cta:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--text-secondary);
 }
 
 .pathway-card.is-primary .pathway-cta {
   border-color: var(--primary-color);
 }
 
+.pathway-card.is-primary .pathway-cta:hover {
+  background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+}
+
 @media (max-width: 900px) {
+  .pathways-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
   .pathways-grid {
     grid-template-columns: 1fr;
   }

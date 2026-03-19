@@ -241,7 +241,7 @@ const CoursesSection = () => {
                           </div>
                         )}
                         <div className="cs-pane-meta-line cs-pane-meta-line--cmd">
-                          <span className="cs-pane-prompt-mini">$</span>
+                          <span className="cs-prompt-mini">$</span>
                           <button
                             className="cs-pane-open-cmd"
                             onClick={() => navigate(`/courses/hacker-protocol/modules/${active.moduleId}`)}

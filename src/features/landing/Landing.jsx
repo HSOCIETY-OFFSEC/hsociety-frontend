@@ -4,7 +4,6 @@ import landingContent from '../../data/static/landing.json';
 import methodologyContent from '../../data/static/methodology.json';
 import { HACKER_PROTOCOL_PHASES } from '../../data/bootcamps/hackerProtocolData';
 import { getLeaderboard } from '../leaderboard/leaderboard.service';
-import { LEADERBOARD_FALLBACK } from '../../data/leaderboard/leaderboardData';
 import {
   getCommunityProfiles,
   getLandingCacheSnapshot,
@@ -12,6 +11,7 @@ import {
   getLandingStats,
 } from './landing.service';
 
+import PromoPopup from './components/PromoPopup';
 import HeroSection from './sections/HeroSection';
 import StatsSection from './sections/StatsSection';
 import ServicesSection from './sections/ServicesSection';
@@ -51,6 +51,7 @@ const Landing = ({ scrollToId = null }) => {
   const [statsError, setStatsError] = useState('');
   const [profilesError, setProfilesError] = useState('');
   const [leaderboardEntries, setLeaderboardEntries] = useState([]);
+  const [leaderboardLoading, setLeaderboardLoading] = useState(true);
 
   const imageMap = {
     terminal: terminalWallpaper,
@@ -126,13 +127,12 @@ const Landing = ({ scrollToId = null }) => {
         if (!isMounted) return;
         if (response.success) {
           const live = response.data?.leaderboard || [];
-          setLeaderboardEntries(live.length ? live : LEADERBOARD_FALLBACK.slice(0, 5));
-          return;
+          setLeaderboardEntries(live);
         }
-        setLeaderboardEntries(LEADERBOARD_FALLBACK.slice(0, 5));
       } catch {
-        if (!isMounted) return;
-        setLeaderboardEntries(LEADERBOARD_FALLBACK.slice(0, 5));
+        // leave entries empty — section will hide itself
+      } finally {
+        if (isMounted) setLeaderboardLoading(false);
       }
     };
 
@@ -265,7 +265,7 @@ const Landing = ({ scrollToId = null }) => {
       <CoursesSection />
       <ModulesSection modules={moduleEmblems} />
       <PathwaysSection pathways={landingContent.pathways} />
-      <LeaderboardSection entries={leaderboardEntries.length ? leaderboardEntries : LEADERBOARD_FALLBACK.slice(0, 5)} />
+      <LeaderboardSection entries={leaderboardEntries} loading={leaderboardLoading} />
       <CommunityProfilesSection
         title={landingContent.communityProfiles?.title || 'Community wins in the open'}
         subtitle={
@@ -281,6 +281,7 @@ const Landing = ({ scrollToId = null }) => {
       <CtaSection content={landingContent.cta} />
       <FaqSection content={landingContent.faq} />
       <FooterSection />
+      <PromoPopup />
     </div>
   );
 };

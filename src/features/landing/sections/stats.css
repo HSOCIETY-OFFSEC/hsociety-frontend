@@ -23,6 +23,7 @@
   flex-direction: column;
   gap: 0.35rem;
   padding: 0 1.5rem;
+  text-align: left;
 }
 
 .stat-item:not(:last-child) {

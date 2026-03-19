@@ -33,7 +33,7 @@
 
   /* ── Borders ──
      Darker than before so card edges are crisp on the grey bg.  */
-  --border-color: #c8d0db;
+  --border-color:#000a07 ;
 
   /* ── Text ──
      Primary = near-black for maximum contrast.
@@ -105,7 +105,7 @@
   --card-bg:      #0d0d0d;
 
   /* ── Borders — visible but not glaring ── */
-  --border-color: #2a2a2a;
+  --border-color: #000a07;
 
   /* ── Text ── */
   --text-primary:   #f5f7fa;   /* near-white             */
@@ -186,8 +186,7 @@ body {
    * Font stack: GitHub system stack first, Sora as a named fallback
    * so the design stays consistent if Sora isn't loaded yet.
    */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
-               Helvetica, Arial, 'Sora', sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans", Helvetica, Arial, sans-serif;
   background-color: var(--bg-primary);
 
   /*

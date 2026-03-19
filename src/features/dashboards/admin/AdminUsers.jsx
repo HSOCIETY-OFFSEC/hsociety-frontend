@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FiCheckSquare, FiEdit2, FiLink2, FiSave, FiSlash, FiUserX, FiUsers } from 'react-icons/fi';
-import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import { getUsers, updateUser, muteUser, sendBootcampRoomLink } from './admin.service';
@@ -35,7 +34,7 @@ const AdminUsers = () => {
     meetUrl: ''
   }));
 
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
     setError('');
     const response = await getUsers();
@@ -45,11 +44,9 @@ const AdminUsers = () => {
       setError(getPublicErrorMessage({ action: 'load', response }));
     }
     setLoading(false);
-  };
-
-  useEffect(() => {
-    loadUsers();
   }, []);
+
+  useEffect(() => { loadUsers(); }, [loadUsers]);
 
   const startEdit = (user) => {
     setEditingId(user.id);
@@ -86,10 +83,7 @@ const AdminUsers = () => {
   const updateDraft = (userId, field, value) => {
     setDrafts((prev) => ({
       ...prev,
-      [userId]: {
-        ...prev[userId],
-        [field]: value
-      }
+      [userId]: { ...prev[userId], [field]: value }
     }));
   };
 
@@ -106,69 +100,42 @@ const AdminUsers = () => {
   const toggleSelect = (userId) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(userId)) {
-        next.delete(userId);
-      } else {
-        next.add(userId);
-      }
+      if (next.has(userId)) next.delete(userId);
+      else next.add(userId);
       return next;
     });
   };
 
-  const selectAllStudents = () => {
-    setSelectedIds(new Set(users.filter((user) => user.role === 'student').map((user) => user.id)));
-  };
+  const selectAllStudents = () =>
+    setSelectedIds(new Set(users.filter((u) => u.role === 'student').map((u) => u.id)));
 
-  const selectPaidStudents = () => {
-    const paid = users
-      .filter((user) => user.role === 'student' && user.bootcampPaymentStatus === 'paid')
-      .map((user) => user.id);
-    setSelectedIds(new Set(paid));
-  };
+  const selectPaidStudents = () =>
+    setSelectedIds(new Set(
+      users.filter((u) => u.role === 'student' && u.bootcampPaymentStatus === 'paid').map((u) => u.id)
+    ));
 
-  const clearSelection = () => {
-    setSelectedIds(new Set());
-  };
+  const clearSelection = () => setSelectedIds(new Set());
 
   const bulkUpdateUsers = async (updates) => {
-    if (!selectedStudentIds.length) {
-      setBulkStatus('Select at least one student.');
-      return;
-    }
+    if (!selectedStudentIds.length) { setBulkStatus('Select at least one student.'); return; }
     setBulkLoading(true);
     setBulkStatus('');
-    const responses = await Promise.all(
-      selectedStudentIds.map((userId) => updateUser(userId, updates))
-    );
+    const responses = await Promise.all(selectedStudentIds.map((id) => updateUser(id, updates)));
     const successIds = responses
-      .map((response, index) => (response.success ? selectedStudentIds[index] : null))
+      .map((res, i) => (res.success ? selectedStudentIds[i] : null))
       .filter(Boolean);
     if (successIds.length) {
-      setUsers((prev) =>
-        prev.map((user) =>
-          successIds.includes(user.id)
-            ? { ...user, ...updates }
-            : user
-        )
-      );
+      setUsers((prev) => prev.map((u) => successIds.includes(u.id) ? { ...u, ...updates } : u));
     }
-    setBulkStatus(
-      successIds.length
-        ? `Updated ${successIds.length} student${successIds.length === 1 ? '' : 's'}.`
-        : 'No updates were applied.'
-    );
+    setBulkStatus(successIds.length
+      ? `Updated ${successIds.length} student${successIds.length === 1 ? '' : 's'}.`
+      : 'No updates were applied.');
     setBulkLoading(false);
   };
 
   const handleSendRoomLink = async () => {
-    if (!selectedStudentIds.length) {
-      setBulkStatus('Select at least one student.');
-      return;
-    }
-    if (!roomForm.meetUrl) {
-      setBulkStatus('Add a live class link before sending.');
-      return;
-    }
+    if (!selectedStudentIds.length) { setBulkStatus('Select at least one student.'); return; }
+    if (!roomForm.meetUrl) { setBulkStatus('Add a live class link before sending.'); return; }
     setBulkLoading(true);
     setBulkStatus('');
     const response = await sendBootcampRoomLink({
@@ -193,65 +160,100 @@ const AdminUsers = () => {
     setBulkLoading(false);
   };
 
-  const stats = useMemo(() => {
-    return users.reduce(
-      (acc, user) => {
-        acc.total += 1;
-        acc[user.role] = (acc[user.role] || 0) + 1;
-        return acc;
-      },
-      { total: 0, student: 0, pentester: 0, corporate: 0, admin: 0 }
-    );
-  }, [users]);
+  const stats = useMemo(() => users.reduce(
+    (acc, u) => { acc.total += 1; acc[u.role] = (acc[u.role] || 0) + 1; return acc; },
+    { total: 0, student: 0, pentester: 0, corporate: 0, admin: 0 }
+  ), [users]);
 
-  if (loading) {
-    return <PageLoader message="Loading user management..." durationMs={0} />;
-  }
+  if (loading) return <PageLoader message="Loading user management..." durationMs={0} />;
 
   return (
-    <div className="admin-dashboard">
-      <div className="dashboard-shell">
+    <div className="ad-table-page">
+      {/* Page header */}
+      <header className="ad-table-header">
+        <div className="ad-table-header-inner">
+          <div className="ad-header-left">
+            <div className="ad-header-icon-wrap">
+              <FiUsers size={20} className="ad-header-icon" />
+            </div>
+            <div>
+              <div className="ad-header-breadcrumb">
+                <span className="ad-breadcrumb-org">HSOCIETY</span>
+                <span className="ad-breadcrumb-sep">/</span>
+                <span className="ad-breadcrumb-page">users</span>
+                <span className="ad-header-visibility">Admin</span>
+              </div>
+              <p className="ad-header-desc">Manage roles, bootcamp access, and send live class links.</p>
+            </div>
+          </div>
+        </div>
+        <div className="ad-header-meta">
+          <span className="ad-meta-pill">
+            <FiUsers size={13} className="ad-meta-icon" />
+            <span className="ad-meta-label">Total</span>
+            <strong className="ad-meta-value">{stats.total}</strong>
+          </span>
+          <span className="ad-meta-pill">
+            <span className="ad-meta-label">Students</span>
+            <strong className="ad-meta-value">{stats.student}</strong>
+          </span>
+          <span className="ad-meta-pill">
+            <span className="ad-meta-label">Pentesters</span>
+            <strong className="ad-meta-value">{stats.pentester}</strong>
+          </span>
+          <span className="ad-meta-pill">
+            <span className="ad-meta-label">Corporate</span>
+            <strong className="ad-meta-value">{stats.corporate}</strong>
+          </span>
+        </div>
+      </header>
+
+      <div className="ad-table-body">
         <PublicError message={error} className="admin-alert" />
         {bulkStatus && <div className="admin-alert">{bulkStatus}</div>}
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-bulk-bar">
-            <div className="admin-bulk-left">
-              <strong>{selectedIds.size}</strong>
-              <span>selected</span>
-            </div>
-            <div className="admin-bulk-actions">
-              <Button size="small" variant="ghost" onClick={selectAllStudents}>
-                Select All Students
-              </Button>
-              <Button size="small" variant="ghost" onClick={selectPaidStudents}>
-                Select Paid Students
-              </Button>
-              <Button size="small" variant="ghost" onClick={clearSelection}>
-                Clear
-              </Button>
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={() => bulkUpdateUsers({ bootcampAccess: true, bootcampStatus: 'active' })}
-                disabled={bulkLoading}
-              >
-                <FiCheckSquare size={14} />
-                Grant Bootcamp Access
-              </Button>
-              <Button
-                size="small"
-                variant="ghost"
-                onClick={() => bulkUpdateUsers({ bootcampAccess: false, bootcampStatus: 'enrolled' })}
-                disabled={bulkLoading}
-              >
-                <FiSlash size={14} />
-                Revoke Access
-              </Button>
-            </div>
+        {/* Bulk action toolbar */}
+        <div className="ad-toolbar">
+          <div className="ad-toolbar-left">
+            <span className="ad-toolbar-count">
+              <strong>{selectedIds.size}</strong> selected
+            </span>
+            <button type="button" className="ad-btn ad-btn-ghost" onClick={selectAllStudents}>
+              All Students
+            </button>
+            <button type="button" className="ad-btn ad-btn-ghost" onClick={selectPaidStudents}>
+              Paid Students
+            </button>
+            <button type="button" className="ad-btn ad-btn-ghost" onClick={clearSelection}>
+              Clear
+            </button>
           </div>
+          <div className="ad-toolbar-right">
+            <button
+              type="button"
+              className="ad-btn ad-btn-secondary"
+              onClick={() => bulkUpdateUsers({ bootcampAccess: true, bootcampStatus: 'active' })}
+              disabled={bulkLoading}
+            >
+              <FiCheckSquare size={14} /> Grant Access
+            </button>
+            <button
+              type="button"
+              className="ad-btn ad-btn-ghost"
+              onClick={() => bulkUpdateUsers({ bootcampAccess: false, bootcampStatus: 'enrolled' })}
+              disabled={bulkLoading}
+            >
+              <FiSlash size={14} /> Revoke Access
+            </button>
+          </div>
+        </div>
 
-          <div className="admin-bulk-room">
+        {/* Live class link sender */}
+        <details className="ad-collapsible">
+          <summary className="ad-collapsible-trigger">
+            <FiLink2 size={14} /> Send Live Class Link to Selected Students
+          </summary>
+          <div className="ad-collapsible-body">
             <div className="admin-bulk-room-form">
               <label>
                 Module
@@ -260,7 +262,7 @@ const AdminUsers = () => {
                   value={roomForm.moduleId}
                   onChange={(e) => {
                     const nextModuleId = Number(e.target.value);
-                    const nextModule = HACKER_PROTOCOL_PHASES.find((phase) => phase.moduleId === nextModuleId);
+                    const nextModule = HACKER_PROTOCOL_PHASES.find((p) => p.moduleId === nextModuleId);
                     setRoomForm((prev) => ({
                       ...prev,
                       moduleId: nextModuleId,
@@ -282,168 +284,124 @@ const AdminUsers = () => {
                   value={roomForm.roomId}
                   onChange={(e) => setRoomForm((prev) => ({ ...prev, roomId: Number(e.target.value) }))}
                 >
-                  {(HACKER_PROTOCOL_PHASES.find((phase) => phase.moduleId === roomForm.moduleId)?.rooms || []).map(
-                    (room) => (
-                      <option key={room.roomId} value={room.roomId}>
-                        Room {room.roomId}: {room.title}
-                      </option>
-                    )
-                  )}
+                  {(HACKER_PROTOCOL_PHASES.find((p) => p.moduleId === roomForm.moduleId)?.rooms || []).map((room) => (
+                    <option key={room.roomId} value={room.roomId}>
+                      Room {room.roomId}: {room.title}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label>
                 Class Title
-                <input
-                  className="admin-input"
-                  value={roomForm.title}
-                  onChange={(e) => setRoomForm((prev) => ({ ...prev, title: e.target.value }))}
-                />
+                <input className="admin-input" value={roomForm.title}
+                  onChange={(e) => setRoomForm((prev) => ({ ...prev, title: e.target.value }))} />
               </label>
               <label>
                 Instructor
-                <input
-                  className="admin-input"
-                  value={roomForm.instructor}
-                  onChange={(e) => setRoomForm((prev) => ({ ...prev, instructor: e.target.value }))}
-                />
+                <input className="admin-input" value={roomForm.instructor}
+                  onChange={(e) => setRoomForm((prev) => ({ ...prev, instructor: e.target.value }))} />
               </label>
               <label>
                 Time
-                <input
-                  className="admin-input"
-                  value={roomForm.time}
-                  onChange={(e) => setRoomForm((prev) => ({ ...prev, time: e.target.value }))}
-                />
+                <input className="admin-input" value={roomForm.time}
+                  onChange={(e) => setRoomForm((prev) => ({ ...prev, time: e.target.value }))} />
               </label>
               <label>
                 Live Class Link
-                <input
-                  className="admin-input"
-                  value={roomForm.meetUrl}
-                  onChange={(e) => setRoomForm((prev) => ({ ...prev, meetUrl: e.target.value }))}
-                />
+                <input className="admin-input" value={roomForm.meetUrl}
+                  onChange={(e) => setRoomForm((prev) => ({ ...prev, meetUrl: e.target.value }))} />
               </label>
             </div>
-            <Button
-              size="small"
-              variant="primary"
+            <button
+              type="button"
+              className="ad-btn ad-btn-primary"
               onClick={handleSendRoomLink}
               disabled={bulkLoading}
             >
-              <FiLink2 size={14} />
-              Send Room Link to Selected
-            </Button>
+              <FiLink2 size={14} /> Send to Selected
+            </button>
+          </div>
+        </details>
+
+        {/* Users table */}
+        <div className="ad-list">
+          <div className="ad-list-header ad-list-row-users">
+            <span />
+            <span>Name</span>
+            <span>Email</span>
+            <span>Org</span>
+            <span>Role</span>
+            <span>Bootcamp</span>
+            <span>Payment</span>
+            <span>Access</span>
+            <span>Mute</span>
+            <span>Actions</span>
           </div>
 
-          <div className="admin-table">
-            <div className="admin-row admin-row-header admin-row-users">
-              <span>Select</span>
-              <span>Name</span>
-              <span>Email</span>
-              <span>Organization</span>
-              <span>Role</span>
-              <span>Bootcamp</span>
-              <span>Payment</span>
-              <span>Access</span>
-              <span>Mute</span>
-              <span>Actions</span>
-            </div>
-
-            {users.map((user) => {
-              const isEditing = editingId === user.id;
-              const draft = drafts[user.id] || {};
-              return (
-                <div key={user.id} className="admin-row admin-row-users">
-                  <div className="admin-select-cell">
-                    <input
-                      type="checkbox"
-                      checked={selectedIds.has(user.id)}
-                      onChange={() => toggleSelect(user.id)}
-                    />
-                  </div>
-                  <div>
-                    {isEditing ? (
-                      <input
-                        className="admin-input"
-                        value={draft.name || ''}
-                        onChange={(e) => updateDraft(user.id, 'name', e.target.value)}
-                      />
-                    ) : (
-                      <span>{user.name || '—'}</span>
-                    )}
-                  </div>
-                  <div>
-                    {isEditing ? (
-                      <input
-                        className="admin-input"
-                        value={draft.email || ''}
-                        onChange={(e) => updateDraft(user.id, 'email', e.target.value)}
-                      />
-                    ) : (
-                      <span>{user.email}</span>
-                    )}
-                  </div>
-                  <div>
-                    {isEditing ? (
-                      <input
-                        className="admin-input"
-                        value={draft.organization || ''}
-                        onChange={(e) => updateDraft(user.id, 'organization', e.target.value)}
-                      />
-                    ) : (
-                      <span>{user.organization || '—'}</span>
-                    )}
-                  </div>
+          {users.map((user) => {
+            const isEditing = editingId === user.id;
+            const draft = drafts[user.id] || {};
+            const isMuted = user.mutedUntil && new Date(user.mutedUntil) > new Date();
+            return (
+              <div key={user.id} className={`ad-list-row ad-list-row-users ${isEditing ? 'editing' : ''}`}>
+                <div>
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.has(user.id)}
+                    onChange={() => toggleSelect(user.id)}
+                  />
+                </div>
                 <div>
                   {isEditing ? (
-                    <select
-                      className="admin-select"
-                        value={draft.role || 'student'}
-                        onChange={(e) => updateDraft(user.id, 'role', e.target.value)}
-                      >
-                        {ROLE_OPTIONS.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <span className={`admin-role role-${user.role || 'student'}`}>
-                        {user.role || 'student'}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    {isEditing ? (
-                      <select
-                        className="admin-select"
-                        value={draft.bootcampStatus || 'not_enrolled'}
-                        onChange={(e) => updateDraft(user.id, 'bootcampStatus', e.target.value)}
-                      >
-                        {['not_enrolled', 'enrolled', 'active', 'completed'].map((status) => (
-                          <option key={status} value={status}>
-                            {status.replace('_', ' ')}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                    <span className="admin-role">
-                      {(user.bootcampStatus || 'not_enrolled').replace('_', ' ')}
-                    </span>
+                    <input className="admin-input" value={draft.name || ''}
+                      onChange={(e) => updateDraft(user.id, 'name', e.target.value)} />
+                  ) : (
+                    <span className="ad-list-name">{user.name || '—'}</span>
                   )}
                 </div>
                 <div>
                   {isEditing ? (
-                    <select
-                      className="admin-select"
-                      value={draft.bootcampPaymentStatus || 'unpaid'}
-                      onChange={(e) => updateDraft(user.id, 'bootcampPaymentStatus', e.target.value)}
-                    >
-                      {['unpaid', 'pending', 'paid'].map((status) => (
-                        <option key={status} value={status}>
-                          {status}
-                        </option>
+                    <input className="admin-input" value={draft.email || ''}
+                      onChange={(e) => updateDraft(user.id, 'email', e.target.value)} />
+                  ) : (
+                    <span className="ad-list-email">{user.email}</span>
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <input className="admin-input" value={draft.organization || ''}
+                      onChange={(e) => updateDraft(user.id, 'organization', e.target.value)} />
+                  ) : (
+                    <span>{user.organization || '—'}</span>
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <select className="admin-select" value={draft.role || 'student'}
+                      onChange={(e) => updateDraft(user.id, 'role', e.target.value)}>
+                      {ROLE_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  ) : (
+                    <span className={`admin-role role-${user.role || 'student'}`}>{user.role || 'student'}</span>
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <select className="admin-select" value={draft.bootcampStatus || 'not_enrolled'}
+                      onChange={(e) => updateDraft(user.id, 'bootcampStatus', e.target.value)}>
+                      {['not_enrolled', 'enrolled', 'active', 'completed'].map((s) => (
+                        <option key={s} value={s}>{s.replace('_', ' ')}</option>
                       ))}
+                    </select>
+                  ) : (
+                    <span className="admin-role">{(user.bootcampStatus || 'not_enrolled').replace('_', ' ')}</span>
+                  )}
+                </div>
+                <div>
+                  {isEditing ? (
+                    <select className="admin-select" value={draft.bootcampPaymentStatus || 'unpaid'}
+                      onChange={(e) => updateDraft(user.id, 'bootcampPaymentStatus', e.target.value)}>
+                      {['unpaid', 'pending', 'paid'].map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
                   ) : (
                     <span className="admin-role">{user.bootcampPaymentStatus || 'unpaid'}</span>
@@ -451,11 +409,9 @@ const AdminUsers = () => {
                 </div>
                 <div>
                   {isEditing ? (
-                    <select
-                      className="admin-select"
+                    <select className="admin-select"
                       value={draft.bootcampAccess ? 'granted' : 'blocked'}
-                      onChange={(e) => updateDraft(user.id, 'bootcampAccess', e.target.value === 'granted')}
-                    >
+                      onChange={(e) => updateDraft(user.id, 'bootcampAccess', e.target.value === 'granted')}>
                       <option value="granted">granted</option>
                       <option value="blocked">blocked</option>
                     </select>
@@ -464,59 +420,46 @@ const AdminUsers = () => {
                   )}
                 </div>
                 <div>
-                  <span className="admin-role">
-                    {user.mutedUntil && new Date(user.mutedUntil) > new Date()
-                      ? 'Muted'
-                      : 'Active'}
-                  </span>
+                  <span className="admin-role">{isMuted ? 'Muted' : 'Active'}</span>
                 </div>
                 <div className="admin-actions">
                   {!isEditing && (
                     <Button size="small" variant="ghost" onClick={() => startEdit(user)}>
-                      <FiEdit2 size={14} />
-                      Edit
+                      <FiEdit2 size={14} /> Edit
                     </Button>
                   )}
                   <Button
                     size="small"
                     variant="ghost"
                     onClick={async () => {
-                      const minutes = user.mutedUntil && new Date(user.mutedUntil) > new Date() ? 0 : 60;
+                      const minutes = isMuted ? 0 : 60;
                       const response = await muteUser(user.id, minutes);
                       if (response.success) {
-                        setUsers((prev) =>
-                          prev.map((u) =>
-                            u.id === user.id ? { ...u, mutedUntil: response.data.mutedUntil } : u
-                          )
-                        );
+                        setUsers((prev) => prev.map((u) =>
+                          u.id === user.id ? { ...u, mutedUntil: response.data.mutedUntil } : u
+                        ));
                       }
                     }}
                   >
-                    <FiUserX size={14} />
-                    {user.mutedUntil && new Date(user.mutedUntil) > new Date() ? 'Unmute' : 'Mute 1h'}
+                    <FiUserX size={14} /> {isMuted ? 'Unmute' : 'Mute 1h'}
                   </Button>
                   {isEditing && (
                     <>
-                        <Button
-                          size="small"
-                          variant="primary"
-                          onClick={() => saveUser(user.id)}
-                          disabled={savingId === user.id}
-                        >
-                          <FiSave size={14} />
-                          {savingId === user.id ? 'Saving...' : 'Save'}
-                        </Button>
-                        <Button size="small" variant="ghost" onClick={cancelEdit}>
-                          Cancel
-                        </Button>
-                      </>
-                    )}
-                  </div>
+                      <Button size="small" variant="primary" onClick={() => saveUser(user.id)} disabled={savingId === user.id}>
+                        <FiSave size={14} /> {savingId === user.id ? 'Saving...' : 'Save'}
+                      </Button>
+                      <Button size="small" variant="ghost" onClick={cancelEdit}>Cancel</Button>
+                    </>
+                  )}
                 </div>
-              );
-            })}
-          </div>
-        </Card>
+              </div>
+            );
+          })}
+
+          {users.length === 0 && (
+            <div className="ad-list-empty">No users found.</div>
+          )}
+        </div>
       </div>
     </div>
   );

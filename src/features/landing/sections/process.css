@@ -41,6 +41,11 @@
   padding-left: calc(50% + 2rem);
 }
 
+/* Left-side cards: align text to the right so it reads toward the center line */
+.process-step.is-left .process-card {
+  text-align: right;
+}
+
 .process-node {
   position: absolute;
   left: 50%;
@@ -94,6 +99,11 @@
   .process-step.is-right {
     padding-right: 0;
     padding-left: 2rem;
+  }
+
+  /* Reset right-alignment on mobile — all cards are left-aligned */
+  .process-step.is-left .process-card {
+    text-align: left;
   }
 
   .process-node {

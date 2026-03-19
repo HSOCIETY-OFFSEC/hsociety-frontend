@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import ScrollToTopButton from '../ui/ScrollToTopButton';
 import useScrollReveal from '../../hooks/useScrollReveal';
+import AnnouncementBanner from '../../../features/landing/components/AnnouncementBanner';
 import './LandingLayout.css';
 
 /**
@@ -26,6 +27,7 @@ const LandingLayout = () => {
 
   return (
     <div className="landing-layout">
+      <AnnouncementBanner />
       <Navbar sticky={true} logoSrc="/logo-nav-banner.png" transparentOnTop={true} />
       <main className="landing-main">
         <Outlet />
