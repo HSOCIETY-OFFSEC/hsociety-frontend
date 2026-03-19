@@ -416,7 +416,12 @@ const AdminUsers = () => {
                       <option value="blocked">blocked</option>
                     </select>
                   ) : (
-                    <span className="admin-role">{user.bootcampAccess ? 'granted' : 'blocked'}</span>
+                    <div className="admin-inline-meta">
+                      <span className="admin-role">{user.bootcampAccess ? 'granted' : 'blocked'}</span>
+                      {user.bootcampAccess === false && (
+                        <span className="admin-flag admin-flag-warning">Revoked</span>
+                      )}
+                    </div>
                   )}
                 </div>
                 <div>

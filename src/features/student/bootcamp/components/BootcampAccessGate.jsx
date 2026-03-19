@@ -2,9 +2,9 @@ import React from 'react';
 import useBootcampAccess from '../../hooks/useBootcampAccess';
 
 const BootcampAccessGate = ({ children }) => {
-  const { isRegistered, isPaid } = useBootcampAccess();
+  const { hasAccess } = useBootcampAccess();
 
-  if (!isRegistered || !isPaid) return null;
+  if (!hasAccess) return null;
 
   return children;
 };

@@ -123,6 +123,17 @@ table.admin-table tbody tr:hover {
   display: block;
 }
 
+.admin-inline-meta span {
+  display: inline-flex;
+}
+
+.admin-inline-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
 .admin-select-cell {
   display: flex;
   align-items: center;

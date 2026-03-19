@@ -52,6 +52,7 @@ const WorkspaceLayout = () => {
     markRead,
     markAllRead,
   } = useNotifications();
+  const role = user?.role === 'client' ? 'corporate' : user?.role;
 
   // Payment reminder banner — shown for unpaid students
   const PAYMENT_BANNER_KEY = 'hsociety.payment-banner.dismissed';
@@ -77,7 +78,6 @@ const WorkspaceLayout = () => {
   const isLessonWorkspace = pathname.startsWith('/student-bootcamps/modules/');
   const isCommunity = pathname.startsWith('/community');
   const isDashboardTheme = !isCommunity && !isLessonWorkspace;
-  const role = user?.role === 'client' ? 'corporate' : user?.role;
   const { cpTotal, streakDays } = useUserStats(user?.id, role);
 
   const communityLinks = useMemo(() => {

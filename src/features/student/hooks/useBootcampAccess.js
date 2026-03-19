@@ -9,6 +9,8 @@ export const useBootcampAccess = () => {
   return useMemo(() => {
     const bootcampStatus = normalizeStatus(user?.bootcampStatus || user?.bootcamp?.status);
     const paymentStatus = normalizeStatus(user?.bootcampPaymentStatus || user?.paymentStatus);
+    const accessOverride = user?.bootcampAccess;
+    const accessRevoked = accessOverride === false;
 
     const isRegistered = Boolean(
       user?.bootcampRegistered ||
@@ -19,12 +21,12 @@ export const useBootcampAccess = () => {
 
     const isPaid = Boolean(
       user?.bootcampPaid ||
-      user?.bootcampAccess ||
+      accessOverride === true ||
       paymentStatus === 'paid'
     );
 
     const isAccessGranted = Boolean(
-      user?.bootcampAccess ||
+      accessOverride === true ||
       bootcampStatus === 'active' ||
       bootcampStatus === 'completed'
     );
@@ -33,7 +35,7 @@ export const useBootcampAccess = () => {
       isRegistered,
       isPaid,
       isAccessGranted,
-      hasAccess: isAccessGranted || (isRegistered && isPaid)
+      hasAccess: !accessRevoked && (isAccessGranted || (isRegistered && isPaid))
     };
   }, [
     user?.bootcampStatus,
