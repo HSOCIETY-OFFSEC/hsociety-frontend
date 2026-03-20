@@ -199,7 +199,7 @@
 .cs-menubar-item {
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.58rem;
-  color: rgba(255,255,255,0.45);
+  color: var(--text-tertiary);
   letter-spacing: 0.04em;
   cursor: default;
   user-select: none;
@@ -208,7 +208,7 @@
 .cs-menubar-time {
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.58rem;
-  color: rgba(255,255,255,0.45);
+  color: var(--text-tertiary);
   letter-spacing: 0.04em;
 }
 
@@ -223,11 +223,11 @@
   margin: 8px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
   background: var(--bg-tertiary);
   box-shadow:
     0 2px 20px rgba(0,0,0,0.6),
-    0 0 0 1px rgba(255,255,255,0.03) inset;
+    0 0 0 1px color-mix(in srgb, var(--border-color) 30%, transparent) inset;
 }
 
 /* ── Title bar ── */
@@ -238,7 +238,7 @@
   padding: 0 12px;
   height: 36px;
   background: var(--bg-tertiary);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
   flex-shrink: 0;
 }
 
@@ -271,7 +271,7 @@
   gap: 0.4rem;
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.65rem;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-tertiary);
   letter-spacing: 0.04em;
   margin: 0 auto;
 }
@@ -294,7 +294,7 @@
    ═══════════════════════════════════════════════ */
 
 .cs-sidebar {
-  border-right: 1px solid rgba(255,255,255,0.06);
+  border-right: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
   background: var(--bg-tertiary);
   display: flex;
   flex-direction: column;
@@ -311,8 +311,8 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-tertiary);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
   flex-shrink: 0;
 }
 
@@ -320,11 +320,11 @@
   flex: 1;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.08) transparent;
+  scrollbar-color: color-mix(in srgb, var(--border-color) 50%, transparent) transparent;
 }
 
 .cs-file-tree::-webkit-scrollbar { width: 3px; }
-.cs-file-tree::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
+.cs-file-tree::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--border-color) 60%, transparent); }
 
 /* File row */
 .cs-file-row {
@@ -344,7 +344,7 @@
 }
 
 .cs-file-row:hover {
-  background: rgba(255,255,255,0.04);
+  background: color-mix(in srgb, var(--bg-secondary) 70%, transparent);
 }
 
 .cs-file-row--active {
@@ -374,7 +374,7 @@
 
 .cs-file-chevron {
   flex-shrink: 0;
-  color: rgba(255,255,255,0.2);
+  color: var(--text-tertiary);
   transition: transform 0.15s ease, color 0.15s ease;
 }
 
@@ -389,8 +389,8 @@
   height: 18px;
   border-radius: var(--radius-xs);
   overflow: hidden;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: color-mix(in srgb, var(--bg-secondary) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -415,7 +415,7 @@
   flex: 1;
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.5);
+  color: var(--text-tertiary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -425,14 +425,14 @@
 }
 
 .cs-file-row--active .cs-file-name {
-  color: rgba(255,255,255,0.9);
+  color: var(--text-primary);
 }
 
 .cs-file-index {
   flex-shrink: 0;
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.58rem;
-  color: rgba(255,255,255,0.2);
+  color: var(--text-tertiary);
   transition: color 0.12s ease;
 }
 
@@ -453,7 +453,7 @@
   gap: 12px;
   transition: opacity 0.14s ease;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.06) transparent;
+  scrollbar-color: color-mix(in srgb, var(--border-color) 50%, transparent) transparent;
 }
 
 .cs-main-pane--fading { opacity: 0; }
@@ -470,12 +470,12 @@
 }
 
 .cs-prompt-user   { color: var(--primary-color); font-weight: 700; }
-.cs-prompt-at     { color: rgba(255,255,255,0.3); }
+.cs-prompt-at     { color: var(--text-tertiary); }
 .cs-prompt-host   { color: var(--primary-color); font-weight: 700; }
-.cs-prompt-sep    { color: rgba(255,255,255,0.3); }
+.cs-prompt-sep    { color: var(--text-tertiary); }
 .cs-prompt-path   { color: var(--primary-color); }
-.cs-prompt-dollar { color: rgba(255,255,255,0.4); margin-left: 4px; }
-.cs-prompt-cmd    { color: rgba(255,255,255,0.65); }
+.cs-prompt-dollar { color: var(--text-tertiary); margin-left: 4px; }
+.cs-prompt-cmd    { color: var(--text-secondary); }
 
 /* Content block */
 .cs-pane-content {
@@ -493,8 +493,8 @@
   width: clamp(72px, 10vw, 110px);
   height: clamp(72px, 10vw, 110px);
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02);
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 50%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -504,11 +504,7 @@
 .cs-pane-emblem-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at 50% 50%,
-    color-mix(in srgb, var(--primary-color) 20%, transparent),
-    transparent 65%
-  );
+  background: none;
   pointer-events: none;
 }
 
@@ -540,12 +536,12 @@
 
 .cs-pane-key {
   flex-shrink: 0;
-  color: rgba(255,255,255,0.25);
+  color: var(--text-tertiary);
   min-width: 60px;
 }
 
 .cs-pane-val {
-  color: rgba(255,255,255,0.75);
+  color: var(--text-secondary);
   word-break: break-word;
 }
 
@@ -556,7 +552,7 @@
 }
 
 .cs-pane-val--muted {
-  color: rgba(255,255,255,0.45);
+  color: var(--text-tertiary);
   font-size: 0.68rem;
   line-height: 1.5;
 }
@@ -573,7 +569,7 @@
 .cs-prompt-mini {
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.3);
+  color: var(--text-tertiary);
   flex-shrink: 0;
 }
 
@@ -633,13 +629,7 @@
 .cs-scanlines {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.08) 2px,
-    rgba(0,0,0,0.08) 4px
-  );
+  background: none;
   pointer-events: none;
   z-index: 10;
   border-radius: 12px 12px 0 0;
@@ -660,12 +650,7 @@
 .cs-hinge {
   width: 100%;
   height: 6px;
-  background: linear-gradient(
-    180deg,
-    var(--bg-tertiary) 0%,
-    var(--bg-tertiary) 40%,
-    var(--bg-tertiary) 100%
-  );
+  background: var(--bg-tertiary);
   border-left: 2px solid var(--border-color);
   border-right: 2px solid var(--border-color);
 }
@@ -673,12 +658,7 @@
 .cs-base-surface {
   width: 110%;
   height: 18px;
-  background: linear-gradient(
-    180deg,
-    var(--bg-tertiary) 0%,
-    var(--bg-secondary) 60%,
-    var(--bg-tertiary) 100%
-  );
+  background: var(--bg-tertiary);
   border-radius: 0 0 10px 10px;
   border: 2px solid var(--border-color);
   border-top: none;
@@ -688,15 +668,15 @@
   padding-bottom: 3px;
   box-shadow:
     0 8px 40px rgba(0,0,0,0.7),
-    0 2px 0 0 rgba(255,255,255,0.04) inset;
+    0 2px 0 0 color-mix(in srgb, var(--border-color) 40%, transparent) inset;
 }
 
 .cs-base-notch {
   width: 80px;
   height: 4px;
-  background: rgba(0,0,0,0.5);
+  background: var(--border-color);
   border-radius: 2px;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
 }
 
 /* ═══════════════════════════════════════════════
@@ -816,7 +796,7 @@
 
   .cs-sidebar {
     border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
     max-height: 140px;
   }
 
@@ -833,7 +813,7 @@
     align-items: center;
     padding: 8px 10px;
     border-bottom: none;
-    border-right: 1px solid rgba(255,255,255,0.04);
+    border-right: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
     min-width: 72px;
     gap: 4px;
     text-align: center;

@@ -21,7 +21,7 @@
   bottom: 0;
   left: 50%;
   width: 1px;
-  background: linear-gradient(to bottom, transparent, var(--border-color), transparent);
+  background: var(--border-color);
   transform: translateX(-50%);
 }
 
@@ -79,6 +79,12 @@
   align-items: center;
   gap: 0.5rem;
   text-transform: uppercase;
+}
+
+.process-index svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.8;
 }
 
 .process-card h3 {

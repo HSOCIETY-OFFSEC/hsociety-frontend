@@ -14,17 +14,7 @@
   text-align: center;
   padding: 3rem 1.5rem;
   border: 1px solid var(--border-color);
-  background:
-    radial-gradient(
-      circle at 20% 20%,
-      color-mix(in srgb, var(--primary-color) 10%, transparent),
-      transparent 45%
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--primary-color) 6%, var(--bg-secondary)),
-      var(--bg-secondary)
-    );
+  background: var(--bg-secondary);
   border-radius: 18px;
   box-shadow: var(--shadow-md);
 }
@@ -32,11 +22,9 @@
 .cta-grid {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(var(--border-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
-  background-size: 64px 64px;
-  opacity: 0.12;
+  background-image: none;
+  background-size: auto;
+  opacity: 0;
   pointer-events: none;
 }
 

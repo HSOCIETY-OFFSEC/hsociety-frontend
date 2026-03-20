@@ -43,6 +43,12 @@
   box-shadow: none;
 }
 
+.cycle-circle svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.8;
+}
+
 .cycle-node h3 {
   margin: 0 0 0.4rem;
   color: var(--text-primary);

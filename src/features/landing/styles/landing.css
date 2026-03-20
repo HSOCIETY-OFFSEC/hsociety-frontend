@@ -21,10 +21,16 @@
   min-height: 100vh;
   background: var(--bg-primary);
   --landing-brand-image: url('../../../assets/branding/brand-images/brand-image-white.webp');
-  background-image: var(--landing-brand-image);
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: min(1200px, 85vw) auto;
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-primary) 92%, transparent),
+      var(--bg-primary)
+    ),
+    var(--landing-brand-image);
+  background-repeat: no-repeat, no-repeat;
+  background-position: center top, center top;
+  background-size: cover, min(1200px, 85vw) auto;
   overflow-x: hidden;
   overflow-y: visible;
   position: relative;
@@ -38,37 +44,16 @@
   position: relative;
 }
 
+[data-theme="black"] .landing-page section {
+  background: var(--bg-primary);
+}
+
 .landing-page section:not(.hero-section)::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--landing-brand-image);
-  background-repeat: no-repeat;
-  background-position: right 10% top 20%;
-  background-size: clamp(220px, 28vw, 360px) auto;
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 .landing-page section:not(.hero-section)::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      circle at 20% 10%,
-      color-mix(in srgb, var(--primary-color) 10%, transparent),
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 30%,
-      color-mix(in srgb, var(--primary-color) 6%, transparent),
-      transparent 55%
-    );
-  opacity: 0.8;
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 .landing-page section:not(.hero-section) > * {
@@ -252,11 +237,7 @@
   height: 2px;
   width: 84px;
   margin-top: 1.15rem;
-  background: linear-gradient(
-    90deg,
-    var(--primary-color),
-    color-mix(in srgb, var(--primary-color) 35%, transparent)
-  );
+  background: var(--primary-color);
   border-radius: 999px;
 }
 
@@ -284,6 +265,17 @@
   height: 26px;
   border-radius: var(--radius-xs);
   box-shadow: none;
+}
+
+.landing-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.8;
+}
+
+.landing-icon--sm svg {
+  width: 14px;
+  height: 14px;
 }
 
 /* ── Keyframes ── */

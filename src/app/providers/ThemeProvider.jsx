@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 /**
  * Theme Provider
@@ -18,12 +18,23 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
-  const getPreferredTheme = () => {
+  const getPreferredTheme = useCallback(() => {
     if (typeof window === 'undefined') return 'black';
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'black';
+  }, []);
+
+  const getStoredMode = () => {
+    if (typeof window === 'undefined') return 'system';
+    return window.localStorage.getItem('themeMode') || 'system';
   };
 
-  const [theme, setTheme] = useState(getPreferredTheme);
+  const resolveTheme = useCallback(
+    (mode) => (mode === 'system' ? getPreferredTheme() : mode),
+    [getPreferredTheme]
+  );
+
+  const [themeMode, setThemeMode] = useState(getStoredMode);
+  const [theme, setTheme] = useState(() => resolveTheme(getStoredMode()));
 
   // Apply theme to document root on mount and when theme changes
   useEffect(() => {
@@ -49,14 +60,25 @@ export const ThemeProvider = ({ children }) => {
     updateFavicon();
   }, [theme]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('themeMode', themeMode);
+    }
+    setTheme(resolveTheme(themeMode));
+  }, [themeMode, resolveTheme]);
+
   // Sync with browser preference changes
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
     const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-    const handleChange = () => setTheme(getPreferredTheme());
+    const handleChange = () => {
+      if (themeMode === 'system') {
+        setTheme(getPreferredTheme());
+      }
+    };
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  }, [getPreferredTheme, themeMode]);
 
   // Keep favicon assets on a single canonical path.
   const updateFavicon = () => {
@@ -74,11 +96,26 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
+  const toggleTheme = () => {
+    setThemeMode((prev) => {
+      const next = prev === 'light' ? 'black' : 'light';
+      return next;
+    });
+  };
+
+  const setSystemTheme = () => {
+    setThemeMode('system');
+  };
+
   const value = {
     theme,
+    themeMode,
+    toggleTheme,
+    setSystemTheme,
     isDark: theme === 'black',
     isLight: theme === 'light',
-    isBlack: theme === 'black'
+    isBlack: theme === 'black',
+    isSystem: themeMode === 'system',
   };
 
   return (

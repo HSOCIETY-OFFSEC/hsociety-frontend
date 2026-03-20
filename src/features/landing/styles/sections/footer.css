@@ -8,11 +8,7 @@
   padding: 3rem 0 2rem;
   font-size: 0.82rem;
   color: var(--text-secondary);
-  background-image: radial-gradient(
-    circle at 10% 0%,
-    color-mix(in srgb, var(--primary-color) 8%, transparent),
-    transparent 40%
-  );
+  background-image: none;
 }
 
 .footer-grid {
@@ -25,6 +21,11 @@
 .footer-brand p {
   margin: 0.75rem 0 1rem;
   color: var(--text-secondary);
+}
+
+.footer-brand .logo-image {
+  height: 48px !important;
+  width: auto !important;
 }
 
 .footer-socials {
@@ -44,6 +45,12 @@
   justify-content: center;
   cursor: pointer;
   transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.footer-social svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.8;
 }
 
 .footer-social:hover {

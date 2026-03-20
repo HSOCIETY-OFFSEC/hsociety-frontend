@@ -50,11 +50,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    130deg,
-    color-mix(in srgb, var(--bg-primary) 20%, transparent),
-    color-mix(in srgb, var(--bg-primary) 70%, transparent)
-  );
+  background: none;
   pointer-events: none;
 }
 
@@ -93,6 +89,9 @@
 
 .pathway-card ul li svg {
   color: var(--primary-color);
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.8;
 }
 
 .pathway-cta {

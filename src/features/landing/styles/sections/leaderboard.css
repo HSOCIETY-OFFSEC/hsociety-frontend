@@ -146,14 +146,8 @@
 .lb-skel {
   display: inline-block;
   border-radius: var(--radius-xs);
-  background: linear-gradient(
-    90deg,
-    var(--border-color) 25%,
-    color-mix(in srgb, var(--border-color) 60%, transparent) 50%,
-    var(--border-color) 75%
-  );
-  background-size: 800px 100%;
-  animation: lb-shimmer 1.4s infinite linear;
+  background: var(--border-color);
+  animation: none;
 }
 
 .lb-skel--rank   { width: 32px; height: 14px; }

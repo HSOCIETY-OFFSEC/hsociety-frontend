@@ -54,6 +54,12 @@
   align-items: center;
 }
 
+.gh-nav-logo .logo-image {
+  height: 40px !important;
+  width: auto !important;
+  display: block;
+}
+
 /* ═══════════════════════════════════════════════
    DESKTOP NAV LINKS
    ═══════════════════════════════════════════════ */
@@ -236,6 +242,7 @@
 .gh-nav-theme {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
 }
 
 /* Flat icon button (bell, etc.) — GitHub octicon-button */

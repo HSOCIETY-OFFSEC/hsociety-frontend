@@ -26,9 +26,11 @@ import {
 } from 'react-icons/lu';
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
+import { useTheme } from '../../../app/providers/ThemeProvider';
 import useAuthModal from '../../hooks/useAuthModal';
 import { getMobileLinks, getDesktopLinks } from '../../../config/navigation/navigation.config';
 import Logo from '../common/Logo';
+import ThemeToggle from '../common/ThemeToggle';
 import { resolveProfileAvatar } from '../../utils/display/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
@@ -49,6 +51,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
   const location  = useLocation();
   const { openAuthModal } = useAuthModal();
   const { user, isAuthenticated, logout } = useAuth();
+  const { themeMode, setSystemTheme } = useTheme();
 
   const [mobileMenuOpen,       setMobileMenuOpen]       = useState(false);
   const [userMenuOpen,         setUserMenuOpen]         = useState(false);
@@ -343,6 +346,18 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
         {/* ── Right cluster ────────────────────────── */}
         <div className="gh-nav-right">
+          <div className="gh-nav-theme">
+            <button
+              type="button"
+              className={`theme-toggle theme-toggle--system${themeMode === 'system' ? ' is-active' : ''}`}
+              onClick={setSystemTheme}
+              aria-label="Use system theme"
+              title="Use system theme"
+            >
+              <span className="theme-toggle-label">SYS</span>
+            </button>
+            <ThemeToggle />
+          </div>
 
           {/* CP + streak stat chips */}
           {showStats && (

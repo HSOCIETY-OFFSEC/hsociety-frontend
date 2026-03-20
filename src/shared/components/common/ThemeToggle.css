@@ -18,6 +18,23 @@
   transition: all 0.2s ease;
 }
 
+.theme-toggle.is-active,
+.theme-toggle--system.is-active {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: var(--bg-tertiary);
+}
+
+.theme-toggle--system {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+}
+
+.theme-toggle-label {
+  display: inline-block;
+}
+
 @media (max-width: 480px) {
   .theme-toggle {
     min-width: 44px;
