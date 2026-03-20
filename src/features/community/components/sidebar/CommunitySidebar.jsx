@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight, FiUsers, FiX } from 'react-icons/fi';
-import { getSidebarLinks } from '../../../../config/navigation.config';
+import { getSidebarLinks } from '../../../../config/navigation/navigation.config';
 import Logo from '../../../../shared/components/common/Logo';
-import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
-import '../../community.css';
+import { COMMUNITY_UI } from '../../../../data/static/community/communityUiData';
+import '../../styles/community.css';
 
 const CommunitySidebar = ({
   role,

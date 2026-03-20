@@ -1,16 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Loader from './Loader';
 import './ImageWithLoader.css';
 
 const ImageWithLoader = ({
   src,
   alt,
+  fallbackSrc = '',
   className = '',
+  imgClassName = '',
   loaderMessage = 'Loading image...',
+  onLoad,
+  onError,
   ...props
 }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+    setLoaded(false);
+    setError(false);
+  }, [src]);
+
+  const handleLoad = (event) => {
+    setLoaded(true);
+    if (onLoad) onLoad(event);
+  };
+
+  const handleError = (event) => {
+    if (fallbackSrc && currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc);
+      setLoaded(false);
+      setError(false);
+      return;
+    }
+    setError(true);
+    setLoaded(true);
+    if (onError) onError(event);
+  };
 
   return (
     <div className={`image-with-loader ${loaded ? 'is-loaded' : ''} ${error ? 'is-error' : ''} ${className}`}>
@@ -20,13 +48,11 @@ const ImageWithLoader = ({
         </div>
       )}
       <img
-        src={src}
+        src={currentSrc}
         alt={alt}
-        onLoad={() => setLoaded(true)}
-        onError={() => {
-          setError(true);
-          setLoaded(true);
-        }}
+        className={imgClassName}
+        onLoad={handleLoad}
+        onError={handleError}
         {...props}
       />
     </div>

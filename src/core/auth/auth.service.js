@@ -3,7 +3,7 @@
  * Location: src/core/auth/auth.service.js
  */
 
-import { API_ENDPOINTS } from '../../config/api.config';
+import { API_ENDPOINTS } from '../../config/api/api.config';
 import { apiClient } from '../../shared/services/api.client';
 import { validateEmail, validatePassword } from '../validation/input.validator';
 

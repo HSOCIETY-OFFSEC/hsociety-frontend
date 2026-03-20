@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FiImage, FiSend, FiSmile, FiX } from 'react-icons/fi';
-import { uploadCommunityImage } from '../../community.service';
-import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
+import { uploadCommunityImage } from '../../services/community.service';
+import { COMMUNITY_UI } from '../../../../data/static/community/communityUiData';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 
 const MAX = COMMUNITY_UI.compose.maxChars;

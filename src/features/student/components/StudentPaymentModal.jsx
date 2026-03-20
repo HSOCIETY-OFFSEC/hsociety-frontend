@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { FiCreditCard } from 'react-icons/fi';
 import Button from '../../../shared/components/ui/Button';
-import { initializeBootcampPayment, submitBootcampBtcPayment } from '../../dashboards/student/student.service';
-import { PAYMENT_METHODS } from '../../../config/payment-methods.config';
+import { initializeBootcampPayment, submitBootcampBtcPayment } from '../../dashboards/student/services/student.service';
+import { PAYMENT_METHODS } from '../../../config/app/payment-methods.config';
 import momoIcon from '../../../assets/icons/payment-icons/momo-icon.png';
 import telecelIcon from '../../../assets/icons/payment-icons/telecel-cash-logo.png';
 import btcIcon from '../../../assets/icons/payment-icons/Bitcoin-logo.png';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
-import '../../corporate/billing/components/PaymentModal.css';
+import '../../corporate/styles/payment-modal.css';
 
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
 

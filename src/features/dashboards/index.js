@@ -1,4 +1,4 @@
-export { default as CorporateDashboard } from './corporate/Dashboard';
-export { default as StudentDashboard } from './student/StudentDashboard';
-export { default as AdminDashboard } from './admin/AdminDashboard';
-export { default as PentesterDashboard } from './pentester/PentesterDashboard';
+export { default as CorporateDashboard } from './corporate/pages/Dashboard';
+export { default as StudentDashboard } from './student/pages/StudentDashboard';
+export { default as AdminDashboard } from './admin/pages/AdminDashboard';
+export { default as PentesterDashboard } from './pentester/pages/PentesterDashboard';

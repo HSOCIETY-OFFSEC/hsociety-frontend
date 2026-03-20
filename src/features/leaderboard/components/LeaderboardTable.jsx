@@ -11,8 +11,8 @@ import { IoFlameOutline } from 'react-icons/io5';
 import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvatar';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
-import { buildLeaderboard } from '../leaderboard.utils';
-import '../leaderboard.css';
+import { buildLeaderboard } from '../services/leaderboard.utils';
+import '../styles/leaderboard.css';
 
 const LeaderboardTable = ({
   entries = [],

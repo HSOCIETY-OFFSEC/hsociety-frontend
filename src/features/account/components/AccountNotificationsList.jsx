@@ -1,5 +1,5 @@
 import React from 'react';
-import { ACCOUNT_UI } from '../../../data/account/accountUiData';
+import { ACCOUNT_UI } from '../../../data/static/account/accountUiData';
 
 const AccountNotificationsList = ({ notifications = [], onOpen }) => {
   if (notifications.length === 0) {

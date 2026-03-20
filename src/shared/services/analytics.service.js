@@ -1,4 +1,4 @@
-import { envConfig } from '../../config/env.config';
+import { envConfig } from '../../config/app/env.config';
 
 const emitDataLayer = (event, payload) => {
   if (typeof window === 'undefined') return;

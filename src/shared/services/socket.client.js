@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { envConfig } from '../../config/env.config';
+import { envConfig } from '../../config/app/env.config';
 import { sessionManager } from '../../core/auth/session.manager';
 
 export const resolveSocketBaseURL = () => {

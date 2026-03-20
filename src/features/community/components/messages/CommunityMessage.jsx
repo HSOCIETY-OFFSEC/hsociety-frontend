@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { FiHeart, FiMessageSquare, FiSend, FiRepeat, FiBookmark, FiSmile } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../utils/community.utils';
+import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../services/community.utils';
 import { sanitizeText } from '../../../../shared/utils/sanitize';
-import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
-import { useNotifications } from '../../../../shared/notifications/NotificationProvider';
+import { COMMUNITY_UI } from '../../../../data/static/community/communityUiData';
+import { useNotifications } from '../../../../shared/components/providers/NotificationProvider';
 
 const CommunityMessage = ({
   message,

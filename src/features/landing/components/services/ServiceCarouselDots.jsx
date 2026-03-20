@@ -1,5 +1,5 @@
 import React from 'react';
-import { SERVICES_SECTION_DATA } from '../../../../data/landing/servicesSectionData';
+import { SERVICES_SECTION_DATA } from '../../../../data/static/landing/servicesSectionData';
 
 const ServiceCarouselDots = ({ total, activeIndex, onChange }) => (
   <div className="carousel-dots" role="tablist" aria-label="Carousel navigation">

@@ -1,19 +1,17 @@
 import React from 'react';
 import { AuthProvider } from '../core/auth/AuthContext';
-import { ThemeProvider } from './providers';
+import { ThemeProvider } from './providers/ThemeProvider';
 import AppRouter from './router';
 import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
 import CookieConsent from '../shared/components/ui/CookieConsent';
 import NotificationConsent from '../shared/components/ui/NotificationConsent';
-import { runSecurityScan } from '../core/security-tests/scan.runner';
-import RankBadgeProvider from '../shared/providers/RankBadgeProvider';
-import { NotificationProvider } from '../shared/notifications/NotificationProvider';
-import { envConfig } from '../config/env.config';
+import { runSecurityScan } from '../core/security/scan.runner';
+import RankBadgeProvider from '../shared/components/providers/RankBadgeProvider';
+import { NotificationProvider } from '../shared/components/providers/NotificationProvider';
+import { envConfig } from '../config/app/env.config';
 
 // Import global styles
-import '../styles/base/common.css';
-import '../styles/base/layout.css';
-import '../styles/base/ui.css';
+import '../styles/globals.css';
 import '../shared/components/layout/AppShell.css';
 
 /**

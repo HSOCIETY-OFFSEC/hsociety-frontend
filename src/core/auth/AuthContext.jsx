@@ -2,9 +2,9 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { sessionManager } from './session.manager';
 import { setupAutoLogout } from '../inactivity/autoLogout';
 import { refreshToken as refreshAuthToken, logout as logoutRequest } from './auth.service';
-import { envConfig } from '../../config/env.config';
-import { trackSecurityEvent } from '../security-tests/security-events.service';
-import { setPendingToast } from '../../shared/notifications/toastStorage';
+import { envConfig } from '../../config/app/env.config';
+import { trackSecurityEvent } from '../security/security-events.service';
+import { setPendingToast } from '../../shared/utils/toastStorage';
 import { buildAuthModalUrl } from '../../shared/utils/auth/authModal';
 
 /**

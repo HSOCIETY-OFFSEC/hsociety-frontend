@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FiMessageSquare } from 'react-icons/fi';
 import CommunityMessage from './CommunityMessage';
-import { COMMUNITY_UI } from '../../../../data/community/communityUiData';
+import { COMMUNITY_UI } from '../../../../data/static/community/communityUiData';
 import Skeleton from '../../../../shared/components/ui/Skeleton';
 
 const CommunityMessageList = ({

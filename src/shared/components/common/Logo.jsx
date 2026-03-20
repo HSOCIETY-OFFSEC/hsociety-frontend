@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '../../../app/providers';
+import { useTheme } from '../../../app/providers/ThemeProvider';
 import './Logo.css';
 
 /**

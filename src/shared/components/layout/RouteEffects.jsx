@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Loader from '../ui/Loader';
-import { trackSecurityEvent } from '../../../core/security-tests/security-events.service';
+import { trackSecurityEvent } from '../../../core/security/security-events.service';
 import { trackPageView } from '../../services/analytics.service';
 import './RouteEffects.css';
 

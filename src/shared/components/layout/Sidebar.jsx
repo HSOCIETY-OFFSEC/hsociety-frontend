@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
-import { getSidebarLinks } from '../../../config/navigation.config';
+import { getSidebarLinks } from '../../../config/navigation/navigation.config';
 import { LuChevronDown, LuChevronsLeft, LuChevronsRight, LuLayers } from 'react-icons/lu';
 import Logo from '../common/Logo';
 import './Sidebar.css';

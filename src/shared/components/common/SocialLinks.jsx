@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSocialLinks } from '../../../config/social.config';
+import { getSocialLinks } from '../../../config/app/social.config';
 import '../../../styles/base/social-links.css';
 
 const SocialLinks = ({ className = '', size = 18, showLabels = false, variant = 'inline' }) => {

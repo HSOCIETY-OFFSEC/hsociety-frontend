@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StudentAccessModal from './StudentAccessModal';
-import '../base.css';
-import '../components.css';
+import '../styles/base.css';
+import '../styles/components.css';
 
 const StudentRoleBlocker = () => {
   const navigate = useNavigate();

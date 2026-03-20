@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { getProfile } from '../../features/account/account.service';
+import { getProfile } from '../../features/account/services/account.service';
 import { getStudentXpSummary } from '../../features/student/services/learn.service';
 
 const CACHE_TTL_MS = 60 * 1000;

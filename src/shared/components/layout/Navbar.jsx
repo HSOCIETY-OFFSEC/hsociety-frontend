@@ -27,12 +27,12 @@ import {
 import { IoFlameOutline } from 'react-icons/io5';
 import { useAuth } from '../../../core/auth/AuthContext';
 import useAuthModal from '../../hooks/useAuthModal';
-import { getMobileLinks, getDesktopLinks } from '../../../config/navigation.config';
+import { getMobileLinks, getDesktopLinks } from '../../../config/navigation/navigation.config';
 import Logo from '../common/Logo';
 import { resolveProfileAvatar } from '../../utils/display/profileAvatar';
 import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
-import { useNotifications } from '../../notifications/NotificationProvider';
+import { useNotifications } from '../providers/NotificationProvider';
 import { useUserStats } from '../../hooks/useUserStats';
 import './Navbar.css';
 

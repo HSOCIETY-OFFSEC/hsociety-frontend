@@ -2,9 +2,12 @@ import React from 'react';
 import ImageWithLoader from '../../../../shared/components/ui/ImageWithLoader';
 import { useNavigate } from 'react-router-dom';
 import { slugify } from '../../../../shared/utils/display/slugify';
+import { FiBookOpen, FiShield, FiCpu } from 'react-icons/fi';
 
 const ServiceCardSlide = ({ service, index, offset, slideRef, total }) => {
   const navigate = useNavigate();
+  const icons = [FiBookOpen, FiShield, FiCpu];
+  const Icon = icons[index % icons.length];
 
   const isActive = offset === 0;
   const isPrev = offset === -1;
@@ -39,7 +42,10 @@ const ServiceCardSlide = ({ service, index, offset, slideRef, total }) => {
           />
         </div>
         <div className="service-body">
-          <span className="service-tag">{service.title.split(' ')[0]}</span>
+          <span className="service-tag">
+            <Icon size={14} aria-hidden="true" />
+            {service.title.split(' ')[0]}
+          </span>
           <h3>{service.title}</h3>
           <p>{service.description}</p>
           <button

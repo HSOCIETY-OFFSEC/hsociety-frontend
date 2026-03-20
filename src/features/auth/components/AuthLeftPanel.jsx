@@ -1,5 +1,5 @@
 import React from 'react';
-import '../auth-portal.css';
+import '../styles/auth-portal.css';
 
 const IMAGE_URL = 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1400&q=80';
 
