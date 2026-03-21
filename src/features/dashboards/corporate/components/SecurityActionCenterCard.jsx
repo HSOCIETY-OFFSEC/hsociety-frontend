@@ -3,7 +3,6 @@ import { FiArrowRight } from 'react-icons/fi';
 
 const SecurityActionCenterCard = ({ status, onNavigate }) => {
   let title = 'Start Security Assessment';
-  let description = 'Run a new vulnerability scan.';
   let actionLabel = 'Start Engagement';
   let route = '/engagements';
   let statusLabel = 'No active engagement';
@@ -11,14 +10,12 @@ const SecurityActionCenterCard = ({ status, onNavigate }) => {
 
   if (status === 'active') {
     title = 'Active Security Engagement';
-    description = 'Engagement in progress.';
     actionLabel = 'View Engagement';
     route = '/engagements';
     statusLabel = 'In Progress';
     statusClass = 'cd-label-alpha';
   } else if (status === 'completed') {
     title = 'Engagement Completed';
-    description = 'Security reports available.';
     actionLabel = 'View Security Reports';
     route = '/reports';
     statusLabel = 'Completed';
@@ -29,12 +26,10 @@ const SecurityActionCenterCard = ({ status, onNavigate }) => {
     <div className="cd-panel cd-action-panel">
       <div className="cd-panel-header">
         <div>
-          <p className="cd-panel-kicker">Action Center</p>
           <h3 className="cd-panel-title">{title}</h3>
         </div>
         <span className={`cd-label ${statusClass}`}>{statusLabel}</span>
       </div>
-      <p className="cd-panel-desc">{description}</p>
       <button type="button" className="cd-btn cd-btn-primary" onClick={() => onNavigate(route)}>
         {actionLabel}
         <FiArrowRight size={14} />

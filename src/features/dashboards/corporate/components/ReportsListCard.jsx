@@ -6,7 +6,6 @@ const ReportsListCard = ({ reports = [], onViewReport, onDownloadReport }) => (
     <div className="cd-panel-header">
       <div>
         <h3 className="cd-panel-title">Recent Reports</h3>
-        <p className="cd-panel-desc">Latest security findings</p>
       </div>
     </div>
     {reports.length === 0 ? (

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FiImage, FiLink, FiMessageSquare } from 'react-icons/fi';
+import { FiArrowLeft, FiImage, FiLink, FiMessageSquare } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getCommunityMessages, getCommunityOverview } from '../services/community.service';
@@ -128,6 +128,16 @@ const CommunityMedia = () => {
               </div>
               <p className="cmd-header-desc">Collected images and links shared in community channels.</p>
             </div>
+          </div>
+          <div className="cmd-header-actions">
+            <button
+              type="button"
+              className="cmd-btn cmd-btn-secondary"
+              onClick={() => navigate('/community')}
+            >
+              <FiArrowLeft size={14} />
+              Back to Community
+            </button>
           </div>
         </div>
         <div className="cmd-header-meta">

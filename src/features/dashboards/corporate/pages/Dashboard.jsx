@@ -165,7 +165,6 @@ const Dashboard = () => {
                 <span className="cd-breadcrumb-page">corporate-dashboard</span>
                 <span className="cd-header-visibility">Private</span>
               </div>
-              <p className="cd-header-desc">Security overview for engagements, vulnerabilities, and reports.</p>
             </div>
           </div>
           <div className="cd-header-actions">
@@ -233,7 +232,6 @@ const Dashboard = () => {
                   <FiShield size={15} className="cd-section-icon" />
                   Security Command Center
                 </h2>
-                <p className="cd-section-desc">Monitor risk level, security score, and last scan status.</p>
                 <SecurityCommandCenterCard
                   securityScore={securityScore}
                   riskLevel={riskLevel}
@@ -249,7 +247,6 @@ const Dashboard = () => {
                   <FiActivity size={15} className="cd-section-icon" />
                   Action Center
                 </h2>
-                <p className="cd-section-desc">Launch or review security engagements.</p>
                 <div className="cd-section-grid">
                   <SecurityActionCenterCard
                     status={engagementStatus}
@@ -269,7 +266,6 @@ const Dashboard = () => {
                   <FiAlertTriangle size={15} className="cd-section-icon" />
                   Vulnerability Snapshot
                 </h2>
-                <p className="cd-section-desc">Critical vulnerabilities are prioritized for remediation.</p>
                 <VulnerabilitySnapshotCard
                   breakdown={vulnerabilityBreakdown}
                   onView={() => navigate('/remediation')}
@@ -282,7 +278,6 @@ const Dashboard = () => {
                   <FiFileText size={15} className="cd-section-icon" />
                   Activity & Reports
                 </h2>
-                <p className="cd-section-desc">Review recent reports and security activity.</p>
                 <div className="cd-section-grid">
                   <ReportsListCard
                     reports={reports}
@@ -295,60 +290,6 @@ const Dashboard = () => {
             </>
           )}
         </main>
-
-        <aside className="cd-sidebar">
-          <div className="cd-sidebar-box">
-            <h3 className="cd-sidebar-heading">About</h3>
-            <p className="cd-sidebar-about">
-              Corporate security overview tracking engagement status, vulnerabilities, and reports.
-            </p>
-            <div className="cd-sidebar-divider" />
-            <ul className="cd-sidebar-list">
-              <li><FiCheckCircle size={13} className="cd-sidebar-icon" />Engagement tracking</li>
-              <li><FiCheckCircle size={13} className="cd-sidebar-icon" />Risk monitoring</li>
-              <li><FiCheckCircle size={13} className="cd-sidebar-icon" />Report access</li>
-            </ul>
-          </div>
-
-          <div className="cd-sidebar-box cd-status-box">
-            {loading && (
-              <div className="cd-status-skeleton">
-                <Skeleton className="cd-status-line" style={{ width: '58%' }} />
-                <Skeleton className="cd-status-value-skeleton" style={{ width: '42%' }} />
-                <Skeleton className="cd-status-track-skeleton" variant="rect" style={{ width: '100%', height: '6px' }} />
-                <Skeleton className="cd-status-line" style={{ width: '78%' }} />
-              </div>
-            )}
-            {!loading && error && (
-              <div className="cd-status-empty">
-                <p className="cd-muted-text">Status unavailable.</p>
-              </div>
-            )}
-            {showData && (
-              <>
-                <div className="cd-status-row">
-                  <span className="cd-status-dot" />
-                  <span className="cd-status-label">{statusMeta.label}</span>
-                </div>
-                <strong className="cd-status-value">{statusMeta.value}</strong>
-                <div className="cd-status-track">
-                  <div className="cd-status-fill" style={{ width: `${statusMeta.fill}%` }} />
-                </div>
-                <p className="cd-status-note">{statusMeta.note}</p>
-              </>
-            )}
-          </div>
-
-          <div className="cd-sidebar-box">
-            <h3 className="cd-sidebar-heading">Topics</h3>
-            <div className="cd-topics">
-              <span className="cd-topic">engagements</span>
-              <span className="cd-topic">reports</span>
-              <span className="cd-topic">vulnerabilities</span>
-              <span className="cd-topic">risk</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   );

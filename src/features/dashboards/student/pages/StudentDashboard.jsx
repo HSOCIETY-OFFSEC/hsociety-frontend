@@ -205,7 +205,6 @@ const StudentDashboard = () => {
                 <span className="sd-breadcrumb-page">student-dashboard</span>
                 <span className="sd-header-visibility">Private</span>
               </div>
-              <p className="sd-header-desc">Your training command center for guided offensive security growth.</p>
             </div>
           </div>
           <div className="sd-header-actions">
@@ -299,10 +298,8 @@ const StudentDashboard = () => {
                   <FiCompass size={15} className="sd-section-icon" />
                   Continue Learning
                 </h2>
-                <p className="sd-section-desc">Jump straight back into the next phase of your bootcamp journey.</p>
                 <div className="sd-panel sd-continue-panel">
                   <div className="sd-continue-main">
-                    <p className="sd-continue-kicker">Current Focus</p>
                     <h3 className="sd-continue-title">{continueModule?.title || 'Start your bootcamp'}</h3>
                     <p className="sd-continue-meta">
                       Phase {continueModule?.id || '1'}
@@ -336,7 +333,6 @@ const StudentDashboard = () => {
                   <FiBookOpen size={15} className="sd-section-icon" />
                   Bootcamp Progress
                 </h2>
-                <p className="sd-section-desc">Track completion across every phase of your offensive journey.</p>
                 <div className="sd-item-list">
                   {bootcampProgressItems.length === 0 ? (
                     <div className="sd-empty">No bootcamp phases yet.</div>
@@ -392,7 +388,6 @@ const StudentDashboard = () => {
                   <FiActivity size={15} className="sd-section-icon" />
                   Progress Overview
                 </h2>
-                <p className="sd-section-desc">Monitor XP growth and core skill pillars in one glance.</p>
                 <div className="sd-section-grid">
                   <StudentXpSummaryCard xpSummary={data.xpSummary} />
                   <SkillProgressCard pillars={skillPillars} />
@@ -405,7 +400,6 @@ const StudentDashboard = () => {
                   <FiMessageSquare size={15} className="sd-section-icon" />
                   Community & Updates
                 </h2>
-                <p className="sd-section-desc">Stay aligned with mentor updates and the student community.</p>
                 <div className="sd-section-grid">
                   <StudentRecentNotificationsCard notifications={notifications} />
                   <div className="sd-panel sd-community-panel">
@@ -413,7 +407,6 @@ const StudentDashboard = () => {
                       <FiMessageSquare size={18} />
                       <h3>Community</h3>
                     </div>
-                    <p>Join the HSOCIETY community to share wins, get feedback, and learn together.</p>
                     <button
                       type="button"
                       className="sd-btn sd-btn-secondary"
@@ -427,60 +420,6 @@ const StudentDashboard = () => {
             </>
           )}
         </main>
-
-        <aside className="sd-sidebar">
-          <div className="sd-sidebar-box">
-            <h3 className="sd-sidebar-heading">About</h3>
-            <p className="sd-sidebar-about">
-              Track bootcamp phases, XP milestones, and mentor updates from a single command center.
-            </p>
-            <div className="sd-sidebar-divider" />
-            <ul className="sd-sidebar-list">
-              <li><FiCheckCircle size={13} className="sd-sidebar-icon" />Phase tracking</li>
-              <li><FiCheckCircle size={13} className="sd-sidebar-icon" />Skill pillar health</li>
-              <li><FiCheckCircle size={13} className="sd-sidebar-icon" />Mentor alerts</li>
-            </ul>
-          </div>
-
-          <div className={`sd-sidebar-box sd-status-box ${statusMeta.paused ? 'sd-status-paused' : ''}`}>
-            {loading && (
-              <div className="sd-status-skeleton">
-                <Skeleton className="sd-status-line" style={{ width: '58%' }} />
-                <Skeleton className="sd-status-value-skeleton" style={{ width: '42%' }} />
-                <Skeleton className="sd-status-track-skeleton" variant="rect" style={{ width: '100%', height: '6px' }} />
-                <Skeleton className="sd-status-line" style={{ width: '78%' }} />
-              </div>
-            )}
-            {!loading && error && (
-              <div className="sd-status-empty">
-                <p className="sd-muted">Status unavailable.</p>
-              </div>
-            )}
-            {showData && (
-              <>
-                <div className="sd-status-row">
-                  <span className="sd-status-dot" />
-                  <span className="sd-status-label">{statusMeta.label}</span>
-                </div>
-                <strong className="sd-status-value">{statusMeta.value}</strong>
-                <div className="sd-status-track">
-                  <div className="sd-status-fill" style={{ width: `${statusMeta.fill}%` }} />
-                </div>
-                <p className="sd-status-note">{statusMeta.note}</p>
-              </>
-            )}
-          </div>
-
-          <div className="sd-sidebar-box">
-            <h3 className="sd-sidebar-heading">Topics</h3>
-            <div className="sd-topics">
-              <span className="sd-topic">student</span>
-              <span className="sd-topic">bootcamp</span>
-              <span className="sd-topic">xp</span>
-              <span className="sd-topic">community</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   );

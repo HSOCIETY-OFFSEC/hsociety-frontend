@@ -211,43 +211,6 @@ const AdminOverview = () => {
             </div>
           </section>
         </main>
-
-        <aside className="ad-sidebar">
-          <div className="ad-sidebar-box">
-            <h3 className="ad-sidebar-heading">About</h3>
-            <p className="ad-sidebar-about">
-              Admin control panel for managing users, pentests, community, and platform security.
-            </p>
-            <div className="ad-sidebar-divider" />
-            <ul className="ad-sidebar-list">
-              <li><FiUsers size={13} className="ad-sidebar-icon" />User management</li>
-              <li><FiShield size={13} className="ad-sidebar-icon" />Pentest operations</li>
-              <li><FiMessageSquare size={13} className="ad-sidebar-icon" />Community moderation</li>
-            </ul>
-          </div>
-
-          <div className="ad-sidebar-box ad-status-box">
-            <div className="ad-status-row">
-              <span className="ad-status-dot" />
-              <span className="ad-status-label">PLATFORM STATUS</span>
-            </div>
-            <strong className="ad-status-value">LIVE</strong>
-            <div className="ad-status-track">
-              <div className="ad-status-fill" style={{ width: '100%' }} />
-            </div>
-            <p className="ad-status-note">All systems operational.</p>
-          </div>
-
-          <div className="ad-sidebar-box">
-            <h3 className="ad-sidebar-heading">Topics</h3>
-            <div className="ad-topics">
-              <span className="ad-topic">admin</span>
-              <span className="ad-topic">users</span>
-              <span className="ad-topic">pentests</span>
-              <span className="ad-topic">community</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import React from 'react';
-import { FiArrowLeft, FiMessageSquare, FiUsers } from 'react-icons/fi';
+import { FiArrowLeft, FiImage, FiMessageSquare, FiUsers } from 'react-icons/fi';
 import { COMMUNITY_UI } from '../../../../data/static/community/communityUiData';
 import '../../styles/community.css';
 
-const CommunityHeader = ({ overviewStats, connected = false, onBack }) => {
+const CommunityHeader = ({ overviewStats, connected = false, onBack, onMedia }) => {
   const learners = Number(overviewStats?.learners || 0).toLocaleString();
   const posts = Number(overviewStats?.questions || 0).toLocaleString();
 
@@ -36,6 +36,17 @@ const CommunityHeader = ({ overviewStats, connected = false, onBack }) => {
             <FiMessageSquare size={12} aria-hidden="true" />
             {posts}
           </span>
+          {onMedia && (
+            <button
+              type="button"
+              className="community-header-action"
+              onClick={onMedia}
+              aria-label="Open community media"
+            >
+              <FiImage size={12} aria-hidden="true" />
+              Media
+            </button>
+          )}
           <span
             className={`community-header-live-badge${connected ? ' live' : ''}`}
             aria-label={connected ? 'Connected — live' : 'Connecting'}

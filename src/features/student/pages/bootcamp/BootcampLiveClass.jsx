@@ -165,43 +165,6 @@ const BootcampLiveClass = () => {
               </div>
             </section>
           </main>
-
-          <aside className="bc-sidebar">
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">About</h3>
-              <p className="bc-sidebar-about">
-                Instructor-led sessions are posted here with meeting links and session timing.
-              </p>
-              <div className="bc-sidebar-divider" />
-              <ul className="bc-sidebar-list">
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Live class links</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Room schedule</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Instructor updates</li>
-              </ul>
-            </div>
-
-            <div className={`bc-sidebar-box bc-status-box ${statusMeta.paused ? 'bc-status-paused' : ''}`}>
-              <div className="bc-status-row">
-                <span className="bc-status-dot" />
-                <span className="bc-status-label">{statusMeta.label}</span>
-              </div>
-              <strong className="bc-status-value">{statusMeta.value}</strong>
-              <div className="bc-status-track">
-                <div className="bc-status-fill" style={{ width: `${statusMeta.fill}%` }} />
-              </div>
-              <p className="bc-status-note">{statusMeta.note}</p>
-            </div>
-
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">Topics</h3>
-              <div className="bc-topics">
-                <span className="bc-topic">live-class</span>
-                <span className="bc-topic">instructors</span>
-                <span className="bc-topic">sessions</span>
-                <span className="bc-topic">schedule</span>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </BootcampAccessGate>

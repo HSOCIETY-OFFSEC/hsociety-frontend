@@ -13,7 +13,6 @@ const SecurityCommandCenterCard = ({ securityScore, riskLevel, lastScan, onRunSc
     <div className="cd-panel cd-command-panel">
       <div className="cd-panel-header">
         <div>
-          <p className="cd-panel-kicker">Security Status</p>
           <h2 className="cd-panel-title">Security Command Center</h2>
         </div>
         <span className={`cd-label ${riskClass}`}>{riskLevel}</span>

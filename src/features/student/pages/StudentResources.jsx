@@ -122,41 +122,6 @@ const StudentResources = () => {
             )}
           </section>
         </main>
-
-        <aside className="sr-sidebar">
-          <div className="sr-sidebar-box">
-            <h3 className="sr-sidebar-heading">About</h3>
-            <p className="sr-sidebar-about">
-              Free resources are updated as new tools, guides, and checklists become available.
-            </p>
-            <div className="sr-sidebar-divider" />
-            <ul className="sr-sidebar-list">
-              <li>Curated playbooks</li>
-              <li>Tooling references</li>
-              <li>Quick-start guides</li>
-            </ul>
-          </div>
-
-          <div className="sr-sidebar-box sr-status-box">
-            <div className="sr-status-row">
-              <span className="sr-status-dot" />
-              <span className="sr-status-label">RESOURCE STATUS</span>
-            </div>
-            <strong className="sr-status-value">ACTIVE</strong>
-            <div className="sr-status-track"><div className="sr-status-fill" /></div>
-            <p className="sr-status-note">Updated weekly.</p>
-          </div>
-
-          <div className="sr-sidebar-box">
-            <h3 className="sr-sidebar-heading">Topics</h3>
-            <div className="sr-topics">
-              <span className="sr-topic">resources</span>
-              <span className="sr-topic">guides</span>
-              <span className="sr-topic">playbooks</span>
-              <span className="sr-topic">tools</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   );

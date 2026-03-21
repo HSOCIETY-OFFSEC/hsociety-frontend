@@ -274,31 +274,6 @@ const AdminCommunity = () => {
             )}
           </section>
         </main>
-
-        <aside className="ad-sidebar">
-          <div className="ad-sidebar-box">
-            <h3 className="ad-sidebar-heading">About</h3>
-            <p className="ad-sidebar-about">
-              Configure community channels, tags, and stats. Moderate messages and posts.
-            </p>
-            <div className="ad-sidebar-divider" />
-            <ul className="ad-sidebar-list">
-              <li><FiMessageSquare size={13} className="ad-sidebar-icon" />Channel config</li>
-              <li><FiBookmark size={13} className="ad-sidebar-icon" />Pin / remove content</li>
-            </ul>
-          </div>
-          <div className="ad-sidebar-box ad-status-box">
-            <div className="ad-status-row">
-              <span className="ad-status-dot" />
-              <span className="ad-status-label">MODERATION</span>
-            </div>
-            <strong className="ad-status-value">{messages.length + posts.length > 0 ? 'ACTIVE' : 'CLEAR'}</strong>
-            <div className="ad-status-track">
-              <div className="ad-status-fill" style={{ width: '100%' }} />
-            </div>
-            <p className="ad-status-note">{messages.length} messages · {posts.length} posts loaded.</p>
-          </div>
-        </aside>
       </div>
     </div>
   );

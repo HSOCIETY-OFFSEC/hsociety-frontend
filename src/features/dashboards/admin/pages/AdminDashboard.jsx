@@ -24,6 +24,7 @@ const AdminDashboard = () => {
   const [pentests, setPentests] = useState([]);
   const [pentestEdits, setPentestEdits] = useState({});
   const [pentestSavingId, setPentestSavingId] = useState(null);
+  const [editingPentestId, setEditingPentestId] = useState(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -91,6 +92,7 @@ const AdminDashboard = () => {
 
   const startPentestEdit = (pentest) => {
     const id = pentest._id || pentest.id;
+    setEditingPentestId(id);
     setPentestEdits((prev) => ({
       ...prev,
       [id]: {
@@ -121,6 +123,7 @@ const AdminDashboard = () => {
     } else {
       setError(getPublicErrorMessage({ action: 'save', response }));
     }
+    setEditingPentestId(null);
     setPentestSavingId(null);
   };
 
@@ -146,6 +149,28 @@ const AdminDashboard = () => {
         <PublicError message={error} className="admin-alert" />
 
         <Card className="admin-card" padding="medium">
+          {editingId && (
+            <div className="admin-bulk-bar">
+              <div className="admin-bulk-left">
+                <FiUsers size={14} />
+                <span>Editing user</span>
+              </div>
+              <div className="admin-bulk-actions">
+                <Button
+                  size="small"
+                  variant="primary"
+                  onClick={() => saveUser(editingId)}
+                  disabled={savingId === editingId}
+                >
+                  <FiSave size={14} />
+                  {savingId === editingId ? 'Saving...' : 'Save'}
+                </Button>
+                <Button size="small" variant="ghost" onClick={cancelEdit}>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
           <div className="admin-table">
             <div className="admin-row admin-row-header">
               <span>Name</span>
@@ -283,8 +308,26 @@ const AdminDashboard = () => {
         <Card className="admin-card" padding="medium">
           <div className="admin-section-header">
             <h2>Pentest Management</h2>
-            <p>Assign pentesters and update engagement status.</p>
           </div>
+          {editingPentestId && (
+            <div className="admin-bulk-bar">
+              <div className="admin-bulk-left">
+                <FiShield size={14} />
+                <span>Editing engagement</span>
+              </div>
+              <div className="admin-bulk-actions">
+                <Button
+                  size="small"
+                  variant="primary"
+                  onClick={() => savePentest(editingPentestId)}
+                  disabled={pentestSavingId === editingPentestId}
+                >
+                  <FiSave size={14} />
+                  {pentestSavingId === editingPentestId ? 'Saving...' : 'Save'}
+                </Button>
+              </div>
+            </div>
+          )}
           <div className="admin-table">
             <div className="admin-row admin-row-header admin-row-pentests">
               <span>Target</span>

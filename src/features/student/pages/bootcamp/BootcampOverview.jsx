@@ -211,43 +211,6 @@ const BootcampOverview = () => {
               </div>
             </section>
           </main>
-
-          <aside className="bc-sidebar">
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">About</h3>
-              <p className="bc-sidebar-about">
-                A structured offensive-security bootcamp with live classes, quiz gating, and hands-on rooms.
-              </p>
-              <div className="bc-sidebar-divider" />
-              <ul className="bc-sidebar-list">
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Phased roadmap</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Room-by-room guidance</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Instructor check-ins</li>
-              </ul>
-            </div>
-
-            <div className={`bc-sidebar-box bc-status-box ${statusMeta.paused ? 'bc-status-paused' : ''}`}>
-              <div className="bc-status-row">
-                <span className="bc-status-dot" />
-                <span className="bc-status-label">{statusMeta.label}</span>
-              </div>
-              <strong className="bc-status-value">{statusMeta.value}</strong>
-              <div className="bc-status-track">
-                <div className="bc-status-fill" style={{ width: `${statusMeta.fill}%` }} />
-              </div>
-              <p className="bc-status-note">{statusMeta.note}</p>
-            </div>
-
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">Topics</h3>
-              <div className="bc-topics">
-                <span className="bc-topic">bootcamp</span>
-                <span className="bc-topic">phases</span>
-                <span className="bc-topic">live-class</span>
-                <span className="bc-topic">rooms</span>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </BootcampAccessGate>

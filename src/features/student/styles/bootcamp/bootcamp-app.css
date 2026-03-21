@@ -18,11 +18,11 @@
 }
 
 .bootcamp-app.bootcamp-right-open {
-  grid-template-columns: var(--bootcamp-sidebar-width, 260px) minmax(0, 1fr) 320px;
+  grid-template-columns: var(--bootcamp-sidebar-width, 260px) 1fr;
   grid-template-areas:
-    "topbar topbar topbar"
-    "sidebar main right"
-    "sidebar footer right";
+    "topbar topbar"
+    "sidebar main"
+    "sidebar footer";
 }
 
 .bootcamp-app.bootcamp-collapsed {
@@ -30,7 +30,7 @@
 }
 
 .bootcamp-app.bootcamp-collapsed.bootcamp-right-open {
-  grid-template-columns: var(--bootcamp-sidebar-collapsed-width, 84px) minmax(0, 1fr) 320px;
+  grid-template-columns: var(--bootcamp-sidebar-collapsed-width, 84px) 1fr;
 }
 
 /* Hide sidebar column entirely on mobile */
@@ -383,7 +383,7 @@
 
 .bc-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 296px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
   align-items: start;
 }

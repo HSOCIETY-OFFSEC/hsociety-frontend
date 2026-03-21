@@ -131,41 +131,6 @@ const StudentPayments = () => {
             </div>
           </section>
         </main>
-
-        <aside className="sp-sidebar">
-          <div className="sp-sidebar-box">
-            <h3 className="sp-sidebar-heading">About</h3>
-            <p className="sp-sidebar-about">
-              Confirm your registration and complete payment to unlock the full bootcamp journey.
-            </p>
-            <div className="sp-sidebar-divider" />
-            <ul className="sp-sidebar-list">
-              <li>Secure checkout</li>
-              <li>Instant access</li>
-              <li>Support available</li>
-            </ul>
-          </div>
-
-          <div className="sp-sidebar-box sp-status-box">
-            <div className="sp-status-row">
-              <span className="sp-status-dot" />
-              <span className="sp-status-label">PAYMENT STATUS</span>
-            </div>
-            <strong className="sp-status-value">{isPaid ? 'ACTIVE' : 'PENDING'}</strong>
-            <div className="sp-status-track"><div className="sp-status-fill" /></div>
-            <p className="sp-status-note">{isPaid ? 'Access unlocked.' : 'Awaiting confirmation.'}</p>
-          </div>
-
-          <div className="sp-sidebar-box">
-            <h3 className="sp-sidebar-heading">Topics</h3>
-            <div className="sp-topics">
-              <span className="sp-topic">payments</span>
-              <span className="sp-topic">bootcamp</span>
-              <span className="sp-topic">billing</span>
-              <span className="sp-topic">support</span>
-            </div>
-          </div>
-        </aside>
       </div>
 
       {showPaymentModal && (

@@ -442,6 +442,7 @@ const CommunityHub = () => {
           overviewStats={overview.stats}
           connected={connected}
           onBack={() => navigate(-1)}
+          onMedia={() => navigate('/community/media')}
         />
 
         {/* Message feed */}

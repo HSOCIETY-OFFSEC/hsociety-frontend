@@ -340,43 +340,6 @@ const BootcampRoom = () => {
               </button>
             </div>
           </main>
-
-          <aside className="bc-sidebar">
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">About</h3>
-              <p className="bc-sidebar-about">
-                Complete the quiz to unlock the next room and keep your progress moving forward.
-              </p>
-              <div className="bc-sidebar-divider" />
-              <ul className="bc-sidebar-list">
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Quiz gating</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Live class access</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Resources + playbooks</li>
-              </ul>
-            </div>
-
-            <div className={`bc-sidebar-box bc-status-box ${statusMeta.paused ? 'bc-status-paused' : ''}`}>
-              <div className="bc-status-row">
-                <span className="bc-status-dot" />
-                <span className="bc-status-label">{statusMeta.label}</span>
-              </div>
-              <strong className="bc-status-value">{statusMeta.value}</strong>
-              <div className="bc-status-track">
-                <div className="bc-status-fill" style={{ width: `${statusMeta.fill}%` }} />
-              </div>
-              <p className="bc-status-note">{statusMeta.note}</p>
-            </div>
-
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">Topics</h3>
-              <div className="bc-topics">
-                <span className="bc-topic">room-{room.roomId}</span>
-                <span className="bc-topic">module-{moduleMeta.moduleId}</span>
-                <span className="bc-topic">quiz</span>
-                <span className="bc-topic">live-class</span>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
 

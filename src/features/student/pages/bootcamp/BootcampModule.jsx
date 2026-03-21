@@ -243,43 +243,6 @@ const BootcampModule = () => {
               </div>
             </section>
           </main>
-
-          <aside className="bc-sidebar">
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">About</h3>
-              <p className="bc-sidebar-about">
-                Rooms include guided labs and quizzes to validate progression before the next phase.
-              </p>
-              <div className="bc-sidebar-divider" />
-              <ul className="bc-sidebar-list">
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Room-by-room flow</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Quiz gating</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Live class support</li>
-              </ul>
-            </div>
-
-            <div className={`bc-sidebar-box bc-status-box ${statusMeta.paused ? 'bc-status-paused' : ''}`}>
-              <div className="bc-status-row">
-                <span className="bc-status-dot" />
-                <span className="bc-status-label">{statusMeta.label}</span>
-              </div>
-              <strong className="bc-status-value">{statusMeta.value}</strong>
-              <div className="bc-status-track">
-                <div className="bc-status-fill" style={{ width: `${statusMeta.fill}%` }} />
-              </div>
-              <p className="bc-status-note">{statusMeta.note}</p>
-            </div>
-
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">Topics</h3>
-              <div className="bc-topics">
-                <span className="bc-topic">rooms</span>
-                <span className="bc-topic">quizzes</span>
-                <span className="bc-topic">phase-{module.moduleId}</span>
-                <span className="bc-topic">progress</span>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </BootcampAccessGate>

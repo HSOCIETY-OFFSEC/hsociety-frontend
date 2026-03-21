@@ -127,41 +127,6 @@ const StudentQuizMaterial = () => {
             </div>
           </section>
         </main>
-
-        <aside className="sq-sidebar">
-          <div className="sq-sidebar-box">
-            <h3 className="sq-sidebar-heading">About</h3>
-            <p className="sq-sidebar-about">
-              Quizzes keep you on pace and highlight concepts to revisit before live sessions.
-            </p>
-            <div className="sq-sidebar-divider" />
-            <ul className="sq-sidebar-list">
-              <li>Module alignment</li>
-              <li>Skill checkpoints</li>
-              <li>Progress validation</li>
-            </ul>
-          </div>
-
-          <div className="sq-sidebar-box sq-status-box">
-            <div className="sq-status-row">
-              <span className="sq-status-dot" />
-              <span className="sq-status-label">QUIZ ACCESS</span>
-            </div>
-            <strong className="sq-status-value">{hasAccess ? 'ACTIVE' : 'LOCKED'}</strong>
-            <div className="sq-status-track"><div className="sq-status-fill" /></div>
-            <p className="sq-status-note">{hasAccess ? 'Ready for quizzes.' : 'Complete payment to unlock.'}</p>
-          </div>
-
-          <div className="sq-sidebar-box">
-            <h3 className="sq-sidebar-heading">Topics</h3>
-            <div className="sq-topics">
-              <span className="sq-topic">quizzes</span>
-              <span className="sq-topic">checkpoints</span>
-              <span className="sq-topic">validation</span>
-              <span className="sq-topic">bootcamp</span>
-            </div>
-          </div>
-        </aside>
       </div>
 
       {showRegisterModal && (

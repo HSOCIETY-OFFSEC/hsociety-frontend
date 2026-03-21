@@ -117,7 +117,7 @@
 
 .nb-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 296px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
   align-items: start;
 }
@@ -499,10 +499,6 @@
 @media (max-width: 1024px) {
   .nb-layout {
     grid-template-columns: 1fr;
-  }
-
-  .nb-sidebar {
-    position: static;
   }
 }
 

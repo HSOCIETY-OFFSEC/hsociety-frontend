@@ -70,43 +70,6 @@ const BootcampResources = () => {
               </div>
             </section>
           </main>
-
-          <aside className="bc-sidebar">
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">About</h3>
-              <p className="bc-sidebar-about">
-                Everything you need to research, execute, and report during each bootcamp phase.
-              </p>
-              <div className="bc-sidebar-divider" />
-              <ul className="bc-sidebar-list">
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Playbooks</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />Tooling</li>
-                <li><FiCheckCircle size={13} className="bc-sidebar-icon" />References</li>
-              </ul>
-            </div>
-
-            <div className="bc-sidebar-box bc-status-box">
-              <div className="bc-status-row">
-                <span className="bc-status-dot" />
-                <span className="bc-status-label">RESOURCE STATUS</span>
-              </div>
-              <strong className="bc-status-value">ACTIVE</strong>
-              <div className="bc-status-track">
-                <div className="bc-status-fill" style={{ width: '70%' }} />
-              </div>
-              <p className="bc-status-note">Resources update weekly.</p>
-            </div>
-
-            <div className="bc-sidebar-box">
-              <h3 className="bc-sidebar-heading">Topics</h3>
-              <div className="bc-topics">
-                <span className="bc-topic">playbooks</span>
-                <span className="bc-topic">tooling</span>
-                <span className="bc-topic">research</span>
-                <span className="bc-topic">references</span>
-              </div>
-            </div>
-          </aside>
         </div>
       </div>
     </BootcampAccessGate>
