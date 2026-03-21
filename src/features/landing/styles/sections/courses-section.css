@@ -98,25 +98,36 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  /* Perspective for the subtle 3D tilt */
   perspective: 1800px;
 }
 
-/* ── LID (screen half) ── */
+/* ── LID (screen half) ──
+   Multi-layer gradient implies a light source from above-left.
+   Top border is slightly lighter (specular highlight on the edge).
+   Three box-shadow layers: inner top-edge spec, inner bottom crease,
+   and the two external drop shadows for depth.
+   ── */
 .cs-lid {
   width: 100%;
   max-width: 1100px;
-  background: var(--bg-secondary);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--bg-secondary) 97%, white 3%) 0%,
+    var(--bg-secondary) 45%,
+    color-mix(in srgb, var(--bg-secondary) 91%, black 9%) 100%
+  );
   border-radius: 16px 16px 0 0;
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
+  border-top-color: color-mix(in srgb, var(--border-color) 55%, white 22%);
   border-bottom: none;
   padding: 10px 10px 0;
   position: relative;
   box-shadow:
-    0 18px 36px -24px rgba(0, 0, 0, 0.35),
-    0 0 0 1px color-mix(in srgb, var(--border-color) 60%, transparent) inset;
-
-  /* Subtle resting tilt */
+    0 2px 0 0 color-mix(in srgb, white 6%, transparent) inset,
+    0 -1px 0 0 color-mix(in srgb, black 28%, transparent) inset,
+    0 24px 48px -16px rgba(0, 0, 0, 0.6),
+    0 8px 18px -8px rgba(0, 0, 0, 0.32),
+    0 2px 4px rgba(0, 0, 0, 0.18);
   transform: none;
   transform-origin: bottom center;
   transform-style: preserve-3d;
@@ -139,27 +150,37 @@
   justify-content: center;
 }
 
+/* Physical camera lens — radial gradient suggests glass depth */
 .cs-camera-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  background: radial-gradient(circle at 35% 35%, #2a2a2e, #0d0d10);
+  border: 1px solid color-mix(in srgb, var(--border-color) 40%, black 60%);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.45),
+    0 0 5px rgba(0, 0, 0, 0.65);
   display: block;
 }
 
-/* ── SCREEN ── */
+/* ── SCREEN ──
+   Near-black bg (screens read darker than chassis).
+   Layered inset shadows create a vignette that implies
+   depth behind the glass rather than a flat panel.
+   ── */
 .cs-screen {
   position: relative;
-  background: var(--bg-tertiary);
-  border-radius: 12px 12px 0 0;
+  background: #08080b;
+  border-radius: 10px 10px 0 0;
   overflow: hidden;
-  /* Screen height — tall enough to feel immersive */
   min-height: clamp(380px, 52vh, 580px);
   display: flex;
   flex-direction: column;
-  /* Inner screen glow */
-  box-shadow: 0 0 36px rgba(0, 0, 0, 0.35) inset;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.65) inset,
+    0 0 44px rgba(0, 0, 0, 0.65) inset,
+    3px 0 10px rgba(0, 0, 0, 0.28) inset,
+    -3px 0 10px rgba(0, 0, 0, 0.28) inset;
 }
 
 @media (min-width: 1024px) {
@@ -216,6 +237,7 @@
    TERMINAL WINDOW inside screen
    ═══════════════════════════════════════════════ */
 
+/* Recessed into the screen — outer crease + top specular + drop shadow */
 .cs-terminal-win {
   flex: 1;
   display: flex;
@@ -223,22 +245,28 @@
   margin: 8px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
-  background: var(--bg-tertiary);
+  border: 1px solid color-mix(in srgb, var(--border-color) 45%, transparent);
+  background: color-mix(in srgb, var(--bg-tertiary) 95%, black 5%);
   box-shadow:
-    0 2px 20px rgba(0,0,0,0.6),
-    0 0 0 1px color-mix(in srgb, var(--border-color) 30%, transparent) inset;
+    0 0 0 1px rgba(0, 0, 0, 0.55) inset,
+    0 1px 0 0 color-mix(in srgb, white 4%, transparent) inset,
+    0 4px 28px rgba(0, 0, 0, 0.75);
 }
 
-/* ── Title bar ── */
+/* ── Title bar — subtle top-to-bottom gradient reads as chrome strip ── */
 .cs-titlebar {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   padding: 0 12px;
   height: 36px;
-  background: var(--bg-tertiary);
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-tertiary) 106%, white 4%) 0%,
+    var(--bg-tertiary) 100%
+  );
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.32);
   flex-shrink: 0;
 }
 
@@ -259,11 +287,30 @@
   transition: filter 0.15s ease;
 }
 
-.cs-traffic-btn--red    { background: var(--border-color); box-shadow: 0 0 4px color-mix(in srgb, var(--border-color) 40%, transparent); }
-.cs-traffic-btn--yellow { background: var(--border-color); box-shadow: 0 0 4px color-mix(in srgb, var(--border-color) 40%, transparent); }
-.cs-traffic-btn--green  { background: var(--primary-color); box-shadow: 0 0 4px color-mix(in srgb, var(--primary-color) 40%, transparent); }
+/* Muted real colours — not full-bright, but not invisible grey */
+.cs-traffic-btn--red {
+  background: #7a3535;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.35) inset,
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
 
-.cs-traffic-btn:hover { filter: brightness(1.2); }
+.cs-traffic-btn--yellow {
+  background: #6e5820;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.35) inset,
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+.cs-traffic-btn--green {
+  background: var(--primary-color);
+  box-shadow:
+    0 0 5px color-mix(in srgb, var(--primary-color) 38%, transparent),
+    0 0 0 1px rgba(0, 0, 0, 0.32) inset,
+    0 1px 0 rgba(255, 255, 255, 0.12) inset;
+}
+
+.cs-traffic-btn:hover { filter: brightness(1.22); }
 
 .cs-titlebar-label {
   display: flex;
@@ -277,7 +324,7 @@
 }
 
 .cs-titlebar-spacer {
-  width: 48px; /* mirrors traffic width to center the label */
+  width: 48px;
   flex-shrink: 0;
 }
 
@@ -291,14 +338,17 @@
 
 /* ═══════════════════════════════════════════════
    LEFT PANE — sidebar / file tree
+   Slightly deeper background than the main pane
+   creates Z-depth — sidebar reads as recessed tray.
    ═══════════════════════════════════════════════ */
 
 .cs-sidebar {
-  border-right: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
-  background: var(--bg-tertiary);
+  border-right: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
+  background: color-mix(in srgb, var(--bg-tertiary) 82%, black 18%);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.22) inset;
 }
 
 .cs-sidebar-header {
@@ -312,7 +362,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-tertiary);
-  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 35%, transparent);
   flex-shrink: 0;
 }
 
@@ -344,11 +394,14 @@
 }
 
 .cs-file-row:hover {
-  background: color-mix(in srgb, var(--bg-secondary) 70%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 60%, transparent);
 }
 
+/* Left accent bar makes the active selection physically obvious */
 .cs-file-row--active {
-  background: color-mix(in srgb, var(--primary-color) 8%, transparent) !important;
+  background: color-mix(in srgb, var(--primary-color) 9%, transparent) !important;
+  border-left: 2px solid color-mix(in srgb, var(--primary-color) 68%, transparent);
+  padding-left: 6px;
 }
 
 .cs-file-row:focus-visible {
@@ -442,13 +495,21 @@
 
 /* ═══════════════════════════════════════════════
    RIGHT PANE — terminal output
+   Faint radial bloom behind content mimics the
+   ambient glow of a lit monitor.
    ═══════════════════════════════════════════════ */
 
 .cs-main-pane {
   display: flex;
   flex-direction: column;
   padding: 14px 18px;
-  background: var(--bg-tertiary);
+  background:
+    radial-gradient(
+      ellipse 65% 38% at 50% 0%,
+      color-mix(in srgb, var(--primary-color) 5%, transparent) 0%,
+      transparent 72%
+    ),
+    var(--bg-tertiary);
   overflow-y: auto;
   gap: 12px;
   transition: opacity 0.14s ease;
@@ -493,18 +554,23 @@
   width: clamp(72px, 10vw, 110px);
   height: clamp(72px, 10vw, 110px);
   border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
-  background: color-mix(in srgb, var(--bg-secondary) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color) 55%, transparent);
+  background: color-mix(in srgb, var(--bg-secondary) 45%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
+/* Activated glow — ambient bloom keyed to primary colour */
 .cs-pane-emblem-glow {
   position: absolute;
   inset: 0;
-  background: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--primary-color) 20%, transparent) 0%,
+    transparent 68%
+  );
   pointer-events: none;
 }
 
@@ -625,18 +691,34 @@
   50%       { opacity: 0; }
 }
 
-/* ── Scanlines overlay ── */
+/* ── Scanlines overlay ──
+   Static repeating gradient gives a subtle CRT texture.
+   Box-shadow vignette darkens the screen corners like real glass.
+   No animation — purely static texture.
+   ── */
 .cs-scanlines {
   position: absolute;
   inset: 0;
-  background: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.045) 2px,
+    rgba(0, 0, 0, 0.045) 4px
+  );
+  box-shadow:
+    0 0 64px rgba(0, 0, 0, 0.38) inset,
+    32px 0 64px rgba(0, 0, 0, 0.14) inset,
+    -32px 0 64px rgba(0, 0, 0, 0.14) inset;
   pointer-events: none;
   z-index: 10;
-  border-radius: 12px 12px 0 0;
+  border-radius: 10px 10px 0 0;
 }
 
 /* ═══════════════════════════════════════════════
    LAPTOP BASE
+   Palm rest uses a directional gradient — slightly
+   darker at top and bottom to imply curved aluminium.
    ═══════════════════════════════════════════════ */
 
 .cs-base {
@@ -647,36 +729,52 @@
   align-items: center;
 }
 
+/* Hinge: darkest element — physical crease between lid and base */
 .cs-hinge {
   width: 100%;
   height: 6px;
-  background: var(--bg-tertiary);
-  border-left: 2px solid var(--border-color);
-  border-right: 2px solid var(--border-color);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-tertiary) 55%, black 45%) 0%,
+    color-mix(in srgb, var(--bg-tertiary) 72%, black 28%) 100%
+  );
+  border-left: 1.5px solid var(--border-color);
+  border-right: 1.5px solid var(--border-color);
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.55) inset,
+    0 -1px 0 0 color-mix(in srgb, white 4%, transparent) inset;
 }
 
+/* Palm rest surface — directional gradient simulates aluminium curvature */
 .cs-base-surface {
   width: 110%;
   height: 18px;
-  background: var(--bg-tertiary);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-tertiary) 88%, black 12%) 0%,
+    var(--bg-tertiary) 35%,
+    color-mix(in srgb, var(--bg-tertiary) 83%, black 17%) 100%
+  );
   border-radius: 0 0 10px 10px;
-  border: 2px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   border-top: none;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 3px;
   box-shadow:
-    0 8px 40px rgba(0,0,0,0.7),
-    0 2px 0 0 color-mix(in srgb, var(--border-color) 40%, transparent) inset;
+    0 12px 52px rgba(0, 0, 0, 0.8),
+    0 4px 0 0 rgba(0, 0, 0, 0.42),
+    0 1px 0 0 color-mix(in srgb, white 5%, transparent) inset;
 }
 
 .cs-base-notch {
   width: 80px;
   height: 4px;
-  background: var(--border-color);
+  background: color-mix(in srgb, var(--border-color) 70%, black 30%);
   border-radius: 2px;
-  border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color) 40%, transparent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) inset;
 }
 
 /* ═══════════════════════════════════════════════
@@ -817,6 +915,13 @@
     min-width: 72px;
     gap: 4px;
     text-align: center;
+  }
+
+  /* On mobile, active row uses bottom border instead of left */
+  .cs-file-row--active {
+    border-left: none;
+    border-bottom: 2px solid color-mix(in srgb, var(--primary-color) 68%, transparent);
+    padding-left: 10px;
   }
 
   .cs-file-chevron {

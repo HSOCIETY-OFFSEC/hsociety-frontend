@@ -20,13 +20,19 @@ const ServicesSection = ({ services = [] }) => {
   const next = () => setActiveIndex((i) => (i === items.length - 1 ? 0 : i + 1));
 
   useEffect(() => {
-    const activeSlide = slideRefs.current[activeIndex];
-    const track = trackRef.current;
-    if (!activeSlide || !track) return;
-    const card = activeSlide.querySelector('.service-card');
-    if (!card) return;
-    track.style.height = `${card.scrollHeight}px`;
-  }, [activeIndex]);
+    const updateTrackHeight = () => {
+      const activeSlide = slideRefs.current[activeIndex];
+      const track = trackRef.current;
+      if (!activeSlide || !track) return;
+      const card = activeSlide.querySelector('.service-card');
+      if (!card) return;
+      track.style.height = `${card.scrollHeight}px`;
+    };
+
+    updateTrackHeight();
+    window.addEventListener('resize', updateTrackHeight);
+    return () => window.removeEventListener('resize', updateTrackHeight);
+  }, [activeIndex, items.length]);
 
   if (!items.length) return null;
 
