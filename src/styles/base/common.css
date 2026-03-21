@@ -33,7 +33,7 @@
 
   /* ── Borders ──
      Darker than before so card edges are crisp on the grey bg.  */
-  --border-color:#000a07 ;
+  --border-color: color-mix(in srgb, var(--primary-color) 30%, #0a0e14);
 
   /* ── Text ──
      Primary = near-black for maximum contrast.
@@ -104,8 +104,8 @@
   --bg-tertiary:  #1a1a1a;   /* inputs, hover rows, inset */
   --card-bg:      #0d0d0d;
 
-  /* ── Borders — visible but not glaring ── */
-  --border-color: #000a07;
+  /* ── Borders — accented, visible but not glaring ── */
+  --border-color: color-mix(in srgb, var(--primary-color) 40%, #0d0d0d);
 
   /* ── Text ── */
   --text-primary:   #f5f7fa;   /* near-white             */

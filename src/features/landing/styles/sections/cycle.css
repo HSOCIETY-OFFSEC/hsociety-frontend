@@ -65,27 +65,18 @@
   display: none;
 }
 
-/* Draw connectors via pseudo-elements on the row */
-.cycle-row::before,
-.cycle-row::after {
-  content: '';
-  position: absolute;
-  top: 22px; /* vertically centered on the 44px circle */
-  height: 1px;
-  background: var(--border-color);
-  pointer-events: none;
-}
-
-/* Line between node 1 and node 2 */
-.cycle-row::before {
-  left: calc(33.33% - 1rem);
-  right: calc(66.66% - 1rem);
-}
-
-/* Line between node 2 and node 3 */
-.cycle-row::after {
-  left: calc(66.66% - 1rem);
-  right: calc(0% + 1rem);
+/* Draw connectors via pseudo-elements on the nodes to avoid overlap */
+@media (min-width: 901px) {
+  .cycle-node:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 36px; /* vertically centered on the 44px circle */
+    right: -1rem;
+    width: 2rem; /* span the gap only */
+    height: 1px;
+    background: var(--border-color);
+    pointer-events: none;
+  }
 }
 
 @media (max-width: 900px) {
@@ -93,13 +84,8 @@
     grid-template-columns: 1fr;
   }
 
-  .cycle-row::before,
-  .cycle-row::after {
-    display: none;
-  }
-
   .cycle-node {
-    padding: 0;
+    padding: 1.25rem;
   }
 
   /* Show a simple vertical line between stacked nodes */
