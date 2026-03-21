@@ -20,14 +20,15 @@
   right: 0;
   z-index: 9999;
   height: var(--navbar-height, 64px);
-  background: var(--bg-secondary);
+  --navbar-bg-color: var(--bg-secondary);
+  background: var(--navbar-bg-color);
   border-bottom: 1px solid var(--border-color);
   font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans", Helvetica, Arial, sans-serif;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .gh-nav--transparent {
-  background: transparent;
+  --navbar-bg-color: var(--bg-primary);
   border-bottom-color: transparent;
 }
 
