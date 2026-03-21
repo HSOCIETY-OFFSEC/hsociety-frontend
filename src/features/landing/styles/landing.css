@@ -396,24 +396,10 @@
   .ann-text { flex-basis: 100%; }
 }
 
-/* ── Promo Popup ── */
-.promo-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--modal-overlay-bg);
-  backdrop-filter: var(--modal-overlay-blur);
-  -webkit-backdrop-filter: var(--modal-overlay-blur);
-  z-index: 10000;
-  display: grid;
-  place-items: center;
-  padding: clamp(1rem, 3vw, 2rem);
-  animation: fadeInUp 0.25s ease;
-}
-
 .promo-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem) clamp(1.1rem, 2.5vw, 1.75rem);
   max-width: min(480px, 100%);
   width: min(480px, 100%);
@@ -542,7 +528,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .promo-overlay { animation: none; }
+  .promo-card { animation: none; }
 }
 
 /* ── Service card stagger entrance ── */

@@ -7,7 +7,6 @@ import momoIcon from '../../../assets/icons/payment-icons/momo-icon.png';
 import telecelIcon from '../../../assets/icons/payment-icons/telecel-cash-logo.png';
 import btcIcon from '../../../assets/icons/payment-icons/Bitcoin-logo.png';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
-import '../../corporate/styles/payment-modal.css';
 
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
 
@@ -62,30 +61,41 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
   };
 
   return (
-    <div className="payment-modal-overlay" role="dialog" aria-modal="true">
-      <div className="payment-modal">
-        <header className="payment-modal-header">
+    <div
+      className="student-modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="student-payment-title"
+    >
+      <div className="student-modal-card student-payment-modal">
+        <div className="student-modal-header">
           <div>
-            <h3>{headline}</h3>
+            <h3 id="student-payment-title">{headline}</h3>
             <p>Secure your seat in the HSOCIETY bootcamp.</p>
           </div>
-          <button type="button" onClick={onClose} className="payment-modal-close" aria-label="Close">
+          <button
+            type="button"
+            className="student-modal-close"
+            onClick={onClose}
+            aria-label="Close dialog"
+          >
             ×
           </button>
-        </header>
-        <div className="payment-modal-body">
-          <form className="payment-modal-form" onSubmit={handleSubmit}>
-            <div className="payment-method-grid">
+        </div>
+
+        <div className="student-modal-body student-payment-body">
+          <form className="student-modal-form" onSubmit={handleSubmit}>
+            <div className="student-payment-method-grid">
               {PAYMENT_METHODS.map((option) => {
                 const iconSrc = iconMap[option.id];
                 return (
                   <button
                     key={option.id}
                     type="button"
-                    className={`payment-method-card ${method === option.id ? 'active' : ''}`}
+                    className={`student-payment-method-card${method === option.id ? ' active' : ''}`}
                     onClick={() => setMethod(option.id)}
                   >
-                    <span className="payment-method-icon" aria-hidden="true">
+                    <span className="student-payment-method-icon" aria-hidden="true">
                       {iconSrc ? (
                         <img src={iconSrc} alt={`${option.label} icon`} />
                       ) : (
@@ -100,16 +110,16 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
             </div>
 
             {method === 'btc' && (
-              <div className="payment-btc-panel">
+              <div className="student-payment-btc-panel">
                 <p>
-                  Send 150 GHS equivalent in BTC to the wallet below, then paste the transaction
+                  Send the 150 GHS equivalent in BTC to the wallet below, then paste the transaction
                   hash. BTC submissions are reviewed before access is unlocked.
                 </p>
-                <div className="payment-btc-wallet">
+                <div className="student-payment-btc-wallet">
                   <span>BTC Wallet</span>
                   <strong>{BTC_WALLET_ADDRESS}</strong>
                 </div>
-                <label className="payment-modal-field">
+                <label className="student-modal-field">
                   <span>Transaction hash</span>
                   <input
                     type="text"
@@ -121,9 +131,9 @@ const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment'
               </div>
             )}
 
-            {error && <p className="payment-modal-error">{error}</p>}
+            {error && <p className="student-modal-error">{error}</p>}
 
-            <div className="payment-modal-footer">
+            <div className="student-modal-actions">
               <Button variant="ghost" size="small" type="button" onClick={onClose}>
                 Cancel
               </Button>

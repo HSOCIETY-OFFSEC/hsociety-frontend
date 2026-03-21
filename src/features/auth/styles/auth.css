@@ -89,6 +89,7 @@
   display: flex;
   flex-direction: column;
   gap: clamp(0.6rem, 1.4vh, 1rem);
+  animation: modal-card-in 0.22s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
 }
 
 /* ============================================================
@@ -623,6 +624,14 @@
   justify-content: center;
   padding: clamp(0.75rem, 3vw, 2rem);
   z-index: var(--z-modal, 10001);
+  animation: modal-backdrop-in 0.2s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-modal-backdrop,
+  .auth-card {
+    animation: none;
+  }
 }
 
 /* ============================================================

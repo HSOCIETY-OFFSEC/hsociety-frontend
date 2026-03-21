@@ -7,9 +7,9 @@
 .student-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: color-mix(in srgb, var(--bg-primary) 72%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--modal-overlay-bg);
+  backdrop-filter: var(--modal-overlay-blur);
+  -webkit-backdrop-filter: var(--modal-overlay-blur);
   display: grid;
   place-items: center;
   z-index: 2000;
@@ -17,15 +17,10 @@
   animation: modal-backdrop-in 0.2s ease forwards;
 }
 
-@keyframes modal-backdrop-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
 /* ── Modal Card ─────────────────────────────────────────────── */
 .student-modal-card {
   width: min(500px, 92vw);
-  border-radius: 18px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
   background: var(--card-bg);
   padding: 1.75rem;
@@ -71,15 +66,12 @@
   );
 }
 
-@keyframes modal-card-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+/* ── Modal Body helpers ─────────────────────────────────────── */
+.student-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0 1.5rem 1.25rem;
 }
 
 /* ── Modal Header ───────────────────────────────────────────── */
@@ -243,6 +235,99 @@
 /* ── Payment Modal ──────────────────────────────────────────── */
 .student-payment-modal {
   /* Uses student-modal-backdrop / student-modal-card base */
+}
+
+.student-payment-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.student-payment-method-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.65rem;
+}
+
+.student-payment-method-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.student-payment-method-card strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.student-payment-method-card.active {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary-color) 20%, transparent);
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-secondary));
+  color: var(--text-primary);
+}
+
+.student-payment-method-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--border-color) 60%, transparent);
+}
+
+.student-payment-method-card img {
+  display: block;
+  height: 20px;
+  width: auto;
+}
+
+.student-payment-btc-panel {
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.student-payment-btc-wallet {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.student-payment-btc-wallet strong {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.student-modal-error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: var(--error-color, #ef4444);
+  background: color-mix(in srgb, var(--error-color, #ef4444) 8%, var(--card-bg));
+  border: 1px solid color-mix(in srgb, var(--error-color, #ef4444) 25%, var(--border-color));
+  border-radius: var(--radius-sm);
 }
 
 .student-payment-summary {

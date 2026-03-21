@@ -46,8 +46,13 @@ const PromoPopup = () => {
   if (!visible) return null;
 
   return (
-    <div className="promo-overlay" role="dialog" aria-modal="true" aria-label="Start your security journey">
-      <div className="promo-card">
+    <div
+      className="auth-modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="promo-title"
+    >
+      <div className="auth-card promo-card">
         <button type="button" className="promo-close" onClick={dismiss} aria-label="Close">
           &times;
         </button>
@@ -55,7 +60,7 @@ const PromoPopup = () => {
           <span className="promo-dot" />
           Offensive Security Training
         </div>
-        <h2 className="promo-title">Start your security journey today.</h2>
+        <h2 id="promo-title" className="promo-title">Start your security journey today.</h2>
         <p className="promo-body">
           Join HSOCIETY's structured bootcamp — hands-on labs, supervised pentests,
           and a community of operators building real skills.
