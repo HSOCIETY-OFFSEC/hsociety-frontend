@@ -4,13 +4,15 @@
 
 .stats-section {
   background: var(--bg-secondary);
-  --reveal-distance: 24px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  --reveal-distance: 20px;
 }
 
 .stats-bar {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 0 1.5rem;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0;
@@ -20,9 +22,58 @@
 .stat-item {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 0 1.5rem;
+  gap: 0.25rem;
+  padding: 2rem 2rem;
   text-align: left;
+  position: relative;
+  cursor: default;
+  transition: background 0.2s ease;
+
+  /* staggered reveal — items slide up on entrance */
+  opacity: 0;
+  transform: translateY(12px);
+  animation: stat-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Each stat item starts invisible; becomes visible only once
+   the parent section is in view (.stats-section.is-visible)  */
+.stats-section:not(.is-visible) .stat-item {
+  animation: none;
+}
+
+/* Staggered delays — add .is-visible via JS IntersectionObserver */
+.stats-section.is-visible .stat-item:nth-child(1) { animation-delay: 0ms;   }
+.stats-section.is-visible .stat-item:nth-child(2) { animation-delay: 80ms;  }
+.stats-section.is-visible .stat-item:nth-child(3) { animation-delay: 160ms; }
+.stats-section.is-visible .stat-item:nth-child(4) { animation-delay: 240ms; }
+
+@keyframes stat-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2rem;
+  right: 2rem;
+  height: 1px;
+  background: var(--primary-color);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.6;
+}
+
+.stat-item:hover {
+  background: var(--bg-tertiary, rgba(255, 255, 255, 0.03));
+}
+
+.stat-item:hover::after {
+  transform: scaleX(1);
 }
 
 .stat-item:not(:last-child) {
@@ -31,34 +82,61 @@
 
 .stat-value {
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 600;
   color: var(--primary-color);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+
+  /* shimmer sweep on the animating number */
+  background: linear-gradient(
+    90deg,
+    var(--primary-color) 0%,
+    var(--primary-color) 40%,
+    color-mix(in srgb, var(--primary-color) 55%, transparent) 55%,
+    var(--primary-color) 70%,
+    var(--primary-color) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: stat-shimmer 1.6s ease-out forwards;
+}
+
+@keyframes stat-shimmer {
+  0%   { background-position: 160% center; }
+  100% { background-position: 0% center; }
 }
 
 .stat-label {
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-tertiary);
+  line-height: 1.4;
 }
 
 .stats-error {
   position: absolute;
   bottom: 0.75rem;
   right: 1.5rem;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-tertiary);
+  opacity: 0.6;
 }
+
+/* ── Responsive ─────────────────────────────────────────── */
 
 @media (max-width: 900px) {
   .stats-bar {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding: 2rem 1rem;
-    row-gap: 1.5rem;
+    padding: 0 1rem;
   }
 
   .stat-item {
-    padding: 0 1rem;
+    padding: 1.75rem 1.25rem;
   }
 
   .stat-item:not(:last-child) {
@@ -70,12 +148,25 @@
   }
 
   .stat-item:nth-child(-n + 2) {
-    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat-item {
+    padding: 1.5rem 1rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stats-section {
-    scroll-behavior: auto;
+  .stat-item,
+  .stat-value {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

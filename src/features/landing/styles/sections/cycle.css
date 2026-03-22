@@ -9,7 +9,6 @@
   padding: 4rem 0;
 }
 
-/* Fix cycle connector — use flex layout instead of absolute positioning */
 .cycle-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -17,6 +16,8 @@
   align-items: start;
   position: relative;
 }
+
+/* ── Nodes ───────────────────────────────────────────────── */
 
 .cycle-node {
   position: relative;
@@ -26,7 +27,36 @@
   border-radius: 14px;
   background: var(--bg-secondary);
   box-shadow: var(--shadow-sm);
+
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cycle-node-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
+
+.cycle-section:not(.is-visible) .cycle-node {
+  animation: none;
+}
+
+.cycle-section.is-visible .cycle-node:nth-child(1) { animation-delay: 0ms;   }
+.cycle-section.is-visible .cycle-node:nth-child(2) { animation-delay: 120ms; }
+.cycle-section.is-visible .cycle-node:nth-child(3) { animation-delay: 240ms; }
+
+@keyframes cycle-node-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cycle-node:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 50%, var(--border-color));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+/* ── Circle icon ─────────────────────────────────────────── */
 
 .cycle-circle {
   width: 44px;
@@ -40,18 +70,32 @@
   align-items: center;
   justify-content: center;
   background: var(--bg-tertiary);
-  box-shadow: none;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cycle-node:hover .cycle-circle {
+  border-color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--bg-tertiary));
+  transform: rotate(8deg) scale(1.1);
 }
 
 .cycle-circle svg {
   width: 18px;
   height: 18px;
   stroke-width: 1.8;
+  transition: stroke 0.2s ease;
 }
+
+/* ── Text ────────────────────────────────────────────────── */
 
 .cycle-node h3 {
   margin: 0 0 0.4rem;
   color: var(--text-primary);
+  transition: color 0.2s ease;
+}
+
+.cycle-node:hover h3 {
+  color: color-mix(in srgb, var(--primary-color) 80%, var(--text-primary));
 }
 
 .cycle-node p {
@@ -60,24 +104,38 @@
   line-height: 1.6;
 }
 
-/* Connector sits after the circle, centered between nodes */
+/* ── Connector line ──────────────────────────────────────── */
+
 .cycle-connector {
   display: none;
 }
 
-/* Draw connectors via pseudo-elements on the nodes to avoid overlap */
 @media (min-width: 901px) {
   .cycle-node:not(:last-child)::after {
     content: '';
     position: absolute;
-    top: 36px; /* vertically centered on the 44px circle */
+    top: 34px;
     right: -1rem;
-    width: 2rem; /* span the gap only */
-    height: 1px;
-    background: var(--border-color);
+    width: 2rem;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--border-color),
+      var(--primary-color),
+      var(--border-color)
+    );
+    border-radius: 999px;
     pointer-events: none;
+    animation: connector-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes connector-pulse {
+    0%, 100% { opacity: 0.35; transform: scaleX(0.85); }
+    50%       { opacity: 1;    transform: scaleX(1);    }
   }
 }
+
+/* ── Responsive ──────────────────────────────────────────── */
 
 @media (max-width: 900px) {
   .cycle-row {
@@ -86,21 +144,43 @@
 
   .cycle-node {
     padding: 1.25rem;
+    transform: translateX(-16px);
   }
 
-  /* Show a simple vertical line between stacked nodes */
+  @keyframes cycle-node-in {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   .cycle-node:not(:last-child)::after {
     content: '';
     display: block;
-    width: 1px;
+    width: 2px;
     height: 1.5rem;
-    background: var(--border-color);
+    background: linear-gradient(
+      180deg,
+      var(--border-color),
+      var(--primary-color),
+      var(--border-color)
+    );
+    border-radius: 999px;
     margin: 0.75rem auto 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cycle-connector {
+  .cycle-node,
+  .cycle-circle,
+  .cycle-node h3 {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .cycle-node:not(:last-child)::after {
     animation: none;
   }
 }

@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FiBookOpen, FiShield, FiDollarSign } from 'react-icons/fi';
 import '../../styles/sections/cycle.css';
 
 const CycleSection = ({ steps }) => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const cycle = steps?.length
     ? steps
     : [
@@ -14,7 +34,7 @@ const CycleSection = ({ steps }) => {
   const icons = [FiBookOpen, FiShield, FiDollarSign];
 
   return (
-    <section className="cycle-section reveal-on-scroll" id="cycle">
+    <section className="cycle-section reveal-on-scroll" id="cycle" ref={sectionRef}>
       <div className="section-container">
         <header className="section-header-center">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Cycle</p>
@@ -30,11 +50,11 @@ const CycleSection = ({ steps }) => {
               </div>
               <h3>{step.title}</h3>
               <p>{step.description}</p>
-                {index < 2 && (
-                  <span className="cycle-connector" aria-hidden="true">
-                    &rarr;
-                  </span>
-                )}
+              {index < 2 && (
+                <span className="cycle-connector" aria-hidden="true">
+                  &rarr;
+                </span>
+              )}
             </div>
           ))}
         </div>

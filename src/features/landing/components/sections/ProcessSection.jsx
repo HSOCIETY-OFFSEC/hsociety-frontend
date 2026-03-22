@@ -1,14 +1,34 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FiSearch, FiMap, FiShield, FiCheckCircle } from 'react-icons/fi';
 import '../../styles/sections/process.css';
 
 const ProcessSection = ({ steps = [] }) => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   if (!steps.length) return null;
 
   const icons = [FiSearch, FiMap, FiShield, FiCheckCircle];
 
   return (
-    <section className="process-section reveal-on-scroll" id="process">
+    <section className="process-section reveal-on-scroll" id="process" ref={sectionRef}>
       <div className="section-container">
         <header className="section-header-center">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Process</p>
@@ -29,7 +49,7 @@ const ProcessSection = ({ steps = [] }) => {
               <div className="process-node" aria-hidden="true" />
               <div className="process-card">
                 <span className="process-index">
-                  {React.createElement(icons[index] || FiSearch, { size: 14 })}
+                  {React.createElement(icons[index] || FiSearch, { size: 13 })}
                   Phase {String(index + 1).padStart(2, '0')}
                 </span>
                 <h3>{step.title}</h3>

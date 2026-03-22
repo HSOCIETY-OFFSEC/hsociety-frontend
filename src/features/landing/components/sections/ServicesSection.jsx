@@ -11,6 +11,7 @@ import '../../styles/sections/services.css';
 const ServicesSection = ({ services = [] }) => {
   const navigate = useNavigate();
   const items = services.slice(0, 3);
+  const sectionRef = useRef(null); // ← added
 
   const [activeIndex, setActiveIndex] = useState(0);
   const trackRef = useRef(null);
@@ -34,10 +35,29 @@ const ServicesSection = ({ services = [] }) => {
     return () => window.removeEventListener('resize', updateTrackHeight);
   }, [activeIndex, items.length]);
 
+  // ← added: IntersectionObserver for .is-visible
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   if (!items.length) return null;
 
   return (
-    <section className="services-section reveal-on-scroll" id="services">
+    <section className="services-section reveal-on-scroll" id="services" ref={sectionRef}> {/* ← ref added */}
       <div className="section-container">
         <header className="section-header">
           <p className="section-eyebrow"><span className="eyebrow-dot" />{SERVICES_SECTION_DATA.eyebrow}</p>
@@ -51,34 +71,34 @@ const ServicesSection = ({ services = [] }) => {
             const icons = [FiBookOpen, FiShield, FiCpu];
             const Icon = icons[index % icons.length];
             return (
-            <article key={service.title} className="service-card" role="listitem">
-              <div className="service-media">
-                <ImageWithLoader
-                  src={service.image}
-                  alt={service.title}
-                  srcSet={service.imageSrcSet}
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="service-body">
-                <span className="service-tag">
-                  <Icon size={14} aria-hidden="true" />
-                  {service.title.split(' ')[0]}
-                </span>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-                <button
-                  type="button"
-                  className="service-link"
-                  onClick={() => navigate(`/services/${slugify(service.title)}`)}
-                  aria-label={`Learn more about ${service.title}`}
-                >
-                  Learn more &rarr;
-                </button>
-              </div>
-            </article>
+              <article key={service.title} className="service-card" role="listitem">
+                <div className="service-media">
+                  <ImageWithLoader
+                    src={service.image}
+                    alt={service.title}
+                    srcSet={service.imageSrcSet}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div className="service-body">
+                  <span className="service-tag">
+                    <Icon size={14} aria-hidden="true" />
+                    {service.title.split(' ')[0]}
+                  </span>
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
+                  <button
+                    type="button"
+                    className="service-link"
+                    onClick={() => navigate(`/services/${slugify(service.title)}`)}
+                    aria-label={`Learn more about ${service.title}`}
+                  >
+                    Learn more &rarr;
+                  </button>
+                </div>
+              </article>
             );
           })}
         </div>

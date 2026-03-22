@@ -65,7 +65,11 @@ const StatsSection = ({ content, error = '' }) => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          // // inside the IntersectionObserver callback, replace:
+          // setIsVisible(true);
+          // // with:
           setIsVisible(true);
+          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
           observer.disconnect();
         }
       },
