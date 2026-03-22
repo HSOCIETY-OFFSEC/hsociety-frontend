@@ -82,7 +82,6 @@ const FooterSection = () => {
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} HSOCIETY. All rights reserved.</span>
-          <span className="footer-theme">Theme: System</span>
         </div>
       </div>
     </footer>

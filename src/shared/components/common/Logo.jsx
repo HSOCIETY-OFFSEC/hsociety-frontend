@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTheme } from '../../../app/providers/ThemeProvider';
 import './Logo.css';
 
 /**
@@ -27,14 +26,8 @@ const Logo = ({
   onClick = null,
   src = null,
 }) => {
-  const { theme } = useTheme();
-  
-  // Select logo based on current theme
-  const logoSrc = src
-    ? src
-    : theme === 'light'
-      ? '/hsociety-logo-black.png'
-      : '/hsociety-logo-white.png';
+  // Dark-only theme: default to the white logo unless overridden.
+  const logoSrc = src || '/hsociety-logo-white.png';
   
   // Size configurations
  const sizeMap = {

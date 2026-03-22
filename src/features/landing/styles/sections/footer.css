@@ -112,10 +112,6 @@
   color: var(--text-tertiary);
 }
 
-.footer-theme {
-  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-}
-
 @media (max-width: 900px) {
   .footer-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

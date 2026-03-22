@@ -40,12 +40,3 @@
   pointer-events: none;
   z-index: -1;
 }
-
-[data-theme="light"] .app-shell::before {
-  background-image: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.18),
-    rgba(241, 245, 249, 0.06)
-  );
-  opacity: 0.12;
-}

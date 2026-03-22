@@ -43,9 +43,6 @@
   z-index: 1;
 }
 
-[data-theme="light"] .hero-center-glow {
-  opacity: 0.6;
-}
 
 /* ═══════════════════════════════════════════════
    LOGO SILHOUETTE WATERMARK
@@ -79,14 +76,6 @@
   user-select: none;
 }
 
-/* Light theme: dark silhouette */
-[data-theme="light"] .hero-logo-silhouette-img,
-[data-theme="light"] .hero-logo-silhouette .logo-image,
-[data-theme="light"] .hero-logo-silhouette img {
-  filter:
-    brightness(0)
-    opacity(0.035);
-}
 
 /* Subtle slow breathing drift */
 @keyframes silhouetteDrift {
@@ -186,7 +175,6 @@
   mask-image: none;
 }
 
-[data-theme="light"] .hero-grid-overlay { opacity: 0; }
 
 /* ═══════════════════════════════════════════════
    CENTERED CONTAINER
@@ -329,6 +317,7 @@
   vertical-align: middle;
   margin-left: 4px;
   animation: cursorBlink 0.55s step-end infinite;
+  color: var(--accent-ink);
 }
 
 .hero-type-cursor--idle {
@@ -374,7 +363,7 @@
 }
 
 .hero-email-form {
-  width: min(720px, 100%);
+  width: min(820px, 100%);
 }
 
 .hero-email-shell {
@@ -391,6 +380,7 @@
   color: var(--text-primary);
   font-size: 0.95rem;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  
 }
 
 .hero-email-input:focus {

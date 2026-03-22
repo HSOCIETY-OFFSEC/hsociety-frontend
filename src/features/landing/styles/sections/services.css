@@ -4,7 +4,6 @@
 
 .services-section {
   background: var(--bg-primary);
-  border-top: 1px solid var(--border-color);
   --reveal-distance: 24px;
   padding: 4rem 0;
 }

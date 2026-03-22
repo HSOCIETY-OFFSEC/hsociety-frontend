@@ -1,84 +1,40 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 
 /**
  * Theme Provider
  * Location: src/app/providers.jsx
  * 
  * Features:
- * - Light/Black theme management
- * - Persists theme preference in localStorage
+ * - Dark-only theme
  * - Applies theme to document root
  * - Provides theme context to entire app
- * 
- * Theme Colors:
- * - Light: White background + Green accents (#10b981)
- * - Black: True black background + Green accents (#10b981)
  */
 
 const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
-  const getPreferredTheme = useCallback(() => {
-    if (typeof window === 'undefined') return 'black';
-    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'black';
-  }, []);
-
-  const getStoredMode = () => {
-    if (typeof window === 'undefined') return 'system';
-    return window.localStorage.getItem('themeMode') || 'system';
-  };
-
-  const resolveTheme = useCallback(
-    (mode) => (mode === 'system' ? getPreferredTheme() : mode),
-    [getPreferredTheme]
-  );
-
-  const [themeMode, setThemeMode] = useState(getStoredMode);
-  const [theme, setTheme] = useState(() => resolveTheme(getStoredMode()));
+  const theme = 'black';
+  const themeMode = 'black';
 
   // Apply theme to document root on mount and when theme changes
   useEffect(() => {
     const root = document.documentElement;
     
     // Set new theme if needed (avoid reflow on initial load)
-    if (root.getAttribute('data-theme') !== theme) {
-      root.setAttribute('data-theme', theme);
+    if (root.getAttribute('data-theme') !== 'black') {
+      root.setAttribute('data-theme', 'black');
     }
-    root.style.colorScheme = theme === 'light' ? 'light' : 'dark';
+    root.style.colorScheme = 'dark';
     
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      const themeColorMap = {
-        light: '#ffffff',
-        black: '#000000'
-      };
-      metaThemeColor.setAttribute('content', themeColorMap[theme] || '#000000');
+      metaThemeColor.setAttribute('content', '#000000');
     }
     
     // Keep a single favicon set across themes.
     updateFavicon();
-  }, [theme]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem('themeMode', themeMode);
-    }
-    setTheme(resolveTheme(themeMode));
-  }, [themeMode, resolveTheme]);
-
-  // Sync with browser preference changes
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-    const handleChange = () => {
-      if (themeMode === 'system') {
-        setTheme(getPreferredTheme());
-      }
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [getPreferredTheme, themeMode]);
+  }, []);
 
   // Keep favicon assets on a single canonical path.
   const updateFavicon = () => {
@@ -96,26 +52,13 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  const toggleTheme = () => {
-    setThemeMode((prev) => {
-      const next = prev === 'light' ? 'black' : 'light';
-      return next;
-    });
-  };
-
-  const setSystemTheme = () => {
-    setThemeMode('system');
-  };
-
   const value = {
     theme,
     themeMode,
-    toggleTheme,
-    setSystemTheme,
-    isDark: theme === 'black',
-    isLight: theme === 'light',
-    isBlack: theme === 'black',
-    isSystem: themeMode === 'system',
+    isDark: true,
+    isLight: false,
+    isBlack: true,
+    isSystem: false,
   };
 
   return (

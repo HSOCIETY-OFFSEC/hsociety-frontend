@@ -2,99 +2,24 @@
  * Common Styles
  * Location: src/styles/base/common.css
  *
- * Three-color system: primary green · black/dark · white/light
+ * Dark-only system: primary green · black/dark
  * ─────────────────────────────────────────────────────────────
  * Every colour in the UI derives from exactly three sources:
  *   1. Primary  — #1fbf8f (green, the brand accent)
  *   2. Dark     — pure black → near-black greys (for backgrounds, text, borders)
- *   3. Light    — off-white → cool grey (for backgrounds, text, borders)
  *
- * Light theme: darker than before — off-white bg, near-black text,
- *              true grey borders so cards read clearly without shadows.
- * Black theme: pure-black bg, single-step grey card, tight borders,
- *              same primary green (not teal).
+ * Dark theme: pure-black bg, single-step grey card, tight borders,
+ *             same primary green (not teal).
  * Modal overlay: near-black rgba, no blue tint, minimal blur.
  */
 
 /* ═══════════════════════════════════════════════
-   LIGHT THEME  (default)
+   DARK THEME (default)
    ═══════════════════════════════════════════════ */
 
 :root {
   --navbar-height: 72px;
 
-  /* ── Backgrounds ──
-     Stepped from cool off-white → slightly warm mid-grey.
-     Enough contrast that cards are visible without shadows.      */
-  --bg-primary:   #f2f4f7;   /* page background — noticeably grey, not white  */
-  --bg-secondary: #ffffff;   /* cards, panels                                  */
-  --bg-tertiary:  #e8ecf1;   /* inputs, hover rows, inset areas                */
-  --card-bg:      #ffffff;
-
-  /* ── Borders ──
-     Darker than before so card edges are crisp on the grey bg.  */
-  --border-color: color-mix(in srgb, var(--primary-color) 30%, #0a0e14);
-
-  /* ── Text ──
-     Primary = near-black for maximum contrast.
-     Secondary = dark charcoal — readable without being harsh.
-     Tertiary = medium grey for labels and hints.                 */
-  --text-primary:   #0a0e14;   /* near-black   */
-  --text-secondary: #2e3a4a;   /* dark charcoal */
-  --text-tertiary:  #6b7685;   /* medium grey   */
-
-  /* ── Inputs ── */
-  --input-bg:          #edf0f4;
-  --input-bg-focus:    #ffffff;
-  --input-bg-disabled: #dde2e9;
-
-  /* ── Notice ── */
-  --notice-bg: #edfaf4;   /* very light green tint — only place green touches bg */
-
-  /* ── Primary (brand green) ── */
-  --primary-color:       #1fbf8f;
-  --primary-color-hover: #17a87d;
-  --primary-color-alpha: rgba(31, 191, 143, 0.12);
-
-  /* ── Accent helpers ── */
-  --accent-ink:  #0a0e14;   /* text on primary-color buttons  */
-  --accent-glow: rgba(31, 191, 143, 0.20);
-
-  /* ── Shadows — darker than before for contrast on lighter bg ── */
-  --shadow-sm: 0 1px 3px  rgba(10, 14, 20, 0.10);
-  --shadow-md: 0 4px 12px rgba(10, 14, 20, 0.14);
-  --shadow-lg: 0 18px 40px -20px rgba(10, 14, 20, 0.30);
-  --shadow-xl: 0 30px 60px -30px rgba(10, 14, 20, 0.40);
-
-  /* ── Radii ── */
-  --radius-xs: 6px;
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-
-  /* ── Scrollbar ── */
-  --scrollbar-track: transparent;
-  --scrollbar-thumb:       color-mix(in srgb, var(--primary-color) 30%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--primary-color) 50%, transparent);
-  --scrollbar-size: 8px;
-
-  /* ── Z-index ── */
-  --z-sticky: 50;
-
-  /* ── Modal overlay — near-black, no colour cast ──
-     Used in auth.css .auth-modal-backdrop and any other modal shell.
-     backdrop-filter is intentionally kept short (4px) — just enough
-     to visually separate the modal without blurring the content blue. */
-  --modal-overlay-bg:    rgba(0, 0, 0, 0.72);
-  --modal-overlay-blur:  blur(4px);
-}
-
-/* ═══════════════════════════════════════════════
-   BLACK THEME
-   ═══════════════════════════════════════════════ */
-
-[data-theme="black"] {
   /* ── Backgrounds ──
      True black page → single-step dark card → slightly lighter inset.
      The gap between bg-primary and bg-secondary is intentionally small
@@ -120,10 +45,10 @@
   /* ── Notice ── */
   --notice-bg: #051a12;   /* very dark green tint */
 
-  /* ── Primary (same green — no teal drift) ── */
+  /* ── Primary (brand green) ── */
   --primary-color:       #1fbf8f;
   --primary-color-hover: #17a87d;
-  --primary-color-alpha: rgba(31, 191, 143, 0.16);
+  --primary-color-alpha: rgba(31, 191, 143, 0.12);
 
   /* ── Accent helpers ── */
   --accent-ink:  #000000;
@@ -135,7 +60,7 @@
   --shadow-lg: 0 18px 40px -22px rgba(0, 0, 0, 0.85);
   --shadow-xl: 0 30px 60px -30px rgba(0, 0, 0, 0.90);
 
-  /* ── Radii (unchanged) ── */
+  /* ── Radii ── */
   --radius-xs: 6px;
   --radius-sm: 10px;
   --radius-md: 14px;
@@ -147,6 +72,9 @@
   --scrollbar-thumb:       color-mix(in srgb, var(--primary-color) 35%, transparent);
   --scrollbar-thumb-hover: color-mix(in srgb, var(--primary-color) 55%, transparent);
   --scrollbar-size: 8px;
+
+  /* ── Z-index ── */
+  --z-sticky: 50;
 
   /* ── Modal overlay ── */
   --modal-overlay-bg:   rgba(0, 0, 0, 0.85);
@@ -189,26 +117,11 @@ body {
   font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans", Helvetica, Arial, sans-serif;
   background-color: var(--bg-primary);
 
-  /*
-   * Light theme: the brand watermark is very subtle because we've darkened
-   * the bg. Keep it but reduce the overlay opacity slightly.
-   */
-  background-image:
-    linear-gradient(135deg, rgba(242, 244, 247, 0.95), rgba(232, 236, 241, 0.97)),
-    url('../../assets/branding/brand-images/brand-image-white.webp');
-  background-size: cover, cover;
-  background-position: center;
-  background-repeat: no-repeat, no-repeat;
-  background-attachment: scroll;
+  background-image: none;
 
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
-}
-
-[data-theme="black"] body {
-  background-color: var(--bg-primary);
-  background-image: none;
 }
 
 body.workspace-lock-scroll { overflow: hidden; }

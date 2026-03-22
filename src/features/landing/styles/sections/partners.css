@@ -4,7 +4,6 @@
 
 .partners-section {
   background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
   --reveal-distance: 24px;
   padding: 3rem 0;
 }

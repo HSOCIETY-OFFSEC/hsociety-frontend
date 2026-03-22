@@ -10,9 +10,8 @@
    ═══════════════════════════════════════════════ */
 
 .cs-section {
-  padding: 5rem 1.5rem 0;
+  padding: 5rem 1.5rem cs-laptop0;
   position: relative;
-  border-top: 1px solid var(--border-color);
   background: var(--bg-primary);
   opacity: 0;
   transform: translateY(32px);
@@ -170,7 +169,7 @@
    ── */
 .cs-screen {
   position: relative;
-  background: #08080b;
+  
   border-radius: 10px 10px 0 0;
   overflow: hidden;
   min-height: clamp(380px, 52vh, 580px);

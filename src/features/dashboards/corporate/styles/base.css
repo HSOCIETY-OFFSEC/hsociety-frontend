@@ -147,14 +147,14 @@
 /* ── Card Padding Responsive ──────────────────────────────── */
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 1.25rem 0.875rem 2.5rem;
+    padding: 1.25rem 0 2.5rem;
     --card-padding: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
   .dashboard-container {
-    padding: 1rem 0.75rem 2rem;
+    padding: 1rem 0 2rem;
     --card-padding: 0.9rem;
   }
 }

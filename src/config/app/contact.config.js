@@ -76,6 +76,6 @@ export const CONTACT_STATS = [
 export const CONTACT_SOCIAL_LINKS = [
   { icon: FiTwitter, label: 'X (Twitter)', href: 'https://twitter.com/hsocietyoffsec' },
   { icon: FiLinkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/hsocietyoffsec' },
-  { icon: FiGithub, label: 'GitHub', href: 'https://github.com/hsociety-offsec' },
+  { icon: FiGithub, label: 'GitHub', href: 'https://github.com/hsocietyoffsec' },
   { icon: FiGlobe, label: 'Website', href: 'https://hsocietyoffsec.netlify.app' },
 ];

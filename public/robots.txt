@@ -1,4 +1,6 @@
+#Just becuase you see this doesnt mean you have done anything yet dummy 
+
 User-agent: *
 Allow: /
 
-Sitemap: https://hsociety.vercel.app/sitemap.xml
+Sitemap: https://hsociety.vercel.app/sitemap.xmlthinhgyet 

@@ -1,6 +1,6 @@
 (function () {
   try {
-    var themeOrder = ['light', 'dark', 'black'];
+    var themeOrder = ['light', 'black'];
     var stored = localStorage.getItem('hsociety-theme');
     var theme = themeOrder.indexOf(stored) !== -1 ? stored : 'dark';
     var root = document.documentElement;
@@ -10,7 +10,6 @@
     if (metaThemeColor) {
       var themeColorMap = {
         light: '#ffffff',
-        dark: '#0a0f14',
         black: '#000000'
       };
       metaThemeColor.setAttribute('content', themeColorMap[theme] || '#0a0f14');

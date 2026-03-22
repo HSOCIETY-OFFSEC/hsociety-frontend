@@ -4,7 +4,6 @@
 
 .stats-section {
   background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
   --reveal-distance: 24px;
 }
 
@@ -71,7 +70,6 @@
   }
 
   .stat-item:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--border-color);
     padding-bottom: 1.25rem;
   }
 }

@@ -82,6 +82,16 @@
   padding-bottom: calc(1.5rem + var(--bottom-nav-height, 64px));
 }
 
+.workspace-layout.mobile.pp-dashboard-theme .workspace-main {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.workspace-layout.tablet.pp-dashboard-theme .workspace-main {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .workspace-layout.community-mode.mobile .workspace-main {
   padding: calc(var(--navbar-height, 64px) + 1rem) 1rem 1rem;
   height: calc(100vh - var(--navbar-height, 64px) - var(--bottom-nav-height, 64px));

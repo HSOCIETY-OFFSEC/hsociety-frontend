@@ -87,18 +87,19 @@
 @media (max-width: 1024px) {
   .workspace-layout.pp-dashboard-theme .workspace-main {
     padding-top: calc(var(--navbar-height, 64px) + 1.25rem);
-    padding-right: 1.25rem;
+    padding-left: 0;
+    padding-right: 0;
     padding-bottom: 4rem;
   }
 }
 
 @media (max-width: 768px) {
   .workspace-layout.pp-dashboard-theme .workspace-main {
-    padding: calc(var(--navbar-height, 64px) + 1rem) 1rem 4rem;
+    padding: calc(var(--navbar-height, 64px) + 1rem) 0 4rem;
   }
 
   .workspace-layout.pp-dashboard-theme.no-sidebar .workspace-main {
-    padding: calc(var(--navbar-height, 64px) + 1rem) 1rem 4rem;
+    padding: calc(var(--navbar-height, 64px) + 1rem) 0 4rem;
   }
 
   .workspace-layout.pp-dashboard-theme .dashboard-shell-header {
