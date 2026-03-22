@@ -1,36 +1,41 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../../styles/sections/partners.css';
 
 import SorbitLogo from '../../../../assets/images/partners/sorbit.webp';
 import RedspectreAILogo from '../../../../assets/images/partners/redspectre-ai.webp';
 import WSuitsIndustriesLogo from '../../../../assets/images/partners/wsuits-industries.webp';
-import ImageWithLoader from '../../../../shared/components/ui/ImageWithLoader';
-import partnerBackdrop from '../../../../assets/images/services-images/community-integration.webp';
 
 const PartnerCarouselSection = () => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const partners = [SorbitLogo, RedspectreAILogo, WSuitsIndustriesLogo];
   if (!partners.length) return null;
 
   return (
-    <section className="partners-section reveal-on-scroll" aria-label="Partners">
+    <section className="partners-section reveal-on-scroll" aria-label="Partners" ref={sectionRef}>
       <div className="section-container">
         <div className="partners-header">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Partners</p>
         </div>
-        <div className="partners-hero">
-          <div className="partners-hero-media">
-            <ImageWithLoader
-              src={partnerBackdrop}
-              alt="HSOCIETY partner network"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <div className="partners-hero-copy">
-            <h3>Backed by operators who ship real security.</h3>
-            <p>We align with teams and brands that push offensive security forward.</p>
-          </div>
-        </div>
+
         <div className="partners-marquee" aria-hidden="true">
           <div className="partners-track">
             {[...partners, ...partners].map((logo, index) => (

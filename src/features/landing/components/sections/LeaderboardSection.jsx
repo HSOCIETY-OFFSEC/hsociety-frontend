@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resolveProfileAvatar } from '../../../../shared/utils/display/profileAvatar';
 import ImageWithLoader from '../../../../shared/components/ui/ImageWithLoader';
@@ -21,11 +21,35 @@ const SkeletonRow = () => (
 
 const LeaderboardSection = ({ entries = [], loading = false }) => {
   const navigate = useNavigate();
+  const sectionRef = useRef(null);
 
-  // Still loading — show skeleton
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   if (loading) {
     return (
-      <section className="leaderboard-section reveal-on-scroll" id="leaderboard" aria-busy="true" aria-label="Leaderboard loading">
+      <section
+        className="leaderboard-section reveal-on-scroll"
+        id="leaderboard"
+        aria-busy="true"
+        aria-label="Leaderboard loading"
+        ref={sectionRef}
+      >
         <div className="section-container">
           <header className="section-header">
             <p className="section-eyebrow"><span className="eyebrow-dot" />Leaderboard</p>
@@ -47,11 +71,14 @@ const LeaderboardSection = ({ entries = [], loading = false }) => {
   }
 
   const top = entries.slice(0, 5);
-  // No data after load — hide section entirely
   if (!top.length) return null;
 
   return (
-    <section className="leaderboard-section reveal-on-scroll" id="leaderboard">
+    <section
+      className="leaderboard-section reveal-on-scroll"
+      id="leaderboard"
+      ref={sectionRef}
+    >
       <div className="section-container">
         <header className="section-header">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Leaderboard</p>
@@ -68,7 +95,10 @@ const LeaderboardSection = ({ entries = [], loading = false }) => {
           </div>
           {top.map((entry, index) => (
             <div key={entry.id} className="leaderboard-row" role="row">
-              <span className={`leaderboard-rank${index === 0 ? ' is-top' : ''}`} role="cell">
+              <span
+                className={`leaderboard-rank${index === 0 ? ' is-top' : ''}`}
+                role="cell"
+              >
                 #{index + 1}
               </span>
               <span className="leaderboard-user" role="cell">

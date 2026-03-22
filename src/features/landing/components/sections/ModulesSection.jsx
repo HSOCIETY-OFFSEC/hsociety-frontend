@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import '../../styles/sections/modules.css';
 
 const ModulesSection = ({ modules = [] }) => {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   if (!modules.length) return null;
 
   return (
-    <section className="modules-section reveal-on-scroll" id="modules">
+    <section className="modules-section reveal-on-scroll" id="modules" ref={sectionRef}>
       <div className="section-container">
         <header className="section-header-center">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Modules</p>
