@@ -125,9 +125,6 @@ const RoleRoute = ({ children, allowedRoles }) => {
   }
   if (!role) return <PageLoader message="Loading your profile..." durationMs={0} />;
   if (!allowedRoles.includes(role)) {
-    if (allowedRoles.includes('corporate') && (role === 'pentester' || role === 'client')) {
-      return children;
-    }
     if (role === 'student') return <StudentRoleBlocker />;
     if (role === 'admin') return <Navigate to="/mr-robot" replace />;
     if (role === 'pentester') return <Navigate to="/pentester" replace />;
@@ -210,7 +207,7 @@ const AppRouter = () => {
             <Route
               path="community"
               element={
-                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin']}>
                   <CommunityHub />
                 </RoleRoute>
               }
@@ -218,7 +215,7 @@ const AppRouter = () => {
             <Route
               path="community/profiles"
               element={
-                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin']}>
                   <CommunityProfiles />
                 </RoleRoute>
               }
@@ -226,7 +223,7 @@ const AppRouter = () => {
             <Route
               path="community/media"
               element={
-                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin']}>
                   <CommunityMedia />
                 </RoleRoute>
               }
@@ -242,7 +239,7 @@ const AppRouter = () => {
             <Route
               path="community/profile/:handle"
               element={
-                <RoleRoute allowedRoles={['student', 'pentester', 'admin', 'corporate']}>
+                <RoleRoute allowedRoles={['student', 'pentester', 'admin']}>
                   <CommunityProfileRedirect />
                 </RoleRoute>
               }
@@ -250,7 +247,7 @@ const AppRouter = () => {
             <Route
               path="corporate-dashboard"
               element={
-                <RoleRoute allowedRoles={['corporate', 'pentester']}>
+                <RoleRoute allowedRoles={['corporate']}>
                   <Dashboard />
                 </RoleRoute>
               }

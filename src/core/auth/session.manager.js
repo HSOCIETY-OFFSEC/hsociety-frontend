@@ -18,7 +18,20 @@ import { encrypt } from '../encryption/encrypt';
 import { decrypt } from '../encryption/decrypt';
 
 const SESSION_KEY = 'hsociety_session';
-const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const DEFAULT_SESSION_FALLBACK_MS = 15 * 60 * 1000; // 15 minutes fallback if no exp
+
+const parseJwtExpiry = (token) => {
+  if (!token) return null;
+  const parts = String(token).split('.');
+  if (parts.length < 2) return null;
+  try {
+    const payload = JSON.parse(atob(parts[1]));
+    if (payload?.exp) return Number(payload.exp) * 1000;
+    return null;
+  } catch {
+    return null;
+  }
+};
 
 class SessionManager {
   constructor() {
@@ -33,10 +46,15 @@ class SessionManager {
     if (!this.storage) return false;
 
     try {
+      const tokenExpiry = parseJwtExpiry(sessionData.token);
+      const derivedExpiry =
+        sessionData.expiresAt
+        || tokenExpiry
+        || (sessionData.token ? Date.now() + DEFAULT_SESSION_FALLBACK_MS : null);
       const session = {
         ...sessionData,
         timestamp: sessionData.timestamp || Date.now(),
-        expiresAt: Date.now() + SESSION_DURATION
+        expiresAt: derivedExpiry
       };
 
       // TODO: Encrypt sensitive data before storing
@@ -124,7 +142,7 @@ class SessionManager {
     if (!session.user || !session.token) return false;
     
     // Check if session has expired
-    if (session.expiresAt && Date.now() > session.expiresAt) {
+    if (!session.expiresAt || Date.now() > session.expiresAt) {
       console.log('Session expired');
       this.clearSession();
       return false;
@@ -140,6 +158,15 @@ class SessionManager {
   getToken() {
     const session = this.getSession();
     return session ? session.token : null;
+  }
+
+  /**
+   * Get refresh token
+   * @returns {string|null}
+   */
+  getRefreshToken() {
+    const session = this.getSession();
+    return session ? session.refreshToken : null;
   }
 
   /**

@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FiImage, FiSend, FiSmile, FiX } from 'react-icons/fi';
-import { uploadCommunityImage } from '../../services/community.service';
+import { FiSend, FiSmile } from 'react-icons/fi';
 import { COMMUNITY_UI } from '../../../../data/static/community/communityUiData';
-import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 
 const MAX = COMMUNITY_UI.compose.maxChars;
-const MAX_IMAGE_BYTES = COMMUNITY_UI.compose.maxImageBytes;
 const EMOJIS = COMMUNITY_UI.compose.emojis;
 
 const CommunityCompose = ({
@@ -15,19 +12,13 @@ const CommunityCompose = ({
   onDraftChange,
   onSend,
   onTyping,
-  imageUrl,
-  onImageChange,
-  imageError,
-  onImageError,
 }) => {
-  const fileInputRef = useRef(null);
   const emojiRef = useRef(null);
-  const [uploading, setUploading] = useState(false);
   const [emojiOpen, setEmojiOpen] = useState(false);
   const typingTimerRef = useRef(null);
   const charsLeft = MAX - draft.length;
   const nearLimit = charsLeft < 80;
-  const canSend = Boolean(draft.trim() || imageUrl);
+  const canSend = Boolean(draft.trim());
   const roomLabel = room?.startsWith('#') ? room.slice(1) : room || 'general';
 
   useEffect(() => {
@@ -45,43 +36,6 @@ const CommunityCompose = ({
     if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
   }, []);
 
-  const handlePickImage = () => {
-    if (fileInputRef.current) fileInputRef.current.click();
-  };
-
-  const handleFileChange = async (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      onImageError?.(COMMUNITY_UI.compose.invalidImageText);
-      event.target.value = '';
-      return;
-    }
-
-    if (file.size > MAX_IMAGE_BYTES) {
-      onImageError?.(COMMUNITY_UI.compose.imageTooLargeText);
-      event.target.value = '';
-      return;
-    }
-
-    try {
-      setUploading(true);
-      onImageError?.('');
-      const response = await uploadCommunityImage(file);
-      if (!response.success || !response.data?.url) {
-        onImageError?.(getPublicErrorMessage({ action: 'submit', response }));
-        return;
-      }
-      onImageChange?.(response.data.url);
-    } catch (_err) {
-      onImageError?.(COMMUNITY_UI.compose.uploadFailedText);
-    } finally {
-      setUploading(false);
-      event.target.value = '';
-    }
-  };
-
   const handleTyping = (value) => {
     onDraftChange(value);
     if (!onTyping) return;
@@ -97,15 +51,6 @@ const CommunityCompose = ({
 
       <div className="community-compose-stack">
         <div className="community-compose-inner">
-          <button
-            type="button"
-            className="community-attach-btn"
-            onClick={handlePickImage}
-            aria-label="Attach an image"
-            disabled={uploading}
-          >
-            <FiImage size={16} />
-          </button>
           <div className="community-emoji" ref={emojiRef}>
             <button
               type="button"
@@ -136,16 +81,6 @@ const CommunityCompose = ({
             )}
           </div>
           <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="community-attach-input"
-            onChange={handleFileChange}
-            aria-hidden="true"
-            tabIndex={-1}
-          />
-
-          <input
             value={draft}
             onChange={(e) => handleTyping(e.target.value)}
             placeholder={`Message #${roomLabel}`}
@@ -172,32 +107,12 @@ const CommunityCompose = ({
             type="button"
             className="community-send-btn"
             onClick={onSend}
-            disabled={!canSend || uploading}
+            disabled={!canSend}
             aria-label="Send message"
           >
             <FiSend size={15} />
           </button>
         </div>
-
-        {imageUrl && (
-          <div className="community-compose-attachment" role="group" aria-label="Image attachment">
-            <img src={imageUrl} alt="Attachment preview" />
-            <button
-              type="button"
-              className="community-attachment-remove"
-              onClick={() => {
-                onImageChange?.('');
-                onImageError?.('');
-              }}
-              aria-label="Remove image attachment"
-            >
-              <FiX size={14} />
-            </button>
-          </div>
-        )}
-
-        {uploading && <p className="community-compose-status">{COMMUNITY_UI.compose.uploadingText}</p>}
-        {imageError && <p className="community-compose-error">{imageError}</p>}
       </div>
     </div>
   );

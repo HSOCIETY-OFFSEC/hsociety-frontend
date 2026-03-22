@@ -85,7 +85,7 @@ const Services = () => {
           <div className="svc-header-actions">
             <button
               className="svc-btn svc-btn-secondary"
-              onClick={() => openAuthModal('register-corporate')}
+              onClick={() => openAuthModal('login')}
             >
               Join training cycle
             </button>

@@ -54,6 +54,12 @@ export const submitBootcampBtcPayment = async (payload = {}) => {
   return { success: false, error: getPublicErrorMessage({ action: 'payment', response }), status: response.status };
 };
 
+export const getBootcampAccessKey = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.STUDENT.BOOTCAMP_ACCESS_KEY);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
+};
+
 export const enrollTraining = async (payload = {}) => {
   const response = await apiClient.post(API_ENDPOINTS.STUDENT.ENROLL_TRAINING, payload);
   if (response.success) return { success: true, data: response.data };
@@ -127,4 +133,5 @@ export default {
   initializeBootcampPayment,
   verifyBootcampPayment,
   submitBootcampBtcPayment,
+  getBootcampAccessKey,
 };

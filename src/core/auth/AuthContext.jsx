@@ -69,8 +69,19 @@ export const AuthProvider = ({ children }) => {
           // Setup auto logout monitoring
           setupInactivityMonitor();
         } else {
-          // Session expired, clear it
-          await logout(false);
+          // Try refresh before forcing logout
+          const refreshed = await refreshToken();
+          if (!refreshed?.success) {
+            await logout(false);
+          } else {
+            const nextSession = sessionManager.getSession();
+            if (nextSession?.user && nextSession?.token) {
+              setUser(nextSession.user);
+              setToken(nextSession.token);
+              setIsAuthenticated(true);
+              setupInactivityMonitor();
+            }
+          }
         }
       }
     } catch (error) {
@@ -109,18 +120,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Login function
-  const login = async (userData, authToken, refreshToken = null) => {
+  const login = async (userData, authToken, refreshToken = null, expiresIn = null) => {
     try {
       // Validate input
       if (!userData || !authToken) {
         throw new Error('Invalid login credentials');
       }
 
+      const expiresAt = expiresIn ? Date.now() + Number(expiresIn) * 1000 : undefined;
+
       // Store session
       sessionManager.setSession({
         user: userData,
         token: authToken,
         refreshToken,
+        expiresAt,
         timestamp: Date.now()
       });
 
@@ -234,9 +248,10 @@ export const AuthProvider = ({ children }) => {
 
       const newToken = response.token;
       const newRefreshToken = response.refreshToken;
+      const expiresAt = response.expiresIn ? Date.now() + Number(response.expiresIn) * 1000 : undefined;
 
       // Update session
-      sessionManager.updateSession({ token: newToken, refreshToken: newRefreshToken });
+      sessionManager.updateSession({ token: newToken, refreshToken: newRefreshToken, expiresAt });
       
       // Update state
       setToken(newToken);

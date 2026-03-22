@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FiHeart, FiMessageSquare, FiSend, FiRepeat, FiBookmark, FiSmile } from 'react-icons/fi';
+import { FiHeart, FiMessageSquare, FiSend, FiRepeat, FiBookmark, FiSmile, FiFlag } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { getDisplayName, getMessageAvatar, formatMessageTime } from '../../services/community.utils';
 import { sanitizeText } from '../../../../shared/utils/sanitize';
@@ -13,6 +13,7 @@ const CommunityMessage = ({
   onLike,
   onAddComment,
   onReact,
+  onReport,
   reactionEmojis = [],
   reactionLimit = 3,
   currentUserId,
@@ -308,6 +309,14 @@ const CommunityMessage = ({
             disabled
           >
             <FiBookmark size={15} />
+          </button>
+          <button
+            type="button"
+            className="community-post-action-btn"
+            aria-label="Report message"
+            onClick={() => onReport?.(message.id)}
+          >
+            <FiFlag size={15} />
           </button>
         </div>
 

@@ -11,6 +11,10 @@ export const normalizeEngagement = (engagement = {}) => ({
   startDate: engagement.startDate || null,
   expectedCompletion: engagement.expectedCompletion || null,
   summary: engagement.summary || '',
+  verificationStatus: engagement.verificationStatus || 'pending',
+  ownershipProof: engagement.ownershipProof || null,
+  ownerVerified: Boolean(engagement.ownerVerified),
+  paymentStatus: engagement.paymentStatus || 'pending_approval',
   budget: Number(engagement.budget || 0),
   currency: engagement.currency || 'USD'
 });

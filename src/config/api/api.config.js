@@ -117,6 +117,8 @@ const DEFAULT_API_ENDPOINTS = {
     BOOTCAMP_PAYMENT_INIT: '/student/bootcamp/payments/initialize',
     BOOTCAMP_PAYMENT_VERIFY: '/student/bootcamp/payments/verify',
     BOOTCAMP_PAYMENT_BTC: '/student/bootcamp/payments/btc',
+    BOOTCAMP_ACCESS_KEY: '/student/bootcamp/access-key',
+    BOOTCAMP_RESOURCES: '/student/bootcamp/resources',
     FREE_RESOURCES: '/student/learn/resources/free',
     XP_SUMMARY: '/student/xp-summary',
     ENROLL_TRAINING: '/student/enroll-training',

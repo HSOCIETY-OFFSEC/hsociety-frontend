@@ -5,7 +5,8 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import useBootcampAccess from '../hooks/useBootcampAccess';
 import StudentAccessModal from '../components/StudentAccessModal';
 import StudentPaymentModal from '../components/StudentPaymentModal';
-import { verifyBootcampPayment } from '../../dashboards/student/services/student.service';
+import { verifyBootcampPayment, getBootcampAccessKey } from '../../dashboards/student/services/student.service';
+import { getCurrentUser } from '../../../core/auth/auth.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import '../styles/components.css';
 import '../styles/payments.css';
@@ -18,6 +19,7 @@ const StudentPayments = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [accessKey, setAccessKey] = useState('');
 
   const handleOpenPayment = () => {
     if (!isRegistered) {
@@ -45,6 +47,10 @@ const StudentPayments = () => {
         bootcampStatus: response.data?.bootcampStatus || 'enrolled',
         bootcampPaidAt: response.data?.bootcampPaidAt,
       });
+      const refreshed = await getCurrentUser();
+      if (refreshed.success && refreshed.user) {
+        updateUser(refreshed.user);
+      }
       setStatusMessage(
         status === 'success' ? 'Payment verified. Access unlocked.' : 'Payment verified.'
       );
@@ -52,6 +58,20 @@ const StudentPayments = () => {
 
     verify();
   }, [location.search, updateUser]);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadKey = async () => {
+      if (!isPaid) return;
+      const response = await getBootcampAccessKey();
+      if (!mounted) return;
+      if (response.success) {
+        setAccessKey(response.data?.bootcampAccessKey || '');
+      }
+    };
+    loadKey();
+    return () => { mounted = false; };
+  }, [isPaid]);
 
   return (
     <div className="sp-page">
@@ -120,6 +140,26 @@ const StudentPayments = () => {
                   </button>
                 </div>
               </article>
+              {isPaid && (
+                <article className="sp-item-row">
+                  <div className="sp-item-main">
+                    <span className="sp-item-title">Bootcamp Access Key</span>
+                    <span className="sp-item-subtitle">
+                      {accessKey ? accessKey : 'Generating access key...'}
+                    </span>
+                  </div>
+                  <div className="sp-item-meta">
+                    <button
+                      type="button"
+                      className="sp-btn sp-btn-secondary"
+                      onClick={() => accessKey && navigator.clipboard?.writeText(accessKey)}
+                      disabled={!accessKey}
+                    >
+                      Copy Key
+                    </button>
+                  </div>
+                </article>
+              )}
               <article className="sp-item-row">
                 <div className="sp-item-main">
                   <span className="sp-item-title">Secure Checkout</span>

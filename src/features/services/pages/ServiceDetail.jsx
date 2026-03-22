@@ -74,7 +74,7 @@ const ServiceDetail = () => {
           <div className="svc-detail-header-actions">
             <button
               className="svc-detail-btn svc-detail-btn-secondary"
-              onClick={() => openAuthModal('register-corporate')}
+              onClick={() => openAuthModal('login')}
             >
               Join training cycle
             </button>
@@ -213,7 +213,7 @@ const ServiceDetail = () => {
               </button>
               <button
                 className="svc-detail-btn svc-detail-btn-secondary svc-detail-btn-full"
-                onClick={() => openAuthModal('register-corporate')}
+                onClick={() => openAuthModal('login')}
               >
                 Join training
               </button>

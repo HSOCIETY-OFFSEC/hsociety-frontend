@@ -14,6 +14,7 @@ import {
 } from 'react-icons/fi';
 import { getStudentOverview } from '../services/student.service';
 import { listNotifications } from '../../../student/services/notifications.service';
+import useBootcampAccess from '../../../student/hooks/useBootcampAccess';
 import StudentXpSummaryCard from '../components/StudentXpSummaryCard';
 import StudentRecentNotificationsCard from '../components/StudentRecentNotificationsCard';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
@@ -34,6 +35,7 @@ const StudentDashboard = () => {
   });
   const [error, setError] = useState('');
   const [notifications, setNotifications] = useState([]);
+  const { isRegistered, isPaid } = useBootcampAccess();
   const rumSentRef = useRef(false);
   const loadStartRef = useRef(performance.now());
   const loadStudentData = useCallback(async () => {
@@ -86,13 +88,15 @@ const StudentDashboard = () => {
     return null;
   }, [data.learningPath, data.modules]);
 
-  const handleResumeLesson = () => {
-    if (!continueModule?.id) {
-      navigate('/student-bootcamps/overview');
-      return;
+  const bootcampAction = useMemo(() => {
+    if (!isRegistered) {
+      return { label: 'Register', onClick: () => navigate('/student-bootcamps') };
     }
-    navigate(`/student-bootcamps/modules/${continueModule.id}`);
-  };
+    if (!isPaid) {
+      return { label: 'Pay Now', onClick: () => navigate('/student-payments') };
+    }
+    return { label: 'Enter Bootcamp', onClick: () => navigate('/student-bootcamps/overview') };
+  }, [isRegistered, isPaid, navigate]);
 
   const skillPillars = useMemo(() => {
     const parsePercent = (value) => {
@@ -211,11 +215,11 @@ const StudentDashboard = () => {
             <button
               type="button"
               className="sd-btn sd-btn-primary"
-              onClick={handleResumeLesson}
+              onClick={bootcampAction.onClick}
               disabled={loading}
             >
               <FiCompass size={16} />
-              Resume Lesson
+              {bootcampAction.label}
             </button>
           </div>
         </div>
@@ -287,7 +291,7 @@ const StudentDashboard = () => {
                   <button
                     type="button"
                     className="sd-btn sd-btn-pay"
-                    onClick={() => navigate('/student-bootcamps/payments')}
+                    onClick={() => navigate('/student-payments')}
                   >
                     Pay Now <FiArrowRight size={14} />
                   </button>
@@ -320,9 +324,9 @@ const StudentDashboard = () => {
                   <button
                     type="button"
                     className="sd-btn sd-btn-primary"
-                    onClick={handleResumeLesson}
+                    onClick={bootcampAction.onClick}
                   >
-                    Resume Lesson <FiArrowRight size={14} />
+                    {bootcampAction.label} <FiArrowRight size={14} />
                   </button>
                 </div>
               </section>

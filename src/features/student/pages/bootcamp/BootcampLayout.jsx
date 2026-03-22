@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../core/auth/AuthContext';
 import { registerBootcamp } from '../../../dashboards/student/services/student.service';
+import { getCurrentUser } from '../../../../core/auth/auth.service';
 import StudentAccessModal from '../../components/StudentAccessModal';
 import useBootcampAccess from '../../hooks/useBootcampAccess';
 import '../../styles/bootcamp/bootcamp-app.css';
@@ -57,11 +58,16 @@ const BootcampLayout = () => {
     });
 
     if (response.success) {
-      updateUser({
-        bootcampRegistered: true,
-        bootcampStatus: response.data?.bootcampStatus || 'enrolled',
-        bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'unpaid',
-      });
+      const refreshed = await getCurrentUser();
+      if (refreshed.success && refreshed.user) {
+        updateUser(refreshed.user);
+      } else {
+        updateUser({
+          bootcampRegistered: true,
+          bootcampStatus: response.data?.bootcampStatus || 'enrolled',
+          bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'unpaid',
+        });
+      }
       navigate('/student-payments');
     }
 

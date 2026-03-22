@@ -180,7 +180,7 @@ const Pricing = () => {
                         onClick={() =>
                           isFeatured
                             ? navigate('/contact')
-                            : openAuthModal('register-corporate')
+                            : openAuthModal('login')
                         }
                       >
                         {isFeatured ? 'Talk to our team' : 'Get started'}
@@ -241,7 +241,7 @@ const Pricing = () => {
               </button>
               <button
                 className="pri-btn pri-btn-secondary"
-                onClick={() => openAuthModal('register-corporate')}
+                onClick={() => openAuthModal('login')}
               >
                 <FiUsers size={13} />
                 Corporate account

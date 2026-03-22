@@ -129,7 +129,7 @@ const ErrorBanner = ({ message }) => (
 /* ══════════════════════════════════════════════════════════
    LOGIN FORM
    ══════════════════════════════════════════════════════════ */
-const LoginForm = ({ onSwitchToRegister, prefillEmail = '' }) => {
+const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
@@ -180,7 +180,11 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '' }) => {
         });
         return;
       }
-      await login(response.user, response.token, response.refreshToken);
+      if (roleGuard && response.user?.role !== roleGuard) {
+        setError('Login failed. Please try again.');
+        return;
+      }
+      await login(response.user, response.token, response.refreshToken, response.expiresIn);
       showToast({ variant: 'success', title: 'Login successful', message: 'Welcome back. Your workspace is ready.', duration: 3600 });
       const redirect = location.state?.redirect;
       navigate(redirect && redirect.startsWith('/') ? redirect : resolveRoute(response.user?.role), { replace: true });
@@ -250,9 +254,6 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '' }) => {
         <button type="button" className="ap-btn-ghost" onClick={() => onSwitchToRegister('student')}>
           Create student account
         </button>
-        <button type="button" className="ap-btn-ghost" onClick={() => onSwitchToRegister('corporate')}>
-          Register organisation
-        </button>
       </div>
     </>
   );
@@ -271,7 +272,7 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
     return q.get('email') || '';
   }, [location.search]);
 
-  const [accountType, setAccountType] = useState(defaultType);
+  const [accountType] = useState('student');
   const [form, setForm] = useState({
     name: '', companyOrSchool: '', handle: '', email: prefillEmail,
     password: '', confirmPassword: '', agree: false,
@@ -384,17 +385,10 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
       </div>
 
       <div className="ap-toggle" role="group" aria-label="Account type">
-        <button type="button" className={accountType === 'student' ? 'active' : ''} onClick={() => setAccountType('student')} disabled={loading}>
+        <button type="button" className="active" disabled>
           Student
         </button>
-        <button type="button" className={accountType === 'corporate' ? 'active' : ''} onClick={() => setAccountType('corporate')} disabled={loading}>
-          Organisation
-        </button>
       </div>
-
-      {accountType === 'corporate' && (
-        <div className="ap-note">Organisation accounts get team management, SSO, and dedicated onboarding support.</div>
-      )}
 
       {error && <ErrorBanner message={error} />}
 
@@ -474,7 +468,7 @@ const AuthPortal = () => {
   const authParam = query.get('auth');
 
   const initialView = (authParam === 'register' || authParam === 'register-corporate') ? 'register' : 'login';
-  const initialType = authParam === 'register-corporate' ? 'corporate' : 'student';
+  const initialType = 'student';
 
   const [view, setView]       = useState(initialView);
   const [regType, setRegType] = useState(initialType);
@@ -488,7 +482,12 @@ const AuthPortal = () => {
       <section className="ap-right">
         <div className="ap-right-inner">
           {view === 'login'
-            ? <LoginForm onSwitchToRegister={goRegister} />
+            ? (
+              <LoginForm
+                onSwitchToRegister={goRegister}
+                roleGuard={authParam === 'pentester-login' ? 'pentester' : null}
+              />
+            )
             : <RegisterForm defaultType={regType} onSwitchToLogin={goLogin} />
           }
           <div className="ap-notice">

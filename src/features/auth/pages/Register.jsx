@@ -42,20 +42,6 @@ const Register = ({
             {copy.footer.loginAction}
           </button>
         </p>
-        <p>
-          {copy.footer.corporatePrompt}{' '}
-          <button
-            type="button"
-            className="ap-link-inline"
-            onClick={() =>
-              onRequestModeChange
-                ? onRequestModeChange('register-corporate')
-                : navigate('/posts?auth=register-corporate')
-            }
-          >
-            {copy.footer.corporateAction}
-          </button>
-        </p>
       </div>
 
       <div className="ap-notice">

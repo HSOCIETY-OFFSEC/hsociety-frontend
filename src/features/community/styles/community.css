@@ -2753,7 +2753,7 @@
 
 .cpr-sidebar {
   position: sticky;
-  top: calc(var(--navbar-height, 72px) + 1.5rem);
+  top: calc(var(--navbar-height, 64px) + 1.5rem);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;

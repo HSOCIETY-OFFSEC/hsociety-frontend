@@ -94,7 +94,7 @@ const Login = ({
 
       const role = response.user?.role;
       enforceRole(role);
-      await login(response.user, response.token, response.refreshToken);
+      await login(response.user, response.token, response.refreshToken, response.expiresIn);
       showToast({
         variant: 'success',
         title: 'Login successful',
@@ -192,20 +192,6 @@ const Login = ({
             disabled={loading}
           >
             {copy.footer.studentAction}
-          </button>
-        </p>
-        <p>
-          {copy.footer.corporatePrompt}{' '}
-          <button
-            onClick={() =>
-              onRequestModeChange
-                ? onRequestModeChange('register-corporate')
-                : navigate('/posts?auth=register-corporate')
-            }
-            className="ap-link-inline"
-            disabled={loading}
-          >
-            {copy.footer.corporateAction}
           </button>
         </p>
       </div>

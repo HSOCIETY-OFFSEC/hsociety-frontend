@@ -44,6 +44,16 @@ export const getCommunityProfile = async (handle) => {
   return { success: true, data: response.data || {} };
 };
 
+export const reportCommunityMessage = async (messageId, reason = '') => {
+  if (!messageId) return { success: false, error: 'Message not found' };
+  const endpoint = `${API_ENDPOINTS.COMMUNITY.MESSAGES}/${messageId}/report`;
+  const response = await apiClient.post(endpoint, { reason });
+  if (!response.success) {
+    return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
+  }
+  return { success: true, data: response.data || {} };
+};
+
 export const getCommunityProfilesList = async (limit = 12) => {
   const params = new URLSearchParams({ limit: String(limit) }).toString();
   const response = await apiClient.get(`${API_ENDPOINTS.PUBLIC.COMMUNITY_PROFILES}?${params}`);
@@ -60,4 +70,5 @@ export default {
   uploadCommunityImage,
   getCommunityProfile,
   getCommunityProfilesList,
+  reportCommunityMessage,
 };

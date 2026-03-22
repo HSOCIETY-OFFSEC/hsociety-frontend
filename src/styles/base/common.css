@@ -18,7 +18,7 @@
    ═══════════════════════════════════════════════ */
 
 :root {
-  --navbar-height: 72px;
+  --navbar-height: 64px;
 
   /* ── Backgrounds ──
      True black page → single-step dark card → slightly lighter inset.
@@ -26,11 +26,11 @@
      so cards read as dark-on-black, not grey-on-grey.              */
   --bg-primary:   #000000;   /* page background           */
   --bg-secondary: #0d0d0d;   /* cards, panels             */
-  --bg-tertiary:  #1a1a1a;   /* inputs, hover rows, inset */
+  --bg-tertiary:  #141414;   /* slightly lighter for hover/inset */
   --card-bg:      #0d0d0d;
 
-  /* ── Borders — accented, visible but not glaring ── */
-  --border-color: color-mix(in srgb, var(--primary-color) 40%, #0d0d0d);
+  /* ── Borders — subtler, using less green for general borders ── */
+  --border-color: #1a1a1a; 
 
   /* ── Text ── */
   --text-primary:   #f5f7fa;   /* near-white             */
@@ -45,14 +45,16 @@
   /* ── Notice ── */
   --notice-bg: #051a12;   /* very dark green tint */
 
-  /* ── Primary (brand green) ── */
+  /* ── Primary (brand green) — Keep as accent ── */
   --primary-color:       #1fbf8f;
   --primary-color-hover: #17a87d;
-  --primary-color-alpha: rgba(31, 191, 143, 0.12);
+  --primary-color-alpha: rgba(31, 191, 143, 0.08);
 
   /* ── Accent helpers ── */
   --accent-ink:  #000000;
-  --accent-glow: rgba(31, 191, 143, 0.22);
+  --accent-glow: rgba(31, 191, 143, 0.15);
+
+  --error-color: #cf222e;
 
   /* ── Shadows ── */
   --shadow-sm: 0 1px 3px  rgba(0, 0, 0, 0.55);
@@ -206,12 +208,8 @@ select:focus-visible {
 
 @media (max-width: 900px) {
   body {
-    /* On mobile drop the brand watermark — too subtle to matter, saves paint */
-    background-image: linear-gradient(
-      180deg,
-      rgba(242, 244, 247, 0.98),
-      rgba(232, 236, 241, 0.99)
-    );
+    /* On mobile keep it true black for consistency with dashboard UI */
+    background-color: var(--bg-primary);
   }
 }
 

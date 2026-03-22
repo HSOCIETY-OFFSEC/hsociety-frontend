@@ -13,6 +13,7 @@ const CommunityMessageList = ({
   onLike,
   onAddComment,
   onReact,
+  onReport,
   reactionEmojis,
   reactionLimit,
   currentUserId,
@@ -60,6 +61,7 @@ const CommunityMessageList = ({
           onLike={onLike}
           onAddComment={onAddComment}
           onReact={onReact}
+          onReport={onReport}
           reactionEmojis={reactionEmojis}
           reactionLimit={reactionLimit}
           currentUserId={currentUserId}

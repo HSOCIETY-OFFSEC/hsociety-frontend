@@ -20,6 +20,8 @@ import { envConfig } from '../../config/app/env.config';
 import { getPublicErrorMessage } from '../utils/errors/publicError';
 import { buildAuthModalUrl } from '../utils/auth/authModal';
 
+const REFRESH_ENDPOINT = '/auth/refresh';
+
 const API_BASE_URL = envConfig.api.baseURL;
 
 /**
@@ -93,10 +95,8 @@ class APIClient {
     // HTTP error
     const { status, data } = error.response;
 
-    // Unauthorized - clear session
+    // Unauthorized (handled in request flow for refresh)
     if (status === 401) {
-      sessionManager.clearSession();
-      window.location.href = buildAuthModalUrl('login', { reason: 'session_expired' });
       return {
         success: false,
         error: 'Session expired. Please login again.',
@@ -183,7 +183,47 @@ class APIClient {
           status: 0
         };
       }
+      const status = error?.response?.status;
+      if (status === 401 && !options._retry) {
+        const refreshed = await this.refreshSession();
+        if (refreshed) {
+          return this.request(method, endpoint, data, { ...options, _retry: true });
+        }
+        sessionManager.clearSession();
+        if (typeof window !== 'undefined') {
+          window.location.href = buildAuthModalUrl('login', { reason: 'session_expired' });
+        }
+      }
       return this.handleError(error, endpoint);
+    }
+  }
+
+  /**
+   * Attempt refresh using cookie or stored refresh token.
+   */
+  async refreshSession() {
+    try {
+      const refreshToken = sessionManager.getRefreshToken?.() || null;
+      const response = await fetch(this.buildURL(REFRESH_ENDPOINT), {
+        method: 'POST',
+        headers: this.defaultHeaders,
+        credentials: 'include',
+        body: refreshToken ? JSON.stringify({ refreshToken }) : undefined,
+      });
+      const data = response.headers.get('content-type')?.includes('application/json')
+        ? await response.json()
+        : null;
+      if (!response.ok || !data?.token || !data?.user) return false;
+      sessionManager.setSession({
+        user: data.user,
+        token: data.token,
+        refreshToken: data.refreshToken || refreshToken || null,
+        expiresAt: data.expiresIn ? Date.now() + Number(data.expiresIn) * 1000 : undefined,
+        timestamp: Date.now(),
+      });
+      return true;
+    } catch {
+      return false;
     }
   }
 
@@ -253,12 +293,19 @@ class APIClient {
       const response = await fetch(url, {
         method: 'POST',
         headers,
-        body: formData
+        body: formData,
+        credentials: 'include'
       });
 
       const responseData = await response.json();
 
       if (!response.ok) {
+        if (response.status === 401) {
+          const refreshed = await this.refreshSession();
+          if (refreshed) {
+            return this.upload(endpoint, file, fieldName, additionalData);
+          }
+        }
         throw {
           response: {
             status: response.status,
@@ -298,9 +345,15 @@ class APIClient {
         console.log(`[API] Download from ${endpoint}`);
       }
 
-      const response = await fetch(url, { headers });
+      const response = await fetch(url, { headers, credentials: 'include' });
 
       if (!response.ok) {
+        if (response.status === 401) {
+          const refreshed = await this.refreshSession();
+          if (refreshed) {
+            return this.download(endpoint, filename);
+          }
+        }
         throw new Error('Download failed');
       }
 

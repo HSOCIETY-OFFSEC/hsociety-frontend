@@ -11,7 +11,7 @@ import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError'
 const BTC_WALLET_ADDRESS = import.meta.env.VITE_BTC_WALLET || 'bc1qexamplebootcampwallet';
 
 const StudentPaymentModal = ({ onClose, onSuccess, headline = 'Bootcamp Payment' }) => {
-  const [method, setMethod] = useState('momo');
+  const [method, setMethod] = useState('mtn');
   const [txHash, setTxHash] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);

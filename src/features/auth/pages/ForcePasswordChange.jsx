@@ -56,7 +56,7 @@ export default function ForcePasswordChange() {
       });
       if (!response.success) throw new Error('Password update failed');
       const data = response.data || {};
-      await login(data.user, data.token, data.refreshToken);
+      await login(data.user, data.token, data.refreshToken, data.expiresIn);
       const role = data.user?.role;
       const target = role === 'admin' ? '/mr-robot' : role === 'pentester' ? '/pentester' : role === 'student' ? '/student-dashboard' : '/corporate-dashboard';
       navigate(target, { replace: true });

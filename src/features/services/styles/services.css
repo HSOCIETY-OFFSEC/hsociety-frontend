@@ -375,7 +375,7 @@
   flex-direction: column;
   gap: 1rem;
   position: sticky;
-  top: calc(var(--navbar-height, 72px) + 1.5rem);
+  top: calc(var(--navbar-height, 64px) + 1.5rem);
 }
 
 .svc-sidebar-box {
@@ -904,7 +904,7 @@
   flex-direction: column;
   gap: 1rem;
   position: sticky;
-  top: calc(var(--navbar-height, 72px) + 1.5rem);
+  top: calc(var(--navbar-height, 64px) + 1.5rem);
 }
 
 .svc-detail-sidebar-box {

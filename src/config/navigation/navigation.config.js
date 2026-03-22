@@ -32,8 +32,7 @@ export const NAV_LINKS = {
       { path: '/remediation', label: 'Vulnerabilities', icon: LuWrench },
       { path: '/assets', label: 'Assets', icon: LuLayers },
       { path: '/billing', label: 'Billing', icon: LuCreditCard },
-      { path: '/notifications', label: 'Notifications', icon: LuBell },
-      { path: '/community', label: 'Community', icon: LuMessageCircle }
+      { path: '/notifications', label: 'Notifications', icon: LuBell }
     ],
     pentester: [
       { path: '/pentester', label: 'Overview', icon: LuChartBar },

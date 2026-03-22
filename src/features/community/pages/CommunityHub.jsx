@@ -6,6 +6,7 @@ import {
   createCommunitySocket,
   getCommunityMessages,
   getCommunityOverview,
+  reportCommunityMessage,
 } from '../services/community.service';
 import CommunityHeader from '../components/header/CommunityHeader';
 import CommunityMessageList from '../components/messages/CommunityMessageList';
@@ -24,8 +25,6 @@ const CommunityHub = () => {
   const [room, setRoom] = useState(COMMUNITY_HUB_DATA.defaults.room);
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [imageError, setImageError] = useState('');
   const [error, setError] = useState('');
   const [connected, setConnected] = useState(false);
   const [cpTotal, setCpTotal] = useState(0);
@@ -284,9 +283,8 @@ const CommunityHub = () => {
   /* ── Send ── */
   const sendMessage = () => {
     const content = draft.trim();
-    const imagePayload = imageUrl;
     const socket = socketRef.current;
-    if ((!content && !imagePayload) || !socket) return;
+    if (!content || !socket) return;
 
     const tempId = `temp-${Date.now()}`;
 
@@ -302,7 +300,6 @@ const CommunityHub = () => {
         userAvatar: currentUserAvatar,
         room,
         content,
-        imageUrl: imagePayload,
         likes: 0,
         likedBy: [],
         reactions: {},
@@ -312,12 +309,10 @@ const CommunityHub = () => {
       },
     ]);
 
-    socket.emit('sendMessage', { room, content, imageUrl: imagePayload, tempId });
+    socket.emit('sendMessage', { room, content, tempId });
     socket.emit('typing', { room, isTyping: false });
 
     setDraft('');
-    setImageUrl('');
-    setImageError('');
   };
 
   const isOwn = (msg) => msg.userId === user?.id || msg.username === user?.username;
@@ -399,6 +394,17 @@ const CommunityHub = () => {
     socketRef.current?.emit('reactMessage', { messageId, emoji });
   };
 
+  const handleReport = async (messageId) => {
+    if (!messageId) return;
+    const reason = window.prompt('Why are you reporting this message?') || '';
+    const response = await reportCommunityMessage(messageId, reason);
+    if (!response.success) {
+      setError(response.error || 'Unable to submit report.');
+      return;
+    }
+    setError('');
+  };
+
   const handleRoomChange = (newRoom) => {
     setRoom(normalizeRoomId(newRoom));
   };
@@ -455,6 +461,7 @@ const CommunityHub = () => {
           onLike={handleLike}
           onAddComment={handleAddComment}
           onReact={handleReact}
+          onReport={handleReport}
           reactionEmojis={currentReactionEmojis}
           reactionLimit={reactionLimit}
           currentUserId={currentUserId}
@@ -471,10 +478,6 @@ const CommunityHub = () => {
           onTyping={(isTyping) => {
             socketRef.current?.emit('typing', { room, isTyping });
           }}
-          imageUrl={imageUrl}
-          onImageChange={setImageUrl}
-          imageError={imageError}
-          onImageError={setImageError}
         />
       </main>
 

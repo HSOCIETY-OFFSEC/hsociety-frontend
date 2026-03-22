@@ -15,7 +15,7 @@
   justify-content: flex-start;
   width: 100%;
   box-sizing: border-box;
-  min-height: calc(100dvh - var(--navbar-height, 72px));
+  min-height: calc(100dvh - var(--navbar-height, 64px));
   height: auto;
   overflow-y: auto;
   padding: 0;

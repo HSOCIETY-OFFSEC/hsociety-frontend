@@ -92,6 +92,7 @@ export const login = async (identity, password) => {
       user: data.user,
       token: data.token,
       refreshToken: data.refreshToken,
+      expiresIn: data.expiresIn,
       message: 'Login successful'
     };
   } catch (error) {
@@ -145,6 +146,7 @@ export const register = async (userData) => {
       user: data.user,
       token: data.token,
       refreshToken: data.refreshToken,
+      expiresIn: data.expiresIn,
       message: 'Registration successful'
     };
   } catch (error) {
@@ -311,11 +313,7 @@ export const changePassword = async (currentPassword, newPassword) => {
  */
 export const refreshToken = async (refreshToken) => {
   try {
-    if (!refreshToken) {
-      return { success: false, message: getPublicAuthMessage('refresh') };
-    }
-
-    const response = await apiClient.post(API_ENDPOINTS.AUTH.REFRESH, { refreshToken });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.REFRESH, refreshToken ? { refreshToken } : {});
 
     if (!response.success) {
       return { success: false, message: getPublicAuthMessage('refresh', response) };
@@ -328,6 +326,7 @@ export const refreshToken = async (refreshToken) => {
       token: data.token,
       refreshToken: data.refreshToken,
       user: data.user,
+      expiresIn: data.expiresIn,
       message: 'Token refreshed successfully'
     };
   } catch (error) {

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import CorporateRegister from '../pages/CorporateRegister';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import { AUTH_MODAL_MODES } from '../../../shared/utils/auth/authModal';
 import '../styles/auth.css';
@@ -62,11 +61,11 @@ const AuthModal = () => {
         />
       )}
       {mode === AUTH_MODAL_MODES.CORPORATE_REGISTER && (
-        <CorporateRegister
+        <Login
           {...sharedProps}
-          onLoginRedirect={(data) =>
-            handleSwitchMode(AUTH_MODAL_MODES.LOGIN, { payload: data })
-          }
+          mode="default"
+          prefillEmail={payload?.email}
+          redirect={redirect || payload?.redirect}
         />
       )}
     </div>

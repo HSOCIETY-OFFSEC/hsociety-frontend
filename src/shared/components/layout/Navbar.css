@@ -132,7 +132,7 @@
   left: 0;
   min-width: 200px;
   width: max-content;
-  max-width: min(90vw, 280px);
+  max-width: calc(100vw - 2rem);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -141,6 +141,16 @@
   z-index: 10000;
   animation: gh-dropdown-in 140ms ease;
   transform-origin: top left;
+}
+
+@media (max-width: 768px) {
+  /* On mobile, most dropdowns should anchor to the right of their trigger
+     if they are in the right cluster, or just ensure they don't bleed left. */
+  .gh-nav-right .gh-dropdown-menu {
+    left: auto;
+    right: 0;
+    transform-origin: top right;
+  }
 }
 
 @keyframes gh-dropdown-in {
@@ -160,7 +170,7 @@
   left: auto;
   right: 0;
   min-width: 300px;
-  max-width: min(90vw, 340px);
+  max-width: min(92vw, 340px);
   max-height: 420px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -170,10 +180,14 @@
 
 @media (max-width: 640px) {
   .gh-notif-menu {
-    right: -0.5rem;
-    min-width: auto;
-    width: calc(100vw - 1.5rem);
-    max-width: calc(100vw - 1.5rem);
+    position: fixed;
+    top: calc(var(--navbar-height, 64px) + 8px);
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    transform-origin: top center;
   }
 }
 

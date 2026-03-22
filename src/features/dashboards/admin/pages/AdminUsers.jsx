@@ -334,6 +334,7 @@ const AdminUsers = () => {
             <span>Bootcamp</span>
             <span>Payment</span>
             <span>Access</span>
+            <span>Key</span>
             <span>Mute</span>
             <span>Actions</span>
           </div>
@@ -423,6 +424,9 @@ const AdminUsers = () => {
                       )}
                     </div>
                   )}
+                </div>
+                <div>
+                  <span className="admin-role">{user.bootcampAccessKey || '—'}</span>
                 </div>
                 <div>
                   <span className="admin-role">{isMuted ? 'Muted' : 'Active'}</span>

@@ -57,7 +57,7 @@ const PathwaysSection = ({ pathways }) => {
   const handleRoute = (route) => {
     if (route === ROUTES.LOGIN) { openAuthModal('login'); return; }
     if (route === ROUTES.REGISTER) { openAuthModal('register'); return; }
-    if (route === ROUTES.CORPORATE_REGISTER) { openAuthModal('register-corporate'); return; }
+    if (route === ROUTES.CORPORATE_REGISTER) { openAuthModal('login'); return; }
     navigate(route);
   };
 
