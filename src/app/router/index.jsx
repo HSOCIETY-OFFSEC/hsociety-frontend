@@ -34,6 +34,7 @@ const StudentDashboard = loadDashboard('StudentDashboard');
 const StudentResources = React.lazy(() => import('../../features/student/pages/StudentResources'));
 const StudentQuizMaterial = React.lazy(() => import('../../features/student/pages/StudentQuizMaterial'));
 const StudentPayments = React.lazy(() => import('../../features/student/pages/StudentPayments'));
+const StudentBootcamp = React.lazy(() => import('../../features/student/pages/StudentBootcamp'));
 const BootcampLayout = React.lazy(() => import('../../features/student/pages/bootcamp/BootcampLayout'));
 const BootcampOverview = React.lazy(() => import('../../features/student/pages/bootcamp/BootcampOverview'));
 const BootcampModules = React.lazy(() => import('../../features/student/pages/bootcamp/BootcampModules'));
@@ -384,7 +385,7 @@ const AppRouter = () => {
                 </RoleRoute>
               }
             >
-              <Route index element={<Navigate to="overview" replace />} />
+              <Route index element={<StudentBootcamp />} />
               <Route path="overview" element={<BootcampOverview />} />
               <Route path="modules" element={<BootcampModules />} />
               <Route path="modules/:moduleId" element={<BootcampModule />} />

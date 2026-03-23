@@ -20,7 +20,6 @@ const FaqSection = ({ content }) => {
             const isOpen = openIndex === index;
             return (
               <div key={item.question} className={`faq-item${isOpen ? ' is-open' : ''}`}>
-                <div className="hs-signature" aria-hidden="true" />
                 <button
                   type="button"
                   className="faq-question"

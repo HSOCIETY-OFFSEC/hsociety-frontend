@@ -9,11 +9,13 @@ import {
   FiLayers,
   FiLock,
   FiMessageSquare,
-  FiTarget
+  FiTarget,
+  FiDownload
 } from 'react-icons/fi';
 import { getStudentCourse } from '../../services/course.service';
 import { getStudentOverview } from '../../../dashboards/student/services/student.service';
 import { listNotifications } from '../../services/notifications.service';
+import { getBootcampResources } from '../../services/learn.service';
 import { QuizPanel } from '../../components/QuizPanel';
 import { getHackerProtocolModule, getHackerProtocolRoom } from '../../../../data/static/bootcamps/hackerProtocolData';
 import LiveClassCard from '../../components/bootcamp/LiveClassCard';
@@ -79,6 +81,7 @@ const BootcampRoom = () => {
   const [quizPassed, setQuizPassed] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [notifications, setNotifications] = useState([]);
+  const [roomResources, setRoomResources] = useState([]);
 
   useEffect(() => {
     let mounted = true;
@@ -86,15 +89,25 @@ const BootcampRoom = () => {
       setLoading(true);
       setError('');
       try {
-        const [courseResponse, overviewResponse, notificationsResponse] = await Promise.all([
+        const [courseResponse, overviewResponse, notificationsResponse, resourcesResponse] = await Promise.all([
           getStudentCourse(),
           getStudentOverview(),
-          listNotifications()
+          listNotifications(),
+          getBootcampResources(moduleId, roomId),
         ]);
         if (!mounted) return;
         if (courseResponse.success) setCourse(courseResponse.data);
         if (overviewResponse.success) setOverview(overviewResponse.data);
         if (notificationsResponse.success) setNotifications(notificationsResponse.data || []);
+        if (resourcesResponse.success) {
+          const resources = resourcesResponse.data?.items || [];
+          const match = resources.find((item) =>
+            Number(item.moduleId) === moduleId && Number(item.roomId) === roomId
+          );
+          setRoomResources(match?.resources || []);
+        } else {
+          setRoomResources([]);
+        }
       } catch (err) {
         if (mounted) setError('Unable to load this room.');
       } finally {
@@ -105,7 +118,7 @@ const BootcampRoom = () => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [moduleId, roomId]);
 
   useEffect(() => {
     setQuizPassed(false);
@@ -273,6 +286,35 @@ const BootcampRoom = () => {
                 <div className="bc-panel-divider" />
                 <strong>Tools & playbooks</strong>
                 <p>Check the Resources tab for playbooks, tooling, and walkthroughs.</p>
+              </div>
+            </section>
+            <div className="bc-divider" />
+
+            <section className="bc-section">
+              <h2 className="bc-section-title">
+                <FiDownload size={15} className="bc-section-icon" />
+                Downloads
+              </h2>
+              <p className="bc-section-desc">Download slides, labs, and supporting files for this room.</p>
+              <div className="bc-card">
+                {roomResources.length === 0 ? (
+                  <p className="bc-muted">No downloads published yet for this room.</p>
+                ) : (
+                  <div className="bc-card-actions">
+                    {roomResources.map((resource) => (
+                      <button
+                        key={resource.url || resource.title}
+                        type="button"
+                        className="bc-btn bc-btn-secondary"
+                        onClick={() => resource.url && window.open(resource.url, '_blank', 'noopener,noreferrer')}
+                        disabled={!resource.url}
+                      >
+                        <FiDownload size={14} />
+                        {resource.title || 'Download'}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
             <div className="bc-divider" />

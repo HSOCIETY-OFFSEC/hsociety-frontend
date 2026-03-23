@@ -365,7 +365,9 @@ const AdminUsers = () => {
                     <input className="admin-input" value={draft.name || ''}
                       onChange={(e) => updateDraft(user.id, 'name', e.target.value)} />
                   ) : (
-                    <span className="ad-list-name">{user.name || '—'}</span>
+                    <span className="ad-list-name ad-ellipsis" title={user.name || '—'}>
+                      {user.name || '—'}
+                    </span>
                   )}
                 </div>
                 <div>
@@ -373,7 +375,9 @@ const AdminUsers = () => {
                     <input className="admin-input" value={draft.email || ''}
                       onChange={(e) => updateDraft(user.id, 'email', e.target.value)} />
                   ) : (
-                    <span className="ad-list-email">{user.email}</span>
+                    <span className="ad-list-email ad-ellipsis" title={user.email}>
+                      {user.email}
+                    </span>
                   )}
                 </div>
                 <div>
@@ -381,7 +385,9 @@ const AdminUsers = () => {
                     <input className="admin-input" value={draft.organization || ''}
                       onChange={(e) => updateDraft(user.id, 'organization', e.target.value)} />
                   ) : (
-                    <span>{user.organization || '—'}</span>
+                    <span className="ad-ellipsis" title={user.organization || '—'}>
+                      {user.organization || '—'}
+                    </span>
                   )}
                 </div>
                 <div>

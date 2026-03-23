@@ -55,7 +55,6 @@ const CommunityProfilesSection = ({ title, subtitle, profiles = [], error = '' }
                   const displayHandle = (profile.name || profile.hackerHandle || 'operator').trim();
                   return (
                     <article key={profile.id || profile.hackerHandle} className="community-card">
-                      <div className="hs-signature" aria-hidden="true" />
                       <div className="community-avatar">
                         <ImageWithLoader
                           src={src}

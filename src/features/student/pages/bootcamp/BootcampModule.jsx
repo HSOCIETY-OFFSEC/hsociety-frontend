@@ -83,7 +83,7 @@ const BootcampModule = () => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [id]);
 
   const module = useMemo(() =>
     course?.modules?.find((item) => item.moduleId === id),
@@ -185,7 +185,7 @@ const BootcampModule = () => {
                 Rooms
               </h2>
               <p className="bc-section-desc">Complete room quizzes in order to unlock the next lesson.</p>
-              <div className="bc-item-list">
+              <div className="bc-card-grid">
                 {(module.rooms || []).map((room, index) => {
                   const isCompleted = index < roomsCompleted;
                   const isCurrent = index === roomsCompleted;
@@ -200,7 +200,7 @@ const BootcampModule = () => {
                     <button
                       key={room.roomId}
                       type="button"
-                      className={`bc-item-row bc-item-action ${isLocked ? 'bc-item-locked' : ''}`}
+                      className={`bc-card bc-card-action ${isLocked ? 'bc-card-locked' : ''}`}
                       onClick={() => {
                         if (isLocked) {
                           setStatusMessage('Complete the previous room quiz to unlock this lesson.');
@@ -210,13 +210,14 @@ const BootcampModule = () => {
                         navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${room.roomId}`);
                       }}
                     >
-                      <div className="bc-item-main">
-                        <span className="bc-item-title">Room {room.roomId}: {room.title}</span>
-                        <span className="bc-item-subtitle">
-                          {isCompleted ? 'Completed' : isCurrent ? 'Next up' : 'Locked'}
-                        </span>
-                      </div>
-                      <div className="bc-item-meta">
+                      <div className="bc-card-header">
+                        <div>
+                          <p className="bc-card-kicker">Room {room.roomId}</p>
+                          <h3 className="bc-card-title">{room.title}</h3>
+                          <p className="bc-card-subtitle">
+                            {isCompleted ? 'Completed' : isCurrent ? 'Next up' : 'Locked'}
+                          </p>
+                        </div>
                         <span className={`bc-label ${labelClass}`}>
                           {isCompleted ? (
                             <>

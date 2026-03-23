@@ -15,6 +15,15 @@ import '../styles/admin-dashboard.css';
 
 const emptyPost = { title: '', date: '', summary: '' };
 const emptyResource = { title: '', description: '', url: '', type: 'link' };
+const emptyBootcampResourceItem = { title: '', description: '', url: '', type: 'file' };
+const emptyBootcampResource = {
+  id: '',
+  moduleId: 1,
+  moduleTitle: '',
+  roomId: 0,
+  roomTitle: '',
+  resources: [{ ...emptyBootcampResourceItem }],
+};
 const emptyTeamSocial = { platform: '', url: '' };
 const emptyTeamMember = {
   name: '',
@@ -71,6 +80,7 @@ const AdminContent = () => {
   const [posts, setPosts] = useState([emptyPost]);
   const [resources, setResources] = useState([emptyResource]);
   const [resourcesMessage, setResourcesMessage] = useState('We do not have free resources yet.');
+  const [bootcampResources, setBootcampResources] = useState([emptyBootcampResource]);
   const [terms, setTerms] = useState({
     effectiveDate: '',
     lastUpdated: '',
@@ -112,6 +122,27 @@ const AdminContent = () => {
           message: data.learn?.bootcampMeetingMessage || '',
         }));
 
+        const existingBootcampResources = data.learn?.bootcampResources || [];
+        setBootcampResources(
+          existingBootcampResources.length
+            ? existingBootcampResources.map((item, index) => ({
+                id: item.id || String(index + 1),
+                moduleId: Number(item.moduleId || 0),
+                moduleTitle: item.moduleTitle || '',
+                roomId: Number(item.roomId || 0),
+                roomTitle: item.roomTitle || '',
+                resources: Array.isArray(item.resources) && item.resources.length
+                  ? item.resources.map((resource) => ({
+                      title: resource.title || '',
+                      description: resource.description || '',
+                      url: resource.url || '',
+                      type: resource.type || 'file',
+                    }))
+                  : [{ ...emptyBootcampResourceItem }],
+              }))
+            : [{ ...emptyBootcampResource }]
+        );
+
         const existingTerms = data.terms || {};
         setTerms({
           effectiveDate: existingTerms.effectiveDate || '',
@@ -150,6 +181,8 @@ const AdminContent = () => {
 
   const addPost = () => setPosts((prev) => [...prev, { ...emptyPost }]);
   const addResource = () => setResources((prev) => [...prev, { ...emptyResource }]);
+  const addBootcampResource = () =>
+    setBootcampResources((prev) => [...prev, { ...emptyBootcampResource }]);
 
   const removePost = (index) => {
     setPosts((prev) => prev.filter((_, i) => i !== index));
@@ -157,6 +190,50 @@ const AdminContent = () => {
 
   const removeResource = (index) => {
     setResources((prev) => prev.filter((_, i) => i !== index));
+  };
+  const removeBootcampResource = (index) => {
+    setBootcampResources((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const updateBootcampResource = (index, field, value) => {
+    setBootcampResources((prev) =>
+      prev.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+    );
+  };
+
+  const updateBootcampResourceItem = (resourceIndex, itemIndex, field, value) => {
+    setBootcampResources((prev) =>
+      prev.map((item, i) => {
+        if (i !== resourceIndex) return item;
+        const resourcesList = Array.isArray(item.resources) ? item.resources : [];
+        return {
+          ...item,
+          resources: resourcesList.map((resource, idx) =>
+            idx === itemIndex ? { ...resource, [field]: value } : resource
+          ),
+        };
+      })
+    );
+  };
+
+  const addBootcampResourceItem = (resourceIndex) => {
+    setBootcampResources((prev) =>
+      prev.map((item, i) =>
+        i === resourceIndex
+          ? { ...item, resources: [...(item.resources || []), { ...emptyBootcampResourceItem }] }
+          : item
+      )
+    );
+  };
+
+  const removeBootcampResourceItem = (resourceIndex, itemIndex) => {
+    setBootcampResources((prev) =>
+      prev.map((item, i) => {
+        if (i !== resourceIndex) return item;
+        const nextResources = (item.resources || []).filter((_, idx) => idx !== itemIndex);
+        return { ...item, resources: nextResources.length ? nextResources : [{ ...emptyBootcampResourceItem }] };
+      })
+    );
   };
 
   const updateTermsSection = (index, field, value) => {
@@ -303,6 +380,23 @@ const AdminContent = () => {
           }))
           .filter((item) => item.title),
         freeResourcesMessage: resourcesMessage,
+        bootcampResources: bootcampResources.map((item, index) => ({
+          id: String(item.id || index + 1).trim(),
+          moduleId: Number(item.moduleId || 0),
+          moduleTitle: String(item.moduleTitle || '').trim(),
+          roomId: Number(item.roomId || 0),
+          roomTitle: String(item.roomTitle || '').trim(),
+          resources: Array.isArray(item.resources)
+            ? item.resources
+                .map((resource) => ({
+                  title: String(resource.title || '').trim(),
+                  description: String(resource.description || '').trim(),
+                  url: String(resource.url || '').trim(),
+                  type: String(resource.type || 'file').trim() || 'file',
+                }))
+                .filter((resource) => resource.title || resource.url)
+            : [],
+        })),
         bootcampMeetingUrl: meetingForm.meetUrl,
         bootcampMeetingMessage: meetingForm.message,
       },
@@ -502,6 +596,118 @@ const AdminContent = () => {
             <Button variant="secondary" size="small" onClick={addResource}>
               <FiPlus size={14} />
               Add Resource
+            </Button>
+          </div>
+        </Card>
+
+        <Card className="admin-card" padding="medium">
+          <div className="admin-section-header">
+            <h2>Bootcamp Downloads</h2>
+            <p>Upload or link downloadable lesson materials per phase and room.</p>
+          </div>
+
+          <div className="admin-content-posts">
+            {bootcampResources.map((resourceGroup, index) => (
+              <div className="admin-content-post" key={`bootcamp-resource-${index}`}>
+                <div className="admin-stats-form">
+                  <label>
+                    Module ID
+                    <input
+                      className="admin-input"
+                      type="number"
+                      min="0"
+                      value={resourceGroup.moduleId}
+                      onChange={(e) => updateBootcampResource(index, 'moduleId', Number(e.target.value))}
+                    />
+                  </label>
+                  <label>
+                    Module Title
+                    <input
+                      className="admin-input"
+                      value={resourceGroup.moduleTitle}
+                      onChange={(e) => updateBootcampResource(index, 'moduleTitle', e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Room ID (optional)
+                    <input
+                      className="admin-input"
+                      type="number"
+                      min="0"
+                      value={resourceGroup.roomId}
+                      onChange={(e) => updateBootcampResource(index, 'roomId', Number(e.target.value))}
+                    />
+                  </label>
+                  <label>
+                    Room Title (optional)
+                    <input
+                      className="admin-input"
+                      value={resourceGroup.roomTitle}
+                      onChange={(e) => updateBootcampResource(index, 'roomTitle', e.target.value)}
+                    />
+                  </label>
+                </div>
+
+                {(resourceGroup.resources || []).map((resource, resourceIndex) => (
+                  <div key={`bootcamp-resource-item-${index}-${resourceIndex}`} className="admin-content-post">
+                    <input
+                      className="admin-input"
+                      placeholder="Resource title"
+                      value={resource.title || ''}
+                      onChange={(e) =>
+                        updateBootcampResourceItem(index, resourceIndex, 'title', e.target.value)
+                      }
+                    />
+                    <input
+                      className="admin-input"
+                      placeholder="Download URL"
+                      value={resource.url || ''}
+                      onChange={(e) =>
+                        updateBootcampResourceItem(index, resourceIndex, 'url', e.target.value)
+                      }
+                    />
+                    <textarea
+                      className="admin-textarea"
+                      rows={2}
+                      placeholder="Description"
+                      value={resource.description || ''}
+                      onChange={(e) =>
+                        updateBootcampResourceItem(index, resourceIndex, 'description', e.target.value)
+                      }
+                    />
+                    <Button
+                      variant="ghost"
+                      size="small"
+                      onClick={() => removeBootcampResourceItem(index, resourceIndex)}
+                      disabled={(resourceGroup.resources || []).length <= 1}
+                    >
+                      <FiTrash2 size={14} />
+                      Remove download
+                    </Button>
+                  </div>
+                ))}
+
+                <div className="admin-content-actions">
+                  <Button variant="secondary" size="small" onClick={() => addBootcampResourceItem(index)}>
+                    <FiPlus size={14} />
+                    Add download
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="small"
+                    onClick={() => removeBootcampResource(index)}
+                    disabled={bootcampResources.length <= 1}
+                  >
+                    <FiTrash2 size={14} />
+                    Remove group
+                  </Button>
+                </div>
+              </div>
+            ))}
+
+            <Button variant="secondary" size="small" onClick={addBootcampResource}>
+              <FiPlus size={14} />
+              Add Resource Group
             </Button>
           </div>
         </Card>

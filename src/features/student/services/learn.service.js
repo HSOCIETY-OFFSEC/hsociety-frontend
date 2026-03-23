@@ -14,8 +14,11 @@ export const getStudentXpSummary = async () => {
   return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
 };
 
-export const getBootcampResources = async (moduleId = null) => {
-  const query = moduleId ? `?moduleId=${encodeURIComponent(moduleId)}` : '';
+export const getBootcampResources = async (moduleId = null, roomId = null) => {
+  const params = new URLSearchParams();
+  if (moduleId) params.set('moduleId', String(moduleId));
+  if (roomId) params.set('roomId', String(roomId));
+  const query = params.toString() ? `?${params.toString()}` : '';
   const response = await apiClient.get(`${API_ENDPOINTS.STUDENT.BOOTCAMP_RESOURCES}${query}`);
   if (response.success) return { success: true, data: response.data || { items: [] } };
   return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };

@@ -112,17 +112,17 @@ const BootcampOverview = () => {
               <button
                 type="button"
                 className="bc-btn bc-btn-primary"
-                onClick={() => navigate('/student-bootcamps/modules')}
+                onClick={() => navigate('/student-bootcamps/live-class')}
               >
-                Go to Modules
-                <FiArrowRight size={14} />
+                Live Class Hub
               </button>
               <button
                 type="button"
                 className="bc-btn bc-btn-secondary"
-                onClick={() => navigate('/student-bootcamps/live-class')}
+                onClick={() => navigate('/student-bootcamps/modules')}
               >
-                Live Class Hub
+                Go to Modules
+                <FiArrowRight size={14} />
               </button>
             </div>
           </div>
@@ -160,29 +160,36 @@ const BootcampOverview = () => {
               <p className="bc-section-desc">
                 {HACKER_PROTOCOL_BOOTCAMP.subtitle} · {HACKER_PROTOCOL_BOOTCAMP.title} Learning App
               </p>
-              <div className="bc-item-list">
-                <article className="bc-item-row">
-                  <div className="bc-item-main">
-                    <span className="bc-item-title">Structured progression</span>
-                    <span className="bc-item-subtitle">Modules unlock sequentially. Finish each room quiz to continue.</span>
+              <div className="bc-card-grid">
+                <article className="bc-card">
+                  <div className="bc-card-header">
+                    <div>
+                      <p className="bc-card-kicker">Progression</p>
+                      <h3 className="bc-card-title">Structured phases</h3>
+                      <p className="bc-card-subtitle">Modules unlock sequentially. Finish each room quiz to continue.</p>
+                    </div>
+                    <span className="bc-label bc-label-alpha">Guided</span>
                   </div>
-                  <span className="bc-label bc-label-alpha">Guided</span>
                 </article>
-                <article className="bc-item-row">
-                  <div className="bc-item-main">
-                    <span className="bc-item-title">Live class support</span>
-                    <span className="bc-item-subtitle">Join instructor-led sessions directly from each room.</span>
+                <article className="bc-card">
+                  <div className="bc-card-header">
+                    <div>
+                      <p className="bc-card-kicker">Live Class</p>
+                      <h3 className="bc-card-title">Instructor support</h3>
+                      <p className="bc-card-subtitle">Join instructor-led sessions directly from each room.</p>
+                    </div>
+                    <span className="bc-label bc-label-beta">Weekly</span>
                   </div>
-                  <span className="bc-label bc-label-beta">Weekly</span>
                 </article>
-                <article className="bc-item-row">
-                  <div className="bc-item-main">
-                    <span className="bc-item-title">Next up</span>
-                    <span className="bc-item-subtitle">
-                      Phase {nextModule?.moduleId}: {nextModule?.title}
-                    </span>
+                <article className="bc-card">
+                  <div className="bc-card-header">
+                    <div>
+                      <p className="bc-card-kicker">Next up</p>
+                      <h3 className="bc-card-title">Phase {nextModule?.moduleId}</h3>
+                      <p className="bc-card-subtitle">{nextModule?.title}</p>
+                    </div>
+                    <span className="bc-label bc-label-delta">Priority</span>
                   </div>
-                  <span className="bc-label bc-label-delta">Priority</span>
                 </article>
               </div>
             </section>

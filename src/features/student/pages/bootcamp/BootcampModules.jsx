@@ -157,12 +157,12 @@ const BootcampModules = () => {
                 Modules
               </h2>
               <p className="bc-section-desc">Select a phase to view lessons and rooms.</p>
-              <div className="bc-item-list">
+              <div className="bc-card-grid">
                 {modules.map((module) => (
                   <button
                     key={module.moduleId}
                     type="button"
-                    className={`bc-item-row bc-item-action ${module.locked ? 'bc-item-locked' : ''}`}
+                    className={`bc-card bc-card-action ${module.locked ? 'bc-card-locked' : ''}`}
                     onClick={() => {
                       if (module.locked) {
                         setStatusMessage('Complete the previous module to unlock this phase.');
@@ -172,12 +172,12 @@ const BootcampModules = () => {
                       navigate(`/student-bootcamps/modules/${module.moduleId}`);
                     }}
                   >
-                    <div className="bc-item-main">
-                      <span className="bc-item-title">Phase {module.moduleId}: {module.meta?.title || module.title}</span>
-                      <span className="bc-item-subtitle">{module.meta?.codename || 'Bootcamp phase'}</span>
-                    </div>
-                    <div className="bc-item-meta">
-                      <span className="bc-item-progress">{module.roomsCompleted}/{module.roomsTotal} rooms</span>
+                    <div className="bc-card-header">
+                      <div>
+                        <p className="bc-card-kicker">Phase {module.moduleId}</p>
+                        <h3 className="bc-card-title">{module.meta?.title || module.title}</h3>
+                        <p className="bc-card-subtitle">{module.meta?.codename || 'Bootcamp phase'}</p>
+                      </div>
                       <span className={`bc-label ${module.locked ? 'bc-label-gamma' : 'bc-label-alpha'}`}>
                         {module.locked ? (
                           <>
@@ -191,6 +191,10 @@ const BootcampModules = () => {
                           </>
                         )}
                       </span>
+                    </div>
+                    <div className="bc-card-meta">
+                      <span>Rooms</span>
+                      <strong>{module.roomsCompleted}/{module.roomsTotal}</strong>
                     </div>
                   </button>
                 ))}

@@ -146,6 +146,13 @@ const StudentDashboard = () => {
     }));
   }, [data.learningPath, data.modules]);
 
+  const liveClassNotice = useMemo(() => {
+    const classes = (notifications || []).filter((item) => item.type === 'bootcamp_meeting');
+    return classes.length ? classes[0] : null;
+  }, [notifications]);
+
+  const liveClassLabel = liveClassNotice?.metadata?.title || 'Live Class';
+
   const xpTotal = Number(data.xpSummary?.totalXp || 0);
   const moduleCount = data.learningPath?.length || data.modules?.length || 0;
   const showData = !loading && !error;
@@ -231,6 +238,15 @@ const StudentDashboard = () => {
             </div>
           </div>
           <div className="sd-header-actions">
+            <button
+              type="button"
+              className="sd-btn sd-btn-secondary"
+              onClick={() => navigate('/student-bootcamps/live-class')}
+              disabled={loading}
+            >
+              <FiMessageSquare size={16} />
+              {liveClassLabel}
+            </button>
             <button
               type="button"
               className="sd-btn sd-btn-primary"

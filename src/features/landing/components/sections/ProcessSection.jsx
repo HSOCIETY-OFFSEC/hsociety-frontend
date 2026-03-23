@@ -48,7 +48,6 @@ const ProcessSection = ({ steps = [] }) => {
             >
               <div className="process-node" aria-hidden="true" />
               <div className="process-card">
-                <div className="hs-signature" aria-hidden="true" />
                 <span className="process-index">
                   {React.createElement(icons[index] || FiSearch, { size: 13 })}
                   Phase {String(index + 1).padStart(2, '0')}

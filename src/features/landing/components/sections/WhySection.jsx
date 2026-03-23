@@ -45,7 +45,6 @@ const WhySection = ({ items = [] }) => {
               const Icon = icons[index % icons.length];
               return (
                 <div key={item.title || index} className="why-item">
-                  <div className="hs-signature" aria-hidden="true" />
                   <div className="why-thumb">
                     <img
                       src={item.image}

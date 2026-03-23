@@ -21,7 +21,6 @@ const DeliverablesSection = ({ items = [] }) => {
             const Icon = icons[index % icons.length];
             return (
               <div key={item.title} className="deliverable-item" role="listitem">
-                <div className="hs-signature" aria-hidden="true" />
                 <span className="deliverable-icon" aria-hidden="true">
                   <Icon size={16} />
                 </span>

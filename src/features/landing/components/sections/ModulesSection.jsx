@@ -37,7 +37,6 @@ const ModulesSection = ({ modules = [] }) => {
           {modules.map((module) => (
             <div key={module.codename} className="module-tile" role="listitem">
               <div className="module-card">
-                <div className="hs-signature" aria-hidden="true" />
                 <img
                   src={module.emblem}
                   alt={module.codename}
