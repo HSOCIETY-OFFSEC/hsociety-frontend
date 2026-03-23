@@ -57,6 +57,7 @@ const LeaderboardSection = ({ entries = [], loading = false }) => {
             <p className="section-subtitle">Proof of progress from the HSOCIETY community.</p>
           </header>
           <div className="leaderboard-table" role="table">
+            <div className="hs-signature" aria-hidden="true" />
             <div className="leaderboard-row leaderboard-head" role="row">
               <span role="columnheader">Rank</span>
               <span role="columnheader">Operator</span>
@@ -87,6 +88,7 @@ const LeaderboardSection = ({ entries = [], loading = false }) => {
         </header>
 
         <div className="leaderboard-table" role="table">
+          <div className="hs-signature" aria-hidden="true" />
           <div className="leaderboard-row leaderboard-head" role="row">
             <span role="columnheader">Rank</span>
             <span role="columnheader">Operator</span>

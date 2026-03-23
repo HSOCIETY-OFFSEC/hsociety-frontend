@@ -32,8 +32,9 @@
   .admin-dashboard,
   .pentester-dashboard
 ) {
-  width: min(1280px, 100%);
-  margin: 0 auto;
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
 }
 
 /* Panel treatment across dashboards */

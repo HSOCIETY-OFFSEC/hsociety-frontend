@@ -73,6 +73,7 @@ const CourseRoomDetails = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Room objectives</p>
             <div className="public-list">
               {room.bullets?.slice(0, 3).map((bullet) => (
@@ -108,6 +109,7 @@ const CourseRoomDetails = () => {
           <div className="public-card-grid">
             {room.bullets?.map((bullet) => (
               <article key={bullet} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <h3 className="public-card-title">Objective</h3>
                 <p className="public-card-desc">{bullet}</p>
               </article>
@@ -137,6 +139,7 @@ const CourseRoomDetails = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Operator training, real missions.</h3>
             <p className="public-card-desc">Every room is built with real-world context and skills.</p>
           </div>

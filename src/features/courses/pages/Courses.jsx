@@ -52,6 +52,7 @@ const Courses = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Featured program</p>
             <div className="crs-featured-panel">
               <img
@@ -90,6 +91,7 @@ const Courses = () => {
           <div className="public-card-grid">
             {HACKER_PROTOCOL_PHASES.map((phase, index) => (
               <article key={phase.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Phase {index + 1}</span>
                 </div>
@@ -122,6 +124,7 @@ const Courses = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Built by operators.</h3>
             <p className="public-card-desc">Learn with live labs, guided missions, and real-world context.</p>
           </div>

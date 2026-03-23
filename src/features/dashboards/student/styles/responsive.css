@@ -44,16 +44,17 @@
 /* ── Desktop (1024px+) ──────────────────────────────────────── */
 @media (min-width: 1024px) {
   .dashboard-shell {
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
 /* ── Wide (1600px+) ─────────────────────────────────────────── */
 @media (min-width: 1600px) {
   .dashboard-shell {
-    max-width: 1600px;
+    max-width: none;
   }
 }
 

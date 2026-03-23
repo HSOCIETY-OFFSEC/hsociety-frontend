@@ -130,6 +130,7 @@ const Terms = () => {
             {error && <p className="trm-error">{error}</p>}
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Effective dates</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -163,6 +164,7 @@ const Terms = () => {
           <div className="public-card-grid">
             {sections.map((section) => (
               <article key={section.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <h3 className="public-card-title">{section.title}</h3>
                 {section.body && <p className="public-card-desc">{section.body}</p>}
                 {section.bullets && (
@@ -202,6 +204,7 @@ const Terms = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Compliance-first operations.</h3>
             <p className="public-card-desc">We operate within ethical and legal standards for all engagements.</p>
           </div>

@@ -88,6 +88,7 @@ const Pricing = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Billing toggle</p>
             <div className="pri-toggle-wrap">
               <span className="pri-toggle-label">Monthly</span>
@@ -213,6 +214,7 @@ const Pricing = () => {
           <div className="public-card-grid">
             {PRICING_INCLUDED_ITEMS.map((item) => (
               <article key={item} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Deliverable</span>
                 </div>
@@ -252,6 +254,7 @@ const Pricing = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Engagements open</h3>
             <p className="public-card-desc">
               Accepting new clients. SLA-backed delivery and clear remediation paths.

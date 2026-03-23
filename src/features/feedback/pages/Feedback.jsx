@@ -154,6 +154,7 @@ const Feedback = () => {
             <p className="feedback-subtitle">{feedbackContent.header.subtitle}</p>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge badge--pulse">Feedback live</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -436,6 +437,7 @@ const Feedback = () => {
             <p className="section-subtitle">Our team reviews feedback and ships fixes fast.</p>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Prefer email?</h3>
             <p className="public-card-desc">Reach out via the contact page for direct support.</p>
           </div>

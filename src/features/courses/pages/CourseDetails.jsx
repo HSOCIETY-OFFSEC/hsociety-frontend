@@ -75,6 +75,7 @@ const CourseDetails = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Program highlights</p>
             <div className="public-list">
               {HACKER_PROTOCOL_BOOTCAMP.highlights?.map((item) => (
@@ -110,6 +111,7 @@ const CourseDetails = () => {
           <div className="public-card-grid">
             {HACKER_PROTOCOL_PHASES.map((phase, index) => (
               <article key={phase.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Phase {index + 1}</span>
                 </div>
@@ -142,6 +144,7 @@ const CourseDetails = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Bootcamp-ready operators.</h3>
             <p className="public-card-desc">Train with real-world context and supervised execution.</p>
           </div>

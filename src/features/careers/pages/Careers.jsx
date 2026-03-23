@@ -62,6 +62,7 @@ const Careers = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Status</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -103,6 +104,7 @@ const Careers = () => {
           <div className="public-card-grid">
             {STATUS_CARDS.map((card) => (
               <article key={card.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Status</span>
                 </div>
@@ -135,6 +137,7 @@ const Careers = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Roles include analysts, builders, mentors.</h3>
             <p className="public-card-desc">We hire operators with real-world engagement experience.</p>
           </div>

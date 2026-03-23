@@ -60,6 +60,7 @@
 }
 
 .public-hero-panel {
+  position: relative;
   background: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -132,6 +133,7 @@
 }
 
 .public-card {
+  position: relative;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -222,6 +224,10 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+.public-cta-card {
+  position: relative;
+}
+
 .public-cta-inner {
   display: grid;
   gap: 2rem;
@@ -280,6 +286,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
+  position: relative;
 }
 
 .public-badge {

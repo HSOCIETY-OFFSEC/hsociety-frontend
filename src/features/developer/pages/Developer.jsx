@@ -58,6 +58,7 @@ const Developer = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Dev focus</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -91,6 +92,7 @@ const Developer = () => {
           <div className="public-card-grid">
             {stack.map((item) => (
               <article key={item.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">{item.title}</span>
                 </div>
@@ -116,6 +118,7 @@ const Developer = () => {
           <div className="public-card-grid">
             {contributions.map((item) => (
               <article key={item.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">{item.title}</span>
                 </div>
@@ -148,6 +151,7 @@ const Developer = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Open-source alignment.</h3>
             <p className="public-card-desc">We ship with transparency, mentorship, and real-world operator feedback.</p>
           </div>

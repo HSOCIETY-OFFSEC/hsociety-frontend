@@ -53,6 +53,7 @@ const CaseStudies = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Impact metrics</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -94,6 +95,7 @@ const CaseStudies = () => {
           <div className="public-card-grid">
             {studies.map((study) => (
               <article key={study.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">{study.title}</span>
                 </div>
@@ -129,6 +131,7 @@ const CaseStudies = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Evidence-first reports.</h3>
             <p className="public-card-desc">Reproduce-ready findings, prioritized remediation, and operator notes.</p>
           </div>

@@ -36,7 +36,6 @@ const CycleSection = ({ steps }) => {
   return (
     <section className="cycle-section reveal-on-scroll" id="cycle" ref={sectionRef}>
       {/* [ADDED] dual-box signature */}
-      <div className="hs-signature" aria-hidden="true" />
 
       <div className="section-container">
         <header className="section-header-center">
@@ -48,6 +47,7 @@ const CycleSection = ({ steps }) => {
         <div className="cycle-row">
           {cycle.slice(0, 3).map((step, index) => (
             <div key={step.title} className="cycle-node">
+              <div className="hs-signature" aria-hidden="true" />
               <div className="cycle-circle" aria-hidden="true">
                 {/* [ADDED] glow layer for hover effect */}
                 <div className="cycle-circle-glow" />

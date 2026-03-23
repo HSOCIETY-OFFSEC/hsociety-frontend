@@ -105,6 +105,7 @@ const Services = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge badge--pulse">Engagements / Open</p>
             <h3 className="public-card-title">Why teams choose HSOCIETY</h3>
             <div className="public-list">
@@ -155,6 +156,7 @@ const Services = () => {
                   }
                 }}
               >
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">
                     {service.icon && <service.icon size={14} />}
@@ -205,6 +207,7 @@ const Services = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Security + training under one roof.</h3>
             <p className="public-card-desc">
               Move from assessment to remediation to upskilling without switching vendors.

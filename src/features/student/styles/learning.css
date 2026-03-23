@@ -14,13 +14,13 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 
 .bootcamp-page > * {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
 }
 
 .bootcamp-hero {
@@ -62,8 +62,9 @@
 }
 
 .bootcamp-shell {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;

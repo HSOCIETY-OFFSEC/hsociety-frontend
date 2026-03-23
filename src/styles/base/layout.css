@@ -131,8 +131,9 @@
 /* ── Desktop (1024px+) ───────────────────────────────────── */
 @media (min-width: 1024px) {
   .dashboard-shell {
-    max-width: 1400px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    margin: 0;
     gap: 1.25rem;
     padding: 0 1.5rem;
   }
@@ -155,7 +156,7 @@
 
 @media (min-width: 1600px) {
   .dashboard-shell {
-    max-width: 1600px;
+    max-width: none;
   }
 }
 

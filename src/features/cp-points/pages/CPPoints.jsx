@@ -82,6 +82,7 @@ const CPPoints = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">CP icon</p>
             <img src={cpIcon} alt="CP" className="cp-hero-icon" />
             <div className="public-hero-stats">
@@ -110,6 +111,7 @@ const CPPoints = () => {
           <div className="public-card-grid">
             {actions.map((action) => (
               <article key={action.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">{action.badge}</span>
                 </div>
@@ -142,6 +144,7 @@ const CPPoints = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Operators earn, operators rise.</h3>
             <p className="public-card-desc">Every verified mission pushes your ranking forward.</p>
           </div>

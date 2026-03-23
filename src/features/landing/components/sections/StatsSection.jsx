@@ -88,6 +88,7 @@ const StatsSection = ({ content, error = '' }) => {
       aria-label="HSOCIETY stats"
     >
       <div className="stats-bar">
+        <div className="hs-signature" aria-hidden="true" />
         {items.map((item, index) => (
           <StatItem key={item.label || item.key || index} item={item} isVisible={isVisible} />
         ))}

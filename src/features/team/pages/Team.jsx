@@ -139,6 +139,7 @@ const Team = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Operator culture</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -174,6 +175,7 @@ const Team = () => {
           <div className="public-card-grid tm-leadership-grid">
             {leadership.map((member, i) => (
               <article key={`${member.name}-${i}`} className="public-card tm-member-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="tm-member-avatar">
                   <ImageWithLoader
                     src={member.image}
@@ -238,6 +240,7 @@ const Team = () => {
           <div className="public-card-grid">
             {teams.map((group, i) => (
               <article key={`${group.title}-${i}`} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">{group.title}</span>
                 </div>
@@ -273,6 +276,7 @@ const Team = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Operators, educators, builders.</h3>
             <p className="public-card-desc">HSOCIETY is built by practitioners with real engagement experience.</p>
           </div>

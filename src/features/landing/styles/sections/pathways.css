@@ -24,6 +24,7 @@
   gap: 1rem;
   min-height: 100%;
   overflow: hidden;
+  position: relative;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 

@@ -75,6 +75,7 @@
   border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 1rem;
+  position: relative;
 
   /* equal height: flex column with meta taking remaining space */
   display: flex;

@@ -63,6 +63,7 @@ export default function Contact() {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Support signals</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -115,6 +116,7 @@ export default function Contact() {
                   key={card.label}
                   className={`public-card contact-card contact-card-${card.accent}`}
                 >
+                  <div className="hs-signature" aria-hidden="true" />
                   <div className="contact-card-header">
                     <span className="contact-card-icon">
                       <Icon size={18} />
@@ -160,6 +162,7 @@ export default function Contact() {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Follow our channels</h3>
             <p className="public-card-desc">
               Stay up to date with product updates, behind-the-scenes stories,

@@ -108,6 +108,7 @@ const Blog = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge badge--pulse">Field Notes / Live</p>
             <h3 className="public-card-title">What you get</h3>
             <div className="public-list">
@@ -164,6 +165,7 @@ const Blog = () => {
                   }
                 }}
               >
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   {post.tag && <span className="public-chip">{post.tag}</span>}
                   <span>{post.date}</span>
@@ -210,6 +212,7 @@ const Blog = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Follow HSOCIETY</h3>
             <p className="public-card-desc">
               Signals, research drops, and community wins — in real time.

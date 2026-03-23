@@ -90,6 +90,7 @@ const Leaderboard = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge badge--pulse">Leaderboard live</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -129,6 +130,7 @@ const Leaderboard = () => {
             <p className="section-subtitle">Updated with every verified mission and streak.</p>
           </div>
           <div className="public-surface">
+            <div className="hs-signature" aria-hidden="true" />
             {loading ? (
               <div className="lb-skeleton" aria-label="Loading leaderboard">
                 {skeletonRows.map((_, idx) => (
@@ -165,6 +167,7 @@ const Leaderboard = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Operators only.</h3>
             <p className="public-card-desc">Train, execute, and earn your position on the board.</p>
           </div>

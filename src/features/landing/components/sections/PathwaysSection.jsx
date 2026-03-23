@@ -76,6 +76,7 @@ const PathwaysSection = ({ pathways }) => {
               key={card.key}
               className={`pathway-card${card.isPrimary ? ' is-primary' : ''}`}
             >
+              <div className="hs-signature" aria-hidden="true" />
               <div className="pathway-media">
                 <ImageWithLoader
                   src={card.image}

@@ -170,6 +170,7 @@ const PublicProfile = () => {
     return (
       <section className="pp-state" aria-live="polite">
         <div className="pp-state-card">
+          <div className="hs-signature" aria-hidden="true" />
           <h1>Profile not found</h1>
           <p>{error}</p>
           <Link className="pp-state-back" to="/">Back to home</Link>
@@ -276,6 +277,7 @@ const PublicProfile = () => {
 
             {/* Stats sidebar card */}
             <div className="pp-stats-card">
+              <div className="hs-signature" aria-hidden="true" />
               <div className="pp-stat-row">
                 <div className="pp-stat-icon">
                   <img src={cpIcon} alt="CP" className="pp-cp-icon" />
@@ -314,6 +316,7 @@ const PublicProfile = () => {
 
             {/* Contribution graph — GitHub style */}
             <section className="pp-panel pp-contrib-panel">
+              <div className="hs-signature" aria-hidden="true" />
               <div className="pp-contrib-header">
                 <h2 className="pp-section-title">
                   <strong>{formatValue(contributionData.total)}</strong> logins in the last year
@@ -388,6 +391,7 @@ const PublicProfile = () => {
 
             {/* Overview */}
             <section className="pp-panel">
+              <div className="hs-signature" aria-hidden="true" />
               <h2 className="pp-section-title">Overview</h2>
               <p className="pp-overview-text">
                 {profile?.summary || profile?.bio || 'This member is building offensive security skills and contributing to the HSOCIETY community.'}
@@ -414,6 +418,7 @@ const PublicProfile = () => {
 
             {/* Activity */}
             <section className="pp-panel">
+              <div className="hs-signature" aria-hidden="true" />
               <h2 className="pp-section-title">Activity</h2>
               <div className="pp-activity-grid">
                 <div className="pp-activity-item">
@@ -459,6 +464,7 @@ const PublicProfile = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Live profiles, real signals.</h3>
             <p className="public-card-desc">Your progress, streaks, and engagement history — all in one place.</p>
           </div>
@@ -470,6 +476,7 @@ const PublicProfile = () => {
         <div className="pp-share-overlay" role="dialog" aria-modal="true" aria-label="Share profile">
           <button type="button" className="pp-share-backdrop" aria-label="Close" onClick={() => setShareOpen(false)} />
           <div className="pp-share-card">
+            <div className="hs-signature" aria-hidden="true" />
             <header className="pp-share-header">
               <h2>Share profile</h2>
               <p>Share this public profile on any platform.</p>

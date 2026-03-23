@@ -72,6 +72,7 @@ const CourseModuleDetails = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Phase overview</p>
             <div className="public-list">
               <div className="public-list-item">
@@ -119,6 +120,7 @@ const CourseModuleDetails = () => {
                 className="public-card crs-room-card interactive-card"
                 to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${room.roomId}`}
               >
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Room {room.roomId}</span>
                   <span className="public-chip">Difficulty: {difficulty}</span>
@@ -150,6 +152,7 @@ const CourseModuleDetails = () => {
           <div className="public-card-grid">
             {module.rooms.map((room) => (
               <article key={room.roomId} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <h3 className="public-card-title">{room.title}</h3>
                 <p className="public-card-desc">{room.overview}</p>
                 {room.bullets?.length > 0 && (
@@ -189,6 +192,7 @@ const CourseModuleDetails = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Operator path unlocked.</h3>
             <p className="public-card-desc">Progress through phases and earn identity badges.</p>
           </div>

@@ -72,6 +72,7 @@ const ServicesSection = ({ services = [] }) => {
             const Icon = icons[index % icons.length];
             return (
               <article key={service.title} className="service-card" role="listitem">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="service-media">
                   <ImageWithLoader
                     src={service.image}

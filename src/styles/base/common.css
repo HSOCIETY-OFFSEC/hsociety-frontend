@@ -84,6 +84,61 @@
 }
 
 /* ═══════════════════════════════════════════════
+   HSOCIETY SIGNATURE
+   ═══════════════════════════════════════════════ */
+
+.hs-signature {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  opacity: 0.95;
+  z-index: 2;
+}
+
+.hs-signature::before,
+.hs-signature::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border-color) 70%, transparent);
+}
+
+.hs-signature::before {
+  top: 0;
+  left: 0;
+  background: var(--primary-color);
+  opacity: 0.85;
+}
+
+.hs-signature::after {
+  bottom: 0;
+  right: 0;
+  background: var(--text-secondary);
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .hs-signature {
+    top: 0.6rem;
+    right: 0.6rem;
+    width: 16px;
+    height: 16px;
+  }
+
+  .hs-signature::before,
+  .hs-signature::after {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+}
+
+/* ═══════════════════════════════════════════════
    BASE STYLES
    ═══════════════════════════════════════════════ */
 

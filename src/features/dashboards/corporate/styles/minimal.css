@@ -4,8 +4,8 @@
 
 .dashboard-wrapper {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
 }
 
 .dashboard-header {

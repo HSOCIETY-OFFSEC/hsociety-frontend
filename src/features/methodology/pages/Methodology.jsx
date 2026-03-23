@@ -48,6 +48,7 @@ const Methodology = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Operator workflow</p>
             <div className="public-list">
               {phases.slice(0, 4).map((phase) => (
@@ -83,6 +84,7 @@ const Methodology = () => {
           <div className="public-card-grid">
             {phases.map((phase) => (
               <article key={phase.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">{phase.title}</span>
                 </div>
@@ -114,6 +116,7 @@ const Methodology = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Cycle-based, evidence-first.</h3>
             <p className="public-card-desc">Continuous validation, clear remediation paths, and operator-grade output.</p>
           </div>

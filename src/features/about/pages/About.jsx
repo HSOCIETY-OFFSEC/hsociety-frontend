@@ -32,6 +32,7 @@ const About = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Cycle overview</p>
             <div className="public-list">
               {cycle.phases.slice(0, 4).map((phase) => (
@@ -66,6 +67,7 @@ const About = () => {
           <div className="public-card-grid">
             {cycle.phases.map((phase, index) => (
               <article key={phase} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Phase {String(index + 1).padStart(2, '0')}</span>
                 </div>
@@ -91,6 +93,7 @@ const About = () => {
           <div className="public-card-grid">
             {experience.cards.map((card) => (
               <article key={card.title} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <h3 className="public-card-title">{card.title}</h3>
                 <p className="public-card-desc">{card.description}</p>
               </article>
@@ -113,6 +116,7 @@ const About = () => {
           <div className="public-card-grid">
             {principle.bullets.map((item, i) => (
               <article key={item} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Principle {i + 1}</span>
                 </div>
@@ -143,6 +147,7 @@ const About = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Stay in the loop</h3>
             <p className="public-card-desc">Follow the latest research and community updates.</p>
             <SocialLinks className="about-social-links" />

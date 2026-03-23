@@ -31,6 +31,7 @@ const ServiceCardSlide = ({ service, index, offset, slideRef, total }) => {
       aria-label={`Service ${index + 1} of ${total}: ${service.title}`}
     >
       <article className={`service-card service-card-${index + 1}`}>
+        <div className="hs-signature" aria-hidden="true" />
         <div className="service-media">
           <ImageWithLoader
             src={service.image}

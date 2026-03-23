@@ -63,6 +63,7 @@ const ServiceDetail = () => {
             </div>
           </div>
           <div className="public-hero-panel">
+            <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge">Coverage summary</p>
             <div className="public-list">
               {service.features.slice(0, 4).map((item) => (
@@ -98,6 +99,7 @@ const ServiceDetail = () => {
           <div className="public-card-grid">
             {service.features.map((feature) => (
               <article key={feature} className="public-card">
+                <div className="hs-signature" aria-hidden="true" />
                 <h3 className="public-card-title">{feature}</h3>
                 <p className="public-card-desc">Operator-led coverage with remediation guidance.</p>
               </article>
@@ -132,6 +134,7 @@ const ServiceDetail = () => {
                 }}
                 aria-label={`View service ${prevService.title}`}
               >
+                <div className="hs-signature" aria-hidden="true" />
                 <p className="public-card-meta">Previous service</p>
                 <h3 className="public-card-title">{prevService.title}</h3>
                 <p className="public-card-desc">{prevService.description}</p>
@@ -151,6 +154,7 @@ const ServiceDetail = () => {
                 }}
                 aria-label={`View service ${nextService.title}`}
               >
+                <div className="hs-signature" aria-hidden="true" />
                 <p className="public-card-meta">Next service</p>
                 <h3 className="public-card-title">{nextService.title}</h3>
                 <p className="public-card-desc">{nextService.description}</p>
@@ -169,6 +173,7 @@ const ServiceDetail = () => {
               }}
               aria-label="View all services"
             >
+              <div className="hs-signature" aria-hidden="true" />
               <p className="public-card-meta">All services</p>
               <h3 className="public-card-title">Service catalog</h3>
               <p className="public-card-desc">Browse all HSOCIETY offerings.</p>
@@ -198,6 +203,7 @@ const ServiceDetail = () => {
             </div>
           </div>
           <div className="public-cta-card">
+            <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Operator-led delivery.</h3>
             <p className="public-card-desc">Supervised pentests, clear findings, and remediation mapping.</p>
           </div>
