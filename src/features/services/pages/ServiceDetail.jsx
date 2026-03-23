@@ -1,23 +1,13 @@
-/**
- * Service Detail Page
- * Location: src/features/services/ServiceDetail.jsx
- *
- * GitHub repo-page layout:
- *   page header (breadcrumb + actions) → two-column (main + sidebar)
- */
-
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import landingContent from '../../../data/static/landing.json';
+import '../../public/styles/public-landing.css';
 import '../styles/services.css';
 import {
-  FiArrowLeft,
   FiArrowUpRight,
   FiCheckCircle,
-  FiList,
   FiZap,
-  FiMessageSquare,
 } from 'react-icons/fi';
 
 const slugify = (value) =>
@@ -44,194 +34,131 @@ const ServiceDetail = () => {
   if (!service) return null;
 
   return (
-    <div className="svc-detail-page">
-
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="svc-detail-page-header">
-        <div className="svc-detail-page-header-inner">
-
-          <div className="svc-detail-header-left">
-            <div className="svc-detail-header-icon-wrap">
-              <FiList size={20} className="svc-detail-header-icon" />
-            </div>
-            <div>
-              <div className="svc-detail-header-breadcrumb">
-                <button
-                  className="svc-detail-breadcrumb-link"
-                  onClick={() => navigate('/services')}
-                >
-                  services
-                </button>
-                <span className="svc-detail-breadcrumb-sep">/</span>
-                <span className="svc-detail-breadcrumb-page">{service.title}</span>
-              </div>
-              <p className="svc-detail-header-desc">
-                {service.description}
-              </p>
-            </div>
-          </div>
-
-          <div className="svc-detail-header-actions">
-            <button
-              className="svc-detail-btn svc-detail-btn-secondary"
-              onClick={() => openAuthModal('login')}
-            >
-              Join training cycle
-            </button>
-            <button
-              className="svc-detail-btn svc-detail-btn-primary"
-              onClick={() => navigate('/contact')}
-            >
-              <FiZap size={14} />
-              Talk to HSOCIETY
-            </button>
-          </div>
-        </div>
-
-        {/* Feature count pill */}
-        <div className="svc-detail-header-meta">
-          <span className="svc-detail-meta-pill">
-            <FiCheckCircle size={13} className="svc-detail-meta-icon" />
-            <span>{service.features.length} coverage areas</span>
-          </span>
-          <span className="svc-detail-meta-pill">
-            <span className="svc-detail-meta-dot" />
-            <span>Active service</span>
-          </span>
-        </div>
-      </header>
-
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="svc-detail-layout">
-
-        {/* ── MAIN COLUMN ─────────────────────────── */}
-        <main className="svc-detail-main">
-
-          {/* Features section */}
-          <section className="svc-detail-section">
-            <h2 className="svc-detail-section-title">
-              <FiList size={15} className="svc-detail-section-icon" />
-              What we cover
-            </h2>
-            <p className="svc-detail-section-desc">
-              Every engagement prioritises clarity, evidence, and immediate impact.
+    <div className="landing-page public-page svc-detail-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Services
             </p>
-
-            {/* Feature list — GitHub issue list style */}
-            <div className="svc-detail-feature-list">
-              {service.features.map((feature, i) => (
-                <div key={feature} className="svc-detail-feature-item">
-                  <span className="svc-detail-feature-num">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <FiCheckCircle size={14} className="svc-detail-feature-check" />
-                  <p className="svc-detail-feature-text">{feature}</p>
+            <h1 className="public-hero-title">{service.title}</h1>
+            <p className="public-hero-desc">{service.description}</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+                <FiZap size={14} />
+                Talk to HSOCIETY
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => openAuthModal('login')}>
+                Join training cycle
+              </button>
+            </div>
+            <div className="public-pill-row">
+              <span className="public-pill">
+                <FiCheckCircle size={12} />
+                {service.features.length} coverage areas
+              </span>
+              <span className="public-pill">Active service</span>
+            </div>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Coverage summary</p>
+            <div className="public-list">
+              {service.features.slice(0, 4).map((item) => (
+                <div key={item} className="public-list-item">
+                  <FiCheckCircle size={14} />
+                  <span>{item}</span>
                 </div>
               ))}
             </div>
-          </section>
-
-          <div className="svc-detail-divider" />
-
-          {/* Pagination — prev / next service */}
-          <section className="svc-detail-section svc-detail-nav-section">
-            <h2 className="svc-detail-section-title">
-              <FiArrowUpRight size={15} className="svc-detail-section-icon" />
-              Other services
-            </h2>
-            <div className="svc-detail-nav">
-              {prevService && (
-                <button
-                  className="svc-detail-nav-card"
-                  onClick={() => navigate(`/services/${slugify(prevService.title)}`)}
-                >
-                  <FiArrowLeft size={13} className="svc-detail-nav-arrow" />
-                  <div>
-                    <span className="svc-detail-nav-label">Previous</span>
-                    <span className="svc-detail-nav-title">{prevService.title}</span>
-                  </div>
-                </button>
-              )}
-              {nextService && (
-                <button
-                  className="svc-detail-nav-card"
-                  onClick={() => navigate(`/services/${slugify(nextService.title)}`)}
-                >
-                  <div>
-                    <span className="svc-detail-nav-label">Next</span>
-                    <span className="svc-detail-nav-title">{nextService.title}</span>
-                  </div>
-                  <FiArrowUpRight size={13} className="svc-detail-nav-arrow" />
-                </button>
-              )}
-            </div>
-          </section>
-
-        </main>
-
-        {/* ── SIDEBAR ─────────────────────────────── */}
-        <aside className="svc-detail-sidebar">
-
-          {/* About this service */}
-          <div className="svc-detail-sidebar-box">
-            <h3 className="svc-detail-sidebar-heading">About this service</h3>
-            <p className="svc-detail-sidebar-about">{service.description}</p>
-            <div className="svc-detail-sidebar-divider" />
-            <ul className="svc-detail-sidebar-list">
-              <li>
-                <FiCheckCircle size={13} className="svc-detail-sidebar-icon" />
-                {service.features.length} defined coverage areas
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="svc-detail-sidebar-icon" />
-                Evidence-based reporting
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="svc-detail-sidebar-icon" />
-                Remediation-mapped findings
-              </li>
-            </ul>
           </div>
+        </div>
+      </section>
 
-          {/* CTA box */}
-          <div className="svc-detail-sidebar-box svc-detail-cta-box">
-            <div className="svc-detail-cta-row">
-              <span className="svc-detail-cta-dot" />
-              <span className="svc-detail-cta-label">GET STARTED</span>
-            </div>
-            <strong className="svc-detail-cta-value">Engage now</strong>
-            <p className="svc-detail-cta-note">
-              Request an engagement or join the training cycle below.
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              What we cover
             </p>
-            <div className="svc-detail-cta-actions">
-              <button
-                className="svc-detail-btn svc-detail-btn-primary svc-detail-btn-full"
-                onClick={() => navigate('/contact')}
-              >
-                <FiMessageSquare size={13} />
-                Contact us
+            <h2 className="section-title">Evidence-driven coverage areas.</h2>
+            <p className="section-subtitle">Every engagement prioritizes clarity, evidence, and impact.</p>
+          </div>
+          <div className="public-card-grid">
+            {service.features.map((feature) => (
+              <article key={feature} className="public-card">
+                <h3 className="public-card-title">{feature}</h3>
+                <p className="public-card-desc">Operator-led coverage with remediation guidance.</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Explore more
+            </p>
+            <h2 className="section-title">Related services</h2>
+            <p className="section-subtitle">Jump to another service or go back to the catalog.</p>
+          </div>
+          <div className="public-card-grid">
+            {prevService && (
+              <article className="public-card svc-nav-card" onClick={() => navigate(`/services/${slugify(prevService.title)}`)}>
+                <p className="public-card-meta">Previous service</p>
+                <h3 className="public-card-title">{prevService.title}</h3>
+                <p className="public-card-desc">{prevService.description}</p>
+              </article>
+            )}
+            {nextService && (
+              <article className="public-card svc-nav-card" onClick={() => navigate(`/services/${slugify(nextService.title)}`)}>
+                <p className="public-card-meta">Next service</p>
+                <h3 className="public-card-title">{nextService.title}</h3>
+                <p className="public-card-desc">{nextService.description}</p>
+              </article>
+            )}
+            <article className="public-card svc-nav-card" onClick={() => navigate('/services')}>
+              <p className="public-card-meta">All services</p>
+              <h3 className="public-card-title">Service catalog</h3>
+              <p className="public-card-desc">Browse all HSOCIETY offerings.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Ready to engage
+            </p>
+            <h2 className="section-title">Start a security engagement.</h2>
+            <p className="section-subtitle">Talk to our team about your attack surface and goals.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+                Book a call
+                <FiArrowUpRight size={14} />
               </button>
-              <button
-                className="svc-detail-btn svc-detail-btn-secondary svc-detail-btn-full"
-                onClick={() => openAuthModal('login')}
-              >
-                Join training
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/pricing')}>
+                View pricing
               </button>
             </div>
           </div>
-
-          {/* Tags */}
-          <div className="svc-detail-sidebar-box">
-            <h3 className="svc-detail-sidebar-heading">Tags</h3>
-            <div className="svc-detail-topics">
-              {['offsec', 'pentesting', 'red-team', 'hsociety'].map((t) => (
-                <span key={t} className="svc-detail-topic">{t}</span>
-              ))}
-            </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Operator-led delivery.</h3>
+            <p className="public-card-desc">Supervised pentests, clear findings, and remediation mapping.</p>
           </div>
-
-        </aside>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };

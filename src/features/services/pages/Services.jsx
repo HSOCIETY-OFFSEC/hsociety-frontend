@@ -27,6 +27,7 @@ import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa'
 import landingContent from '../../../data/static/landing.json';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import { slugify } from '../../../shared/utils/display/slugify';
+import '../../public/styles/public-landing.css';
 import '../styles/services.css';
 
 const Services = () => {
@@ -51,6 +52,12 @@ const Services = () => {
 
   const heroTrust = landingContent.hero?.trust || [];
   const cta = landingContent.cta;
+  const highlights = [
+    'Evidence-driven reports mapped to remediation.',
+    'Operator-led engagements with supervised delivery.',
+    'Training programs backed by live pentest experience.',
+    'Direct collaboration with your engineering teams.',
+  ];
 
   const handleRoute = (route) => {
     if (route === '/corporate/pentest') { requestPentest(); return; }
@@ -58,187 +65,150 @@ const Services = () => {
   };
 
   return (
-    <div className="svc-page">
+    <div className="landing-page public-page svc-page">
       {requestPentestModal}
 
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="svc-page-header">
-        <div className="svc-page-header-inner">
-
-          <div className="svc-header-left">
-            <div className="svc-header-icon-wrap">
-              <FiShield size={20} className="svc-header-icon" />
-            </div>
-            <div>
-              <div className="svc-header-breadcrumb">
-                <span className="svc-breadcrumb-org">HSOCIETY</span>
-                <span className="svc-breadcrumb-sep">/</span>
-                <span className="svc-breadcrumb-page">services</span>
-                <span className="svc-header-visibility">Public</span>
-              </div>
-              <p className="svc-header-desc">
-                Evidence-driven security work with reporting that maps directly to fixes.
-              </p>
-            </div>
-          </div>
-
-          <div className="svc-header-actions">
-            <button
-              className="svc-btn svc-btn-secondary"
-              onClick={() => openAuthModal('login')}
-            >
-              Join training cycle
-            </button>
-            <button
-              className="svc-btn svc-btn-primary"
-              onClick={requestPentest}
-            >
-              <FiZap size={14} />
-              Request pentest
-            </button>
-          </div>
-        </div>
-
-        {/* Trust pills row */}
-        <div className="svc-header-meta">
-          {heroTrust.map((item) => (
-            <span key={item} className="svc-meta-pill">
-              <span className="svc-meta-dot" />
-              {item}
-            </span>
-          ))}
-        </div>
-      </header>
-
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="svc-layout">
-
-        {/* ── MAIN COLUMN ─────────────────────────── */}
-        <main className="svc-main">
-
-          {/* Section: services list */}
-          <section className="svc-section">
-            <h2 className="svc-section-title">
-              <FiLayers size={15} className="svc-section-icon" />
-              Core services
-            </h2>
-            <p className="svc-section-desc">
-              Built to surface risk, validate impact, and accelerate remediation.
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Services
             </p>
-
-            <div className="svc-card-list">
-              {services.map((service) => (
-                <article
-                  key={service.title}
-                  className="svc-card"
-                  onClick={() => navigate(`/services/${slugify(service.title)}`)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      navigate(`/services/${slugify(service.title)}`);
-                    }
-                  }}
-                >
-                  {/* Card header */}
-                  <div className="svc-card-header">
-                    <div className="svc-card-header-left">
-                      <span className="svc-card-icon">
-                        {service.icon && <service.icon size={16} />}
-                      </span>
-                      <h3 className="svc-card-title">{service.title}</h3>
-                    </div>
-                    <FiArrowUpRight size={14} className="svc-card-arrow" />
-                  </div>
-
-                  {/* Description */}
-                  <p className="svc-card-desc">{service.description}</p>
-
-                  {/* Feature tags — GitHub topic tags */}
-                  <div className="svc-card-footer">
-                    {service.features.map((f) => (
-                      <span key={f} className="svc-tag">{f}</span>
-                    ))}
-                  </div>
-                </article>
+            <h1 className="public-hero-title">Security work that maps directly to fixes.</h1>
+            <p className="public-hero-desc">
+              Evidence-driven engagements with clear remediation playbooks. We
+              run supervised pentests, red team operations, and operator-grade
+              training for modern teams.
+            </p>
+            <div className="public-hero-actions">
+              <button
+                className="public-btn public-btn--primary"
+                onClick={requestPentest}
+              >
+                <FiZap size={14} />
+                Request pentest
+              </button>
+              <button
+                className="public-btn public-btn--ghost"
+                onClick={() => openAuthModal('login')}
+              >
+                Join training cycle
+                <FiArrowUpRight size={14} />
+              </button>
+            </div>
+            <div className="public-pill-row">
+              {heroTrust.map((item) => (
+                <span key={item} className="public-pill">{item}</span>
               ))}
             </div>
-          </section>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Engagements / Open</p>
+            <h3 className="public-card-title">Why teams choose HSOCIETY</h3>
+            <div className="public-list">
+              {highlights.map((item) => (
+                <div key={item} className="public-list-item">
+                  <FiCheckCircle size={14} />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <div className="svc-divider" />
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Core services
+            </p>
+            <h2 className="section-title">Operator-led engagements.</h2>
+            <p className="section-subtitle">
+              Built to surface risk, validate impact, and accelerate remediation.
+            </p>
+          </div>
+          <div className="public-card-grid svc-card-grid">
+            {services.map((service) => (
+              <article
+                key={service.title}
+                className="public-card svc-card"
+                onClick={() => navigate(`/services/${slugify(service.title)}`)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(`/services/${slugify(service.title)}`);
+                  }
+                }}
+              >
+                <div className="public-card-meta">
+                  <span className="public-chip">
+                    {service.icon && <service.icon size={14} />}
+                    {service.title}
+                  </span>
+                </div>
+                <h3 className="public-card-title">{service.title}</h3>
+                <p className="public-card-desc">{service.description}</p>
+                <div className="public-card-meta svc-tags">
+                  {service.features.map((f) => (
+                    <span key={f} className="public-pill">{f}</span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* CTA section */}
-          <section className="svc-section svc-cta-section">
-            <div className="svc-cta-body">
-              <p className="svc-cta-eyebrow">
-                <FiCheckCircle size={13} />
-                Ready to engage
-              </p>
-              <h2 className="svc-cta-title">
-                {cta?.right?.title || 'Start a security engagement.'}
-              </h2>
-              <p className="svc-cta-desc">
-                {cta?.right?.description || 'Talk to our team about your attack surface.'}
-              </p>
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Ready to engage
+            </p>
+            <h2 className="section-title">
+              {cta?.right?.title || 'Start a security engagement.'}
+            </h2>
+            <p className="section-subtitle">
+              {cta?.right?.description || 'Talk to our team about your attack surface.'}
+            </p>
+            <div className="public-hero-actions">
               <button
-                className="svc-btn svc-btn-primary"
+                className="public-btn public-btn--primary"
                 onClick={() => handleRoute(cta?.right?.route || '/corporate/pentest')}
               >
                 {cta?.right?.button || 'Request Pentest'}
                 <FiArrowUpRight size={14} />
               </button>
+              <button
+                className="public-btn public-btn--ghost"
+                onClick={() => navigate('/contact')}
+              >
+                Talk to our team
+              </button>
             </div>
-          </section>
-
-        </main>
-
-        {/* ── SIDEBAR ─────────────────────────────── */}
-        <aside className="svc-sidebar">
-
-          {/* About */}
-          <div className="svc-sidebar-box">
-            <h3 className="svc-sidebar-heading">About</h3>
-            <p className="svc-sidebar-about">
-              HSOCIETY delivers offensive security services: penetration tests, red team
-              operations, and training engagements for real-world risk reduction.
+          </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Security + training under one roof.</h3>
+            <p className="public-card-desc">
+              Move from assessment to remediation to upskilling without switching vendors.
             </p>
-            <div className="svc-sidebar-divider" />
-            <ul className="svc-sidebar-list">
-              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Evidence-driven reports</li>
-              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Direct remediation mapping</li>
-              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Supervised pentest engagements</li>
-              <li><FiCheckCircle size={13} className="svc-sidebar-icon" />Beginner-to-advanced training</li>
-            </ul>
-          </div>
-
-          {/* Status box */}
-          <div className="svc-sidebar-box svc-status-box">
-            <div className="svc-status-row">
-              <span className="svc-status-dot" />
-              <span className="svc-status-label">ENGAGEMENTS</span>
-            </div>
-            <strong className="svc-status-value">OPEN</strong>
-            <div className="svc-status-track">
-              <div className="svc-status-fill" />
-            </div>
-            <p className="svc-status-note">
-              Accepting new clients. SLA-backed delivery.
-            </p>
-          </div>
-
-          {/* Topics */}
-          <div className="svc-sidebar-box">
-            <h3 className="svc-sidebar-heading">Topics</h3>
-            <div className="svc-topics">
-              {['pentesting', 'red-team', 'offsec', 'training', 'vulnerability', 'remediation'].map(
-                (t) => <span key={t} className="svc-topic">{t}</span>
-              )}
+            <div className="public-card-meta">
+              <span>Engagements</span>
+              <span>Training</span>
+              <span>Community</span>
             </div>
           </div>
-
-        </aside>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };

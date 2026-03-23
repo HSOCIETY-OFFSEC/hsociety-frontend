@@ -1,11 +1,3 @@
-/**
- * Courses Page
- * Location: src/features/courses/Courses.jsx
- *
- * GitHub repo-page layout:
- *   page header (breadcrumb + actions) → two-column (main + sidebar)
- */
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,206 +5,120 @@ import {
   FiClock,
   FiLayers,
   FiShield,
-  FiChevronRight,
-  FiCheckCircle,
-  FiBook,
 } from 'react-icons/fi';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../../data/static/bootcamps/hackerProtocolData';
+import '../../public/styles/public-landing.css';
 import '../styles/courses.css';
 
 const Courses = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="crs-page">
-
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="crs-page-header">
-        <div className="crs-page-header-inner">
-          <div className="crs-header-left">
-            <div className="crs-header-icon-wrap">
-              <FiBook size={20} className="crs-header-icon" />
+    <div className="landing-page public-page crs-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Courses
+            </p>
+            <h1 className="public-hero-title">Operator-grade training programs.</h1>
+            <p className="public-hero-desc">
+              Structured programs built for skill progression, identity validation, and real-world deployment.
+            </p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses/hacker-protocol')}>
+                View Hacker Protocol
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/contact')}>
+                Talk to us
+              </button>
             </div>
-            <div>
-              <div className="crs-header-breadcrumb">
-                <span className="crs-breadcrumb-org">HSOCIETY</span>
-                <span className="crs-breadcrumb-sep">/</span>
-                <span className="crs-breadcrumb-page">courses</span>
-                <span className="crs-header-visibility">Public</span>
+            <div className="public-pill-row">
+              <span className="public-pill">
+                <FiShield size={12} />
+                Programs 1 active
+              </span>
+              <span className="public-pill">
+                <FiLayers size={12} />
+                {HACKER_PROTOCOL_BOOTCAMP.phases} phases
+              </span>
+              <span className="public-pill">
+                <FiClock size={12} />
+                {HACKER_PROTOCOL_BOOTCAMP.duration}
+              </span>
+            </div>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Featured program</p>
+            <div className="crs-featured-panel">
+              <img
+                src={HACKER_PROTOCOL_BOOTCAMP.emblem}
+                alt="Hacker Protocol emblem"
+                className="crs-featured-emblem"
+              />
+              <div>
+                <h3 className="public-card-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h3>
+                <p className="public-card-desc">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
               </div>
-              <p className="crs-header-desc">
-                Structured programs built for skill progression, identity validation,
-                and real-world deployment.
-              </p>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Meta pills */}
-        <div className="crs-header-meta">
-          <span className="crs-meta-pill">
-            <FiShield size={13} className="crs-meta-icon" />
-            <span className="crs-meta-label">Programs</span>
-            <strong className="crs-meta-value">1 active</strong>
-          </span>
-          <span className="crs-meta-pill">
-            <FiLayers size={13} className="crs-meta-icon" />
-            <span className="crs-meta-label">Phases</span>
-            <strong className="crs-meta-value">{HACKER_PROTOCOL_BOOTCAMP.phases}</strong>
-          </span>
-          <span className="crs-meta-pill">
-            <FiClock size={13} className="crs-meta-icon" />
-            <span className="crs-meta-label">Duration</span>
-            <strong className="crs-meta-value">{HACKER_PROTOCOL_BOOTCAMP.duration}</strong>
-          </span>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Program overview
+            </p>
+            <h2 className="section-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h2>
+            <p className="section-subtitle">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
+          </div>
+          <div className="public-card-grid">
+            {HACKER_PROTOCOL_PHASES.map((phase, index) => (
+              <article key={phase.title} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">Phase {index + 1}</span>
+                </div>
+                <h3 className="public-card-title">{phase.title}</h3>
+                <p className="public-card-desc">{phase.summary}</p>
+              </article>
+            ))}
+          </div>
         </div>
-      </header>
+      </section>
 
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="crs-layout">
-
-        {/* ── MAIN COLUMN ─────────────────────────── */}
-        <main className="crs-main">
-
-          {/* Featured program */}
-          <section className="crs-section">
-            <h2 className="crs-section-title">
-              <FiShield size={15} className="crs-section-icon" />
-              Featured program
-            </h2>
-
-            <article
-              className="crs-featured-card"
-              onClick={() => navigate('/courses/hacker-protocol')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  navigate('/courses/hacker-protocol');
-                }
-              }}
-            >
-              {/* Emblem */}
-              <div className="crs-featured-emblem-col">
-                <img
-                  src={HACKER_PROTOCOL_BOOTCAMP.emblem}
-                  alt="Hacker Protocol emblem"
-                  className="crs-featured-emblem"
-                />
-              </div>
-
-              {/* Body */}
-              <div className="crs-featured-body">
-                <div className="crs-featured-header-row">
-                  <span className="crs-label crs-label-alpha">Featured Program</span>
-                  <FiArrowUpRight size={14} className="crs-featured-arrow" />
-                </div>
-                <h3 className="crs-featured-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h3>
-                <p className="crs-featured-sub">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
-                <div className="crs-chip-row">
-                  <span className="crs-chip">
-                    <FiClock size={12} />
-                    {HACKER_PROTOCOL_BOOTCAMP.duration}
-                  </span>
-                  <span className="crs-chip">
-                    <FiLayers size={12} />
-                    {HACKER_PROTOCOL_BOOTCAMP.phases} phases
-                  </span>
-                </div>
-              </div>
-            </article>
-          </section>
-
-          <div className="crs-divider" />
-
-          {/* Phases list */}
-          <section className="crs-section">
-            <h2 className="crs-section-title">
-              <FiLayers size={15} className="crs-section-icon" />
-              Hacker Protocol phases
-            </h2>
-            <p className="crs-section-desc">
-              Select a phase to inspect operative requirements and room breakdown.
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Ready to start
             </p>
-
-            <div className="crs-phase-list">
-              {HACKER_PROTOCOL_PHASES.map((phase, i) => (
-                <article
-                  key={phase.moduleId}
-                  className="crs-phase-row"
-                  onClick={() => navigate(`/courses/hacker-protocol/modules/${phase.moduleId}`)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      navigate(`/courses/hacker-protocol/modules/${phase.moduleId}`);
-                    }
-                  }}
-                >
-                  <div className="crs-phase-emblem-wrap">
-                    <img src={phase.emblem} alt={phase.codename} className="crs-phase-emblem" />
-                  </div>
-                  <div className="crs-phase-text">
-                    <div className="crs-phase-meta-row">
-                      <span className="crs-phase-id">
-                        P-{String(phase.moduleId).padStart(2, '0')}
-                      </span>
-                      <span className="crs-label crs-label-alpha">{phase.roleTitle}</span>
-                    </div>
-                    <strong className="crs-phase-codename">{phase.codename}</strong>
-                  </div>
-                  <FiChevronRight size={14} className="crs-phase-arrow" />
-                </article>
-              ))}
-            </div>
-          </section>
-
-        </main>
-
-        {/* ── SIDEBAR ─────────────────────────────── */}
-        <aside className="crs-sidebar">
-
-          <div className="crs-sidebar-box">
-            <h3 className="crs-sidebar-heading">About</h3>
-            <p className="crs-sidebar-about">
-              {HACKER_PROTOCOL_BOOTCAMP.overview}
-            </p>
-            <div className="crs-sidebar-divider" />
-            <ul className="crs-sidebar-list">
-              <li><FiCheckCircle size={13} className="crs-sidebar-icon" />Structured phase progression</li>
-              <li><FiCheckCircle size={13} className="crs-sidebar-icon" />Real-world pentest rooms</li>
-              <li><FiCheckCircle size={13} className="crs-sidebar-icon" />Verified operative identity</li>
-              <li><FiCheckCircle size={13} className="crs-sidebar-icon" />CP points on completion</li>
-            </ul>
-          </div>
-
-          <div className="crs-sidebar-box crs-status-box">
-            <div className="crs-status-row">
-              <span className="crs-status-dot" />
-              <span className="crs-status-label">ENROLLMENT</span>
-            </div>
-            <strong className="crs-status-value">OPEN</strong>
-            <div className="crs-status-track">
-              <div className="crs-status-fill" />
-            </div>
-            <p className="crs-status-note">
-              Accepting new students. Self-paced delivery.
-            </p>
-          </div>
-
-          <div className="crs-sidebar-box">
-            <h3 className="crs-sidebar-heading">Topics</h3>
-            <div className="crs-topics">
-              {['pentesting', 'offsec', 'red-team', 'training', 'labs', 'hsociety'].map(
-                (t) => <span key={t} className="crs-topic">{t}</span>
-              )}
+            <h2 className="section-title">Start the Hacker Protocol journey.</h2>
+            <p className="section-subtitle">Enroll in the bootcamp and move into supervised engagements.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses/hacker-protocol')}>
+                View curriculum
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/student-bootcamps')}>
+                Go to bootcamp
+              </button>
             </div>
           </div>
-
-        </aside>
-      </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Built by operators.</h3>
+            <p className="public-card-desc">Learn with live labs, guided missions, and real-world context.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

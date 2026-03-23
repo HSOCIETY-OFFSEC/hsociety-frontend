@@ -1,186 +1,143 @@
 import React from 'react';
 import aboutContent from '../../../data/static/about.json';
 import SocialLinks from '../../../shared/components/common/SocialLinks';
+import '../../public/styles/public-landing.css';
 import '../styles/about.css';
 
 const About = () => {
-
   const { hero, cycle, experience, principle } = aboutContent;
 
   return (
-    <div className="about-page">
-
-      {/* ── Hero ─────────────────────────────────────────── */}
-      <header className="about-hero reveal-on-scroll">
-        <div className="about-hero-inner">
-
-          {/* Top bar */}
-          <div className="about-hero-topbar">
-            <span className="about-tag">HSOCIETY // ABOUT</span>
-            <span className="about-tag about-tag--dim">EST. 2024</span>
-          </div>
-
-          {/* Title block */}
-          <div className="about-hero-body">
-            <div className="about-hero-left">
-              <p className="about-kicker">
-                <span className="about-kicker-glyph" aria-hidden="true">◈</span>
-                {hero.kicker}
-              </p>
-              <h1 className="about-hero-title">{hero.title}</h1>
-              <p className="about-hero-desc">{hero.description}</p>
+    <div className="landing-page public-page about-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / About
+            </p>
+            <h1 className="public-hero-title">{hero.title}</h1>
+            <p className="public-hero-desc">{hero.description}</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/services')}>
+                Explore services
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/contact')}>
+                Contact the team
+              </button>
             </div>
-
-            <aside className="about-hero-right" aria-hidden="true">
-              <div className="about-stat-block">
-                <span className="about-stat-num">06</span>
-                <span className="about-stat-label">CYCLE<br/>PHASES</span>
-              </div>
-              <div className="about-stat-divider" />
-              <div className="about-stat-block">
-                <span className="about-stat-num">∞</span>
-                <span className="about-stat-label">CONTINUOUS<br/>PIPELINE</span>
-              </div>
-            </aside>
           </div>
-
-          {/* Bottom strip */}
-          <div className="about-hero-strip">
-            <span>TRAIN</span>
-            <span className="strip-dot" aria-hidden="true" />
-            <span>DEPLOY</span>
-            <span className="strip-dot" aria-hidden="true" />
-            <span>EXECUTE</span>
-            <span className="strip-dot" aria-hidden="true" />
-            <span>REPEAT</span>
-          </div>
-        </div>
-      </header>
-
-      {/* ── Cycle / Phases ───────────────────────────────── */}
-      <section
-        className="about-section about-cycle-section reveal-on-scroll"
-        aria-labelledby="cycle-heading"
-      >
-        <div className="about-section-label">
-          <span className="section-code" aria-hidden="true">SYS::01</span>
-          <span className="section-rule" aria-hidden="true" />
-        </div>
-
-        <div className="about-section-body">
-          <div className="about-section-intro">
-            <h2 id="cycle-heading">{cycle.title}</h2>
-            <p>{cycle.subtitle}</p>
-          </div>
-
-          <ol className="about-cycle-list" aria-label="Security cycle phases">
-            {cycle.phases.map((phase, index) => (
-              <li key={phase} className="about-cycle-item">
-                <div className="cycle-connector" aria-hidden="true">
-                  <span className="cycle-node" />
-                  {index < cycle.phases.length - 1 && (
-                    <span className="cycle-line" />
-                  )}
+          <div className="public-hero-panel">
+            <p className="public-badge">Cycle overview</p>
+            <div className="public-list">
+              {cycle.phases.slice(0, 4).map((phase) => (
+                <div key={phase} className="public-list-item">
+                  <span>{phase}</span>
                 </div>
-                <div className="cycle-content">
-                  <span className="cycle-index" aria-hidden="true">
-                    PHASE_{String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="cycle-title">{phase}</span>
-                </div>
-              </li>
-            ))}
-          </ol>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── Experience / Cards ───────────────────────────── */}
-      <section
-        className="about-section about-experience-section reveal-on-scroll"
-        aria-labelledby="experience-heading"
-      >
-        <div className="about-section-label">
-          <span className="section-code" aria-hidden="true">SYS::02</span>
-          <span className="section-rule" aria-hidden="true" />
-        </div>
-
-        <div className="about-section-body">
-          <div className="about-section-intro">
-            <h2 id="experience-heading">{experience.title}</h2>
-            <p>{experience.subtitle}</p>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              {cycle.title}
+            </p>
+            <h2 className="section-title">{cycle.title}</h2>
+            <p className="section-subtitle">{cycle.subtitle}</p>
           </div>
-
-          <div className="about-points-grid">
-            {experience.cards.map((card, i) => (
-              <article
-                key={card.title}
-                className="about-point-card"
-                style={{ '--card-index': i }}
-              >
-                <div className="card-header">
-                  <span className="card-index" aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span className="card-corner" aria-hidden="true" />
+          <div className="public-card-grid">
+            {cycle.phases.map((phase, index) => (
+              <article key={phase} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">Phase {String(index + 1).padStart(2, '0')}</span>
                 </div>
-                <h3>{card.title}</h3>
-                <p>{card.description}</p>
+                <h3 className="public-card-title">{phase}</h3>
+                <p className="public-card-desc">Operational focus within the HSOCIETY cycle.</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Principles ───────────────────────────────────── */}
-      <section
-        className="about-section about-principle-section reveal-on-scroll"
-        aria-labelledby="principle-heading"
-      >
-        <div className="about-section-label">
-          <span className="section-code" aria-hidden="true">SYS::03</span>
-          <span className="section-rule" aria-hidden="true" />
-        </div>
-
-        <div className="about-section-body">
-          <div className="about-section-intro">
-            <h2 id="principle-heading">{principle.title}</h2>
-            <p>{principle.subtitle}</p>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              {experience.title}
+            </p>
+            <h2 className="section-title">{experience.title}</h2>
+            <p className="section-subtitle">{experience.subtitle}</p>
           </div>
-
-          <ul className="about-principle-list" aria-label="Core principles">
-            {principle.bullets.map((item, i) => (
-              <li key={item} className="about-principle-item">
-                <span className="principle-index" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="principle-text">{item}</span>
-                <span className="principle-arrow" aria-hidden="true">→</span>
-              </li>
+          <div className="public-card-grid">
+            {experience.cards.map((card) => (
+              <article key={card.title} className="public-card">
+                <h3 className="public-card-title">{card.title}</h3>
+                <p className="public-card-desc">{card.description}</p>
+              </article>
             ))}
-          </ul>
-
-          {/* Core doctrine callout */}
-          <blockquote className="about-doctrine">
-            <span className="doctrine-marker" aria-hidden="true">[ DOCTRINE ]</span>
-            <p>Execution over marketing.<br />Real experience over theory.</p>
-          </blockquote>
-        </div>
-      </section>
-
-      <section className="about-section about-social-section reveal-on-scroll" aria-label="Social links">
-        <div className="about-section-label">
-          <span className="section-code" aria-hidden="true">SYS::04</span>
-          <span className="section-rule" aria-hidden="true" />
-        </div>
-        <div className="about-section-body">
-          <div className="about-section-intro">
-            <h2>Connect with HSOCIETY</h2>
-            <p>Follow the latest research, community updates, and training launches.</p>
           </div>
-          <SocialLinks className="about-social-links" />
         </div>
       </section>
 
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              {principle.title}
+            </p>
+            <h2 className="section-title">{principle.title}</h2>
+            <p className="section-subtitle">{principle.subtitle}</p>
+          </div>
+          <div className="public-card-grid">
+            {principle.bullets.map((item, i) => (
+              <article key={item} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">Principle {i + 1}</span>
+                </div>
+                <p className="public-card-desc">{item}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Connect
+            </p>
+            <h2 className="section-title">Follow the HSOCIETY cycle.</h2>
+            <p className="section-subtitle">Training, community, and live engagements — all in one place.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/contact')}>
+                Contact us
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/services')}>
+                View services
+              </button>
+            </div>
+          </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Stay in the loop</h3>
+            <p className="public-card-desc">Follow the latest research and community updates.</p>
+            <SocialLinks className="about-social-links" />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

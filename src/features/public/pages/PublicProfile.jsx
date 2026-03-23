@@ -26,6 +26,7 @@ import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvata
 import { getPublicProfileByHandle } from '../services/publicProfile.service';
 import ProfileBadgeSection from '../../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges } from '../../../shared/utils/display/profileBadges';
+import '../../public/styles/public-landing.css';
 import '../styles/public-profile.css';
 
 /* ── Helpers ─────────────────────────────────────────────── */
@@ -220,11 +221,11 @@ const PublicProfile = () => {
 
   return (
     <>
-      <div className="pp-root">
+      <div className="pp-root landing-page public-page">
         <div className="pp-layout">
 
           {/* ── LEFT SIDEBAR ── */}
-          <aside className="pp-sidebar">
+          <aside className="pp-sidebar hero-section public-hero reveal-on-scroll">
             {/* Avatar */}
             <div className="pp-avatar-wrap">
               <div className="pp-avatar">
@@ -309,7 +310,7 @@ const PublicProfile = () => {
           </aside>
 
           {/* ── RIGHT MAIN ── */}
-          <main className="pp-main">
+          <main className="pp-main public-section">
 
             {/* Contribution graph — GitHub style */}
             <section className="pp-panel pp-contrib-panel">
@@ -437,6 +438,32 @@ const PublicProfile = () => {
           </main>
         </div>
       </div>
+
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Join the community
+            </p>
+            <h2 className="section-title">Build your public operator profile.</h2>
+            <p className="section-subtitle">Complete missions, earn CP points, and showcase your progress.</p>
+            <div className="public-hero-actions">
+              <Link className="public-btn public-btn--primary" to="/register">
+                Get started
+              </Link>
+              <Link className="public-btn public-btn--ghost" to="/community">
+                Explore community
+              </Link>
+            </div>
+          </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Live profiles, real signals.</h3>
+            <p className="public-card-desc">Your progress, streaks, and engagement history — all in one place.</p>
+          </div>
+        </div>
+      </section>
 
       {/* ── SHARE MODAL ── */}
       {shareOpen && (

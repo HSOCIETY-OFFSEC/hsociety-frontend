@@ -3,6 +3,7 @@
  * Location: src/styles/features/public-profile/index.css
  */
 
+@import '../../public/styles/public-landing.css';
 @import '../../../shared/styles/mobile-dashboard-fixes.css';
 
 /* ── Local tokens ──────────────────────────────────────────── */
@@ -777,4 +778,32 @@
   .pp-share-link {
     transition: none;
   }
+}
+
+/* ── Landing layout override ─────────────────────────────── */
+.pp-layout { grid-template-columns: 1fr; }
+.pp-sidebar { position: static; width: 100%; max-width: none; }
+
+/* ── Landing overrides ─────────────────────────── */
+.pp-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+.pp-sidebar {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--pp-border);
+  border-radius: var(--radius-lg);
+  background: var(--pp-card);
+  padding: 2rem;
+}
+
+.pp-main {
+  padding: 0;
+}
+
+.pp-panel {
+  border-radius: var(--radius-lg);
 }

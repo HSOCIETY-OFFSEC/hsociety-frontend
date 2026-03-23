@@ -1,14 +1,5 @@
-/**
- * Careers Page
- * Location: src/features/careers/Careers.jsx
- *
- * GitHub repo-page layout:
- *   page header (breadcrumb + action) → two-column (main + sidebar)
- */
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/careers.css';
 import {
   FiMessageSquare,
   FiBriefcase,
@@ -17,6 +8,8 @@ import {
   FiUsers,
   FiArrowUpRight,
 } from 'react-icons/fi';
+import '../../public/styles/public-landing.css';
+import '../styles/careers.css';
 
 const STATUS_CARDS = [
   {
@@ -33,174 +26,112 @@ const Careers = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="car-page">
-
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="car-page-header">
-        <div className="car-page-header-inner">
-
-          <div className="car-header-left">
-            <div className="car-header-icon-wrap">
-              <FiBriefcase size={20} className="car-header-icon" />
-            </div>
-            <div>
-              <div className="car-header-breadcrumb">
-                <span className="car-breadcrumb-org">HSOCIETY</span>
-                <span className="car-breadcrumb-sep">/</span>
-                <span className="car-breadcrumb-page">careers</span>
-                <span className="car-header-visibility">Public</span>
-              </div>
-              <p className="car-header-desc">
-                We aren't hiring right now — but keep an eye on this page for
-                future opportunities.
-              </p>
-            </div>
-          </div>
-
-          <div className="car-header-actions">
-            <button
-              className="car-btn car-btn-primary"
-              onClick={() => navigate('/contact')}
-            >
-              <FiMessageSquare size={14} />
-              Notify me
-            </button>
-          </div>
-        </div>
-
-        {/* Status meta pills */}
-        <div className="car-header-meta">
-          <span className="car-meta-pill car-meta-pill--paused">
-            <span className="car-meta-dot car-meta-dot--paused" />
-            <span>Hiring paused</span>
-          </span>
-          <span className="car-meta-pill">
-            <FiClock size={13} className="car-meta-icon" />
-            <span className="car-meta-label">Reopening</span>
-            <strong className="car-meta-value">2026</strong>
-          </span>
-          <span className="car-meta-pill">
-            <FiUsers size={13} className="car-meta-icon" />
-            <span className="car-meta-label">Focus</span>
-            <strong className="car-meta-value">Community first</strong>
-          </span>
-        </div>
-      </header>
-
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="car-layout">
-
-        {/* ── MAIN COLUMN ─────────────────────────── */}
-        <main className="car-main">
-
-          {/* Status section */}
-          <section className="car-section">
-            <h2 className="car-section-title">
-              <FiBriefcase size={15} className="car-section-icon" />
-              Open positions
-            </h2>
-            <p className="car-section-desc">
-              We are pausing hiring while we focus on internal programs and
-              training. We'll post all new roles here when the window reopens.
+    <div className="landing-page public-page car-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Careers
             </p>
-
-            {/* Empty state — GitHub "no results" pattern */}
-            <div className="car-empty-state">
-              <div className="car-empty-icon-wrap">
-                <FiBriefcase size={24} className="car-empty-icon" />
-              </div>
-              <strong className="car-empty-title">No open roles right now</strong>
-              <p className="car-empty-desc">
-                We aren't hiring at the moment. Check back in 2026 or leave
-                your details via the contact page and we'll reach out.
-              </p>
-              <button
-                className="car-btn car-btn-secondary"
-                onClick={() => navigate('/contact')}
-              >
-                Get notified
-                <FiArrowUpRight size={13} />
+            <h1 className="public-hero-title">We’re pausing hiring to scale the platform.</h1>
+            <p className="public-hero-desc">
+              We aren’t hiring right now — but keep an eye on this page for future opportunities.
+            </p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+                <FiMessageSquare size={14} />
+                Notify me
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/team')}>
+                Meet the team
+                <FiArrowUpRight size={14} />
               </button>
             </div>
-          </section>
-
-          <div className="car-divider" />
-
-          {/* Info cards */}
-          <section className="car-section">
-            <h2 className="car-section-title">
-              <FiMessageSquare size={15} className="car-section-icon" />
-              Updates
-            </h2>
-
-            <div className="car-status-list">
-              {STATUS_CARDS.map((card) => (
-                <article key={card.title} className="car-status-card">
-                  <strong className="car-status-title">{card.title}</strong>
-                  <p className="car-status-body">{card.body}</p>
-                </article>
-              ))}
+            <div className="public-pill-row">
+              <span className="public-pill">
+                <FiClock size={12} />
+                Hiring paused
+              </span>
+              <span className="public-pill">
+                <FiUsers size={12} />
+                Community first
+              </span>
+              <span className="public-pill">Reopening 2026</span>
             </div>
-          </section>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Status</p>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiBriefcase size={14} />
+                <span>No open roles right now.</span>
+              </div>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Updates announced via email.</span>
+              </div>
+              <div className="public-list-item">
+                <FiMessageSquare size={14} />
+                <span>Reach out for future openings.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        </main>
-
-        {/* ── SIDEBAR ─────────────────────────────── */}
-        <aside className="car-sidebar">
-
-          <div className="car-sidebar-box">
-            <h3 className="car-sidebar-heading">About</h3>
-            <p className="car-sidebar-about">
-              HSOCIETY is a hacker-focused learning and security platform. We
-              build community before we scale headcount.
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Hiring update
             </p>
-            <div className="car-sidebar-divider" />
-            <ul className="car-sidebar-list">
-              <li>
-                <FiCheckCircle size={13} className="car-sidebar-icon" />
-                Remote-first culture
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="car-sidebar-icon" />
-                Operators & builders
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="car-sidebar-icon" />
-                Analyst & mentor roles
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="car-sidebar-icon" />
-                Community-driven
-              </li>
-            </ul>
+            <h2 className="section-title">What we’re focused on now.</h2>
+            <p className="section-subtitle">We’re refining internal delivery and training before the next hiring wave.</p>
           </div>
+          <div className="public-card-grid">
+            {STATUS_CARDS.map((card) => (
+              <article key={card.title} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">Status</span>
+                </div>
+                <h3 className="public-card-title">{card.title}</h3>
+                <p className="public-card-desc">{card.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Hiring status box */}
-          <div className="car-sidebar-box car-status-box">
-            <div className="car-status-row">
-              <span className="car-status-dot" />
-              <span className="car-status-label">HIRING STATUS</span>
-            </div>
-            <strong className="car-status-value">PAUSED</strong>
-            <div className="car-status-track">
-              <div className="car-status-fill" />
-            </div>
-            <p className="car-status-note">
-              Reopening in 2026. Leave your details via contact.
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Stay close
             </p>
-          </div>
-
-          <div className="car-sidebar-box">
-            <h3 className="car-sidebar-heading">Topics</h3>
-            <div className="car-topics">
-              {['careers', 'hiring', 'offsec', 'analysts', 'mentors', 'remote'].map(
-                (t) => <span key={t} className="car-topic">{t}</span>
-              )}
+            <h2 className="section-title">Want to be first in line?</h2>
+            <p className="section-subtitle">We’ll notify you when new roles are posted.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+                Join the list
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/community')}>
+                Join the community
+              </button>
             </div>
           </div>
-
-        </aside>
-      </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Roles include analysts, builders, mentors.</h3>
+            <p className="public-card-desc">We hire operators with real-world engagement experience.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

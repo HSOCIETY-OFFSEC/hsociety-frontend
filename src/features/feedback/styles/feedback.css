@@ -14,17 +14,18 @@
    FEEDBACK CONTAINER
    ======================================== */
 
+@import '../../public/styles/public-landing.css';
 @import '../../../shared/styles/mobile-dashboard-fixes.css';
-.feedback-container {
+.feedback-page {
   min-height: 100vh;
   background: var(--bg-primary);
   padding: 3rem 0;
 }
 
-.feedback-container button,
-.feedback-container a,
-.feedback-container input,
-.feedback-container textarea {
+.feedback-page button,
+.feedback-page a,
+.feedback-page input,
+.feedback-page textarea {
   min-height: 44px;
 }
 
@@ -423,7 +424,7 @@ select.form-input {
    ======================================== */
 
 @media (max-width: 768px) {
-  .feedback-container {
+  .feedback-page {
     padding: 2rem 0;
   }
 
@@ -479,7 +480,7 @@ select.form-input {
 }
 
 @media (max-width: 480px) {
-  .feedback-container {
+  .feedback-page {
     padding: 1.5rem 0;
   }
 

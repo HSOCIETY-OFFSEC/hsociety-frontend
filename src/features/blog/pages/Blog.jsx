@@ -13,11 +13,11 @@ import {
   FiCalendar,
   FiArrowUpRight,
   FiRss,
-  FiCheckCircle,
 } from 'react-icons/fi';
 import SocialLinks from '../../../shared/components/common/SocialLinks';
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../../config/api/api.config';
+import '../../public/styles/public-landing.css';
 import '../styles/blog.css';
 
 const FALLBACK_POSTS = [
@@ -67,167 +67,149 @@ const Blog = () => {
   };
 
   return (
-    <div className="blg-page">
-
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="blg-page-header">
-        <div className="blg-page-header-inner">
-          <div className="blg-header-left">
-            <div className="blg-header-icon-wrap">
-              <FiBookOpen size={20} className="blg-header-icon" />
+    <div className="landing-page public-page blg-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Field Notes
+            </p>
+            <h1 className="public-hero-title">Offensive security research in the open.</h1>
+            <p className="public-hero-desc">
+              Research, tactics, and lessons from live operations. Practical write-ups,
+              red team playbooks, and learning paths for operators at every level.
+            </p>
+            <div className="public-hero-actions">
+              <button
+                className="public-btn public-btn--primary"
+                onClick={() => navigate('/contact')}
+              >
+                <FiRss size={14} />
+                Subscribe for weekly drops
+              </button>
+              <button
+                className="public-btn public-btn--ghost"
+                onClick={() => navigate('/services')}
+              >
+                Explore services
+                <FiArrowUpRight size={14} />
+              </button>
             </div>
-            <div>
-              <div className="blg-header-breadcrumb">
-                <span className="blg-breadcrumb-org">HSOCIETY</span>
-                <span className="blg-breadcrumb-sep">/</span>
-                <span className="blg-breadcrumb-page">field-notes</span>
-                <span className="blg-header-visibility">Public</span>
+            <div className="public-pill-row">
+              <span className="public-pill">
+                <FiCalendar size={12} />
+                Weekly cadence
+              </span>
+              <span className="public-pill">Red team tactics</span>
+              <span className="public-pill">Learning playbooks</span>
+              <span className="public-pill">{posts.length} posts</span>
+            </div>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Field Notes / Live</p>
+            <h3 className="public-card-title">What you get</h3>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiBookOpen size={14} />
+                <span>Research breakdowns with reproduce-ready steps.</span>
               </div>
-              <p className="blg-header-desc">
-                Research, tactics, and lessons from offensive security operations.
-              </p>
+              <div className="public-list-item">
+                <FiBookOpen size={14} />
+                <span>Operator notes from live engagements.</span>
+              </div>
+              <div className="public-list-item">
+                <FiBookOpen size={14} />
+                <span>Curated learning paths for new operators.</span>
+              </div>
             </div>
           </div>
-
-          <div className="blg-header-actions">
-            <button
-              className="blg-btn blg-btn-primary"
-              onClick={() => navigate('/contact')}
-            >
-              <FiRss size={14} />
-              Subscribe
-            </button>
-          </div>
         </div>
+      </section>
 
-        {/* Meta pills */}
-        <div className="blg-header-meta">
-          <span className="blg-meta-pill">
-            <FiCalendar size={13} className="blg-meta-icon" />
-            <span className="blg-meta-label">Cadence</span>
-            <strong className="blg-meta-value">Weekly</strong>
-          </span>
-          <span className="blg-meta-pill">
-            <span className="blg-meta-dot" />
-            <span>Red Team tactics</span>
-          </span>
-          <span className="blg-meta-pill">
-            <span className="blg-meta-dot" />
-            <span>Student learning paths</span>
-          </span>
-          <span className="blg-meta-pill">
-            <strong className="blg-meta-value">{posts.length}</strong>
-            <span className="blg-meta-label">posts</span>
-          </span>
-        </div>
-      </header>
-
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="blg-layout">
-
-        {/* ── MAIN COLUMN ─────────────────────────── */}
-        <main className="blg-main">
-
-          {/* Post list */}
-          <section className="blg-section">
-            <h2 className="blg-section-title">
-              <FiBookOpen size={15} className="blg-section-icon" />
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
               Latest posts
-            </h2>
+            </p>
+            <h2 className="section-title">Fresh research and playbooks.</h2>
+            <p className="section-subtitle">
+              Open notes from the field. Click any card to read the full post.
+            </p>
+          </div>
+          <div className="public-card-grid">
+            {posts.map((post) => (
+              <article
+                key={post.title}
+                className="public-card blg-card"
+                onClick={() => handleReadArticle(post)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleReadArticle(post);
+                  }
+                }}
+              >
+                <div className="public-card-meta">
+                  {post.tag && <span className="public-chip">{post.tag}</span>}
+                  <span>{post.date}</span>
+                </div>
+                <h3 className="public-card-title">{post.title}</h3>
+                <p className="public-card-desc">{post.summary}</p>
+                <div className="public-card-meta">
+                  <span>Read article</span>
+                  <FiArrowUpRight size={14} />
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="blg-post-list">
-              {posts.map((post) => (
-                <article
-                  key={post.title}
-                  className="blg-post-row"
-                  onClick={() => handleReadArticle(post)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleReadArticle(post);
-                    }
-                  }}
-                >
-                  <div className="blg-post-header">
-                    <div className="blg-post-header-left">
-                      {post.tag && (
-                        <span className="blg-label blg-label-alpha">{post.tag}</span>
-                      )}
-                      <h3 className="blg-post-title">{post.title}</h3>
-                    </div>
-                    <FiArrowUpRight size={14} className="blg-post-arrow" />
-                  </div>
-                  <p className="blg-post-summary">{post.summary}</p>
-                  <div className="blg-post-footer">
-                    <FiCalendar size={12} className="blg-post-date-icon" />
-                    <span className="blg-post-date">{post.date}</span>
-                  </div>
-                </article>
-              ))}
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Stay connected
+            </p>
+            <h2 className="section-title">Follow the signals in real time.</h2>
+            <p className="section-subtitle">
+              Subscribe for weekly drops or follow the team across your favorite platforms.
+            </p>
+            <div className="public-hero-actions">
+              <button
+                className="public-btn public-btn--primary"
+                onClick={() => navigate('/contact')}
+              >
+                <FiRss size={14} />
+                Subscribe
+              </button>
+              <button
+                className="public-btn public-btn--ghost"
+                onClick={() => navigate('/community')}
+              >
+                View community
+                <FiArrowUpRight size={14} />
+              </button>
             </div>
-          </section>
-
-          <div className="blg-divider" />
-
-          {/* Social section */}
-          <section className="blg-section">
-            <h2 className="blg-section-title">
-              <FiRss size={15} className="blg-section-icon" />
-              Follow HSOCIETY
-            </h2>
-            <p className="blg-section-desc">
+          </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Follow HSOCIETY</h3>
+            <p className="public-card-desc">
               Signals, research drops, and community wins — in real time.
             </p>
             <SocialLinks className="blg-social-links" />
-          </section>
-
-        </main>
-
-        {/* ── SIDEBAR ─────────────────────────────── */}
-        <aside className="blg-sidebar">
-
-          <div className="blg-sidebar-box">
-            <h3 className="blg-sidebar-heading">About</h3>
-            <p className="blg-sidebar-about">
-              Field Notes is HSOCIETY's editorial channel — covering offensive
-              security research, red team tactics, and beginner learning paths.
-            </p>
-            <div className="blg-sidebar-divider" />
-            <ul className="blg-sidebar-list">
-              <li><FiCheckCircle size={13} className="blg-sidebar-icon" />Weekly briefings</li>
-              <li><FiCheckCircle size={13} className="blg-sidebar-icon" />Red team playbooks</li>
-              <li><FiCheckCircle size={13} className="blg-sidebar-icon" />Student learning paths</li>
-              <li><FiCheckCircle size={13} className="blg-sidebar-icon" />Community research drops</li>
-            </ul>
           </div>
-
-          <div className="blg-sidebar-box blg-status-box">
-            <div className="blg-status-row">
-              <span className="blg-status-dot" />
-              <span className="blg-status-label">PUBLISHING</span>
-            </div>
-            <strong className="blg-status-value">ACTIVE</strong>
-            <div className="blg-status-track">
-              <div className="blg-status-fill" />
-            </div>
-            <p className="blg-status-note">
-              New posts drop weekly. Subscribe to get notified.
-            </p>
-          </div>
-
-          <div className="blg-sidebar-box">
-            <h3 className="blg-sidebar-heading">Topics</h3>
-            <div className="blg-topics">
-              {['offsec', 'red-team', 'research', 'learning', 'pentesting', 'hsociety'].map(
-                (t) => <span key={t} className="blg-topic">{t}</span>
-              )}
-            </div>
-          </div>
-
-        </aside>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };

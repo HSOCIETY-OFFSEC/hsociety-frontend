@@ -3,27 +3,28 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import ScrollToTopButton from '../ui/ScrollToTopButton';
 import useScrollReveal from '../../hooks/useScrollReveal';
-import './PublicLayout.css';
-import './PageLayout.css';
+import AnnouncementBanner from '../../../features/landing/components/AnnouncementBanner';
+import '../../../features/landing/styles/landing.css';
+import './LandingLayout.css';
 
 /**
  * Public Layout
  * Location: src/shared/components/layout/PublicLayout.jsx
  *
- * For public informational pages — About, Team, Blog, Careers, etc.
- * - Sticky Navbar.
- * - Content uses each page shell for width/padding (no global container constraint).
- * - Scroll-reveal hook re-runs on every route change, scoped to .public-layout.
- * - ScrollToTopButton renders outside <main> so it overlays page content.
+ * Public informational pages use the landing-style layout.
+ * - Announcement banner + transparent sticky nav.
+ * - Full-bleed sections controlled by each page.
+ * - Scroll-reveal hook scoped to .landing-layout.
  */
 const PublicLayout = () => {
   const location = useLocation();
-  useScrollReveal('.reveal-on-scroll', {}, [location.pathname], '.public-layout');
+  useScrollReveal('.reveal-on-scroll', { threshold: 0.1 }, [location.pathname], '.landing-layout');
 
   return (
-    <div className="public-layout page-container">
-      <Navbar sticky={true} />
-      <main className="public-main page-content">
+    <div className="landing-layout public-layout landing-page">
+      <AnnouncementBanner />
+      <Navbar sticky={true} logoSrc="/logo-nav-banner.png" transparentOnTop={true} />
+      <main className="landing-main">
         <Outlet />
       </main>
       <ScrollToTopButton />

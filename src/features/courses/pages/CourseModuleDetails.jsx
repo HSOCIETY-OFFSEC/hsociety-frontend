@@ -1,8 +1,3 @@
-/**
- * Course Module Details Page
- * Location: src/features/courses/CourseModuleDetails.jsx
- */
-
 import React, { useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
@@ -17,6 +12,7 @@ import {
 } from 'react-icons/fi';
 import { getHackerProtocolModule } from '../../../data/static/bootcamps/hackerProtocolData';
 import { useAuth } from '../../../core/auth/AuthContext';
+import '../../public/styles/public-landing.css';
 import '../styles/courses.css';
 
 const CourseModuleDetails = () => {
@@ -36,174 +32,156 @@ const CourseModuleDetails = () => {
 
   if (bootcampId !== 'hacker-protocol' || !module) {
     return (
-      <div className="crs-page">
+      <div className="landing-page public-page crs-page">
         <div className="crs-not-found">Module not found.</div>
       </div>
     );
   }
 
   return (
-    <div className="crs-page">
-
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="crs-page-header">
-        <div className="crs-page-header-inner">
-          <div className="crs-header-left">
-            <div className="crs-header-icon-wrap">
-              <img src={module.emblem} alt={module.codename} className="crs-header-emblem" />
+    <div className="landing-page public-page crs-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Courses / {module.codename}
+            </p>
+            <h1 className="public-hero-title">{module.codename}</h1>
+            <p className="public-hero-desc">{module.description}</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+                <FiZap size={14} />
+                Enroll now
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/courses/hacker-protocol')}>
+                <FiArrowLeft size={14} />
+                Back to program
+              </button>
             </div>
-            <div>
-              <div className="crs-header-breadcrumb">
-                <button className="crs-breadcrumb-link" onClick={() => navigate('/courses')}>
-                  courses
-                </button>
-                <span className="crs-breadcrumb-sep">/</span>
-                <button
-                  className="crs-breadcrumb-link"
-                  onClick={() => navigate('/courses/hacker-protocol')}
-                >
-                  hacker-protocol
-                </button>
-                <span className="crs-breadcrumb-sep">/</span>
-                <span className="crs-breadcrumb-page">{module.codename.toLowerCase()}</span>
+            <div className="public-pill-row">
+              <span className="public-pill">
+                <FiTerminal size={12} />
+                {module.roleTitle}
+              </span>
+              <span className="public-pill">
+                <FiList size={12} />
+                {module.rooms.length} rooms
+              </span>
+            </div>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Phase overview</p>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>{module.rooms.length} rooms in this phase.</span>
               </div>
-              <p className="crs-header-desc">{module.description}</p>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>{module.roleTitle} identity unlock.</span>
+              </div>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Evidence-based assessment.</span>
+              </div>
             </div>
           </div>
-
-          <div className="crs-header-actions">
-            <button
-              className="crs-btn crs-btn-secondary"
-              onClick={() => navigate('/courses/hacker-protocol')}
-            >
-              <FiArrowLeft size={14} />
-              Back
-            </button>
-            <button className="crs-btn crs-btn-primary" onClick={handleEnroll}>
-              <FiZap size={14} />
-              Enroll now
-            </button>
-          </div>
         </div>
+      </section>
 
-        <div className="crs-header-meta">
-          <span className="crs-meta-pill">
-            <FiTerminal size={13} className="crs-meta-icon" />
-            <span className="crs-meta-label">Role</span>
-            <strong className="crs-meta-value">{module.roleTitle}</strong>
-          </span>
-          <span className="crs-meta-pill">
-            <FiList size={13} className="crs-meta-icon" />
-            <span className="crs-meta-label">Rooms</span>
-            <strong className="crs-meta-value">{module.rooms.length}</strong>
-          </span>
-          <span className="crs-meta-pill">
-            <span className="crs-meta-dot" />
-            <span>P-{String(module.moduleId).padStart(2, '0')}</span>
-          </span>
-        </div>
-      </header>
-
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="crs-layout">
-        <main className="crs-main">
-
-          {/* Room list */}
-          <section className="crs-section">
-            <h2 className="crs-section-title">
-              <FiList size={15} className="crs-section-icon" />
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
               Room breakdown
-              <span className="crs-section-count">{module.rooms.length} rooms</span>
-            </h2>
-
-            <div className="crs-room-list">
-              {module.rooms.map((room, i) => (
-                <Link
-                  key={room.roomId}
-                  className="crs-room-row"
-                  to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${room.roomId}`}
-                >
-                  <span className="crs-room-num">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <FiCheckCircle size={13} className="crs-room-check" />
-                  <div className="crs-room-text">
-                    <strong className="crs-room-title">Room {room.roomId} · {room.title}</strong>
-                    {room.overview && (
-                      <p className="crs-room-overview">{room.overview}</p>
-                    )}
-                  </div>
-                  <FiChevronRight size={13} className="crs-room-arrow" />
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <div className="crs-divider" />
-
-          {/* Objectives */}
-          <section className="crs-section">
-            <h2 className="crs-section-title">
-              <FiTerminal size={15} className="crs-section-icon" />
-              What you will learn
-            </h2>
-
-            <div className="crs-objectives-list">
-              {module.rooms.map((room) => (
-                <div key={room.roomId} className="crs-objective-item">
-                  <strong className="crs-obj-title">{room.title}</strong>
-                  <p className="crs-obj-desc">{room.overview}</p>
-                  {room.bullets?.length > 0 && (
-                    <ul className="crs-obj-bullets">
-                      {room.bullets.map((bullet) => (
-                        <li key={bullet}>
-                          <FiCheckCircle size={11} className="crs-obj-bullet-icon" />
-                          {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+            </p>
+            <h2 className="section-title">Rooms in this phase</h2>
+            <p className="section-subtitle">Jump into any room to preview the content.</p>
+          </div>
+          <div className="public-card-grid">
+            {module.rooms.map((room) => (
+              <Link
+                key={room.roomId}
+                className="public-card crs-room-card"
+                to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${room.roomId}`}
+              >
+                <div className="public-card-meta">
+                  <span className="public-chip">Room {room.roomId}</span>
                 </div>
-              ))}
-            </div>
-          </section>
-
-        </main>
-
-        <aside className="crs-sidebar">
-          <div className="crs-sidebar-box">
-            <h3 className="crs-sidebar-heading">About this phase</h3>
-            <p className="crs-sidebar-about">{module.description}</p>
-            <div className="crs-sidebar-divider" />
-            <ul className="crs-sidebar-list">
-              <li><FiCheckCircle size={13} className="crs-sidebar-icon" />{module.rooms.length} rooms in this phase</li>
-              <li><FiCheckCircle size={13} className="crs-sidebar-icon" />{module.roleTitle} identity unlock</li>
-              <li><FiCheckCircle size={13} className="crs-sidebar-icon" />Evidence-based assessment</li>
-            </ul>
+                <h3 className="public-card-title">{room.title}</h3>
+                {room.overview && <p className="public-card-desc">{room.overview}</p>}
+                <div className="public-card-meta">
+                  <span>View room</span>
+                  <FiChevronRight size={14} />
+                </div>
+              </Link>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="crs-sidebar-box crs-status-box">
-            <div className="crs-status-row">
-              <span className="crs-status-dot" />
-              <span className="crs-status-label">PHASE STATUS</span>
-            </div>
-            <strong className="crs-status-value">ACTIVE</strong>
-            <div className="crs-status-track">
-              <div className="crs-status-fill" />
-            </div>
-            <p className="crs-status-note">Enroll to begin this phase.</p>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Objectives
+            </p>
+            <h2 className="section-title">What you will learn</h2>
+            <p className="section-subtitle">Skills covered across each room in this phase.</p>
           </div>
+          <div className="public-card-grid">
+            {module.rooms.map((room) => (
+              <article key={room.roomId} className="public-card">
+                <h3 className="public-card-title">{room.title}</h3>
+                <p className="public-card-desc">{room.overview}</p>
+                {room.bullets?.length > 0 && (
+                  <ul className="crs-obj-bullets">
+                    {room.bullets.map((bullet) => (
+                      <li key={bullet}>
+                        <FiCheckCircle size={11} />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <div className="crs-sidebar-box">
-            <h3 className="crs-sidebar-heading">Topics</h3>
-            <div className="crs-topics">
-              {['pentesting', 'offsec', module.codename.toLowerCase(), 'labs'].map(
-                (t) => <span key={t} className="crs-topic">{t}</span>
-              )}
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Ready to start
+            </p>
+            <h2 className="section-title">Enroll to unlock this phase.</h2>
+            <p className="section-subtitle">Join the bootcamp to access labs and guided missions.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+                Enroll now
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/courses')}>
+                Back to courses
+              </button>
             </div>
           </div>
-        </aside>
-      </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Operator path unlocked.</h3>
+            <p className="public-card-desc">Progress through phases and earn identity badges.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

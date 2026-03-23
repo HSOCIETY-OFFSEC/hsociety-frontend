@@ -1,11 +1,3 @@
-/**
- * Leaderboard Page
- * Location: src/features/leaderboard/Leaderboard.jsx
- *
- * GitHub repo-page layout:
- *   page header (breadcrumb + meta pills) → two-column (main + sidebar)
- */
-
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   FiBarChart2,
@@ -13,11 +5,13 @@ import {
   FiUsers,
   FiZap,
   FiTrendingUp,
+  FiArrowUpRight,
 } from 'react-icons/fi';
 import LeaderboardTable from '../components/LeaderboardTable';
 import { getLeaderboard } from '../services/leaderboard.service';
 import { extractLeaderboardEntries } from '../services/leaderboard.utils';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import '../../public/styles/public-landing.css';
 import '../styles/leaderboard.css';
 
 const Leaderboard = () => {
@@ -54,139 +48,110 @@ const Leaderboard = () => {
   const topCp = entries[0]?.totalXp ?? '—';
 
   return (
-    <div className="lb-page">
-
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="lb-page-header">
-        <div className="lb-page-header-inner">
-
-          <div className="lb-header-left">
-            <div className="lb-header-icon-wrap">
-              <FiBarChart2 size={20} className="lb-header-icon" />
+    <div className="landing-page public-page lb-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Leaderboard
+            </p>
+            <h1 className="public-hero-title">Top operators in the community.</h1>
+            <p className="public-hero-desc">
+              Rankings based on Compromised Points, streaks, and verified learning milestones.
+            </p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/community')}>
+                Join the community
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/cp-points')}>
+                Learn about CP points
+              </button>
             </div>
-            <div>
-              <div className="lb-header-breadcrumb">
-                <span className="lb-breadcrumb-org">HSOCIETY</span>
-                <span className="lb-breadcrumb-sep">/</span>
-                <span className="lb-breadcrumb-page">leaderboard</span>
-                <span className="lb-header-visibility">Public</span>
+            <div className="public-pill-row">
+              <span className="public-pill">
+                <FiUsers size={12} />
+                {totalEntries} operators
+              </span>
+              <span className="public-pill">
+                <FiTrendingUp size={12} />
+                Top streak {topStreak}
+              </span>
+              <span className="public-pill">
+                <FiZap size={12} />
+                Top CP {topCp}
+              </span>
+            </div>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Leaderboard signals</p>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Verified mission completions.</span>
               </div>
-              <p className="lb-header-desc">
-                Top operators ranked by Compromised Points and learning streaks.
-              </p>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Daily streak multipliers.</span>
+              </div>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Community contribution weight.</span>
+              </div>
             </div>
           </div>
-
-          {/* No action buttons — read-only page */}
         </div>
+      </section>
 
-        {/* Meta pills */}
-        <div className="lb-header-meta">
-          <span className="lb-meta-pill">
-            <FiUsers size={13} className="lb-meta-icon" />
-            <span className="lb-meta-label">Operators ranked</span>
-            <strong className="lb-meta-value">
-              {loading ? '—' : totalEntries}
-            </strong>
-          </span>
-          <span className="lb-meta-pill">
-            <FiZap size={13} className="lb-meta-icon" />
-            <span className="lb-meta-label">Top streak</span>
-            <strong className="lb-meta-value">
-              {loading ? '—' : `${topStreak}d`}
-            </strong>
-          </span>
-          <span className="lb-meta-pill">
-            <FiTrendingUp size={13} className="lb-meta-icon" />
-            <span className="lb-meta-label">Top CP</span>
-            <strong className="lb-meta-value">
-              {loading ? '—' : topCp}
-            </strong>
-          </span>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Rankings
+            </p>
+            <h2 className="section-title">Current operator leaderboard.</h2>
+            <p className="section-subtitle">Updated with every verified mission and streak.</p>
+          </div>
+          <div className="public-surface">
+            {statusMessage ? (
+              <p className="lb-status">{statusMessage}</p>
+            ) : (
+              <LeaderboardTable entries={entries} />
+            )}
+          </div>
         </div>
-      </header>
+      </section>
 
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="lb-layout">
-
-        {/* ── MAIN COLUMN ─────────────────────────── */}
-        <main className="lb-main">
-          <section className="lb-section">
-            <h2 className="lb-section-title">
-              <FiBarChart2 size={15} className="lb-section-icon" />
-              CP + Streak Rankings
-            </h2>
-            <p className="lb-section-desc">
-              Live rankings across all registered operators. Updated on each
-              completed lab, report submission, and streak milestone.
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Rank up
             </p>
-
-            <LeaderboardTable
-              entries={entries}
-              emptyMessage={statusMessage || 'No leaderboard data yet.'}
-              loading={loading}
-            />
-          </section>
-        </main>
-
-        {/* ── SIDEBAR ─────────────────────────────── */}
-        <aside className="lb-sidebar">
-
-          {/* About */}
-          <div className="lb-sidebar-box">
-            <h3 className="lb-sidebar-heading">About</h3>
-            <p className="lb-sidebar-about">
-              Rankings are calculated from Compromised Points (CP) earned through
-              labs, pentest reports, and daily learning streaks.
-            </p>
-            <div className="lb-sidebar-divider" />
-            <ul className="lb-sidebar-list">
-              <li>
-                <FiCheckCircle size={13} className="lb-sidebar-icon" />
-                Updated in real-time
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="lb-sidebar-icon" />
-                Top 50 operators shown
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="lb-sidebar-icon" />
-                Streak multipliers included
-              </li>
-              <li>
-                <FiCheckCircle size={13} className="lb-sidebar-icon" />
-                Verified rank titles
-              </li>
-            </ul>
-          </div>
-
-          {/* Status box */}
-          <div className="lb-sidebar-box lb-status-box">
-            <div className="lb-status-row">
-              <span className="lb-status-dot" />
-              <span className="lb-status-label">RANKINGS</span>
-            </div>
-            <strong className="lb-status-value">LIVE</strong>
-            <div className="lb-status-track">
-              <div className="lb-status-fill" />
-            </div>
-            <p className="lb-status-note">
-              Rankings refresh on every CP transaction.
-            </p>
-          </div>
-
-          {/* Topics */}
-          <div className="lb-sidebar-box">
-            <h3 className="lb-sidebar-heading">Topics</h3>
-            <div className="lb-topics">
-              {['rankings', 'cp-points', 'streaks', 'offsec', 'operators', 'hsociety'].map(
-                (t) => <span key={t} className="lb-topic">{t}</span>
-              )}
+            <h2 className="section-title">Start earning Compromised Points.</h2>
+            <p className="section-subtitle">Complete labs, ship reports, and build streak momentum.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/courses')}>
+                View programs
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/cp-points')}>
+                CP Points guide
+              </button>
             </div>
           </div>
-
-        </aside>
-      </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Operators only.</h3>
+            <p className="public-card-desc">Train, execute, and earn your position on the board.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

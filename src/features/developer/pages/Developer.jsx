@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiActivity, FiCode, FiCpu, FiGitBranch, FiGithub, FiMessageSquare, FiShield, FiTool } from 'react-icons/fi';
-import Logo from '../../../shared/components/common/Logo';
-import Button from '../../../shared/components/ui/Button';
-import Card from '../../../shared/components/ui/Card';
+import { FiCode, FiCpu, FiGitBranch, FiGithub, FiShield, FiTool, FiArrowUpRight } from 'react-icons/fi';
 import developerContent from '../../../data/static/developer.json';
+import '../../public/styles/public-landing.css';
 import '../styles/developer.css';
 
 const Developer = () => {
@@ -16,91 +14,143 @@ const Developer = () => {
     FiShield,
     FiCpu,
     FiGitBranch,
-    FiGithub
+    FiGithub,
   }), []);
 
   const stack = developerContent.stack.items.map((item) => ({
     ...item,
-    icon: iconMap[item.icon]
+    icon: iconMap[item.icon],
   }));
 
   const contributions = developerContent.contributions.items.map((item) => ({
     ...item,
-    icon: iconMap[item.icon]
+    icon: iconMap[item.icon],
   }));
 
   return (
-    <div className="developer-page">
-      <header className="developer-hero reveal-on-scroll">
-        <div className="developer-hero-content">
-          <Logo size="large" />
+    <div className="landing-page public-page developer-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
           <div>
-            <p className="developer-kicker">{developerContent.hero.kicker}</p>
-            <h1>{developerContent.hero.title}</h1>
-            <p>{developerContent.hero.subtitle}</p>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Developers
+            </p>
+            <h1 className="public-hero-title">{developerContent.hero.title}</h1>
+            <p className="public-hero-desc">{developerContent.hero.subtitle}</p>
+            <div className="public-hero-actions">
+              <button
+                className="public-btn public-btn--primary"
+                onClick={() => navigate(developerContent.hero.route)}
+              >
+                {developerContent.hero.button}
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/services')}>
+                Explore services
+              </button>
+            </div>
+            <div className="public-pill-row">
+              <span className="public-pill">Open source</span>
+              <span className="public-pill">Operator tooling</span>
+              <span className="public-pill">Community build</span>
+            </div>
           </div>
-          <Button variant="primary" size="large" onClick={() => navigate(developerContent.hero.route)}>
-            {developerContent.hero.button}
-          </Button>
-        </div>
-      </header>
-
-      <section className="developer-stack reveal-on-scroll">
-        <div className="developer-section-header">
-          <Logo size="small" />
-          <h2>{developerContent.stack.title}</h2>
-          <p>{developerContent.stack.subtitle}</p>
-        </div>
-        <div className="developer-grid">
-          {stack.map((item, index) => (
-            <Card key={index} padding="large" className="developer-card">
-              <div className="developer-card-icon">
-                <item.icon size={26} />
+          <div className="public-hero-panel">
+            <p className="public-badge">Dev focus</p>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiCode size={14} />
+                <span>Open-source security tooling.</span>
               </div>
-              <h3>{item.title}</h3>
-              <p>{item.detail}</p>
-            </Card>
-          ))}
+              <div className="public-list-item">
+                <FiGitBranch size={14} />
+                <span>Contributor-friendly workflows.</span>
+              </div>
+              <div className="public-list-item">
+                <FiGithub size={14} />
+                <span>Ship code with the operator community.</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="developer-contributions reveal-on-scroll">
-        <div className="developer-section-header">
-          <Logo size="small" />
-          <h2>{developerContent.contributions.title}</h2>
-          <p>{developerContent.contributions.subtitle}</p>
-        </div>
-        <div className="developer-grid">
-          {contributions.map((item, index) => (
-            <Card key={index} padding="large" className="developer-card">
-              <div className="developer-card-icon">
-                <item.icon size={26} />
-              </div>
-              <h3>{item.title}</h3>
-              <p>{item.detail}</p>
-            </Card>
-          ))}
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Stack focus
+            </p>
+            <h2 className="section-title">{developerContent.stack.title}</h2>
+            <p className="section-subtitle">{developerContent.stack.subtitle}</p>
+          </div>
+          <div className="public-card-grid">
+            {stack.map((item) => (
+              <article key={item.title} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">{item.title}</span>
+                </div>
+                <h3 className="public-card-title">{item.title}</h3>
+                <p className="public-card-desc">{item.detail}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="developer-cta reveal-on-scroll">
-        <Card padding="large" className="developer-cta-card">
-          <div className="developer-cta-content">
-            <div className="developer-cta-icon">
-              <FiActivity size={22} />
-            </div>
-            <div>
-              <h3>{developerContent.cta.title}</h3>
-              <p>{developerContent.cta.subtitle}</p>
-            </div>
-            <Button variant="secondary" size="large" onClick={() => navigate(developerContent.cta.route)}>
-              {developerContent.cta.button}
-            </Button>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Contributions
+            </p>
+            <h2 className="section-title">{developerContent.contributions.title}</h2>
+            <p className="section-subtitle">{developerContent.contributions.subtitle}</p>
           </div>
-        </Card>
-        <div className="developer-contact">
-          <FiMessageSquare size={18} />
-          <span>{developerContent.cta.contact}</span>
+          <div className="public-card-grid">
+            {contributions.map((item) => (
+              <article key={item.title} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">{item.title}</span>
+                </div>
+                <h3 className="public-card-title">{item.title}</h3>
+                <p className="public-card-desc">{item.detail}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Build with HSOCIETY
+            </p>
+            <h2 className="section-title">Ship tools with the operator community.</h2>
+            <p className="section-subtitle">Partner with us on research, tooling, and platform development.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+                Talk to us
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/careers')}>
+                See careers
+              </button>
+            </div>
+          </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Open-source alignment.</h3>
+            <p className="public-card-desc">We ship with transparency, mentorship, and real-world operator feedback.</p>
+          </div>
         </div>
       </section>
     </div>

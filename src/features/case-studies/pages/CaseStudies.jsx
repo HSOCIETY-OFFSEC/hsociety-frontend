@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiBarChart2, FiCheckCircle, FiShield } from 'react-icons/fi';
-import Card from '../../../shared/components/ui/Card';
-import Button from '../../../shared/components/ui/Button';
+import { FiBarChart2, FiCheckCircle, FiShield, FiArrowUpRight } from 'react-icons/fi';
+import '../../public/styles/public-landing.css';
 import '../styles/case-studies.css';
 
 const CaseStudies = () => {
@@ -13,58 +12,120 @@ const CaseStudies = () => {
       title: 'Fintech API Exposure',
       outcome: 'Reduced exploitability by 74% in 30 days.',
       focus: 'Auth bypass, token replay, CI/CD secrets.',
-      icon: FiShield
+      icon: FiShield,
     },
     {
       title: 'Telecom Phishing Response',
       outcome: 'Cut incident time by 46% and improved detection.',
       focus: 'Awareness playbooks, SOC triage workflow.',
-      icon: FiCheckCircle
+      icon: FiCheckCircle,
     },
     {
       title: 'Critical Infrastructure Review',
       outcome: 'Validated segmentation and access controls.',
       focus: 'Network pivoting, lateral movement controls.',
-      icon: FiBarChart2
-    }
+      icon: FiBarChart2,
+    },
   ];
 
   return (
-    <div className="case-studies-page">
-        <header className="case-studies-hero reveal-on-scroll">
-          <h1>Case Studies</h1>
-          <p>Outcome-driven security work with measurable results.</p>
-          <div className="case-studies-meta">
-            <div>
-              <span className="meta-value">74%</span>
-              <span className="meta-label">risk reduction avg</span>
-            </div>
-            <div>
-              <span className="meta-value">30 days</span>
-              <span className="meta-label">median fix cycle</span>
-            </div>
-            <div>
-              <span className="meta-value">100%</span>
-              <span className="meta-label">report completeness</span>
+    <div className="landing-page public-page case-studies-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Case Studies
+            </p>
+            <h1 className="public-hero-title">Outcome-driven security work.</h1>
+            <p className="public-hero-desc">
+              Real engagements with measurable results. Every project ends with a clear remediation path.
+            </p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+                Request a briefing
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/services')}>
+                Explore services
+              </button>
             </div>
           </div>
-        </header>
-
-        <section className="case-studies-grid reveal-on-scroll">
-          {studies.map((study) => (
-            <Card key={study.title} padding="large" className="case-studies-card">
-              <div className="case-studies-icon">
-                <study.icon size={24} />
+          <div className="public-hero-panel">
+            <p className="public-badge">Impact metrics</p>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiBarChart2 size={14} />
+                <span>74% average risk reduction.</span>
               </div>
-              <h3>{study.title}</h3>
-              <p>{study.focus}</p>
-              <div className="case-studies-outcome">{study.outcome}</div>
-              <Button variant="ghost" size="small" onClick={() => navigate('/contact')}>
-                Read More
-              </Button>
-            </Card>
-          ))}
-        </section>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>30-day median fix cycle.</span>
+              </div>
+              <div className="public-list-item">
+                <FiShield size={14} />
+                <span>100% report completeness.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Highlights
+            </p>
+            <h2 className="section-title">Select engagements and outcomes.</h2>
+            <p className="section-subtitle">Each case study includes evidence, findings, and remediation guidance.</p>
+          </div>
+          <div className="public-card-grid">
+            {studies.map((study) => (
+              <article key={study.title} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">{study.title}</span>
+                </div>
+                <h3 className="public-card-title">{study.title}</h3>
+                <p className="public-card-desc">{study.focus}</p>
+                <div className="public-card-meta">
+                  <span>{study.outcome}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Ready to start
+            </p>
+            <h2 className="section-title">Bring your environment. We’ll bring the operators.</h2>
+            <p className="section-subtitle">Let’s scope the right engagement for your team.</p>
+            <div className="public-hero-actions">
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+                Contact security team
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/pricing')}>
+                View pricing
+              </button>
+            </div>
+          </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Evidence-first reports.</h3>
+            <p className="public-card-desc">Reproduce-ready findings, prioritized remediation, and operator notes.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

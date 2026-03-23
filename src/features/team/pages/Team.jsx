@@ -1,11 +1,3 @@
-/**
- * Team Page
- * Location: src/features/team/Team.jsx
- *
- * GitHub repo-page layout:
- *   page header (breadcrumb + actions) → two-column (main + sidebar)
- */
-
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -17,25 +9,24 @@ import {
   FiUsers,
   FiCheckCircle,
   FiArrowUpRight,
-  FiGlobe,
 } from 'react-icons/fi';
 import {
   FaDiscord,
   FaFacebookF,
   FaGithub,
-  FaGlobe,
   FaInstagram,
   FaLinkedinIn,
   FaTelegram,
   FaXTwitter,
   FaYoutube,
+  FaGlobe,
 } from 'react-icons/fa6';
 import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
 import teamContent from '../../../data/static/team.json';
 import { getTeamContent } from '../services/team.service';
+import '../../public/styles/public-landing.css';
 import '../styles/team.css';
 
-/* ── helpers ── */
 const ensureArray = (v, fallback = []) => (Array.isArray(v) ? v : fallback);
 
 const normalizeTeamContent = (base, incoming = {}) => ({
@@ -68,29 +59,33 @@ const Team = () => {
   const [content, setContent] = useState(teamContent);
 
   const iconMap = useMemo(() => ({
-    FiCrosshair, FiCpu, FiTarget, FiShield, FiUsers, FiMessageSquare,
+    FiCrosshair,
+    FiCpu,
+    FiTarget,
+    FiShield,
+    FiUsers,
+    FiMessageSquare,
   }), []);
 
   const socialIconMap = useMemo(() => ({
     linkedin: FaLinkedinIn,
-    github:   FaGithub,
-    x:        FaXTwitter,
-    twitter:  FaXTwitter,
-    youtube:  FaYoutube,
+    github: FaGithub,
+    x: FaXTwitter,
+    twitter: FaXTwitter,
+    youtube: FaYoutube,
     telegram: FaTelegram,
-    instagram:FaInstagram,
+    discord: FaDiscord,
+    instagram: FaInstagram,
     facebook: FaFacebookF,
-    discord:  FaDiscord,
-    website:  FaGlobe,
-    web:      FaGlobe,
+    website: FaGlobe,
   }), []);
 
   useEffect(() => {
     let mounted = true;
     const load = async () => {
-      const res = await getTeamContent();
-      if (!mounted || !res.success) return;
-      setContent(normalizeTeamContent(teamContent, res.data?.team || {}));
+      const response = await getTeamContent();
+      if (!mounted || !response?.success) return;
+      setContent(normalizeTeamContent(teamContent, response.data?.team));
     };
     load();
     return () => { mounted = false; };
@@ -107,214 +102,182 @@ const Team = () => {
   }));
 
   return (
-    <div className="tm-page">
-
-      {/* ── PAGE HEADER ─────────────────────────────── */}
-      <header className="tm-page-header">
-        <div className="tm-page-header-inner">
-          <div className="tm-header-left">
-            <div className="tm-header-icon-wrap">
-              <FiUsers size={20} className="tm-header-icon" />
+    <div className="landing-page public-page tm-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero reveal-on-scroll">
+        <div className="section-container">
+          <div>
+            <p className="public-hero-kicker">
+              <span className="eyebrow-dot" />
+              HSOCIETY / Team
+            </p>
+            <h1 className="public-hero-title">{content.hero?.title || 'Meet the operators.'}</h1>
+            <p className="public-hero-desc">
+              {content.hero?.subtitle || 'The team behind HSOCIETY’s security programs and community.'}
+            </p>
+            <div className="public-hero-actions">
+              <button
+                className="public-btn public-btn--primary"
+                onClick={() => navigate(content.hero?.route || '/feedback')}
+              >
+                {content.hero?.button || 'Work with us'}
+                <FiArrowUpRight size={14} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/careers')}>
+                View careers
+              </button>
             </div>
-            <div>
-              <div className="tm-header-breadcrumb">
-                <span className="tm-breadcrumb-org">HSOCIETY</span>
-                <span className="tm-breadcrumb-sep">/</span>
-                <span className="tm-breadcrumb-page">team</span>
-                <span className="tm-header-visibility">Public</span>
+            <div className="public-pill-row">
+              <span className="public-pill">
+                <FiUsers size={12} />
+                Leadership {leadership.length}
+              </span>
+              <span className="public-pill">
+                <FiShield size={12} />
+                Teams {teams.length}
+              </span>
+            </div>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge">Operator culture</p>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Offensive security focus.</span>
               </div>
-              <p className="tm-header-desc">
-                {content.hero?.subtitle || 'Meet the operators behind HSOCIETY.'}
-              </p>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Community-driven execution.</span>
+              </div>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Remote-first collaboration.</span>
+              </div>
             </div>
           </div>
-
-          <div className="tm-header-actions">
-            <button
-              className="tm-btn tm-btn-primary"
-              onClick={() => navigate(content.hero?.route || '/feedback')}
-            >
-              <FiArrowUpRight size={14} />
-              {content.hero?.button || 'Work with us'}
-            </button>
-          </div>
         </div>
+      </section>
 
-        <div className="tm-header-meta">
-          <span className="tm-meta-pill">
-            <FiUsers size={13} className="tm-meta-icon" />
-            <span className="tm-meta-label">Leadership</span>
-            <strong className="tm-meta-value">{leadership.length}</strong>
-          </span>
-          <span className="tm-meta-pill">
-            <FiShield size={13} className="tm-meta-icon" />
-            <span className="tm-meta-label">Teams</span>
-            <strong className="tm-meta-value">{teams.length}</strong>
-          </span>
-        </div>
-      </header>
-
-      {/* ── TWO-COLUMN LAYOUT ───────────────────────── */}
-      <div className="tm-layout">
-
-        {/* ── MAIN COLUMN ─────────────────────────── */}
-        <main className="tm-main">
-
-          {/* Leadership section */}
-          <section className="tm-section">
-            <h2 className="tm-section-title">
-              <FiUsers size={15} className="tm-section-icon" />
-              {content.leadership?.title || 'Leadership'}
-            </h2>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Leadership
+            </p>
+            <h2 className="section-title">{content.leadership?.title || 'Leadership'}</h2>
             {content.leadership?.subtitle && (
-              <p className="tm-section-desc">{content.leadership.subtitle}</p>
+              <p className="section-subtitle">{content.leadership.subtitle}</p>
             )}
-
-            <div className="tm-member-list">
-              {leadership.map((member, i) => (
-                <article key={i} className="tm-member-card">
-                  {/* Avatar */}
-                  <div className="tm-member-avatar">
-                    <ImageWithLoader
-                      src={member.image}
-                      alt={member.name}
-                      loading="lazy"
-                      loaderMessage="Loading profile..."
-                    />
-                  </div>
-
-                  {/* Info */}
-                  <div className="tm-member-body">
-                    <div className="tm-member-header">
-                      <div className="tm-member-icon">
-                        <member.icon size={14} />
-                      </div>
-                      <div>
-                        <strong className="tm-member-name">{member.name}</strong>
-                        <span className="tm-member-role">{member.role}</span>
-                      </div>
+          </div>
+          <div className="public-card-grid tm-leadership-grid">
+            {leadership.map((member, i) => (
+              <article key={`${member.name}-${i}`} className="public-card tm-member-card">
+                <div className="tm-member-avatar">
+                  <ImageWithLoader
+                    src={member.image}
+                    alt={member.name}
+                    loading="lazy"
+                    loaderMessage="Loading profile..."
+                  />
+                </div>
+                <div className="tm-member-body">
+                  <div className="tm-member-header">
+                    <div className="tm-member-icon">
+                      <member.icon size={14} />
                     </div>
-                    {member.focus && (
-                      <p className="tm-member-focus">{member.focus}</p>
-                    )}
-                    {!!member.socials?.length && (
-                      <div className="tm-member-socials">
-                        {member.socials.map((social, si) => {
-                          if (!social?.url) return null;
-                          const key = String(social?.platform || '').toLowerCase().trim();
-                          const Icon = socialIconMap[key] || FaGlobe;
-                          return (
-                            <a
-                              key={`${key}-${si}`}
-                              href={social.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="tm-social-link"
-                              aria-label={`${member.name} on ${social.platform || 'social'}`}
-                            >
-                              <Icon size={13} />
-                              <span>{social.platform || 'Website'}</span>
-                            </a>
-                          );
-                        })}
-                      </div>
-                    )}
+                    <div>
+                      <strong className="tm-member-name">{member.name}</strong>
+                      <span className="tm-member-role">{member.role}</span>
+                    </div>
                   </div>
-                </article>
-              ))}
-            </div>
-          </section>
+                  {member.focus && <p className="tm-member-focus">{member.focus}</p>}
+                  {!!member.socials?.length && (
+                    <div className="tm-member-socials">
+                      {member.socials.map((social, si) => {
+                        if (!social?.url) return null;
+                        const key = String(social?.platform || '').toLowerCase().trim();
+                        const Icon = socialIconMap[key] || FaGlobe;
+                        return (
+                          <a
+                            key={`${key}-${si}`}
+                            href={social.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="tm-social-link"
+                            aria-label={`${member.name} on ${social.platform || 'social'}`}
+                          >
+                            <Icon size={13} />
+                            <span>{social.platform || 'Website'}</span>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <div className="tm-divider" />
-
-          {/* Teams / groups section */}
-          <section className="tm-section">
-            <h2 className="tm-section-title">
-              <FiShield size={15} className="tm-section-icon" />
-              {content.groups?.title || 'Teams'}
-            </h2>
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
+          <div className="section-header">
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Teams
+            </p>
+            <h2 className="section-title">{content.groups?.title || 'Teams'}</h2>
             {content.groups?.subtitle && (
-              <p className="tm-section-desc">{content.groups.subtitle}</p>
+              <p className="section-subtitle">{content.groups.subtitle}</p>
             )}
+          </div>
+          <div className="public-card-grid">
+            {teams.map((group, i) => (
+              <article key={`${group.title}-${i}`} className="public-card">
+                <div className="public-card-meta">
+                  <span className="public-chip">{group.title}</span>
+                </div>
+                <h3 className="public-card-title">{group.title}</h3>
+                <p className="public-card-desc">{group.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="tm-group-list">
-              {teams.map((group, i) => (
-                <article key={i} className="tm-group-card">
-                  <div className="tm-group-card-header">
-                    <span className="tm-group-icon">
-                      <group.icon size={15} />
-                    </span>
-                    <strong className="tm-group-title">{group.title}</strong>
-                  </div>
-                  <p className="tm-group-desc">{group.description}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <div className="tm-divider" />
-
-          {/* CTA section */}
-          <section className="tm-section tm-cta-section">
-            <p className="tm-cta-eyebrow">
-              <FiArrowUpRight size={13} />
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
               {content.cta?.title || 'Join the team'}
             </p>
-            <h2 className="tm-cta-title">{content.cta?.subtitle || 'We\'re always looking for operators.'}</h2>
-            <button
-              className="tm-btn tm-btn-secondary"
-              onClick={() => navigate(content.cta?.route || '/feedback')}
-            >
-              {content.cta?.button || 'Open roles'}
-              <FiArrowUpRight size={13} />
-            </button>
-          </section>
-
-        </main>
-
-        {/* ── SIDEBAR ─────────────────────────────── */}
-        <aside className="tm-sidebar">
-
-          <div className="tm-sidebar-box">
-            <h3 className="tm-sidebar-heading">About</h3>
-            <p className="tm-sidebar-about">
-              {content.hero?.subtitle ||
-                'HSOCIETY is built by operators, for operators — a collective of security professionals driving real-world impact.'}
-            </p>
-            <div className="tm-sidebar-divider" />
-            <ul className="tm-sidebar-list">
-              <li><FiCheckCircle size={13} className="tm-sidebar-icon" />Offensive security focus</li>
-              <li><FiCheckCircle size={13} className="tm-sidebar-icon" />Community-driven culture</li>
-              <li><FiCheckCircle size={13} className="tm-sidebar-icon" />Remote-first team</li>
-              <li><FiCheckCircle size={13} className="tm-sidebar-icon" />Open to collaborations</li>
-            </ul>
-          </div>
-
-          <div className="tm-sidebar-box tm-status-box">
-            <div className="tm-status-row">
-              <span className="tm-status-dot" />
-              <span className="tm-status-label">HIRING</span>
-            </div>
-            <strong className="tm-status-value">OPEN</strong>
-            <div className="tm-status-track">
-              <div className="tm-status-fill" />
-            </div>
-            <p className="tm-status-note">
-              Roles open for operators and contributors.
-            </p>
-          </div>
-
-          <div className="tm-sidebar-box">
-            <h3 className="tm-sidebar-heading">Topics</h3>
-            <div className="tm-topics">
-              {['team', 'offsec', 'operators', 'leadership', 'community', 'hsociety'].map(
-                (t) => <span key={t} className="tm-topic">{t}</span>
-              )}
+            <h2 className="section-title">{content.cta?.subtitle || 'We are always looking for operators.'}</h2>
+            <p className="section-subtitle">Build with us across research, training, and community.</p>
+            <div className="public-hero-actions">
+              <button
+                className="public-btn public-btn--primary"
+                onClick={() => navigate(content.cta?.route || '/feedback')}
+              >
+                {content.cta?.button || 'Open roles'}
+                <FiArrowUpRight size={13} />
+              </button>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/contact')}>
+                Contact the team
+              </button>
             </div>
           </div>
-
-        </aside>
-      </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Operators, educators, builders.</h3>
+            <p className="public-card-desc">HSOCIETY is built by practitioners with real engagement experience.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

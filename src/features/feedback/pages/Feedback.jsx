@@ -7,6 +7,7 @@ import { validateForm } from '../../../core/validation/input.validator';
 import { submitFeedback } from '../services/feedback.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import feedbackContent from '../../../data/static/feedback.json';
+import '../../public/styles/public-landing.css';
 import '../styles/feedback.css';
 
 /**
@@ -144,13 +145,18 @@ const Feedback = () => {
   };
 
   return (
-    <div className="feedback-container">
-        <div className="feedback-wrapper">
-          {/* Header */}
-          <div className="feedback-header reveal-on-scroll">
-            <h1 className="feedback-title">{feedbackContent.header.title}</h1>
-            <p className="feedback-subtitle">{feedbackContent.header.subtitle}</p>
-          </div>
+    <div className="landing-page public-page feedback-page">
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="hero-section public-hero feedback-header reveal-on-scroll">
+        <div className="section-container">
+          <h1 className="feedback-title">{feedbackContent.header.title}</h1>
+          <p className="feedback-subtitle">{feedbackContent.header.subtitle}</p>
+        </div>
+      </section>
+
+      {/* ── CARDS ────────────────────────────────── */}
+      <section className="public-section reveal-on-scroll">
+        <div className="section-container">
 
           {/* Success Message */}
           {submitSuccess && (
@@ -389,6 +395,25 @@ const Feedback = () => {
             })}
           </div>
         </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────── */}
+      <section className="public-cta reveal-on-scroll">
+        <div className="section-container public-cta-inner">
+          <div>
+            <p className="section-eyebrow">
+              <span className="eyebrow-dot" />
+              Need support
+            </p>
+            <h2 className="section-title">We read every submission.</h2>
+            <p className="section-subtitle">Our team reviews feedback and ships fixes fast.</p>
+          </div>
+          <div className="public-cta-card">
+            <h3 className="public-card-title">Prefer email?</h3>
+            <p className="public-card-desc">Reach out via the contact page for direct support.</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
