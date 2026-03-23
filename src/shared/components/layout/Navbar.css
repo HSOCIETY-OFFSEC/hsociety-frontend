@@ -61,6 +61,19 @@
   display: block;
 }
 
+/* Scale logo down on mobile so it fits the 64px navbar */
+@media (max-width: 768px) {
+  .gh-nav-logo .logo-image {
+    height: 52px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .gh-nav-logo .logo-image {
+    height: 44px !important;
+  }
+}
+
 /* ═══════════════════════════════════════════════
    DESKTOP NAV LINKS
    ═══════════════════════════════════════════════ */
