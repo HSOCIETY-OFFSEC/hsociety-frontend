@@ -6,10 +6,6 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getStudentCourse } from '../services/course.service';
 import { getStudentOverview } from '../../dashboards/student/services/student.service';
-import useBootcampAccess from '../hooks/useBootcampAccess';
-import StudentAccessModal from '../components/StudentAccessModal';
-import StudentPaymentModal from '../components/StudentPaymentModal';
-import { useAuth } from '../../../core/auth/AuthContext';
 import { QuizPanel } from '../components/QuizPanel';
 import '../styles/base.css';
 import '../styles/components.css';
@@ -22,8 +18,6 @@ import {
 const StudentLesson = () => {
   const navigate = useNavigate();
   const { moduleId: moduleIdParam, roomId: roomIdParam } = useParams();
-  const { updateUser } = useAuth();
-  const { isRegistered, hasAccess } = useBootcampAccess();
 
   const moduleId = Number(moduleIdParam);
   const roomId = Number(roomIdParam);
@@ -33,8 +27,6 @@ const StudentLesson = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [quizContext, setQuizContext] = useState(null);
   const [showNotes, setShowNotes] = useState(false);
   const [notes, setNotes] = useState('');
@@ -75,21 +67,6 @@ const StudentLesson = () => {
 
     load();
   }, []);
-
-  useEffect(() => {
-    if (!isRegistered) {
-      setShowRegisterModal(true);
-      setShowPaymentModal(false);
-      return;
-    }
-    if (!hasAccess) {
-      setShowPaymentModal(true);
-      setShowRegisterModal(false);
-      return;
-    }
-    setShowPaymentModal(false);
-    setShowRegisterModal(false);
-  }, [isRegistered, hasAccess]);
 
   useEffect(() => {
     setCanAdvance(false);
@@ -271,29 +248,6 @@ const StudentLesson = () => {
           Mark Completed
         </Button>
       </div>
-
-      {showRegisterModal && (
-        <StudentAccessModal
-          title="Bootcamp registration required"
-          description="Register for the bootcamp before you can access course materials."
-          primaryLabel="Go to Bootcamps"
-          onPrimary={() => {
-            setShowRegisterModal(false);
-            navigate('/student-bootcamps');
-          }}
-          onClose={() => setShowRegisterModal(false)}
-        />
-      )}
-
-      {showPaymentModal && (
-        <StudentPaymentModal
-          onClose={() => setShowPaymentModal(false)}
-          onSuccess={() => {
-            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
-            setShowPaymentModal(false);
-          }}
-        />
-      )}
 
       {quizContext && (
         <QuizPanel

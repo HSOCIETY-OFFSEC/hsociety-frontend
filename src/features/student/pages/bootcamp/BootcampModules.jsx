@@ -4,7 +4,6 @@ import { FiActivity, FiCheckCircle, FiLayers, FiLock, FiTarget } from 'react-ico
 import { getStudentCourse } from '../../services/course.service';
 import { getStudentOverview } from '../../../dashboards/student/services/student.service';
 import { HACKER_PROTOCOL_PHASES } from '../../../../data/static/bootcamps/hackerProtocolData';
-import BootcampAccessGate from '../../components/bootcamp/BootcampAccessGate';
 
 const buildStatusMeta = (overview) => {
   const modules = overview?.modules || [];
@@ -105,8 +104,7 @@ const BootcampModules = () => {
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
 
   return (
-    <BootcampAccessGate>
-      <div className="bc-page">
+    <div className="bc-page">
         <header className="bc-page-header">
           <div className="bc-page-header-inner">
             <div className="bc-header-left">
@@ -200,8 +198,7 @@ const BootcampModules = () => {
             </section>
           </main>
         </div>
-      </div>
-    </BootcampAccessGate>
+    </div>
   );
 };
 

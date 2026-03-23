@@ -6,10 +6,6 @@ import Button from '../../../shared/components/ui/Button';
 import { getStudentCourse } from '../services/course.service';
 import { getStudentOverview } from '../../dashboards/student/services/student.service';
 import { listNotifications, markNotificationRead } from '../services/notifications.service';
-import { useAuth } from '../../../core/auth/AuthContext';
-import useBootcampAccess from '../hooks/useBootcampAccess';
-import StudentAccessModal from '../components/StudentAccessModal';
-import StudentPaymentModal from '../components/StudentPaymentModal';
 import '../styles/learning.css';
 import {
   HACKER_PROTOCOL_BOOTCAMP,
@@ -18,15 +14,11 @@ import {
 
 const StudentLearning = () => {
   const navigate = useNavigate();
-  const { updateUser } = useAuth();
-  const { isRegistered, hasAccess } = useBootcampAccess();
   const [course, setCourse] = useState(null);
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [meetingNotification, setMeetingNotification] = useState(null);
 
   useEffect(() => {
@@ -35,18 +27,11 @@ const StudentLearning = () => {
       setLoading(true);
       setError('');
       try {
-        const requests = [
+        const [courseResponse, overviewResponse, notificationResponse] = await Promise.all([
+          getStudentCourse(),
           getStudentOverview(),
           listNotifications(),
-        ];
-        if (hasAccess) {
-          requests.unshift(getStudentCourse());
-        }
-        const responses = await Promise.all(requests);
-        const [courseResponse, overviewResponse, notificationResponse] = hasAccess
-          ? responses
-          : [null, responses[0], responses[1]];
-
+        ]);
         if (!isMounted) return;
         if (courseResponse?.success) setCourse(courseResponse.data);
         if (overviewResponse.success) setOverview(overviewResponse.data);
@@ -69,7 +54,7 @@ const StudentLearning = () => {
     return () => {
       isMounted = false;
     };
-  }, [hasAccess]);
+  }, []);
 
   const moduleProgressMap = useMemo(() => {
     if (!overview?.modules) return {};
@@ -95,17 +80,6 @@ const StudentLearning = () => {
   }, [course, moduleProgressMap]);
 
   const handleModuleClick = (module, index) => {
-    if (!isRegistered) {
-      setShowRegisterModal(true);
-      return;
-    }
-
-    if (!hasAccess) {
-      setShowPaymentModal(true);
-      setStatusMessage('Bootcamp payment unlocks the phase rooms and guided resources.');
-      return;
-    }
-
     const previousModule = phaseCards[index - 1];
     const previousProgress = previousModule ? previousModule.progress : 100;
 
@@ -177,83 +151,43 @@ const StudentLearning = () => {
           </Card>
         )}
 
-        {!isRegistered && !loading && (
+        {statusMessage && (
           <Card padding="medium" className="bootcamp-status-card">
-            <div className="bootcamp-status-card-header">
-              <FiLock size={20} />
-              <h3>Enrollment required</h3>
-            </div>
-            <p>Enroll in Hacker Protocol to unlock the phase dashboard.</p>
-            <Button variant="primary" size="small" onClick={() => navigate('/student-bootcamps')}>
-              Go to Bootcamps
-            </Button>
+            <p>{statusMessage}</p>
           </Card>
         )}
 
-        {isRegistered && (
-          <>
-            {statusMessage && (
-              <Card padding="medium" className="bootcamp-status-card">
-                <p>{statusMessage}</p>
-              </Card>
-            )}
-
-            <section className="bootcamp-timeline">
-              {phaseCards.map((module, index) => {
-                const progress = module.progress || 0;
-                const isCompleted = progress >= 100;
-                const isCurrent = module.moduleId === currentPhaseId;
-                const isLocked = !isCompleted && !isCurrent;
-                return (
-                  <button
-                    key={module.moduleId}
-                    type="button"
-                    className={`bootcamp-timeline-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}`}
-                    onClick={() => {
-                      if (isLocked) return;
-                      handleModuleClick(module, index);
-                    }}
-                    disabled={isLocked}
-                  >
-                    <span className="bootcamp-timeline-phase">Phase {module.moduleId}</span>
-                    <div className="bootcamp-timeline-body">
-                      <h3>{module.codename || module.title}</h3>
-                      <p>{module.roleTitle || module.description || module.ctf || 'Skill building module'}</p>
-                    </div>
-                    <div className="bootcamp-timeline-status">
-                      {isCompleted ? 'Completed' : isCurrent ? 'Current' : 'Locked'}
-                      {isLocked && <FiLock size={14} />}
-                    </div>
-                  </button>
-                );
-              })}
-            </section>
-          </>
-        )}
+        <section className="bootcamp-timeline">
+          {phaseCards.map((module, index) => {
+            const progress = module.progress || 0;
+            const isCompleted = progress >= 100;
+            const isCurrent = module.moduleId === currentPhaseId;
+            const isLocked = !isCompleted && !isCurrent;
+            return (
+              <button
+                key={module.moduleId}
+                type="button"
+                className={`bootcamp-timeline-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}`}
+                onClick={() => {
+                  if (isLocked) return;
+                  handleModuleClick(module, index);
+                }}
+                disabled={isLocked}
+              >
+                <span className="bootcamp-timeline-phase">Phase {module.moduleId}</span>
+                <div className="bootcamp-timeline-body">
+                  <h3>{module.codename || module.title}</h3>
+                  <p>{module.roleTitle || module.description || module.ctf || 'Skill building module'}</p>
+                </div>
+                <div className="bootcamp-timeline-status">
+                  {isCompleted ? 'Completed' : isCurrent ? 'Current' : 'Locked'}
+                  {isLocked && <FiLock size={14} />}
+                </div>
+              </button>
+            );
+          })}
+        </section>
       </div>
-
-      {showPaymentModal && (
-        <StudentPaymentModal
-          onClose={() => setShowPaymentModal(false)}
-          onSuccess={() => {
-            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
-            setShowPaymentModal(false);
-          }}
-        />
-      )}
-
-      {showRegisterModal && (
-        <StudentAccessModal
-          title="Bootcamp registration"
-          description="Complete registration before accessing the phase rooms."
-          primaryLabel="Go to Bootcamps"
-          onPrimary={() => {
-            setShowRegisterModal(false);
-            navigate('/student-bootcamps');
-          }}
-          onClose={() => setShowRegisterModal(false)}
-        />
-      )}
     </div>
   );
 };

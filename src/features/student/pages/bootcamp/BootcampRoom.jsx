@@ -16,7 +16,6 @@ import { getStudentOverview } from '../../../dashboards/student/services/student
 import { listNotifications } from '../../services/notifications.service';
 import { QuizPanel } from '../../components/QuizPanel';
 import { getHackerProtocolModule, getHackerProtocolRoom } from '../../../../data/static/bootcamps/hackerProtocolData';
-import BootcampAccessGate from '../../components/bootcamp/BootcampAccessGate';
 import LiveClassCard from '../../components/bootcamp/LiveClassCard';
 
 const buildStatusMeta = (overview) => {
@@ -153,40 +152,36 @@ const BootcampRoom = () => {
 
   if (loading) {
     return (
-      <BootcampAccessGate>
-        <div className="bc-page">
-          <div className="bc-panel">
-            <div className="bc-skeleton" style={{ width: '40%' }} />
-            <div className="bc-skeleton" style={{ width: '80%' }} />
-          </div>
+      <div className="bc-page">
+        <div className="bc-panel">
+          <div className="bc-skeleton" style={{ width: '40%' }} />
+          <div className="bc-skeleton" style={{ width: '80%' }} />
         </div>
-      </BootcampAccessGate>
+      </div>
     );
   }
 
   if (error || !module || !room || !moduleMeta || !roomMeta) {
     return (
-      <BootcampAccessGate>
-        <div className="bc-page">
-          <div className="bc-panel bc-alert">
-            <h3 className="bc-panel-title">Room unavailable</h3>
-            <p>{error || 'We could not load this lesson.'}</p>
-            <button
-              type="button"
-              className="bc-btn bc-btn-secondary"
-              onClick={() => navigate('/student-bootcamps/modules')}
-            >
-              <FiArrowLeft size={14} />
-              Back to Modules
-            </button>
-          </div>
+      <div className="bc-page">
+        <div className="bc-panel bc-alert">
+          <h3 className="bc-panel-title">Room unavailable</h3>
+          <p>{error || 'We could not load this lesson.'}</p>
+          <button
+            type="button"
+            className="bc-btn bc-btn-secondary"
+            onClick={() => navigate('/student-bootcamps/modules')}
+          >
+            <FiArrowLeft size={14} />
+            Back to Modules
+          </button>
         </div>
-      </BootcampAccessGate>
+      </div>
     );
   }
 
   return (
-    <BootcampAccessGate>
+    <>
       <div className="bc-page">
         <header className="bc-page-header">
           <div className="bc-page-header-inner">
@@ -358,7 +353,7 @@ const BootcampRoom = () => {
           }}
         />
       )}
-    </BootcampAccessGate>
+    </>
   );
 };
 

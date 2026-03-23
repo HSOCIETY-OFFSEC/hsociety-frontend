@@ -3,11 +3,11 @@ import { FiCreditCard, FiShield } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
 import useBootcampAccess from '../hooks/useBootcampAccess';
-import StudentAccessModal from '../components/StudentAccessModal';
 import StudentPaymentModal from '../components/StudentPaymentModal';
 import { verifyBootcampPayment, getBootcampAccessKey } from '../../dashboards/student/services/student.service';
 import { getCurrentUser } from '../../../core/auth/auth.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import { consumeBootcampRedirect } from '../utils/bootcampRedirect';
 import '../styles/components.css';
 import '../styles/payments.css';
 
@@ -17,13 +17,12 @@ const StudentPayments = () => {
   const location = useLocation();
   const { isRegistered, isPaid } = useBootcampAccess();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [accessKey, setAccessKey] = useState('');
 
   const handleOpenPayment = () => {
     if (!isRegistered) {
-      setShowRegisterModal(true);
+      navigate('/student-bootcamps');
       return;
     }
     setShowPaymentModal(true);
@@ -54,10 +53,11 @@ const StudentPayments = () => {
       setStatusMessage(
         status === 'success' ? 'Payment verified. Access unlocked.' : 'Payment verified.'
       );
+      navigate(consumeBootcampRedirect('/student-bootcamps/overview'), { replace: true });
     };
 
     verify();
-  }, [location.search, updateUser]);
+  }, [location.search, navigate, updateUser]);
 
   useEffect(() => {
     let mounted = true;
@@ -115,6 +115,19 @@ const StudentPayments = () => {
             </h2>
             <p className="sp-section-desc">Payment unlocks all course modules, quizzes, and resources.</p>
 
+            {!isRegistered && (
+              <div className="sp-panel sp-alert">
+                <p>Register for the bootcamp before completing payment.</p>
+                <button
+                  type="button"
+                  className="sp-btn sp-btn-secondary"
+                  onClick={() => navigate('/student-bootcamps')}
+                >
+                  Go to Bootcamps
+                </button>
+              </div>
+            )}
+
             {statusMessage && (
               <div className="sp-panel sp-alert">
                 <p>{statusMessage}</p>
@@ -134,7 +147,7 @@ const StudentPayments = () => {
                     type="button"
                     className="sp-btn sp-btn-primary"
                     onClick={handleOpenPayment}
-                    disabled={isPaid}
+                    disabled={isPaid || !isRegistered}
                   >
                     {isPaid ? 'Paid' : 'Pay Now'}
                   </button>
@@ -179,20 +192,8 @@ const StudentPayments = () => {
           onSuccess={() => {
             updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
             setShowPaymentModal(false);
+            navigate(consumeBootcampRedirect('/student-bootcamps/overview'), { replace: true });
           }}
-        />
-      )}
-
-      {showRegisterModal && (
-        <StudentAccessModal
-          title="Bootcamp registration required"
-          description="Register for the bootcamp before completing payment."
-          primaryLabel="Go to Bootcamps"
-          onPrimary={() => {
-            setShowRegisterModal(false);
-            navigate('/student-bootcamps');
-          }}
-          onClose={() => setShowRegisterModal(false)}
         />
       )}
     </div>

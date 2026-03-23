@@ -11,7 +11,6 @@ import {
 import { getStudentOverview } from '../../../dashboards/student/services/student.service';
 import { getStudentCourse } from '../../services/course.service';
 import { getHackerProtocolModule } from '../../../../data/static/bootcamps/hackerProtocolData';
-import BootcampAccessGate from '../../components/bootcamp/BootcampAccessGate';
 
 const buildStatusMeta = (overview) => {
   const modules = overview?.modules || [];
@@ -101,27 +100,24 @@ const BootcampModule = () => {
 
   if (!module || !moduleMeta) {
     return (
-      <BootcampAccessGate>
-        <div className="bc-page">
-          <div className="bc-panel bc-alert">
-            <h3 className="bc-panel-title">Module not found</h3>
-            <button
-              type="button"
-              className="bc-btn bc-btn-secondary"
-              onClick={() => navigate('/student-bootcamps/modules')}
-            >
-              <FiArrowLeft size={14} />
-              Back to Modules
-            </button>
-          </div>
+      <div className="bc-page">
+        <div className="bc-panel bc-alert">
+          <h3 className="bc-panel-title">Module not found</h3>
+          <button
+            type="button"
+            className="bc-btn bc-btn-secondary"
+            onClick={() => navigate('/student-bootcamps/modules')}
+          >
+            <FiArrowLeft size={14} />
+            Back to Modules
+          </button>
         </div>
-      </BootcampAccessGate>
+      </div>
     );
   }
 
   return (
-    <BootcampAccessGate>
-      <div className="bc-page">
+    <div className="bc-page">
         <header className="bc-page-header">
           <div className="bc-page-header-inner">
             <div className="bc-header-left">
@@ -244,8 +240,7 @@ const BootcampModule = () => {
             </section>
           </main>
         </div>
-      </div>
-    </BootcampAccessGate>
+    </div>
   );
 };
 

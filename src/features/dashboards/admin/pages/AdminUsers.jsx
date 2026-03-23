@@ -59,7 +59,7 @@ const AdminUsers = () => {
         role: user.role || 'student',
         bootcampStatus: user.bootcampStatus || 'not_enrolled',
         bootcampPaymentStatus: user.bootcampPaymentStatus || 'unpaid',
-        bootcampAccess: Boolean(user.bootcampAccess),
+        bootcampAccessRevoked: Boolean(user.bootcampAccessRevoked),
       }
     }));
   };
@@ -232,7 +232,7 @@ const AdminUsers = () => {
             <button
               type="button"
               className="ad-btn ad-btn-secondary"
-              onClick={() => bulkUpdateUsers({ bootcampAccess: true, bootcampStatus: 'active' })}
+              onClick={() => bulkUpdateUsers({ bootcampAccessRevoked: false, bootcampStatus: 'active' })}
               disabled={bulkLoading}
             >
               <FiCheckSquare size={14} /> Grant Access
@@ -240,7 +240,7 @@ const AdminUsers = () => {
             <button
               type="button"
               className="ad-btn ad-btn-ghost"
-              onClick={() => bulkUpdateUsers({ bootcampAccess: false, bootcampStatus: 'enrolled' })}
+              onClick={() => bulkUpdateUsers({ bootcampAccessRevoked: true, bootcampStatus: 'enrolled' })}
               disabled={bulkLoading}
             >
               <FiSlash size={14} /> Revoke Access
@@ -411,15 +411,15 @@ const AdminUsers = () => {
                 <div>
                   {isEditing ? (
                     <select className="admin-select"
-                      value={draft.bootcampAccess ? 'granted' : 'blocked'}
-                      onChange={(e) => updateDraft(user.id, 'bootcampAccess', e.target.value === 'granted')}>
-                      <option value="granted">granted</option>
-                      <option value="blocked">blocked</option>
+                      value={draft.bootcampAccessRevoked ? 'revoked' : 'allowed'}
+                      onChange={(e) => updateDraft(user.id, 'bootcampAccessRevoked', e.target.value === 'revoked')}>
+                      <option value="allowed">allowed</option>
+                      <option value="revoked">revoked</option>
                     </select>
                   ) : (
                     <div className="admin-inline-meta">
-                      <span className="admin-role">{user.bootcampAccess ? 'granted' : 'blocked'}</span>
-                      {user.bootcampAccess === false && (
+                      <span className="admin-role">{user.bootcampAccessRevoked ? 'revoked' : 'allowed'}</span>
+                      {user.bootcampAccessRevoked === true && (
                         <span className="admin-flag admin-flag-warning">Revoked</span>
                       )}
                     </div>

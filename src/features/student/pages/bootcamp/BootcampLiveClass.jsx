@@ -3,7 +3,6 @@ import { FiActivity, FiCheckCircle, FiVideo } from 'react-icons/fi';
 import { listNotifications } from '../../services/notifications.service';
 import { getStudentCourse } from '../../services/course.service';
 import { getStudentOverview } from '../../../dashboards/student/services/student.service';
-import BootcampAccessGate from '../../components/bootcamp/BootcampAccessGate';
 import LiveClassCard from '../../components/bootcamp/LiveClassCard';
 
 const buildStatusMeta = (overview) => {
@@ -95,8 +94,7 @@ const BootcampLiveClass = () => {
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
 
   return (
-    <BootcampAccessGate>
-      <div className="bc-page">
+    <div className="bc-page">
         <header className="bc-page-header">
           <div className="bc-page-header-inner">
             <div className="bc-header-left">
@@ -166,8 +164,7 @@ const BootcampLiveClass = () => {
             </section>
           </main>
         </div>
-      </div>
-    </BootcampAccessGate>
+    </div>
   );
 };
 

@@ -1,52 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../core/auth/AuthContext';
 import { registerBootcamp } from '../../../dashboards/student/services/student.service';
 import { getCurrentUser } from '../../../../core/auth/auth.service';
-import StudentAccessModal from '../../components/StudentAccessModal';
+import BootcampAccessPage from '../../components/bootcamp/BootcampAccessPage';
 import useBootcampAccess from '../../hooks/useBootcampAccess';
+import { consumeBootcampRedirect, setBootcampRedirect } from '../../utils/bootcampRedirect';
 import '../../styles/bootcamp/bootcamp-app.css';
 
 const BootcampLayout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, updateUser } = useAuth();
-  const { isRegistered, isPaid } = useBootcampAccess();
-  const [accessModalOpen, setAccessModalOpen] = useState(false);
-  const [accessModalCopy, setAccessModalCopy] = useState({
-    title: 'Bootcamp access required',
-    description: 'Please complete registration and payment to unlock the bootcamp dashboard.',
-    primaryLabel: 'Go to Payments',
-    onPrimary: () => navigate('/student-payments'),
-  });
+  const { isRegistered, isPaid, accessRevoked } = useBootcampAccess();
   const [registering, setRegistering] = useState(false);
 
-  const gateAccess = Boolean(user) && (!isRegistered || !isPaid);
+  const gateAccess = Boolean(user) && (accessRevoked || !isRegistered || !isPaid);
 
   useEffect(() => {
-    if (!gateAccess) {
-      setAccessModalOpen(false);
-      return;
-    }
-
-    if (!isRegistered) {
-      setAccessModalCopy({
-        title: 'Bootcamp registration required',
-        description: 'You have not registered for the bootcamp yet. Register now to begin the enrollment process.',
-        primaryLabel: registering ? 'Registering…' : 'Register for Bootcamp',
-        onPrimary: null,
-      });
-      setAccessModalOpen(true);
-      return;
-    }
-
-    setAccessModalCopy({
-      title: 'Bootcamp payment required',
-      description: 'Have you completed payment for the bootcamp? Payment unlocks your dashboard access.',
-      primaryLabel: 'Go to Payments',
-      onPrimary: () => navigate('/student-payments'),
-    });
-    setAccessModalOpen(true);
-  }, [gateAccess, isRegistered, isPaid, navigate, registering]);
+    if (!gateAccess) return;
+    const nextPath = `${location.pathname}${location.search || ''}`;
+    setBootcampRedirect(nextPath);
+  }, [gateAccess, location.pathname, location.search]);
 
   const handleRegisterBootcamp = useCallback(async () => {
     if (registering) return;
@@ -68,31 +43,56 @@ const BootcampLayout = () => {
           bootcampPaymentStatus: response.data?.bootcampPaymentStatus || 'unpaid',
         });
       }
-      navigate('/student-payments');
+      const redirectTo = consumeBootcampRedirect('/student-bootcamps/overview');
+      navigate(redirectTo, { replace: true });
     }
 
     setRegistering(false);
   }, [navigate, registering, updateUser]);
 
+  const accessCopy = useMemo(() => {
+    if (accessRevoked) {
+      return {
+        title: 'Bootcamp access revoked',
+        description: 'Your bootcamp access was revoked by an admin. Contact support if you believe this is a mistake.',
+        primaryLabel: 'Back to Dashboard',
+        onPrimary: () => navigate('/student-dashboard'),
+        primaryDisabled: false,
+      };
+    }
+
+    if (!isRegistered) {
+      return {
+        title: 'Bootcamp registration required',
+        description: 'You have not registered for the bootcamp yet. Register now to begin the enrollment process.',
+        primaryLabel: registering ? 'Registering…' : 'Register for Bootcamp',
+        onPrimary: handleRegisterBootcamp,
+        primaryDisabled: registering,
+      };
+    }
+
+    return {
+      title: 'Bootcamp payment required',
+      description: 'Have you completed payment for the bootcamp? Payment unlocks your dashboard access.',
+      primaryLabel: 'Go to Payments',
+      onPrimary: () => {
+        setBootcampRedirect(`${location.pathname}${location.search || ''}`);
+        navigate('/student-payments');
+      },
+      primaryDisabled: false,
+    };
+  }, [accessRevoked, handleRegisterBootcamp, isRegistered, location.pathname, location.search, navigate, registering]);
+
   return (
     <>
       {!gateAccess && <Outlet />}
-      {accessModalOpen && (
-        <StudentAccessModal
-          title={accessModalCopy.title}
-          description={accessModalCopy.description}
-          primaryLabel={accessModalCopy.primaryLabel}
-          onPrimary={() => {
-            if (!isRegistered) {
-              handleRegisterBootcamp();
-              return;
-            }
-            accessModalCopy.onPrimary?.();
-          }}
-          onClose={() => {
-            setAccessModalOpen(false);
-            navigate('/student-dashboard');
-          }}
+      {gateAccess && (
+        <BootcampAccessPage
+          title={accessCopy.title}
+          description={accessCopy.description}
+          primaryLabel={accessCopy.primaryLabel}
+          onPrimary={accessCopy.onPrimary}
+          primaryDisabled={accessCopy.primaryDisabled}
         />
       )}
     </>

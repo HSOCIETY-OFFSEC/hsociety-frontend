@@ -12,7 +12,6 @@ import {
 } from 'react-icons/fi';
 import { getStudentOverview } from '../../../dashboards/student/services/student.service';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../../../data/static/bootcamps/hackerProtocolData';
-import BootcampAccessGate from '../../components/bootcamp/BootcampAccessGate';
 
 const buildStatusMeta = (overview) => {
   const modules = overview?.modules || [];
@@ -92,8 +91,7 @@ const BootcampOverview = () => {
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
 
   return (
-    <BootcampAccessGate>
-      <div className="bc-page">
+    <div className="bc-page">
         <header className="bc-page-header">
           <div className="bc-page-header-inner">
             <div className="bc-header-left">
@@ -212,8 +210,7 @@ const BootcampOverview = () => {
             </section>
           </main>
         </div>
-      </div>
-    </BootcampAccessGate>
+    </div>
   );
 };
 

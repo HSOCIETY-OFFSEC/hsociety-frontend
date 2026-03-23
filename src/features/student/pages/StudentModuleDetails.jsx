@@ -3,10 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FiArrowLeft, FiCheckCircle, FiPlayCircle } from 'react-icons/fi';
 import Card from '../../../shared/components/ui/Card';
 import Button from '../../../shared/components/ui/Button';
-import StudentPaymentModal from '../components/StudentPaymentModal';
-import StudentAccessModal from '../components/StudentAccessModal';
-import useBootcampAccess from '../hooks/useBootcampAccess';
-import { useAuth } from '../../../core/auth/AuthContext';
 import { getStudentOverview } from '../../dashboards/student/services/student.service';
 import '../styles/module-details.css';
 import {
@@ -18,12 +14,8 @@ const StudentModuleDetails = () => {
   const { moduleId } = useParams();
   const id = Number(moduleId);
   const navigate = useNavigate();
-  const { updateUser } = useAuth();
-  const { isRegistered, hasAccess } = useBootcampAccess();
 
   const [overview, setOverview] = useState(null);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const module = getHackerProtocolModule(id);
 
@@ -80,14 +72,6 @@ const StudentModuleDetails = () => {
                 variant="primary"
                 size="small"
                 onClick={() => {
-                  if (!isRegistered) {
-                    setShowRegisterModal(true);
-                    return;
-                  }
-                  if (!hasAccess) {
-                    setShowPaymentModal(true);
-                    return;
-                  }
                   if (!nextRoom) return;
                   navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${nextRoom.roomId}`);
                 }}
@@ -136,25 +120,6 @@ const StudentModuleDetails = () => {
         </section>
       </div>
 
-      {showPaymentModal && (
-        <StudentPaymentModal
-          onClose={() => setShowPaymentModal(false)}
-          onSuccess={() => {
-            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
-            setShowPaymentModal(false);
-          }}
-        />
-      )}
-
-      {showRegisterModal && (
-        <StudentAccessModal
-          title="Bootcamp registration required"
-          description="Register in bootcamps before opening a phase."
-          primaryLabel="Go to Bootcamps"
-          onPrimary={() => navigate('/student-bootcamps')}
-          onClose={() => setShowRegisterModal(false)}
-        />
-      )}
     </div>
   );
 };

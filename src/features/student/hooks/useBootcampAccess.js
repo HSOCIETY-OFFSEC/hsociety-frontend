@@ -7,26 +7,19 @@ export const useBootcampAccess = () => {
   const { user } = useAuth();
 
   return useMemo(() => {
-    const bootcampStatus = normalizeStatus(user?.bootcampStatus || user?.bootcamp?.status);
-    const paymentStatus = normalizeStatus(user?.bootcampPaymentStatus || user?.paymentStatus);
-    const accessOverride = user?.bootcampAccess;
-    const accessRevoked = accessOverride === false;
+    const bootcampStatus = normalizeStatus(user?.bootcampStatus);
+    const paymentStatus = normalizeStatus(user?.bootcampPaymentStatus);
+    const accessRevoked = user?.bootcampAccessRevoked === true;
 
     const isRegistered = Boolean(
-      user?.bootcampRegistered ||
       bootcampStatus === 'enrolled' ||
       bootcampStatus === 'active' ||
       bootcampStatus === 'completed'
     );
 
-    const isPaid = Boolean(
-      user?.bootcampPaid ||
-      accessOverride === true ||
-      paymentStatus === 'paid'
-    );
+    const isPaid = paymentStatus === 'paid';
 
     const isAccessGranted = Boolean(
-      accessOverride === true ||
       bootcampStatus === 'active' ||
       bootcampStatus === 'completed'
     );
@@ -35,17 +28,13 @@ export const useBootcampAccess = () => {
       isRegistered,
       isPaid,
       isAccessGranted,
-      hasAccess: !accessRevoked && (isAccessGranted || (isRegistered && isPaid))
+      accessRevoked,
+      hasAccess: isRegistered && isPaid && !accessRevoked
     };
   }, [
     user?.bootcampStatus,
-    user?.bootcamp?.status,
-    user?.bootcampRegistered,
-    user?.bootcampPaid,
-    user?.bootcampAccess,
-    user?.paymentStatus,
-    user?.bootcampPaymentStatus,
-    user?.paymentStatus
+    user?.bootcampAccessRevoked,
+    user?.bootcampPaymentStatus
   ]);
 };
 

@@ -1,42 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiCheckCircle, FiClipboard, FiTarget } from 'react-icons/fi';
-import useBootcampAccess from '../hooks/useBootcampAccess';
-import StudentAccessModal from '../components/StudentAccessModal';
-import StudentPaymentModal from '../components/StudentPaymentModal';
-import { useAuth } from '../../../core/auth/AuthContext';
 import '../styles/components.css';
 import '../styles/quiz-material.css';
 
 const StudentQuizMaterial = () => {
   const navigate = useNavigate();
-  const { updateUser } = useAuth();
-  const { isRegistered, isPaid, hasAccess } = useBootcampAccess();
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-
-  const triggerAccessModal = () => {
-    if (!isRegistered) {
-      setShowRegisterModal(true);
-      return;
-    }
-    setShowPaymentModal(true);
-  };
-
-  useEffect(() => {
-    if (!isRegistered) {
-      setShowRegisterModal(true);
-      setShowPaymentModal(false);
-      return;
-    }
-    if (!isPaid) {
-      setShowPaymentModal(true);
-      setShowRegisterModal(false);
-      return;
-    }
-    setShowRegisterModal(false);
-    setShowPaymentModal(false);
-  }, [isRegistered, isPaid]);
 
   return (
     <div className="sq-page">
@@ -62,10 +31,10 @@ const StudentQuizMaterial = () => {
             <button
               type="button"
               className="sq-btn sq-btn-primary"
-              onClick={() => (hasAccess ? navigate('/student-bootcamps/overview') : triggerAccessModal())}
+              onClick={() => navigate('/student-bootcamps/overview')}
             >
               <FiTarget size={16} />
-              {hasAccess ? 'Go to Learning Path' : 'Access Denied'}
+              Go to Learning Path
             </button>
           </div>
         </div>
@@ -73,7 +42,7 @@ const StudentQuizMaterial = () => {
           <span className="sq-meta-pill">
             <FiTarget size={13} className="sq-meta-icon" />
             <span className="sq-meta-label">Access</span>
-            <strong className="sq-meta-value">{hasAccess ? 'OPEN' : 'LOCKED'}</strong>
+            <strong className="sq-meta-value">OPEN</strong>
           </span>
           <span className="sq-meta-pill">
             <FiCheckCircle size={13} className="sq-meta-icon" />
@@ -101,10 +70,9 @@ const StudentQuizMaterial = () => {
                   <button
                     type="button"
                     className="sq-btn sq-btn-secondary"
-                    disabled={!hasAccess}
-                    onClick={() => (hasAccess ? navigate('/student-bootcamps/overview') : triggerAccessModal())}
+                    onClick={() => navigate('/student-bootcamps/overview')}
                   >
-                    {hasAccess ? 'Start check-in' : 'Access Denied'}
+                    Start check-in
                   </button>
                 </div>
               </article>
@@ -117,10 +85,9 @@ const StudentQuizMaterial = () => {
                   <button
                     type="button"
                     className="sq-btn sq-btn-secondary"
-                    disabled={!hasAccess}
-                    onClick={() => (hasAccess ? navigate('/student-bootcamps/overview') : triggerAccessModal())}
+                    onClick={() => navigate('/student-bootcamps/overview')}
                   >
-                    {hasAccess ? 'Open validation' : 'Access Denied'}
+                    Open validation
                   </button>
                 </div>
               </article>
@@ -129,25 +96,6 @@ const StudentQuizMaterial = () => {
         </main>
       </div>
 
-      {showRegisterModal && (
-        <StudentAccessModal
-          title="Bootcamp registration required"
-          description="Register for the bootcamp before you can access quizzes."
-          primaryLabel="Go to Bootcamps"
-          onPrimary={() => navigate('/student-bootcamps')}
-          onClose={() => setShowRegisterModal(false)}
-        />
-      )}
-
-      {showPaymentModal && !showRegisterModal && (
-        <StudentPaymentModal
-          onClose={() => setShowPaymentModal(false)}
-          onSuccess={() => {
-            updateUser({ bootcampPaymentStatus: 'pending', bootcampStatus: 'enrolled' });
-            setShowPaymentModal(false);
-          }}
-        />
-      )}
     </div>
   );
 };

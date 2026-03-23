@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FiBookOpen, FiCheckCircle, FiLayers, FiTool, FiDownload, FiInfo } from 'react-icons/fi';
-import BootcampAccessGate from '../../components/bootcamp/BootcampAccessGate';
 import { getBootcampResources } from '../../services/learn.service';
 
 const BootcampResources = () => {
@@ -26,8 +25,7 @@ const BootcampResources = () => {
   }, []);
 
   return (
-    <BootcampAccessGate>
-      <div className="bc-page">
+    <div className="bc-page">
         <header className="bc-page-header">
           <div className="bc-page-header-inner">
             <div className="bc-header-left">
@@ -116,8 +114,7 @@ const BootcampResources = () => {
             </section>
           </main>
         </div>
-      </div>
-    </BootcampAccessGate>
+    </div>
   );
 };
 
