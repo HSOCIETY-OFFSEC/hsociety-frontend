@@ -168,7 +168,24 @@ const StudentDashboard = () => {
         paused: true
       };
     }
-    const isPaused = data.bootcampStatus === 'not_enrolled' || data.bootcampPaymentStatus === 'unpaid';
+    if (!isRegistered) {
+      return {
+        label: 'BOOTCAMP STATUS',
+        value: 'NOT ENROLLED',
+        note: 'Register to unlock bootcamp phases.',
+        fill: 20,
+        paused: true
+      };
+    }
+    if (!isPaid) {
+      return {
+        label: 'BOOTCAMP STATUS',
+        value: 'PAYMENT DUE',
+        note: 'Complete payment to unlock phases.',
+        fill: 20,
+        paused: true
+      };
+    }
     const hasActive = bootcampProgressItems.some((item) => {
       const status = String(item.status || '').toLowerCase();
       return status === 'in-progress' || status === 'current';
@@ -176,16 +193,6 @@ const StudentDashboard = () => {
     const avgProgress = bootcampProgressItems.length
       ? Math.round(bootcampProgressItems.reduce((sum, item) => sum + (Number(item.progress) || 0), 0) / bootcampProgressItems.length)
       : 0;
-
-    if (isPaused) {
-      return {
-        label: 'BOOTCAMP STATUS',
-        value: 'PAUSED',
-        note: 'Complete enrollment to unlock phases.',
-        fill: 20,
-        paused: true
-      };
-    }
 
     if (avgProgress >= 100) {
       return {
@@ -204,7 +211,7 @@ const StudentDashboard = () => {
       fill: hasActive ? 70 : 40,
       paused: false
     };
-  }, [accessRevoked, bootcampProgressItems, data.bootcampPaymentStatus, data.bootcampStatus]);
+  }, [accessRevoked, bootcampProgressItems, isPaid, isRegistered]);
 
   return (
     <div className="sd-page">
@@ -296,11 +303,19 @@ const StudentDashboard = () => {
                   <div className="sd-payment-banner-left">
                     <FiLock size={18} className="sd-payment-banner-icon" />
                     <div>
-                      <strong>{accessRevoked ? 'Bootcamp access revoked' : 'Bootcamp access paused'}</strong>
+                      <strong>
+                        {accessRevoked
+                          ? 'Bootcamp access revoked'
+                          : !isRegistered
+                            ? 'Bootcamp registration required'
+                            : 'Bootcamp payment required'}
+                      </strong>
                       <p>
                         {accessRevoked
                           ? 'Your bootcamp access was revoked. Contact support to resolve this issue.'
-                          : 'Your bootcamp is locked until payment is confirmed. Complete your enrollment to unlock all phases.'}
+                          : !isRegistered
+                            ? 'Register for the bootcamp to unlock your dashboard.'
+                            : 'Your bootcamp is locked until payment is confirmed. Complete payment to unlock all phases.'}
                       </p>
                     </div>
                   </div>
@@ -311,6 +326,14 @@ const StudentDashboard = () => {
                       onClick={() => navigate('/contact')}
                     >
                       Contact Support <FiArrowRight size={14} />
+                    </button>
+                  ) : !isRegistered ? (
+                    <button
+                      type="button"
+                      className="sd-btn sd-btn-pay"
+                      onClick={() => navigate('/student-bootcamps')}
+                    >
+                      Register <FiArrowRight size={14} />
                     </button>
                   ) : (
                     <button

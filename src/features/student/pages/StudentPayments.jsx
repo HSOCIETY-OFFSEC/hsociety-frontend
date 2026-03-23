@@ -15,12 +15,16 @@ const StudentPayments = () => {
   const { updateUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isRegistered, isPaid } = useBootcampAccess();
+  const { isRegistered, isPaid, accessRevoked } = useBootcampAccess();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [accessKey, setAccessKey] = useState('');
 
   const handleOpenPayment = () => {
+    if (accessRevoked) {
+      navigate('/contact');
+      return;
+    }
     if (!isRegistered) {
       navigate('/student-bootcamps');
       return;
@@ -115,7 +119,20 @@ const StudentPayments = () => {
             </h2>
             <p className="sp-section-desc">Payment unlocks all course modules, quizzes, and resources.</p>
 
-            {!isRegistered && (
+            {accessRevoked && (
+              <div className="sp-panel sp-alert">
+                <p>Your bootcamp access is revoked. Contact support to resolve this issue.</p>
+                <button
+                  type="button"
+                  className="sp-btn sp-btn-secondary"
+                  onClick={() => navigate('/contact')}
+                >
+                  Contact Support
+                </button>
+              </div>
+            )}
+
+            {!isRegistered && !accessRevoked && (
               <div className="sp-panel sp-alert">
                 <p>Register for the bootcamp before completing payment.</p>
                 <button
@@ -147,7 +164,7 @@ const StudentPayments = () => {
                     type="button"
                     className="sp-btn sp-btn-primary"
                     onClick={handleOpenPayment}
-                    disabled={isPaid || !isRegistered}
+                    disabled={isPaid || !isRegistered || accessRevoked}
                   >
                     {isPaid ? 'Paid' : 'Pay Now'}
                   </button>

@@ -1,29 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import StudentAccessModal from './StudentAccessModal';
+import Button from '../../../shared/components/ui/Button';
 import '../styles/base.css';
 import '../styles/components.css';
 
 const StudentRoleBlocker = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(true);
-
-  const handleExit = () => {
-    setOpen(false);
-    navigate('/student-dashboard', { replace: true });
-  };
 
   return (
     <div className="student-page">
-      {open && (
-        <StudentAccessModal
-          title="Access restricted"
-          description="You are logged in as a student and cannot access this page or content."
-          primaryLabel="Go to Overview"
-          onPrimary={handleExit}
-          onClose={handleExit}
-        />
-      )}
+      <div className="student-role-blocker">
+        <h3>Access restricted</h3>
+        <p>You are logged in as a student and cannot access this page or content.</p>
+        <Button
+          variant="primary"
+          size="medium"
+          onClick={() => navigate('/student-dashboard', { replace: true })}
+        >
+          Go to Overview
+        </Button>
+      </div>
     </div>
   );
 };

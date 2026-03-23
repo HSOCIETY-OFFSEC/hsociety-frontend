@@ -402,7 +402,15 @@ const AdminUsers = () => {
                   {isEditing ? (
                     <select className="admin-select" value={draft.bootcampPaymentStatus || 'unpaid'}
                       onChange={(e) => updateDraft(user.id, 'bootcampPaymentStatus', e.target.value)}>
-                      {['unpaid', 'pending', 'paid'].map((s) => <option key={s} value={s}>{s}</option>)}
+                      {['unpaid', 'pending', 'paid'].map((s) => (
+                        <option
+                          key={s}
+                          value={s}
+                          disabled={draft.bootcampAccessRevoked === true && s === 'paid'}
+                        >
+                          {s}
+                        </option>
+                      ))}
                     </select>
                   ) : (
                     <span className="admin-role">{user.bootcampPaymentStatus || 'unpaid'}</span>
