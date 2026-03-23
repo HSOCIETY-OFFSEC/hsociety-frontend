@@ -5,8 +5,20 @@
 }
 
 .cp-hero-icon {
-  width: 120px;
+  width: min(420px, 92vw);
+  max-width: none;
   height: auto;
   display: block;
   margin: 0 auto;
+}
+
+.cp-page .public-hero-panel {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.cp-page .public-badge {
+  display: none;
 }

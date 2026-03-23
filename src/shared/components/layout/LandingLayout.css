@@ -12,8 +12,12 @@
 }
 
 .landing-layout .gh-nav {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: var(--ann-banner-height, 0px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: var(--z-sticky, 60);
 }
 
 .landing-main {
@@ -21,4 +25,5 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding-top: var(--navbar-height, 64px);
 }

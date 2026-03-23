@@ -260,3 +260,22 @@
     justify-content: center;
   }
 }
+
+@media (max-width: 720px) {
+  .section-container {
+    padding: 0 1.1rem;
+  }
+
+  .public-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-card {
+    width: 100%;
+  }
+
+  .public-cta-inner,
+  .public-hero .section-container {
+    grid-template-columns: 1fr;
+  }
+}
