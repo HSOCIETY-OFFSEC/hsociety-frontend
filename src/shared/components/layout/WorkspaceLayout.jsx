@@ -562,7 +562,7 @@ const WorkspaceLayout = () => {
             <button
               type="button"
               className="workspace-payment-banner-cta"
-              onClick={() => navigate('/student-bootcamps/payments')}
+              onClick={() => navigate('/student-payments?open=payment')}
             >
               Pay Now
             </button>

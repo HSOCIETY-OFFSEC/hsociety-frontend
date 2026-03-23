@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FiCreditCard, FiShield } from 'react-icons/fi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
@@ -20,7 +20,9 @@ const StudentPayments = () => {
   const [statusMessage, setStatusMessage] = useState('');
   const [accessKey, setAccessKey] = useState('');
 
-  const handleOpenPayment = () => {
+  const autoOpenedRef = useRef(false);
+
+  const handleOpenPayment = useCallback(() => {
     if (accessRevoked) {
       navigate('/contact');
       return;
@@ -30,7 +32,17 @@ const StudentPayments = () => {
       return;
     }
     setShowPaymentModal(true);
-  };
+  }, [accessRevoked, isRegistered, navigate]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const open = params.get('open');
+    if (autoOpenedRef.current) return;
+    if (open === 'payment' || open === 'modal' || open === 'pay') {
+      autoOpenedRef.current = true;
+      handleOpenPayment();
+    }
+  }, [handleOpenPayment, location.search]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
