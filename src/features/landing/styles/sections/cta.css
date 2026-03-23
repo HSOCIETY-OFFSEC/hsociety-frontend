@@ -9,6 +9,7 @@
   padding: 4rem 0;
 }
 
+/* [NOTE] position: relative already present — anchors .hs-signature */
 .cta-shell {
   position: relative;
   text-align: center;
@@ -17,6 +18,7 @@
   background: var(--bg-secondary);
   border-radius: 18px;
   box-shadow: var(--shadow-md);
+  overflow: visible; /* allow signature to bleed outside the card */
 }
 
 .cta-grid {
@@ -98,5 +100,54 @@
 @media (prefers-reduced-motion: reduce) {
   .cta-grid {
     animation: none;
+  }
+}
+
+/* ==========================================================
+   HS SIGNATURE — straddles the top-right corner of .cta-shell
+   Positioned so the two squares sit ON the card border edge.
+   ========================================================== */
+
+.cta-shell .hs-signature {
+  position: absolute;
+  /* translate half out so the squares straddle the corner */
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Back square — secondary/border tone, offset diagonally behind */
+.cta-shell .hs-signature::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-secondary);
+  opacity: 0.7;
+}
+
+/* Front square — primary accent, sits top-left of the pair */
+.cta-shell .hs-signature::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 15%, var(--bg-secondary));
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .cta-shell .hs-signature {
+    top: -8px;
+    right: -8px;
   }
 }

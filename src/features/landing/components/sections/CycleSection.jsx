@@ -35,6 +35,9 @@ const CycleSection = ({ steps }) => {
 
   return (
     <section className="cycle-section reveal-on-scroll" id="cycle" ref={sectionRef}>
+      {/* [ADDED] dual-box signature */}
+      <div className="hs-signature" aria-hidden="true" />
+
       <div className="section-container">
         <header className="section-header-center">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Cycle</p>
@@ -46,14 +49,14 @@ const CycleSection = ({ steps }) => {
           {cycle.slice(0, 3).map((step, index) => (
             <div key={step.title} className="cycle-node">
               <div className="cycle-circle" aria-hidden="true">
+                {/* [ADDED] glow layer for hover effect */}
+                <div className="cycle-circle-glow" />
                 {React.createElement(icons[index] || FiBookOpen, { size: 18 })}
               </div>
               <h3>{step.title}</h3>
               <p>{step.description}</p>
               {index < 2 && (
-                <span className="cycle-connector" aria-hidden="true">
-                  &rarr;
-                </span>
+                <span className="cycle-connector" aria-hidden="true" />
               )}
             </div>
           ))}

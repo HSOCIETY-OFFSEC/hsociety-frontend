@@ -16,6 +16,9 @@ const CtaSection = ({ content }) => {
     <section className="cta-section reveal-on-scroll" id="cta">
       <div className="section-container">
         <div className="cta-shell">
+          {/* [ADDED] dual-box signature */}
+          <div className="hs-signature" aria-hidden="true" />
+
           <div className="cta-grid" aria-hidden="true" />
           <h2>{content?.left?.title || 'Ready to join HSOCIETY?'}</h2>
           <p>{content?.left?.description || 'Launch your offensive security journey.'}</p>
