@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FiActivity, FiAlertTriangle, FiGlobe, FiLock } from 'react-icons/fi';
 import Card from '../../../../shared/components/ui/Card';
-import PageLoader from '../../../../shared/components/ui/PageLoader';
+import TableSkeleton from '../../../../shared/components/ui/TableSkeleton';
 import { getSecurityEvents, getSecuritySummary } from '../services/admin.service';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import PublicError from '../../../../shared/components/ui/PublicError';
@@ -37,7 +37,15 @@ const AdminSecurity = () => {
     };
   }, []);
 
-  if (loading) return <PageLoader message="Loading security telemetry..." durationMs={0} />;
+  if (loading) {
+    return (
+      <div className="admin-dashboard">
+        <div className="dashboard-shell">
+          <TableSkeleton rows={8} columns={7} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-dashboard">
@@ -45,7 +53,7 @@ const AdminSecurity = () => {
         <PublicError message={error} className="admin-alert" />
 
         <div className="admin-overview-grid">
-          <Card className="admin-card" padding="medium">
+          <Card className="admin-card dashboard-card" padding="medium">
             <div className="admin-overview-stats">
               <div>
                 <FiActivity size={16} />
@@ -69,7 +77,7 @@ const AdminSecurity = () => {
           </Card>
         </div>
 
-        <Card className="admin-card" padding="medium">
+        <Card className="admin-card dashboard-card" padding="medium">
           <div className="admin-section-header">
             <h2>Latest Security Events</h2>
             <p>Latest 120 events across authentication and route activity.</p>

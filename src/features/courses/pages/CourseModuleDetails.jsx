@@ -32,14 +32,14 @@ const CourseModuleDetails = () => {
 
   if (bootcampId !== 'hacker-protocol' || !module) {
     return (
-      <div className="landing-page public-page crs-page">
+      <div className="public-page public-page-inner crs-page">
         <div className="crs-not-found">Module not found.</div>
       </div>
     );
   }
 
   return (
-    <div className="landing-page public-page crs-page">
+    <div className="public-page public-page-inner crs-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -87,6 +87,14 @@ const CourseModuleDetails = () => {
                 <span>Evidence-based assessment.</span>
               </div>
             </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>{module.rooms.length}</strong> rooms
+              </span>
+              <span className="public-hero-stat">
+                <strong>{module.roleTitle}</strong>
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -103,14 +111,17 @@ const CourseModuleDetails = () => {
             <p className="section-subtitle">Jump into any room to preview the content.</p>
           </div>
           <div className="public-card-grid">
-            {module.rooms.map((room) => (
+            {module.rooms.map((room, index) => {
+              const difficulty = index < 2 ? 'Core' : index < 4 ? 'Advanced' : 'Expert';
+              return (
               <Link
                 key={room.roomId}
-                className="public-card crs-room-card"
+                className="public-card crs-room-card interactive-card"
                 to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${room.roomId}`}
               >
                 <div className="public-card-meta">
                   <span className="public-chip">Room {room.roomId}</span>
+                  <span className="public-chip">Difficulty: {difficulty}</span>
                 </div>
                 <h3 className="public-card-title">{room.title}</h3>
                 {room.overview && <p className="public-card-desc">{room.overview}</p>}
@@ -119,7 +130,8 @@ const CourseModuleDetails = () => {
                   <FiChevronRight size={14} />
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

@@ -28,7 +28,7 @@ const Developer = () => {
   }));
 
   return (
-    <div className="landing-page public-page developer-page">
+    <div className="public-page public-page-inner developer-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">

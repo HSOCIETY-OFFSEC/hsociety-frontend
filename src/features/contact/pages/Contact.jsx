@@ -23,7 +23,7 @@ export default function Contact() {
   const SecondaryActionIcon = hero.secondaryAction.icon;
 
   return (
-    <div className="landing-page public-page contact-page">
+    <div className="public-page public-page-inner contact-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -81,6 +81,14 @@ export default function Contact() {
                 <FiCheckCircle size={14} />
                 <span>98% satisfaction rate.</span>
               </div>
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>24h</strong> response
+              </span>
+              <span className="public-hero-stat">
+                <strong>98%</strong> CSAT
+              </span>
             </div>
           </div>
         </div>

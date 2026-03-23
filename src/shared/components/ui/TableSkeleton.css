@@ -1,0 +1,23 @@
+.table-skeleton {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.table-skeleton-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.6rem;
+}
+
+.table-skeleton-cell {
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--bg-tertiary), var(--bg-secondary), var(--bg-tertiary));
+  background-size: 200px 100%;
+  animation: tableShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes tableShimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}

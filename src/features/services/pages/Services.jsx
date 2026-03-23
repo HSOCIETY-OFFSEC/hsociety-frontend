@@ -65,7 +65,7 @@ const Services = () => {
   };
 
   return (
-    <div className="landing-page public-page svc-page">
+    <div className="public-page public-page-inner svc-page">
       {requestPentestModal}
 
       {/* ── HERO ─────────────────────────────────── */}
@@ -105,7 +105,7 @@ const Services = () => {
             </div>
           </div>
           <div className="public-hero-panel">
-            <p className="public-badge">Engagements / Open</p>
+            <p className="public-badge badge--pulse">Engagements / Open</p>
             <h3 className="public-card-title">Why teams choose HSOCIETY</h3>
             <div className="public-list">
               {highlights.map((item) => (
@@ -114,6 +114,14 @@ const Services = () => {
                   <span>{item}</span>
                 </div>
               ))}
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>24h</strong> response
+              </span>
+              <span className="public-hero-stat">
+                <strong>Global</strong> coverage
+              </span>
             </div>
           </div>
         </div>
@@ -136,7 +144,7 @@ const Services = () => {
             {services.map((service) => (
               <article
                 key={service.title}
-                className="public-card svc-card"
+                className="public-card svc-card interactive-card"
                 onClick={() => navigate(`/services/${slugify(service.title)}`)}
                 role="button"
                 tabIndex={0}

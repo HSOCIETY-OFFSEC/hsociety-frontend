@@ -102,7 +102,7 @@ const Team = () => {
   }));
 
   return (
-    <div className="landing-page public-page tm-page">
+    <div className="public-page public-page-inner tm-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">

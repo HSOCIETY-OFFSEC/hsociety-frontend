@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FiBarChart2,
   FiCheckCircle,
@@ -15,6 +16,7 @@ import '../../public/styles/public-landing.css';
 import '../styles/leaderboard.css';
 
 const Leaderboard = () => {
+  const navigate = useNavigate();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,12 +45,14 @@ const Leaderboard = () => {
     return null;
   }, [loading, error]);
 
+  const skeletonRows = Array.from({ length: 6 });
+
   const totalEntries = entries.length;
   const topStreak = entries[0]?.streakDays ?? '—';
   const topCp = entries[0]?.totalXp ?? '—';
 
   return (
-    <div className="landing-page public-page lb-page">
+    <div className="public-page public-page-inner lb-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -62,11 +66,11 @@ const Leaderboard = () => {
               Rankings based on Compromised Points, streaks, and verified learning milestones.
             </p>
             <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/community')}>
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/community')}>
                 Join the community
                 <FiArrowUpRight size={14} />
               </button>
-              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/cp-points')}>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/cp-points')}>
                 Learn about CP points
               </button>
             </div>
@@ -86,7 +90,7 @@ const Leaderboard = () => {
             </div>
           </div>
           <div className="public-hero-panel">
-            <p className="public-badge">Leaderboard signals</p>
+            <p className="public-badge badge--pulse">Leaderboard live</p>
             <div className="public-list">
               <div className="public-list-item">
                 <FiCheckCircle size={14} />
@@ -100,6 +104,14 @@ const Leaderboard = () => {
                 <FiCheckCircle size={14} />
                 <span>Community contribution weight.</span>
               </div>
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>{totalEntries}</strong> operators
+              </span>
+              <span className="public-hero-stat">
+                <strong>{topStreak}</strong> top streak
+              </span>
             </div>
           </div>
         </div>
@@ -117,7 +129,13 @@ const Leaderboard = () => {
             <p className="section-subtitle">Updated with every verified mission and streak.</p>
           </div>
           <div className="public-surface">
-            {statusMessage ? (
+            {loading ? (
+              <div className="lb-skeleton" aria-label="Loading leaderboard">
+                {skeletonRows.map((_, idx) => (
+                  <div key={idx} className="lb-skeleton-row" />
+                ))}
+              </div>
+            ) : statusMessage ? (
               <p className="lb-status">{statusMessage}</p>
             ) : (
               <LeaderboardTable entries={entries} />
@@ -137,11 +155,11 @@ const Leaderboard = () => {
             <h2 className="section-title">Start earning Compromised Points.</h2>
             <p className="section-subtitle">Complete labs, ship reports, and build streak momentum.</p>
             <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/courses')}>
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses')}>
                 View programs
                 <FiArrowUpRight size={14} />
               </button>
-              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/cp-points')}>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/cp-points')}>
                 CP Points guide
               </button>
             </div>

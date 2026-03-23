@@ -22,7 +22,7 @@ const Methodology = () => {
   }));
 
   return (
-    <div className="landing-page public-page methodology-page">
+    <div className="public-page public-page-inner methodology-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -56,6 +56,14 @@ const Methodology = () => {
                   <span>{phase.title}</span>
                 </div>
               ))}
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>{phases.length}</strong> phases
+              </span>
+              <span className="public-hero-stat">
+                <strong>Repeatable</strong> cycle
+              </span>
             </div>
           </div>
         </div>

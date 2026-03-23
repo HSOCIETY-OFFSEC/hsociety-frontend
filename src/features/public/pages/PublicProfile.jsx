@@ -221,7 +221,7 @@ const PublicProfile = () => {
 
   return (
     <>
-      <div className="pp-root landing-page public-page">
+      <div className="pp-root public-page public-page-inner">
         <div className="pp-layout">
 
           {/* ── LEFT SIDEBAR ── */}

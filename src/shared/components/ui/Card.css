@@ -32,6 +32,11 @@
   transform: scale(0.99);
 }
 
+.card-clickable:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
 @media (max-width: 768px) {
   .card {
     width: 100%;

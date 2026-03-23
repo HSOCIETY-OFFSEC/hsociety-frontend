@@ -460,6 +460,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                 type="button"
                 className="gh-user-btn"
                 onClick={() => setUserMenuOpen((p) => !p)}
+                aria-label="Open user menu"
                 aria-haspopup="menu"
                 aria-expanded={userMenuOpen}
                 onKeyDown={(e) => handleEscape(e, setUserMenuOpen)}

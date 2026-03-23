@@ -50,7 +50,7 @@ const CPPoints = () => {
   ];
 
   return (
-    <div className="landing-page public-page cp-page">
+    <div className="public-page public-page-inner cp-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -84,6 +84,14 @@ const CPPoints = () => {
           <div className="public-hero-panel">
             <p className="public-badge">CP icon</p>
             <img src={cpIcon} alt="CP" className="cp-hero-icon" />
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>Daily</strong> streaks
+              </span>
+              <span className="public-hero-stat">
+                <strong>Live</strong> leaderboard
+              </span>
+            </div>
           </div>
         </div>
       </section>

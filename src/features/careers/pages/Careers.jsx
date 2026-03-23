@@ -26,7 +26,7 @@ const Careers = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="landing-page public-page car-page">
+    <div className="public-page public-page-inner car-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -76,6 +76,14 @@ const Careers = () => {
                 <FiMessageSquare size={14} />
                 <span>Reach out for future openings.</span>
               </div>
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>Remote</strong> first
+              </span>
+              <span className="public-hero-stat">
+                <strong>Global</strong> team
+              </span>
             </div>
           </div>
         </div>

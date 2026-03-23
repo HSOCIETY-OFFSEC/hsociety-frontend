@@ -32,14 +32,14 @@ const CourseRoomDetails = () => {
 
   if (bootcampId !== 'hacker-protocol' || !module || !room) {
     return (
-      <div className="landing-page public-page crs-page">
+      <div className="public-page public-page-inner crs-page">
         <div className="crs-not-found">Room not found.</div>
       </div>
     );
   }
 
   return (
-    <div className="landing-page public-page crs-page">
+    <div className="public-page public-page-inner crs-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -69,6 +69,7 @@ const CourseRoomDetails = () => {
                 <FiList size={12} />
                 Room {room.roomId}
               </span>
+              <span className="public-pill">Est. 2h</span>
             </div>
           </div>
           <div className="public-hero-panel">
@@ -80,6 +81,14 @@ const CourseRoomDetails = () => {
                   <span>{bullet}</span>
                 </div>
               ))}
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>Room</strong> {room.roomId}
+              </span>
+              <span className="public-hero-stat">
+                <strong>Est.</strong> 2h
+              </span>
             </div>
           </div>
         </div>

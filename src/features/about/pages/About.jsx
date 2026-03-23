@@ -1,14 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import aboutContent from '../../../data/static/about.json';
 import SocialLinks from '../../../shared/components/common/SocialLinks';
 import '../../public/styles/public-landing.css';
 import '../styles/about.css';
 
 const About = () => {
+  const navigate = useNavigate();
   const { hero, cycle, experience, principle } = aboutContent;
 
   return (
-    <div className="landing-page public-page about-page">
+    <div className="public-page public-page-inner about-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -20,10 +22,11 @@ const About = () => {
             <h1 className="public-hero-title">{hero.title}</h1>
             <p className="public-hero-desc">{hero.description}</p>
             <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/services')}>
+              {/* Enhancement: SPA navigation */}
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/services')}>
                 Explore services
               </button>
-              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/contact')}>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/contact')}>
                 Contact the team
               </button>
             </div>
@@ -36,6 +39,14 @@ const About = () => {
                   <span>{phase}</span>
                 </div>
               ))}
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>4</strong> phases
+              </span>
+              <span className="public-hero-stat">
+                <strong>24/7</strong> operator-led
+              </span>
             </div>
           </div>
         </div>
@@ -123,10 +134,10 @@ const About = () => {
             <h2 className="section-title">Follow the HSOCIETY cycle.</h2>
             <p className="section-subtitle">Training, community, and live engagements — all in one place.</p>
             <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/contact')}>
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
                 Contact us
               </button>
-              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/services')}>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/services')}>
                 View services
               </button>
             </div>

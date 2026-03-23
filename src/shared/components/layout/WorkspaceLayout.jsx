@@ -576,7 +576,9 @@ const WorkspaceLayout = () => {
             </button>
           </div>
         )}
-        <Outlet />
+        <div className="dashboard-shell">
+          <Outlet />
+        </div>
       </main>
 
       {navMode === 'mobile' && (

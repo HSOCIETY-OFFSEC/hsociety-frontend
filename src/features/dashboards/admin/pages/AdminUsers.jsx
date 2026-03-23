@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FiCheckSquare, FiEdit2, FiLink2, FiSave, FiSlash, FiUserX, FiUsers } from 'react-icons/fi';
 import Button from '../../../../shared/components/ui/Button';
-import PageLoader from '../../../../shared/components/ui/PageLoader';
+import TableSkeleton from '../../../../shared/components/ui/TableSkeleton';
 import { getUsers, updateUser, muteUser, sendBootcampRoomLink } from '../services/admin.service';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import PublicError from '../../../../shared/components/ui/PublicError';
@@ -165,7 +165,15 @@ const AdminUsers = () => {
     { total: 0, student: 0, pentester: 0, corporate: 0, admin: 0 }
   ), [users]);
 
-  if (loading) return <PageLoader message="Loading user management..." durationMs={0} />;
+  if (loading) {
+    return (
+      <div className="ad-table-page">
+        <div className="ad-table-body">
+          <TableSkeleton rows={10} columns={6} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="ad-table-page">
@@ -208,7 +216,7 @@ const AdminUsers = () => {
         </div>
       </header>
 
-      <div className="ad-table-body">
+      <div className="ad-table-body dashboard-section">
         <PublicError message={error} className="admin-alert" />
         {bulkStatus && <div className="admin-alert">{bulkStatus}</div>}
 

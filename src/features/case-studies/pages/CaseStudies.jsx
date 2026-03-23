@@ -29,7 +29,7 @@ const CaseStudies = () => {
   ];
 
   return (
-    <div className="landing-page public-page case-studies-page">
+    <div className="public-page public-page-inner case-studies-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -67,6 +67,14 @@ const CaseStudies = () => {
                 <FiShield size={14} />
                 <span>100% report completeness.</span>
               </div>
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>30d</strong> median fix
+              </span>
+              <span className="public-hero-stat">
+                <strong>74%</strong> reduction
+              </span>
             </div>
           </div>
         </div>

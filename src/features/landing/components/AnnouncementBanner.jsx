@@ -25,6 +25,7 @@ const AnnouncementBanner = () => {
     const updateHeight = () => {
       const height = bannerRef.current?.offsetHeight || 0;
       document.documentElement.style.setProperty('--ann-banner-height', `${height}px`);
+      document.documentElement.style.setProperty('--announcement-banner-height', `${height}px`);
     };
 
     updateHeight();
@@ -32,6 +33,7 @@ const AnnouncementBanner = () => {
     return () => {
       window.removeEventListener('resize', updateHeight);
       document.documentElement.style.removeProperty('--ann-banner-height');
+      document.documentElement.style.removeProperty('--announcement-banner-height');
     };
   }, [visible]);
 

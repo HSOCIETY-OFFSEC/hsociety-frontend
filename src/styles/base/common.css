@@ -162,6 +162,11 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
+/* Account for fixed nav + banner when scrolling to anchors */
+:where(section, header)[id] {
+  scroll-margin-top: calc(var(--navbar-height, 64px) + var(--announcement-banner-height, 0px) + 12px);
+}
+
 /* ═══════════════════════════════════════════════
    SCROLL REVEAL
    ═══════════════════════════════════════════════ */

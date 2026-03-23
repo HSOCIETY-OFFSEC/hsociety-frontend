@@ -14,7 +14,7 @@ const Courses = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="landing-page public-page crs-page">
+    <div className="public-page public-page-inner crs-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -63,6 +63,14 @@ const Courses = () => {
                 <h3 className="public-card-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h3>
                 <p className="public-card-desc">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
               </div>
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>{HACKER_PROTOCOL_BOOTCAMP.phases}</strong> phases
+              </span>
+              <span className="public-hero-stat">
+                <strong>{HACKER_PROTOCOL_BOOTCAMP.duration}</strong>
+              </span>
             </div>
           </div>
         </div>

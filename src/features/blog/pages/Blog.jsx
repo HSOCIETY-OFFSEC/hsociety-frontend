@@ -67,7 +67,7 @@ const Blog = () => {
   };
 
   return (
-    <div className="landing-page public-page blg-page">
+    <div className="public-page public-page-inner blg-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -108,7 +108,7 @@ const Blog = () => {
             </div>
           </div>
           <div className="public-hero-panel">
-            <p className="public-badge">Field Notes / Live</p>
+            <p className="public-badge badge--pulse">Field Notes / Live</p>
             <h3 className="public-card-title">What you get</h3>
             <div className="public-list">
               <div className="public-list-item">
@@ -123,6 +123,14 @@ const Blog = () => {
                 <FiBookOpen size={14} />
                 <span>Curated learning paths for new operators.</span>
               </div>
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>{posts.length}</strong> posts
+              </span>
+              <span className="public-hero-stat">
+                <strong>Weekly</strong> drops
+              </span>
             </div>
           </div>
         </div>
@@ -145,7 +153,7 @@ const Blog = () => {
             {posts.map((post) => (
               <article
                 key={post.title}
-                className="public-card blg-card"
+                className="public-card blg-card interactive-card"
                 onClick={() => handleReadArticle(post)}
                 role="button"
                 tabIndex={0}

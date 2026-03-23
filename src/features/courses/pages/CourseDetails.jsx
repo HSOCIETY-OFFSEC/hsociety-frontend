@@ -31,14 +31,14 @@ const CourseDetails = () => {
 
   if (bootcampId !== 'hacker-protocol') {
     return (
-      <div className="landing-page public-page crs-page">
+      <div className="public-page public-page-inner crs-page">
         <div className="crs-not-found">Course not found.</div>
       </div>
     );
   }
 
   return (
-    <div className="landing-page public-page crs-page">
+    <div className="public-page public-page-inner crs-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -83,6 +83,14 @@ const CourseDetails = () => {
                   <span>{item}</span>
                 </div>
               ))}
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>{HACKER_PROTOCOL_BOOTCAMP.phases}</strong> phases
+              </span>
+              <span className="public-hero-stat">
+                <strong>{HACKER_PROTOCOL_BOOTCAMP.duration}</strong>
+              </span>
             </div>
           </div>
         </div>

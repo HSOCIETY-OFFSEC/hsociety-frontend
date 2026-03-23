@@ -34,7 +34,7 @@ const ServiceDetail = () => {
   if (!service) return null;
 
   return (
-    <div className="landing-page public-page svc-detail-page">
+    <div className="public-page public-page-inner svc-detail-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -71,6 +71,14 @@ const ServiceDetail = () => {
                   <span>{item}</span>
                 </div>
               ))}
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>{service.features.length}</strong> controls
+              </span>
+              <span className="public-hero-stat">
+                <strong>Rapid</strong> reporting
+              </span>
             </div>
           </div>
         </div>
@@ -111,20 +119,56 @@ const ServiceDetail = () => {
           </div>
           <div className="public-card-grid">
             {prevService && (
-              <article className="public-card svc-nav-card" onClick={() => navigate(`/services/${slugify(prevService.title)}`)}>
+              <article
+                className="public-card svc-nav-card interactive-card"
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate(`/services/${slugify(prevService.title)}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(`/services/${slugify(prevService.title)}`);
+                  }
+                }}
+                aria-label={`View service ${prevService.title}`}
+              >
                 <p className="public-card-meta">Previous service</p>
                 <h3 className="public-card-title">{prevService.title}</h3>
                 <p className="public-card-desc">{prevService.description}</p>
               </article>
             )}
             {nextService && (
-              <article className="public-card svc-nav-card" onClick={() => navigate(`/services/${slugify(nextService.title)}`)}>
+              <article
+                className="public-card svc-nav-card interactive-card"
+                role="button"
+                tabIndex={0}
+                onClick={() => navigate(`/services/${slugify(nextService.title)}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(`/services/${slugify(nextService.title)}`);
+                  }
+                }}
+                aria-label={`View service ${nextService.title}`}
+              >
                 <p className="public-card-meta">Next service</p>
                 <h3 className="public-card-title">{nextService.title}</h3>
                 <p className="public-card-desc">{nextService.description}</p>
               </article>
             )}
-            <article className="public-card svc-nav-card" onClick={() => navigate('/services')}>
+            <article
+              className="public-card svc-nav-card interactive-card"
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate('/services')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  navigate('/services');
+                }
+              }}
+              aria-label="View all services"
+            >
               <p className="public-card-meta">All services</p>
               <h3 className="public-card-title">Service catalog</h3>
               <p className="public-card-desc">Browse all HSOCIETY offerings.</p>

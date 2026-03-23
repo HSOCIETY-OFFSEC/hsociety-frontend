@@ -145,12 +145,39 @@ const Feedback = () => {
   };
 
   return (
-    <div className="landing-page public-page feedback-page">
+    <div className="public-page public-page-inner feedback-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero feedback-header reveal-on-scroll">
         <div className="section-container">
-          <h1 className="feedback-title">{feedbackContent.header.title}</h1>
-          <p className="feedback-subtitle">{feedbackContent.header.subtitle}</p>
+          <div>
+            <h1 className="feedback-title">{feedbackContent.header.title}</h1>
+            <p className="feedback-subtitle">{feedbackContent.header.subtitle}</p>
+          </div>
+          <div className="public-hero-panel">
+            <p className="public-badge badge--pulse">Feedback live</p>
+            <div className="public-list">
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Direct operator review within 24 hours.</span>
+              </div>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Actionable follow-up for critical issues.</span>
+              </div>
+              <div className="public-list-item">
+                <FiCheckCircle size={14} />
+                <span>Transparent tracking with ticket receipts.</span>
+              </div>
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>24h</strong> response
+              </span>
+              <span className="public-hero-stat">
+                <strong>Live</strong> routing
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 

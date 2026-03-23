@@ -58,7 +58,7 @@ const Pricing = () => {
       : Math.floor(PRICING_TIERS.length / 2);
 
   return (
-    <div className="landing-page public-page pri-page">
+    <div className="public-page public-page-inner pri-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -109,6 +109,14 @@ const Pricing = () => {
                   {t.title}
                 </span>
               ))}
+            </div>
+            <div className="public-hero-stats">
+              <span className="public-hero-stat">
+                <strong>24/7</strong> support
+              </span>
+              <span className="public-hero-stat">
+                <strong>Global</strong> coverage
+              </span>
             </div>
           </div>
         </div>

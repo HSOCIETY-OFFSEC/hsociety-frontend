@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FiAlertCircle,
   FiClipboard,
@@ -75,6 +76,7 @@ const FALLBACK_TERMS = {
 };
 
 const Terms = () => {
+  const navigate = useNavigate();
   const [terms, setTerms] = useState(FALLBACK_TERMS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -103,7 +105,7 @@ const Terms = () => {
   }
 
   return (
-    <div className="landing-page public-page trm-page">
+    <div className="public-page public-page-inner trm-page">
       {/* ── HERO ─────────────────────────────────── */}
       <section className="hero-section public-hero reveal-on-scroll">
         <div className="section-container">
@@ -117,11 +119,11 @@ const Terms = () => {
               These terms govern access to HSOCIETY services, including training, community, and professional engagements.
             </p>
             <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/contact')}>
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
                 Contact support
                 <FiArrowUpRight size={14} />
               </button>
-              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/privacy')}>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/privacy')}>
                 View privacy
               </button>
             </div>
@@ -190,11 +192,11 @@ const Terms = () => {
             <h2 className="section-title">Questions about these terms?</h2>
             <p className="section-subtitle">Contact the HSOCIETY team for clarifications.</p>
             <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => window.location.assign('/contact')}>
+              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
                 Reach support
                 <FiArrowUpRight size={14} />
               </button>
-              <button className="public-btn public-btn--ghost" onClick={() => window.location.assign('/services')}>
+              <button className="public-btn public-btn--ghost" onClick={() => navigate('/services')}>
                 View services
               </button>
             </div>
