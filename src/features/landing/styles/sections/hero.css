@@ -19,12 +19,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-primary);
+  background: none;
 }
 
 .hero-section--centered {
   align-items: center;
   justify-content: center;
+}
+
+.hero-bg-image {
+  position: absolute;
+  inset: -6%;
+  background-image: url("../../../../assets/circuit-hero.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  filter: blur(8px) saturate(1.25) brightness(1.15);
+  transform: scale(1.02);
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* ═══════════════════════════════════════════════
@@ -94,6 +108,7 @@
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  display: none;
 }
 
 .hero-binary-stream-col {
@@ -398,7 +413,7 @@
   border-radius: 12px;
   padding: 0.7rem 1.2rem;
   background: var(--primary-color);
-  color: var(--accent-ink);
+  color: #fff;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;

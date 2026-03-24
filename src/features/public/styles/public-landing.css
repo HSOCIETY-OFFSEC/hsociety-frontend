@@ -75,17 +75,17 @@
 }
 
 .public-hero-stats {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .public-hero-stat {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.8rem;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
   border-radius: 999px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
@@ -94,8 +94,8 @@
 }
 
 .public-hero-stat strong {
-  color: var(--text-primary);
-  font-weight: 650;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .public-pill-row {
