@@ -5,7 +5,7 @@ import { getStudentOverview, registerBootcamp, joinStudentCommunity, updateOnboa
 import { useAuth } from '../../../core/auth/AuthContext';
 import { SOCIAL_LINKS } from '../../../config/app/social.config';
 import '../styles/components.css';
-import '../styles/student-dashboard.css';
+import '../../dashboards/student/styles/student-dashboard.css';
 
 const StudentOnboarding = () => {
   const navigate = useNavigate();
