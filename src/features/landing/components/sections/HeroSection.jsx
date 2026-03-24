@@ -8,41 +8,6 @@ import { validateEmail } from '../../../../core/validation/input.validator';
 import '../../styles/sections/hero.css';
 
 /* ════════════════════════════════════════
-   BINARY RAIN
-════════════════════════════════════════ */
-function makeBinaryString(len) {
-  let s = '';
-  for (let i = 0; i < len; i++) {
-    s += Math.random() > 0.5 ? '1' : '0';
-    if (i > 0 && i % 8 === 7) s += ' ';
-  }
-  return s;
-}
-
-const BinaryStreamCol = ({ index }) => {
-  const text = useMemo(() => makeBinaryString(220), []);
-  return (
-    <div
-      className="hero-binary-stream-col"
-      aria-hidden="true"
-      style={{ '--col-index': index }}
-    >
-      {text}
-    </div>
-  );
-};
-
-const STREAM_COUNT = 33;
-
-const BinaryRain = () => (
-  <div className="hero-binary-stream" aria-hidden="true">
-    {Array.from({ length: STREAM_COUNT }, (_, i) => (
-      <BinaryStreamCol key={i} index={i} />
-    ))}
-  </div>
-);
-
-/* ════════════════════════════════════════
    TYPEWRITER HOOK
 ════════════════════════════════════════ */
 function useTypewriter(text, { speed = 38, startDelay = 300 } = {}) {
@@ -161,11 +126,11 @@ const HeroSection = ({ content }) => {
     openAuthModal('register', { email: normalized, payload: { email: normalized } });
   };
 
-  const heroCtaLabel = ctas?.[0]?.label || 'Sign up for HSOCIETY';
+  const heroCtaLabel = ctas?.[0]?.label || 'Sign up for HSOCIETY OFFSEC';
 
   return (
     <section className="hero-section hero-section--centered">
-      <BinaryRain />
+      <div className="hero-bg-image" aria-hidden="true" />
       <div className="hero-grid-overlay" aria-hidden="true" />
 
       {/* ── Radial glow behind title ── */}
@@ -231,7 +196,7 @@ const HeroSection = ({ content }) => {
         {/* DESCRIPTION */}
         <p className="hero-desc-centered hs-reveal hs-reveal--delay-2">
           {description ||
-            'HSOCIETY is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.'}
+            'HSOCIETY OFFSEC is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.'}
         </p>
 
         {/* CTAs */}

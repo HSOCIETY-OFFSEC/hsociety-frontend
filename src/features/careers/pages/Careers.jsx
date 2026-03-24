@@ -33,7 +33,7 @@ const Careers = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Careers
+              HSOCIETY OFFSEC / Careers
             </p>
             <h1 className="public-hero-title">We’re pausing hiring to scale the platform.</h1>
             <p className="public-hero-desc">

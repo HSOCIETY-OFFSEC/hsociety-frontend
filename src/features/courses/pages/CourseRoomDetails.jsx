@@ -46,7 +46,7 @@ const CourseRoomDetails = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / {module.codename} / Room {room.roomId}
+              HSOCIETY OFFSEC / {module.codename} / Room {room.roomId}
             </p>
             <h1 className="public-hero-title">{room.title}</h1>
             <p className="public-hero-desc">{room.overview}</p>

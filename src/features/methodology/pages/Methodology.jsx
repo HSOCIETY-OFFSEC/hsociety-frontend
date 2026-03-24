@@ -29,7 +29,7 @@ const Methodology = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Methodology
+              HSOCIETY OFFSEC / Methodology
             </p>
             <h1 className="public-hero-title">{methodologyContent.hero.title}</h1>
             <p className="public-hero-desc">{methodologyContent.hero.subtitle}</p>
@@ -105,7 +105,7 @@ const Methodology = () => {
               Ready to execute
             </p>
             <h2 className="section-title">Let’s apply this methodology to your stack.</h2>
-            <p className="section-subtitle">Scope a pentest or training cycle with the HSOCIETY team.</p>
+            <p className="section-subtitle">Scope a pentest or training cycle with the HSOCIETY OFFSEC team.</p>
             <div className="public-hero-actions">
               <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
                 Book a briefing

@@ -74,7 +74,7 @@ const Blog = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Field Notes
+              HSOCIETY OFFSEC / Field Notes
             </p>
             <h1 className="public-hero-title">Offensive security research in the open.</h1>
             <p className="public-hero-desc">
@@ -213,7 +213,7 @@ const Blog = () => {
           </div>
           <div className="public-cta-card">
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Follow HSOCIETY</h3>
+            <h3 className="public-card-title">Follow HSOCIETY OFFSEC</h3>
             <p className="public-card-desc">
               Signals, research drops, and community wins — in real time.
             </p>

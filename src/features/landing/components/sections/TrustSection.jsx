@@ -6,7 +6,11 @@ import RedspectreAILogo from '../../../../assets/images/partners/redspectre-ai.w
 import WSuitsIndustriesLogo from '../../../../assets/images/partners/wsuits-industries.webp';
 
 const TrustSection = ({ signals = [] }) => {
-  const logos = [SorbitLogo, RedspectreAILogo, WSuitsIndustriesLogo];
+  const logos = [
+    { src: SorbitLogo, label: 'Sorbit' },
+    { src: RedspectreAILogo, label: 'Redspectre AI' },
+    { src: WSuitsIndustriesLogo, label: 'WSuits Industries' },
+  ];
   const statements = signals.slice(0, 3);
 
   return (
@@ -16,8 +20,8 @@ const TrustSection = ({ signals = [] }) => {
           <div className="trust-marquee" aria-hidden="true">
             <div className="trust-track">
               {[...logos, ...logos].map((logo, index) => (
-                <div key={`${logo}-${index}`} className="trust-logo">
-                  <img src={logo} alt="" loading="lazy" width={140} height={40} />
+                <div key={`${logo.label}-${index}`} className="trust-logo">
+                  <img src={logo.src} alt={`${logo.label} logo`} loading="lazy" width={140} height={40} />
                 </div>
               ))}
             </div>

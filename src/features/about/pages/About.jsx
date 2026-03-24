@@ -17,7 +17,7 @@ const About = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / About
+              HSOCIETY OFFSEC / About
             </p>
             <h1 className="public-hero-title">{hero.title}</h1>
             <p className="public-hero-desc">{hero.description}</p>
@@ -72,7 +72,7 @@ const About = () => {
                   <span className="public-chip">Phase {String(index + 1).padStart(2, '0')}</span>
                 </div>
                 <h3 className="public-card-title">{phase}</h3>
-                <p className="public-card-desc">Operational focus within the HSOCIETY cycle.</p>
+                <p className="public-card-desc">Operational focus within the HSOCIETY OFFSEC cycle.</p>
               </article>
             ))}
           </div>
@@ -135,7 +135,7 @@ const About = () => {
               <span className="eyebrow-dot" />
               Connect
             </p>
-            <h2 className="section-title">Follow the HSOCIETY cycle.</h2>
+            <h2 className="section-title">Follow the HSOCIETY OFFSEC cycle.</h2>
             <p className="section-subtitle">Training, community, and live engagements — all in one place.</p>
             <div className="public-hero-actions">
               <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>

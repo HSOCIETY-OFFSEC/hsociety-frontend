@@ -21,7 +21,7 @@ const Courses = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Courses
+              HSOCIETY OFFSEC / Courses
             </p>
             <h1 className="public-hero-title">Operator-grade training programs.</h1>
             <p className="public-hero-desc">

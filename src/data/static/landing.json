@@ -2,7 +2,7 @@
   "hero": {
     "badge": "Offensive Security Training + Delivery",
     "title": "Build Real Offensive Security Operators.",
-    "description": "HSOCIETY trains entry-level talent into execution-ready offensive operators and delivers supervised penetration testing for growing companies.",
+    "description": "HSOCIETY OFFSEC trains entry-level talent into execution-ready offensive operators and delivers supervised penetration testing for growing companies.",
     "highlights": [
       "Paid training designed for complete beginners",
       "Supervised real-world engagements with reporting",
@@ -59,7 +59,7 @@
     {
       "icon": "FiFileText",
       "title": "Community Integration & Mentorship",
-      "description": "Graduates join the HSOCIETY community for collaboration, mentorship, and team-based simulations.",
+      "description": "Graduates join the HSOCIETY OFFSEC community for collaboration, mentorship, and team-based simulations.",
       "features": [
         "Peer collaboration & study groups",
         "Mentorship from senior operators",
@@ -147,7 +147,7 @@
   ],
   "communityProfiles": {
     "title": "Community wins in the open",
-    "subtitle": "Meet learners already sharing findings, collaboration, and momentum inside HSOCIETY.",
+    "subtitle": "Meet learners already sharing findings, collaboration, and momentum inside HSOCIETY OFFSEC.",
     "profiles": [
       {
         "id": "sample-1",
@@ -163,7 +163,7 @@
         "id": "sample-2",
         "name": "Daniel S.",
         "role": "pentester",
-        "organization": "HSOCIETY",
+        "organization": "HSOCIETY OFFSEC",
         "avatarUrl": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80",
         "hackerHandle": "rootframe",
         "bio": "Red team operator sharing methodologies and live feedback.",
@@ -300,7 +300,7 @@
   "faq": {
     "eyebrow": "FAQ",
     "title": "Clear answers for students and companies",
-    "subtitle": "Short, direct responses to the most common questions about how HSOCIETY works.",
+    "subtitle": "Short, direct responses to the most common questions about how HSOCIETY OFFSEC works.",
     "items": [
       {
         "question": "Is this beginner-friendly?",
@@ -319,7 +319,7 @@
         "answer": "All tests are scoped, authorized, monitored, and reported with clear remediation guidance and evidence."
       },
       {
-        "question": "What makes HSOCIETY different?",
+        "question": "What makes HSOCIETY OFFSEC different?",
         "answer": "We combine training with real execution. Students become professionals by contributing to supervised pentests."
       }
     ]

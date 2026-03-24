@@ -85,7 +85,7 @@ const StatsSection = ({ content, error = '' }) => {
     <section
       ref={sectionRef}
       className="stats-section reveal-on-scroll"
-      aria-label="HSOCIETY stats"
+      aria-label="HSOCIETY OFFSEC stats"
     >
       <div className="stats-bar">
         {items.map((item, index) => (

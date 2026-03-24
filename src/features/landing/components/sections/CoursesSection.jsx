@@ -119,7 +119,7 @@ const CoursesSection = () => {
               {/* ── OS-style menu bar ── */}
               <div className="cs-menubar" aria-hidden="true">
                 <div className="cs-menubar-left">
-                  <span className="cs-menubar-brand">hsociety</span>
+                  <span className="cs-menubar-brand">hsociety-offsec</span>
                   <span className="cs-menubar-item">File</span>
                   <span className="cs-menubar-item">View</span>
                   <span className="cs-menubar-item">Terminal</span>
@@ -203,7 +203,7 @@ const CoursesSection = () => {
                     <div className="cs-pane-header">
                       <span className="cs-prompt-user">student</span>
                       <span className="cs-prompt-at">@</span>
-                      <span className="cs-prompt-host">hsociety</span>
+                      <span className="cs-prompt-host">hsociety-offsec</span>
                       <span className="cs-prompt-sep">:</span>
                       <span className="cs-prompt-path">~/hacker-protocol</span>
                       <span className="cs-prompt-dollar">$</span>
@@ -258,7 +258,7 @@ const CoursesSection = () => {
                     <div className="cs-pane-cursor" aria-hidden="true">
                       <span className="cs-prompt-user">student</span>
                       <span className="cs-prompt-at">@</span>
-                      <span className="cs-prompt-host">hsociety</span>
+                      <span className="cs-prompt-host">hsociety-offsec</span>
                       <span className="cs-prompt-dollar">$</span>
                       <span className="cs-terminal-cursor" />
                     </div>

@@ -36,7 +36,7 @@ const CaseStudies = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Case Studies
+              HSOCIETY OFFSEC / Case Studies
             </p>
             <h1 className="public-hero-title">Outcome-driven security work.</h1>
             <p className="public-hero-desc">

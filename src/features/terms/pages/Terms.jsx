@@ -23,11 +23,11 @@ const FALLBACK_TERMS = {
   sections: [
     {
       title: 'Introduction',
-      body: 'Welcome to HSOCIETY. By accessing or using our services—including training programs, community platforms, and penetration testing services—you agree to comply with these Terms and Conditions. HSOCIETY operates a cycle-based offensive security ecosystem designed to train, integrate, and deploy penetration testing talent through real-world engagements. If you do not agree to these terms, you may not use our services.'
+      body: 'Welcome to HSOCIETY OFFSEC. By accessing or using our services—including training programs, community platforms, and penetration testing services—you agree to comply with these Terms and Conditions. HSOCIETY OFFSEC operates a cycle-based offensive security ecosystem designed to train, integrate, and deploy penetration testing talent through real-world engagements. If you do not agree to these terms, you may not use our services.'
     },
     {
       title: 'Services Overview',
-      body: 'HSOCIETY provides:',
+      body: 'HSOCIETY OFFSEC provides:',
       bullets: [
         'Training Programs – Structured beginner-to-advanced offensive security and ethical hacking courses.',
         'Community Access – Collaboration, mentorship, and team-based simulations.',
@@ -39,20 +39,20 @@ const FALLBACK_TERMS = {
     {
       title: 'Eligibility',
       bullets: [
-        'Users must be 13 years or older to access HSOCIETY services.',
+        'Users must be 13 years or older to access HSOCIETY OFFSEC services.',
         'Participation in supervised penetration testing requires explicit consent and adherence to legal and ethical standards.',
         'Users are responsible for maintaining confidentiality of their accounts and login credentials.'
       ]
     },
     {
       title: 'User Conduct',
-      body: 'By using HSOCIETY, you agree not to:',
+      body: 'By using HSOCIETY OFFSEC, you agree not to:',
       bullets: [
         'Engage in illegal hacking, unauthorized system access, or malicious activities.',
         'Share confidential client data outside authorized channels.',
         'Harass or harm other community members.',
-        'Circumvent, exploit, or disrupt HSOCIETY\'s systems or services.',
-        'HSOCIETY reserves the right to suspend or terminate accounts for violations.'
+        'Circumvent, exploit, or disrupt HSOCIETY OFFSEC\'s systems or services.',
+        'HSOCIETY OFFSEC reserves the right to suspend or terminate accounts for violations.'
       ]
     },
     {
@@ -61,15 +61,15 @@ const FALLBACK_TERMS = {
         'Fees apply for training programs and professional penetration testing services.',
         'Payments are processed through secure methods.',
         'Refund policies are outlined per service and may vary by program.',
-        'HSOCIETY reserves the right to modify pricing with prior notice.'
+        'HSOCIETY OFFSEC reserves the right to modify pricing with prior notice.'
       ]
     },
     {
       title: 'Intellectual Property',
       bullets: [
-        'All content, training materials, tools, and reports are owned by HSOCIETY or licensed to us.',
-        'Users may not copy, redistribute, or sell any HSOCIETY intellectual property without explicit permission.',
-        'Community contributions remain the property of the contributor, but HSOCIETY may use anonymized insights for service improvement.'
+        'All content, training materials, tools, and reports are owned by HSOCIETY OFFSEC or licensed to us.',
+        'Users may not copy, redistribute, or sell any HSOCIETY OFFSEC intellectual property without explicit permission.',
+        'Community contributions remain the property of the contributor, but HSOCIETY OFFSEC may use anonymized insights for service improvement.'
       ]
     },
   ]
@@ -112,11 +112,11 @@ const Terms = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Terms
+              HSOCIETY OFFSEC / Terms
             </p>
             <h1 className="public-hero-title">Terms & Conditions</h1>
             <p className="public-hero-desc">
-              These terms govern access to HSOCIETY services, including training, community, and professional engagements.
+              These terms govern access to HSOCIETY OFFSEC services, including training, community, and professional engagements.
             </p>
             <div className="public-hero-actions">
               <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
@@ -192,7 +192,7 @@ const Terms = () => {
               Need clarity
             </p>
             <h2 className="section-title">Questions about these terms?</h2>
-            <p className="section-subtitle">Contact the HSOCIETY team for clarifications.</p>
+            <p className="section-subtitle">Contact the HSOCIETY OFFSEC team for clarifications.</p>
             <div className="public-hero-actions">
               <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
                 Reach support

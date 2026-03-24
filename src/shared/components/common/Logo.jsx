@@ -72,7 +72,7 @@ const Logo = ({
     >
       <img
         src={logoSrc}
-        alt="HSOCIETY Logo"
+        alt="HSOCIETY OFFSEC Logo"
         style={logoStyle}
         className="logo-image"
         onError={(e) => {

@@ -41,14 +41,14 @@ const ServiceDetail = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Services
+              HSOCIETY OFFSEC / Services
             </p>
             <h1 className="public-hero-title">{service.title}</h1>
             <p className="public-hero-desc">{service.description}</p>
             <div className="public-hero-actions">
               <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
                 <FiZap size={14} />
-                Talk to HSOCIETY
+                Talk to HSOCIETY OFFSEC
               </button>
               <button className="public-btn public-btn--ghost" onClick={() => openAuthModal('login')}>
                 Join training cycle
@@ -176,7 +176,7 @@ const ServiceDetail = () => {
               <div className="hs-signature" aria-hidden="true" />
               <p className="public-card-meta">All services</p>
               <h3 className="public-card-title">Service catalog</h3>
-              <p className="public-card-desc">Browse all HSOCIETY offerings.</p>
+              <p className="public-card-desc">Browse all HSOCIETY OFFSEC offerings.</p>
             </article>
           </div>
         </div>

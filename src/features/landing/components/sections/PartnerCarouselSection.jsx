@@ -26,7 +26,11 @@ const PartnerCarouselSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  const partners = [SorbitLogo, RedspectreAILogo, WSuitsIndustriesLogo];
+  const partners = [
+    { src: SorbitLogo, label: 'Sorbit' },
+    { src: RedspectreAILogo, label: 'Redspectre AI' },
+    { src: WSuitsIndustriesLogo, label: 'WSuits Industries' },
+  ];
   if (!partners.length) return null;
 
   return (
@@ -38,9 +42,15 @@ const PartnerCarouselSection = () => {
 
         <div className="partners-marquee" aria-hidden="true">
           <div className="partners-track">
-            {[...partners, ...partners].map((logo, index) => (
-              <div key={`${logo}-${index}`} className="partner-logo">
-                <img src={logo} alt="" loading="lazy" width={140} height={40} />
+            {[...partners, ...partners].map((partner, index) => (
+              <div key={`${partner.label}-${index}`} className="partner-logo">
+                <img
+                  src={partner.src}
+                  alt={`${partner.label} logo`}
+                  loading="lazy"
+                  width={140}
+                  height={40}
+                />
               </div>
             ))}
           </div>

@@ -46,7 +46,7 @@ const CourseModuleDetails = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Courses / {module.codename}
+              HSOCIETY OFFSEC / Courses / {module.codename}
             </p>
             <h1 className="public-hero-title">{module.codename}</h1>
             <p className="public-hero-desc">{module.description}</p>

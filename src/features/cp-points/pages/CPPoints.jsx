@@ -57,7 +57,7 @@ const CPPoints = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / CP Points
+              HSOCIETY OFFSEC / CP Points
             </p>
             <h1 className="public-hero-title">Your operator reputation score.</h1>
             <p className="public-hero-desc">

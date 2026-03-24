@@ -53,9 +53,9 @@ const ServiceCardSlide = ({ service, index, offset, slideRef, total }) => {
             type="button"
             className="service-link"
             onClick={() => navigate(`/services/${slugify(service.title)}`)}
-            aria-label={`Learn more about ${service.title}`}
+            aria-label={`Explore ${service.title}`}
           >
-            Learn more &rarr;
+            Explore {service.title} &rarr;
           </button>
         </div>
       </article>

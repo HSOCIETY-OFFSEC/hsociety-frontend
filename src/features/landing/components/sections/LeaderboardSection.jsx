@@ -54,7 +54,7 @@ const LeaderboardSection = ({ entries = [], loading = false }) => {
           <header className="section-header">
             <p className="section-eyebrow"><span className="eyebrow-dot" />Leaderboard</p>
             <h2 className="section-title">Top operators right now.</h2>
-            <p className="section-subtitle">Proof of progress from the HSOCIETY community.</p>
+            <p className="section-subtitle">Proof of progress from the HSOCIETY OFFSEC community.</p>
           </header>
           <div className="leaderboard-table" role="table">
             <div className="leaderboard-row leaderboard-head" role="row">
@@ -83,7 +83,7 @@ const LeaderboardSection = ({ entries = [], loading = false }) => {
         <header className="section-header">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Leaderboard</p>
           <h2 className="section-title">Top operators right now.</h2>
-          <p className="section-subtitle">Proof of progress from the HSOCIETY community.</p>
+          <p className="section-subtitle">Proof of progress from the HSOCIETY OFFSEC community.</p>
         </header>
 
         <div className="leaderboard-table" role="table">

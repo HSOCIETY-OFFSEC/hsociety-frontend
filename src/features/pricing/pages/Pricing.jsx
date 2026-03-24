@@ -65,7 +65,7 @@ const Pricing = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Pricing
+              HSOCIETY OFFSEC / Pricing
             </p>
             <h1 className="public-hero-title">Engagement tiers built for real-world risk.</h1>
             <p className="public-hero-desc">

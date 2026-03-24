@@ -18,7 +18,7 @@ const CtaSection = ({ content }) => {
         <div className="cta-shell">
           <div className="hs-signature" aria-hidden="true" />
           <div className="cta-grid" aria-hidden="true" />
-          <h2>{content?.left?.title || 'Ready to join HSOCIETY?'}</h2>
+          <h2>{content?.left?.title || 'Ready to join HSOCIETY OFFSEC?'}</h2>
           <p>{content?.left?.description || 'Launch your offensive security journey.'}</p>
           <div className="cta-actions">
             <button

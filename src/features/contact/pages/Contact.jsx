@@ -30,7 +30,7 @@ export default function Contact() {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Contact
+              HSOCIETY OFFSEC / Contact
             </p>
             <h1 className="public-hero-title">Talk to the operators.</h1>
             <p className="public-hero-desc">{hero.description}</p>
@@ -146,7 +146,7 @@ export default function Contact() {
               <span className="eyebrow-dot" />
               Follow our journey
             </p>
-            <h2 className="section-title">Stay connected with HSOCIETY.</h2>
+            <h2 className="section-title">Stay connected with HSOCIETY OFFSEC.</h2>
             <p className="section-subtitle">
               Product updates, behind-the-scenes stories, and industry insights.
             </p>

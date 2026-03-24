@@ -31,7 +31,7 @@ const WhySection = ({ items = [] }) => {
       <div className="section-container">
         <div className="why-grid">
           <div className="why-left">
-            <p className="section-eyebrow"><span className="eyebrow-dot" />Why HSOCIETY</p>
+            <p className="section-eyebrow"><span className="eyebrow-dot" />Why HSOCIETY OFFSEC</p>
             <h2 className="section-title">Built for operators, not spectators.</h2>
             <p className="section-subtitle">
               We combine beginner training, community feedback, and supervised

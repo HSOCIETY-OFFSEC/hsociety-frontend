@@ -50,7 +50,7 @@ const PathwaysSection = ({ pathways }) => {
       route: '/pentester',
       isPrimary: false,
       image: communityEngagementsImage,
-      imageAlt: 'HSOCIETY community collaboration',
+      imageAlt: 'HSOCIETY OFFSEC community collaboration',
     },
   ];
 
@@ -67,7 +67,7 @@ const PathwaysSection = ({ pathways }) => {
         <header className="section-header-center">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Pathways</p>
           <h2 className="section-title">Choose your entry lane.</h2>
-          <p className="section-subtitle">Three clear paths into HSOCIETY's ecosystem.</p>
+          <p className="section-subtitle">Three clear paths into HSOCIETY OFFSEC's ecosystem.</p>
         </header>
 
         <div className="pathways-grid">

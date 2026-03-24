@@ -62,7 +62,7 @@ const PromoPopup = () => {
         </div>
         <h2 id="promo-title" className="promo-title">Start your security journey today.</h2>
         <p className="promo-body">
-          Join HSOCIETY's structured bootcamp — hands-on labs, supervised pentests,
+          Join HSOCIETY OFFSEC's structured bootcamp — hands-on labs, supervised pentests,
           and a community of operators building real skills.
         </p>
         <ul className="promo-list">

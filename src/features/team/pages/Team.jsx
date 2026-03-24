@@ -109,11 +109,11 @@ const Team = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Team
+              HSOCIETY OFFSEC / Team
             </p>
             <h1 className="public-hero-title">{content.hero?.title || 'Meet the operators.'}</h1>
             <p className="public-hero-desc">
-              {content.hero?.subtitle || 'The team behind HSOCIETY’s security programs and community.'}
+              {content.hero?.subtitle || 'The team behind HSOCIETY OFFSEC’s security programs and community.'}
             </p>
             <div className="public-hero-actions">
               <button
@@ -278,7 +278,7 @@ const Team = () => {
           <div className="public-cta-card">
             <div className="hs-signature" aria-hidden="true" />
             <h3 className="public-card-title">Operators, educators, builders.</h3>
-            <p className="public-card-desc">HSOCIETY is built by practitioners with real engagement experience.</p>
+            <p className="public-card-desc">HSOCIETY OFFSEC is built by practitioners with real engagement experience.</p>
           </div>
         </div>
       </section>

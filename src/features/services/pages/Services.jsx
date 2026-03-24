@@ -74,7 +74,7 @@ const Services = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Services
+              HSOCIETY OFFSEC / Services
             </p>
             <h1 className="public-hero-title">Security work that maps directly to fixes.</h1>
             <p className="public-hero-desc">
@@ -107,7 +107,7 @@ const Services = () => {
           <div className="public-hero-panel">
             <div className="hs-signature" aria-hidden="true" />
             <p className="public-badge badge--pulse">Engagements / Open</p>
-            <h3 className="public-card-title">Why teams choose HSOCIETY</h3>
+            <h3 className="public-card-title">Why teams choose HSOCIETY OFFSEC</h3>
             <div className="public-list">
               {highlights.map((item) => (
                 <div key={item} className="public-list-item">

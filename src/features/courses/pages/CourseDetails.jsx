@@ -45,7 +45,7 @@ const CourseDetails = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Courses / Hacker Protocol
+              HSOCIETY OFFSEC / Courses / Hacker Protocol
             </p>
             <h1 className="public-hero-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h1>
             <p className="public-hero-desc">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>

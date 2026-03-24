@@ -35,7 +35,7 @@ const Developer = () => {
           <div>
             <p className="public-hero-kicker">
               <span className="eyebrow-dot" />
-              HSOCIETY / Developers
+              HSOCIETY OFFSEC / Developers
             </p>
             <h1 className="public-hero-title">{developerContent.hero.title}</h1>
             <p className="public-hero-desc">{developerContent.hero.subtitle}</p>
@@ -136,7 +136,7 @@ const Developer = () => {
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
-              Build with HSOCIETY
+              Build with HSOCIETY OFFSEC
             </p>
             <h2 className="section-title">Ship tools with the operator community.</h2>
             <p className="section-subtitle">Partner with us on research, tooling, and platform development.</p>
