@@ -9,6 +9,7 @@ import {
   FiTarget
 } from 'react-icons/fi';
 import { getStudentOverview } from '../../../dashboards/student/services/student.service';
+import { completeLearningCtf } from '../../../dashboards/student/services/student.service';
 import { getStudentCourse } from '../../services/course.service';
 import { getHackerProtocolModule } from '../../../../data/static/bootcamps/hackerProtocolData';
 
@@ -95,6 +96,7 @@ const BootcampModule = () => {
 
   const roomsCompleted = Number(moduleProgress?.roomsCompleted) || 0;
   const roomsTotal = Number(moduleProgress?.roomsTotal) || module?.rooms?.length || 0;
+  const ctfCompleted = Boolean(moduleProgress?.ctfCompleted);
 
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
 
@@ -131,7 +133,7 @@ const BootcampModule = () => {
                   <span className="bc-breadcrumb-page">phase-{module.moduleId}</span>
                   <span className="bc-header-visibility">Private</span>
                 </div>
-                <p className="bc-header-desc">{moduleMeta.description}</p>
+                <p className="bc-header-desc">{module?.description || moduleMeta.description}</p>
               </div>
             </div>
             <div className="bc-header-actions">
@@ -237,6 +239,37 @@ const BootcampModule = () => {
                     </button>
                   );
                 })}
+              </div>
+            </section>
+            <div className="bc-divider" />
+
+            <section className="bc-section">
+              <h2 className="bc-section-title">
+                <FiTarget size={15} className="bc-section-icon" />
+                CTF Completion
+              </h2>
+              <p className="bc-section-desc">
+                Finish the module CTF to close this phase and unlock the next one.
+              </p>
+              <div className="bc-panel">
+                <p>{module.ctf}</p>
+                <button
+                  type="button"
+                  className="bc-btn bc-btn-primary"
+                  disabled={ctfCompleted || roomsCompleted < roomsTotal}
+                  onClick={async () => {
+                    const response = await completeLearningCtf(module.moduleId);
+                    if (response.success) {
+                      const overviewResponse = await getStudentOverview();
+                      if (overviewResponse.success) setOverview(overviewResponse.data);
+                      setStatusMessage('CTF completed. Phase unlocked.');
+                    } else {
+                      setStatusMessage(response.error || 'Unable to complete CTF.');
+                    }
+                  }}
+                >
+                  {ctfCompleted ? 'CTF Completed' : 'Mark CTF Complete'}
+                </button>
               </div>
             </section>
           </main>

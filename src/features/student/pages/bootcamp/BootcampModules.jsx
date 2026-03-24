@@ -175,8 +175,8 @@ const BootcampModules = () => {
                     <div className="bc-card-header">
                       <div>
                         <p className="bc-card-kicker">Phase {module.moduleId}</p>
-                        <h3 className="bc-card-title">{module.meta?.title || module.title}</h3>
-                        <p className="bc-card-subtitle">{module.meta?.codename || 'Bootcamp phase'}</p>
+                        <h3 className="bc-card-title">{module.title || module.meta?.title}</h3>
+                        <p className="bc-card-subtitle">{module.codename || module.meta?.codename || 'Bootcamp phase'}</p>
                       </div>
                       <span className={`bc-label ${module.locked ? 'bc-label-gamma' : 'bc-label-alpha'}`}>
                         {module.locked ? (

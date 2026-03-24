@@ -11,6 +11,7 @@ import {
   FiTarget
 } from 'react-icons/fi';
 import { getStudentOverview } from '../../../dashboards/student/services/student.service';
+import { getStudentCourse } from '../../services/course.service';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../../../data/static/bootcamps/hackerProtocolData';
 
 const buildStatusMeta = (overview) => {
@@ -62,13 +63,18 @@ const buildStatusMeta = (overview) => {
 const BootcampOverview = () => {
   const navigate = useNavigate();
   const [overview, setOverview] = useState(null);
+  const [course, setCourse] = useState(null);
 
   useEffect(() => {
     let mounted = true;
     const load = async () => {
-      const response = await getStudentOverview();
+      const [overviewResponse, courseResponse] = await Promise.all([
+        getStudentOverview(),
+        getStudentCourse(),
+      ]);
       if (!mounted) return;
-      if (response.success) setOverview(response.data);
+      if (overviewResponse.success) setOverview(overviewResponse.data);
+      if (courseResponse.success) setCourse(courseResponse.data);
     };
     load();
     return () => {
@@ -76,17 +82,26 @@ const BootcampOverview = () => {
     };
   }, []);
 
-  const nextModule = useMemo(() => {
-    const progressMap = (overview?.modules || []).reduce((acc, module) => {
+  const modules = course?.modules?.length ? course.modules : HACKER_PROTOCOL_PHASES;
+
+  const progressMap = useMemo(() => (
+    (overview?.modules || []).reduce((acc, module) => {
       acc[Number(module.id)] = Number(module.progress) || 0;
       return acc;
-    }, {});
+    }, {})
+  ), [overview]);
 
+  const nextModule = useMemo(() => {
     return (
-      HACKER_PROTOCOL_PHASES.find((phase) => (progressMap[Number(phase.moduleId)] || 0) < 100)
-      || HACKER_PROTOCOL_PHASES[HACKER_PROTOCOL_PHASES.length - 1]
+      modules.find((phase) => (progressMap[Number(phase.moduleId)] || 0) < 100)
+      || modules[modules.length - 1]
     );
-  }, [overview]);
+  }, [modules, progressMap]);
+
+  const earnedModule = useMemo(() => {
+    const completed = modules.filter((phase) => (progressMap[Number(phase.moduleId)] || 0) >= 100);
+    return completed.length ? completed[completed.length - 1] : null;
+  }, [modules, progressMap]);
 
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
 
@@ -130,7 +145,7 @@ const BootcampOverview = () => {
             <span className="bc-meta-pill">
               <FiLayers size={13} className="bc-meta-icon" />
               <span className="bc-meta-label">Phases</span>
-              <strong className="bc-meta-value">{HACKER_PROTOCOL_PHASES.length}</strong>
+              <strong className="bc-meta-value">{modules.length}</strong>
             </span>
             <span className="bc-meta-pill">
               <FiTarget size={13} className="bc-meta-icon" />
@@ -189,6 +204,20 @@ const BootcampOverview = () => {
                       <p className="bc-card-subtitle">{nextModule?.title}</p>
                     </div>
                     <span className="bc-label bc-label-delta">Priority</span>
+                  </div>
+                </article>
+                <article className="bc-card">
+                  <div className="bc-card-header">
+                    <div>
+                      <p className="bc-card-kicker">Role unlocked</p>
+                      <h3 className="bc-card-title">
+                        {earnedModule?.roleTitle || 'Candidate'}
+                      </h3>
+                      <p className="bc-card-subtitle">
+                        {earnedModule?.badge || 'Complete phases to unlock badges.'}
+                      </p>
+                    </div>
+                    <span className="bc-label bc-label-beta">Earned</span>
                   </div>
                 </article>
               </div>

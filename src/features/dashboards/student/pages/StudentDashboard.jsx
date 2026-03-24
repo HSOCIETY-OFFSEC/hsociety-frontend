@@ -156,6 +156,7 @@ const StudentDashboard = () => {
   const xpTotal = Number(data.xpSummary?.totalXp || 0);
   const moduleCount = data.learningPath?.length || data.modules?.length || 0;
   const showData = !loading && !error;
+  const onboardingComplete = Boolean(data.onboarding?.completed);
 
   const renderMetaValue = (value, width = 36) => {
     if (loading) {
@@ -284,6 +285,18 @@ const StudentDashboard = () => {
 
       <div className="sd-layout">
         <main className="sd-main">
+          {!onboardingComplete && (
+            <div className="sd-panel sd-alert">
+              <p>Complete onboarding to unlock your full HSOCIETY experience.</p>
+              <button
+                type="button"
+                className="sd-btn sd-btn-secondary"
+                onClick={() => navigate('/student-onboarding')}
+              >
+                Go to Onboarding <FiArrowRight size={14} />
+              </button>
+            </div>
+          )}
           {loading && (
             <div className="sd-loading">
               <p>Loading your training data...</p>
@@ -392,6 +405,32 @@ const StudentDashboard = () => {
                     onClick={bootcampAction.onClick}
                   >
                     {bootcampAction.label} <FiArrowRight size={14} />
+                  </button>
+                </div>
+              </section>
+              <section className="sd-section">
+                <h2 className="sd-section-title">
+                  <FiTarget size={15} className="sd-section-icon" />
+                  Current Phase & Role
+                </h2>
+                <div className="sd-panel sd-continue-panel">
+                  <div className="sd-continue-main">
+                    <h3 className="sd-continue-title">
+                      {data.progressMeta?.currentPhase?.title || 'Phase 1'}
+                    </h3>
+                    <p className="sd-continue-meta">
+                      Role: {data.progressMeta?.earned?.roleTitle || 'Candidate'}
+                    </p>
+                    <span className="sd-progress-note">
+                      Badge: {data.progressMeta?.earned?.badge || 'Complete phases to unlock badges.'}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="sd-btn sd-btn-secondary"
+                    onClick={() => navigate('/student-bootcamps/overview')}
+                  >
+                    View Bootcamp <FiArrowRight size={14} />
                   </button>
                 </div>
               </section>

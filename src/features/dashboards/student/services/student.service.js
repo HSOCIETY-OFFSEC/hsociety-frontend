@@ -36,6 +36,18 @@ export const registerBootcamp = async (application = null) => {
   return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
 };
 
+export const updateOnboarding = async (payload = {}) => {
+  const response = await apiClient.post(API_ENDPOINTS.STUDENT.ONBOARDING, payload);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
+};
+
+export const getOnboarding = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.STUDENT.ONBOARDING);
+  if (response.success) return { success: true, data: response.data };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
+};
+
 export const initializeBootcampPayment = async (payload = {}) => {
   const response = await apiClient.post(API_ENDPOINTS.STUDENT.BOOTCAMP_PAYMENT_INIT, payload);
   if (response.success) return { success: true, data: response.data };
@@ -134,4 +146,6 @@ export default {
   verifyBootcampPayment,
   submitBootcampBtcPayment,
   getBootcampAccessKey,
+  updateOnboarding,
+  getOnboarding,
 };

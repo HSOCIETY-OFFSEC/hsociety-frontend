@@ -8,6 +8,7 @@ import { verifyBootcampPayment, getBootcampAccessKey } from '../../dashboards/st
 import { getCurrentUser } from '../../../core/auth/auth.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { consumeBootcampRedirect } from '../utils/bootcampRedirect';
+import { SOCIAL_LINKS } from '../../../config/app/social.config';
 import '../styles/components.css';
 import '../styles/payments.css';
 
@@ -19,6 +20,7 @@ const StudentPayments = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [accessKey, setAccessKey] = useState('');
+  const whatsappLink = SOCIAL_LINKS.find((link) => link.key === 'whatsapp')?.href || '';
 
   const autoOpenedRef = useRef(false);
 
@@ -198,6 +200,25 @@ const StudentPayments = () => {
                       disabled={!accessKey}
                     >
                       Copy Key
+                    </button>
+                  </div>
+                </article>
+              )}
+              {isPaid && whatsappLink && (
+                <article className="sp-item-row">
+                  <div className="sp-item-main">
+                    <span className="sp-item-title">Join WhatsApp Onboarding</span>
+                    <span className="sp-item-subtitle">
+                      Get live announcements and support from mentors.
+                    </span>
+                  </div>
+                  <div className="sp-item-meta">
+                    <button
+                      type="button"
+                      className="sp-btn sp-btn-primary"
+                      onClick={() => window.open(whatsappLink, '_blank', 'noopener,noreferrer')}
+                    >
+                      Join WhatsApp
                     </button>
                   </div>
                 </article>

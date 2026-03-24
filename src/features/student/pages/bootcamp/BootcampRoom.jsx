@@ -13,7 +13,7 @@ import {
   FiDownload
 } from 'react-icons/fi';
 import { getStudentCourse } from '../../services/course.service';
-import { getStudentOverview } from '../../../dashboards/student/services/student.service';
+import { getStudentOverview, completeLearningRoom } from '../../../dashboards/student/services/student.service';
 import { listNotifications } from '../../services/notifications.service';
 import { getBootcampResources } from '../../services/learn.service';
 import { QuizPanel } from '../../components/QuizPanel';
@@ -83,6 +83,11 @@ const BootcampRoom = () => {
   const [notifications, setNotifications] = useState([]);
   const [roomResources, setRoomResources] = useState([]);
 
+  const reloadOverview = async () => {
+    const response = await getStudentOverview();
+    if (response.success) setOverview(response.data);
+  };
+
   useEffect(() => {
     let mounted = true;
     const load = async () => {
@@ -141,6 +146,11 @@ const BootcampRoom = () => {
   const isLocked = currentRoomIndex > roomsCompleted;
   const isCompleted = currentRoomIndex >= 0 && currentRoomIndex < roomsCompleted;
   const canAdvance = isCompleted || quizPassed;
+
+  const roomOverview = room?.overview || roomMeta?.overview || '';
+  const roomBullets = Array.isArray(room?.bullets) && room.bullets.length
+    ? room.bullets
+    : (roomMeta?.bullets || []);
 
   const liveClassNotification = useMemo(() => {
     const match = notifications.find((item) => {
@@ -209,7 +219,7 @@ const BootcampRoom = () => {
                   <span className="bc-breadcrumb-page">phase-{moduleMeta.moduleId}-room-{room.roomId}</span>
                   <span className="bc-header-visibility">Private</span>
                 </div>
-                <p className="bc-header-desc">{roomMeta.overview}</p>
+                <p className="bc-header-desc">{roomOverview}</p>
               </div>
             </div>
             <div className="bc-header-actions">
@@ -275,11 +285,11 @@ const BootcampRoom = () => {
               <p className="bc-section-desc">Review the core material before attempting the quiz.</p>
               <div className="bc-panel">
                 <h3 className="bc-panel-title">Overview</h3>
-                <p>{roomMeta.overview}</p>
+                <p>{roomOverview}</p>
                 <div className="bc-panel-divider" />
                 <h4 className="bc-panel-subtitle">Reading materials & guides</h4>
                 <ul className="bc-list">
-                  {(roomMeta.bullets || []).map((item) => (
+                  {(roomBullets || []).map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
@@ -385,10 +395,12 @@ const BootcampRoom = () => {
           scope={quizContext.scope}
           title={quizContext.title}
           onClose={() => setQuizContext(null)}
-          onComplete={(result) => {
+          onComplete={async (result) => {
             if (result?.passed) {
               setQuizPassed(true);
               setStatusMessage('Quiz passed. Next room unlocked.');
+              await completeLearningRoom(moduleId, roomId);
+              await reloadOverview();
             } else {
               setStatusMessage('Quiz submitted. Review and retry.');
             }
