@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://hsociety.vercel.app/</loc></url>
-  <url><loc>https://hsociety.vercel.app/services</loc></url>
-  <url><loc>https://hsociety.vercel.app/courses</loc></url>
-  <url><loc>https://hsociety.vercel.app/about</loc></url>
-  <url><loc>https://hsociety.vercel.app/team</loc></url>
-  <url><loc>https://hsociety.vercel.app/contact</loc></url>
-  <url><loc>https://hsociety.vercel.app/case-studies</loc></url>
-  <url><loc>https://hsociety.vercel.app/methodology</loc></url>
-  <url><loc>https://hsociety.vercel.app/blog</loc></url>
-  <url><loc>https://hsociety.vercel.app/pricing</loc></url>
-  <url><loc>https://hsociety.vercel.app/leaderboard</loc></url>
-  <url><loc>https://hsociety.vercel.app/feedback</loc></url>
-  <url><loc>https://hsociety.vercel.app/terms</loc></url>
+  <url><loc>https://hsocietyoffsec.io/</loc></url>
+  <url><loc>https://hsocietyoffsec.io/services</loc></url>
+  <url><loc>https://hsocietyoffsec.io/courses</loc></url>
+  <url><loc>https://hsocietyoffsec.io/about</loc></url>
+  <url><loc>https://hsocietyoffsec.io/team</loc></url>
+  <url><loc>https://hsocietyoffsec.io/developer</loc></url>
+  <url><loc>https://hsocietyoffsec.io/contact</loc></url>
+  <url><loc>https://hsocietyoffsec.io/careers</loc></url>
+  <url><loc>https://hsocietyoffsec.io/case-studies</loc></url>
+  <url><loc>https://hsocietyoffsec.io/methodology</loc></url>
+  <url><loc>https://hsocietyoffsec.io/blog</loc></url>
+  <url><loc>https://hsocietyoffsec.io/pricing</loc></url>
+  <url><loc>https://hsocietyoffsec.io/leaderboard</loc></url>
+  <url><loc>https://hsocietyoffsec.io/cp-points</loc></url>
+  <url><loc>https://hsocietyoffsec.io/feedback</loc></url>
+  <url><loc>https://hsocietyoffsec.io/terms</loc></url>
+  <url><loc>https://hsocietyoffsec.io/privacy</loc></url>
 </urlset>

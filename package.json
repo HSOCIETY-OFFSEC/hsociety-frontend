@@ -1,7 +1,7 @@
 {
   "name": "hsociety",
   "version": "1.0.0",
-  "description": "Elite Offensive Security SaaS Platform",
+  "description": "HSOCIETY OFFSEC offensive security training and penetration testing platform",
   "type": "module",
   "private": true,
   "scripts": {
@@ -42,6 +42,6 @@
     "cybersecurity",
     "saas"
   ],
-  "author": "Hsociety Team",
+  "author": "HSOCIETY OFFSEC Team",
   "license": "UNLICENSED"
 }

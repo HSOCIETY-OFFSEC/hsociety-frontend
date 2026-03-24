@@ -51,10 +51,10 @@ export default defineConfig({
         'hsociety-logo-white.png'
       ],
       manifest: {
-        name: 'Hsociety - Elite Offensive Security',
-        short_name: 'Hsociety',
+        name: 'HSOCIETY OFFSEC — Offensive Security Training & Penetration Testing',
+        short_name: 'HSOCIETY',
         description:
-          'Professional penetration testing and security assessment platform.',
+          'HSOCIETY OFFSEC delivers offensive security training, supervised penetration testing, and a cybersecurity pipeline for teams and emerging operators.',
         start_url: '/',
         scope: '/',
         display: 'standalone',

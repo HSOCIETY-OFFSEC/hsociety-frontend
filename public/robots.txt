@@ -1,6 +1,29 @@
-#Just becuase you see this doesnt mean you have done anything yet dummy 
-
+#  ___  ___  ________  ________  ________  ___  _______  _________    ___    ___ 
+# |\  \|\  \|\   ____\|\   __  \|\   ____\|\  \|\  ___ \|\___   ___\ |\  \  /  /|
+# \ \  \\\  \ \  \___|\ \  \|\  \ \  \___|\ \  \ \   __/\|___ \  \_| \ \  \/  / /
+#  \ \   __  \ \_____  \ \  \\\  \ \  \    \ \  \ \  \_|/__  \ \  \   \ \    / / 
+#   \ \  \ \  \|____|\  \ \  \\\  \ \  \____\ \  \ \  \_|\ \  \ \  \   \/  /  /  
+#    \ \__\ \__\____\_\  \ \_______\ \_______\ \__\ \_______\  \ \__\__/  / /    
+#     \|__|\|__|\_________\|_______|\|_______|\|__|\|_______|   \|__|\___/ /     
+#              \|_________|                                         \|___|/      
+# HSOCIETY OFFSEC robots.txt
 User-agent: *
 Allow: /
+Disallow: /student-dashboard
+Disallow: /student-bootcamps
+Disallow: /student-resources
+Disallow: /student-payments
+Disallow: /community
+Disallow: /corporate
+Disallow: /pentester
+Disallow: /mr-robot
+Disallow: /account
+Disallow: /settings
+Disallow: /notifications
+Disallow: /posts
+Disallow: /login
+Disallow: /register
+Disallow: /change-password
+Disallow: /verify-email
 
-Sitemap: https://hsociety.vercel.app/sitemap.xmlthinhgyet 
+Sitemap: https://hsocietyoffsec.io/sitemap.xml

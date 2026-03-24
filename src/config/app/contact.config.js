@@ -14,10 +14,10 @@ const PHONE_NUMBER = '+233 504 500 337';
 const PHONE_LINK = 'tel:+233504500337';
 
 export const CONTACT_HERO = {
-  kicker: 'Contact HSOCIETY',
+  kicker: 'Contact HSOCIETY OFFSEC',
   title: 'Talk to the offensive security team that ships results.',
   description:
-    'HSOCIETY runs distributed offensive-security operations across Africa. Send through training, community, or engagement requests and expect a reply within one business day.',
+    'HSOCIETY OFFSEC runs distributed offensive-security operations across Africa. Send through training, community, or engagement requests and expect a reply within one business day.',
   availability: 'Team online · servicing multiple time zones',
   primaryAction: {
     label: 'Email the team',
@@ -77,5 +77,5 @@ export const CONTACT_SOCIAL_LINKS = [
   { icon: FiTwitter, label: 'X (Twitter)', href: 'https://twitter.com/hsocietyoffsec' },
   { icon: FiLinkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/hsocietyoffsec' },
   { icon: FiGithub, label: 'GitHub', href: 'https://github.com/hsocietyoffsec' },
-  { icon: FiGlobe, label: 'Website', href: 'https://hsocietyoffsec.netlify.app' },
+  { icon: FiGlobe, label: 'Website', href: 'https://hsocietyoffsec.io' },
 ];

@@ -1,8 +1,14 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Hsociety",
-  "url": "https://hsociety.vercel.app/",
-  "logo": "https://hsociety.vercel.app/hsociety-logo-black.png",
-  "sameAs": []
+  "name": "HSOCIETY OFFSEC",
+  "url": "https://hsocietyoffsec.io/",
+  "logo": "https://hsocietyoffsec.io/hsociety-logo-black.png",
+  "sameAs": [
+    "https://www.youtube.com/@hsocietyoffsec",
+    "https://x.com/hsocietyoffsec",
+    "https://github.com/hsocietyoffsec",
+    "https://www.linkedin.com/in/hsocietyoffsec/",
+    "https://chat.whatsapp.com/Ja8pR0FZQAI2pceGjQpji5"
+  ]
 }
