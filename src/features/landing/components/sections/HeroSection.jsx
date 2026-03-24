@@ -50,11 +50,14 @@ const ColoredText = ({ text }) => {
   const parts = text.split(HACKER_RE);
   return (
     <>
-      {parts.map((part, i) =>
-        HACKER_RE.test(part)
-          ? <span key={i} className="hero-hacker-word">{part}</span>
-          : part
-      )}
+      {parts.map((part, i) => {
+        if (!HACKER_RE.test(part)) return part;
+        return (
+          <span key={i} className="hero-hacker-word">
+            <span className="hero-hacker-code">{part}</span>
+          </span>
+        );
+      })}
     </>
   );
 };
@@ -142,12 +145,6 @@ const HeroSection = ({ content }) => {
       </div>
 
       <div className="hero-centered-container">
-
-        {/* KICKER */}
-        <p className="hero-kicker hero-kicker--center hs-reveal">
-          <FiTerminal size={12} aria-hidden="true" />
-          Real Attacks. Real Security.
-        </p>
 
         {/* TITLE */}
         <div className="hero-title-block hs-reveal hs-reveal--delay-1">
@@ -237,28 +234,32 @@ const HeroSection = ({ content }) => {
           </button>
         </div>
 
-        {/* SOCIAL LINKS */}
-        <div className="hero-socials-centered hs-reveal hs-reveal--delay-4">
-          {getSocialLinks().map((link) => {
-            const Icon = link.icon;
-            return (
-              <a
-                key={link.key}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={link.label}
-                className="hero-social-link"
-              >
-                <Icon size={16} />
-              </a>
-            );
-          })}
-        </div>
+        {/* SOCIAL + SCROLL FOOTER */}
+        <div className="hero-footer">
+          <div className="hero-socials-centered hs-reveal hs-reveal--delay-4">
+            {getSocialLinks().map((link) => {
+              const Icon = link.icon;
+              return (
+                <a
+                  key={link.key}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={link.label}
+                  className="hero-social-link"
+                >
+                  <Icon size={16} />
+                </a>
+              );
+            })}
+          </div>
 
-        {/* SCROLL CUE */}
-        <div className={`hero-scroll-cue-centered ${pulse ? 'hero-scroll-cue-centered--visible' : ''}`} aria-hidden="true">
-          <FiChevronDown size={18} />
+          <div
+            className={`hero-scroll-cue-centered ${pulse ? 'hero-scroll-cue-centered--visible' : ''}`}
+            aria-hidden="true"
+          >
+            <FiChevronDown size={18} />
+          </div>
         </div>
       </div>
 
