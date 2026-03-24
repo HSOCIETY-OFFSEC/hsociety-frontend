@@ -5,6 +5,8 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getRemediationReports, getRemediationSummary } from '../services/remediation.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import { apiClient } from '../../../shared/services/api.client';
+import { API_ENDPOINTS, buildEndpoint } from '../../../config/api/api.config';
 import '../styles/remediation.css';
 
 const Remediation = () => {
@@ -51,18 +53,10 @@ const Remediation = () => {
     }
   };
 
-  const downloadReport = (report) => {
-    const blob = new Blob([`Remediation summary for ${report.title}`], {
-      type: 'application/pdf'
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${report.title}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  const downloadReport = async (report) => {
+    if (!report?.id) return;
+    const endpoint = buildEndpoint(API_ENDPOINTS.REMEDIATION.DOWNLOAD, { id: report.id });
+    await apiClient.download(endpoint, `${report.title || report.id}.pdf`);
   };
 
   const summaryStats = [

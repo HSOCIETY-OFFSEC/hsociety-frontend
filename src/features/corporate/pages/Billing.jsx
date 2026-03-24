@@ -6,6 +6,8 @@ import Skeleton from '../../../shared/components/ui/Skeleton';
 import PaymentModal from '../components/billing/PaymentModal';
 import { getAgreements, getInvoices } from '../services/billing.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import { apiClient } from '../../../shared/services/api.client';
+import { API_ENDPOINTS, buildEndpoint } from '../../../config/api/api.config';
 import '../styles/billing.css';
 
 const Billing = () => {
@@ -56,18 +58,16 @@ const Billing = () => {
     }
   };
 
-  const downloadDocument = (title) => {
-    const blob = new Blob([`Document placeholder for ${title}`], {
-      type: 'application/pdf'
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${title}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  const downloadInvoice = async (invoice) => {
+    if (!invoice?.id) return;
+    const endpoint = buildEndpoint(API_ENDPOINTS.BILLING.DOWNLOAD, { id: invoice.id });
+    await apiClient.download(endpoint, `${invoice.id}.pdf`);
+  };
+
+  const downloadAgreement = async (agreement) => {
+    if (!agreement?.id) return;
+    const endpoint = buildEndpoint(API_ENDPOINTS.BILLING.AGREEMENT_DOWNLOAD, { id: agreement.id });
+    await apiClient.download(endpoint, `${agreement.title || agreement.id}.pdf`);
   };
 
   const openPayment = (invoice) => {
@@ -139,7 +139,7 @@ const Billing = () => {
                       </span>
                     </span>
                     <span className="billing-row-actions" data-label="Actions">
-                      <Button variant="ghost" size="small" onClick={() => downloadDocument(invoice.id)}>
+                      <Button variant="ghost" size="small" onClick={() => downloadInvoice(invoice)}>
                         <FiDownload size={14} />
                       </Button>
                       {(invoice.status === 'Pending' || invoice.status === 'Failed') && (
@@ -171,7 +171,7 @@ const Billing = () => {
                 <Card key={agreement.id} padding="large" shadow="medium">
                   <h3>{agreement.title}</h3>
                   <p className="billing-agreement-date">{formatDate(agreement.date)}</p>
-                  <Button variant="secondary" size="small" onClick={() => downloadDocument(agreement.title)}>
+                  <Button variant="secondary" size="small" onClick={() => downloadAgreement(agreement)}>
                     Download PDF <FiDownload size={16} />
                   </Button>
                 </Card>
