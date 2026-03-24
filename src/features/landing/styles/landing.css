@@ -66,17 +66,17 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky, 50);
-  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
-  border-bottom: 1px solid var(--border-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent;
+  border-bottom: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 @media (prefers-reduced-motion: reduce), (max-width: 900px) {
   .landing-nav {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background: var(--bg-primary);
+    background: transparent;
   }
 }
 
@@ -356,6 +356,11 @@
   z-index: calc(var(--z-sticky, 60) + 1);
   box-sizing: border-box;
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+html:not(.nav-scrolled) .ann-banner {
+  background: transparent;
+  border-bottom-color: transparent;
 }
 
 .nav-scrolled .ann-banner {

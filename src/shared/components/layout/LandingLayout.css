@@ -20,6 +20,22 @@
   z-index: var(--z-sticky, 60);
 }
 
+html:not(.nav-scrolled) .landing-layout .gh-nav {
+  --navbar-bg-color: transparent !important;
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+html:not(.nav-scrolled) .landing-layout .gh-nav-inner {
+  background: transparent !important;
+}
+
+.nav-scrolled .landing-layout .gh-nav {
+  --navbar-bg-color: var(--bg-secondary) !important;
+  background: var(--bg-secondary) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
 .landing-main {
   flex: 1 1 auto;
   width: 100%;

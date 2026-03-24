@@ -28,7 +28,7 @@
 }
 
 .gh-nav--transparent {
-  --navbar-bg-color: var(--bg-primary);
+  --navbar-bg-color: transparent;
   border-bottom-color: transparent;
 }
 
