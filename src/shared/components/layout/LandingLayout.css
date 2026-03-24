@@ -25,5 +25,13 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px));
+}
+
+.nav-scrolled .landing-layout .gh-nav {
+  top: 0;
+}
+
+.nav-scrolled .landing-main {
   padding-top: var(--navbar-height, 64px);
 }

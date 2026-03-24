@@ -348,7 +348,23 @@
   padding: 0.6rem 1.5rem;
   font-size: 0.85rem;
   color: var(--text-secondary);
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: calc(var(--z-sticky, 60) + 1);
+  box-sizing: border-box;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.nav-scrolled .ann-banner {
+  background: transparent;
+  border-bottom-color: transparent;
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .ann-badge {

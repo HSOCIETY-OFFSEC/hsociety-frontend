@@ -112,10 +112,17 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
   useEffect(() => {
     if (!transparentOnTop || typeof window === 'undefined') return undefined;
-    const update = () => setIsAtTop(window.scrollY <= 2);
+    const update = () => {
+      const atTop = window.scrollY <= 2;
+      setIsAtTop(atTop);
+      document.documentElement.classList.toggle('nav-scrolled', !atTop);
+    };
     update();
     window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      document.documentElement.classList.remove('nav-scrolled');
+    };
   }, [transparentOnTop, location.pathname]);
 
   const role        = user?.role === 'client' ? 'corporate' : user?.role;

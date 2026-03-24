@@ -53,10 +53,12 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .gh-nav-logo .logo-image {
-  height: 150px !important;
+  height: 48px !important;
+  max-height: calc(var(--navbar-height, 64px) - 12px);
   width: auto !important;
   display: block;
 }
@@ -64,13 +66,13 @@
 /* Scale logo down on mobile so it fits the 64px navbar */
 @media (max-width: 768px) {
   .gh-nav-logo .logo-image {
-    height: 52px !important;
+    height: 40px !important;
   }
 }
 
 @media (max-width: 480px) {
   .gh-nav-logo .logo-image {
-    height: 44px !important;
+    height: 34px !important;
   }
 }
 

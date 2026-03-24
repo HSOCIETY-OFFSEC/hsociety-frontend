@@ -175,18 +175,66 @@ const RegistrationForm = ({
     if (suggested.length >= 3) setForm((prev) => (prev.handle ? prev : { ...prev, handle: suggested }));
   }, [form.name, form.handle]);
 
+  const getValidationError = (snapshot) => {
+    if (!snapshot.name || snapshot.name.trim().length < 2) return 'Full name is required (min 2 characters).';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(snapshot.email || '')) return 'Enter a valid email address.';
+    if (!snapshot.companyOrSchool || snapshot.companyOrSchool.trim().length < 2) return 'Organisation/School is required.';
+    if (snapshot.handle) {
+      const handleRegex = /^[a-z0-9._-]{3,30}$/i;
+      if (!handleRegex.test(snapshot.handle.trim())) return 'Handle must be 3–30 characters (letters, numbers, dot, dash, underscore).';
+    }
+    const { isValid: pwValid, errors } = validatePassword(snapshot.password);
+    if (!pwValid) return errors?.[0] || 'Password does not meet requirements.';
+    if (snapshot.password !== snapshot.confirmPassword) return 'Passwords do not match.';
+    if (!snapshot.agree) return 'Please accept the Terms of Service.';
+    return '';
+  };
+
+  const getFormSnapshot = (formEl) => {
+    if (formEl) {
+      const data = new FormData(formEl);
+      const next = {
+        ...form,
+        name: String(data.get('name') || ''),
+        companyOrSchool: String(data.get('organization') || ''),
+        email: String(data.get('email') || '').trim(),
+        handle: normalizeHandleInput(data.get('handle') || ''),
+        password: String(data.get('password') || ''),
+        confirmPassword: String(data.get('confirmPassword') || ''),
+        agree: data.has('agree'),
+      };
+      if (next.password && !next.confirmPassword) next.confirmPassword = next.password;
+      return next;
+    }
+
+    const fallback = {
+      ...form,
+      name: nameRef.current?.value ?? form.name,
+      companyOrSchool: orgRef.current?.value ?? form.companyOrSchool,
+      email: String(emailRef.current?.value ?? form.email).trim(),
+      handle: normalizeHandleInput(handleRef.current?.value ?? form.handle),
+      password: passwordRef.current?.value ?? form.password,
+      confirmPassword: confirmRef.current?.value ?? form.confirmPassword,
+    };
+    if (fallback.password && !fallback.confirmPassword) fallback.confirmPassword = fallback.password;
+    return fallback;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
 
-    if (!isValid) {
-      setError('Please complete all required fields correctly.');
+    const snapshot = getFormSnapshot(event.currentTarget);
+    setForm(snapshot);
+    if (!validateRegisterForm({ ...snapshot, accountType })) {
+      setError(getValidationError(snapshot) || 'Please complete all required fields correctly.');
       return;
     }
 
     setLoading(true);
     try {
-      const payload = buildRegisterDTO({ ...form, accountType });
+      const payload = buildRegisterDTO({ ...snapshot, accountType });
       const response = await registerUser(payload);
 
       if (!response.success) {
@@ -393,6 +441,7 @@ const RegistrationForm = ({
         <label className="ap-checkbox">
           <input
             type="checkbox"
+            name="agree"
             checked={form.agree}
             onChange={handleChange('agree')}
             disabled={loading}
@@ -416,7 +465,7 @@ const RegistrationForm = ({
           <button
             type="submit"
             className="ap-btn-primary"
-            disabled={loading || !isValid}
+            disabled={loading || !form.agree}
           >
             {loading ? <span className="ap-spinner" /> : null}
             {copy.button.create}

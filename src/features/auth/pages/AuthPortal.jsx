@@ -85,13 +85,14 @@ const LeftPanel = () => (
 /* ══════════════════════════════════════════════════════════
    PASSWORD INPUT
    ══════════════════════════════════════════════════════════ */
-const PasswordInput = React.forwardRef(({ id, value, onChange, onInput, placeholder, disabled, autoComplete }, ref) => {
+const PasswordInput = React.forwardRef(({ id, name, value, onChange, onInput, placeholder, disabled, autoComplete }, ref) => {
   const [show, setShow] = useState(false);
   return (
     <div style={{ position: 'relative' }}>
       <input
         type={show ? 'text' : 'password'}
         id={id}
+        name={name}
         value={value}
         onChange={onChange}
         onInput={onInput}
@@ -349,13 +350,71 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
     return 'Passwords do not match.';
   }, [form.password, form.confirmPassword]);
 
+  const normalizeHandle = (value = '') =>
+    String(value)
+      .trim()
+      .replace(/^@/, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9._-]/g, '');
+
+  const getValidationError = (snapshot) => {
+    if (!snapshot.name || snapshot.name.trim().length < 2) return 'Full name is required (min 2 characters).';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(snapshot.email || '')) return 'Enter a valid email address.';
+    if (!snapshot.companyOrSchool || snapshot.companyOrSchool.trim().length < 2) return 'Organisation/School is required.';
+    if (snapshot.handle) {
+      const handleRegex = /^[a-z0-9._-]{3,30}$/i;
+      if (!handleRegex.test(snapshot.handle.trim())) return 'Handle must be 3–30 characters (letters, numbers, dot, dash, underscore).';
+    }
+    const { isValid: pwValid, errors } = validatePassword(snapshot.password);
+    if (!pwValid) return errors?.[0] || 'Password does not meet requirements.';
+    if (snapshot.password !== snapshot.confirmPassword) return 'Passwords do not match.';
+    if (!snapshot.agree) return 'Please accept the Terms of Service.';
+    return '';
+  };
+
+  const getFormSnapshot = (formEl) => {
+    if (formEl) {
+      const data = new FormData(formEl);
+      const next = {
+        ...form,
+        name: String(data.get('name') || ''),
+        companyOrSchool: String(data.get('companyOrSchool') || ''),
+        handle: normalizeHandle(data.get('handle') || ''),
+        email: String(data.get('email') || '').trim(),
+        password: String(data.get('password') || ''),
+        confirmPassword: String(data.get('confirmPassword') || ''),
+        agree: data.has('agree'),
+      };
+      if (next.password && !next.confirmPassword) next.confirmPassword = next.password;
+      return next;
+    }
+
+    const fallback = {
+      ...form,
+      name: nameRef.current?.value ?? form.name,
+      companyOrSchool: orgRef.current?.value ?? form.companyOrSchool,
+      handle: normalizeHandle(handleRef.current?.value ?? form.handle),
+      email: String(emailRef.current?.value ?? form.email).trim(),
+      password: passwordRef.current?.value ?? form.password,
+      confirmPassword: confirmRef.current?.value ?? form.confirmPassword,
+    };
+    if (fallback.password && !fallback.confirmPassword) fallback.confirmPassword = fallback.password;
+    return fallback;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isValid) { setError('Please complete all required fields correctly.'); return; }
+    const snapshot = getFormSnapshot(e.currentTarget);
+    setForm(snapshot);
+    if (!validateRegisterForm({ ...snapshot, accountType })) {
+      setError(getValidationError(snapshot) || 'Please complete all required fields correctly.');
+      return;
+    }
     setError('');
     setLoading(true);
     try {
-      const payload = buildRegisterDTO({ ...form, accountType });
+      const payload = buildRegisterDTO({ ...snapshot, accountType });
       const response = await registerUser(payload);
       if (!response.success) {
         if (response.errorCode === 'USER_EXISTS') {
@@ -396,45 +455,45 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
         <div className="ap-form-row">
           <div className="ap-field">
             <label htmlFor="reg-name">Full name</label>
-            <input type="text" id="reg-name" value={form.name} onChange={set('name')} onInput={set('name')}
+            <input type="text" id="reg-name" name="name" value={form.name} onChange={set('name')} onInput={set('name')}
               placeholder="Ada Lovelace" required disabled={loading} className="ap-input" autoComplete="name" ref={nameRef} />
           </div>
           <div className="ap-field">
             <label htmlFor="reg-handle">Handle</label>
-            <input type="text" id="reg-handle" value={form.handle} onChange={set('handle')} onInput={set('handle')}
+            <input type="text" id="reg-handle" name="handle" value={form.handle} onChange={set('handle')} onInput={set('handle')}
               placeholder="ada_lovelace" disabled={loading} className="ap-input" autoComplete="username" ref={handleRef} />
           </div>
         </div>
 
         <div className="ap-field">
           <label htmlFor="reg-org">{orgLabel}</label>
-          <input type="text" id="reg-org" value={form.companyOrSchool} onChange={set('companyOrSchool')} onInput={set('companyOrSchool')}
+          <input type="text" id="reg-org" name="companyOrSchool" value={form.companyOrSchool} onChange={set('companyOrSchool')} onInput={set('companyOrSchool')}
             placeholder={orgPlaceholder} required disabled={loading} className="ap-input" autoComplete="organization" ref={orgRef} />
         </div>
 
         <div className="ap-field">
           <label htmlFor="reg-email">Email address</label>
-          <input type="email" id="reg-email" value={form.email} onChange={set('email')} onInput={set('email')}
+          <input type="email" id="reg-email" name="email" value={form.email} onChange={set('email')} onInput={set('email')}
             placeholder="you@example.com" required disabled={loading} className="ap-input" autoComplete="email" inputMode="email" ref={emailRef} />
         </div>
 
         <div className="ap-form-row">
           <div className="ap-field">
             <label htmlFor="reg-pw">Password</label>
-            <PasswordInput id="reg-pw" value={form.password} onChange={set('password')} onInput={set('password')}
+            <PasswordInput id="reg-pw" name="password" value={form.password} onChange={set('password')} onInput={set('password')}
               placeholder="Min 8 characters" disabled={loading} autoComplete="new-password" ref={passwordRef} />
             {passwordError && <span className="ap-hint" role="status">{passwordError}</span>}
           </div>
           <div className="ap-field">
             <label htmlFor="reg-cpw">Confirm password</label>
-            <PasswordInput id="reg-cpw" value={form.confirmPassword} onChange={set('confirmPassword')} onInput={set('confirmPassword')}
+            <PasswordInput id="reg-cpw" name="confirmPassword" value={form.confirmPassword} onChange={set('confirmPassword')} onInput={set('confirmPassword')}
               placeholder="Repeat password" disabled={loading} autoComplete="new-password" ref={confirmRef} />
             {confirmError && <span className="ap-hint" role="status">{confirmError}</span>}
           </div>
         </div>
 
         <label className="ap-checkbox">
-          <input type="checkbox" checked={form.agree} onChange={set('agree')} disabled={loading} />
+          <input type="checkbox" name="agree" checked={form.agree} onChange={set('agree')} disabled={loading} />
           <span>
             I agree to the{' '}
             <button type="button" className="ap-link-inline" onClick={() => navigate('/terms')} disabled={loading}>Terms of Service</button>
@@ -443,7 +502,7 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
           </span>
         </label>
 
-        <button type="submit" className="ap-btn-primary" disabled={loading || !isValid}>
+        <button type="submit" className="ap-btn-primary" disabled={loading || !form.agree}>
           {loading ? <span className="ap-spinner" /> : null}
           {loading ? 'Creating account…' : `Create ${accountType === 'corporate' ? 'organisation' : 'student'} account`}
           {!loading && <IconArrow />}
