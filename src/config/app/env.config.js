@@ -112,7 +112,8 @@ export const envConfig = {
     enableCSRF: getEnvVar('VITE_ENABLE_CSRF', 'true') === 'true',
     enableRateLimiting: getEnvVar('VITE_ENABLE_RATE_LIMITING', 'true') === 'true',
     enableRuntimeScan: getEnvVar('VITE_ENABLE_RUNTIME_SECURITY_SCAN', 'false') === 'true',
-    runtimeScanSampleRate: parseFloat(getEnvVar('VITE_RUNTIME_SECURITY_SCAN_SAMPLE_RATE', '0.15'))
+    runtimeScanSampleRate: parseFloat(getEnvVar('VITE_RUNTIME_SECURITY_SCAN_SAMPLE_RATE', '0.15')),
+    storeAccessTokenInStorage: getEnvVar('VITE_STORE_ACCESS_TOKEN', 'false') === 'true',
   },
 
   // Feature Flags

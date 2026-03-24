@@ -74,9 +74,9 @@ const LeftPanel = () => (
         </div>
       </div>
       <div className="ap-trust">
-        <span className="ap-trust-badge"><IconShield /> SOC 2</span>
-        <span className="ap-trust-badge"><IconShield /> ISO 27001</span>
-        <span className="ap-trust-badge"><IconShield /> End-to-end encrypted</span>
+        <span className="ap-trust-badge"><IconShield /> Security-first platform</span>
+        <span className="ap-trust-badge"><IconShield /> JWT + refresh sessions</span>
+        <span className="ap-trust-badge"><IconShield /> Rate-limited auth</span>
       </div>
     </div>
   </aside>
@@ -154,7 +154,6 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
     const onAnim = (e) => { if (e.animationName === 'hsociety-autofill-detect') sync(); };
     document.addEventListener('animationstart', onAnim, true);
     return () => { window.clearInterval(id); document.removeEventListener('animationstart', onAnim, true); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const resolveRoute = (role) => {
@@ -171,6 +170,10 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
     try {
       const response = await loginRequest(email, password);
       if (!response.success) {
+        if (response.verificationRequired) {
+          navigate('/verify-email', { replace: true, state: { email } });
+          return;
+        }
         setError(response.message || 'Login failed. Please try again.');
         return;
       }
@@ -188,6 +191,12 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
       await login(response.user, response.token, response.refreshToken, response.expiresIn);
       showToast({ variant: 'success', title: 'Login successful', message: 'Welcome back. Your workspace is ready.', duration: 3600 });
       const redirect = location.state?.redirect;
+      const needsOnboarding =
+        response.user?.role === 'student' && !response.user?.onboardingCompletedAt;
+      if (needsOnboarding) {
+        navigate('/student-onboarding', { replace: true });
+        return;
+      }
       navigate(redirect && redirect.startsWith('/') ? redirect : resolveRoute(response.user?.role), { replace: true });
     } catch {
       setError('Login failed. Please try again.');
@@ -273,10 +282,10 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
     return q.get('email') || '';
   }, [location.search]);
 
-  const [accountType] = useState('student');
+  const [accountType, setAccountType] = useState(defaultType === 'corporate' ? 'corporate' : 'student');
   const [form, setForm] = useState({
     name: '', companyOrSchool: '', handle: '', email: prefillEmail,
-    password: '', confirmPassword: '', agree: false,
+    password: '', confirmPassword: '', inviteCode: '', agree: false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
@@ -362,6 +371,9 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(snapshot.email || '')) return 'Enter a valid email address.';
     if (!snapshot.companyOrSchool || snapshot.companyOrSchool.trim().length < 2) return 'Organisation/School is required.';
+    if (accountType === 'corporate' && (!snapshot.inviteCode || snapshot.inviteCode.trim().length < 4)) {
+      return 'Invite code is required for corporate accounts.';
+    }
     if (snapshot.handle) {
       const handleRegex = /^[a-z0-9._-]{3,30}$/i;
       if (!handleRegex.test(snapshot.handle.trim())) return 'Handle must be 3–30 characters (letters, numbers, dot, dash, underscore).';
@@ -384,6 +396,7 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
         email: String(data.get('email') || '').trim(),
         password: String(data.get('password') || ''),
         confirmPassword: String(data.get('confirmPassword') || ''),
+        inviteCode: String(data.get('inviteCode') || ''),
         agree: data.has('agree'),
       };
       if (next.password && !next.confirmPassword) next.confirmPassword = next.password;
@@ -398,6 +411,7 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
       email: String(emailRef.current?.value ?? form.email).trim(),
       password: passwordRef.current?.value ?? form.password,
       confirmPassword: confirmRef.current?.value ?? form.confirmPassword,
+      inviteCode: form.inviteCode,
     };
     if (fallback.password && !fallback.confirmPassword) fallback.confirmPassword = fallback.password;
     return fallback;
@@ -424,6 +438,11 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
         setError(response.error || 'Registration failed. Please try again.');
         return;
       }
+      if (response.data?.verificationRequired) {
+        showToast({ variant: 'info', title: 'Verify your email', message: 'We sent a verification link to your email.', duration: 4800 });
+        navigate('/verify-email', { replace: true, state: { email: snapshot.email } });
+        return;
+      }
       showToast({ variant: 'success', title: 'Account created', message: 'Your account is ready. Please sign in.', duration: 3600 });
       onSwitchToLogin();
     } catch {
@@ -444,8 +463,19 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
       </div>
 
       <div className="ap-toggle" role="group" aria-label="Account type">
-        <button type="button" className="active" disabled>
+        <button
+          type="button"
+          className={accountType === 'student' ? 'active' : ''}
+          onClick={() => setAccountType('student')}
+        >
           Student
+        </button>
+        <button
+          type="button"
+          className={accountType === 'corporate' ? 'active' : ''}
+          onClick={() => setAccountType('corporate')}
+        >
+          Corporate
         </button>
       </div>
 
@@ -470,6 +500,24 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
           <input type="text" id="reg-org" name="companyOrSchool" value={form.companyOrSchool} onChange={set('companyOrSchool')} onInput={set('companyOrSchool')}
             placeholder={orgPlaceholder} required disabled={loading} className="ap-input" autoComplete="organization" ref={orgRef} />
         </div>
+
+        {accountType === 'corporate' && (
+          <div className="ap-field">
+            <label htmlFor="reg-invite">Invite code</label>
+            <input
+              type="text"
+              id="reg-invite"
+              name="inviteCode"
+              value={form.inviteCode}
+              onChange={set('inviteCode')}
+              onInput={set('inviteCode')}
+              placeholder="Provided by HSOCIETY"
+              required
+              disabled={loading}
+              className="ap-input"
+            />
+          </div>
+        )}
 
         <div className="ap-field">
           <label htmlFor="reg-email">Email address</label>
@@ -497,8 +545,7 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
           <span>
             I agree to the{' '}
             <button type="button" className="ap-link-inline" onClick={() => navigate('/terms')} disabled={loading}>Terms of Service</button>
-            {' '}and{' '}
-            <button type="button" className="ap-link-inline" onClick={() => navigate('/privacy')} disabled={loading}>Privacy Policy</button>.
+            .
           </span>
         </label>
 
@@ -527,7 +574,7 @@ const AuthPortal = () => {
   const authParam = query.get('auth');
 
   const initialView = (authParam === 'register' || authParam === 'register-corporate') ? 'register' : 'login';
-  const initialType = 'student';
+  const initialType = authParam === 'register-corporate' ? 'corporate' : 'student';
 
   const [view, setView]       = useState(initialView);
   const [regType, setRegType] = useState(initialType);

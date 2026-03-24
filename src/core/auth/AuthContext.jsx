@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
       // Check for existing session
       const session = sessionManager.getSession();
       
-      if (session && session.token && session.user) {
+      if (session && session.user) {
         // SECURITY UPDATE IMPLEMENTED: Block access until password meets strength (mustChangePassword)
         if (session.user?.mustChangePassword) {
           sessionManager.clearSession();
@@ -58,13 +58,31 @@ export const AuthProvider = ({ children }) => {
           }
           return;
         }
+        if (session.user?.emailVerified === false) {
+          sessionManager.clearSession();
+          setUser(null);
+          setToken(null);
+          setIsAuthenticated(false);
+          if (typeof window !== 'undefined') {
+            window.location.href = '/verify-email';
+          }
+          return;
+        }
+
         // Verify session is still valid
         const isValid = sessionManager.isSessionValid();
         
         if (isValid) {
           setUser(session.user);
-          setToken(session.token);
+          setToken(session.token || null);
           setIsAuthenticated(true);
+
+          if (!session.token) {
+            const refreshed = await refreshToken();
+            if (refreshed?.success) {
+              setToken(refreshed.token);
+            }
+          }
           
           // Setup auto logout monitoring
           setupInactivityMonitor();

@@ -35,6 +35,7 @@ const StudentResources = React.lazy(() => import('../../features/student/pages/S
 const StudentQuizMaterial = React.lazy(() => import('../../features/student/pages/StudentQuizMaterial'));
 const StudentPayments = React.lazy(() => import('../../features/student/pages/StudentPayments'));
 const StudentBootcamp = React.lazy(() => import('../../features/student/pages/StudentBootcamp'));
+const StudentOnboarding = React.lazy(() => import('../../features/student/pages/StudentOnboarding'));
 const BootcampLayout = React.lazy(() => import('../../features/student/pages/bootcamp/BootcampLayout'));
 const BootcampOverview = React.lazy(() => import('../../features/student/pages/bootcamp/BootcampOverview'));
 const BootcampModules = React.lazy(() => import('../../features/student/pages/bootcamp/BootcampModules'));
@@ -86,6 +87,7 @@ const Leaderboard = React.lazy(() => import('../../features/leaderboard/pages/Le
 const CPPoints = React.lazy(() => import('../../features/cp-points/pages/CPPoints'));
 const NotFound = React.lazy(() => import('../../features/notfound/pages/NotFound'));
 const ForcePasswordChange = React.lazy(() => import('../../features/auth/pages/ForcePasswordChange'));
+const VerifyEmail = React.lazy(() => import('../../features/auth/pages/VerifyEmail'));
 
 /**
  * Protected Route
@@ -200,6 +202,7 @@ const AppRouter = () => {
             />
             <Route path="posts" element={<AuthPortal />} />
             <Route path="change-password" element={<ForcePasswordChange />} />
+            <Route path="verify-email" element={<VerifyEmail />} />
           </Route>
 
           {/* Bootcamp learning app (standalone layout) */}
@@ -374,6 +377,14 @@ const AppRouter = () => {
               element={
                 <RoleRoute allowedRoles={['student']}>
                   <StudentDashboard />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="student-onboarding"
+              element={
+                <RoleRoute allowedRoles={['student']}>
+                  <StudentOnboarding />
                 </RoleRoute>
               }
             />

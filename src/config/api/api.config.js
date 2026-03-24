@@ -65,14 +65,9 @@ const DEFAULT_API_ENDPOINTS = {
     ME: '/auth/me',
     PASSWORD_RESET_REQUEST: '/auth/password-reset/request',
     PASSWORD_RESET_CONFIRM: '/auth/password-reset/confirm',
-    CHANGE_PASSWORD: '/auth/change-password'
-  },
-
-  // OTP
-  OTP: {
-    REQUEST: '/auth/otp/request',
-    VERIFY: '/auth/otp/verify',
-    RESEND: '/auth/otp/resend'
+    CHANGE_PASSWORD: '/auth/change-password',
+    VERIFY_EMAIL_REQUEST: '/auth/verify-email/request',
+    VERIFY_EMAIL_CONFIRM: '/auth/verify-email/confirm'
   },
 
   // Two-Factor Authentication
@@ -121,6 +116,7 @@ const DEFAULT_API_ENDPOINTS = {
     BOOTCAMP_RESOURCES: '/student/bootcamp/resources',
     FREE_RESOURCES: '/student/learn/resources/free',
     XP_SUMMARY: '/student/xp-summary',
+    ONBOARDING: '/student/onboarding',
     ENROLL_TRAINING: '/student/enroll-training',
     COMPLETE_MODULE: '/student/modules/:moduleId/complete',
     COMPLETE_ROOM: '/student/modules/:moduleId/rooms/:roomId/complete',
@@ -165,7 +161,8 @@ const DEFAULT_API_ENDPOINTS = {
   // Remediation
   REMEDIATION: {
     SUMMARY: '/remediation/summary',
-    REPORTS: '/remediation/reports'
+    REPORTS: '/remediation/reports',
+    DOWNLOAD: '/remediation/reports/:id/download'
   },
 
   // Assets
@@ -180,7 +177,8 @@ const DEFAULT_API_ENDPOINTS = {
   BILLING: {
     INVOICES: '/billing/invoices',
     AGREEMENTS: '/billing/agreements',
-    DOWNLOAD: '/billing/invoices/:id/download'
+    DOWNLOAD: '/billing/invoices/:id/download',
+    AGREEMENT_DOWNLOAD: '/billing/agreements/:id/download'
   },
 
   // Feedback

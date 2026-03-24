@@ -16,9 +16,10 @@
 
 import { encrypt } from '../encryption/encrypt';
 import { decrypt } from '../encryption/decrypt';
+import { envConfig } from '../../config/app/env.config';
 
 const SESSION_KEY = 'hsociety_session';
-const DEFAULT_SESSION_FALLBACK_MS = 15 * 60 * 1000; // 15 minutes fallback if no exp
+const DEFAULT_SESSION_FALLBACK_MS = 7 * 24 * 60 * 60 * 1000; // 7 days fallback if no exp
 
 const parseJwtExpiry = (token) => {
   if (!token) return null;
@@ -36,6 +37,7 @@ const parseJwtExpiry = (token) => {
 class SessionManager {
   constructor() {
     this.storage = typeof window !== 'undefined' ? window.sessionStorage : null;
+    this.inMemoryToken = null;
   }
 
   /**
@@ -51,8 +53,13 @@ class SessionManager {
         sessionData.expiresAt
         || tokenExpiry
         || (sessionData.token ? Date.now() + DEFAULT_SESSION_FALLBACK_MS : null);
+      if (sessionData.token) {
+        this.inMemoryToken = sessionData.token;
+      }
       const session = {
         ...sessionData,
+        token: envConfig.security.storeAccessTokenInStorage ? sessionData.token : undefined,
+        refreshToken: envConfig.security.storeAccessTokenInStorage ? sessionData.refreshToken : undefined,
         timestamp: sessionData.timestamp || Date.now(),
         expiresAt: derivedExpiry
       };
@@ -124,6 +131,7 @@ class SessionManager {
       
       // Clear any other session-related items
       this.storage.removeItem('logout-reason');
+      this.inMemoryToken = null;
     } catch (error) {
       console.error('Failed to clear session:', error);
     }
@@ -139,7 +147,7 @@ class SessionManager {
     if (!session) return false;
     
     // Check if session has required fields
-    if (!session.user || !session.token) return false;
+    if (!session.user) return false;
     
     // Check if session has expired
     if (!session.expiresAt || Date.now() > session.expiresAt) {
@@ -156,6 +164,7 @@ class SessionManager {
    * @returns {string|null}
    */
   getToken() {
+    if (this.inMemoryToken) return this.inMemoryToken;
     const session = this.getSession();
     return session ? session.token : null;
   }

@@ -67,6 +67,15 @@ export const login = async (identity, password) => {
 
     const data = response.data || {};
 
+    if (data.verificationRequired) {
+      return {
+        success: false,
+        verificationRequired: true,
+        user: data.user,
+        message: 'Email verification required'
+      };
+    }
+
     if (data.twoFactorRequired) {
       return {
         success: true,
@@ -126,11 +135,7 @@ export const register = async (userData) => {
       return { success: false, message: getPublicAuthMessage('register') };
     }
 
-    const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, {
-      email,
-      password,
-      name: name.trim()
-    });
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, userData);
 
     if (!response.success) {
       return {
@@ -140,6 +145,15 @@ export const register = async (userData) => {
     }
 
     const data = response.data || {};
+
+    if (data.verificationRequired) {
+      return {
+        success: true,
+        verificationRequired: true,
+        user: data.user,
+        message: 'Verification email sent'
+      };
+    }
 
     return {
       success: true,
@@ -353,6 +367,30 @@ export const verifyToken = async () => {
   }
 };
 
+export const requestEmailVerification = async (email) => {
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.VERIFY_EMAIL_REQUEST, { email });
+    if (!response.success) {
+      return { success: false, message: getPublicAuthMessage('verify', response) };
+    }
+    return { success: true, message: 'Verification email sent' };
+  } catch (error) {
+    return { success: false, message: getPublicAuthMessage('verify', error) };
+  }
+};
+
+export const confirmEmailVerification = async (token) => {
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.VERIFY_EMAIL_CONFIRM, { token });
+    if (!response.success) {
+      return { success: false, message: getPublicAuthMessage('verify', response) };
+    }
+    return { success: true, message: 'Email verified successfully' };
+  } catch (error) {
+    return { success: false, message: getPublicAuthMessage('verify', error) };
+  }
+};
+
 /**
  * Get current user profile
  */
@@ -403,6 +441,8 @@ export default {
   changePassword,
   refreshToken,
   verifyToken,
+  requestEmailVerification,
+  confirmEmailVerification,
   getCurrentUser,
   updateProfile
 };

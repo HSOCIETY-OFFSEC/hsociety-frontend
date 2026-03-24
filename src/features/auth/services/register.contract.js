@@ -15,6 +15,7 @@ export const buildRegisterDTO = (form) => {
 
   return {
     role,
+    inviteCode: role === 'corporate' ? String(form.inviteCode || '').trim() : undefined,
     profile: {
       fullName: form.name.trim(),
       organization: form.companyOrSchool.trim(),
@@ -42,6 +43,9 @@ export const validateRegisterForm = (form) => {
   if (!emailRegex.test(form.email || '')) return false;
 
   if (!form.companyOrSchool || form.companyOrSchool.trim().length < 2) return false;
+  if (form.accountType === 'corporate' && (!form.inviteCode || form.inviteCode.trim().length < 4)) {
+    return false;
+  }
 
   if (form.handle) {
     const handleRegex = /^[a-z0-9._-]{3,30}$/i;
