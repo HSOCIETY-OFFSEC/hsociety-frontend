@@ -1,10 +1,10 @@
 /**
- * Quiz Service (placeholder for future backend integration)
+ * Quiz Service
  * Location: src/features/student/quizzes/quiz.service.js
  *
  * Responsibility:
  * - Handle quiz start / submit for rooms or modules
- * - Currently operates fully client-side, but shaped to call APIs later
+ * - Uses backend for quiz generation and grading
  */
 
 import { API_ENDPOINTS } from '../../../config/api/api.config';
@@ -12,15 +12,14 @@ import { apiClient } from '../../../shared/services/api.client';
 
 /**
  * Request a quiz definition for a given scope (room or module).
- * In the current mock implementation, this simply builds a
- * lightweight quiz structure on the client.
+ * Requests a quiz definition from the backend.
  */
 export const fetchQuizForScope = async ({ type, id, courseId }) => {
   // Shape future backend integration
   const endpoint = API_ENDPOINTS.STUDENT.QUIZ;
   const params = { type, id, courseId };
 
-  // Try calling the API – OK if it fails in dev
+  // Call the API
   const response = await apiClient.post(endpoint, params);
 
   if (response.success && response.data) {
@@ -29,40 +28,9 @@ export const fetchQuizForScope = async ({ type, id, courseId }) => {
       data: response.data
     };
   }
-
-  // Local mock quiz for now
-  const mockQuiz = {
-    scope: { type, id, courseId },
-    questions: [
-      {
-        id: 'q1',
-        text: 'What is the primary mindset of an ethical hacker?',
-        options: [
-          'Break everything without limits',
-          'Think like an attacker while respecting boundaries',
-          'Ignore rules to find vulnerabilities',
-          'Automate all security work'
-        ],
-        correctIndex: 1
-      },
-      {
-        id: 'q2',
-        text: 'What is the most important first step when learning a new hacking topic?',
-        options: [
-          'Memorize every tool command',
-          'Run tools blindly until something works',
-          'Understand the underlying system and threat model',
-          'Skip basics and jump into advanced exploits'
-        ],
-        correctIndex: 2
-      }
-    ]
-  };
-
   return {
-    success: true,
-    data: mockQuiz,
-    isMock: true
+    success: false,
+    error: response.error || 'Unable to load quiz at this time'
   };
 };
 

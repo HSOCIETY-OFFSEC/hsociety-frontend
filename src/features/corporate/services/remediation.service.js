@@ -11,29 +11,6 @@ import {
 } from './remediation.contract';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
-const mockSummary = {
-  totalVulnerabilities: 128,
-  fixedVulnerabilities: 89,
-  openVulnerabilities: 39,
-  remediationRate: 71
-};
-
-const mockReports = [
-  {
-    id: 'rem-0101',
-    title: 'Remediation Playbook Q1',
-    generatedOn: Date.now() - (5 * 24 * 60 * 60 * 1000),
-    owner: 'HSOCIETY Recovery Team',
-    downloadUrl: ''
-  },
-  {
-    id: 'rem-0102',
-    title: 'API Remediation Report',
-    generatedOn: Date.now() - (9 * 24 * 60 * 60 * 1000),
-    owner: 'HSOCIETY Recovery Team',
-    downloadUrl: ''
-  }
-];
 
 export const getRemediationSummary = async () => {
   const response = await apiClient.get(API_ENDPOINTS.REMEDIATION.SUMMARY);
@@ -41,14 +18,6 @@ export const getRemediationSummary = async () => {
     return {
       success: true,
       data: normalizeRemediationSummary(response.data || {})
-    };
-  }
-
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeRemediationSummary(mockSummary),
-      isMock: true
     };
   }
 
@@ -62,14 +31,6 @@ export const getRemediationReports = async () => {
     return {
       success: true,
       data: normalizeRemediationReports(payload)
-    };
-  }
-
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeRemediationReports(mockReports),
-      isMock: true
     };
   }
 

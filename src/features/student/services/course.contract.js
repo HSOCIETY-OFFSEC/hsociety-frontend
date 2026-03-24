@@ -2,13 +2,15 @@
  * Course Learning System Contract
  * Location: src/features/student/courses/course.contract.js
  *
- * Normalizes course / module / room structures coming from the API (or mocks)
+ * Normalizes course / module / room structures coming from the API
  * so the UI can rely on a stable, predictable shape.
  */
 
 export const normalizeRoom = (room = {}) => ({
   roomId: Number(room.roomId ?? 0),
   title: room.title || 'Untitled room',
+  overview: room.overview || '',
+  bullets: Array.isArray(room.bullets) ? room.bullets : [],
   liveClass: room.liveClass
     ? {
         title: room.liveClass.title || '',
@@ -22,6 +24,9 @@ export const normalizeRoom = (room = {}) => ({
 export const normalizeModule = (module = {}) => ({
   moduleId: Number(module.moduleId ?? 0),
   title: module.title || 'Untitled module',
+  codename: module.codename || '',
+  roleTitle: module.roleTitle || '',
+  description: module.description || '',
   badge: module.badge || '',
   rooms: (module.rooms || []).map(normalizeRoom),
   ctf: module.ctf || ''

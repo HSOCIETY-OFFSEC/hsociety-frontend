@@ -8,25 +8,6 @@ import { API_ENDPOINTS, buildEndpoint } from '../../../config/api/api.config';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { buildFeedbackDTO } from './feedback.contract';
 
-const mockHistory = [
-  {
-    id: '1',
-    type: 'bug',
-    subject: 'Login page issue',
-    status: 'resolved',
-    date: Date.now() - (5 * 24 * 60 * 60 * 1000),
-    ticketNumber: 'FB-12345'
-  },
-  {
-    id: '2',
-    type: 'feature',
-    subject: 'Add dark mode toggle',
-    status: 'in-progress',
-    date: Date.now() - (10 * 24 * 60 * 60 * 1000),
-    ticketNumber: 'FB-12346'
-  }
-];
-
 const normalizeFeedback = (item = {}) => ({
   id: String(item.id || ''),
   type: item.type || 'general',
@@ -61,24 +42,6 @@ export const submitFeedback = async (feedbackData) => {
     };
   }
 
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      message: 'Feedback submitted successfully',
-      data: {
-        id: 'feedback-' + Date.now(),
-        status: 'received',
-        ticketNumber: 'FB-' + Math.floor(Math.random() * 100000),
-        type: payload.type,
-        subject: payload.subject,
-        priority: payload.priority,
-        date: Date.now(),
-        contact: payload.contact
-      },
-      isMock: true
-    };
-  }
-
   return {
     success: false,
     error: getPublicErrorMessage({ action: 'submit', response })
@@ -101,14 +64,6 @@ export const getFeedbackHistory = async (params = {}) => {
     };
   }
 
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeFeedbackList(mockHistory),
-      isMock: true
-    };
-  }
-
   return {
     success: false,
     error: getPublicErrorMessage({ action: 'load', response })
@@ -127,23 +82,6 @@ export const getFeedbackDetails = async (feedbackId) => {
     return {
       success: true,
       data: normalizeFeedback(response.data)
-    };
-  }
-
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeFeedback({
-        id: feedbackId,
-        type: 'bug',
-        subject: 'Login page issue',
-        message: 'I encountered an issue when trying to log in...',
-        status: 'resolved',
-        priority: 'high',
-        date: Date.now() - (5 * 24 * 60 * 60 * 1000),
-        ticketNumber: 'FB-12345'
-      }),
-      isMock: true
     };
   }
 

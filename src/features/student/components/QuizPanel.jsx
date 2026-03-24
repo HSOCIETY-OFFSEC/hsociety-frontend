@@ -17,10 +17,12 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
   const [answers, setAnswers] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const loadQuiz = async () => {
       setLoading(true);
+      setError('');
       try {
         const response = await fetchQuizForScope({
           type: scope.type,
@@ -35,6 +37,7 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
         setQuiz(response.data);
       } catch (err) {
         console.error('QuizPanel error:', err);
+        setError('Unable to load quiz right now. Please try again in a moment.');
       } finally {
         setLoading(false);
       }
@@ -119,7 +122,16 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
             </div>
           )}
 
-          {!loading && quiz && (
+          {!loading && error && (
+            <div className="quiz-body">
+              <p className="quiz-error">{error}</p>
+              <Button variant="secondary" size="small" onClick={onClose}>
+                Close
+              </Button>
+            </div>
+          )}
+
+          {!loading && !error && quiz && (
             <div className="quiz-body">
               {quiz.questions.map((q) => (
                 <div key={q.id} className="quiz-question">

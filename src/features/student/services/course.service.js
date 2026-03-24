@@ -3,14 +3,12 @@
  * Location: src/features/student/courses/course.service.js
  *
  * Responsibility:
- * - Fetch course learning data from the backend (future)
- * - For now, load from local mock JSON to simulate API responses
+ * - Fetch course learning data from the backend
  */
 
 import { API_ENDPOINTS } from '../../../config/api/api.config';
 import { apiClient } from '../../../shared/services/api.client';
 import { normalizeCoursePayload } from './course.contract';
-import mockCoursePayload from '../../../data/mocks/student/mockCourseData.json';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 
 /**
@@ -25,15 +23,6 @@ export const getStudentCourse = async () => {
     return {
       success: true,
       data: normalizeCoursePayload(response.data)
-    };
-  }
-
-  // Development / fallback: use local mock JSON to keep the UI functional
-  if (import.meta.env.DEV) {
-    return {
-      success: true,
-      data: normalizeCoursePayload(mockCoursePayload),
-      isMock: true
     };
   }
 

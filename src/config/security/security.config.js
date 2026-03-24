@@ -79,21 +79,6 @@ export const SESSION_CONFIG = {
   }
 };
 
-/**
- * OTP Security Configuration
- */
-export const OTP_CONFIG = {
-  length: 6,
-  expiryTime: 10 * 60 * 1000, // 10 minutes
-  maxAttempts: 3,
-  resendDelay: 60 * 1000, // 1 minute
-  
-  // Rate limiting for OTP requests
-  rateLimit: {
-    maxRequests: 5,
-    windowMs: 15 * 60 * 1000 // 15 minutes
-  }
-};
 
 /**
  * Two-Factor Authentication Configuration
@@ -420,7 +405,6 @@ if (envConfig.mode === 'production') {
 export default {
   PASSWORD_CONFIG,
   SESSION_CONFIG,
-  OTP_CONFIG,
   TWO_FA_CONFIG,
   RATE_LIMIT_CONFIG,
   CSRF_CONFIG,
