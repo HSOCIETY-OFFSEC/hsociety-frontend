@@ -238,7 +238,7 @@ const AdminCommunity = () => {
                   {messages.length === 0 && <div className="ad-list-empty">No messages.</div>}
                 </div>
 
-                <h3 className="ad-subsection-title" style={{ marginTop: '1.5rem' }}>Posts</h3>
+                <h3 className="ad-subsection-title admin-community-section-title">Posts</h3>
                 <div className="ad-list">
                   <div className="ad-list-header ad-list-row-moderation-posts">
                     <span>Post</span>

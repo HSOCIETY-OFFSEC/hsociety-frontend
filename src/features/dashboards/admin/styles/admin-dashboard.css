@@ -16,3 +16,37 @@
 @import './layout.css';
 @import './overview.css';
 @import './responsive.css';
+
+.ad-meta-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
+.ad-stat-card-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.25rem;
+}
+
+.dashboard-section {
+  margin-bottom: 2rem;
+}
+
+.dashboard-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  padding: 1.25rem;
+}
+
+.admin-security-note {
+  margin-top: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.admin-community-section-title {
+  margin-top: 1.5rem;
+}

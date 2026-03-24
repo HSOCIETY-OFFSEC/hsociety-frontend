@@ -3,97 +3,11 @@
  * Location: src/styles/dashboards/corporate/overview.css
  */
 
-/* ── Generic Section ─────────────────────────────────────────── */
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.section-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-
 .section-subtitle {
   font-size: 0.82rem;
   color: var(--text-secondary);
   margin: 0.2rem 0 0;
   line-height: 1.5;
-}
-
-.view-all-link {
-  background: none;
-  border: none;
-  color: var(--text-tertiary);
-  font-size: 0.68rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
-  transition: color 0.18s ease, background 0.18s ease;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  flex-shrink: 0;
-}
-
-.view-all-link:hover {
-  color: var(--text-primary);
-  background: var(--bg-secondary);
-}
-
-/* ── Stats Grid ──────────────────────────────────────────────── */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.875rem;
-}
-
-@media (min-width: 640px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-  }
-}
-
-/* ── Stat Card ───────────────────────────────────────────────── */
-.stat-card {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  min-width: 0;
-  padding: var(--card-padding, 1.25rem);
-}
-
-.stat-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
 }
 
 .stat-content {
@@ -108,18 +22,6 @@
   margin: 0 0 0.25rem;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
-}
-
-.stat-value {
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* ── Corp Overview Cards ─────────────────────────────────────── */
@@ -262,7 +164,6 @@
 .risk-high   { color: #ef4444; border-color: color-mix(in srgb, #ef4444 45%, var(--border-color)); background: color-mix(in srgb, #ef4444 8%, transparent); }
 
 .status-active    { color: #38bdf8; border-color: color-mix(in srgb, #38bdf8 45%, var(--border-color)); background: color-mix(in srgb, #38bdf8 8%, transparent); }
-.status-completed { color: #22c55e; border-color: color-mix(in srgb, #22c55e 45%, var(--border-color)); background: color-mix(in srgb, #22c55e 8%, transparent); }
 .status-none      { color: var(--text-tertiary); }
 
 /* ── Indicators ──────────────────────────────────────────────── */

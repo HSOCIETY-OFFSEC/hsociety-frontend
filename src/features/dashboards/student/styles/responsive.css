@@ -7,55 +7,12 @@
  * this file handles cross-cutting layout concerns.
  */
 
-/* ── Mobile base: fill full width everywhere ────────────────── */
-.student-page .student-grid,
-.student-page .student-card,
-.student-page .student-hero,
-.student-page .dashboard-shell,
-.student-page .dashboard-shell-header {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
 /* Prevent horizontal overflow on any child */
 .student-page > *,
 .dashboard-shell > * {
   min-width: 0;
   overflow-wrap: break-word;
   word-break: break-word;
-}
-
-/* ── Large tablet (900px+): restore page-level horizontal padding ─ */
-/* Cards are now cards again (rounded, bordered), so the page needs
-   padding so they don't touch the viewport edge */
-@media (min-width: 900px) {
-  .student-page {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  /* Restore gap between cards now they're properly bordered */
-  .dashboard-shell {
-    gap: 1rem;
-  }
-}
-
-/* ── Desktop (1024px+) ──────────────────────────────────────── */
-@media (min-width: 1024px) {
-  .dashboard-shell {
-    width: 100%;
-    max-width: none;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-/* ── Wide (1600px+) ─────────────────────────────────────────── */
-@media (min-width: 1600px) {
-  .dashboard-shell {
-    max-width: none;
-  }
 }
 
 /* ── Reduced motion ─────────────────────────────────────────── */

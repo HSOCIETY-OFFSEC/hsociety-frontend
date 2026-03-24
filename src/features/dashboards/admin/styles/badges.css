@@ -50,3 +50,15 @@
   color: var(--text-primary);
   line-height: 1;
 }
+
+@media (max-width: 768px) {
+  .admin-badges {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-badge {
+    width: 100%;
+  }
+}

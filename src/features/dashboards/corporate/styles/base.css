@@ -40,6 +40,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .dashboard-title {
@@ -104,20 +105,6 @@
   gap: 0;
 }
 
-.corporate-hero .dashboard-shell-title {
-  margin-top: 0.6rem;
-  line-height: 1.15;
-  position: relative;
-  z-index: 1;
-}
-
-.corporate-hero .dashboard-shell-subtitle {
-  margin: 0;
-  line-height: 1.65;
-  position: relative;
-  z-index: 1;
-}
-
 @media (max-width: 768px) {
   .corporate-hero {
     flex-direction: column;
@@ -141,14 +128,32 @@
 @media (prefers-reduced-motion: reduce) {
   .corporate-hero::before {
     display: none;
+    transition: none !important;
+    animation: none !important;
   }
 }
 
 /* ── Card Padding Responsive ──────────────────────────────── */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 1.5rem 0 3rem;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 1.25rem 0 2.5rem;
     --card-padding: 1.1rem;
+  }
+
+  .dashboard-wrapper {
+    gap: 1.1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-bottom: 0;
   }
 }
 
@@ -156,6 +161,16 @@
   .dashboard-container {
     padding: 1rem 0 2rem;
     --card-padding: 0.9rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.65rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .dashboard-container {
+    padding: 0.875rem 0 1.75rem;
   }
 }
 

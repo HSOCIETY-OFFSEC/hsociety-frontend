@@ -107,6 +107,14 @@
   color: var(--text-secondary);
 }
 
+.cd-meta-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+}
+
 .cd-meta-icon {
   color: var(--text-tertiary);
 }

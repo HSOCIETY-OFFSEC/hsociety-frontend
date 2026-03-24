@@ -71,7 +71,7 @@ const AdminSecurity = () => {
                 <strong>{summary.authFailures24h || 0}</strong>
               </div>
             </div>
-            <p style={{ marginTop: '0.75rem', color: 'var(--text-secondary)' }}>
+            <p className="admin-security-note">
               {summary.macAddressNote || 'MAC addresses are unavailable from browser traffic.'}
             </p>
           </Card>

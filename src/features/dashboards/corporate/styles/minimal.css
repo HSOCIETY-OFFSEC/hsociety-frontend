@@ -1,17 +1,3 @@
-.dashboard-container {
-  padding: 1.5rem 1rem 3rem;
-}
-
-.dashboard-wrapper {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-}
-
-.dashboard-header {
-  margin-bottom: 1.5rem;
-}
-
 .dashboard-grid {
   display: grid;
   gap: 1.25rem;
@@ -169,23 +155,6 @@
   background: var(--border-color);
   border-radius: 6px;
   margin-top: 0.25rem;
-}
-
-.skeleton-line {
-  width: 100%;
-  height: 10px;
-  border-radius: 6px;
-  background: var(--border-color);
-  margin-bottom: 0.4rem;
-}
-
-.skeleton-line.short {
-  width: 60%;
-}
-
-.dashboard-shell {
-  padding: 0;
-  background: transparent;
 }
 
 @media (min-width: 768px) {

@@ -146,6 +146,55 @@ table.admin-table tbody tr:hover {
   accent-color: var(--primary-color);
 }
 
+@media (max-width: 1200px) {
+  .admin-row {
+    grid-template-columns: 1.2fr 1.4fr 1fr 0.8fr 0.9fr 1.2fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-row {
+    grid-template-columns: 1.2fr 1.4fr 1fr 0.8fr 1fr;
+  }
+
+  .admin-row span:nth-child(6) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-row,
+  .admin-row.admin-row-pentests {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .admin-row {
+    gap: 0.5rem;
+  }
+
+  .admin-row-header {
+    display: none;
+  }
+
+  .admin-table-wrap {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    border-radius: 10px;
+  }
+
+  table.admin-table {
+    min-width: 560px;
+  }
+
+  table.admin-table th,
+  table.admin-table td {
+    max-width: 100px;
+    padding: 0.5rem 0.35rem;
+    font-size: 0.8rem;
+  }
+}
+
 @media (max-width: 480px) {
   .admin-select-cell input[type='checkbox'] {
     width: 22px;

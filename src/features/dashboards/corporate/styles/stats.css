@@ -9,12 +9,19 @@
   animation: none;
 }
 
+.dramatic-card {
+  position: static;
+  overflow: visible;
+  animation: none;
+}
+
 /* ── Stat Card ───────────────────────────────────────────────── */
 .stat-card {
   display: flex;
   align-items: center;
   gap: 1rem;
   min-width: 0;
+  padding: var(--card-padding, 1.25rem);
 }
 
 .stat-icon {
@@ -55,4 +62,51 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .stat-card {
+    gap: 0.75rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-icon {
+    transition: none !important;
+    animation: none !important;
+  }
 }

@@ -6,6 +6,16 @@
   width: 100%;
 }
 
+.bootcamp-status-card {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .bootcamp-status p {
   margin: 0;
   color: var(--text-secondary);

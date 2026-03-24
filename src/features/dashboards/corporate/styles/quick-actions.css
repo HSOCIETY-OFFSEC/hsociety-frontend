@@ -5,18 +5,22 @@
   gap: 1rem;
 }
 
+.cd-action-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+}
+
 .quick-action-card {
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   border-radius: 14px;
   position: relative;
   overflow: hidden;
-}
-
-.quick-action-card.dramatic-card {
-  position: static;
-  overflow: visible;
-  animation: none;
 }
 
 .quick-action-card::before {

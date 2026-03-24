@@ -7,3 +7,14 @@
   justify-content: flex-end;
   min-width: 0;
 }
+
+@media (max-width: 480px) {
+  .admin-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .admin-actions > * {
+    flex: 1;
+  }
+}
