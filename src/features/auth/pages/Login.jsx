@@ -48,7 +48,6 @@ const Login = ({
       window.clearInterval(interval);
       document.removeEventListener('animationstart', handleAnimation, true);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const resolveRouteForRole = (role) => {

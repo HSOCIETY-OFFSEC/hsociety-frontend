@@ -1018,6 +1018,12 @@
   gap: 1rem;
 }
 
+.quiz-error {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .quiz-question-text { margin: 0 0 0.5rem; font-weight: 500; }
 
 .quiz-options {
