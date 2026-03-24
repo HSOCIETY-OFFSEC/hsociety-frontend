@@ -11,7 +11,7 @@
    * edge-to-edge. We keep top padding for the sticky nav clearance
    * and bottom padding for the mobile tab bar.
    */
-  padding: 0.75rem 0 3.5rem;
+  padding: 1rem 0 3.5rem;
   color: var(--text-primary);
   font-family: inherit;
   box-sizing: border-box;

@@ -25,10 +25,10 @@
   border-radius: 14px;
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
+  gap: 1rem;
   position: relative;
   overflow: hidden;
-  padding: 1rem;
+  padding: 1.25rem;
   min-width: 0;
   width: 100%;
   box-sizing: border-box;
@@ -61,8 +61,8 @@
 .student-card-header {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding-bottom: 0.75rem;
+  gap: 0.65rem;
+  padding-bottom: 0.875rem;
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
 }
@@ -148,7 +148,7 @@
     border-top: none;
     border-bottom: 1px solid var(--border-color);
     box-shadow: none;
-    padding: 1.1rem 1rem;
+    padding: 1.25rem 1rem;
     /* No hover lift on touch */
     transform: none !important;
   }
@@ -204,8 +204,8 @@
   }
 
   .student-card {
-    padding: 1.35rem;
-    gap: 1rem;
+    padding: 1.5rem;
+    gap: 1.1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
 
