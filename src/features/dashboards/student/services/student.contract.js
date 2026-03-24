@@ -10,15 +10,20 @@ export const normalizeLearningPathItem = (item = {}) => ({
   progress: Number(item.progress || 0)
 });
 
-export const normalizeModuleOverview = (item = {}) => ({
-  id: String(item.id || ''),
-  title: item.title || 'Untitled module',
-  roomsTotal: Number(item.roomsTotal || 0),
-  roomsCompleted: Number(item.roomsCompleted || 0),
-  ctf: item.ctf || '',
-  badge: item.badge || '',
-  progress: Number(item.progress || 0)
-});
+export const normalizeModuleOverview = (item = {}) => {
+  const resolvedId = item.id ?? item.moduleId ?? item.phaseId ?? '';
+  const moduleId = Number(item.moduleId ?? item.id ?? item.phaseId ?? 0) || 0;
+  return {
+    id: String(resolvedId || ''),
+    moduleId,
+    title: item.title || 'Untitled module',
+    roomsTotal: Number(item.roomsTotal || 0),
+    roomsCompleted: Number(item.roomsCompleted || 0),
+    ctf: item.ctf || '',
+    badge: item.badge || '',
+    progress: Number(item.progress || 0)
+  };
+};
 
 export const normalizeSnapshotItem = (item = {}) => ({
   id: String(item.id || ''),

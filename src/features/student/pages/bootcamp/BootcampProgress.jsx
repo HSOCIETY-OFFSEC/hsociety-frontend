@@ -51,6 +51,7 @@ const buildStatusMeta = (overview) => {
 
 const BootcampProgress = () => {
   const [overview, setOverview] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -58,6 +59,7 @@ const BootcampProgress = () => {
       const response = await getStudentOverview();
       if (!mounted) return;
       if (response.success) setOverview(response.data);
+      if (mounted) setLoading(false);
     };
     load();
     return () => {
@@ -67,7 +69,8 @@ const BootcampProgress = () => {
 
   const progressMap = useMemo(() => (
     (overview?.modules || []).reduce((acc, module) => {
-      acc[Number(module.id)] = Number(module.progress) || 0;
+      const key = Number(module.moduleId ?? module.id ?? 0);
+      if (key) acc[key] = Number(module.progress) || 0;
       return acc;
     }, {})
   ), [overview]);
@@ -123,20 +126,30 @@ const BootcampProgress = () => {
               </h2>
               <p className="bc-section-desc">Progress is updated after each room quiz submission.</p>
               <div className="bc-item-list">
-                {HACKER_PROTOCOL_PHASES.map((phase) => (
+                {HACKER_PROTOCOL_PHASES.map((phase) => {
+                  const phaseProgress = progressMap[Number(phase.moduleId)] || 0;
+                  const isComplete = phaseProgress >= 100;
+                  return (
                   <article key={phase.moduleId} className="bc-item-row">
                     <div className="bc-item-main">
                       <span className="bc-item-title">Phase {phase.moduleId}: {phase.codename}</span>
                       <span className="bc-item-subtitle">{phase.title}</span>
                     </div>
                     <div className="bc-item-meta">
-                      <span className="bc-item-progress">{progressMap[Number(phase.moduleId)] || 0}%</span>
-                      <span className={`bc-label ${(progressMap[Number(phase.moduleId)] || 0) >= 100 ? 'bc-label-beta' : 'bc-label-alpha'}`}>
-                        {(progressMap[Number(phase.moduleId)] || 0) >= 100 ? 'Complete' : 'In progress'}
-                      </span>
+                      {loading ? (
+                        <span className="bc-item-progress">Loading…</span>
+                      ) : (
+                        <>
+                          <span className="bc-item-progress">{phaseProgress}%</span>
+                          <span className={`bc-label ${isComplete ? 'bc-label-beta' : 'bc-label-alpha'}`}>
+                            {isComplete ? 'Complete' : 'In progress'}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </article>
-                ))}
+                );
+                })}
               </div>
             </section>
             <div className="bc-divider" />

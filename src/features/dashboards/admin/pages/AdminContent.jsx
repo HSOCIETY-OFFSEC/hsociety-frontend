@@ -5,7 +5,8 @@ import Button from '../../../../shared/components/ui/Button';
 import PageLoader from '../../../../shared/components/ui/PageLoader';
 import {
   getAdminContent,
-  publishBootcampMeeting,
+  getUsers,
+  sendBootcampRoomLink,
   sendAdminNotification,
   updateAdminContent,
 } from '../services/admin.service';
@@ -88,7 +89,7 @@ const AdminContent = () => {
     sections: [{ title: '', body: '', bullets: [] }],
   });
   const [team, setTeam] = useState(() => normalizeTeam({}));
-  const [meetingForm, setMeetingForm] = useState({ meetUrl: '', message: '', audience: 'students' });
+  const [meetingForm, setMeetingForm] = useState({ meetUrl: '', message: '', audience: 'enrolled' });
   const [notificationForm, setNotificationForm] = useState({
     title: '',
     message: '',
@@ -475,12 +476,47 @@ const AdminContent = () => {
   const handlePublishMeeting = async () => {
     setError('');
     setStatus('');
-    const response = await publishBootcampMeeting(meetingForm);
+    if (!meetingForm.meetUrl) {
+      setError('Add a live class link before publishing.');
+      return;
+    }
+
+    const usersRes = await getUsers();
+    if (!usersRes.success) {
+      setError(getPublicErrorMessage({ action: 'load', response: usersRes }));
+      return;
+    }
+
+    const enrolledStudentIds = (usersRes.data || [])
+      .filter((user) => user.role === 'student')
+      .filter((user) => {
+        const status = String(user.bootcampStatus || '').toLowerCase();
+        const isEnrolled = status === 'enrolled' || status === 'active' || status === 'completed';
+        return isEnrolled && user.bootcampAccessRevoked !== true;
+      })
+      .map((user) => user.id);
+
+    if (!enrolledStudentIds.length) {
+      setStatus('No enrolled students found for this broadcast.');
+      return;
+    }
+
+    const response = await sendBootcampRoomLink({
+      title: meetingForm.message?.trim() || 'Live Class',
+      message: meetingForm.message?.trim() || 'A live class session is now available.',
+      audience: 'custom',
+      userIds: enrolledStudentIds,
+      metadata: {
+        meetUrl: meetingForm.meetUrl,
+        title: meetingForm.message?.trim() || 'Live Class',
+      }
+    });
+
     if (!response.success) {
       setError(getPublicErrorMessage({ action: 'submit', response }));
       return;
     }
-    setStatus(`Meeting alert sent to ${response.data?.sentCount || 0} users.`);
+    setStatus(`Meeting alert sent to ${response.data?.sentCount || enrolledStudentIds.length} enrolled students.`);
   };
 
   if (loading) return <PageLoader message="Loading content manager..." durationMs={0} />;
@@ -715,7 +751,7 @@ const AdminContent = () => {
         <Card className="admin-card" padding="medium">
           <div className="admin-section-header">
             <h2>Bootcamp Meeting Broadcast</h2>
-            <p>Paste a Google Meet link and notify target users instantly.</p>
+            <p>Paste a Google Meet link and notify enrolled bootcamp students instantly.</p>
           </div>
           <div className="admin-stats-form">
             <label>
@@ -736,14 +772,8 @@ const AdminContent = () => {
             </label>
             <label>
               Audience
-              <select
-                className="admin-input"
-                value={meetingForm.audience}
-                onChange={(e) => setMeetingForm((prev) => ({ ...prev, audience: e.target.value }))}
-              >
-                <option value="students">Students</option>
-                <option value="organizers">Organizers</option>
-                <option value="all">All users</option>
+              <select className="admin-input" value={meetingForm.audience} disabled>
+                <option value="enrolled">Enrolled students only</option>
               </select>
             </label>
           </div>

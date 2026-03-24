@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiCircle, FiVideo } from 'react-icons/fi';
 import { useAuth } from '../../../../core/auth/AuthContext';
 import { registerBootcamp } from '../../../dashboards/student/services/student.service';
 import { getCurrentUser } from '../../../../core/auth/auth.service';
 import BootcampAccessPage from '../../components/bootcamp/BootcampAccessPage';
-import BootcampSidebar from '../../components/bootcamp/BootcampSidebar';
 import useBootcampAccess from '../../hooks/useBootcampAccess';
 import { consumeBootcampRedirect, setBootcampRedirect } from '../../utils/bootcampRedirect';
 import '../../styles/bootcamp/bootcamp-app.css';
@@ -16,9 +14,6 @@ const BootcampLayout = () => {
   const { user, updateUser } = useAuth();
   const { isRegistered, isPaid, accessRevoked } = useBootcampAccess();
   const [registering, setRegistering] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
   const allowPreview = location.pathname === '/student-bootcamps' || location.pathname === '/student-bootcamps/';
   const gateAccess = Boolean(user) && !allowPreview && (accessRevoked || !isRegistered || !isPaid);
 
@@ -88,58 +83,11 @@ const BootcampLayout = () => {
     };
   }, [accessRevoked, handleRegisterBootcamp, isRegistered, location.pathname, location.search, navigate, registering]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window?.innerWidth || 0;
-      setIsMobile(width < 960);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <>
       {!gateAccess && (
-        <div className={`bootcamp-app ${collapsed ? 'bootcamp-collapsed' : ''} ${isMobile ? 'mobile' : ''}`}>
-          <header className="bootcamp-topbar">
-            <div className="bootcamp-topbar-content">
-              <div className="bootcamp-topbar-left">
-                <button
-                  type="button"
-                  className="bc-btn bc-btn-secondary"
-                  onClick={() => navigate('/student-dashboard')}
-                >
-                  <FiArrowLeft size={14} />
-                  Back to Dashboard
-                </button>
-              </div>
-              <div className="bootcamp-topbar-right">
-                <button
-                  type="button"
-                  className="bc-btn bc-btn-primary"
-                  onClick={() => navigate('/student-bootcamps/live-class')}
-                >
-                  <FiVideo size={14} />
-                  Live Class
-                </button>
-                <span className="bootcamp-topbar-status">
-                  <FiCircle size={10} />
-                  {user?.bootcampPaymentStatus === 'paid' ? 'Active' : 'Locked'}
-                </span>
-              </div>
-            </div>
-          </header>
-
-          {!isMobile && (
-            <aside className="bootcamp-sidebar">
-              <BootcampSidebar collapsed={collapsed} onToggleCollapse={() => setCollapsed((prev) => !prev)} />
-            </aside>
-          )}
-
-          <main className="bootcamp-main">
-            <Outlet />
-          </main>
+        <div className="bootcamp-shell">
+          <Outlet />
         </div>
       )}
       {gateAccess && (

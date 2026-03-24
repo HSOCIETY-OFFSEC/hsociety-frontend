@@ -189,14 +189,18 @@
 .cd-section-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .cd-panel {
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border-radius: 16px;
   background: var(--bg-secondary);
   padding: 1.25rem;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 
 .cd-panel-header {
@@ -473,16 +477,16 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  padding: 0.45rem 0.9rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.65rem 1.1rem;
   border-radius: var(--radius-xs);
   border: 1px solid var(--border-color);
   cursor: pointer;
   white-space: nowrap;
   font-family: inherit;
-  line-height: 1;
-  min-height: 32px;
+  line-height: 1.2;
+  min-height: 44px;
 }
 
 .cd-btn:disabled {

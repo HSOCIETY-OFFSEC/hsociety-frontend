@@ -10,6 +10,16 @@
   --card-padding: 1.6rem;
 }
 
+.admin-dashboard .card__content {
+  gap: 1.5rem;
+}
+
+.admin-dashboard .button--small {
+  height: 44px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.92rem;
+}
+
 .admin-dashboard .dashboard-shell {
   min-width: 0;
 }

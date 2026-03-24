@@ -77,6 +77,7 @@ const WorkspaceLayout = () => {
   const pathname = location.pathname || '';
   const isLessonWorkspace = pathname.startsWith('/student-bootcamps/modules/');
   const isCommunity = pathname.startsWith('/community');
+  const isBootcamp = pathname.startsWith('/student-bootcamps');
   const isDashboardTheme = !isCommunity && !isLessonWorkspace;
   const { cpTotal, streakDays } = useUserStats(user?.id, role);
 
@@ -324,6 +325,15 @@ const WorkspaceLayout = () => {
             </div>
 
             <div className="workspace-topbar-actions">
+              {role === 'student' && isBootcamp && (
+                <button
+                  type="button"
+                  className="workspace-bootcamp-btn"
+                  onClick={() => navigate('/student-bootcamps/live-class')}
+                >
+                  Live Class
+                </button>
+              )}
               {user?.id && (
                 <div className="workspace-cp-chip" title={WORKSPACE_UI.cpChipTitle}>
                   <img src={cpIcon} alt="CP" className="workspace-cp-chip-icon" />

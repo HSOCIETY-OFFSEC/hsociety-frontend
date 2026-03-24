@@ -2,7 +2,17 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../core/auth/AuthContext';
 import { getSidebarLinks } from '../../../config/navigation/navigation.config';
-import { LuChevronDown, LuChevronsLeft, LuChevronsRight, LuLayers } from 'react-icons/lu';
+import {
+  LuBookOpen,
+  LuChartBar,
+  LuChevronDown,
+  LuChevronsLeft,
+  LuChevronsRight,
+  LuFileText,
+  LuLayers,
+  LuPlay,
+  LuVideo
+} from 'react-icons/lu';
 import Logo from '../common/Logo';
 import './Sidebar.css';
 
@@ -31,28 +41,37 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
     ? 'corporate'
     : null;
   const resolvedRole = routeRole || role || 'student';
-  const links = getSidebarLinks(true, resolvedRole);
+  const isBootcampRoute = path.startsWith('/student-bootcamps');
+  const bootcampNavLinks = useMemo(() => ([
+    { path: '/student-bootcamps', label: 'Bootcamp Home', icon: LuPlay },
+    { path: '/student-bootcamps/overview', label: 'Overview', icon: LuLayers },
+    { path: '/student-bootcamps/modules', label: 'Modules', icon: LuBookOpen },
+    { path: '/student-bootcamps/live-class', label: 'Live Class', icon: LuVideo },
+    { path: '/student-bootcamps/resources', label: 'Resources', icon: LuFileText },
+    { path: '/student-bootcamps/progress', label: 'Progress', icon: LuChartBar }
+  ]), []);
+  const links = isBootcampRoute ? bootcampNavLinks : getSidebarLinks(true, resolvedRole);
   const isActive = (path) => location.pathname === path;
   const [learnOpen, setLearnOpen] = useState(false);
   const sidebarRef = useRef(null);
   const innerRef = useRef(null);
 
   const bootcampLinks = useMemo(
-    () => links.filter((link) => link.group === 'learn'),
-    [links]
+    () => (isBootcampRoute ? [] : links.filter((link) => link.group === 'learn')),
+    [isBootcampRoute, links]
   );
 
   const defaultLinks = useMemo(
-    () => links.filter((link) => link.group !== 'learn'),
-    [links]
+    () => (isBootcampRoute ? links : links.filter((link) => link.group !== 'learn')),
+    [isBootcampRoute, links]
   );
 
   const labelList = useMemo(() => {
     const labels = links.map((link) => link.label);
-    if (bootcampLinks.length > 0) labels.push('Learn');
+    if (!isBootcampRoute && bootcampLinks.length > 0) labels.push('Learn');
     labels.push('Collapse');
     return labels;
-  }, [links, bootcampLinks.length]);
+  }, [bootcampLinks.length, isBootcampRoute, links]);
 
   useEffect(() => {
     const sidebar = sidebarRef.current;
@@ -149,6 +168,8 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
           <div className="app-sidebar-links">
             {collapsed ? (
               links.map(renderLink)
+            ) : isBootcampRoute ? (
+              defaultLinks.map(renderLink)
             ) : (
               <>
                 {defaultLinks.map(renderLink)}

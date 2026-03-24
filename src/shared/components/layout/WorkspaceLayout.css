@@ -238,6 +238,27 @@
   background: var(--bg-tertiary);
 }
 
+.workspace-bootcamp-btn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.workspace-bootcamp-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
+}
+
 @keyframes workspace-dropdown-pop {
   from { opacity: 0; transform: translateY(5px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
