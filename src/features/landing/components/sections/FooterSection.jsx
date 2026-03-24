@@ -31,6 +31,7 @@ const FooterSection = () => {
       title: 'Legal',
       links: [
         { label: 'Terms', path: '/terms' },
+        { label: 'Privacy', path: '/privacy' },
         { label: 'Feedback', path: '/feedback' },
       ],
     },
@@ -81,7 +82,7 @@ const FooterSection = () => {
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} HSOCIETY. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} HSOCIETY OFFSEC. All rights reserved.</span>
         </div>
       </div>
     </footer>

@@ -79,6 +79,7 @@ const Blog = React.lazy(() => import('../../features/blog/pages/Blog'));
 const Pricing = React.lazy(() => import('../../features/pricing/pages/Pricing'));
 const Feedback = React.lazy(() => import('../../features/feedback/pages/Feedback'));
 const Terms = React.lazy(() => import('../../features/terms/pages/Terms'));
+const Privacy = React.lazy(() => import('../../features/privacy/pages/Privacy'));
 const Courses = React.lazy(() => import('../../features/courses/pages/Courses'));
 const CourseDetails = React.lazy(() => import('../../features/courses/pages/CourseDetails'));
 const CourseModuleDetails = React.lazy(() => import('../../features/courses/pages/CourseModuleDetails'));
@@ -489,6 +490,7 @@ const AppRouter = () => {
           <Route path="cp-points" element={<CPPoints />} />
           <Route path="terms" element={<Terms />} />
           <Route path="terms-and-conditions" element={<Terms />} />
+          <Route path="privacy" element={<Privacy />} />
           <Route path=":handle" element={<PublicHandleRoute />} />
         </Route>
 
