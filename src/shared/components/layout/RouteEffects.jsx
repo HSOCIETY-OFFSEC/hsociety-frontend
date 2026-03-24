@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Loader from '../ui/Loader';
 import { trackSecurityEvent } from '../../../core/security/security-events.service';
 import { trackPageView } from '../../services/analytics.service';
+import Seo from '../seo/Seo';
+import { getSeoForPath } from '../../../config/app/seo.config';
 import './RouteEffects.css';
 
 const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
@@ -66,12 +68,17 @@ const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
     };
   }, [location.pathname, durationMs, loaderDelayMs, trackInIdle]);
 
-  if (!showLoader) return null;
+  const seo = useMemo(() => getSeoForPath(location.pathname), [location.pathname]);
 
   return (
-    <div className="route-loader-overlay" aria-hidden="true">
-      <Loader size="lg" label="Switching secure context" />
-    </div>
+    <>
+      <Seo {...seo} />
+      {showLoader && (
+        <div className="route-loader-overlay" aria-hidden="true">
+          <Loader size="lg" label="Switching secure context" />
+        </div>
+      )}
+    </>
   );
 };
 

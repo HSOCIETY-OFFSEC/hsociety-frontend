@@ -9,6 +9,7 @@ import { runSecurityScan } from '../core/security/scan.runner';
 import RankBadgeProvider from '../shared/components/providers/RankBadgeProvider';
 import { NotificationProvider } from '../shared/components/providers/NotificationProvider';
 import { envConfig } from '../config/app/env.config';
+import AnalyticsHead from '../shared/components/seo/AnalyticsHead';
 
 // Import global styles
 import '../styles/globals.css';
@@ -51,6 +52,7 @@ const App = () => {
         <RankBadgeProvider>
           <NotificationProvider>
             <div className="app-shell">
+              <AnalyticsHead />
               <AppRouter />
               <PwaUpdatePrompt />
               <CookieConsent />
