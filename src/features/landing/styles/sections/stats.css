@@ -3,10 +3,9 @@
    ========================================================== */
 
 .stats-section {
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  background: transparent;
   --reveal-distance: 20px;
+  padding: 2.5rem 0 0;
 }
 
 .stats-bar {
@@ -15,7 +14,7 @@
   padding: 0 1.5rem;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
+  gap: 1.25rem;
   position: relative;
 }
 
@@ -23,11 +22,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 2rem 2rem;
+  padding: 1.6rem 1.6rem;
   text-align: left;
   position: relative;
   cursor: default;
-  transition: background 0.2s ease;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  background: var(--bg-secondary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 
   /* staggered reveal — items slide up on entrance */
   opacity: 0;
@@ -57,10 +59,10 @@
 .stat-item::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 2rem;
-  right: 2rem;
-  height: 1px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
   background: var(--primary-color);
   transform: scaleX(0);
   transform-origin: left center;
@@ -69,15 +71,13 @@
 }
 
 .stat-item:hover {
-  background: var(--bg-tertiary, rgba(255, 255, 255, 0.03));
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
 }
 
 .stat-item:hover::after {
   transform: scaleX(1);
-}
-
-.stat-item:not(:last-child) {
-  border-right: 1px solid var(--border-color);
 }
 
 .stat-value {
@@ -133,22 +133,11 @@
   .stats-bar {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     padding: 0 1rem;
+    gap: 1rem;
   }
 
   .stat-item {
-    padding: 1.75rem 1.25rem;
-  }
-
-  .stat-item:not(:last-child) {
-    border-right: none;
-  }
-
-  .stat-item:nth-child(odd) {
-    border-right: 1px solid var(--border-color);
-  }
-
-  .stat-item:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--border-color);
+    padding: 1.4rem 1.2rem;
   }
 }
 
