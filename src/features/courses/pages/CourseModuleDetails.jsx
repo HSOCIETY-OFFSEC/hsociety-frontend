@@ -12,6 +12,7 @@ import {
 } from 'react-icons/fi';
 import { getHackerProtocolModule } from '../../../data/static/bootcamps/hackerProtocolData';
 import { useAuth } from '../../../core/auth/AuthContext';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/courses.css';
 
@@ -111,7 +112,7 @@ const CourseModuleDetails = () => {
             <h2 className="section-title">Rooms in this phase</h2>
             <p className="section-subtitle">Jump into any room to preview the content.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {module.rooms.map((room, index) => {
               const difficulty = index < 2 ? 'Core' : index < 4 ? 'Advanced' : 'Expert';
               return (
@@ -134,7 +135,7 @@ const CourseModuleDetails = () => {
               </Link>
               );
             })}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 
@@ -149,7 +150,7 @@ const CourseModuleDetails = () => {
             <h2 className="section-title">What you will learn</h2>
             <p className="section-subtitle">Skills covered across each room in this phase.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {module.rooms.map((room) => (
               <article key={room.roomId} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -167,7 +168,7 @@ const CourseModuleDetails = () => {
                 )}
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

@@ -12,6 +12,7 @@ import {
   FiArrowUpRight,
 } from 'react-icons/fi';
 import PageLoader from '../../../shared/components/ui/PageLoader';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import { getTermsContent } from '../services/terms.service';
 import '../../public/styles/public-landing.css';
 import '../styles/terms.css';
@@ -161,7 +162,7 @@ const Terms = () => {
             <h2 className="section-title">Review the agreements.</h2>
             <p className="section-subtitle">Each section summarizes the key expectations and responsibilities.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {sections.map((section) => (
               <article key={section.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -179,7 +180,7 @@ const Terms = () => {
                 )}
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

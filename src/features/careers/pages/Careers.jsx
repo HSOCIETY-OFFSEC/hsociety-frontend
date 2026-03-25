@@ -8,6 +8,7 @@ import {
   FiUsers,
   FiArrowUpRight,
 } from 'react-icons/fi';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/careers.css';
 
@@ -101,7 +102,7 @@ const Careers = () => {
             <h2 className="section-title">What we’re focused on now.</h2>
             <p className="section-subtitle">We’re refining internal delivery and training before the next hiring wave.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {STATUS_CARDS.map((card) => (
               <article key={card.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -112,7 +113,7 @@ const Careers = () => {
                 <p className="public-card-desc">{card.body}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

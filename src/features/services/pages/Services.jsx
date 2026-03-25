@@ -27,6 +27,7 @@ import { FaGraduationCap, FaUsers, FaShieldAlt, FaRocket } from 'react-icons/fa'
 import landingContent from '../../../data/static/landing.json';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import { slugify } from '../../../shared/utils/display/slugify';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/services.css';
 
@@ -141,7 +142,7 @@ const Services = () => {
               Built to surface risk, validate impact, and accelerate remediation.
             </p>
           </div>
-          <div className="public-card-grid svc-card-grid">
+          <PublicCardGrid className="svc-card-grid">
             {services.map((service) => (
               <article
                 key={service.title}
@@ -172,7 +173,7 @@ const Services = () => {
                 </div>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

@@ -15,6 +15,7 @@ import {
   FiRss,
 } from 'react-icons/fi';
 import SocialLinks from '../../../shared/components/common/SocialLinks';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../../config/api/api.config';
 import '../../public/styles/public-landing.css';
@@ -44,14 +45,19 @@ const FALLBACK_POSTS = [
 const Blog = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState(FALLBACK_POSTS);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
     const load = async () => {
-      const response = await apiClient.get(API_ENDPOINTS.PUBLIC.BLOG_POSTS);
-      if (!mounted) return;
-      if (response.success && Array.isArray(response.data?.posts) && response.data.posts.length) {
-        setPosts(response.data.posts);
+      try {
+        const response = await apiClient.get(API_ENDPOINTS.PUBLIC.BLOG_POSTS);
+        if (!mounted) return;
+        if (response.success && Array.isArray(response.data?.posts) && response.data.posts.length) {
+          setPosts(response.data.posts);
+        }
+      } finally {
+        if (mounted) setLoading(false);
       }
     };
     load();
@@ -150,7 +156,7 @@ const Blog = () => {
               Open notes from the field. Click any card to read the full post.
             </p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid loading={loading}>
             {posts.map((post) => (
               <article
                 key={post.title}
@@ -178,7 +184,7 @@ const Blog = () => {
                 </div>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

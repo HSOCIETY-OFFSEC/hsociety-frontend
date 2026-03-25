@@ -10,6 +10,7 @@ import {
   FiBarChart2,
 } from 'react-icons/fi';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/cp-points.css';
 
@@ -82,7 +83,7 @@ const CPPoints = () => {
             </div>
           </div>
           <div className="public-hero-panel">
-            <div className="hs-signature" aria-hidden="true" />
+            
             <p className="public-badge">CP icon</p>
             <img src={cpIcon} alt="CP" className="cp-hero-icon" />
             <div className="public-hero-stats">
@@ -108,7 +109,7 @@ const CPPoints = () => {
             <h2 className="section-title">Ways to stack Compromised Points.</h2>
             <p className="section-subtitle">Each action compounds your operator signal.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {actions.map((action) => (
               <article key={action.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -119,7 +120,7 @@ const CPPoints = () => {
                 <p className="public-card-desc">{action.description}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

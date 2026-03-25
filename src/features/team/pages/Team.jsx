@@ -24,6 +24,7 @@ import {
 import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
 import teamContent from '../../../data/static/team.json';
 import { getTeamContent } from '../services/team.service';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/team.css';
 
@@ -172,7 +173,7 @@ const Team = () => {
               <p className="section-subtitle">{content.leadership.subtitle}</p>
             )}
           </div>
-          <div className="public-card-grid tm-leadership-grid">
+          <PublicCardGrid className="tm-leadership-grid">
             {leadership.map((member, i) => (
               <article key={`${member.name}-${i}`} className="public-card tm-member-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -220,7 +221,7 @@ const Team = () => {
                 </div>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 
@@ -237,7 +238,7 @@ const Team = () => {
               <p className="section-subtitle">{content.groups.subtitle}</p>
             )}
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {teams.map((group, i) => (
               <article key={`${group.title}-${i}`} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -248,7 +249,7 @@ const Team = () => {
                 <p className="public-card-desc">{group.description}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

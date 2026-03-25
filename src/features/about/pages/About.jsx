@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import aboutContent from '../../../data/static/about.json';
 import SocialLinks from '../../../shared/components/common/SocialLinks';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/about.css';
 
@@ -64,7 +65,7 @@ const About = () => {
             <h2 className="section-title">{cycle.title}</h2>
             <p className="section-subtitle">{cycle.subtitle}</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {cycle.phases.map((phase, index) => (
               <article key={phase} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -75,7 +76,7 @@ const About = () => {
                 <p className="public-card-desc">Operational focus within the HSOCIETY OFFSEC cycle.</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 
@@ -90,7 +91,7 @@ const About = () => {
             <h2 className="section-title">{experience.title}</h2>
             <p className="section-subtitle">{experience.subtitle}</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {experience.cards.map((card) => (
               <article key={card.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -98,7 +99,7 @@ const About = () => {
                 <p className="public-card-desc">{card.description}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 
@@ -113,7 +114,7 @@ const About = () => {
             <h2 className="section-title">{principle.title}</h2>
             <p className="section-subtitle">{principle.subtitle}</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {principle.bullets.map((item, i) => (
               <article key={item} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -123,7 +124,7 @@ const About = () => {
                 <p className="public-card-desc">{item}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiBarChart2, FiCheckCircle, FiShield, FiArrowUpRight } from 'react-icons/fi';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/case-studies.css';
 
@@ -92,7 +93,7 @@ const CaseStudies = () => {
             <h2 className="section-title">Select engagements and outcomes.</h2>
             <p className="section-subtitle">Each case study includes evidence, findings, and remediation guidance.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {studies.map((study) => (
               <article key={study.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -106,7 +107,7 @@ const CaseStudies = () => {
                 </div>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiCode, FiCpu, FiGitBranch, FiGithub, FiShield, FiTool, FiArrowUpRight } from 'react-icons/fi';
 import developerContent from '../../../data/static/developer.json';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/developer.css';
 
@@ -89,7 +90,7 @@ const Developer = () => {
             <h2 className="section-title">{developerContent.stack.title}</h2>
             <p className="section-subtitle">{developerContent.stack.subtitle}</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {stack.map((item) => (
               <article key={item.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -100,7 +101,7 @@ const Developer = () => {
                 <p className="public-card-desc">{item.detail}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 
@@ -115,7 +116,7 @@ const Developer = () => {
             <h2 className="section-title">{developerContent.contributions.title}</h2>
             <p className="section-subtitle">{developerContent.contributions.subtitle}</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {contributions.map((item) => (
               <article key={item.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -126,7 +127,7 @@ const Developer = () => {
                 <p className="public-card-desc">{item.detail}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

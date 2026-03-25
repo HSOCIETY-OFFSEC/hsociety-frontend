@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import landingContent from '../../../data/static/landing.json';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/services.css';
 import {
@@ -96,7 +97,7 @@ const ServiceDetail = () => {
             <h2 className="section-title">Evidence-driven coverage areas.</h2>
             <p className="section-subtitle">Every engagement prioritizes clarity, evidence, and impact.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {service.features.map((feature) => (
               <article key={feature} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -104,7 +105,7 @@ const ServiceDetail = () => {
                 <p className="public-card-desc">Operator-led coverage with remediation guidance.</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 
@@ -119,7 +120,7 @@ const ServiceDetail = () => {
             <h2 className="section-title">Related services</h2>
             <p className="section-subtitle">Jump to another service or go back to the catalog.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {prevService && (
               <article
                 className="public-card svc-nav-card interactive-card"
@@ -178,7 +179,7 @@ const ServiceDetail = () => {
               <h3 className="public-card-title">Service catalog</h3>
               <p className="public-card-desc">Browse all HSOCIETY OFFSEC offerings.</p>
             </article>
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

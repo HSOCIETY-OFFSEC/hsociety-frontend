@@ -8,6 +8,7 @@ import {
   FiArrowUpRight,
   FiCheckCircle,
 } from 'react-icons/fi';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/contact.css';
 import {
@@ -108,7 +109,7 @@ export default function Contact() {
               Direct lines for partnerships, support, and training inquiries.
             </p>
           </div>
-          <div className="public-card-grid contact-card-grid">
+          <PublicCardGrid className="contact-card-grid">
             {CONTACT_CHANNELS.map((card) => {
               const Icon = card.icon;
               return (
@@ -134,7 +135,7 @@ export default function Contact() {
                 </article>
               );
             })}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

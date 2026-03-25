@@ -25,6 +25,7 @@ import {
   FiCheckCircle,
   FiTag,
 } from 'react-icons/fi';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/pricing.css';
 import {
@@ -211,7 +212,7 @@ const Pricing = () => {
             <h2 className="section-title">Included in every engagement.</h2>
             <p className="section-subtitle">{PRICING_NOTE}</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {PRICING_INCLUDED_ITEMS.map((item) => (
               <article key={item} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -221,7 +222,7 @@ const Pricing = () => {
                 <p className="public-card-desc">{item}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

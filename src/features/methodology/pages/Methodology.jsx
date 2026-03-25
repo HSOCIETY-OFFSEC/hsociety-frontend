@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiCheckCircle, FiClipboard, FiSearch, FiShield, FiTarget, FiTool } from 'react-icons/fi';
 import methodologyContent from '../../../data/static/methodology.json';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/methodology.css';
 
@@ -81,7 +82,7 @@ const Methodology = () => {
             <h2 className="section-title">A repeatable security cycle.</h2>
             <p className="section-subtitle">Every phase is designed to surface risk and ship fixes.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {phases.map((phase) => (
               <article key={phase.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -92,7 +93,7 @@ const Methodology = () => {
                 <p className="public-card-desc">{phase.detail}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

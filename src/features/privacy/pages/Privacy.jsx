@@ -7,6 +7,7 @@ import {
   FiGlobe,
   FiCheckCircle,
 } from 'react-icons/fi';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../../terms/styles/terms.css';
 
@@ -133,7 +134,7 @@ const Privacy = () => {
             <h2 className="section-title">Review how we protect data.</h2>
             <p className="section-subtitle">Key privacy commitments and data handling practices.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {sections.map((section) => (
               <article key={section.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -151,7 +152,7 @@ const Privacy = () => {
                 )}
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
     </div>

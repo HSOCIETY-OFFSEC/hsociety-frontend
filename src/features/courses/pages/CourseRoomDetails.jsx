@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fi';
 import { getHackerProtocolModule, getHackerProtocolRoom } from '../../../data/static/bootcamps/hackerProtocolData';
 import { useAuth } from '../../../core/auth/AuthContext';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/courses.css';
 
@@ -106,7 +107,7 @@ const CourseRoomDetails = () => {
             <h2 className="section-title">What you will cover</h2>
             <p className="section-subtitle">Focus areas for this room.</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {room.bullets?.map((bullet) => (
               <article key={bullet} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -114,7 +115,7 @@ const CourseRoomDetails = () => {
                 <p className="public-card-desc">{bullet}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 

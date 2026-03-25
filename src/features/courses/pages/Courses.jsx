@@ -7,6 +7,7 @@ import {
   FiShield,
 } from 'react-icons/fi';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../../data/static/bootcamps/hackerProtocolData';
+import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import '../../public/styles/public-landing.css';
 import '../styles/courses.css';
 
@@ -88,7 +89,7 @@ const Courses = () => {
             <h2 className="section-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h2>
             <p className="section-subtitle">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
           </div>
-          <div className="public-card-grid">
+          <PublicCardGrid>
             {HACKER_PROTOCOL_PHASES.map((phase, index) => (
               <article key={phase.title} className="public-card">
                 <div className="hs-signature" aria-hidden="true" />
@@ -99,7 +100,7 @@ const Courses = () => {
                 <p className="public-card-desc">{phase.summary}</p>
               </article>
             ))}
-          </div>
+          </PublicCardGrid>
         </div>
       </section>
 
