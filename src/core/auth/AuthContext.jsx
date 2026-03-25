@@ -3,6 +3,7 @@ import { sessionManager } from './session.manager';
 import { setupAutoLogout } from '../inactivity/autoLogout';
 import { refreshToken as refreshAuthToken, logout as logoutRequest } from './auth.service';
 import { envConfig } from '../../config/app/env.config';
+import { getWhatsAppLink } from '../../config/app/social.config';
 import { trackSecurityEvent } from '../security/security-events.service';
 import { setPendingToast } from '../../shared/utils/toastStorage';
 import { buildAuthModalUrl } from '../../shared/utils/auth/authModal';
@@ -164,7 +165,7 @@ export const AuthProvider = ({ children }) => {
 
       // Setup auto logout monitoring
       setupInactivityMonitor();
-      if (typeof window !== 'undefined' && envConfig.community?.whatsappUrl) {
+      if (typeof window !== 'undefined' && getWhatsAppLink()) {
         sessionStorage.setItem('hsociety.whatsappPopup', '1');
       }
       trackSecurityEvent(

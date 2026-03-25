@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../core/auth/AuthContext';
-import { envConfig } from '../../../config/app/env.config';
+import { getWhatsAppLink } from '../../../config/app/social.config';
 import './WhatsAppCommunityPopup.css';
 
 const STORAGE_KEY = 'hsociety.whatsappPopup';
@@ -8,7 +8,7 @@ const STORAGE_KEY = 'hsociety.whatsappPopup';
 const WhatsAppCommunityPopup = () => {
   const { isAuthenticated } = useAuth();
   const [visible, setVisible] = useState(false);
-  const whatsappUrl = envConfig.community?.whatsappUrl || '';
+  const whatsappUrl = getWhatsAppLink();
 
   useEffect(() => {
     if (!whatsappUrl) return;

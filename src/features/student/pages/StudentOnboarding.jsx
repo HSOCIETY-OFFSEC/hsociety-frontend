@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiMessageSquare, FiPlayCircle } from 'react-icons/fi';
 import { getStudentOverview, registerBootcamp, joinStudentCommunity, updateOnboarding } from '../../dashboards/student/services/student.service';
 import { useAuth } from '../../../core/auth/AuthContext';
-import { SOCIAL_LINKS } from '../../../config/app/social.config';
+import { getWhatsAppLink } from '../../../config/app/social.config';
 import '../styles/components.css';
 import '../../dashboards/student/styles/student-dashboard.css';
 
@@ -13,7 +13,7 @@ const StudentOnboarding = () => {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('');
   const [overview, setOverview] = useState(null);
-  const whatsappLink = SOCIAL_LINKS.find((link) => link.key === 'whatsapp')?.href || '';
+  const whatsappLink = getWhatsAppLink();
 
   useEffect(() => {
     let mounted = true;

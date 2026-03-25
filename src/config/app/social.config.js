@@ -20,5 +20,6 @@ export const SOCIAL_LINKS = [
 ];
 
 export const getSocialLinks = () => SOCIAL_LINKS.filter((link) => Boolean(link.href));
+export const getWhatsAppLink = () => SOCIAL_LINKS.find((link) => link.key === 'whatsapp')?.href || '';
 
 export default SOCIAL_LINKS;

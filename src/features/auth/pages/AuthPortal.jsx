@@ -14,6 +14,7 @@ import { buildRegisterDTO, validateRegisterForm } from '../services/register.con
 import { validatePassword } from '../../../core/validation/input.validator';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
 import { envConfig } from '../../../config/app/env.config';
+import { getWhatsAppLink } from '../../../config/app/social.config';
 import brandLogoBlack from '../../../assets/branding/brand-images/brand-image-LOGO-black.png';
 import '../styles/auth-portal.css';
 
@@ -445,8 +446,9 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
         navigate('/verify-email', { replace: true, state: { email: snapshot.email } });
         return;
       }
-      if (!requireEmailVerification && envConfig.community?.whatsappUrl) {
-        window.location.href = envConfig.community.whatsappUrl;
+      const whatsappUrl = getWhatsAppLink();
+      if (!requireEmailVerification && whatsappUrl) {
+        window.location.href = whatsappUrl;
         return;
       }
       showToast({ variant: 'success', title: 'Account created', message: 'Your account is ready. Please sign in.', duration: 3600 });

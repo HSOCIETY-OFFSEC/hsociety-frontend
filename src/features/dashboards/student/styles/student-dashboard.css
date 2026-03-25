@@ -200,6 +200,48 @@
   gap: 1.5rem;
 }
 
+.sd-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.sd-card {
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--bg-secondary);
+  padding: 1.25rem;
+  text-align: left;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+  color: var(--text-primary);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sd-card-action {
+  cursor: pointer;
+}
+
+.sd-card-action:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--text-primary) 18%, var(--border-color));
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.16);
+}
+
+.sd-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.sd-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
 .sd-panel {
   border: 1px solid var(--border-color);
   border-radius: 16px;
@@ -671,6 +713,11 @@
 
 @media (max-width: 768px) {
   .sd-section-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .sd-card-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
