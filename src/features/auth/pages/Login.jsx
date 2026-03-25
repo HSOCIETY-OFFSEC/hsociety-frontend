@@ -6,6 +6,7 @@ import { login as loginRequest } from '../../../core/auth/auth.service';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
 import PasswordInput from '../../../shared/components/ui/PasswordInput';
 import { AUTH_FORM_CONTENT } from '../../../data/static/auth/authContent';
+import { envConfig } from '../../../config/app/env.config';
 import '../styles/auth-portal.css';
 
 const Login = ({
@@ -20,6 +21,7 @@ const Login = ({
   const { login } = useAuth();
   const { showToast } = useNotifications();
   const copy = AUTH_FORM_CONTENT.login;
+  const requireEmailVerification = envConfig.auth.requireEmailVerification;
 
   const [email, setEmail] = useState(prefillEmail || location.state?.email || '');
   const [password, setPassword] = useState('');
@@ -79,7 +81,7 @@ const Login = ({
     try {
       const response = await loginRequest(email, password);
       if (!response.success) {
-        if (response.verificationRequired) {
+        if (requireEmailVerification && response.verificationRequired) {
           navigate('/verify-email', { replace: true, state: { email } });
           return;
         }

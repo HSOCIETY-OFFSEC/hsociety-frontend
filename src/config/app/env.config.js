@@ -102,7 +102,8 @@ export const envConfig = {
     tokenKey: getEnvVar('VITE_AUTH_TOKEN_KEY', 'hsociety_token'),
     sessionDuration: parseInt(getEnvVar('VITE_SESSION_DURATION', '86400000')), // 24 hours
     inactivityTimeout: parseInt(getEnvVar('VITE_INACTIVITY_TIMEOUT', '900000')), // 15 minutes
-    enableTwoFA: getEnvVar('VITE_ENABLE_2FA', 'true') === 'true'
+    enableTwoFA: getEnvVar('VITE_ENABLE_2FA', 'true') === 'true',
+    requireEmailVerification: getEnvVar('VITE_REQUIRE_EMAIL_VERIFICATION', 'true') === 'true'
   },
 
   // Security
@@ -149,6 +150,11 @@ export const envConfig = {
     name: getEnvVar('VITE_APP_NAME', 'HSOCIETY'),
     version: getEnvVar('VITE_APP_VERSION', '1.0.0'),
     description: getEnvVar('VITE_APP_DESCRIPTION', 'Offensive Security Platform')
+  },
+
+  // Community
+  community: {
+    whatsappUrl: getEnvVar('VITE_WHATSAPP_COMMUNITY_URL', '').trim()
   }
 };
 

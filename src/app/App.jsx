@@ -5,6 +5,7 @@ import AppRouter from './router';
 import PwaUpdatePrompt from '../shared/components/ui/PwaUpdatePrompt';
 import CookieConsent from '../shared/components/ui/CookieConsent';
 import NotificationConsent from '../shared/components/ui/NotificationConsent';
+import WhatsAppCommunityPopup from '../shared/components/ui/WhatsAppCommunityPopup';
 import { runSecurityScan } from '../core/security/scan.runner';
 import RankBadgeProvider from '../shared/components/providers/RankBadgeProvider';
 import { NotificationProvider } from '../shared/components/providers/NotificationProvider';
@@ -54,6 +55,7 @@ const App = () => {
             <div className="app-shell">
               <AnalyticsHead />
               <AppRouter />
+              <WhatsAppCommunityPopup />
               <PwaUpdatePrompt />
               <CookieConsent />
               <NotificationConsent />

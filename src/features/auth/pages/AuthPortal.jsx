@@ -13,6 +13,7 @@ import { registerUser } from '../services/register.service';
 import { buildRegisterDTO, validateRegisterForm } from '../services/register.contract';
 import { validatePassword } from '../../../core/validation/input.validator';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
+import { envConfig } from '../../../config/app/env.config';
 import brandLogoBlack from '../../../assets/branding/brand-images/brand-image-LOGO-black.png';
 import '../styles/auth-portal.css';
 
@@ -135,6 +136,7 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
   const location = useLocation();
   const { login } = useAuth();
   const { showToast } = useNotifications();
+  const requireEmailVerification = envConfig.auth.requireEmailVerification;
 
   const [email, setEmail]       = useState(prefillEmail || location.state?.email || '');
   const [password, setPassword] = useState('');
@@ -170,7 +172,7 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
     try {
       const response = await loginRequest(email, password);
       if (!response.success) {
-        if (response.verificationRequired) {
+        if (requireEmailVerification && response.verificationRequired) {
           navigate('/verify-email', { replace: true, state: { email } });
           return;
         }
@@ -438,9 +440,13 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
         setError(response.error || 'Registration failed. Please try again.');
         return;
       }
-      if (response.data?.verificationRequired) {
+      if (requireEmailVerification && response.data?.verificationRequired) {
         showToast({ variant: 'info', title: 'Verify your email', message: 'We sent a verification link to your email.', duration: 4800 });
         navigate('/verify-email', { replace: true, state: { email: snapshot.email } });
+        return;
+      }
+      if (!requireEmailVerification && envConfig.community?.whatsappUrl) {
+        window.location.href = envConfig.community.whatsappUrl;
         return;
       }
       showToast({ variant: 'success', title: 'Account created', message: 'Your account is ready. Please sign in.', duration: 3600 });

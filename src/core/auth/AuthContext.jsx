@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [autoLogoutCleanup, setAutoLogoutCleanup] = useState(null);
+  const requireEmailVerification = envConfig.auth.requireEmailVerification;
 
   // Initialize auth state on mount
   useEffect(() => {
@@ -58,7 +59,7 @@ export const AuthProvider = ({ children }) => {
           }
           return;
         }
-        if (session.user?.emailVerified === false) {
+        if (requireEmailVerification && session.user?.emailVerified === false) {
           sessionManager.clearSession();
           setUser(null);
           setToken(null);
@@ -163,6 +164,9 @@ export const AuthProvider = ({ children }) => {
 
       // Setup auto logout monitoring
       setupInactivityMonitor();
+      if (typeof window !== 'undefined' && envConfig.community?.whatsappUrl) {
+        sessionStorage.setItem('hsociety.whatsappPopup', '1');
+      }
       trackSecurityEvent(
         {
           eventType: 'auth_activity',
