@@ -51,3 +51,48 @@ html:not(.nav-scrolled) .landing-layout .gh-nav-inner {
 .nav-scrolled .landing-main {
   padding-top: var(--navbar-height, 64px);
 }
+
+
+/*Spacin fix block */
+/* ═══════════════════════════════════════════════
+   PUBLIC LAYOUT — extra hero clearance on mobile
+   ═══════════════════════════════════════════════
+   PublicLayout adds .public-layout alongside .landing-layout.
+   Public hero sections don't have their own full-bleed padding rules
+   like the landing page hero does, so the fixed transparent navbar
+   visually overlaps the headline on small screens.
+   Add a safe extra offset so the first content clears the bar.
+   ═══════════════════════════════════════════════ */
+
+.public-layout .landing-main {
+  padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 1.5rem);
+}
+
+@media (max-width: 768px) {
+  .public-layout .landing-main {
+    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 2.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .public-layout .landing-main {
+    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 3rem);
+  }
+}
+
+/* When scrolled, banner collapses — keep the same extra offset */
+.nav-scrolled .public-layout .landing-main {
+  padding-top: calc(var(--navbar-height, 64px) + 1.5rem);
+}
+
+@media (max-width: 768px) {
+  .nav-scrolled .public-layout .landing-main {
+    padding-top: calc(var(--navbar-height, 64px) + 2.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-scrolled .public-layout .landing-main {
+    padding-top: calc(var(--navbar-height, 64px) + 3rem);
+  }
+}

@@ -141,6 +141,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-width: 0;
+  overflow: hidden;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -162,6 +164,8 @@
 .public-card a {
   text-decoration: none;
   color: inherit;
+  display: block;
+  min-width: 0;
 }
 
 .public-card-title {
@@ -169,11 +173,17 @@
   font-weight: 650;
   color: var(--text-primary);
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .public-card-desc {
   color: var(--text-secondary);
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .public-card-meta {
@@ -182,6 +192,7 @@
   flex-wrap: wrap;
   font-size: 0.75rem;
   color: var(--text-tertiary);
+  min-width: 0;
 }
 
 .public-chip {
@@ -195,6 +206,8 @@
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .public-list {
@@ -351,6 +364,10 @@
 
   .public-card {
     width: 100%;
+  }
+
+  .public-hero.hero-section {
+    padding-top: calc(var(--navbar-height, 64px) + 4.5rem);
   }
 
   .public-cta-inner,
