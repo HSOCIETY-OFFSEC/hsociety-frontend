@@ -166,7 +166,9 @@ export const AuthProvider = ({ children }) => {
       // Setup auto logout monitoring
       setupInactivityMonitor();
       if (typeof window !== 'undefined' && getWhatsAppLink()) {
-        sessionStorage.setItem('hsociety.whatsappPopup', '1');
+        if (localStorage.getItem('hsociety.whatsappJoined') !== '1') {
+          sessionStorage.setItem('hsociety.whatsappPopup', '1');
+        }
       }
       trackSecurityEvent(
         {

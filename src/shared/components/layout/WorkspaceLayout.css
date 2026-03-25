@@ -74,7 +74,7 @@
 
 .workspace-layout.community-mode .workspace-main {
   padding-top: calc(var(--navbar-height, 64px) + 1rem);
-  padding-bottom: 1.5rem;
+  padding-bottom: 0;
   overflow: hidden;
   height: calc(100vh - var(--navbar-height, 64px));
 }
@@ -104,6 +104,16 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+}
+
+.workspace-layout.community-mode .dashboard-shell {
+  flex: 1;
+  min-height: 0;
+}
+
+.workspace-layout.community-mode .dashboard-shell > .community-root {
+  height: 100%;
+  min-height: 0;
 }
 
 .dashboard-section {

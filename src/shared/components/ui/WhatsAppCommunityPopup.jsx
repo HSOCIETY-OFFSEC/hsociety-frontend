@@ -4,6 +4,7 @@ import { getWhatsAppLink } from '../../../config/app/social.config';
 import './WhatsAppCommunityPopup.css';
 
 const STORAGE_KEY = 'hsociety.whatsappPopup';
+const JOINED_KEY = 'hsociety.whatsappJoined';
 
 const WhatsAppCommunityPopup = () => {
   const { isAuthenticated } = useAuth();
@@ -13,6 +14,7 @@ const WhatsAppCommunityPopup = () => {
   useEffect(() => {
     if (!whatsappUrl) return;
     if (isAuthenticated && typeof window !== 'undefined') {
+      if (localStorage.getItem(JOINED_KEY) === '1') return;
       const shouldShow = sessionStorage.getItem(STORAGE_KEY) === '1';
       if (shouldShow) setVisible(true);
     }
@@ -27,6 +29,7 @@ const WhatsAppCommunityPopup = () => {
 
   const joinCommunity = () => {
     if (typeof window !== 'undefined') {
+      localStorage.setItem(JOINED_KEY, '1');
       sessionStorage.removeItem(STORAGE_KEY);
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     }
