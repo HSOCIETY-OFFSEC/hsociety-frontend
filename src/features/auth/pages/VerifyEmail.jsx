@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { requestEmailVerification, confirmEmailVerification } from '../../../core/auth/auth.service';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
@@ -15,6 +15,7 @@ const VerifyEmail = () => {
   const [email, setEmail] = useState(emailFromState);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
+  const autoResentRef = useRef(false);
 
   useEffect(() => {
     if (!tokenFromQuery) return;
@@ -53,6 +54,13 @@ const VerifyEmail = () => {
     }
     setStatus('Verification email sent. Check your inbox.');
   };
+
+  useEffect(() => {
+    if (autoResentRef.current) return;
+    if (!email || tokenFromQuery) return;
+    autoResentRef.current = true;
+    handleResend();
+  }, [email, tokenFromQuery]);
 
   return (
     <div className="ap-root">

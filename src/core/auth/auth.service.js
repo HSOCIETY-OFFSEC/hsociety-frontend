@@ -59,9 +59,17 @@ export const login = async (identity, password) => {
     });
 
     if (!response.success) {
+      if (response.status === 403 && response.data?.verificationRequired) {
+        return {
+          success: false,
+          verificationRequired: true,
+          user: response.data.user,
+          message: 'Email verification required'
+        };
+      }
       return {
         success: false,
-        message: getPublicAuthMessage('login', response)
+        message: response.data?.error || getPublicAuthMessage('login', response)
       };
     }
 

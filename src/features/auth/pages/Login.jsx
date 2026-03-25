@@ -79,6 +79,10 @@ const Login = ({
     try {
       const response = await loginRequest(email, password);
       if (!response.success) {
+        if (response.verificationRequired) {
+          navigate('/verify-email', { replace: true, state: { email } });
+          return;
+        }
         setError(response.message || genericLoginError);
         return;
       }

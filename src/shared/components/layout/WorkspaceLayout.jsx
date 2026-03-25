@@ -263,11 +263,11 @@ const WorkspaceLayout = () => {
               <button
                 type="button"
                 className="workspace-home-button"
-                onClick={() => navigate('/')}
-                aria-label={WORKSPACE_UI.aria.goHome}
+                onClick={() => navigate(isBootcamp ? '/student-dashboard' : '/')}
+                aria-label={isBootcamp ? 'Back to dashboard' : WORKSPACE_UI.aria.goHome}
               >
                 <LuHouse size={16} />
-                <span>{WORKSPACE_UI.topbar.home}</span>
+                <span>{isBootcamp ? 'Back' : WORKSPACE_UI.topbar.home}</span>
               </button>
 
               {isCommunity && !showSidebar && (
