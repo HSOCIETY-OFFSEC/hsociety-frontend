@@ -39,6 +39,12 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
+/* remove top accent line animation */
+.service-card::before,
+.service-card::after {
+  content: none;
+}
+
 /* fire animations only once section is visible */
 .services-section:not(.is-visible) .service-card {
   animation: none;
@@ -55,12 +61,6 @@
   }
 }
 
-/* subtle top accent line — draws in on hover */
-.service-card:hover {
-  border-color: var(--primary-color);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-}
 
 /* ── Media ───────────────────────────────────────────────── */
 
@@ -78,9 +78,6 @@
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.service-card:hover .service-media img {
-  transform: scale(1.04);
-}
 
 /* dark scrim that deepens on hover */
 .service-media::after {
@@ -93,9 +90,6 @@
   pointer-events: none;
 }
 
-.service-card:hover .service-media::after {
-  opacity: 0.35;
-}
 
 /* ── Body ────────────────────────────────────────────────── */
 
@@ -123,10 +117,6 @@
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
-.service-card:hover .service-tag {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-}
 
 .service-tag svg {
   width: 14px;
@@ -164,10 +154,6 @@
   transition: color 0.15s ease, gap 0.2s ease;
 }
 
-.service-link:hover {
-  color: var(--primary-color);
-  gap: 0.55rem;          /* arrow nudges right on hover */
-}
 
 /* ── Mobile Carousel ─────────────────────────────────────── */
 
