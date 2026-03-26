@@ -5,6 +5,7 @@ import { CONTACT_CHANNELS } from '../../../../config/app/contact.config';
 const SUPPORT_EMAIL = CONTACT_CHANNELS.find((channel) => channel.label === 'Email')?.value;
 
 const BootcampAccessPage = ({
+  kicker = 'Restricted',
   title,
   description,
   primaryLabel,
@@ -27,7 +28,7 @@ const BootcampAccessPage = ({
   return (
     <div className="bootcamp-access-page">
       <div className="bootcamp-access-card">
-        <span className="bootcamp-access-kicker">Restricted</span>
+        <span className="bootcamp-access-kicker">{kicker}</span>
         <h1 className="bootcamp-access-title">{title}</h1>
         <p className="bootcamp-access-description">{description}</p>
 

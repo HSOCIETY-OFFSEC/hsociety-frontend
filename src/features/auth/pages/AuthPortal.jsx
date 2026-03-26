@@ -422,6 +422,7 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
     const snapshot = getFormSnapshot(e.currentTarget);
     setForm(snapshot);
     if (!validateRegisterForm({ ...snapshot, accountType })) {

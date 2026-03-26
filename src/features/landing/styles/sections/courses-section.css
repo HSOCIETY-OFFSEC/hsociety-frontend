@@ -911,6 +911,11 @@
     transform: rotateX(2deg);
   }
 
+  .cs-screen {
+    min-height: clamp(260px, 42vh, 360px);
+    max-height: 60vh;
+  }
+
   .cs-terminal-body {
     grid-template-columns: 1fr;
   }

@@ -252,6 +252,7 @@
     position: relative;
     display: block;
     width: 100%;
+    transition: height 0.2s ease;
   }
 
   .carousel-dots {
@@ -279,12 +280,16 @@
   }
 
   .service-body {
-    padding: 1.1rem;
-    gap: 0.6rem;
+    padding: 1rem;
+    gap: 0.55rem;
   }
 
   .service-body p {
     line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 

@@ -16,10 +16,11 @@ export const registerUser = async (payload) => {
       };
     }
 
-    if (response.status === 409 || response.data?.error?.toLowerCase?.().includes('already')) {
+    const conflictMessage = response.data?.message || response.data?.error || '';
+    if (response.status === 409 || conflictMessage.toLowerCase?.().includes('already')) {
       return {
         success: false,
-        error: 'Account already exists. Log in instead.',
+        error: conflictMessage || 'Account already exists. Log in instead.',
         errorCode: 'USER_EXISTS'
       };
     }
