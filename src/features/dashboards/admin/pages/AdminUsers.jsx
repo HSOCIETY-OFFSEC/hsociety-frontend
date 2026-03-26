@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { FiCheckSquare, FiEdit2, FiLink2, FiSave, FiSlash, FiUserX, FiUsers } from 'react-icons/fi';
+import { FiCheckSquare, FiEdit2, FiLink2, FiSave, FiSlash, FiUserX, FiUsers, FiZap } from 'react-icons/fi';
 import Button from '../../../../shared/components/ui/Button';
 import TableSkeleton from '../../../../shared/components/ui/TableSkeleton';
-import { getUsers, updateUser, muteUser, sendBootcampRoomLink } from '../services/admin.service';
+import { getUsers, updateUser, muteUser, sendBootcampRoomLink, grantCpPoints } from '../services/admin.service';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import PublicError from '../../../../shared/components/ui/PublicError';
 import { HACKER_PROTOCOL_PHASES } from '../../../../data/static/bootcamps/hackerProtocolData';
@@ -25,6 +25,10 @@ const AdminUsers = () => {
   const [selectedIds, setSelectedIds] = useState(new Set());
   const [bulkStatus, setBulkStatus] = useState('');
   const [bulkLoading, setBulkLoading] = useState(false);
+  const [cpGrantOpen, setCpGrantOpen] = useState(false);
+  const [cpGrantPoints, setCpGrantPoints] = useState(0);
+  const [cpGrantReason, setCpGrantReason] = useState('');
+  const [cpGrantStatus, setCpGrantStatus] = useState('');
   const [roomForm, setRoomForm] = useState(() => ({
     moduleId: HACKER_PROTOCOL_PHASES[0]?.moduleId || 1,
     roomId: HACKER_PROTOCOL_PHASES[0]?.rooms?.[0]?.roomId || 1,
@@ -97,6 +101,13 @@ const AdminUsers = () => {
     [selectedUsers]
   );
 
+  const selectedCpIds = useMemo(
+    () => selectedUsers
+      .filter((user) => user.role === 'student' || user.role === 'pentester')
+      .map((user) => user.id),
+    [selectedUsers]
+  );
+
   const toggleSelect = (userId) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
@@ -156,6 +167,34 @@ const AdminUsers = () => {
       setBulkStatus(`Live class link sent to ${response.data?.sentCount || selectedStudentIds.length} students.`);
     } else {
       setBulkStatus(getPublicErrorMessage({ action: 'submit', response }));
+    }
+    setBulkLoading(false);
+  };
+
+  const handleGrantCp = async () => {
+    if (!selectedCpIds.length) {
+      setCpGrantStatus('Select at least one student or pentester.');
+      return;
+    }
+    if (!cpGrantPoints || cpGrantPoints <= 0) {
+      setCpGrantStatus('Enter a positive CP amount.');
+      return;
+    }
+    setCpGrantStatus('');
+    setBulkLoading(true);
+    const response = await grantCpPoints({
+      userIds: selectedCpIds,
+      points: Number(cpGrantPoints || 0),
+      reason: cpGrantReason,
+    });
+    if (response.success) {
+      setCpGrantStatus(`Granted ${cpGrantPoints} CP to ${response.data?.sentCount || selectedCpIds.length} users.`);
+      await loadUsers();
+      setCpGrantOpen(false);
+      setCpGrantPoints(0);
+      setCpGrantReason('');
+    } else {
+      setCpGrantStatus(getPublicErrorMessage({ action: 'submit', response }));
     }
     setBulkLoading(false);
   };
@@ -253,6 +292,14 @@ const AdminUsers = () => {
             >
               <FiSlash size={14} /> Revoke Access
             </button>
+            <button
+              type="button"
+              className="ad-btn ad-btn-primary"
+              onClick={() => setCpGrantOpen(true)}
+              disabled={bulkLoading}
+            >
+              <FiZap size={14} /> Grant CP
+            </button>
           </div>
         </div>
 
@@ -339,6 +386,7 @@ const AdminUsers = () => {
             <span>Email</span>
             <span>Org</span>
             <span>Role</span>
+            <span>CP</span>
             <span>Bootcamp</span>
             <span>Payment</span>
             <span>Access</span>
@@ -399,6 +447,9 @@ const AdminUsers = () => {
                   ) : (
                     <span className={`admin-role role-${user.role || 'student'}`}>{user.role || 'student'}</span>
                   )}
+                </div>
+                <div>
+                  <span className="admin-role">{user.cpPoints ?? 0}</span>
                 </div>
                 <div>
                   {isEditing ? (
@@ -491,6 +542,43 @@ const AdminUsers = () => {
             <div className="ad-list-empty">No users found.</div>
           )}
         </div>
+        {cpGrantOpen && (
+          <div className="admin-modal-backdrop" role="dialog" aria-modal="true">
+            <div className="admin-modal">
+              <h3>Grant CP Points</h3>
+              <p>Grant CP Points to selected students/pentesters. Add a reason to notify them.</p>
+              {cpGrantStatus && <div className="admin-alert">{cpGrantStatus}</div>}
+              <label>
+                CP Points
+                <input
+                  className="admin-input"
+                  type="number"
+                  min="1"
+                  value={cpGrantPoints}
+                  onChange={(e) => setCpGrantPoints(Number(e.target.value))}
+                />
+              </label>
+              <label>
+                Reason / Message
+                <textarea
+                  className="admin-textarea"
+                  rows={3}
+                  value={cpGrantReason}
+                  onChange={(e) => setCpGrantReason(e.target.value)}
+                  placeholder="e.g. Top leaderboard performance this month."
+                />
+              </label>
+              <div className="admin-modal-actions">
+                <Button variant="ghost" size="small" onClick={() => setCpGrantOpen(false)}>
+                  Cancel
+                </Button>
+                <Button variant="primary" size="small" onClick={handleGrantCp} disabled={bulkLoading}>
+                  Grant CP
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

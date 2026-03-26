@@ -18,16 +18,20 @@
   right: 0;
   width: 100%;
   z-index: var(--z-sticky, 60);
+  --navbar-bg-color: var(--bg-secondary);
+  background: var(--bg-secondary) !important;
+  background-image: none !important;
+  border-bottom-color: var(--border-color) !important;
 }
 
 html:not(.nav-scrolled) .landing-layout .gh-nav {
-  --navbar-bg-color: transparent !important;
-  background: transparent !important;
-  border-bottom-color: transparent !important;
+  --navbar-bg-color: var(--bg-secondary) !important;
+  background: var(--bg-secondary) !important;
+  border-bottom-color: var(--border-color) !important;
 }
 
 html:not(.nav-scrolled) .landing-layout .gh-nav-inner {
-  background: transparent !important;
+  background: var(--bg-secondary) !important;
 }
 
 .nav-scrolled .landing-layout .gh-nav {
@@ -65,34 +69,56 @@ html:not(.nav-scrolled) .landing-layout .gh-nav-inner {
    ═══════════════════════════════════════════════ */
 
 .public-layout .landing-main {
-  padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 1.5rem);
+  padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 0.5rem);
 }
 
 @media (max-width: 768px) {
   .public-layout .landing-main {
-    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 2.5rem);
+    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 0.6rem);
   }
 }
 
 @media (max-width: 480px) {
   .public-layout .landing-main {
-    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 3rem);
+    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 0.7rem);
   }
 }
 
 /* When scrolled, banner collapses — keep the same extra offset */
 .nav-scrolled .public-layout .landing-main {
-  padding-top: calc(var(--navbar-height, 64px) + 1.5rem);
+  padding-top: calc(var(--navbar-height, 64px) + 0.5rem);
 }
 
 @media (max-width: 768px) {
   .nav-scrolled .public-layout .landing-main {
-    padding-top: calc(var(--navbar-height, 64px) + 2.5rem);
+    padding-top: calc(var(--navbar-height, 64px) + 0.6rem);
   }
 }
 
 @media (max-width: 480px) {
   .nav-scrolled .public-layout .landing-main {
-    padding-top: calc(var(--navbar-height, 64px) + 3rem);
+    padding-top: calc(var(--navbar-height, 64px) + 0.7rem);
   }
+}
+
+/* Marketplace public page: reduce hero gap by ~70% */
+.marketplace-public .public-layout .landing-main {
+  padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px));
+}
+
+@media (max-width: 768px) {
+  .marketplace-public .public-layout .landing-main {
+    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px));
+  }
+}
+
+@media (max-width: 480px) {
+  .marketplace-public .public-layout .landing-main {
+    padding-top: calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px));
+  }
+}
+
+.marketplace-public.nav-scrolled .public-layout .landing-main,
+.marketplace-public .nav-scrolled .public-layout .landing-main {
+  padding-top: var(--navbar-height, 64px);
 }

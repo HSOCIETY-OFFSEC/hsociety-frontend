@@ -15,6 +15,19 @@
   padding: clamp(4.5rem, 8vw, 7rem) 0 3.5rem;
 }
 
+.marketplace-page .public-hero.hero-section {
+  padding-top: 0.75rem;
+  padding-bottom: 2.5rem;
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .marketplace-page .public-hero.hero-section {
+    padding-top: 0.6rem;
+    padding-bottom: 2rem;
+  }
+}
+
 .public-hero .section-container {
   display: grid;
   gap: 2.5rem;

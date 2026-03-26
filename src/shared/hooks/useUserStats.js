@@ -56,7 +56,13 @@ const fetchUserStats = async (userId, role, { force = false } = {}) => {
       role === 'student' ? getStudentXpSummary() : Promise.resolve({ success: true, data: { streakDays: 0 } }),
     ]);
 
-    const cpTotal = profileResponse.success ? Number(profileResponse.data?.xpSummary?.totalXp || 0) : 0;
+    const cpTotal = profileResponse.success
+      ? Number(
+          profileResponse.data?.cpPoints ??
+          profileResponse.data?.xpSummary?.totalXp ??
+          0
+        )
+      : 0;
     const streakDays =
       role === 'student' && streakResponse.success
         ? Number(streakResponse.data?.streakDays || 0)

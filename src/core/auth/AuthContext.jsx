@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [autoLogoutCleanup, setAutoLogoutCleanup] = useState(null);
   const requireEmailVerification = envConfig.auth.requireEmailVerification;
+  const shouldEnableAutoLogout = (role) => role !== 'student';
 
   // Initialize auth state on mount
   useEffect(() => {
@@ -87,8 +88,13 @@ export const AuthProvider = ({ children }) => {
             }
           }
           
-          // Setup auto logout monitoring
-          setupInactivityMonitor();
+          // Setup auto logout monitoring (skip for students)
+          if (shouldEnableAutoLogout(session.user?.role)) {
+            setupInactivityMonitor();
+          } else if (autoLogoutCleanup) {
+            autoLogoutCleanup();
+            setAutoLogoutCleanup(null);
+          }
         } else {
           // Try refresh before forcing logout
           const refreshed = await refreshToken();
@@ -100,7 +106,12 @@ export const AuthProvider = ({ children }) => {
               setUser(nextSession.user);
               setToken(nextSession.token);
               setIsAuthenticated(true);
-              setupInactivityMonitor();
+              if (shouldEnableAutoLogout(nextSession.user?.role)) {
+                setupInactivityMonitor();
+              } else if (autoLogoutCleanup) {
+                autoLogoutCleanup();
+                setAutoLogoutCleanup(null);
+              }
             }
           }
         }
@@ -164,8 +175,13 @@ export const AuthProvider = ({ children }) => {
       setToken(authToken);
       setIsAuthenticated(true);
 
-      // Setup auto logout monitoring
-      setupInactivityMonitor();
+      // Setup auto logout monitoring (skip for students)
+      if (shouldEnableAutoLogout(userData?.role)) {
+        setupInactivityMonitor();
+      } else if (autoLogoutCleanup) {
+        autoLogoutCleanup();
+        setAutoLogoutCleanup(null);
+      }
       if (typeof window !== 'undefined' && getWhatsAppLink()) {
         if (localStorage.getItem('hsociety.whatsappJoined') !== '1') {
           sessionStorage.setItem('hsociety.whatsappPopup', '1');

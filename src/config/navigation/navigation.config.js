@@ -41,6 +41,8 @@ export const NAV_LINKS = {
       { path: '/pentester/profiles', label: 'Pentester Profiles', icon: LuUsers },
       { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/community', label: 'Community', icon: LuMessageCircle },
+      { path: '/cp-wallet', label: 'CP Wallet', icon: LuTrophy },
+      { path: '/cp-marketplace', label: 'ZeroDay Market', icon: LuBookOpen },
       { path: '/settings', label: 'Settings', icon: LuUsers }
     ],
     admin: [
@@ -55,7 +57,9 @@ export const NAV_LINKS = {
       { path: '/student-resources', label: 'Resources', icon: LuBookOpen, group: 'default' },
       { path: '/student-payments', label: 'Payments', icon: LuCreditCard, group: 'default' },
       { path: '/notifications', label: 'Notifications', icon: LuBell, group: 'default' },
-      { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'default' }
+      { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'default' },
+      { path: '/cp-wallet', label: 'CP Wallet', icon: LuTrophy, group: 'default' },
+      { path: '/cp-marketplace', label: 'ZeroDay Market', icon: LuBookOpen, group: 'default' }
     ]
   },
 
@@ -65,6 +69,7 @@ export const NAV_LINKS = {
     { path: '/courses', label: 'Courses', icon: LuBookOpen },
     { path: '/services', label: 'Services', icon: LuWrench },
     { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
+    { path: '/marketplace', label: 'ZeroDay Market', icon: LuBookOpen },
     { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
     { path: '/about', label: 'About', icon: LuUsers },
     { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
@@ -98,6 +103,8 @@ export const NAV_LINKS = {
       { path: '/pentester/profiles', label: 'Pentester Profiles', icon: LuUsers },
       { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
+      { path: '/cp-wallet', label: 'CP Wallet', icon: LuTrophy },
+      { path: '/cp-marketplace', label: 'ZeroDay Market', icon: LuBookOpen },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
       { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
@@ -122,6 +129,8 @@ export const NAV_LINKS = {
       { path: '/community', label: 'Community', icon: LuMessageCircle, group: 'learn' },
       { path: '/notifications', label: 'Notifications', icon: LuBell },
       { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
+      { path: '/cp-wallet', label: 'CP Wallet', icon: LuTrophy },
+      { path: '/cp-marketplace', label: 'ZeroDay Market', icon: LuBookOpen },
       { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
       { path: '/settings', label: 'Settings', icon: LuUsers },
       { path: '/pricing', label: 'Pricing', icon: LuDollarSign },
@@ -135,6 +144,7 @@ export const NAV_LINKS = {
     { path: '/courses', label: 'Courses', icon: LuBookOpen },
     { path: '/services', label: 'Services', icon: LuWrench },
     { path: '/cp-points', label: 'CP Points', icon: LuTrophy },
+    { path: '/marketplace', label: 'ZeroDay Market', icon: LuBookOpen },
     { path: '/leaderboard', label: 'Leaderboard', icon: LuChartBar },
     { path: '/about', label: 'About', icon: LuUsers },
     { path: '/careers', label: 'Careers', icon: LuBriefcase },

@@ -7,6 +7,7 @@ import {
   FiBookOpen,
   FiCheckCircle,
   FiCompass,
+  FiLock,
   FiMessageSquare,
   FiShield,
   FiTarget

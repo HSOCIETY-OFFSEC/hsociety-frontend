@@ -164,10 +164,48 @@ export const publishBootcampMeeting = async (payload) => {
   return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
 };
 
-export const getSecurityEvents = async (limit = 120) => {
-  const response = await apiClient.get(`${API_ENDPOINTS.ADMIN.SECURITY_EVENTS}?limit=${limit}`);
+export const getCpProducts = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.ADMIN.CP_PRODUCTS);
+  if (response.success) return { success: true, data: response.data?.items || [] };
+  return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
+};
+
+export const createCpProduct = async (payload) => {
+  const response = await apiClient.post(API_ENDPOINTS.ADMIN.CP_PRODUCTS, payload);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
+};
+
+export const updateCpProduct = async (id, payload) => {
+  const response = await apiClient.patch(`${API_ENDPOINTS.ADMIN.CP_PRODUCTS}/${id}`, payload);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
+};
+
+export const deleteCpProduct = async (id) => {
+  const response = await apiClient.delete(`${API_ENDPOINTS.ADMIN.CP_PRODUCTS}/${id}`);
+  if (response.success) return { success: true };
+  return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
+};
+
+export const grantCpPoints = async (payload) => {
+  const response = await apiClient.post(API_ENDPOINTS.ADMIN.CP_GRANT, payload);
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: getPublicErrorMessage({ action: 'submit', response }) };
+};
+
+export const getSecurityEvents = async (limit = 120, page = 1) => {
+  const response = await apiClient.get(`${API_ENDPOINTS.ADMIN.SECURITY_EVENTS}?limit=${limit}&page=${page}`);
   if (response.success) return { success: true, data: response.data || { items: [], total: 0 } };
   return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
+};
+
+export const downloadSecurityEventsCsv = async (limit = 120, page = 1) => {
+  const response = await apiClient.get(`${API_ENDPOINTS.ADMIN.SECURITY_EVENTS_EXPORT}?limit=${limit}&page=${page}`, {
+    headers: { Accept: 'text/csv' },
+  });
+  if (!response.success) return { success: false, error: getPublicErrorMessage({ action: 'load', response }) };
+  return { success: true, data: response.data };
 };
 
 export const getSecuritySummary = async () => {
@@ -208,7 +246,13 @@ export default {
   sendAdminNotification,
   sendBootcampRoomLink,
   publishBootcampMeeting,
+  getCpProducts,
+  createCpProduct,
+  updateCpProduct,
+  deleteCpProduct,
+  grantCpPoints,
   getSecurityEvents,
   getSecuritySummary,
+  downloadSecurityEventsCsv,
   getRumSummary,
 };

@@ -1,0 +1,110 @@
+/* ==========================================================
+   MARKETPLACE SECTION
+   ========================================================== */
+
+.landing-marketplace-section {
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  padding: 4rem 0;
+  --reveal-distance: 24px;
+}
+
+.landing-marketplace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.landing-marketplace-copy .section-title {
+  margin-top: 0.5rem;
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+}
+
+.landing-marketplace-copy .section-subtitle {
+  margin: 0.75rem 0 1.75rem;
+  color: var(--text-secondary);
+  max-width: 52ch;
+}
+
+.landing-marketplace-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.marketplace-primary,
+.marketplace-secondary {
+  border-radius: 12px;
+  padding: 0.75rem 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.marketplace-primary {
+  border: none;
+  background: var(--primary-color);
+  color: var(--accent-ink);
+  box-shadow: 0 12px 18px color-mix(in srgb, var(--primary-color) 25%, transparent);
+}
+
+.marketplace-secondary {
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.landing-marketplace-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.landing-marketplace-card {
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 1.25rem 1.4rem;
+  box-shadow: var(--shadow-md);
+}
+
+.landing-marketplace-card h3 {
+  margin: 0.6rem 0 0.4rem;
+  font-size: 1.05rem;
+}
+
+.landing-marketplace-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.marketplace-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--primary-color);
+}
+
+@media (max-width: 900px) {
+  .landing-marketplace-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing-marketplace-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .marketplace-primary,
+  .marketplace-secondary {
+    width: 100%;
+  }
+}

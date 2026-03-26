@@ -49,6 +49,8 @@ class SessionManager {
     if (!this.storage) return false;
 
     try {
+      const shouldPersistTokens =
+        envConfig.security.storeAccessTokenInStorage || sessionData?.user?.role === 'student';
       const tokenExpiry = parseJwtExpiry(sessionData.token);
       const derivedExpiry =
         sessionData.expiresAt
@@ -59,8 +61,8 @@ class SessionManager {
       }
       const session = {
         ...sessionData,
-        token: envConfig.security.storeAccessTokenInStorage ? sessionData.token : undefined,
-        refreshToken: envConfig.security.storeAccessTokenInStorage ? sessionData.refreshToken : undefined,
+        token: shouldPersistTokens ? sessionData.token : undefined,
+        refreshToken: shouldPersistTokens ? sessionData.refreshToken : undefined,
         timestamp: sessionData.timestamp || Date.now(),
         expiresAt: derivedExpiry
       };

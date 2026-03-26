@@ -4,6 +4,7 @@ export { default as ServicesSection } from './ServicesSection';
 export { default as WhySection } from './WhySection';
 export { default as ProcessSection } from './ProcessSection';
 export { default as DeliverablesSection } from './DeliverablesSection';
+export { default as MarketplaceSection } from './MarketplaceSection';
 export { default as ModulesSection } from './ModulesSection';
 export { default as LeaderboardSection } from './LeaderboardSection';
 export { default as TrustSection } from './TrustSection';

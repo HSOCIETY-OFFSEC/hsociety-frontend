@@ -10,6 +10,10 @@ import {
   sendAdminNotification,
   updateAdminContent,
   uploadFreeResource,
+  getCpProducts,
+  createCpProduct,
+  updateCpProduct,
+  deleteCpProduct,
 } from '../services/admin.service';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import defaultTeamContent from '../../../../data/static/team.json';
@@ -25,6 +29,16 @@ const emptyBootcampResource = {
   roomId: 0,
   roomTitle: '',
   resources: [{ ...emptyBootcampResourceItem }],
+};
+const emptyCpProduct = {
+  id: '',
+  title: '',
+  description: '',
+  cpPrice: 0,
+  coverUrl: '',
+  productUrl: '',
+  isActive: true,
+  sortOrder: 0,
 };
 const emptyTeamSocial = { platform: '', url: '' };
 const emptyTeamMember = {
@@ -84,6 +98,8 @@ const AdminContent = () => {
   const [resources, setResources] = useState([emptyResource]);
   const [resourcesMessage, setResourcesMessage] = useState('We do not have free resources yet.');
   const [bootcampResources, setBootcampResources] = useState([emptyBootcampResource]);
+  const [cpProducts, setCpProducts] = useState([emptyCpProduct]);
+  const [removedCpProductIds, setRemovedCpProductIds] = useState([]);
   const [terms, setTerms] = useState({
     effectiveDate: '',
     lastUpdated: '',
@@ -188,6 +204,25 @@ const AdminContent = () => {
               : [{ title: '', body: '', bullets: [] }],
         });
         setTeam(normalizeTeam(data.team || {}));
+
+        const cpProductsRes = await getCpProducts();
+        if (cpProductsRes.success) {
+          const items = cpProductsRes.data || [];
+          setCpProducts(
+            items.length
+              ? items.map((item) => ({
+                  id: item._id,
+                  title: item.title || '',
+                  description: item.description || '',
+                  cpPrice: Number(item.cpPrice || 0),
+                  coverUrl: item.coverUrl || '',
+                  productUrl: item.productUrl || '',
+                  isActive: item.isActive !== false,
+                  sortOrder: Number(item.sortOrder || 0),
+                }))
+              : [{ ...emptyCpProduct }]
+          );
+        }
       } else {
         setError(getPublicErrorMessage({ action: 'load', response }));
       }
@@ -372,6 +407,27 @@ const AdminContent = () => {
     }));
   };
 
+  const updateCpProductField = (index, field, value) => {
+    setCpProducts((prev) =>
+      prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item))
+    );
+  };
+
+  const addCpProduct = () => {
+    setCpProducts((prev) => [...prev, { ...emptyCpProduct }]);
+  };
+
+  const removeCpProduct = (index) => {
+    setCpProducts((prev) => {
+      const target = prev[index];
+      if (target?.id) {
+        setRemovedCpProductIds((ids) => [...ids, target.id]);
+      }
+      const next = prev.filter((_, idx) => idx !== index);
+      return next.length ? next : [{ ...emptyCpProduct }];
+    });
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError('');
@@ -477,10 +533,48 @@ const AdminContent = () => {
       },
     };
 
+    for (const id of removedCpProductIds) {
+      await deleteCpProduct(id);
+    }
+
+    const nextProducts = [];
+    for (const product of cpProducts) {
+      if (!String(product.title || '').trim()) continue;
+      const body = {
+        title: String(product.title || '').trim(),
+        description: String(product.description || '').trim(),
+        cpPrice: Number(product.cpPrice || 0),
+        coverUrl: String(product.coverUrl || '').trim(),
+        productUrl: String(product.productUrl || '').trim(),
+        isActive: product.isActive !== false,
+        sortOrder: Number(product.sortOrder || 0),
+        type: 'book',
+      };
+      if (product.id) {
+        const res = await updateCpProduct(product.id, body);
+        if (res.success) {
+          nextProducts.push({
+            ...product,
+            id: res.data._id || product.id,
+          });
+        }
+      } else {
+        const res = await createCpProduct(body);
+        if (res.success) {
+          nextProducts.push({
+            ...product,
+            id: res.data._id,
+          });
+        }
+      }
+    }
+
     const response = await updateAdminContent(payload);
     if (!response.success) {
       setError(getPublicErrorMessage({ action: 'save', response }));
     } else {
+      if (nextProducts.length) setCpProducts(nextProducts);
+      setRemovedCpProductIds([]);
       setStatus('Content saved.');
     }
     setSaving(false);
@@ -782,6 +876,90 @@ const AdminContent = () => {
             <Button variant="secondary" size="small" onClick={addBootcampResource}>
               <FiPlus size={14} />
               Add Resource Group
+            </Button>
+          </div>
+        </Card>
+
+        <Card className="admin-card" padding="medium">
+          <div className="admin-section-header">
+            <h2>ZeroDay Market Products</h2>
+            <p>Manage book listings shown in ZeroDay Market and the public catalog.</p>
+          </div>
+          <div className="admin-content-posts">
+            {cpProducts.map((product, index) => (
+              <div className="admin-content-post" key={`cp-product-${product.id || index}`}>
+                <div className="admin-stats-form">
+                  <label>
+                    Title
+                    <input
+                      className="admin-input"
+                      placeholder="Book title"
+                      value={product.title}
+                      onChange={(e) => updateCpProductField(index, 'title', e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    CP Price
+                    <input
+                      className="admin-input"
+                      type="number"
+                      min="0"
+                      value={product.cpPrice}
+                      onChange={(e) => updateCpProductField(index, 'cpPrice', Number(e.target.value))}
+                    />
+                  </label>
+                  <label>
+                    Sort Order
+                    <input
+                      className="admin-input"
+                      type="number"
+                      min="0"
+                      value={product.sortOrder}
+                      onChange={(e) => updateCpProductField(index, 'sortOrder', Number(e.target.value))}
+                    />
+                  </label>
+                  <label className="admin-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={product.isActive !== false}
+                      onChange={(e) => updateCpProductField(index, 'isActive', e.target.checked)}
+                    />
+                    Active
+                  </label>
+                </div>
+                <input
+                  className="admin-input"
+                  placeholder="Cover image URL"
+                  value={product.coverUrl}
+                  onChange={(e) => updateCpProductField(index, 'coverUrl', e.target.value)}
+                />
+                <input
+                  className="admin-input"
+                  placeholder="Product URL (optional)"
+                  value={product.productUrl}
+                  onChange={(e) => updateCpProductField(index, 'productUrl', e.target.value)}
+                />
+                <textarea
+                  className="admin-textarea"
+                  rows={2}
+                  placeholder="Short description"
+                  value={product.description}
+                  onChange={(e) => updateCpProductField(index, 'description', e.target.value)}
+                />
+                <Button
+                  variant="ghost"
+                  size="small"
+                  onClick={() => removeCpProduct(index)}
+                  disabled={cpProducts.length <= 1}
+                >
+                  <FiTrash2 size={14} />
+                  Remove product
+                </Button>
+              </div>
+            ))}
+            <Button variant="secondary" size="small" onClick={addCpProduct}>
+              <FiPlus size={14} />
+              Add Product
             </Button>
           </div>
         </Card>

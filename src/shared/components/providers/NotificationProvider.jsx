@@ -8,6 +8,7 @@ import {
 import BinaryToast from '../ui/BinaryToast';
 import { getPendingToast, clearPendingToast } from '../../utils/toastStorage';
 import { createAuthSocket } from '../../services/socket.client';
+import '../ui/cp-grant-modal.css';
 
 const NotificationContext = createContext(undefined);
 
@@ -15,6 +16,7 @@ export const NotificationProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const [notifications, setNotifications] = useState([]);
   const [toast, setToast] = useState(null);
+  const [cpModal, setCpModal] = useState(null);
   const [isPolling, setIsPolling] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
   const toastTimerRef = useRef(null);
@@ -80,6 +82,15 @@ export const NotificationProvider = ({ children }) => {
         tone: 'notify',
         duration: 4200,
       });
+      const cpGrant = newItems.find((item) => item.type === 'cp_points_granted');
+      if (cpGrant) {
+        setCpModal({
+          id: cpGrant.id,
+          title: cpGrant.title || 'CP Points Added',
+          message: cpGrant.message || 'You received CP points.',
+          points: cpGrant.metadata?.points,
+        });
+      }
     }
 
     lastIdsRef.current = new Set(items.map((item) => item.id));
@@ -163,6 +174,14 @@ export const NotificationProvider = ({ children }) => {
         tone: 'notify',
         duration: 4200,
       });
+      if (payload.type === 'cp_points_granted') {
+        setCpModal({
+          id: payload.id,
+          title: payload.title || 'CP Points Added',
+          message: payload.message || 'You received CP points.',
+          points: payload.metadata?.points,
+        });
+      }
     });
 
     return () => {
@@ -207,6 +226,27 @@ export const NotificationProvider = ({ children }) => {
     <NotificationContext.Provider value={value}>
       {children}
       <BinaryToast toast={toast} onClose={() => setToast(null)} />
+      {cpModal && (
+        <div className="cp-grant-modal-backdrop" role="dialog" aria-modal="true">
+          <div className="cp-grant-modal">
+            <h3>{cpModal.title}</h3>
+            <p>{cpModal.message}</p>
+            {cpModal.points !== undefined && (
+              <span className="cp-grant-points">+{cpModal.points} CP</span>
+            )}
+            <button
+              type="button"
+              className="cp-grant-close"
+              onClick={() => {
+                if (cpModal.id) markRead(cpModal.id);
+                setCpModal(null);
+              }}
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </NotificationContext.Provider>
   );
 };

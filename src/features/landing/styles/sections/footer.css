@@ -104,8 +104,7 @@
 
 .footer-bottom {
   margin-top: 2rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--border-color);
+  padding-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

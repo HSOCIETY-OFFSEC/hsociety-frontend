@@ -15,6 +15,7 @@ import PromoPopup from '../components/PromoPopup';
 import HeroSection from '../components/sections/HeroSection';
 import StatsSection from '../components/sections/StatsSection';
 import ServicesSection from '../components/sections/ServicesSection';
+import MarketplaceSection from '../components/sections/MarketplaceSection';
 import WhySection from '../components/sections/WhySection';
 import CycleSection from '../components/sections/CycleSection';
 import ProcessSection from '../components/sections/ProcessSection';
@@ -259,6 +260,7 @@ const Landing = ({ scrollToId = null }) => {
       <HeroSection content={heroContent} />
       <StatsSection content={statsContent} error={statsError} />
       <ServicesSection services={services} />
+      <MarketplaceSection />
       <WhySection items={whyItems} />
       <CycleSection />
       <ProcessSection steps={processSteps} />

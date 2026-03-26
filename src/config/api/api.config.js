@@ -238,7 +238,10 @@ const DEFAULT_API_ENDPOINTS = {
     SEND_NOTIFICATION: '/admin/notifications/send',
     BOOTCAMP_MEETING: '/admin/bootcamp/meeting',
     SECURITY_EVENTS: '/admin/security/events',
+    SECURITY_EVENTS_EXPORT: '/admin/security/events/export',
     SECURITY_SUMMARY: '/admin/security/summary',
+    CP_PRODUCTS: '/admin/cp-products',
+    CP_GRANT: '/admin/cp/grant',
   },
 
   // Public
@@ -253,13 +256,21 @@ const DEFAULT_API_ENDPOINTS = {
     BLOG_POSTS: '/public/blog-posts',
     SECURITY_EVENT: '/public/security-events',
     LEADERBOARD: '/public/leaderboard',
+    CP_PRODUCTS: '/public/cp-products',
+    FREE_RESOURCES: '/public/free-resources',
   },
 
   // Telemetry
   TELEMETRY: {
     RUM: '/telemetry/rum',
     RUM_SUMMARY: '/telemetry/rum/summary',
-  }
+  },
+  // CP Points
+  CP: {
+    BALANCE: '/cp/balance',
+    TRANSACTIONS: '/cp/transactions',
+    PURCHASE: '/cp/purchase',
+  },
 };
 
 export const API_ENDPOINTS = deepFreeze(mergeOverrides(DEFAULT_API_ENDPOINTS, ENDPOINT_OVERRIDES));

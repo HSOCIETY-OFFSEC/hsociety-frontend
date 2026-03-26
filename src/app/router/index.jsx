@@ -87,6 +87,9 @@ const CourseModuleDetails = React.lazy(() => import('../../features/courses/page
 const CourseRoomDetails = React.lazy(() => import('../../features/courses/pages/CourseRoomDetails'));
 const Leaderboard = React.lazy(() => import('../../features/leaderboard/pages/Leaderboard'));
 const CPPoints = React.lazy(() => import('../../features/cp-points/pages/CPPoints'));
+const CPWallet = React.lazy(() => import('../../features/cp-wallet/pages/CPWallet'));
+const Marketplace = React.lazy(() => import('../../features/marketplace/pages/Marketplace'));
+const MarketplacePublic = React.lazy(() => import('../../features/marketplace/pages/MarketplacePublic'));
 const NotFound = React.lazy(() => import('../../features/notfound/pages/NotFound'));
 const ForcePasswordChange = React.lazy(() => import('../../features/auth/pages/ForcePasswordChange'));
 const VerifyEmail = React.lazy(() => import('../../features/auth/pages/VerifyEmail'));
@@ -468,6 +471,22 @@ const AppRouter = () => {
                 </RoleRoute>
               }
             />
+            <Route
+              path="cp-wallet"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester']}>
+                  <CPWallet />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="cp-marketplace"
+              element={
+                <RoleRoute allowedRoles={['student', 'pentester']}>
+                  <Marketplace />
+                </RoleRoute>
+              }
+            />
           </Route>
 
           {/* Public pages - about, team, blog, etc. */}
@@ -490,6 +509,7 @@ const AppRouter = () => {
           <Route path="courses/:bootcampId/modules/:moduleId/rooms/:roomId" element={<CourseRoomDetails />} />
           <Route path="leaderboard" element={<Leaderboard />} />
           <Route path="cp-points" element={<CPPoints />} />
+          <Route path="marketplace" element={<MarketplacePublic />} />
           <Route path="terms" element={<Terms />} />
           <Route path="terms-and-conditions" element={<Terms />} />
           <Route path="privacy" element={<Privacy />} />

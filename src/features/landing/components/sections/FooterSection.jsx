@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   LuBriefcase,
+  LuBookOpen,
   LuChevronRight,
   LuFileText,
   LuHouse,
@@ -24,6 +25,7 @@ const FooterSection = () => {
         { label: 'Home', path: '/', icon: LuHouse },
         { label: 'Courses', path: '/courses', icon: LuLayers },
         { label: 'Services', path: '/services', icon: LuShield },
+        { label: 'ZeroDay Market', path: '/marketplace', icon: LuBookOpen },
         { label: 'Leaderboard', path: '/leaderboard', icon: LuUsers },
       ],
     },

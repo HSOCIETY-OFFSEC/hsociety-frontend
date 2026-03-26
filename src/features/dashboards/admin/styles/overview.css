@@ -494,8 +494,8 @@
 /* Grid column templates */
 .ad-list-row-users,
 .ad-list-header.ad-list-row-users {
-  grid-template-columns: 0.4fr 1.2fr 1.6fr 1fr 0.8fr 0.9fr 0.8fr 0.7fr 0.9fr 0.7fr 1.6fr;
-  min-width: 1080px;
+  grid-template-columns: 0.4fr 1.2fr 1.6fr 1fr 0.8fr 0.7fr 0.9fr 0.8fr 0.7fr 0.9fr 0.7fr 1.6fr;
+  min-width: 1160px;
 }
 
 .ad-list-row-pentests,

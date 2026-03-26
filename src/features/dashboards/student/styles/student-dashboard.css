@@ -197,13 +197,13 @@
 .sd-section-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.75rem;
+  gap: 2rem;
 }
 
 .sd-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
 
 .sd-card {
@@ -246,11 +246,11 @@
   border: 1px solid var(--border-color);
   border-radius: 16px;
   background: var(--bg-secondary);
-  padding: 1.75rem;
+  padding: 1.9rem;
   box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.4rem;
 }
 
 .sd-panel-header {
