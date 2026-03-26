@@ -9,6 +9,37 @@
   padding: 4rem 0;
 }
 
+@media (min-width: 1024px) {
+  .faq-section .section-container {
+    display: grid;
+    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .faq-section .section-header-center {
+    text-align: left;
+    align-items: flex-start;
+    max-width: 360px;
+    margin: 0;
+  }
+
+  .faq-section .section-header-center .section-subtitle {
+    max-width: 34ch;
+  }
+
+  .faq-section .section-header-center .section-eyebrow,
+  .faq-section .section-header-center .section-title,
+  .faq-section .section-header-center .section-subtitle {
+    text-align: left;
+  }
+
+  .faq-list {
+    max-width: none;
+    margin: 0;
+  }
+}
+
 .faq-list {
   max-width: 720px;
   margin: 0 auto;

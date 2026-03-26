@@ -672,6 +672,10 @@
   border-top: 1px solid var(--border-color);
 }
 
+body.footer-in-view .gh-mobile-dock {
+  display: none;
+}
+
 body.has-auth-dock {
   --mobile-action-dock-height: 64px;
 }

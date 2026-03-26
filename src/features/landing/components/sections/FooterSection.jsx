@@ -1,6 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LuCircle } from 'react-icons/lu';
+import {
+  LuBriefcase,
+  LuChevronRight,
+  LuFileText,
+  LuHouse,
+  LuMail,
+  LuShield,
+  LuUsers,
+  LuLayers,
+} from 'react-icons/lu';
 import Logo from '../../../../shared/components/common/Logo';
 import { getSocialLinks } from '../../../../config/app/social.config';
 import '../../styles/sections/footer.css';
@@ -12,27 +21,27 @@ const FooterSection = () => {
     {
       title: 'Platform',
       links: [
-        { label: 'Home', path: '/' },
-        { label: 'Courses', path: '/courses' },
-        { label: 'Services', path: '/services' },
-        { label: 'Leaderboard', path: '/leaderboard' },
+        { label: 'Home', path: '/', icon: LuHouse },
+        { label: 'Courses', path: '/courses', icon: LuLayers },
+        { label: 'Services', path: '/services', icon: LuShield },
+        { label: 'Leaderboard', path: '/leaderboard', icon: LuUsers },
       ],
     },
     {
       title: 'Company',
       links: [
-        { label: 'About', path: '/about' },
-        { label: 'Team', path: '/team' },
-        { label: 'Careers', path: '/careers' },
-        { label: 'Contact', path: '/contact' },
+        { label: 'About', path: '/about', icon: LuBriefcase },
+        { label: 'Team', path: '/team', icon: LuUsers },
+        { label: 'Careers', path: '/careers', icon: LuBriefcase },
+        { label: 'Contact', path: '/contact', icon: LuMail },
       ],
     },
     {
       title: 'Legal',
       links: [
-        { label: 'Terms', path: '/terms' },
-        { label: 'Privacy', path: '/privacy' },
-        { label: 'Feedback', path: '/feedback' },
+        { label: 'Terms', path: '/terms', icon: LuFileText },
+        { label: 'Privacy', path: '/privacy', icon: LuShield },
+        { label: 'Feedback', path: '/feedback', icon: LuMail },
       ],
     },
   ];
@@ -70,7 +79,7 @@ const FooterSection = () => {
                   <li key={link.label}>
                     <button type="button" onClick={() => navigate(link.path)}>
                       <span className="footer-link-icon" aria-hidden="true">
-                        <LuCircle size={10} />
+                        {link.icon ? <link.icon size={14} /> : null}
                       </span>
                       <span>{link.label}</span>
                     </button>
@@ -83,6 +92,9 @@ const FooterSection = () => {
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} HSOCIETY OFFSEC. All rights reserved.</span>
+          <button type="button" className="footer-cta" onClick={() => navigate('/register')}>
+            Join as Student <LuChevronRight size={14} />
+          </button>
         </div>
       </div>
     </footer>

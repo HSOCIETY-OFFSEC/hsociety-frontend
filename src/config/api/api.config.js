@@ -234,6 +234,7 @@ const DEFAULT_API_ENDPOINTS = {
     COMMUNITY_POSTS: '/admin/community/posts',
     USER_MUTE: '/admin/users/:id/mute',
     CONTENT: '/admin/content',
+    FREE_RESOURCES_UPLOAD: '/admin/uploads/free-resources',
     SEND_NOTIFICATION: '/admin/notifications/send',
     BOOTCAMP_MEETING: '/admin/bootcamp/meeting',
     SECURITY_EVENTS: '/admin/security/events',

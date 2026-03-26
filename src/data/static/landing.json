@@ -253,10 +253,8 @@
     "student": {
       "title": "For Aspiring Cybersecurity Professionals",
       "items": [
-        "Paid beginner-friendly offensive security training",
-        "Community integration",
-        "Supervised real-world engagements",
-        "Professional pentesting pathway"
+        "Beginner-friendly offsec training",
+        "Supervised real-world engagements"
       ],
       "cta": "Join as a Student",
       "route": "/register"
@@ -264,10 +262,8 @@
     "company": {
       "title": "For Companies & Organizations",
       "items": [
-        "Supervised security audits",
         "Professional penetration testing",
-        "Full reporting & remediation",
-        "Long-term security partnership"
+        "Evidence-backed reporting"
       ],
       "cta": "Request Security Assessment",
       "route": "/corporate/pentest"

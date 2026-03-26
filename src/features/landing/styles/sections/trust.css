@@ -6,22 +6,30 @@
   background: var(--bg-primary);
   border-top: 1px solid var(--border-color);
   --reveal-distance: 24px;
-  padding: 4rem 0;
+  padding: 2rem 0;
 }
 
 .trust-shell {
-  border: 1px solid var(--border-color);
-  padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  border-radius: 16px;
-  background: var(--bg-secondary);
-  box-shadow: var(--shadow-md);
 }
 
 .trust-marquee {
   overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
 }
 
 .trust-track {
@@ -50,46 +58,9 @@
   object-fit: contain;
 }
 
-.trust-quotes {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
-}
-
-.trust-quote p {
-  margin: 0 0 0.5rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-.trust-quote {
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1rem;
-  background: var(--bg-tertiary);
-}
-
-.trust-quote span {
-  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--text-tertiary);
-}
-
 @keyframes trustScroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
-}
-
-@media (max-width: 900px) {
-  .trust-shell {
-    padding: 1.5rem;
-  }
-
-  .trust-quotes {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

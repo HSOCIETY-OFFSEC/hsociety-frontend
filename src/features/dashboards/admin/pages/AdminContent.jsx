@@ -9,6 +9,7 @@ import {
   sendBootcampRoomLink,
   sendAdminNotification,
   updateAdminContent,
+  uploadFreeResource,
 } from '../services/admin.service';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import defaultTeamContent from '../../../../data/static/team.json';
@@ -71,6 +72,7 @@ const AdminContent = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
+  const [uploadingIndex, setUploadingIndex] = useState(null);
   const [landing, setLanding] = useState({
     heroTitle: '',
     heroDescription: '',
@@ -95,6 +97,33 @@ const AdminContent = () => {
     message: '',
     audience: 'all',
   });
+
+  const handleResourceUpload = async (index, file) => {
+    if (!file) return;
+    setStatus('');
+    setError('');
+    setUploadingIndex(index);
+    try {
+      const response = await uploadFreeResource(file);
+      if (!response.success) {
+        setError(response.error || 'Upload failed.');
+        return;
+      }
+      const url = response.data?.url || '';
+      if (!url) {
+        setError('Upload failed. Missing file URL.');
+        return;
+      }
+      setResources((prev) =>
+        prev.map((item, idx) =>
+          idx === index ? { ...item, url, type: 'file' } : item
+        )
+      );
+      setStatus('PDF uploaded. Remember to save changes.');
+    } finally {
+      setUploadingIndex(null);
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -611,6 +640,15 @@ const AdminContent = () => {
                   value={resource.url}
                   onChange={(e) => updateResource(index, 'url', e.target.value)}
                 />
+                <label className="admin-upload">
+                  Upload PDF
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(e) => handleResourceUpload(index, e.target.files?.[0])}
+                    disabled={uploadingIndex === index}
+                  />
+                </label>
                 <textarea
                   className="admin-textarea"
                   rows={2}

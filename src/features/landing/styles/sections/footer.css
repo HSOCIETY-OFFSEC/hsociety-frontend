@@ -62,7 +62,7 @@
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: var(--text-tertiary);
+  color: var(--primary-color);
 }
 
 .footer-group ul {
@@ -99,7 +99,7 @@
 }
 
 .footer-group button:hover .footer-link-icon {
-  color: var(--primary-color);
+  color: var(--text-primary);
 }
 
 .footer-bottom {
@@ -110,6 +110,25 @@
   justify-content: space-between;
   align-items: center;
   color: var(--text-tertiary);
+}
+
+.footer-cta {
+  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, var(--border-color));
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--bg-secondary));
+  color: var(--primary-color);
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.footer-cta:hover {
+  border-color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 16%, var(--bg-secondary));
 }
 
 @media (max-width: 900px) {

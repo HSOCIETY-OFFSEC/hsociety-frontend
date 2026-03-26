@@ -137,6 +137,12 @@ export const updateAdminContent = async (payload) => {
   return { success: false, error: getPublicErrorMessage({ action: 'save', response }) };
 };
 
+export const uploadFreeResource = async (file) => {
+  const response = await apiClient.upload(API_ENDPOINTS.ADMIN.FREE_RESOURCES_UPLOAD, file, 'file');
+  if (response.success) return { success: true, data: response.data || {} };
+  return { success: false, error: getPublicErrorMessage({ action: 'upload', response }) };
+};
+
 export const sendAdminNotification = async (payload) => {
   const response = await apiClient.post(API_ENDPOINTS.ADMIN.SEND_NOTIFICATION, payload);
   if (response.success) return { success: true, data: response.data || {} };
@@ -198,6 +204,7 @@ export default {
   muteUser,
   getAdminContent,
   updateAdminContent,
+  uploadFreeResource,
   sendAdminNotification,
   sendBootcampRoomLink,
   publishBootcampMeeting,

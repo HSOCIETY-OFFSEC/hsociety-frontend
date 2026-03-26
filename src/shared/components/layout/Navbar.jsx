@@ -87,6 +87,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
   );
 
   const handleLogout = async () => { await logout(); };
+  const [footerInView, setFooterInView] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
@@ -103,12 +104,31 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
-    const shouldShowDock = viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen;
+    const shouldShowDock = viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && !footerInView;
     document.body.classList.toggle('has-auth-dock', shouldShowDock);
     return () => {
       document.body.classList.remove('has-auth-dock');
     };
-  }, [viewportMode, isAuthenticated, mobileMenuOpen]);
+  }, [viewportMode, isAuthenticated, mobileMenuOpen, footerInView]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const footer = document.getElementById('footer');
+    if (!footer || typeof IntersectionObserver === 'undefined') return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visible = Boolean(entry.isIntersecting);
+        setFooterInView(visible);
+        document.body.classList.toggle('footer-in-view', visible);
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(footer);
+    return () => {
+      observer.disconnect();
+      document.body.classList.remove('footer-in-view');
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!transparentOnTop || typeof window === 'undefined') return undefined;

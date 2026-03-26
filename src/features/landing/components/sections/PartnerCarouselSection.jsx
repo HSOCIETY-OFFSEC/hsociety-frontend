@@ -36,10 +36,6 @@ const PartnerCarouselSection = () => {
   return (
     <section className="partners-section reveal-on-scroll" aria-label="Partners" ref={sectionRef}>
       <div className="section-container">
-        <div className="partners-header">
-          <p className="section-eyebrow"><span className="eyebrow-dot" />Partners</p>
-        </div>
-
         <div className="partners-marquee" aria-hidden="true">
           <div className="partners-track">
             {[...partners, ...partners].map((partner, index) => (

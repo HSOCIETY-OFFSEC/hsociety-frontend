@@ -11,8 +11,6 @@ const TrustSection = ({ signals = [] }) => {
     { src: RedspectreAILogo, label: 'Redspectre AI' },
     { src: WSuitsIndustriesLogo, label: 'WSuits Industries' },
   ];
-  const statements = signals.slice(0, 3);
-
   return (
     <section className="trust-section reveal-on-scroll" aria-label="Trusted by">
       <div className="section-container">
@@ -25,15 +23,6 @@ const TrustSection = ({ signals = [] }) => {
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="trust-quotes">
-            {statements.map((item) => (
-              <div key={item.title} className="trust-quote">
-                <p>{item.description}</p>
-                <span>{item.title}</span>
-              </div>
-            ))}
           </div>
         </div>
       </div>
