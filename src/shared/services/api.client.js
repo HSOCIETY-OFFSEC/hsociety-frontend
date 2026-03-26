@@ -124,8 +124,14 @@ class APIClient {
    * Make HTTP request
    */
   async request(method, endpoint, data = null, options = {}) {
+    const {
+      timeoutMs: timeoutOverride,
+      headers: customHeaders,
+      _retry,
+      ...requestOptions
+    } = options;
     const url = this.buildURL(endpoint);
-    const headers = this.buildHeaders(options.headers);
+    const headers = this.buildHeaders(customHeaders);
     if (endpoint === REFRESH_ENDPOINT) {
       const csrfToken = this.getCookie('csrf_token');
       if (csrfToken) {
@@ -133,7 +139,7 @@ class APIClient {
       }
     }
     const controller = new AbortController();
-    const timeoutMs = Number(envConfig.api.timeout || 30000);
+    const timeoutMs = Number((timeoutOverride ?? envConfig.api.timeout) || 30000);
     const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
     // SECURITY UPDATE IMPLEMENTED: Send cookies (e.g. refresh_token) for same-origin/configured API
@@ -142,7 +148,7 @@ class APIClient {
       headers,
       credentials: 'include',
       signal: controller.signal,
-      ...options
+      ...requestOptions
     };
 
     // Add body for POST, PUT, PATCH
@@ -197,7 +203,7 @@ class APIClient {
         };
       }
       const status = error?.response?.status;
-      if (status === 401 && !options._retry) {
+      if (status === 401 && !_retry) {
         const refreshed = await this.refreshSession();
         if (refreshed) {
           return this.request(method, endpoint, data, { ...options, _retry: true });

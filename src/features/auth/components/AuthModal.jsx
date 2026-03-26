@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
@@ -7,6 +8,7 @@ import '../styles/auth.css';
 
 const AuthModal = () => {
   const { mode, payload, redirect, closeAuthModal, openAuthModal } = useAuthModal();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!mode) return undefined;
@@ -17,7 +19,14 @@ const AuthModal = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mode, closeAuthModal]);
 
-  if (!mode) return null;
+  useEffect(() => {
+    if (mode === AUTH_MODAL_MODES.CORPORATE_REGISTER) {
+      closeAuthModal({ replace: true });
+      navigate('/contact', { replace: true });
+    }
+  }, [mode, closeAuthModal, navigate]);
+
+  if (!mode || mode === AUTH_MODAL_MODES.CORPORATE_REGISTER) return null;
 
   const handleSwitchMode = (nextMode, options = {}) => {
     openAuthModal(nextMode, { replace: true, ...options });
@@ -58,14 +67,6 @@ const AuthModal = () => {
           onLoginRedirect={(data) =>
             handleSwitchMode(AUTH_MODAL_MODES.LOGIN, { payload: data })
           }
-        />
-      )}
-      {mode === AUTH_MODAL_MODES.CORPORATE_REGISTER && (
-        <Login
-          {...sharedProps}
-          mode="default"
-          prefillEmail={payload?.email}
-          redirect={redirect || payload?.redirect}
         />
       )}
     </div>

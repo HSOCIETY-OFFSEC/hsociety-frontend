@@ -201,7 +201,7 @@ const AppRouter = () => {
             />
             <Route
               path="register/corporate"
-              element={<Navigate to={{ pathname: '/posts', search: `?auth=${AUTH_MODAL_MODES.CORPORATE_REGISTER}` }} replace />}
+              element={<Navigate to="/contact" replace />}
             />
             <Route path="posts" element={<AuthPortal />} />
             <Route path="change-password" element={<ForcePasswordChange />} />

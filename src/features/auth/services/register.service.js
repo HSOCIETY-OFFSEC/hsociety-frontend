@@ -9,7 +9,7 @@ import { logger } from '../../../core/logging/logger';
 
 export const registerUser = async (payload) => {
   try {
-    const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, payload);
+    const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, payload, { timeoutMs: 60000 });
     if (response.success) {
       return {
         success: true,

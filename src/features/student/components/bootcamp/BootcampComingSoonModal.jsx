@@ -1,6 +1,7 @@
 import React from 'react';
 import BootcampAccessPage from './BootcampAccessPage';
 import { useNavigate } from 'react-router-dom';
+import { getWhatsAppLink } from '../../../../config/app/social.config';
 import './bootcamp-coming-soon-modal.css';
 
 const BootcampComingSoonModal = ({ onClose }) => {
@@ -12,6 +13,15 @@ const BootcampComingSoonModal = ({ onClose }) => {
       return;
     }
     navigate('/student-dashboard');
+  };
+
+  const handlePrimary = () => {
+    const whatsappLink = getWhatsAppLink();
+    if (whatsappLink) {
+      window.open(whatsappLink, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    navigate('/contact');
   };
 
   return (
@@ -26,11 +36,12 @@ const BootcampComingSoonModal = ({ onClose }) => {
           ×
         </button>
         <BootcampAccessPage
+          className="bootcamp-access-page--modal"
           kicker="Coming Soon"
           title="Bootcamp access is opening soon."
-          description="We are preparing the next cohort. Join the waitlist to get early access when modules go live."
-          primaryLabel="Join Waitlist"
-          onPrimary={() => navigate('/contact')}
+          description="We are preparing the next cohort. Join the community on WhatsApp to get early access when modules go live."
+          primaryLabel="Join WhatsApp Community"
+          onPrimary={handlePrimary}
           secondaryLabel="Back to Dashboard"
           onSecondary={handleClose}
         />

@@ -272,6 +272,19 @@
   font-size: 0.9rem;
 }
 
+.sd-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+@media (max-width: 899px) {
+  .sd-panel-actions .sd-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .sd-continue-panel {
   display: flex;
   align-items: center;

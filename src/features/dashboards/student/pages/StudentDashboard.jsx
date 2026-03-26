@@ -7,7 +7,6 @@ import {
   FiBookOpen,
   FiCheckCircle,
   FiCompass,
-  FiLock,
   FiMessageSquare,
   FiShield,
   FiTarget
@@ -22,6 +21,7 @@ import SkillProgressCard from '../components/SkillProgressCard';
 import Skeleton from '../../../../shared/components/ui/Skeleton';
 import reportRum from '../../../../shared/utils/perf/rum';
 import { logger } from '../../../../core/logging/logger';
+import { envConfig } from '../../../../config/app/env.config';
 import '../styles/student-dashboard.css';
 
 const StudentDashboard = () => {
@@ -37,6 +37,7 @@ const StudentDashboard = () => {
   const [error, setError] = useState('');
   const [notifications, setNotifications] = useState([]);
   const { isRegistered, isPaid, accessRevoked } = useBootcampAccess();
+  const bootcampComingSoon = envConfig.features.bootcampComingSoon;
   const rumSentRef = useRef(false);
   const loadStartRef = useRef(performance.now());
   const loadStudentData = useCallback(async () => {
@@ -89,18 +90,10 @@ const StudentDashboard = () => {
     return null;
   }, [data.learningPath, data.modules]);
 
-  const bootcampAction = useMemo(() => {
-    if (accessRevoked) {
-      return { label: 'Contact Support', onClick: () => navigate('/contact') };
-    }
-    if (!isRegistered) {
-      return { label: 'Register', onClick: () => navigate('/student-bootcamps') };
-    }
-    if (!isPaid) {
-      return { label: 'Pay Now', onClick: () => navigate('/student-payments') };
-    }
-    return { label: 'Enter Bootcamp', onClick: () => navigate('/student-bootcamps/overview') };
-  }, [accessRevoked, isRegistered, isPaid, navigate]);
+  const primaryAction = useMemo(
+    () => ({ label: 'Explore Free Resources', onClick: () => navigate('/student-resources') }),
+    [navigate]
+  );
 
   const skillPillars = useMemo(() => {
     const parsePercent = (value) => {
@@ -147,13 +140,6 @@ const StudentDashboard = () => {
     }));
   }, [data.learningPath, data.modules]);
 
-  const liveClassNotice = useMemo(() => {
-    const classes = (notifications || []).filter((item) => item.type === 'bootcamp_meeting');
-    return classes.length ? classes[0] : null;
-  }, [notifications]);
-
-  const liveClassLabel = liveClassNotice?.metadata?.title || 'Live Class';
-
   const xpTotal = Number(data.xpSummary?.totalXp || 0);
   const moduleCount = data.learningPath?.length || data.modules?.length || 0;
   const showData = !loading && !error;
@@ -168,6 +154,15 @@ const StudentDashboard = () => {
   };
 
   const statusMeta = useMemo(() => {
+    if (bootcampComingSoon) {
+      return {
+        label: 'BOOTCAMP STATUS',
+        value: 'COMING SOON',
+        note: 'Bootcamp access opens soon. Explore free resources and join the community.',
+        fill: 10,
+        paused: true
+      };
+    }
     if (accessRevoked) {
       return {
         label: 'BOOTCAMP STATUS',
@@ -239,26 +234,26 @@ const StudentDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="sd-header-actions">
-            <button
-              type="button"
-              className="sd-btn sd-btn-secondary"
-              onClick={() => navigate('/student-bootcamps/live-class')}
-              disabled={loading}
-            >
-              <FiMessageSquare size={16} />
-              {liveClassLabel}
-            </button>
-            <button
-              type="button"
-              className="sd-btn sd-btn-primary"
-              onClick={bootcampAction.onClick}
-              disabled={loading}
-            >
-              <FiCompass size={16} />
-              {bootcampAction.label}
-            </button>
-          </div>
+        <div className="sd-header-actions">
+          <button
+            type="button"
+            className="sd-btn sd-btn-secondary"
+            onClick={() => navigate('/student-resources')}
+            disabled={loading}
+          >
+            <FiBookOpen size={16} />
+            Free Resources
+          </button>
+          <button
+            type="button"
+            className="sd-btn sd-btn-primary"
+            onClick={() => navigate('/community')}
+            disabled={loading}
+          >
+            <FiMessageSquare size={16} />
+            Join Community
+          </button>
+        </div>
         </div>
         <div className="sd-header-meta">
           <span className="sd-meta-pill">
@@ -328,54 +323,29 @@ const StudentDashboard = () => {
 
           {!error && !loading && (
             <>
-              {statusMeta.paused && (
-                <div className="sd-payment-banner">
-                  <div className="sd-payment-banner-left">
-                    <FiLock size={18} className="sd-payment-banner-icon" />
-                    <div>
-                      <strong>
-                        {accessRevoked
-                          ? 'Bootcamp access revoked'
-                          : !isRegistered
-                            ? 'Bootcamp registration required'
-                            : 'Bootcamp payment required'}
-                      </strong>
-                      <p>
-                        {accessRevoked
-                          ? 'Your bootcamp access was revoked. Contact support to resolve this issue.'
-                          : !isRegistered
-                            ? 'Register for the bootcamp to unlock your dashboard.'
-                            : 'Your bootcamp is locked until payment is confirmed. Complete payment to unlock all phases.'}
-                      </p>
-                    </div>
-                  </div>
-                  {accessRevoked ? (
-                    <button
-                      type="button"
-                      className="sd-btn sd-btn-pay"
-                      onClick={() => navigate('/contact')}
-                    >
-                      Contact Support <FiArrowRight size={14} />
-                    </button>
-                  ) : !isRegistered ? (
-                    <button
-                      type="button"
-                      className="sd-btn sd-btn-pay"
-                      onClick={() => navigate('/student-bootcamps')}
-                    >
-                      Register <FiArrowRight size={14} />
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="sd-btn sd-btn-pay"
-                      onClick={() => navigate('/student-payments')}
-                    >
-                      Pay Now <FiArrowRight size={14} />
-                    </button>
-                  )}
+              <div className="sd-panel sd-alert">
+                <div className="sd-panel-header">
+                  <FiBookOpen size={18} />
+                  <h3>Start With Free Resources</h3>
                 </div>
-              )}
+                <p>Bootcamp modules are opening soon. In the meantime, dive into curated free learning and connect with the community.</p>
+                <div className="sd-panel-actions">
+                  <button
+                    type="button"
+                    className="sd-btn sd-btn-secondary"
+                    onClick={() => navigate('/student-resources')}
+                  >
+                    Browse Free Resources <FiArrowRight size={14} />
+                  </button>
+                  <button
+                    type="button"
+                    className="sd-btn sd-btn-primary"
+                    onClick={() => navigate('/community')}
+                  >
+                    Open Community <FiArrowRight size={14} />
+                  </button>
+                </div>
+              </div>
               <section className="sd-section">
                 <h2 className="sd-section-title">
                   <FiCompass size={15} className="sd-section-icon" />
@@ -403,9 +373,9 @@ const StudentDashboard = () => {
                   <button
                     type="button"
                     className="sd-btn sd-btn-primary"
-                    onClick={bootcampAction.onClick}
+                    onClick={primaryAction.onClick}
                   >
-                    {bootcampAction.label} <FiArrowRight size={14} />
+                    {primaryAction.label} <FiArrowRight size={14} />
                   </button>
                 </div>
               </section>

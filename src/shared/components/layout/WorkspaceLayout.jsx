@@ -88,27 +88,17 @@ const WorkspaceLayout = () => {
 
   useEffect(() => {
     if (!bootcampComingSoon) {
+      if (bootcampModalOpen) setBootcampModalOpen(false);
       lastNonBootcampPathRef.current = pathname;
       return;
     }
     if (!pathname.startsWith('/student-bootcamps')) {
+      if (bootcampModalOpen) setBootcampModalOpen(false);
       lastNonBootcampPathRef.current = pathname;
       return;
     }
-    setBootcampModalOpen(true);
-    const fallback = lastNonBootcampPathRef.current && !lastNonBootcampPathRef.current.startsWith('/student-bootcamps')
-      ? lastNonBootcampPathRef.current
-      : '/student-dashboard';
-    if (pathname !== fallback) {
-      navigate(fallback, { replace: true });
-    }
-  }, [bootcampComingSoon, navigate, pathname]);
-
-  useEffect(() => {
-    if (!bootcampComingSoon && bootcampModalOpen) {
-      setBootcampModalOpen(false);
-    }
-  }, [bootcampComingSoon, bootcampModalOpen]);
+    if (!bootcampModalOpen) setBootcampModalOpen(true);
+  }, [bootcampComingSoon, bootcampModalOpen, pathname]);
 
   const communityLinks = useMemo(() => {
     if (!isCommunity) return [];
@@ -627,7 +617,22 @@ const WorkspaceLayout = () => {
         />
       )}
       {bootcampComingSoon && bootcampModalOpen && (
-        <BootcampComingSoonModal onClose={() => setBootcampModalOpen(false)} />
+        <BootcampComingSoonModal
+          onClose={() => {
+            setBootcampModalOpen(false);
+            if (pathname.startsWith('/student-bootcamps')) {
+              const fallback = (
+                lastNonBootcampPathRef.current
+                && !lastNonBootcampPathRef.current.startsWith('/student-bootcamps')
+              )
+                ? lastNonBootcampPathRef.current
+                : '/student-dashboard';
+              if (pathname !== fallback) {
+                navigate(fallback, { replace: true });
+              }
+            }
+          }}
+        />
       )}
     </div>
   );

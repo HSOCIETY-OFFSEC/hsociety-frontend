@@ -276,7 +276,7 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
 /* ══════════════════════════════════════════════════════════
    REGISTER FORM
    ══════════════════════════════════════════════════════════ */
-const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
+const RegisterForm = ({ onSwitchToLogin }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { showToast } = useNotifications();
@@ -286,7 +286,7 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
     return q.get('email') || '';
   }, [location.search]);
 
-  const [accountType, setAccountType] = useState(defaultType === 'corporate' ? 'corporate' : 'student');
+  const [accountType] = useState('student');
   const [form, setForm] = useState({
     name: '', companyOrSchool: '', handle: '', email: prefillEmail,
     password: '', confirmPassword: '', inviteCode: '', agree: false,
@@ -472,23 +472,6 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
         <p className="ap-form-subtitle">Join HSociety and start your security mission.</p>
       </div>
 
-      <div className="ap-toggle" role="group" aria-label="Account type">
-        <button
-          type="button"
-          className={accountType === 'student' ? 'active' : ''}
-          onClick={() => setAccountType('student')}
-        >
-          Student
-        </button>
-        <button
-          type="button"
-          className={accountType === 'corporate' ? 'active' : ''}
-          onClick={() => setAccountType('corporate')}
-        >
-          Corporate
-        </button>
-      </div>
-
       {error && <ErrorBanner message={error} />}
 
       <form onSubmit={handleSubmit} className="ap-form" noValidate>
@@ -579,17 +562,22 @@ const RegisterForm = ({ defaultType = 'student', onSwitchToLogin }) => {
    AUTH PORTAL — root component
    ══════════════════════════════════════════════════════════ */
 const AuthPortal = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const authParam = query.get('auth');
 
-  const initialView = (authParam === 'register' || authParam === 'register-corporate') ? 'register' : 'login';
-  const initialType = authParam === 'register-corporate' ? 'corporate' : 'student';
+  const initialView = authParam === 'register' ? 'register' : 'login';
 
   const [view, setView]       = useState(initialView);
-  const [regType, setRegType] = useState(initialType);
 
-  const goRegister = (type = 'student') => { setRegType(type); setView('register'); };
+  useEffect(() => {
+    if (authParam === 'register-corporate') {
+      navigate('/contact', { replace: true });
+    }
+  }, [authParam, navigate]);
+
+  const goRegister = () => { setView('register'); };
   const goLogin    = ()                 => setView('login');
 
   return (
@@ -604,7 +592,7 @@ const AuthPortal = () => {
                 roleGuard={authParam === 'pentester-login' ? 'pentester' : null}
               />
             )
-            : <RegisterForm defaultType={regType} onSwitchToLogin={goLogin} />
+            : <RegisterForm onSwitchToLogin={goLogin} />
           }
           <div className="ap-notice">
             <IconLock />

@@ -13,6 +13,7 @@ const BootcampAccessPage = ({
   primaryDisabled = false,
   secondaryLabel = 'Contact Support',
   onSecondary,
+  className = '',
 }) => {
   const handleSupport = () => {
     if (onSecondary) {
@@ -26,7 +27,7 @@ const BootcampAccessPage = ({
   };
 
   return (
-    <div className="bootcamp-access-page">
+    <div className={`bootcamp-access-page${className ? ` ${className}` : ''}`}>
       <div className="bootcamp-access-card">
         <span className="bootcamp-access-kicker">{kicker}</span>
         <h1 className="bootcamp-access-title">{title}</h1>

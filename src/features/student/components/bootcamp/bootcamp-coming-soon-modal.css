@@ -21,6 +21,20 @@
   animation: modal-card-in 220ms ease-out both;
 }
 
+.bootcamp-soon-modal .bootcamp-access-page {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+}
+
+.bootcamp-soon-modal .bootcamp-access-card {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+
 .bootcamp-soon-close {
   position: absolute;
   top: 12px;

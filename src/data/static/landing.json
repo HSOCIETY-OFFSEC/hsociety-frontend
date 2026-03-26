@@ -38,6 +38,7 @@
     "items": [
       { "key": "learnersTrained", "value": "0", "label": "Students Enrolled", "plus": false },
       { "key": "communityMembers", "value": "0", "label": "Community Members", "plus": false },
+      { "key": "pentestersActive", "value": "0", "label": "Pentesters", "plus": false },
       { "key": "paidPentestsDelivered", "value": "0", "label": "Paid Pentests Delivered", "plus": false }
     ]
   },
