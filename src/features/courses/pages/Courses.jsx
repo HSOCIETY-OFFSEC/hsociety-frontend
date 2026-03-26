@@ -91,7 +91,11 @@ const Courses = () => {
           </div>
           <PublicCardGrid>
             {HACKER_PROTOCOL_PHASES.map((phase, index) => (
-              <article key={phase.title} className="public-card">
+              <article
+                key={phase.title}
+                className="public-card crs-phase-card"
+                style={{ '--public-card-media': `url(${phase.emblem})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
                 <div className="public-card-meta">
                   <span className="public-chip">Phase {index + 1}</span>

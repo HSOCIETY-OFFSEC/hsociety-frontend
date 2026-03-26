@@ -16,6 +16,12 @@
   object-fit: contain;
 }
 
+.crs-phase-card::before {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .crs-not-found {
   padding: 4rem 2rem;
   text-align: center;
