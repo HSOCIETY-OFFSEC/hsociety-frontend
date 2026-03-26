@@ -19,6 +19,7 @@ import { sessionManager } from '../../core/auth/session.manager';
 import { envConfig } from '../../config/app/env.config';
 import { getPublicErrorMessage } from '../utils/errors/publicError';
 import { buildAuthModalUrl } from '../utils/auth/authModal';
+import { logger } from '../../core/logging/logger';
 
 const REFRESH_ENDPOINT = '/auth/refresh';
 
@@ -77,11 +78,17 @@ class APIClient {
     return headers;
   }
 
+  getCookie(name) {
+    if (typeof document === 'undefined') return '';
+    const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
   /**
    * Handle API errors
    */
   handleError(error, endpoint) {
-    console.error(`[API] Error on ${endpoint}:`, error);
+    logger.error(`[API] Error on ${endpoint}:`, error);
 
     // Network error
     if (!error.response) {
@@ -119,6 +126,12 @@ class APIClient {
   async request(method, endpoint, data = null, options = {}) {
     const url = this.buildURL(endpoint);
     const headers = this.buildHeaders(options.headers);
+    if (endpoint === REFRESH_ENDPOINT) {
+      const csrfToken = this.getCookie('csrf_token');
+      if (csrfToken) {
+        headers['x-csrf-token'] = csrfToken;
+      }
+    }
     const controller = new AbortController();
     const timeoutMs = Number(envConfig.api.timeout || 30000);
     const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
@@ -139,7 +152,7 @@ class APIClient {
 
     try {
       if (import.meta.env.DEV) {
-        console.log(`[API] ${method} ${endpoint}`);
+        logger.info(`[API] ${method} ${endpoint}`);
       }
 
       const response = await fetch(url, config);
@@ -166,7 +179,7 @@ class APIClient {
       }
 
       if (import.meta.env.DEV) {
-        console.log(`[API] ${method} ${endpoint} - Success`);
+        logger.info(`[API] ${method} ${endpoint} - Success`);
       }
 
       return {
@@ -204,9 +217,14 @@ class APIClient {
   async refreshSession() {
     try {
       const refreshToken = sessionManager.getRefreshToken?.() || null;
+      const csrfToken = this.getCookie('csrf_token');
+      const headers = { ...this.defaultHeaders };
+      if (csrfToken) {
+        headers['x-csrf-token'] = csrfToken;
+      }
       const response = await fetch(this.buildURL(REFRESH_ENDPOINT), {
         method: 'POST',
-        headers: this.defaultHeaders,
+        headers,
         credentials: 'include',
         body: refreshToken ? JSON.stringify({ refreshToken }) : undefined,
       });
@@ -287,7 +305,7 @@ class APIClient {
 
     try {
       if (import.meta.env.DEV) {
-        console.log(`[API] Upload to ${endpoint}`);
+        logger.info(`[API] Upload to ${endpoint}`);
       }
 
       const response = await fetch(url, {
@@ -315,7 +333,7 @@ class APIClient {
       }
 
       if (import.meta.env.DEV) {
-        console.log(`[API] Upload to ${endpoint} - Success`);
+        logger.info(`[API] Upload to ${endpoint} - Success`);
       }
 
       return {
@@ -342,7 +360,7 @@ class APIClient {
 
     try {
       if (import.meta.env.DEV) {
-        console.log(`[API] Download from ${endpoint}`);
+        logger.info(`[API] Download from ${endpoint}`);
       }
 
       const response = await fetch(url, { headers, credentials: 'include' });
@@ -370,7 +388,7 @@ class APIClient {
       window.URL.revokeObjectURL(downloadUrl);
 
       if (import.meta.env.DEV) {
-        console.log(`[API] Download from ${endpoint} - Success`);
+        logger.info(`[API] Download from ${endpoint} - Success`);
       }
 
       return {
@@ -378,7 +396,7 @@ class APIClient {
         message: 'File downloaded successfully'
       };
     } catch (error) {
-      console.error(`[API] Download failed:`, error);
+      logger.error(`[API] Download failed:`, error);
       return {
         success: false,
         error: 'Failed to download file'

@@ -5,6 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getAssets } from '../services/assets.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import { logger } from '../../../core/logging/logger';
 import '../styles/assets.css';
 
 const assetTypes = ['Domain', 'IP Range', 'Application', 'Cloud Environment'];
@@ -28,7 +29,7 @@ const Assets = () => {
       }
       setAssets(response.data);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       setError('Unable to load assets.');
     } finally {
       setLoading(false);

@@ -18,6 +18,8 @@ import { getWhatsAppLink } from '../../../config/app/social.config';
 import brandLogoBlack from '../../../assets/branding/brand-images/brand-image-LOGO-black.png';
 import '../styles/auth-portal.css';
 
+const requireEmailVerification = envConfig.auth.requireEmailVerification;
+
 /* ─── tiny icon helpers ───────────────────────────────────── */
 const IconLock = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -137,7 +139,6 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
   const location = useLocation();
   const { login } = useAuth();
   const { showToast } = useNotifications();
-  const requireEmailVerification = envConfig.auth.requireEmailVerification;
 
   const [email, setEmail]       = useState(prefillEmail || location.state?.email || '');
   const [password, setPassword] = useState('');

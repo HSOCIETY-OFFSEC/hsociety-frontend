@@ -21,6 +21,7 @@ import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicErr
 import SkillProgressCard from '../components/SkillProgressCard';
 import Skeleton from '../../../../shared/components/ui/Skeleton';
 import reportRum from '../../../../shared/utils/perf/rum';
+import { logger } from '../../../../core/logging/logger';
 import '../styles/student-dashboard.css';
 
 const StudentDashboard = () => {
@@ -54,7 +55,7 @@ const StudentDashboard = () => {
         setNotifications(notificationsResponse.data || []);
       }
     } catch (err) {
-      console.error('Student dashboard error:', err);
+      logger.error('Student dashboard error:', err);
       setError('Unable to load student dashboard data.');
     } finally {
       setLoading(false);

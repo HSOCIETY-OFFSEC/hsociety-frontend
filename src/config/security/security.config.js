@@ -17,6 +17,7 @@
  */
 
 import { envConfig } from '../app/env.config';
+import { logger } from '../../core/logging/logger';
 
 /**
  * Password Security Configuration
@@ -391,10 +392,10 @@ export const validateSecurityConfig = () => {
   }
 
   if (warnings.length > 0) {
-    console.warn('[SECURITY] Configuration warnings:', warnings);
+    logger.warn('[SECURITY] Configuration warnings:', warnings);
   }
 
-  console.log('[SECURITY] Security configuration loaded');
+  logger.info('[SECURITY] Security configuration loaded');
 };
 
 // Validate on import

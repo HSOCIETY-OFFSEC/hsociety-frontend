@@ -5,6 +5,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { fetchQuizForScope, submitQuizAnswers } from '../services/quiz.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import { logger } from '../../../core/logging/logger';
 
 /**
  * QuizPanel
@@ -36,7 +37,7 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
 
         setQuiz(response.data);
       } catch (err) {
-        console.error('QuizPanel error:', err);
+        logger.error('QuizPanel error:', err);
         setError('Unable to load quiz right now. Please try again in a moment.');
       } finally {
         setLoading(false);
@@ -67,7 +68,7 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
         onComplete(response.data);
       }
     } catch (err) {
-      console.error('Quiz submit error:', err);
+      logger.error('Quiz submit error:', err);
     } finally {
       setSubmitting(false);
     }

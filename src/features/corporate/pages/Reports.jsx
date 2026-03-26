@@ -7,6 +7,7 @@ import { getReports } from '../services/reports.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS, buildEndpoint } from '../../../config/api/api.config';
+import { logger } from '../../../core/logging/logger';
 import '../styles/reports.css';
 
 const Reports = () => {
@@ -28,7 +29,7 @@ const Reports = () => {
       }
       setReports(response.data);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       setError('Unable to load reports at this time.');
     } finally {
       setLoading(false);

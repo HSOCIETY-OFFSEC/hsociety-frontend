@@ -6,6 +6,7 @@ import Button from '../../../shared/components/ui/Button';
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getEngagements, requestEngagement } from '../services/engagements.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
+import { logger } from '../../../core/logging/logger';
 import '../styles/engagements.css';
 
 const statusMap = {
@@ -77,7 +78,7 @@ const Engagements = () => {
       setActiveEngagements(response.data.active);
       setPastEngagements(response.data.past);
     } catch (err) {
-      console.error('Engagements load error:', err);
+      logger.error('Engagements load error:', err);
       setError('Unable to load engagement data right now.');
     } finally {
       setLoading(false);
@@ -161,7 +162,7 @@ const Engagements = () => {
       loadEngagements();
       closeRequestModal();
     } catch (err) {
-      console.error('Engagement request error:', err);
+      logger.error('Engagement request error:', err);
       setRequestStatus('Unable to submit engagement request.');
     } finally {
       setIsSubmittingRequest(false);

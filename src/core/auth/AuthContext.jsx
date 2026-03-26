@@ -7,6 +7,7 @@ import { getWhatsAppLink } from '../../config/app/social.config';
 import { trackSecurityEvent } from '../security/security-events.service';
 import { setPendingToast } from '../../shared/utils/toastStorage';
 import { buildAuthModalUrl } from '../../shared/utils/auth/authModal';
+import { logger } from '../logging/logger';
 
 /**
  * Authentication Context
@@ -105,7 +106,7 @@ export const AuthProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      console.error('Auth initialization error:', error);
+      logger.error('Auth initialization error:', error);
       await logout(false);
     } finally {
       setIsLoading(false);
@@ -123,7 +124,7 @@ export const AuthProvider = ({ children }) => {
     const cleanup = setupAutoLogout({
       timeout: envConfig.auth.inactivityTimeout,
       onTimeout: async () => {
-        console.log('Session timed out due to inactivity');
+        logger.info('Session timed out due to inactivity');
         trackSecurityEvent(
           {
             eventType: 'session_timeout',
@@ -181,7 +182,7 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true };
     } catch (error) {
-      console.error('Login error:', error);
+      logger.error('Login error:', error);
       return { success: false, error: 'Login failed. Please try again.' };
     }
   };
@@ -234,7 +235,7 @@ export const AuthProvider = ({ children }) => {
         window.location.href = '/posts?auth=login';
       }
     } catch (error) {
-      console.error('Logout error:', error);
+      logger.error('Logout error:', error);
       
       // Force clear session anyway
       sessionManager.clearSession();
@@ -283,7 +284,7 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true, token: newToken };
     } catch (error) {
-      console.error('Token refresh error:', error);
+      logger.error('Token refresh error:', error);
       await logout();
       return { success: false, error: 'Session refresh failed. Please try again.' };
     }

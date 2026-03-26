@@ -8,6 +8,7 @@ import LandingLayout from '../../shared/components/layout/LandingLayout';
 import PublicLayout from '../../shared/components/layout/PublicLayout';
 import RouteEffects from '../../shared/components/layout/RouteEffects';
 import StudentRoleBlocker from '../../features/student/components/StudentRoleBlocker';
+import { envConfig } from '../../config/app/env.config';
 import Landing from '../../features/landing/pages/Landing';
 import AuthPortal from '../../features/auth/pages/AuthPortal';
 import { AUTH_MODAL_MODES } from '../../shared/utils/auth/authModal';
@@ -173,6 +174,7 @@ const LoadingFallback = () => <PageLoader message="Loading secure interface..." 
  * App Router with nested layouts
  */
 const AppRouter = () => {
+  const bootcampComingSoon = envConfig.features.bootcampComingSoon;
   return (
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <RouteEffects />

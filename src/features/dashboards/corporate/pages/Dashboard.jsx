@@ -18,6 +18,7 @@ import ReportsListCard from '../components/ReportsListCard';
 import SecurityActivityFeedCard from '../components/SecurityActivityFeedCard';
 import Skeleton from '../../../../shared/components/ui/Skeleton';
 import reportRum from '../../../../shared/utils/perf/rum';
+import { logger } from '../../../../core/logging/logger';
 import '../styles/corporate-dashboard.css';
 
 const Dashboard = () => {
@@ -39,7 +40,7 @@ const Dashboard = () => {
       }
       setOverview(response.data);
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+      logger.error('Failed to load dashboard data:', error);
       setError('Unable to load dashboard data. Please try again.');
     } finally {
       setLoading(false);

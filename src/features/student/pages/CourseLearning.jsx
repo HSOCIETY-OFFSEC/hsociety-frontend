@@ -10,6 +10,7 @@ import { completeLearningRoom, completeLearningCtf } from '../../dashboards/stud
 import { QuizPanel } from '../components/QuizPanel';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { ROUTES } from '../../../app/router/routes';
+import { logger } from '../../../core/logging/logger';
 import '../styles/learning.css';
 
 /**
@@ -154,7 +155,7 @@ export const CourseLearning = () => {
           setActiveModuleId(normalizedCourse.modules[0].moduleId);
         }
       } catch (err) {
-        console.error('CourseLearning error:', err);
+        logger.error('CourseLearning error:', err);
         setError('Unable to load course learning data.');
       } finally {
         setLoading(false);

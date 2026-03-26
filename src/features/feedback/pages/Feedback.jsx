@@ -7,6 +7,7 @@ import { validateForm } from '../../../core/validation/input.validator';
 import { submitFeedback } from '../services/feedback.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import feedbackContent from '../../../data/static/feedback.json';
+import { logger } from '../../../core/logging/logger';
 import '../../public/styles/public-landing.css';
 import '../styles/feedback.css';
 
@@ -138,7 +139,7 @@ const Feedback = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       setFormErrors({ submit: feedbackContent.errors.submit });
-      console.error('Feedback submission failed:', error);
+      logger.error('Feedback submission failed:', error);
     } finally {
       setLoading(false);
     }

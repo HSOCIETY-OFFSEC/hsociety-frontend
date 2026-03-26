@@ -1,5 +1,6 @@
 import React from 'react';
 import './Logo.css';
+import { logger } from '../../../core/logging/logger';
 
 /**
  * Logo Component
@@ -76,7 +77,7 @@ const Logo = ({
         style={logoStyle}
         className="logo-image"
         onError={(e) => {
-          console.error('Logo failed to load:', logoSrc);
+          logger.error('Logo failed to load:', logoSrc);
           e.target.style.display = 'none';
         }}
       />

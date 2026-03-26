@@ -6,6 +6,7 @@
 import { API_ENDPOINTS } from '../../config/api/api.config';
 import { apiClient } from '../../shared/services/api.client';
 import { validateEmail, validatePassword } from '../validation/input.validator';
+import { logger } from '../logging/logger';
 
 const getPublicAuthMessage = (action, responseOrError = null) => {
   const status = responseOrError?.status;
@@ -113,7 +114,7 @@ export const login = async (identity, password) => {
       message: 'Login successful'
     };
   } catch (error) {
-    console.error('[AUTH] Login failed:', error);
+    logger.error('[AUTH] Login failed:', error);
     return {
       success: false,
       message: getPublicAuthMessage('login', error)
@@ -172,7 +173,7 @@ export const register = async (userData) => {
       message: 'Registration successful'
     };
   } catch (error) {
-    console.error('[AUTH] Registration failed:', error);
+    logger.error('[AUTH] Registration failed:', error);
     return {
       success: false,
       message: getPublicAuthMessage('register', error)
@@ -202,7 +203,7 @@ export const checkEmailExists = async (email) => {
 
     return { success: true, exists: Boolean(response.data?.exists) };
   } catch (error) {
-    console.error('[AUTH] Email check failed:', error);
+    logger.error('[AUTH] Email check failed:', error);
     return {
       success: false,
       message: getPublicAuthMessage('register', error)
@@ -235,7 +236,7 @@ export const logout = async (token) => {
       message: 'Logout successful'
     };
   } catch (error) {
-    console.error('[AUTH] Logout failed:', error);
+    logger.error('[AUTH] Logout failed:', error);
     return {
       success: false,
       message: getPublicAuthMessage('logout', error)
@@ -260,7 +261,7 @@ export const requestPasswordReset = async (email) => {
 
     return { success: true, message: 'Password reset instructions sent to your email' };
   } catch (error) {
-    console.error('[AUTH] Password reset request failed:', error);
+    logger.error('[AUTH] Password reset request failed:', error);
     return { success: false, message: getPublicAuthMessage('request_reset', error) };
   }
 };
@@ -290,7 +291,7 @@ export const resetPassword = async (token, newPassword) => {
 
     return { success: true, message: 'Password reset successful' };
   } catch (error) {
-    console.error('[AUTH] Password reset failed:', error);
+    logger.error('[AUTH] Password reset failed:', error);
     return { success: false, message: getPublicAuthMessage('reset_password', error) };
   }
 };
@@ -324,7 +325,7 @@ export const changePassword = async (currentPassword, newPassword) => {
 
     return { success: true, message: 'Password changed successfully' };
   } catch (error) {
-    console.error('[AUTH] Password change failed:', error);
+    logger.error('[AUTH] Password change failed:', error);
     return { success: false, message: getPublicAuthMessage('change_password', error) };
   }
 };
@@ -352,7 +353,7 @@ export const refreshToken = async (refreshToken) => {
       message: 'Token refreshed successfully'
     };
   } catch (error) {
-    console.error('[AUTH] Token refresh failed:', error);
+    logger.error('[AUTH] Token refresh failed:', error);
     return { success: false, message: getPublicAuthMessage('refresh', error) };
   }
 };
@@ -370,7 +371,7 @@ export const verifyToken = async () => {
 
     return { success: true, user: response.data?.user, message: 'Token is valid' };
   } catch (error) {
-    console.error('[AUTH] Token verification failed:', error);
+    logger.error('[AUTH] Token verification failed:', error);
     return { success: false, message: getPublicAuthMessage('verify', error) };
   }
 };
@@ -412,7 +413,7 @@ export const getCurrentUser = async () => {
 
     return { success: true, user: response.data, message: 'Profile retrieved successfully' };
   } catch (error) {
-    console.error('[AUTH] Failed to get user profile:', error);
+    logger.error('[AUTH] Failed to get user profile:', error);
     return { success: false, message: getPublicAuthMessage('verify', error) };
   }
 };
@@ -434,7 +435,7 @@ export const updateProfile = async (updates) => {
 
     return { success: true, user: response.data, message: 'Profile updated successfully' };
   } catch (error) {
-    console.error('[AUTH] Profile update failed:', error);
+    logger.error('[AUTH] Profile update failed:', error);
     return { success: false, message: getPublicAuthMessage('profile', error) };
   }
 };

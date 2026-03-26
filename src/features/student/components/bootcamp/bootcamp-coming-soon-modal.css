@@ -1,0 +1,43 @@
+.bootcamp-soon-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay-bg);
+  backdrop-filter: var(--modal-overlay-blur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1100;
+}
+
+.bootcamp-soon-modal {
+  position: relative;
+  width: min(90vw, 720px);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-xl);
+  animation: modal-card-in 220ms ease-out both;
+}
+
+.bootcamp-soon-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.bootcamp-soon-close:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 600px) {
+  .bootcamp-soon-modal {
+    padding: 1.5rem;
+  }
+}

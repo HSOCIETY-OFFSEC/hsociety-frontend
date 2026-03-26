@@ -1,5 +1,6 @@
 import { runFrontendVulnerabilityChecks } from './vulnerability.checks';
 import { trackSecurityEvent } from './security-events.service';
+import { logger } from '../logging/logger';
 
 const severityRank = {
   critical: 4,
@@ -16,9 +17,9 @@ export const runSecurityScan = async () => {
   );
 
   if (sorted.length > 0) {
-    console.warn('[SECURITY] Frontend security scan issues:', sorted);
+    logger.warn('[SECURITY] Frontend security scan issues:', sorted);
   } else {
-    console.info('[SECURITY] Frontend security scan passed');
+    logger.info('[SECURITY] Frontend security scan passed');
   }
 
   const highSeverity = sorted.filter((item) => ['critical', 'high'].includes(item.severity));

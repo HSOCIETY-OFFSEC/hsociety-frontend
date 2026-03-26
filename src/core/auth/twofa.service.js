@@ -5,6 +5,7 @@
 
 import { API_ENDPOINTS } from '../../config/api/api.config';
 import { apiClient } from '../../shared/services/api.client';
+import { logger } from '../logging/logger';
 
 /**
  * Setup 2FA for current user
@@ -23,7 +24,7 @@ export const setup2FA = async () => {
       message: 'Scan the QR code with your authenticator app'
     };
   } catch (error) {
-    console.error('[2FA] Setup failed:', error);
+    logger.error('[2FA] Setup failed:', error);
     return { success: false, message: 'Request failed. Please try again.' };
   }
 };
@@ -50,7 +51,7 @@ export const verify2FA = async (twoFactorToken, code) => {
 
     return { success: true, ...response.data, message: '2FA verification successful' };
   } catch (error) {
-    console.error('[2FA] Verification failed:', error);
+    logger.error('[2FA] Verification failed:', error);
     return { success: false, message: 'Verification failed. Please try again.' };
   }
 };
@@ -72,7 +73,7 @@ export const enable2FA = async (code) => {
 
     return { success: true, ...response.data, message: '2FA enabled successfully' };
   } catch (error) {
-    console.error('[2FA] Enable failed:', error);
+    logger.error('[2FA] Enable failed:', error);
     return { success: false, message: 'Request failed. Please try again.' };
   }
 };
@@ -94,7 +95,7 @@ export const disable2FA = async (code) => {
 
     return { success: true, message: '2FA disabled' };
   } catch (error) {
-    console.error('[2FA] Disable failed:', error);
+    logger.error('[2FA] Disable failed:', error);
     return { success: false, message: 'Request failed. Please try again.' };
   }
 };
@@ -119,7 +120,7 @@ export const verifyBackupCode = async (twoFactorToken, backupCode) => {
 
     return { success: true, ...response.data, message: 'Backup code verified' };
   } catch (error) {
-    console.error('[2FA] Backup code verification failed:', error);
+    logger.error('[2FA] Backup code verification failed:', error);
     return { success: false, message: 'Verification failed. Please try again.' };
   }
 };
@@ -140,7 +141,7 @@ export const regenerateBackupCodes = async () => {
       message: 'New backup codes generated. Store them safely.'
     };
   } catch (error) {
-    console.error('[2FA] Backup code regeneration failed:', error);
+    logger.error('[2FA] Backup code regeneration failed:', error);
     return { success: false, message: 'Request failed. Please try again.' };
   }
 };
@@ -154,7 +155,7 @@ export const is2FAEnabled = async () => {
     if (!response.success) return false;
     return !!response.data?.enabled;
   } catch (error) {
-    console.error('[2FA] Status check failed:', error);
+    logger.error('[2FA] Status check failed:', error);
     return false;
   }
 };

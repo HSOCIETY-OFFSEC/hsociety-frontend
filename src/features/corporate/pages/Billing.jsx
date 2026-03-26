@@ -8,6 +8,7 @@ import { getAgreements, getInvoices } from '../services/billing.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS, buildEndpoint } from '../../../config/api/api.config';
+import { logger } from '../../../core/logging/logger';
 import '../styles/billing.css';
 
 const Billing = () => {
@@ -34,7 +35,7 @@ const Billing = () => {
       }
       setInvoices(response.data);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       setInvoiceError('Unable to load invoices.');
     } finally {
       setLoadingInvoices(false);
@@ -51,7 +52,7 @@ const Billing = () => {
       }
       setAgreements(response.data);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       setAgreementError('Unable to load agreements.');
     } finally {
       setLoadingAgreements(false);

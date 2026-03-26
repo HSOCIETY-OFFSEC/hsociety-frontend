@@ -27,6 +27,8 @@ import { useUserStats } from '../../hooks/useUserStats';
 import './AppShell.css';
 import './WorkspaceLayout.css';
 import '../../../styles/base/dashboard-public-profile.css';
+import BootcampComingSoonModal from '../../../features/student/components/bootcamp/BootcampComingSoonModal';
+import { envConfig } from '../../../config/app/env.config';
 
 /**
  * Workspace Layout
@@ -53,6 +55,9 @@ const WorkspaceLayout = () => {
     markAllRead,
   } = useNotifications();
   const role = user?.role === 'client' ? 'corporate' : user?.role;
+  const bootcampComingSoon = envConfig.features.bootcampComingSoon;
+  const [bootcampModalOpen, setBootcampModalOpen] = useState(false);
+  const lastNonBootcampPathRef = useRef('/student-dashboard');
 
   // Payment reminder banner — shown for unpaid students
   const PAYMENT_BANNER_KEY = 'hsociety.payment-banner.dismissed';
@@ -80,6 +85,30 @@ const WorkspaceLayout = () => {
   const isBootcamp = pathname.startsWith('/student-bootcamps');
   const isDashboardTheme = !isCommunity && !isLessonWorkspace;
   const { cpTotal, streakDays } = useUserStats(user?.id, role);
+
+  useEffect(() => {
+    if (!bootcampComingSoon) {
+      lastNonBootcampPathRef.current = pathname;
+      return;
+    }
+    if (!pathname.startsWith('/student-bootcamps')) {
+      lastNonBootcampPathRef.current = pathname;
+      return;
+    }
+    setBootcampModalOpen(true);
+    const fallback = lastNonBootcampPathRef.current && !lastNonBootcampPathRef.current.startsWith('/student-bootcamps')
+      ? lastNonBootcampPathRef.current
+      : '/student-dashboard';
+    if (pathname !== fallback) {
+      navigate(fallback, { replace: true });
+    }
+  }, [bootcampComingSoon, navigate, pathname]);
+
+  useEffect(() => {
+    if (!bootcampComingSoon && bootcampModalOpen) {
+      setBootcampModalOpen(false);
+    }
+  }, [bootcampComingSoon, bootcampModalOpen]);
 
   const communityLinks = useMemo(() => {
     if (!isCommunity) return [];
@@ -596,6 +625,9 @@ const WorkspaceLayout = () => {
           links={bottomNavLinks}
           profile={user?.id ? profileNav : null}
         />
+      )}
+      {bootcampComingSoon && bootcampModalOpen && (
+        <BootcampComingSoonModal onClose={() => setBootcampModalOpen(false)} />
       )}
     </div>
   );

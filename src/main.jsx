@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './app/App';
+import { logger } from './core/logging/logger';
 
 /**
  * Main Entry Point
@@ -27,6 +28,6 @@ root.render(
 
 // Log successful mount in development
 if (import.meta.env.DEV) {
-  console.log('HSOCIETY MVP loaded successfully');
-  console.log('Environment:', import.meta.env.MODE);
+  logger.info('HSOCIETY MVP loaded successfully');
+  logger.info('Environment:', import.meta.env.MODE);
 }

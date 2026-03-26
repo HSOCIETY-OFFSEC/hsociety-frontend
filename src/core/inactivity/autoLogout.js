@@ -13,6 +13,7 @@
  * - Prevents unauthorized access from unattended sessions
  * - Clears sensitive data on timeout
  */
+import { logger } from '../logging/logger';
 
 /**
  * Setup auto logout monitor
@@ -32,7 +33,7 @@ export const setupAutoLogout = ({
   events = ['mousedown', 'keydown', 'scroll', 'touchstart', 'click', 'mousemove']
 } = {}) => {
   if (!onTimeout || typeof onTimeout !== 'function') {
-    console.error('Auto logout requires onTimeout callback');
+    logger.error('Auto logout requires onTimeout callback');
     return () => {};
   }
 
@@ -71,7 +72,7 @@ export const setupAutoLogout = ({
 
     // Set logout timer
     timeoutId = setTimeout(() => {
-      console.log('Auto logout triggered due to inactivity');
+      logger.info('Auto logout triggered due to inactivity');
       onTimeout();
     }, timeout);
   };
@@ -109,7 +110,7 @@ export const setupAutoLogout = ({
       clearTimeout(warningId);
     }
 
-    console.log('Auto logout monitor cleaned up');
+    logger.info('Auto logout monitor cleaned up');
   };
 };
 

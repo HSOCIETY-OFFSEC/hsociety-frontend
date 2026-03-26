@@ -7,6 +7,7 @@ import { getRemediationReports, getRemediationSummary } from '../services/remedi
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS, buildEndpoint } from '../../../config/api/api.config';
+import { logger } from '../../../core/logging/logger';
 import '../styles/remediation.css';
 
 const Remediation = () => {
@@ -30,7 +31,7 @@ const Remediation = () => {
       }
       setSummary(response.data);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       setError('Unable to load remediation overview.');
     } finally {
       setLoadingSummary(false);
@@ -46,7 +47,7 @@ const Remediation = () => {
       }
       setReports(response.data);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
       setError('Unable to load remediation reports.');
     } finally {
       setLoadingReports(false);

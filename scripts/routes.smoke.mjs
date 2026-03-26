@@ -8,5 +8,3 @@ assert.equal(
   ROUTES.STUDENT_LESSON(2, 5),
   '/student-bootcamps/modules/2/rooms/5'
 );
-
-console.log('Route smoke checks passed.');

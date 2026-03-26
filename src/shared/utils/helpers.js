@@ -9,6 +9,7 @@
  * - Data transformations
  * - Validation helpers
  */
+import { logger } from '../../core/logging/logger';
 
 /**
  * Format date to readable string
@@ -181,7 +182,7 @@ export const deepClone = (obj) => {
   try {
     return JSON.parse(JSON.stringify(obj));
   } catch (error) {
-    console.error('Deep clone failed:', error);
+    logger.error('Deep clone failed:', error);
     return obj;
   }
 };
@@ -263,7 +264,7 @@ export const copyToClipboard = async (text) => {
       return true;
     }
   } catch (error) {
-    console.error('Copy to clipboard failed:', error);
+    logger.error('Copy to clipboard failed:', error);
     return false;
   }
 };

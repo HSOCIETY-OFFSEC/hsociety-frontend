@@ -5,6 +5,7 @@
 
 import { API_ENDPOINTS } from '../../../config/api/api.config';
 import { apiClient } from '../../../shared/services/api.client';
+import { logger } from '../../../core/logging/logger';
 
 export const registerUser = async (payload) => {
   try {
@@ -32,7 +33,7 @@ export const registerUser = async (payload) => {
         : 'Registration failed. Please try again.'
     };
   } catch (error) {
-    console.error('[REGISTER] Failed:', error);
+    logger.error('[REGISTER] Failed:', error);
     return {
       success: false,
       error: 'Registration failed. Please try again.'

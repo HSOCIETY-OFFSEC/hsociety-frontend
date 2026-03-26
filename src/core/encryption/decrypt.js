@@ -20,8 +20,21 @@
  * @param {string} key - Decryption key (optional for now)
  * @returns {string} - Decrypted plain text
  */
+import { logger } from '../logging/logger';
+
+const isProduction = import.meta.env.MODE === 'production';
+const allowInsecureCrypto =
+  String(import.meta.env.VITE_ALLOW_INSECURE_CRYPTO || 'false').toLowerCase() === 'true';
+
+const assertInsecureCryptoAllowed = (action) => {
+  if (isProduction && !allowInsecureCrypto) {
+    throw new Error(`Insecure ${action} blocked in production. Configure real crypto or allow insecure crypto explicitly.`);
+  }
+};
+
 export const decrypt = (encryptedData, key = null) => {
   try {
+    assertInsecureCryptoAllowed('decryption');
     // TODO: Implement actual decryption
     // For now, just base64 decode as placeholder
     
@@ -32,11 +45,11 @@ export const decrypt = (encryptedData, key = null) => {
     // Placeholder: Base64 decoding
     const decoded = atob(encryptedData);
     
-    console.log('[DECRYPTION] Data decrypted (placeholder)');
+    logger.info('[DECRYPTION] Data decrypted (placeholder)');
     
     return decoded;
   } catch (error) {
-    console.error('Decryption error:', error);
+    logger.error('Decryption error:', error);
     throw new Error('Failed to decrypt data');
   }
 };
@@ -52,7 +65,7 @@ export const decryptObject = (encryptedData, key = null) => {
     const decryptedString = decrypt(encryptedData, key);
     return JSON.parse(decryptedString);
   } catch (error) {
-    console.error('Object decryption error:', error);
+    logger.error('Object decryption error:', error);
     throw new Error('Failed to decrypt object');
   }
 };
@@ -85,7 +98,7 @@ export const decryptField = (obj, field, key = null) => {
     
     return result;
   } catch (error) {
-    console.error('Field decryption error:', error);
+    logger.error('Field decryption error:', error);
     return obj;
   }
 };
@@ -100,7 +113,7 @@ export const safeDecrypt = (data, key = null) => {
   try {
     return decrypt(data, key);
   } catch (error) {
-    console.warn('Safe decryption failed, returning original data');
+    logger.warn('Safe decryption failed, returning original data');
     return data;
   }
 };
@@ -138,7 +151,7 @@ export const decryptFields = (obj, fields = [], key = null) => {
     
     return result;
   } catch (error) {
-    console.error('Multiple fields decryption error:', error);
+    logger.error('Multiple fields decryption error:', error);
     return obj;
   }
 };

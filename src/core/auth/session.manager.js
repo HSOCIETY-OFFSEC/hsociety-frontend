@@ -17,6 +17,7 @@
 import { encrypt } from '../encryption/encrypt';
 import { decrypt } from '../encryption/decrypt';
 import { envConfig } from '../../config/app/env.config';
+import { logger } from '../logging/logger';
 
 const SESSION_KEY = 'hsociety_session';
 const DEFAULT_SESSION_FALLBACK_MS = 7 * 24 * 60 * 60 * 1000; // 7 days fallback if no exp
@@ -73,7 +74,7 @@ class SessionManager {
 
       return true;
     } catch (error) {
-      console.error('Failed to set session:', error);
+      logger.error('Failed to set session:', error);
       return false;
     }
   }
@@ -97,7 +98,7 @@ class SessionManager {
       // For now, parse JSON directly (placeholder)
       return JSON.parse(sessionData);
     } catch (error) {
-      console.error('Failed to get session:', error);
+      logger.error('Failed to get session:', error);
       return null;
     }
   }
@@ -133,7 +134,7 @@ class SessionManager {
       this.storage.removeItem('logout-reason');
       this.inMemoryToken = null;
     } catch (error) {
-      console.error('Failed to clear session:', error);
+      logger.error('Failed to clear session:', error);
     }
   }
 
@@ -151,7 +152,7 @@ class SessionManager {
     
     // Check if session has expired
     if (!session.expiresAt || Date.now() > session.expiresAt) {
-      console.log('Session expired');
+      logger.info('Session expired');
       this.clearSession();
       return false;
     }

@@ -20,8 +20,21 @@
  * @param {string} key - Encryption key (optional for now)
  * @returns {string} - Encrypted data (currently returns base64 encoded)
  */
+import { logger } from '../logging/logger';
+
+const isProduction = import.meta.env.MODE === 'production';
+const allowInsecureCrypto =
+  String(import.meta.env.VITE_ALLOW_INSECURE_CRYPTO || 'false').toLowerCase() === 'true';
+
+const assertInsecureCryptoAllowed = (action) => {
+  if (isProduction && !allowInsecureCrypto) {
+    throw new Error(`Insecure ${action} blocked in production. Configure real crypto or allow insecure crypto explicitly.`);
+  }
+};
+
 export const encrypt = (data, key = null) => {
   try {
+    assertInsecureCryptoAllowed('encryption');
     // TODO: Implement actual encryption
     // For now, just base64 encode as placeholder
     
@@ -32,11 +45,11 @@ export const encrypt = (data, key = null) => {
     // Placeholder: Base64 encoding
     const encoded = btoa(data);
     
-    console.log('[ENCRYPTION] Data encrypted (placeholder)');
+    logger.info('[ENCRYPTION] Data encrypted (placeholder)');
     
     return encoded;
   } catch (error) {
-    console.error('Encryption error:', error);
+    logger.error('Encryption error:', error);
     throw new Error('Failed to encrypt data');
   }
 };
@@ -49,10 +62,11 @@ export const encrypt = (data, key = null) => {
  */
 export const encryptObject = (obj, key = null) => {
   try {
+    assertInsecureCryptoAllowed('encryption');
     const jsonString = JSON.stringify(obj);
     return encrypt(jsonString, key);
   } catch (error) {
-    console.error('Object encryption error:', error);
+    logger.error('Object encryption error:', error);
     throw new Error('Failed to encrypt object');
   }
 };
@@ -66,6 +80,7 @@ export const encryptObject = (obj, key = null) => {
  */
 export const encryptField = (obj, field, key = null) => {
   try {
+    assertInsecureCryptoAllowed('encryption');
     if (!obj || !obj[field]) {
       return obj;
     }
@@ -78,7 +93,7 @@ export const encryptField = (obj, field, key = null) => {
       [`${field}_encrypted`]: true
     };
   } catch (error) {
-    console.error('Field encryption error:', error);
+    logger.error('Field encryption error:', error);
     return obj;
   }
 };
@@ -104,6 +119,7 @@ export const generateKey = () => {
  */
 export const hash = async (data) => {
   try {
+    assertInsecureCryptoAllowed('hashing');
     // TODO: Implement proper hashing using Web Crypto API
     // const encoder = new TextEncoder();
     // const dataBuffer = encoder.encode(data);
@@ -120,7 +136,7 @@ export const hash = async (data) => {
     
     return Math.abs(hashValue).toString(16);
   } catch (error) {
-    console.error('Hashing error:', error);
+    logger.error('Hashing error:', error);
     throw new Error('Failed to hash data');
   }
 };
@@ -133,10 +149,11 @@ export const hash = async (data) => {
  */
 export const verifyHash = async (data, hashedData) => {
   try {
+    assertInsecureCryptoAllowed('hash verification');
     const newHash = await hash(data);
     return newHash === hashedData;
   } catch (error) {
-    console.error('Hash verification error:', error);
+    logger.error('Hash verification error:', error);
     return false;
   }
 };

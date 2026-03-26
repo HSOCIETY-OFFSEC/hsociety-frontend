@@ -13,6 +13,7 @@
  * - Provides defaults for missing values
  * - Validates required variables
  */
+import { logger } from '../../core/logging/logger';
 
 /**
  * Get environment variable with fallback
@@ -123,7 +124,8 @@ export const envConfig = {
     enableAudits: getEnvVar('VITE_FEATURE_AUDITS', 'true') === 'true',
     enableFeedback: getEnvVar('VITE_FEATURE_FEEDBACK', 'true') === 'true',
     enableNotifications: getEnvVar('VITE_FEATURE_NOTIFICATIONS', 'true') === 'true',
-    enableFileUpload: getEnvVar('VITE_FEATURE_FILE_UPLOAD', 'true') === 'true'
+    enableFileUpload: getEnvVar('VITE_FEATURE_FILE_UPLOAD', 'true') === 'true',
+    bootcampComingSoon: getEnvVar('VITE_BOOTCAMP_COMING_SOON', 'true') === 'true'
   },
 
   // File Upload
@@ -141,7 +143,7 @@ export const envConfig = {
   // Logging
   logging: {
     level: getEnvVar('VITE_LOG_LEVEL', 'info'), // debug, info, warn, error
-    enableConsole: getEnvVar('VITE_LOG_CONSOLE', 'true') === 'true',
+    enableConsole: getEnvVar('VITE_LOG_CONSOLE', 'false') === 'true',
     enableRemote: getEnvVar('VITE_LOG_REMOTE', 'false') === 'true'
   },
 
@@ -169,14 +171,14 @@ export const validateEnvConfig = () => {
   const missing = required.filter(key => !getEnvVar(key));
 
   if (missing.length > 0) {
-    console.warn('[ENV] Missing required environment variables:', missing);
+    logger.warn('[ENV] Missing required environment variables:', missing);
     
     if (isProduction()) {
       throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
     }
   }
 
-  console.log('[ENV] Environment configuration loaded:', {
+  logger.info('[ENV] Environment configuration loaded:', {
     mode: envConfig.mode,
     apiBaseURL: envConfig.api.baseURL,
     features: envConfig.features
