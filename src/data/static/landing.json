@@ -34,13 +34,11 @@
   "stats": {
     "eyebrow": "Proof of Execution",
     "title": "Measured training. Verified delivery.",
-    "subtitle": "We track outcomes across training, community growth, and real-world security work.",
+    "subtitle": "We track outcomes across training and community growth, with delivery metrics added as engagements begin.",
     "items": [
-      { "key": "learnersTrained", "value": "0+", "label": "Learners Trained" },
-      { "key": "communityMembers", "value": "0+", "label": "Community Members" },
-      { "key": "engagementsCompleted", "value": "0+", "label": "Engagements Completed" },
-      { "key": "vulnerabilitiesIdentified", "value": "0+", "label": "Vulnerabilities Identified" },
-      { "key": "paidPentestsDelivered", "value": "0+", "label": "Paid Pentests Delivered" }
+      { "key": "learnersTrained", "value": "0", "label": "Students Enrolled", "plus": false },
+      { "key": "communityMembers", "value": "0", "label": "Community Members", "plus": false },
+      { "key": "paidPentestsDelivered", "value": "0", "label": "Paid Pentests Delivered", "plus": false }
     ]
   },
   "services": [

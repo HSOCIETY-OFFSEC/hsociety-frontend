@@ -60,6 +60,7 @@ const PageLoader = ({
     >
       <div className="page-loader-inner">
         <Loader size="lg" label={message} />
+        <p className="page-loader-message">{message}</p>
       </div>
     </div>
   );

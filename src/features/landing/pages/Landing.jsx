@@ -205,7 +205,7 @@ const Landing = ({ scrollToId = null }) => {
       const rawValue = item.key ? statsData?.stats?.[item.key] : undefined;
       return {
         ...item,
-        value: formatStatValue(rawValue, item.value, { plus: true })
+        value: formatStatValue(rawValue, item.value, { plus: item.plus ?? true })
       };
     });
 
