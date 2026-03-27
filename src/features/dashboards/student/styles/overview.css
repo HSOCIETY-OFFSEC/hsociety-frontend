@@ -12,7 +12,7 @@
 .student-dashboard-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 0.875rem;
 }
 
@@ -23,7 +23,11 @@
 .student-section-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
+}
+
+.student-card {
+  --card-padding: 1.4rem;
 }
 
 /* ── Continue Learning ─────────────────────────────────────── */

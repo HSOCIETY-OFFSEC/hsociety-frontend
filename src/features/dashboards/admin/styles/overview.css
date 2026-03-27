@@ -327,17 +327,17 @@
 .ad-stat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .ad-stat-card {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm, 8px);
   background: var(--bg-secondary);
-  padding: 1rem 1.1rem;
+  padding: 1.4rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.6rem;
 }
 
 .ad-stat-card-header {

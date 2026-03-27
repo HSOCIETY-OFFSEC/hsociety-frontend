@@ -45,7 +45,7 @@
 .corp-section-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 @media (min-width: 1024px) {
@@ -58,6 +58,7 @@
   border-radius: 14px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
+  padding: 1.4rem 1.5rem;
 }
 
 .corp-card-header {
