@@ -28,8 +28,34 @@ import landingContent from '../../../data/static/landing.json';
 import useRequestPentest from '../../../shared/hooks/useRequestPentest';
 import { slugify } from '../../../shared/utils/display/slugify';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/services.css';
+import Button from '../../../shared/components/ui/Button';
+import {
+  publicBadge,
+  publicBadgePulse,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const Services = () => {
   const navigate = useNavigate();
@@ -66,63 +92,66 @@ const Services = () => {
   };
 
   return (
-    <div className="public-page public-page-inner svc-page">
+    <div className={`${publicPage} text-text-primary`}>
       {requestPentestModal}
 
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Services
             </p>
-            <h1 className="public-hero-title">Security work that maps directly to fixes.</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>Security work that maps directly to fixes.</h1>
+            <p className={publicHeroDesc}>
               Evidence-driven engagements with clear remediation playbooks. We
               run supervised pentests, red team operations, and operator-grade
               training for modern teams.
             </p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
                 onClick={requestPentest}
               >
                 <FiZap size={14} />
                 Request pentest
-              </button>
-              <button
-                className="public-btn public-btn--ghost"
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
                 onClick={() => openAuthModal('login')}
               >
                 Join training cycle
                 <FiArrowUpRight size={14} />
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
+            <div className={publicPillRow}>
               {heroTrust.map((item) => (
-                <span key={item} className="public-pill">{item}</span>
+                <span key={item} className={publicPill}>{item}</span>
               ))}
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge badge--pulse">Engagements / Open</p>
-            <h3 className="public-card-title">Why teams choose HSOCIETY OFFSEC</h3>
-            <div className="public-list">
+            <p className={`${publicBadge} ${publicBadgePulse}`}>Engagements / Open</p>
+            <h3 className={publicCardTitle}>Why teams choose HSOCIETY OFFSEC</h3>
+            <div className={publicList}>
               {highlights.map((item) => (
-                <div key={item} className="public-list-item">
+                <div key={item} className={publicListItem}>
                   <FiCheckCircle size={14} />
                   <span>{item}</span>
                 </div>
               ))}
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>24h</strong> response
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">24h</strong> response
               </span>
-              <span className="public-hero-stat">
-                <strong>Global</strong> coverage
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Global</strong> coverage
               </span>
             </div>
           </div>
@@ -130,7 +159,7 @@ const Services = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -146,7 +175,7 @@ const Services = () => {
             {services.map((service) => (
               <article
                 key={service.title}
-                className="public-card svc-card interactive-card"
+                className={`${publicCard} cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand`}
                 onClick={() => navigate(`/services/${slugify(service.title)}`)}
                 role="button"
                 tabIndex={0}
@@ -158,17 +187,22 @@ const Services = () => {
                 }}
               >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>
                     {service.icon && <service.icon size={14} />}
                     {service.title}
                   </span>
                 </div>
-                <h3 className="public-card-title">{service.title}</h3>
-                <p className="public-card-desc">{service.description}</p>
-                <div className="public-card-meta svc-tags">
+                <h3 className={publicCardTitle}>{service.title}</h3>
+                <p className={publicCardDesc}>{service.description}</p>
+                <div className={`${publicCardMeta} gap-2`}>
                   {service.features.map((f) => (
-                    <span key={f} className="public-pill">{f}</span>
+                    <span
+                      key={f}
+                      className={`${publicPill} bg-[color-mix(in_srgb,var(--primary-color)_10%,var(--bg-secondary))]`}
+                    >
+                      {f}
+                    </span>
                   ))}
                 </div>
               </article>
@@ -178,8 +212,8 @@ const Services = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -191,29 +225,32 @@ const Services = () => {
             <p className="section-subtitle">
               {cta?.right?.description || 'Talk to our team about your attack surface.'}
             </p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
                 onClick={() => handleRoute(cta?.right?.route || '/corporate/pentest')}
               >
                 {cta?.right?.button || 'Request Pentest'}
                 <FiArrowUpRight size={14} />
-              </button>
-              <button
-                className="public-btn public-btn--ghost"
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate('/contact')}
               >
                 Talk to our team
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Security + training under one roof.</h3>
-            <p className="public-card-desc">
+            <h3 className={publicCardTitle}>Security + training under one roof.</h3>
+            <p className={publicCardDesc}>
               Move from assessment to remediation to upskilling without switching vendors.
             </p>
-            <div className="public-card-meta">
+            <div className={publicCardMeta}>
               <span>Engagements</span>
               <span>Training</span>
               <span>Community</span>

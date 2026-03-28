@@ -13,8 +13,34 @@ import {
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../../data/static/bootcamps/hackerProtocolData';
 import { useAuth } from '../../../core/auth/AuthContext';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/courses.css';
+import Button from '../../../shared/components/ui/Button';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+  publicButtonBase,
+  publicButtonGhost,
+  publicButtonSmall,
+} from '../../../shared/styles/publicClasses';
 
 const CourseDetails = () => {
   const { bootcampId } = useParams();
@@ -32,65 +58,71 @@ const CourseDetails = () => {
 
   if (bootcampId !== 'hacker-protocol') {
     return (
-      <div className="public-page public-page-inner crs-page">
-        <div className="crs-not-found">Course not found.</div>
+      <div className={`${publicPage} text-text-primary`}>
+        <div className="mx-auto max-w-3xl px-6 py-16 text-center text-text-secondary">
+          Course not found.
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="public-page public-page-inner crs-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Courses / Hacker Protocol
             </p>
-            <h1 className="public-hero-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h1>
-            <p className="public-hero-desc">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+            <h1 className={publicHeroTitle}>{HACKER_PROTOCOL_BOOTCAMP.title}</h1>
+            <p className={publicHeroDesc}>{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={handleEnroll}>
                 <FiZap size={14} />
                 Enroll now
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/courses')}>
+              </Button>
+              <button
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
+                onClick={() => navigate('/courses')}
+                type="button"
+              >
                 <FiArrowLeft size={14} />
                 Back to courses
               </button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiClock size={12} />
                 {HACKER_PROTOCOL_BOOTCAMP.duration}
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiLayers size={12} />
                 {HACKER_PROTOCOL_BOOTCAMP.phases} phases
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiShield size={12} />
                 Operator-led training
               </span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Program highlights</p>
-            <div className="public-list">
+            <p className={publicBadge}>Program highlights</p>
+            <div className="grid gap-3">
               {HACKER_PROTOCOL_BOOTCAMP.highlights?.map((item) => (
-                <div key={item} className="public-list-item">
+                <div key={item} className="flex items-start gap-3 text-text-secondary">
                   <FiCheckCircle size={14} />
                   <span>{item}</span>
                 </div>
               ))}
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
                 <strong>{HACKER_PROTOCOL_BOOTCAMP.phases}</strong> phases
               </span>
-              <span className="public-hero-stat">
+              <span className={publicHeroStat}>
                 <strong>{HACKER_PROTOCOL_BOOTCAMP.duration}</strong>
               </span>
             </div>
@@ -99,7 +131,7 @@ const CourseDetails = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -111,13 +143,13 @@ const CourseDetails = () => {
           </div>
           <PublicCardGrid>
             {HACKER_PROTOCOL_PHASES.map((phase, index) => (
-              <article key={phase.title} className="public-card">
+              <article key={phase.title} className={publicCard}>
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">Phase {index + 1}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>Phase {index + 1}</span>
                 </div>
-                <h3 className="public-card-title">{phase.title}</h3>
-                <p className="public-card-desc">{phase.summary}</p>
+                <h3 className={publicCardTitle}>{phase.title}</h3>
+                <p className={publicCardDesc}>{phase.summary}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -125,8 +157,8 @@ const CourseDetails = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -134,20 +166,24 @@ const CourseDetails = () => {
             </p>
             <h2 className="section-title">Step into the Hacker Protocol cycle.</h2>
             <p className="section-subtitle">Get access to live labs, guided missions, and community support.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={handleEnroll}>
                 Enroll now
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/contact')}>
+              </Button>
+              <button
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
+                onClick={() => navigate('/contact')}
+                type="button"
+              >
                 Talk to us
               </button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Bootcamp-ready operators.</h3>
-            <p className="public-card-desc">Train with real-world context and supervised execution.</p>
+            <h3 className={publicCardTitle}>Bootcamp-ready operators.</h3>
+            <p className={publicCardDesc}>Train with real-world context and supervised execution.</p>
           </div>
         </div>
       </section>

@@ -13,8 +13,7 @@ import { envConfig } from '../config/app/env.config';
 import AnalyticsHead from '../shared/components/seo/AnalyticsHead';
 
 // Import global styles
-import '../styles/globals.css';
-import '../shared/components/layout/AppShell.css';
+import '../tailwind.css';
 
 /**
  * Main App Component
@@ -52,7 +51,8 @@ const App = () => {
       <AuthProvider>
         <RankBadgeProvider>
           <NotificationProvider>
-            <div className="app-shell">
+            <div className="relative min-h-screen">
+              <div className="pointer-events-none fixed inset-0 -z-10 bg-app-shell opacity-20" aria-hidden="true" />
               <AnalyticsHead />
               <AppRouter />
               <WhatsAppCommunityPopup />

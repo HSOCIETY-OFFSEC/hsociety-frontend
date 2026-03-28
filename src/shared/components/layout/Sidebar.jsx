@@ -14,7 +14,6 @@ import {
   LuVideo
 } from 'react-icons/lu';
 import Logo from '../common/Logo';
-import './Sidebar.css';
 
 /**
  * Sidebar Component (large screens only via CSS)
@@ -130,42 +129,58 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
     };
   }, [collapsed, labelList]);
 
+  const linkBase =
+    'flex w-full items-center gap-2 rounded-xs border border-transparent px-3 py-2 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
+  const linkActive = 'bg-bg-tertiary text-text-primary border-brand/30 font-semibold';
   const renderLink = (link) => (
     <button
       key={link.path}
       type="button"
-      className={`app-sidebar-link ${isActive(link.path) ? 'active' : ''} ${
-        collapsed ? 'is-collapsed' : ''
+      className={`${linkBase} ${isActive(link.path) ? linkActive : ''} ${
+        collapsed ? 'justify-center px-2' : ''
       }`}
       aria-label={link.label}
       onClick={() => navigate(link.path)}
     >
-      <span style={{ display: 'inline-flex' }}>
+      <span className="inline-flex">
         <link.icon size={18} />
       </span>
-      <span className="app-sidebar-label">{link.label}</span>
+      {!collapsed && <span className="inline-flex whitespace-nowrap">{link.label}</span>}
     </button>
   );
 
   return (
-    <aside ref={sidebarRef} className={`app-sidebar ${collapsed ? 'collapsed' : ''}`} aria-label="Sidebar navigation">
-      <div className="app-sidebar-inner" ref={innerRef}>
+    <aside
+      ref={sidebarRef}
+      className="fixed left-0 z-40 flex flex-col overflow-hidden border-r border-border bg-bg-secondary transition-all duration-200"
+      style={{
+        top: 'var(--navbar-height, 64px)',
+        height: 'calc(100vh - var(--navbar-height, 64px))',
+        width: collapsed ? 'var(--sidebar-collapsed-width, 84px)' : 'var(--sidebar-width, 260px)',
+      }}
+      aria-label="Sidebar navigation"
+    >
+      <div className="app-sidebar-inner flex h-full flex-col gap-2 overflow-y-auto overflow-x-hidden px-2 py-4" ref={innerRef}>
         <button
           type="button"
-          className="app-sidebar-logo"
+          className="flex w-full items-center gap-2 rounded-xs px-3 py-2 text-left transition-colors duration-150 hover:bg-bg-tertiary"
           onClick={() => navigate('/')}
           aria-label="Go to home"
         >
           <Logo size="small" />
-          <div className="app-sidebar-brand">
-            <span className="app-sidebar-title">HSOCIETY</span>
-            <span className="app-sidebar-subtitle">OffSec</span>
-          </div>
+          {!collapsed && (
+            <div className="flex flex-col leading-tight">
+              <span className="text-xs font-bold uppercase tracking-widest text-text-primary">HSOCIETY</span>
+              <span className="text-xs uppercase tracking-widest text-text-tertiary">OffSec</span>
+            </div>
+          )}
         </button>
 
-        <div className="app-sidebar-nav-block">
-          <p className="app-sidebar-section-title">Navigation</p>
-          <div className="app-sidebar-links">
+        <div className="flex flex-1 flex-col">
+          {!collapsed && (
+            <p className="px-3 pb-1 text-xs uppercase tracking-widest text-text-tertiary">Navigation</p>
+          )}
+          <div className="flex flex-1 flex-col gap-1">
             {collapsed ? (
               links.map(renderLink)
             ) : isBootcampRoute ? (
@@ -175,40 +190,36 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
                 {defaultLinks.map(renderLink)}
                 {bootcampLinks.length > 0 && (
                   <div
-                    className={`bootcamp-dropdown ${learnOpen ? 'open' : ''}`}
+                    className="flex flex-col"
                     onMouseLeave={() => setLearnOpen(false)}
                   >
                     <button
                       type="button"
-                      className={`app-sidebar-link ${learnOpen ? 'active' : ''}`}
+                      className={`${linkBase} ${learnOpen ? linkActive : ''}`}
                       onClick={() => setLearnOpen((prev) => !prev)}
                     >
-                      <span style={{ display: 'inline-flex' }}>
+                      <span className="inline-flex">
                         <LuLayers size={18} />
                       </span>
-                      <span className="app-sidebar-label">Learn</span>
+                      <span className="inline-flex whitespace-nowrap">Learn</span>
                       <LuChevronDown
                         size={16}
-                        style={{
-                          marginLeft: 'auto',
-                          transition: 'transform 0.2s ease',
-                          transform: learnOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                        }}
+                        className={`ml-auto transition-transform duration-150 ${learnOpen ? 'rotate-180' : ''}`}
                       />
                     </button>
                     {learnOpen && (
-                      <div className="bootcamp-dropdown-menu">
+                      <div className="ml-2 border-l border-border pl-2">
                         {bootcampLinks.map((link) => (
                           <button
                             key={link.path}
                             type="button"
-                            className={`app-sidebar-link ${isActive(link.path) ? 'active' : ''}`}
+                            className={`${linkBase} ${isActive(link.path) ? linkActive : ''}`}
                             onClick={() => navigate(link.path)}
                           >
-                            <span style={{ display: 'inline-flex' }}>
+                            <span className="inline-flex">
                               <link.icon size={18} />
                             </span>
-                            <span className="app-sidebar-label">{link.label}</span>
+                            <span className="inline-flex whitespace-nowrap">{link.label}</span>
                           </button>
                         ))}
                       </div>
@@ -220,18 +231,18 @@ const Sidebar = ({ collapsed = false, onToggleCollapse = null }) => {
           </div>
         </div>
 
-        <div className="app-sidebar-footer">
+        <div className="mt-auto flex flex-col gap-2 border-t border-border pt-3">
           {onToggleCollapse && (
             <button
               type="button"
-              className="app-sidebar-collapse"
+              className={`inline-flex w-full items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary ${
+                collapsed ? 'justify-center' : ''
+              }`}
               onClick={onToggleCollapse}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {collapsed ? <LuChevronsRight size={16} /> : <LuChevronsLeft size={16} />}
-              <span className="app-sidebar-label">
-                {collapsed ? 'Expand' : 'Collapse'}
-              </span>
+              {!collapsed && <span className="inline-flex whitespace-nowrap">{collapsed ? 'Expand' : 'Collapse'}</span>}
             </button>
           )}
         </div>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
-import './PasswordInput.css';
 
 /**
  * Password input with show/hide toggle. Forwards ref and supports standard input props.
@@ -11,9 +10,15 @@ const PasswordInput = React.forwardRef(function PasswordInput(
 ) {
   const [visible, setVisible] = useState(false);
   const toggle = () => setVisible((v) => !v);
+  const inputClasses = [
+    inputClassName || className,
+    'pr-11 max-sm:pr-14',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <div className="password-input-wrap">
+    <div className="group relative block">
       <input
         ref={ref}
         type={visible ? 'text' : 'password'}
@@ -24,13 +29,13 @@ const PasswordInput = React.forwardRef(function PasswordInput(
         disabled={disabled}
         required={required}
         autoComplete={autoComplete}
-        className={inputClassName || className}
+        className={inputClasses}
         aria-describedby={id ? `${id}-toggle-desc` : undefined}
         {...rest}
       />
       <button
         type="button"
-        className="password-input-toggle"
+        className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-xs text-text-tertiary transition-colors duration-200 hover:bg-bg-tertiary hover:text-text-secondary disabled:cursor-default disabled:opacity-50 group-focus-within:text-text-secondary max-sm:h-11 max-sm:w-11 max-sm:rounded-sm"
         onClick={toggle}
         tabIndex={-1}
         disabled={disabled}

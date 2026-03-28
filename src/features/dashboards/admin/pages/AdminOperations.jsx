@@ -10,7 +10,7 @@ const AdminOperations = () => {
 
   return (
     <div className="admin-dashboard">
-      <div className="dashboard-shell">
+      <div className="flex flex-col gap-5">
         <div className="admin-overview-grid">
           <Card className="admin-card" padding="medium">
             <div className="admin-section-header">

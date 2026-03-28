@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { registerSW } from 'virtual:pwa-register';
 import Button from './Button';
-import './PwaUpdatePrompt.css';
 
 /**
  * PWA Update Prompt
@@ -86,20 +85,27 @@ const PwaUpdatePrompt = () => {
   if (!needRefresh) return null;
 
   return (
-    <div className="pwa-update-backdrop" role="dialog" aria-modal="true">
-      <div className="pwa-update-card">
+    <div
+      className="pointer-events-none fixed inset-0 z-50 flex items-end justify-center p-6"
+      role="dialog"
+      aria-modal="true"
+      style={{
+        paddingBottom: 'calc(1.5rem + var(--mobile-action-dock-height, 0px) + env(safe-area-inset-bottom))',
+      }}
+    >
+      <div className="pointer-events-auto grid w-[min(92vw,560px)] gap-4 rounded-lg border border-border bg-card px-6 py-5 shadow-lg animate-pwa-update-rise max-sm:px-4 max-sm:py-4">
         <div className="pwa-update-content">
-          <p className="pwa-update-eyebrow">Update available</p>
-          <h3>Install the latest version</h3>
-          <p>
+          <p className="m-0 text-xs uppercase tracking-[0.1em] text-text-tertiary">Update available</p>
+          <h3 className="mt-2 text-lg">Install the latest version</h3>
+          <p className="mt-1 text-text-secondary">
             A new deployment is ready. Update now to load the latest content and features.
           </p>
         </div>
-        <div className="pwa-update-actions">
-          <Button size="small" variant="primary" onClick={handleUpdate}>
+        <div className="flex flex-wrap justify-end gap-3 max-sm:justify-stretch">
+          <Button size="small" variant="primary" onClick={handleUpdate} className="max-sm:w-full">
             Update now
           </Button>
-          <Button size="small" variant="ghost" onClick={handleLater}>
+          <Button size="small" variant="ghost" onClick={handleLater} className="max-sm:w-full">
             Later
           </Button>
         </div>

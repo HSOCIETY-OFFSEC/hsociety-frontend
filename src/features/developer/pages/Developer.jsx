@@ -3,8 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import { FiCode, FiCpu, FiGitBranch, FiGithub, FiShield, FiTool, FiArrowUpRight } from 'react-icons/fi';
 import developerContent from '../../../data/static/developer.json';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/developer.css';
+import Button from '../../../shared/components/ui/Button';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const Developer = () => {
   const navigate = useNavigate();
@@ -29,48 +53,54 @@ const Developer = () => {
   }));
 
   return (
-    <div className="public-page public-page-inner developer-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Developers
             </p>
-            <h1 className="public-hero-title">{developerContent.hero.title}</h1>
-            <p className="public-hero-desc">{developerContent.hero.subtitle}</p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
+            <h1 className={publicHeroTitle}>{developerContent.hero.title}</h1>
+            <p className={publicHeroDesc}>{developerContent.hero.subtitle}</p>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate(developerContent.hero.route)}
               >
                 {developerContent.hero.button}
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/services')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/services')}
+              >
                 Explore services
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">Open source</span>
-              <span className="public-pill">Operator tooling</span>
-              <span className="public-pill">Community build</span>
+            <div className={publicPillRow}>
+              <span className={publicPill}>Open source</span>
+              <span className={publicPill}>Operator tooling</span>
+              <span className={publicPill}>Community build</span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Dev focus</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={publicBadge}>Dev focus</p>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiCode size={14} />
                 <span>Open-source security tooling.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiGitBranch size={14} />
                 <span>Contributor-friendly workflows.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiGithub size={14} />
                 <span>Ship code with the operator community.</span>
               </div>
@@ -80,7 +110,7 @@ const Developer = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -91,14 +121,18 @@ const Developer = () => {
             <p className="section-subtitle">{developerContent.stack.subtitle}</p>
           </div>
           <PublicCardGrid>
-            {stack.map((item) => (
-              <article key={item.title} className="public-card">
+            {stack.map((item, index) => (
+              <article
+                key={item.title}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">{item.title}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>{item.title}</span>
                 </div>
-                <h3 className="public-card-title">{item.title}</h3>
-                <p className="public-card-desc">{item.detail}</p>
+                <h3 className={publicCardTitle}>{item.title}</h3>
+                <p className={publicCardDesc}>{item.detail}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -106,7 +140,7 @@ const Developer = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -117,14 +151,18 @@ const Developer = () => {
             <p className="section-subtitle">{developerContent.contributions.subtitle}</p>
           </div>
           <PublicCardGrid>
-            {contributions.map((item) => (
-              <article key={item.title} className="public-card">
+            {contributions.map((item, index) => (
+              <article
+                key={item.title}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">{item.title}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>{item.title}</span>
                 </div>
-                <h3 className="public-card-title">{item.title}</h3>
-                <p className="public-card-desc">{item.detail}</p>
+                <h3 className={publicCardTitle}>{item.title}</h3>
+                <p className={publicCardDesc}>{item.detail}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -132,8 +170,8 @@ const Developer = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -141,20 +179,29 @@ const Developer = () => {
             </p>
             <h2 className="section-title">Ship tools with the operator community.</h2>
             <p className="section-subtitle">Partner with us on research, tooling, and platform development.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Talk to us
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/careers')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/careers')}
+              >
                 See careers
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Open-source alignment.</h3>
-            <p className="public-card-desc">We ship with transparency, mentorship, and real-world operator feedback.</p>
+            <h3 className={publicCardTitle}>Open-source alignment.</h3>
+            <p className={publicCardDesc}>We ship with transparency, mentorship, and real-world operator feedback.</p>
           </div>
         </div>
       </section>

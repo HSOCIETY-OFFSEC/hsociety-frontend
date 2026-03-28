@@ -16,6 +16,36 @@ import { ACCOUNT_UI } from '../../../data/static/account/accountUiData';
 import ProfileBadgeSection from '../../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges, normalizeBadges } from '../../../shared/utils/display/profileBadges';
 import {
+  profileAvatar,
+  profileAvatarWrap,
+  profileBadgeSection,
+  profileBadgeTitle,
+  profileBio,
+  profileButtonBase as profileButtonBaseClass,
+  profileButtonGhost as profileButtonGhostClass,
+  profileButtonOutline,
+  profileCtaRow,
+  profileHandle,
+  profileIdentity,
+  profileLayout,
+  profileMain,
+  profileMetaItem,
+  profileMetaList,
+  profileName,
+  profilePanel,
+  profileRoot,
+  profileRootStyle,
+  profileSectionTitle,
+  profileSidebar,
+  profileStatFi,
+  profileStatIcon,
+  profileStatInfo,
+  profileStatLabel,
+  profileStatRow,
+  profileStatValue,
+  profileStatsCard,
+} from '../../../shared/styles/profileClasses';
+import {
   changePassword as changePasswordService,
   deleteAccount,
   getProfile,
@@ -25,7 +55,6 @@ import {
 } from '../services/account.service';
 import { listNotifications, markNotificationRead } from '../../student/services/notifications.service';
 import '../styles/account.css';
-import '../../public/styles/public-profile.css';
 
 const normalizeHandle = (handle) => {
   if (!handle) return '';
@@ -270,11 +299,14 @@ const AccountSettings = () => {
   };
 
   return (
-    <div className="pp-root account-settings">
-      <div className="pp-layout">
-        <aside className="pp-sidebar">
-          <div className="pp-avatar-wrap">
-            <div className="pp-avatar">
+    <div
+      className={`${profileRoot} account-settings text-text-primary`}
+      style={profileRootStyle}
+    >
+      <div className={profileLayout}>
+        <aside className={profileSidebar}>
+          <div className={profileAvatarWrap}>
+            <div className={profileAvatar}>
               <img
                 src={avatarPreview || identiconFallback}
                 alt="Profile avatar"
@@ -287,31 +319,31 @@ const AccountSettings = () => {
             </div>
           </div>
 
-          <div className="pp-identity">
-            <h1 className="pp-name">
+          <div className={profileIdentity}>
+            <h1 className={profileName}>
               {profile.name || user?.name || 'Account Settings'}
             </h1>
-            <p className="pp-handle">{normalizedHandle ? `@${normalizedHandle}` : user?.email || '—'}</p>
-            {profile.bio && <p className="pp-bio">{profile.bio}</p>}
+            <p className={profileHandle}>{normalizedHandle ? `@${normalizedHandle}` : user?.email || '—'}</p>
+            {profile.bio && <p className={profileBio}>{profile.bio}</p>}
           </div>
 
-          <div className="pp-cta-row">
+          <div className={profileCtaRow}>
             <button
               type="button"
-              className="pp-btn pp-btn--outline"
+              className={`${profileButtonBaseClass} ${profileButtonOutline}`}
               onClick={handleProfileSave}
               disabled={profileSaving}
             >
               {profileSaving ? 'Saving…' : 'Save Profile'}
             </button>
             {publicProfilePath ? (
-              <Link className="pp-btn pp-btn--ghost" to={publicProfilePath}>
+              <Link className={`${profileButtonBaseClass} ${profileButtonGhostClass}`} to={publicProfilePath}>
                 View Profile
               </Link>
             ) : (
               <button
                 type="button"
-                className="pp-btn pp-btn--ghost"
+                className={`${profileButtonBaseClass} ${profileButtonGhostClass}`}
                 disabled
                 title="Add a hacker handle to view your public profile."
               >
@@ -320,56 +352,56 @@ const AccountSettings = () => {
             )}
           </div>
 
-          <ul className="pp-meta-list">
-            <li><FiUser size={14} /><span>{user?.role || 'Member'}</span></li>
-            <li><FiMail size={14} /><span>{user?.email || '—'}</span></li>
-            <li><FiMapPin size={14} /><span>{profile.organization || 'Independent'}</span></li>
+          <ul className={profileMetaList}>
+            <li className={profileMetaItem}><FiUser size={14} /><span>{user?.role || 'Member'}</span></li>
+            <li className={profileMetaItem}><FiMail size={14} /><span>{user?.email || '—'}</span></li>
+            <li className={profileMetaItem}><FiMapPin size={14} /><span>{profile.organization || 'Independent'}</span></li>
           </ul>
 
-          <div className="pp-badge-section" aria-label="Profile badges">
-            <p className="pp-badge-title">Badges</p>
+          <div className={profileBadgeSection} aria-label="Profile badges">
+            <p className={profileBadgeTitle}>Badges</p>
             <ProfileBadgeSection badges={badgeList} />
           </div>
 
-          <div className="pp-stats-card">
-            <div className="pp-stat-row">
-              <div className="pp-stat-icon">
-                <img src={cpIcon} alt="CP" className="pp-cp-icon" />
+          <div className={profileStatsCard}>
+            <div className={profileStatRow}>
+              <div className={profileStatIcon}>
+                <img src={cpIcon} alt="CP" className="h-[18px] w-[18px] object-contain drop-shadow-[0_0_4px_color-mix(in_srgb,var(--primary-color)_55%,transparent)]" />
               </div>
-              <div className="pp-stat-info">
-                <span className="pp-stat-label">CP</span>
-                <strong className="pp-stat-val">{xpSummary.totalXp || 0}</strong>
-              </div>
-            </div>
-            <div className="pp-stat-row">
-              <FiTrendingUp size={15} className="pp-stat-fi" />
-              <div className="pp-stat-info">
-                <span className="pp-stat-label">Rank</span>
-                <strong className="pp-stat-val">{xpSummary.rank || 'Candidate'}</strong>
+              <div className={profileStatInfo}>
+                <span className={profileStatLabel}>CP</span>
+                <strong className={profileStatValue}>{xpSummary.totalXp || 0}</strong>
               </div>
             </div>
-            <div className="pp-stat-row">
-              <IoFlameOutline size={15} className="pp-stat-fi" />
-              <div className="pp-stat-info">
-                <span className="pp-stat-label">Streak</span>
-                <strong className="pp-stat-val">{xpSummary.streakDays || 0} days</strong>
+            <div className={profileStatRow}>
+              <FiTrendingUp size={15} className={profileStatFi} />
+              <div className={profileStatInfo}>
+                <span className={profileStatLabel}>Rank</span>
+                <strong className={profileStatValue}>{xpSummary.rank || 'Candidate'}</strong>
               </div>
             </div>
-            <div className="pp-stat-row">
-              <FiAward size={15} className="pp-stat-fi" />
-              <div className="pp-stat-info">
-                <span className="pp-stat-label">Emblems</span>
-                <strong className="pp-stat-val">{emblems.unlockedModules.length}/5</strong>
+            <div className={profileStatRow}>
+              <IoFlameOutline size={15} className={profileStatFi} />
+              <div className={profileStatInfo}>
+                <span className={profileStatLabel}>Streak</span>
+                <strong className={profileStatValue}>{xpSummary.streakDays || 0} days</strong>
+              </div>
+            </div>
+            <div className={profileStatRow}>
+              <FiAward size={15} className={profileStatFi} />
+              <div className={profileStatInfo}>
+                <span className={profileStatLabel}>Emblems</span>
+                <strong className={profileStatValue}>{emblems.unlockedModules.length}/5</strong>
               </div>
             </div>
           </div>
         </aside>
 
-        <main className="pp-main">
+        <main className={profileMain}>
           {error && <div className="account-error">{error}</div>}
 
-          <section className="pp-panel">
-            <h2 className="pp-section-title">Profile Overview</h2>
+          <section className={profilePanel}>
+            <h2 className={profileSectionTitle}>Profile Overview</h2>
 
             <div className="account-progress-grid">
               <div className="account-progress-card">
@@ -427,8 +459,8 @@ const AccountSettings = () => {
             )}
           </section>
 
-          <section className="pp-panel">
-            <h2 className="pp-section-title">Profile Details</h2>
+          <section className={profilePanel}>
+            <h2 className={profileSectionTitle}>Profile Details</h2>
 
             <div className="account-info account-info-spaced">
               <div className="account-field account-field-wide">
@@ -572,7 +604,7 @@ const AccountSettings = () => {
             </div>
           </section>
 
-          <section className="pp-panel account-password-card">
+          <section className={`${profilePanel} account-password-card`}>
             <div className="account-section-header">
               <FiLock size={20} />
               <div>
@@ -635,7 +667,7 @@ const AccountSettings = () => {
             </div>
           </section>
 
-          <section className="pp-panel account-danger">
+          <section className={`${profilePanel} account-danger`}>
             <div className="account-danger-header">
               <FiAlertTriangle size={18} />
               <div>

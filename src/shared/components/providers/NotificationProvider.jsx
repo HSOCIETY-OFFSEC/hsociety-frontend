@@ -8,7 +8,6 @@ import {
 import BinaryToast from '../ui/BinaryToast';
 import { getPendingToast, clearPendingToast } from '../../utils/toastStorage';
 import { createAuthSocket } from '../../services/socket.client';
-import '../ui/cp-grant-modal.css';
 
 const NotificationContext = createContext(undefined);
 
@@ -227,16 +226,20 @@ export const NotificationProvider = ({ children }) => {
       {children}
       <BinaryToast toast={toast} onClose={() => setToast(null)} />
       {cpModal && (
-        <div className="cp-grant-modal-backdrop" role="dialog" aria-modal="true">
-          <div className="cp-grant-modal">
-            <h3>{cpModal.title}</h3>
-            <p>{cpModal.message}</p>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--modal-overlay-bg)] p-6 backdrop-blur"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="flex w-[min(420px,92vw)] flex-col gap-3 rounded-2xl border border-border bg-bg-secondary p-6 text-center shadow-xl animate-modal-card-in">
+            <h3 className="text-lg font-semibold">{cpModal.title}</h3>
+            <p className="text-text-secondary">{cpModal.message}</p>
             {cpModal.points !== undefined && (
-              <span className="cp-grant-points">+{cpModal.points} CP</span>
+              <span className="text-3xl font-bold text-brand">+{cpModal.points} CP</span>
             )}
             <button
               type="button"
-              className="cp-grant-close"
+              className="rounded-sm border border-border bg-bg-tertiary px-4 py-2 font-semibold text-text-primary"
               onClick={() => {
                 if (cpModal.id) markRead(cpModal.id);
                 setCpModal(null);

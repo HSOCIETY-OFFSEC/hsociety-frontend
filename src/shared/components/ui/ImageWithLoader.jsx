@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Loader from './Loader';
-import './ImageWithLoader.css';
 
 const ImageWithLoader = ({
   src,
@@ -41,16 +40,18 @@ const ImageWithLoader = ({
   };
 
   return (
-    <div className={`image-with-loader ${loaded ? 'is-loaded' : ''} ${error ? 'is-error' : ''} ${className}`}>
+    <div
+      className={`relative h-full w-full overflow-hidden rounded-md bg-[color-mix(in_srgb,var(--input-bg)_85%,transparent)] ${className}`}
+    >
       {!loaded && !error && (
-        <div className="image-loader">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-[linear-gradient(140deg,rgb(var(--brand-rgb)/0.08),rgb(var(--brand-rgb)/0.04))] p-4">
           <Loader size="sm" label={loaderMessage} />
         </div>
       )}
       <img
         src={currentSrc}
         alt={alt}
-        className={imgClassName}
+        className={`block h-full w-full object-cover transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${imgClassName}`}
         onLoad={handleLoad}
         onError={handleError}
         {...props}

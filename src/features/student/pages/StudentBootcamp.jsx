@@ -75,13 +75,17 @@ const StudentBootcamp = () => {
 
   return (
     <div className="student-page">
-      <div className="dashboard-shell">
+      <div className="flex flex-col gap-5">
 
-        <header className="student-hero dashboard-shell-header reveal-on-scroll">
+        <header className="student-hero reveal-on-scroll w-full border-b border-border bg-card px-4 py-4 md:rounded-md md:border md:shadow-sm">
           <div>
-            <p className="student-kicker dashboard-shell-kicker">Bootcamps</p>
-            <h1 className="dashboard-shell-title">Choose your training cycle.</h1>
-            <p className="dashboard-shell-subtitle">
+            <p className="inline-flex items-center rounded-xs border border-border bg-bg-secondary px-2 py-1 text-xs font-semibold uppercase tracking-widest text-text-tertiary">
+              Bootcamps
+            </p>
+            <h1 className="mt-3 text-2xl font-semibold text-text-primary md:text-3xl">
+              Choose your training cycle.
+            </h1>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
               Enroll in a bootcamp, complete payment, then unlock the phase-based dashboard.
             </p>
           </div>

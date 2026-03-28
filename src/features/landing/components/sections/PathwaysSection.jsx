@@ -7,7 +7,6 @@ import handsOnImage from '../../../../assets/images/why-choose-hsociety-images/h
 import supervisedPentestsImage from '../../../../assets/images/why-choose-hsociety-images/supervised-pentests.webp';
 import communityEngagementsImage from '../../../../assets/images/why-choose-hsociety-images/community-engagements.webp';
 import { FiCheckCircle } from 'react-icons/fi';
-import '../../styles/sections/pathways.css';
 
 const PathwaysSection = ({ pathways }) => {
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ const PathwaysSection = ({ pathways }) => {
   };
 
   return (
-    <section className="pathways-section reveal-on-scroll" id="pathways">
+    <section className="reveal-on-scroll bg-bg-secondary py-16" id="pathways">
       <div className="section-container">
         <header className="section-header-center">
           <p className="section-eyebrow"><span className="eyebrow-dot" />Pathways</p>
@@ -70,14 +69,16 @@ const PathwaysSection = ({ pathways }) => {
           <p className="section-subtitle">Three clear paths into HSOCIETY OFFSEC's ecosystem.</p>
         </header>
 
-        <div className="pathways-grid">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
             <article
               key={card.key}
-              className={`pathway-card${card.isPrimary ? ' is-primary' : ''}`}
+              className={`relative flex min-h-full flex-col gap-4 overflow-hidden rounded-md border border-border bg-bg-secondary p-6 transition-all duration-200 hover:border-[color-mix(in_srgb,var(--primary-color)_45%,var(--border-color))] hover:shadow-md ${
+                card.isPrimary ? 'border-brand' : ''
+              }`}
             >
               <div className="hs-signature" aria-hidden="true" />
-              <div className="pathway-media">
+              <div className="relative h-[clamp(140px,22vw,180px)] overflow-hidden rounded-sm border border-border bg-bg-tertiary">
                 <ImageWithLoader
                   src={card.image}
                   alt={card.imageAlt}
@@ -85,19 +86,23 @@ const PathwaysSection = ({ pathways }) => {
                   decoding="async"
                 />
               </div>
-              <span className="pathway-tag">{card.tag}</span>
-              <h3>{card.title}</h3>
-              <ul>
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-text-tertiary">{card.tag}</span>
+              <h3 className="text-lg font-semibold text-text-primary">{card.title}</h3>
+              <ul className="flex flex-col gap-2 text-sm text-text-secondary">
                 {card.items.map((item) => (
-                  <li key={item}>
-                    <FiCheckCircle size={14} aria-hidden="true" />
+                  <li key={item} className="flex items-center gap-2">
+                    <FiCheckCircle size={14} aria-hidden="true" className="text-brand" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
               <button
                 type="button"
-                className="pathway-cta"
+                className={`mt-auto rounded-md border border-border px-4 py-3 font-semibold text-text-primary transition-colors ${
+                  card.isPrimary
+                    ? 'border-brand hover:bg-[color-mix(in_srgb,var(--primary-color)_12%,transparent)]'
+                    : 'hover:bg-bg-tertiary hover:border-text-secondary'
+                }`}
                 onClick={() => handleRoute(card.route)}
               >
                 {card.cta}

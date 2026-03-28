@@ -15,11 +15,38 @@ import {
   FiRss,
 } from 'react-icons/fi';
 import SocialLinks from '../../../shared/components/common/SocialLinks';
+import Button from '../../../shared/components/ui/Button';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS } from '../../../config/api/api.config';
-import '../../public/styles/public-landing.css';
-import '../styles/blog.css';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicBadgePulse,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const FALLBACK_POSTS = [
   {
@@ -73,70 +100,73 @@ const Blog = () => {
   };
 
   return (
-    <div className="public-page public-page-inner blg-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Field Notes
             </p>
-            <h1 className="public-hero-title">Offensive security research in the open.</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>Offensive security research in the open.</h1>
+            <p className={publicHeroDesc}>
               Research, tactics, and lessons from live operations. Practical write-ups,
               red team playbooks, and learning paths for operators at every level.
             </p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate('/contact')}
               >
                 <FiRss size={14} />
                 Subscribe for weekly drops
-              </button>
-              <button
-                className="public-btn public-btn--ghost"
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate('/services')}
               >
                 Explore services
                 <FiArrowUpRight size={14} />
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiCalendar size={12} />
                 Weekly cadence
               </span>
-              <span className="public-pill">Red team tactics</span>
-              <span className="public-pill">Learning playbooks</span>
-              <span className="public-pill">{posts.length} posts</span>
+              <span className={publicPill}>Red team tactics</span>
+              <span className={publicPill}>Learning playbooks</span>
+              <span className={publicPill}>{posts.length} posts</span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge badge--pulse">Field Notes / Live</p>
-            <h3 className="public-card-title">What you get</h3>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={`${publicBadge} ${publicBadgePulse}`}>Field Notes / Live</p>
+            <h3 className={publicCardTitle}>What you get</h3>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiBookOpen size={14} />
                 <span>Research breakdowns with reproduce-ready steps.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiBookOpen size={14} />
                 <span>Operator notes from live engagements.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiBookOpen size={14} />
                 <span>Curated learning paths for new operators.</span>
               </div>
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>{posts.length}</strong> posts
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">{posts.length}</strong> posts
               </span>
-              <span className="public-hero-stat">
-                <strong>Weekly</strong> drops
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Weekly</strong> drops
               </span>
             </div>
           </div>
@@ -144,7 +174,7 @@ const Blog = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -157,10 +187,11 @@ const Blog = () => {
             </p>
           </div>
           <PublicCardGrid loading={loading}>
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <article
                 key={post.title}
-                className="public-card blg-card interactive-card"
+                className={`${publicCard} cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand`}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
                 onClick={() => handleReadArticle(post)}
                 role="button"
                 tabIndex={0}
@@ -172,13 +203,13 @@ const Blog = () => {
                 }}
               >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  {post.tag && <span className="public-chip">{post.tag}</span>}
+                <div className={publicCardMeta}>
+                  {post.tag && <span className={publicChip}>{post.tag}</span>}
                   <span>{post.date}</span>
                 </div>
-                <h3 className="public-card-title">{post.title}</h3>
-                <p className="public-card-desc">{post.summary}</p>
-                <div className="public-card-meta">
+                <h3 className={publicCardTitle}>{post.title}</h3>
+                <p className={publicCardDesc}>{post.summary}</p>
+                <div className={publicCardMeta}>
                   <span>Read article</span>
                   <FiArrowUpRight size={14} />
                 </div>
@@ -189,8 +220,8 @@ const Blog = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -200,30 +231,33 @@ const Blog = () => {
             <p className="section-subtitle">
               Subscribe for weekly drops or follow the team across your favorite platforms.
             </p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate('/contact')}
               >
                 <FiRss size={14} />
                 Subscribe
-              </button>
-              <button
-                className="public-btn public-btn--ghost"
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate('/community')}
               >
                 View community
                 <FiArrowUpRight size={14} />
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Follow HSOCIETY OFFSEC</h3>
-            <p className="public-card-desc">
+            <h3 className={publicCardTitle}>Follow HSOCIETY OFFSEC</h3>
+            <p className={publicCardDesc}>
               Signals, research drops, and community wins — in real time.
             </p>
-            <SocialLinks className="blg-social-links" />
+            <SocialLinks className="flex flex-wrap gap-3" />
           </div>
         </div>
       </section>

@@ -545,7 +545,7 @@ export const CourseLearning = () => {
   if (loading) {
     return (
       <div className="course-learning">
-        <div className="course-layout dashboard-shell">
+        <div className="course-layout flex flex-col gap-5">
           <div className="course-layout-main">
             <Card padding="medium" className="course-header-card">
               <Skeleton className="skeleton-line" style={{ width: '40%' }} />
@@ -579,7 +579,7 @@ export const CourseLearning = () => {
   if (error) {
     return (
       <div className="course-learning">
-        <div className="course-layout dashboard-shell">
+        <div className="course-layout flex flex-col gap-5">
           <div className="course-layout-main">
             <Card padding="medium" className="course-header-card">
               <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
@@ -592,7 +592,7 @@ export const CourseLearning = () => {
 
   return (
     <div className="course-learning">
-      <div className="course-layout dashboard-shell">
+      <div className="course-layout flex flex-col gap-5">
         <div className="course-layout-main">
           {renderOverallHeader()}
           {renderModules()}

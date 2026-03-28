@@ -145,7 +145,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <div className="dashboard-shell">
+      <div className="flex flex-col gap-5">
         <PublicError message={error} className="admin-alert" />
 
         <Card className="admin-card" padding="medium">

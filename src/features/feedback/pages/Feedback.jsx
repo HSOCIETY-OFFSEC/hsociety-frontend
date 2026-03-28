@@ -8,8 +8,24 @@ import { submitFeedback } from '../services/feedback.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import feedbackContent from '../../../data/static/feedback.json';
 import { logger } from '../../../core/logging/logger';
-import '../../public/styles/public-landing.css';
-import '../styles/feedback.css';
+import {
+  publicBadge,
+  publicBadgePulse,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 /**
  * Feedback Component
@@ -28,7 +44,6 @@ import '../styles/feedback.css';
 
 const Feedback = () => {
   const { user } = useAuth();
-
 
   const iconMap = useMemo(() => ({
     FiAlertTriangle,
@@ -52,6 +67,16 @@ const Feedback = () => {
   const [loading, setLoading] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submittedReceipt, setSubmittedReceipt] = useState(null);
+
+  const inputBase =
+    'w-full rounded-md border-2 border-border bg-[var(--input-bg)] px-4 py-3 text-base text-text-primary placeholder:text-text-tertiary transition focus:border-brand focus:bg-[var(--input-bg-focus)] focus:outline-none focus:ring-2 focus:ring-brand/20';
+  const inputError = 'border-status-danger';
+
+  const typeCardBase =
+    'relative flex cursor-pointer items-start gap-3 rounded-lg border-2 border-border bg-[var(--input-bg)] p-5 transition-all duration-200';
+  const typeCardHover = 'hover:-translate-y-0.5 hover:border-brand hover:bg-bg-tertiary hover:shadow-md';
+  const typeCardSelected =
+    'border-brand bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] shadow-[0_0_0_3px_var(--primary-color-alpha)]';
 
   const feedbackTypes = feedbackContent.types.map((item) => ({
     ...item,
@@ -146,36 +171,36 @@ const Feedback = () => {
   };
 
   return (
-    <div className="public-page public-page-inner feedback-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero feedback-header reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <h1 className="feedback-title">{feedbackContent.header.title}</h1>
-            <p className="feedback-subtitle">{feedbackContent.header.subtitle}</p>
+            <h1 className={publicHeroTitle}>{feedbackContent.header.title}</h1>
+            <p className={publicHeroDesc}>{feedbackContent.header.subtitle}</p>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge badge--pulse">Feedback live</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={`${publicBadge} ${publicBadgePulse}`}>Feedback live</p>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Direct operator review within 24 hours.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Actionable follow-up for critical issues.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Transparent tracking with ticket receipts.</span>
               </div>
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
                 <strong>24h</strong> response
               </span>
-              <span className="public-hero-stat">
+              <span className={publicHeroStat}>
                 <strong>Live</strong> routing
               </span>
             </div>
@@ -184,27 +209,32 @@ const Feedback = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
 
           {/* Success Message */}
           {submitSuccess && (
-            <Card padding="large" shadow="medium" className="success-card reveal-on-scroll">
-              <div className="success-content">
-                <div className="success-icon-large">
+            <Card
+              padding="large"
+              shadow="medium"
+              className="reveal-on-scroll border-2 border-[color:rgb(var(--success-rgb))] bg-[color-mix(in_srgb,rgb(var(--success-rgb))_12%,var(--bg-secondary))]"
+            >
+              <div className="flex flex-col items-center gap-4 px-4 py-8 text-center max-md:px-2">
+                <div className="grid h-20 w-20 place-items-center rounded-full bg-[color:rgb(var(--success-rgb))] text-ink-white animate-scale-in max-md:h-16 max-md:w-16">
                   <FiCheckCircle size={40} />
                 </div>
-                <h2>{feedbackContent.success.title}</h2>
-                <p>{feedbackContent.success.message}</p>
+                <h2 className="text-2xl font-semibold text-text-primary max-md:text-xl">{feedbackContent.success.title}</h2>
+                <p className="max-w-[500px] text-base leading-relaxed text-text-secondary">
+                  {feedbackContent.success.message}
+                </p>
                 {submittedReceipt?.contact?.allowContact && (
-                  <p className="contact-note">
+                  <p className="rounded-md border-l-[3px] border-brand bg-[var(--input-bg)] px-5 py-3 text-[0.95rem] text-text-secondary">
                     {feedbackContent.success.contactNote}{' '}
-                    <strong>{submittedReceipt?.contact?.email || formData.email}</strong> if we need
-                    additional information.
+                    <strong className="text-brand">{submittedReceipt?.contact?.email || formData.email}</strong> if we need additional information.
                   </p>
                 )}
                 {submittedReceipt?.ticketNumber && (
-                  <p className="contact-note">
+                  <p className="rounded-md border-l-[3px] border-brand bg-[var(--input-bg)] px-5 py-3 text-[0.95rem] text-text-secondary">
                     {feedbackContent.success.ticketLabel} <strong>{submittedReceipt.ticketNumber}</strong>
                   </p>
                 )}
@@ -214,7 +244,7 @@ const Feedback = () => {
                     setSubmitSuccess(false);
                     setSubmittedReceipt(null);
                   }}
-                  style={{ marginTop: '1rem' }}
+                  className="mt-4"
                 >
                   {feedbackContent.success.button}
                 </Button>
@@ -227,23 +257,27 @@ const Feedback = () => {
             <Card padding="large" shadow="medium" className="reveal-on-scroll">
               {/* Error Message */}
               {formErrors.submit && (
-                <div className="error-message">
-                  <span className="error-icon">
+                <div className="mb-6 flex items-center gap-3 rounded-md border border-status-danger/30 bg-status-danger/10 px-4 py-3 text-sm text-status-danger animate-slide-down">
+                  <span className="inline-flex text-lg">
                     <FiAlertTriangle size={18} />
                   </span>
                   {formErrors.submit}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="feedback-form">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-8">
                 {/* Feedback Type Selection */}
-                <div className="form-section">
-                  <h3 className="section-label">{feedbackContent.form.typeLabel}</h3>
-                  <div className="type-grid">
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-base font-semibold text-text-primary">{feedbackContent.form.typeLabel}</h3>
+                  <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
                     {feedbackTypes.map(type => (
                       <label
                         key={type.value}
-                        className={`type-card ${formData.type === type.value ? 'selected' : ''}`}
+                        className={[
+                          typeCardBase,
+                          typeCardHover,
+                          formData.type === type.value ? typeCardSelected : '',
+                        ].join(' ')}
                       >
                         <input
                           type="radio"
@@ -251,16 +285,16 @@ const Feedback = () => {
                           value={type.value}
                           checked={formData.type === type.value}
                           onChange={handleInputChange}
-                          className="type-radio"
+                          className="absolute opacity-0 pointer-events-none"
                         />
-                        <div className="type-content">
-                          <div className="type-label">
-                            <span className="type-icon">
+                        <div className="flex w-full flex-col gap-2">
+                          <div className="inline-flex items-center gap-2 text-base font-semibold text-text-primary">
+                            <span className="inline-flex text-brand">
                               <type.icon size={18} />
                             </span>
                             {type.label}
                           </div>
-                          <div className="type-description">{type.description}</div>
+                          <div className="text-sm leading-relaxed text-text-secondary">{type.description}</div>
                         </div>
                       </label>
                     ))}
@@ -268,11 +302,13 @@ const Feedback = () => {
                 </div>
 
                 {/* Contact Information */}
-                <div className="form-section">
-                  <h3 className="section-label">{feedbackContent.form.contactLabel}</h3>
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="name">{feedbackContent.form.nameLabel}</label>
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-base font-semibold text-text-primary">{feedbackContent.form.contactLabel}</h3>
+                  <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-text-primary" htmlFor="name">
+                        {feedbackContent.form.nameLabel}
+                      </label>
                       <input
                         type="text"
                         id="name"
@@ -280,16 +316,18 @@ const Feedback = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder={feedbackContent.form.namePlaceholder}
-                        className={`form-input ${formErrors.name ? 'error' : ''}`}
+                        className={`${inputBase} min-h-[44px] ${formErrors.name ? inputError : ''}`}
                         required
                       />
                       {formErrors.name && (
-                        <span className="field-error">{formErrors.name}</span>
+                        <span className="text-[0.85rem] text-status-danger">{formErrors.name}</span>
                       )}
                     </div>
 
-                    <div className="form-group">
-                      <label htmlFor="email">{feedbackContent.form.emailLabel}</label>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-text-primary" htmlFor="email">
+                        {feedbackContent.form.emailLabel}
+                      </label>
                       <input
                         type="email"
                         id="email"
@@ -297,22 +335,24 @@ const Feedback = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder={feedbackContent.form.emailPlaceholder}
-                        className={`form-input ${formErrors.email ? 'error' : ''}`}
+                        className={`${inputBase} min-h-[44px] ${formErrors.email ? inputError : ''}`}
                         required
                       />
                       {formErrors.email && (
-                        <span className="field-error">{formErrors.email}</span>
+                        <span className="text-[0.85rem] text-status-danger">{formErrors.email}</span>
                       )}
                     </div>
                   </div>
                 </div>
 
                 {/* Feedback Details */}
-                <div className="form-section">
-                  <h3 className="section-label">{feedbackContent.form.detailsLabel}</h3>
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-base font-semibold text-text-primary">{feedbackContent.form.detailsLabel}</h3>
                   
-                  <div className="form-group">
-                    <label htmlFor="subject">{feedbackContent.form.subjectLabel}</label>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-text-primary" htmlFor="subject">
+                      {feedbackContent.form.subjectLabel}
+                    </label>
                     <input
                       type="text"
                       id="subject"
@@ -320,16 +360,18 @@ const Feedback = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       placeholder={feedbackContent.form.subjectPlaceholder}
-                      className={`form-input ${formErrors.subject ? 'error' : ''}`}
+                      className={`${inputBase} min-h-[44px] ${formErrors.subject ? inputError : ''}`}
                       required
                     />
                     {formErrors.subject && (
-                      <span className="field-error">{formErrors.subject}</span>
+                      <span className="text-[0.85rem] text-status-danger">{formErrors.subject}</span>
                     )}
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="message">{feedbackContent.form.messageLabel}</label>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-text-primary" htmlFor="message">
+                      {feedbackContent.form.messageLabel}
+                    </label>
                     <textarea
                       id="message"
                       name="message"
@@ -337,25 +379,33 @@ const Feedback = () => {
                       onChange={handleInputChange}
                       placeholder={feedbackContent.form.messagePlaceholder}
                       rows={8}
-                      className={`form-input ${formErrors.message ? 'error' : ''}`}
+                      className={`${inputBase} min-h-[150px] resize-y leading-relaxed ${formErrors.message ? inputError : ''}`}
                       required
                     />
                     {formErrors.message && (
-                      <span className="field-error">{formErrors.message}</span>
+                      <span className="text-[0.85rem] text-status-danger">{formErrors.message}</span>
                     )}
-                    <span className="field-hint">
+                    <span className="text-[0.85rem] text-text-secondary">
                       {feedbackContent.form.detailsHintPrefix} • {formData.message.length} / 20
                     </span>
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="priority">{feedbackContent.form.priorityLabel}</label>
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-semibold text-text-primary" htmlFor="priority">
+                      {feedbackContent.form.priorityLabel}
+                    </label>
                     <select
                       id="priority"
                       name="priority"
                       value={formData.priority}
                       onChange={handleInputChange}
-                      className="form-input"
+                      className={`${inputBase} min-h-[44px] cursor-pointer appearance-none pr-10`}
+                      style={{
+                        backgroundImage:
+                          "url(\"data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'right 1rem center',
+                      }}
                     >
                       {feedbackContent.form.priorityOptions.map((option) => (
                         <option key={option.value} value={option.value}>{option.label}</option>
@@ -365,17 +415,17 @@ const Feedback = () => {
                 </div>
 
                 {/* Preferences */}
-                <div className="form-section">
-                  <div className="checkbox-group">
-                    <label className="checkbox-label">
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-3">
+                    <label className="flex items-start gap-3">
                       <input
                         type="checkbox"
                         name="allowContact"
                         checked={formData.allowContact}
                         onChange={handleInputChange}
-                        className="checkbox-input"
+                        className="mt-0.5 h-5 w-5 shrink-0 accent-brand"
                       />
-                      <span className="checkbox-text">
+                      <span className="text-[0.95rem] leading-relaxed text-text-secondary">
                         {feedbackContent.form.allowContact}
                       </span>
                     </label>
@@ -383,7 +433,7 @@ const Feedback = () => {
                 </div>
 
                 {/* Submit Button */}
-                <div className="form-actions">
+                <div className="flex gap-4 max-sm:flex-col">
                   <Button
                     type="submit"
                     variant="primary"
@@ -400,21 +450,23 @@ const Feedback = () => {
           )}
 
           {/* Info Cards */}
-          <div className="info-section reveal-on-scroll">
+          <div className="grid gap-4 pt-4 md:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] reveal-on-scroll">
             {feedbackContent.infoCards.map((card) => {
               const InfoIcon = iconMap[card.icon];
               return (
                 <Card key={card.title} padding="medium" shadow="small">
-                  <div className="info-card">
-                    <span className="info-icon">
+                  <div className="flex items-start gap-4">
+                    <span className="inline-flex text-2xl text-brand">
                       {InfoIcon && <InfoIcon size={18} />}
                     </span>
                     <div>
-                      <h4>{card.title}</h4>
-                      <p>
+                      <h4 className="text-base font-semibold text-text-primary">{card.title}</h4>
+                      <p className="text-sm leading-relaxed text-text-secondary">
                         {card.description}{' '}
                         {card.link && (
-                          <a href={`mailto:${card.link}`}>{card.link}</a>
+                          <a className="font-semibold text-brand underline hover:text-brand-hover" href={`mailto:${card.link}`}>
+                            {card.link}
+                          </a>
                         )}
                       </p>
                     </div>
@@ -427,8 +479,8 @@ const Feedback = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -437,10 +489,12 @@ const Feedback = () => {
             <h2 className="section-title">We read every submission.</h2>
             <p className="section-subtitle">Our team reviews feedback and ships fixes fast.</p>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Prefer email?</h3>
-            <p className="public-card-desc">Reach out via the contact page for direct support.</p>
+            <h3 className="text-[1.05rem] font-semibold text-text-primary">Prefer email?</h3>
+            <p className="text-[0.98rem] leading-relaxed text-text-secondary">
+              Reach out via the contact page for direct support.
+            </p>
           </div>
         </div>
       </section>

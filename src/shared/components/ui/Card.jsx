@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Card.css';
 
 /**
  * Card Component
@@ -36,58 +35,37 @@ const Card = ({
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Padding configurations
-  const paddingMap = {
-    none: '0',
-    small: '1rem',
-    medium: '1.5rem',
-    large: '2rem'
-  };
-
-  // Shadow configurations
-  const shadowMap = {
-    none: 'none',
-    small: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
-    medium: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    large: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
-  };
-
-  // Black theme shadow adjustments
-  const darkShadowMap = {
-    none: 'none',
-    small: '0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2)',
-    medium: '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
-    large: '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4)'
-  };
-
   const isClickable = !!onClick;
-  const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'black';
-
-  // Base card styles
-  const baseStyles = {
-    position: 'relative',
-    background: 'var(--card-bg)',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'var(--border-color)',
-    borderRadius: 'var(--card-radius, 12px)',
-    padding: `var(--card-padding, ${paddingMap[padding]})`,
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    cursor: isClickable ? 'pointer' : 'default',
-    overflow: 'hidden',
-    ...style
+  const paddingMap = {
+    none: 'p-0',
+    small: 'p-4',
+    medium: 'p-6',
+    large: 'p-8',
   };
 
-  // Hover styles
-  const hoverStyles = isHovered && (hover3d || isClickable) ? {
-    transform: hover3d 
+  const shadowMap = {
+    none: 'shadow-none',
+    small: 'shadow-sm',
+    medium: 'shadow-md',
+    large: 'shadow-lg',
+  };
+
+  const baseClasses = [
+    'relative overflow-hidden rounded-md border border-border bg-card text-text-primary transition-all duration-200 ease-out',
+    paddingMap[padding] || paddingMap.medium,
+    shadowMap[shadow] || shadowMap.medium,
+    isClickable ? 'cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand' : '',
+    hover3d ? 'transform-gpu' : '',
+    isClickable && !hover3d ? 'hover:-translate-y-0.5 hover:shadow-lg hover:border-brand/40' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const transformStyle =
+    isHovered && hover3d
       ? `perspective(1000px) rotateX(${(mousePosition.y - 0.5) * 5}deg) rotateY(${(mousePosition.x - 0.5) * -5}deg) translateY(-4px)`
-      : 'translateY(-2px)',
-    boxShadow: isDarkTheme ? darkShadowMap.large : shadowMap.large,
-    borderColor: 'var(--primary-color-alpha)'
-  } : {
-    boxShadow: isDarkTheme ? darkShadowMap[shadow] : shadowMap[shadow]
-  };
+      : undefined;
 
   // Handle mouse move for 3D effect
   const handleMouseMove = (e) => {
@@ -112,10 +90,10 @@ const Card = ({
 
   return (
     <div
-      className={`card ${hover3d ? 'card-3d' : ''} ${isClickable ? 'card-clickable' : ''} ${className}`}
+      className={baseClasses}
       style={{
-        ...baseStyles,
-        ...hoverStyles
+        ...style,
+        transform: transformStyle
       }}
       onClick={onClick}
       role={isClickable ? 'button' : undefined}
@@ -141,7 +119,7 @@ const Card = ({
             left: 0,
             right: 0,
             bottom: 0,
-            background: `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)`,
+            background: `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, rgba(var(--brand-rgb), 0.12) 0%, transparent 50%)`,
             pointerEvents: 'none',
             transition: 'opacity 0.3s ease',
             opacity: isHovered ? 1 : 0
@@ -150,7 +128,7 @@ const Card = ({
       )}
 
       {/* Card Content - flex column + gap so content is well spaced in all dashboards */}
-      <div className="card__content" style={{ position: 'relative', zIndex: 1 }}>
+      <div className="relative z-10 flex min-w-0 flex-col gap-5">
         {children}
       </div>
     </div>

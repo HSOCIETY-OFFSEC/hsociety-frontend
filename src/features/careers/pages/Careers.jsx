@@ -9,8 +9,34 @@ import {
   FiArrowUpRight,
 } from 'react-icons/fi';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/careers.css';
+import Button from '../../../shared/components/ui/Button';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const STATUS_CARDS = [
   {
@@ -27,64 +53,73 @@ const Careers = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="public-page public-page-inner car-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Careers
             </p>
-            <h1 className="public-hero-title">We’re pausing hiring to scale the platform.</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>We’re pausing hiring to scale the platform.</h1>
+            <p className={publicHeroDesc}>
               We aren’t hiring right now — but keep an eye on this page for future opportunities.
             </p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 <FiMessageSquare size={14} />
                 Notify me
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/team')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/team')}
+              >
                 Meet the team
                 <FiArrowUpRight size={14} />
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiClock size={12} />
                 Hiring paused
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiUsers size={12} />
                 Community first
               </span>
-              <span className="public-pill">Reopening 2026</span>
+              <span className={publicPill}>Reopening 2026</span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Status</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={publicBadge}>Status</p>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiBriefcase size={14} />
                 <span>No open roles right now.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Updates announced via email.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiMessageSquare size={14} />
                 <span>Reach out for future openings.</span>
               </div>
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>Remote</strong> first
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Remote</strong> first
               </span>
-              <span className="public-hero-stat">
-                <strong>Global</strong> team
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Global</strong> team
               </span>
             </div>
           </div>
@@ -92,7 +127,7 @@ const Careers = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -103,14 +138,18 @@ const Careers = () => {
             <p className="section-subtitle">We’re refining internal delivery and training before the next hiring wave.</p>
           </div>
           <PublicCardGrid>
-            {STATUS_CARDS.map((card) => (
-              <article key={card.title} className="public-card">
+            {STATUS_CARDS.map((card, index) => (
+              <article
+                key={card.title}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">Status</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>Status</span>
                 </div>
-                <h3 className="public-card-title">{card.title}</h3>
-                <p className="public-card-desc">{card.body}</p>
+                <h3 className={publicCardTitle}>{card.title}</h3>
+                <p className={publicCardDesc}>{card.body}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -118,8 +157,8 @@ const Careers = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -127,20 +166,29 @@ const Careers = () => {
             </p>
             <h2 className="section-title">Want to be first in line?</h2>
             <p className="section-subtitle">We’ll notify you when new roles are posted.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Join the list
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/community')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/community')}
+              >
                 Join the community
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Roles include analysts, builders, mentors.</h3>
-            <p className="public-card-desc">We hire operators with real-world engagement experience.</p>
+            <h3 className={publicCardTitle}>Roles include analysts, builders, mentors.</h3>
+            <p className={publicCardDesc}>We hire operators with real-world engagement experience.</p>
           </div>
         </div>
       </section>

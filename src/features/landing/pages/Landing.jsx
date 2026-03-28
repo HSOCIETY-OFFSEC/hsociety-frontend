@@ -42,7 +42,6 @@ import communityImage from '../../../assets/images/why-choose-hsociety-images/co
 import pentestsImage from '../../../assets/images/why-choose-hsociety-images/supervised-pentests.webp';
 import pathwayImage from '../../../assets/images/why-choose-hsociety-images/career-ready-pathway.webp';
 
-import '../styles/landing.css';
 
 const Landing = ({ scrollToId = null }) => {
   const location = useLocation();
@@ -256,7 +255,7 @@ const Landing = ({ scrollToId = null }) => {
   );
 
   return (
-    <div className="landing-page">
+    <div className="relative min-h-screen overflow-x-hidden overflow-y-visible bg-bg-primary bg-[image:linear-gradient(180deg,color-mix(in_srgb,var(--bg-primary)_92%,transparent),var(--bg-primary)),var(--landing-brand-image)] bg-no-repeat [background-position:center_top,center_top] [background-size:cover,min(1200px,85vw)_auto]">
       <HeroSection content={heroContent} />
       <StatsSection content={statsContent} error={statsError} />
       <ServicesSection services={services} />

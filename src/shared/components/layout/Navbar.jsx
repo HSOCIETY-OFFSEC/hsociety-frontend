@@ -34,7 +34,6 @@ import { openNotificationTarget } from '../../utils/notificationNavigation';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { useNotifications } from '../providers/NotificationProvider';
 import { useUserStats } from '../../hooks/useUserStats';
-import './Navbar.css';
 
 const NAV_COLLAPSE_WIDTH = 1024;
 const MENU_IDS = {
@@ -241,28 +240,51 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
   const handleEscape = (e, setter) => { if (e.key === 'Escape') setter(false); };
 
+  const navBase =
+    'fixed left-0 right-0 z-40 h-16 border-b border-border bg-bg-secondary font-sans transition-colors duration-200';
+  const navTransparent = 'bg-transparent border-transparent';
+  const navInner = 'mx-auto flex h-full w-full items-center gap-4 px-4';
+  const navLinks = 'hidden flex-1 items-center justify-center gap-1 lg:flex';
+  const navLinkBase =
+    'inline-flex h-8 items-center gap-2 rounded-xs px-3 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
+  const navLinkActive = 'text-text-primary font-semibold';
+  const navLinkPill =
+    'border border-border bg-bg-secondary text-text-primary hover:border-brand/40';
+  const dropdownBase =
+    'absolute left-0 top-full mt-2 w-56 max-w-sm rounded-sm border border-border bg-bg-secondary p-1 shadow-lg';
+  const dropdownItem =
+    'flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
+  const dropdownDivider = 'my-1 h-px w-full bg-border';
+  const iconBtn =
+    'relative inline-flex h-9 w-9 items-center justify-center rounded-xs border border-transparent text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
+  const pillBtn =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1.5 text-sm font-medium text-text-primary transition-colors duration-150 hover:border-brand/40 hover:bg-bg-tertiary';
+
   return (
-    <nav className={`gh-nav${transparentOnTop && isAtTop ? ' gh-nav--transparent' : ''}`}>
-      <div className="gh-nav-inner">
+    <nav
+      className={`${navBase} ${transparentOnTop && isAtTop ? navTransparent : ''}`.trim()}
+      style={{ top: 'var(--ann-banner-height, 0px)' }}
+    >
+      <div className={navInner}>
 
         {/* ── Logo ─────────────────────────────────── */}
         <button
           type="button"
-          className="gh-nav-logo"
+          className="flex h-full items-center"
           onClick={() => navigate('/')}
           aria-label="Go to home"
         >
-          <Logo size="large" src={logoSrc} />
+          <Logo size="medium" src={logoSrc} />
         </button>
 
         {/* ── Desktop nav links ────────────────────── */}
-        <div className="gh-nav-links">
+        <div className={navLinks}>
           {visibleDesktopLinks.map((link) => (
             <button
               key={link.path}
               type="button"
               onClick={() => navigate(link.path)}
-              className={`gh-nav-link${isActive(link.path) ? ' is-active' : ''}`}
+              className={`${navLinkBase} ${isActive(link.path) ? navLinkActive : ''}`.trim()}
               aria-current={isActive(link.path) ? 'page' : undefined}
             >
               <link.icon size={15} />
@@ -273,7 +295,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
           {/* More dropdown */}
           {overflowDesktopLinks.length > 0 && (
             <div
-              className="gh-dropdown"
+              className="relative inline-flex"
               ref={moreMenuRef}
               onMouseEnter={() => openMenu(moreCloseTimerRef, setMoreMenuOpen)}
               onMouseLeave={() => scheduleClose(moreCloseTimerRef, setMoreMenuOpen)}
@@ -281,7 +303,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
             >
               <button
                 type="button"
-                className="gh-nav-link"
+                className={navLinkBase}
                 onClick={() => setMoreMenuOpen((p) => !p)}
                 aria-haspopup="menu"
                 aria-expanded={moreMenuOpen}
@@ -295,7 +317,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
               {moreMenuOpen && (
                 <div
-                  className="gh-dropdown-menu"
+                  className={dropdownBase}
                   id={MENU_IDS.more}
                   role="menu"
                   onMouseEnter={() => openMenu(moreCloseTimerRef, setMoreMenuOpen)}
@@ -305,7 +327,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                     <button
                       key={link.path}
                       type="button"
-                      className={`gh-dropdown-item${isActive(link.path) ? ' is-active' : ''}`}
+                      className={`${dropdownItem} ${isActive(link.path) ? navLinkActive : ''}`.trim()}
                       role="menuitem"
                       onClick={() => { navigate(link.path); setMoreMenuOpen(false); }}
                     >
@@ -321,7 +343,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
           {/* Student Learn dropdown */}
           {isStudent && (
             <div
-              className="gh-dropdown"
+              className="relative inline-flex"
               ref={studentMenuRef}
               onMouseEnter={() => openMenu(studentCloseTimerRef, setStudentLearnOpen)}
               onMouseLeave={() => scheduleClose(studentCloseTimerRef, setStudentLearnOpen)}
@@ -329,7 +351,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
             >
               <button
                 type="button"
-                className="gh-nav-link gh-nav-link--pill"
+                className={`${navLinkBase} ${navLinkPill}`.trim()}
                 onClick={() => setStudentLearnOpen((p) => !p)}
                 aria-haspopup="menu"
                 aria-expanded={studentLearnOpen}
@@ -343,7 +365,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
               {studentLearnOpen && (
                 <div
-                  className="gh-dropdown-menu"
+                  className={dropdownBase}
                   id={MENU_IDS.student}
                   role="menu"
                   onMouseEnter={() => openMenu(studentCloseTimerRef, setStudentLearnOpen)}
@@ -353,7 +375,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                     <button
                       key={link.path}
                       type="button"
-                      className={`gh-dropdown-item${isActive(link.path) ? ' is-active' : ''}`}
+                      className={`${dropdownItem} ${isActive(link.path) ? navLinkActive : ''}`.trim()}
                       role="menuitem"
                       onClick={() => navigate(link.path)}
                     >
@@ -368,15 +390,15 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
         </div>
 
         {/* ── Right cluster ────────────────────────── */}
-        <div className="gh-nav-right">
+        <div className="flex items-center gap-2 lg:gap-3">
           {/* CP + streak stat chips */}
           {showStats && (
-            <div className="gh-stat-group">
-              <span className="gh-stat-chip" title="Compromised Points">
-                <img src={cpIcon} alt="CP" className="gh-stat-cp-icon" />
+            <div className="hidden items-center gap-2 lg:flex">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary" title="Compromised Points">
+                <img src={cpIcon} alt="CP" className="h-3.5 w-3.5" />
                 <span>{cpTotal}</span>
               </span>
-              <span className="gh-stat-chip" title="Learning streak">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary" title="Learning streak">
                 <IoFlameOutline size={14} />
                 <span>{streakDays}d</span>
               </span>
@@ -386,7 +408,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
           {/* Notifications */}
           {isAuthenticated && (
             <div
-              className="gh-dropdown"
+              className="relative inline-flex"
               ref={notificationMenuRef}
               onMouseEnter={() => openMenu(notificationCloseTimerRef, setNotificationMenuOpen)}
               onMouseLeave={() => scheduleClose(notificationCloseTimerRef, setNotificationMenuOpen)}
@@ -394,7 +416,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
             >
               <button
                 type="button"
-                className="gh-icon-btn"
+                className={iconBtn}
                 onClick={() => setNotificationMenuOpen((p) => !p)}
                 aria-label="Notifications"
                 aria-haspopup="menu"
@@ -404,30 +426,32 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
               >
                 <LuBell size={16} />
                 {unreadCount > 0 && (
-                  <span className="gh-notif-badge">{unreadCount}</span>
+                  <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-status-danger px-1 text-xs font-semibold text-ink-white">
+                    {unreadCount}
+                  </span>
                 )}
               </button>
 
               {notificationMenuOpen && (
                 <div
-                  className="gh-dropdown-menu gh-notif-menu"
+                  className={`fixed left-4 right-4 top-16 max-h-screen overflow-y-auto rounded-sm border border-border bg-bg-secondary p-2 shadow-lg sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80 sm:max-w-sm`}
                   id={MENU_IDS.notifications}
                   onMouseEnter={() => openMenu(notificationCloseTimerRef, setNotificationMenuOpen)}
                   onMouseLeave={() => scheduleClose(notificationCloseTimerRef, setNotificationMenuOpen)}
                 >
-                  <div className="gh-notif-head">
-                    <strong>Notifications</strong>
-                    <div className="gh-notif-head-actions">
+                  <div className="flex items-center justify-between gap-3 px-2 pb-2">
+                    <strong className="text-sm text-text-primary">Notifications</strong>
+                    <div className="flex items-center gap-2">
                       <button
                         type="button"
-                        className="gh-notif-read-all"
+                        className="text-xs font-medium text-text-secondary hover:text-text-primary"
                         onClick={async () => { await markAllRead(); }}
                       >
                         Mark all read
                       </button>
                       <button
                         type="button"
-                        className="gh-notif-read-all"
+                        className="text-xs font-medium text-text-secondary hover:text-text-primary"
                         onClick={() => {
                           setNotificationMenuOpen(false);
                           navigate('/notifications');
@@ -439,20 +463,20 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                   </div>
 
                   {notifications.length === 0 ? (
-                    <p className="gh-notif-empty">No notifications yet.</p>
+                    <p className="px-2 py-3 text-sm text-text-tertiary">No notifications yet.</p>
                   ) : (
                     notifications.slice(0, 8).map((item) => (
                       <button
                         key={item.id}
                         type="button"
-                        className={`gh-notif-item${item.read ? '' : ' is-unread'}`}
+                        className={`flex w-full flex-col gap-1 rounded-xs px-3 py-2 text-left text-xs text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary ${item.read ? '' : 'bg-bg-tertiary/60 text-text-primary'}`}
                         onClick={async () => {
                           await markRead(item.id);
                           openNotificationTarget(item, navigate);
                         }}
                       >
-                        <strong>{item.title}</strong>
-                        <span>{item.message}</span>
+                        <strong className="text-sm text-text-primary">{item.title}</strong>
+                        <span className="text-xs text-text-secondary">{item.message}</span>
                       </button>
                     ))
                   )}
@@ -466,7 +490,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
             <>
               <button
                 type="button"
-                className="gh-btn"
+                className={pillBtn}
                 onClick={() => openAuthModal('login')}
               >
                 Login
@@ -477,7 +501,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
           {/* User menu (authenticated, desktop) */}
           {isAuthenticated && user && (
             <div
-              className="gh-dropdown"
+              className="relative inline-flex"
               ref={userMenuRef}
               onMouseEnter={() => openMenu(userCloseTimerRef, setUserMenuOpen)}
               onMouseLeave={() => scheduleClose(userCloseTimerRef, setUserMenuOpen)}
@@ -485,43 +509,44 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
             >
               <button
                 type="button"
-                className="gh-user-btn"
+                className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-2 py-1.5 text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary"
                 onClick={() => setUserMenuOpen((p) => !p)}
                 aria-label="Open user menu"
                 aria-haspopup="menu"
                 aria-expanded={userMenuOpen}
                 onKeyDown={(e) => handleEscape(e, setUserMenuOpen)}
               >
-                <span className="gh-user-avatar">
+                <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-border bg-bg-tertiary">
                   <img
                     src={avatarSrc}
                     alt="Profile"
                     onError={(e) => {
                       if (e.currentTarget.src !== avatarFallback) e.currentTarget.src = avatarFallback;
                     }}
+                    className="h-full w-full object-cover"
                   />
                 </span>
-                <LuChevronDown size={13} className="gh-user-chevron" />
+                <LuChevronDown size={13} className="text-text-tertiary" />
               </button>
 
               {userMenuOpen && (
                 <div
-                  className="gh-dropdown-menu gh-user-menu"
+                  className={`${dropdownBase} left-auto right-0 origin-top-right`}
                   role="menu"
                   onMouseEnter={() => openMenu(userCloseTimerRef, setUserMenuOpen)}
                   onMouseLeave={() => scheduleClose(userCloseTimerRef, setUserMenuOpen)}
                 >
                   {/* Header */}
-                  <div className="gh-user-menu-header">
-                    <p className="gh-user-menu-hint">Signed in as</p>
-                    <p className="gh-user-menu-email">{user.email}</p>
+                  <div className="px-3 py-2">
+                    <p className="text-xs uppercase tracking-widest text-text-tertiary">Signed in as</p>
+                    <p className="text-sm text-text-primary">{user.email}</p>
                   </div>
 
-                  <div className="gh-dropdown-divider" />
+                  <div className={dropdownDivider} />
 
                   <button
                     type="button"
-                    className="gh-dropdown-item"
+                    className={dropdownItem}
                     role="menuitem"
                     onClick={() => navigate('/settings')}
                   >
@@ -529,11 +554,11 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                     <span>Profile</span>
                   </button>
 
-                  <div className="gh-dropdown-divider" />
+                  <div className={dropdownDivider} />
 
                   <button
                     type="button"
-                    className="gh-dropdown-item gh-dropdown-item--danger"
+                    className={`${dropdownItem} text-status-danger hover:text-status-danger`}
                     role="menuitem"
                     onClick={handleLogout}
                   >
@@ -549,7 +574,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
           {viewportMode === 'mobile' && (
             <button
               type="button"
-              className="gh-hamburger"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xs border border-border bg-bg-secondary text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary lg:hidden"
               onClick={() => setMobileMenuOpen((p) => !p)}
               aria-label="Toggle navigation"
               aria-expanded={mobileMenuOpen}
@@ -563,14 +588,14 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
       {/* ── Mobile drawer ────────────────────────── */}
       {viewportMode === 'mobile' && mobileMenuOpen && (
-        <div className="gh-mobile-menu" id={MENU_IDS.mobile}>
-          <div className="gh-mobile-menu-inner">
+        <div className="fixed left-0 right-0 top-16 z-40 border-b border-border bg-bg-secondary" id={MENU_IDS.mobile}>
+          <div className="flex max-h-screen flex-col gap-4 overflow-y-auto px-4 py-4">
 
             {/* Primary section */}
-            <div className="gh-mobile-section">
+            <div className="flex flex-col gap-2">
               <button
                 type="button"
-                className="gh-mobile-section-toggle"
+                className="flex w-full items-center justify-between rounded-xs border border-border bg-bg-tertiary px-3 py-2 text-xs uppercase tracking-widest text-text-tertiary"
                 onClick={() => setMobileSectionsOpen((p) => ({ ...p, primary: !p.primary }))}
                 aria-expanded={mobileSectionsOpen.primary}
               >
@@ -578,12 +603,14 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                 <LuChevronDown size={15} />
               </button>
               {mobileSectionsOpen.primary && (
-                <div className="gh-mobile-group">
+                <div className="flex flex-col gap-1">
                   {mobileSections.primary.map((link) => (
                     <button
                       key={link.path}
                       type="button"
-                      className={`gh-mobile-link${isActive(link.path) ? ' is-active' : ''}`}
+                      className={`flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary hover:bg-bg-tertiary hover:text-text-primary ${
+                        isActive(link.path) ? 'bg-bg-tertiary text-text-primary' : ''
+                      }`}
                       onClick={() => { navigate(link.path); setMobileMenuOpen(false); }}
                     >
                       <link.icon size={16} />
@@ -596,10 +623,10 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
             {/* Learning section (student) */}
             {isStudent && (
-              <div className="gh-mobile-section">
+              <div className="flex flex-col gap-2">
                 <button
                   type="button"
-                  className="gh-mobile-section-toggle"
+                  className="flex w-full items-center justify-between rounded-xs border border-border bg-bg-tertiary px-3 py-2 text-xs uppercase tracking-widest text-text-tertiary"
                   onClick={() => setMobileSectionsOpen((p) => ({ ...p, learning: !p.learning }))}
                   aria-expanded={mobileSectionsOpen.learning}
                 >
@@ -607,12 +634,14 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                   <LuChevronDown size={15} />
                 </button>
                 {mobileSectionsOpen.learning && (
-                  <div className="gh-mobile-group">
+                  <div className="flex flex-col gap-1">
                     {mobileSections.learning.map((link) => (
                       <button
                         key={link.path}
                         type="button"
-                        className={`gh-mobile-link${isActive(link.path) ? ' is-active' : ''}`}
+                        className={`flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary hover:bg-bg-tertiary hover:text-text-primary ${
+                          isActive(link.path) ? 'bg-bg-tertiary text-text-primary' : ''
+                        }`}
                         onClick={() => { navigate(link.path); setMobileMenuOpen(false); }}
                       >
                         <link.icon size={16} />
@@ -626,10 +655,10 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
             {/* Utilities section (student) */}
             {isStudent && mobileSections.secondary.length > 0 && (
-              <div className="gh-mobile-section">
+              <div className="flex flex-col gap-2">
                 <button
                   type="button"
-                  className="gh-mobile-section-toggle"
+                  className="flex w-full items-center justify-between rounded-xs border border-border bg-bg-tertiary px-3 py-2 text-xs uppercase tracking-widest text-text-tertiary"
                   onClick={() => setMobileSectionsOpen((p) => ({ ...p, secondary: !p.secondary }))}
                   aria-expanded={mobileSectionsOpen.secondary}
                 >
@@ -637,12 +666,14 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                   <LuChevronDown size={15} />
                 </button>
                 {mobileSectionsOpen.secondary && (
-                  <div className="gh-mobile-group">
+                  <div className="flex flex-col gap-1">
                     {mobileSections.secondary.map((link) => (
                       <button
                         key={link.path}
                         type="button"
-                        className={`gh-mobile-link${isActive(link.path) ? ' is-active' : ''}`}
+                        className={`flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary hover:bg-bg-tertiary hover:text-text-primary ${
+                          isActive(link.path) ? 'bg-bg-tertiary text-text-primary' : ''
+                        }`}
                         onClick={() => { navigate(link.path); setMobileMenuOpen(false); }}
                       >
                         <link.icon size={16} />
@@ -654,13 +685,13 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
               </div>
             )}
 
-            <div className="gh-mobile-divider" />
+            <div className="h-px w-full bg-border" />
 
             {/* Auth row */}
             {isAuthenticated ? (
               <button
                 type="button"
-                className="gh-mobile-link gh-mobile-link--danger"
+                className="flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-status-danger hover:bg-bg-tertiary"
                 onClick={handleLogout}
               >
                 <LuLogOut size={16} />
@@ -670,7 +701,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
               <>
                 <button
                   type="button"
-                  className="gh-mobile-link"
+                  className="flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary hover:bg-bg-tertiary hover:text-text-primary"
                   onClick={() => { openAuthModal('login'); setMobileMenuOpen(false); }}
                 >
                   <LuLogIn size={16} />
@@ -684,10 +715,10 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
       {/* ── Mobile action dock (unauthenticated, menu closed) ── */}
       {viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && !isAuthPage && (
-        <div className="gh-mobile-dock" role="navigation" aria-label="Quick actions">
+        <div className="fixed bottom-4 left-4 right-4 z-30" role="navigation" aria-label="Quick actions">
           <button
             type="button"
-            className="gh-mobile-dock-btn"
+            className="w-full rounded-sm border border-border bg-bg-secondary px-4 py-3 text-sm font-semibold text-text-primary shadow-lg"
             onClick={() => openAuthModal('login')}
           >
             Login

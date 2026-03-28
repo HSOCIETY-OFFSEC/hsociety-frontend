@@ -2,7 +2,19 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { requestEmailVerification, confirmEmailVerification } from '../../../core/auth/auth.service';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
-import '../styles/auth-portal.css';
+import Button from '../../../shared/components/ui/Button';
+import {
+  authDivider,
+  authDividerText,
+  authError,
+  authField,
+  authForm,
+  authFormHeader,
+  authFormSubtitle,
+  authFormTitle,
+  authInput,
+  authLabel,
+} from '../styles/authClasses';
 
 const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -63,56 +75,56 @@ const VerifyEmail = () => {
   }, [email, tokenFromQuery]);
 
   return (
-    <div className="ap-root">
-      <section className="ap-right" style={{ margin: '0 auto' }}>
-        <div className="ap-right-inner">
-          <div className="ap-form-header">
-            <h1 className="ap-form-title">Verify your email</h1>
-            <p className="ap-form-subtitle">
+    <div className="min-h-screen w-full bg-bg-primary">
+      <section className="mx-auto flex min-h-screen w-full max-w-[520px] items-center justify-center bg-bg-secondary px-6 py-8 pt-[calc(var(--navbar-height,64px)+2rem)] max-sm:px-4">
+        <div className="flex w-full max-w-[400px] flex-col gap-4">
+          <div className={authFormHeader}>
+            <h1 className={authFormTitle}>Verify your email</h1>
+            <p className={authFormSubtitle}>
               We sent a verification link to your inbox. Paste your token below or request a new link.
             </p>
           </div>
 
           {status && (
-            <div className="ap-error" role="status">
+            <div className={authError} role="status">
               {status}
             </div>
           )}
 
-          <form className="ap-form" onSubmit={handleConfirm} noValidate>
-            <div className="ap-field">
-              <label htmlFor="verify-token">Verification token</label>
+          <form className={authForm} onSubmit={handleConfirm} noValidate>
+            <div className={authField}>
+              <label htmlFor="verify-token" className={authLabel}>Verification token</label>
               <input
                 id="verify-token"
                 type="text"
                 value={token}
                 onChange={(event) => setToken(event.target.value)}
-                className="ap-input"
+                className={authInput}
                 placeholder="Paste token from email"
                 required
               />
             </div>
-            <button type="submit" className="ap-btn-primary" disabled={loading || !canSubmit}>
+            <Button type="submit" variant="primary" size="medium" fullWidth loading={loading} disabled={loading || !canSubmit}>
               {loading ? 'Verifying…' : 'Verify email'}
-            </button>
+            </Button>
           </form>
 
-          <div className="ap-divider"><span>Need a new link?</span></div>
+          <div className={authDivider}><span className={authDividerText}>Need a new link?</span></div>
 
-          <div className="ap-field">
-            <label htmlFor="verify-email">Email address</label>
+          <div className={authField}>
+            <label htmlFor="verify-email" className={authLabel}>Email address</label>
             <input
               id="verify-email"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="ap-input"
+              className={authInput}
               placeholder="you@example.com"
             />
           </div>
-          <button type="button" className="ap-btn-ghost" onClick={handleResend} disabled={loading}>
+          <Button type="button" variant="ghost" size="medium" fullWidth onClick={handleResend} disabled={loading}>
             Resend verification email
-          </button>
+          </Button>
         </div>
       </section>
     </div>

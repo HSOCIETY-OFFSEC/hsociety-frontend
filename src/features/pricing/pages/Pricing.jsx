@@ -11,23 +11,45 @@ import { useNavigate } from 'react-router-dom';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import {
   FiArrowUpRight,
-  FiUsers,
   FiShield,
   FiZap,
   FiLock,
   FiFileText,
   FiCheck,
-  FiStar,
   FiClock,
   FiGlobe,
   FiAward,
-  FiInfo,
-  FiCheckCircle,
-  FiTag,
 } from 'react-icons/fi';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/pricing.css';
+import Button from '../../../shared/components/ui/Button';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+  publicButtonBase,
+  publicButtonGhost,
+  publicButtonPrimary,
+  publicButtonSmall,
+} from '../../../shared/styles/publicClasses';
 import {
   PRICING_INCLUDED_ITEMS,
   PRICING_NOTE,
@@ -59,64 +81,72 @@ const Pricing = () => {
       : Math.floor(PRICING_TIERS.length / 2);
 
   return (
-    <div className="public-page public-page-inner pri-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Pricing
             </p>
-            <h1 className="public-hero-title">Engagement tiers built for real-world risk.</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>Engagement tiers built for real-world risk.</h1>
+            <p className={publicHeroDesc}>
               Security engagements that scale with your risk posture and engineering capacity.
             </p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
-                onClick={() => navigate('/contact')}
-              >
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={() => navigate('/contact')}>
                 Talk to our team
                 <FiArrowUpRight size={14} />
-              </button>
+              </Button>
               <button
-                className="public-btn public-btn--ghost"
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
                 onClick={() => openAuthModal('login')}
+                type="button"
               >
                 Corporate account
               </button>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Billing toggle</p>
-            <div className="pri-toggle-wrap">
-              <span className="pri-toggle-label">Monthly</span>
+            <p className={publicBadge}>Billing toggle</p>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-2">
+              <span className="text-[0.7rem] uppercase tracking-[0.15em] text-text-tertiary">
+                Monthly
+              </span>
               <button
-                className={`pri-toggle-track${annual ? ' is-on' : ''}`}
+                className={[
+                  'inline-flex h-6 w-12 items-center rounded-full border border-border bg-bg-primary p-[2px] transition-colors',
+                  annual
+                    ? 'justify-end bg-[color-mix(in_srgb,var(--primary-color)_16%,var(--bg-secondary))]'
+                    : 'justify-start',
+                ].join(' ')}
                 onClick={() => setAnnual((v) => !v)}
                 aria-pressed={annual}
                 aria-label="Toggle annual billing"
+                type="button"
               >
-                <span className="pri-toggle-thumb" />
+                <span className="h-[18px] w-[18px] rounded-full bg-brand" />
               </button>
-              <span className="pri-toggle-label">Annual</span>
-              {annual && <span className="pri-toggle-badge">Save 20%</span>}
+              <span className="text-[0.7rem] uppercase tracking-[0.15em] text-text-tertiary">
+                Annual
+              </span>
+              {annual && <span className="text-[0.7rem] font-semibold text-brand">Save 20%</span>}
             </div>
-            <div className="public-pill-row">
+            <div className={publicPillRow}>
               {TRUST_ITEMS.map((t) => (
-                <span key={t.title} className="public-pill">
+                <span key={t.title} className={publicPill}>
                   {t.icon}
                   {t.title}
                 </span>
               ))}
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
                 <strong>24/7</strong> support
               </span>
-              <span className="public-hero-stat">
+              <span className={publicHeroStat}>
                 <strong>Global</strong> coverage
               </span>
             </div>
@@ -125,7 +155,7 @@ const Pricing = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -137,62 +167,73 @@ const Pricing = () => {
               Every plan includes evidence-first reporting and remediation guidance.
             </p>
           </div>
-          <div className="pri-tier-grid">
+          <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]">
             {PRICING_TIERS.map((tier, i) => {
               const isFeatured = i === featuredIndex;
               return (
                 <article
                   key={tier.title}
-                  className={`pri-tier-card${isFeatured ? ' pri-tier-card--featured' : ''}`}
+                  className={[
+                    'grid gap-4 rounded-lg border border-border bg-bg-secondary p-6',
+                    isFeatured
+                      ? 'border-[color-mix(in_srgb,var(--primary-color)_40%,var(--border-color))] shadow-md'
+                      : '',
+                  ].join(' ')}
                 >
-                  <div className="pri-tier-header">
-                    <div className="pri-tier-header-left">
-                      <span className="pri-tier-icon">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex gap-3">
+                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] bg-[color-mix(in_srgb,var(--primary-color)_15%,var(--bg-secondary))] text-brand">
                         {TIER_ICONS[i] ?? <FiShield size={16} />}
                       </span>
                       <div>
-                        <p className="pri-tier-name">{tier.title}</p>
+                        <p className="m-0 font-semibold text-text-primary">{tier.title}</p>
                         {tier.subtitle && (
-                          <p className="pri-tier-subtitle">{tier.subtitle}</p>
+                          <p className="m-0 text-[0.85rem] text-text-tertiary">{tier.subtitle}</p>
                         )}
                       </div>
                     </div>
-                    <div className="pri-tier-price-block">
-                      <span className="pri-tier-price">{tier.price}</span>
+                    <div className="text-right">
+                      <span className="text-[1.4rem] font-semibold">{tier.price}</span>
                       {tier.priceUnit && (
-                        <span className="pri-tier-price-unit">{tier.priceUnit}</span>
+                        <span className="block text-[0.75rem] text-text-tertiary">{tier.priceUnit}</span>
                       )}
                       {isFeatured && (
-                        <span className="pri-label pri-label-alpha">Popular</span>
+                        <span className="mt-2 inline-flex items-center rounded-full bg-[color-mix(in_srgb,var(--primary-color)_20%,var(--bg-secondary))] px-2.5 py-1 text-[0.65rem] uppercase tracking-[0.18em] text-brand">
+                          Popular
+                        </span>
                       )}
                     </div>
                   </div>
 
-                  <p className="pri-tier-details">{tier.details}</p>
+                  <p className="m-0 text-text-secondary">{tier.details}</p>
 
                   {Array.isArray(tier.features) && tier.features.length > 0 && (
-                    <ul className="pri-tier-features">
+                    <ul className="grid gap-2 text-text-secondary">
                       {tier.features.map((f) => (
-                        <li key={f}>
-                          <FiCheck size={12} className="pri-tier-check" />
+                        <li key={f} className="flex items-start gap-2">
+                          <FiCheck size={12} className="mt-0.5 text-brand" />
                           {f}
                         </li>
                       ))}
                     </ul>
                   )}
 
-                  <div className="pri-tier-footer">
-                    <button
-                      className={`public-btn${isFeatured ? ' public-btn--primary' : ''}`}
-                      onClick={() =>
-                        isFeatured
-                          ? navigate('/contact')
-                          : openAuthModal('login')
-                      }
-                    >
-                      {isFeatured ? 'Talk to our team' : 'Get started'}
-                      <FiArrowUpRight size={13} />
-                    </button>
+                  <div className="flex">
+                    {isFeatured ? (
+                      <Button size="small" onClick={() => navigate('/contact')}>
+                        Talk to our team
+                        <FiArrowUpRight size={13} />
+                      </Button>
+                    ) : (
+                      <button
+                        className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonPrimary}`}
+                        onClick={() => openAuthModal('login')}
+                        type="button"
+                      >
+                        Get started
+                        <FiArrowUpRight size={13} />
+                      </button>
+                    )}
                   </div>
                 </article>
               );
@@ -202,7 +243,7 @@ const Pricing = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -214,12 +255,12 @@ const Pricing = () => {
           </div>
           <PublicCardGrid>
             {PRICING_INCLUDED_ITEMS.map((item) => (
-              <article key={item} className="public-card">
+              <article key={item} className={publicCard}>
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">Deliverable</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>Deliverable</span>
                 </div>
-                <p className="public-card-desc">{item}</p>
+                <p className={publicCardDesc}>{item}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -227,8 +268,8 @@ const Pricing = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -238,29 +279,27 @@ const Pricing = () => {
             <p className="section-subtitle">
               We'll scope the right engagement for your risk posture, timeline, and budget.
             </p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
-                onClick={() => navigate('/contact')}
-              >
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={() => navigate('/contact')}>
                 Contact security team
                 <FiArrowUpRight size={13} />
-              </button>
+              </Button>
               <button
-                className="public-btn public-btn--ghost"
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
                 onClick={() => openAuthModal('login')}
+                type="button"
               >
                 Corporate account
               </button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Engagements open</h3>
-            <p className="public-card-desc">
+            <h3 className={publicCardTitle}>Engagements open</h3>
+            <p className={publicCardDesc}>
               Accepting new clients. SLA-backed delivery and clear remediation paths.
             </p>
-            <div className="public-card-meta">
+            <div className={publicCardMeta}>
               <span><FiShield size={12} /> Evidence-first</span>
               <span><FiClock size={12} /> 48h kickoff</span>
               <span><FiFileText size={12} /> Clear playbooks</span>

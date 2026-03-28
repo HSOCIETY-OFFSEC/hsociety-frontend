@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import '../../styles/sections/partners.css';
+import React, { useEffect, useRef, useState } from 'react';
 
 import SorbitLogo from '../../../../assets/images/partners/sorbit.webp';
 import RedspectreAILogo from '../../../../assets/images/partners/redspectre-ai.webp';
@@ -7,16 +6,17 @@ import WSuitsIndustriesLogo from '../../../../assets/images/partners/wsuits-indu
 
 const PartnerCarouselSection = () => {
   const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') {
-      if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+      setIsVisible(true);
       return undefined;
     }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          if (sectionRef.current) sectionRef.current.classList.add('is-visible');
+          setIsVisible(true);
           observer.disconnect();
         }
       },
@@ -34,18 +34,35 @@ const PartnerCarouselSection = () => {
   if (!partners.length) return null;
 
   return (
-    <section className="partners-section reveal-on-scroll" aria-label="Partners" ref={sectionRef}>
+    <section className="reveal-on-scroll border-t border-border bg-bg-secondary py-6" aria-label="Partners" ref={sectionRef}>
       <div className="section-container">
-        <div className="partners-marquee" aria-hidden="true">
-          <div className="partners-track">
+        <div
+          className={`group overflow-hidden ${isVisible ? 'animate-partners-fade' : 'opacity-0'}`}
+          style={{
+            maskImage:
+              'linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)',
+            WebkitMaskImage:
+              'linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)',
+            animationDelay: isVisible ? '80ms' : undefined,
+          }}
+          aria-hidden="true"
+        >
+          <div
+            className="flex w-max items-center gap-16 animate-trust-scroll group-hover:[animation-play-state:paused] motion-reduce:animate-none"
+            style={{ animationDuration: '28s' }}
+          >
             {[...partners, ...partners].map((partner, index) => (
-              <div key={`${partner.label}-${index}`} className="partner-logo">
+              <div
+                key={`${partner.label}-${index}`}
+                className="flex items-center justify-center rounded-sm border border-transparent px-3 py-1 opacity-45 grayscale transition-all duration-200 hover:-translate-y-0.5 hover:opacity-100 hover:grayscale-0 motion-reduce:transition-none"
+              >
                 <img
                   src={partner.src}
                   alt={`${partner.label} logo`}
                   loading="lazy"
                   width={140}
                   height={40}
+                  className="block h-7 w-auto"
                 />
               </div>
             ))}

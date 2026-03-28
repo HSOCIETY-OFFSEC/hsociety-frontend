@@ -13,8 +13,34 @@ import {
 import { getHackerProtocolModule } from '../../../data/static/bootcamps/hackerProtocolData';
 import { useAuth } from '../../../core/auth/AuthContext';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/courses.css';
+import Button from '../../../shared/components/ui/Button';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+  publicButtonBase,
+  publicButtonGhost,
+  publicButtonSmall,
+} from '../../../shared/styles/publicClasses';
 
 const CourseModuleDetails = () => {
   const { bootcampId, moduleId } = useParams();
@@ -33,67 +59,73 @@ const CourseModuleDetails = () => {
 
   if (bootcampId !== 'hacker-protocol' || !module) {
     return (
-      <div className="public-page public-page-inner crs-page">
-        <div className="crs-not-found">Module not found.</div>
+      <div className={`${publicPage} text-text-primary`}>
+        <div className="mx-auto max-w-3xl px-6 py-16 text-center text-text-secondary">
+          Module not found.
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="public-page public-page-inner crs-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Courses / {module.codename}
             </p>
-            <h1 className="public-hero-title">{module.codename}</h1>
-            <p className="public-hero-desc">{module.description}</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+            <h1 className={publicHeroTitle}>{module.codename}</h1>
+            <p className={publicHeroDesc}>{module.description}</p>
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={handleEnroll}>
                 <FiZap size={14} />
                 Enroll now
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/courses/hacker-protocol')}>
+              </Button>
+              <button
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
+                onClick={() => navigate('/courses/hacker-protocol')}
+                type="button"
+              >
                 <FiArrowLeft size={14} />
                 Back to program
               </button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiTerminal size={12} />
                 {module.roleTitle}
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiList size={12} />
                 {module.rooms.length} rooms
               </span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Phase overview</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={publicBadge}>Phase overview</p>
+            <div className="grid gap-3">
+              <div className="flex items-start gap-3 text-text-secondary">
                 <FiCheckCircle size={14} />
                 <span>{module.rooms.length} rooms in this phase.</span>
               </div>
-              <div className="public-list-item">
+              <div className="flex items-start gap-3 text-text-secondary">
                 <FiCheckCircle size={14} />
                 <span>{module.roleTitle} identity unlock.</span>
               </div>
-              <div className="public-list-item">
+              <div className="flex items-start gap-3 text-text-secondary">
                 <FiCheckCircle size={14} />
                 <span>Evidence-based assessment.</span>
               </div>
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
                 <strong>{module.rooms.length}</strong> rooms
               </span>
-              <span className="public-hero-stat">
+              <span className={publicHeroStat}>
                 <strong>{module.roleTitle}</strong>
               </span>
             </div>
@@ -102,7 +134,7 @@ const CourseModuleDetails = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -118,17 +150,17 @@ const CourseModuleDetails = () => {
               return (
               <Link
                 key={room.roomId}
-                className="public-card crs-room-card interactive-card"
+                className={`${publicCard} cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand`}
                 to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${room.roomId}`}
               >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">Room {room.roomId}</span>
-                  <span className="public-chip">Difficulty: {difficulty}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>Room {room.roomId}</span>
+                  <span className={publicChip}>Difficulty: {difficulty}</span>
                 </div>
-                <h3 className="public-card-title">{room.title}</h3>
-                {room.overview && <p className="public-card-desc">{room.overview}</p>}
-                <div className="public-card-meta">
+                <h3 className={publicCardTitle}>{room.title}</h3>
+                {room.overview && <p className={publicCardDesc}>{room.overview}</p>}
+                <div className={publicCardMeta}>
                   <span>View room</span>
                   <FiChevronRight size={14} />
                 </div>
@@ -140,7 +172,7 @@ const CourseModuleDetails = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -152,15 +184,15 @@ const CourseModuleDetails = () => {
           </div>
           <PublicCardGrid>
             {module.rooms.map((room) => (
-              <article key={room.roomId} className="public-card">
+              <article key={room.roomId} className={publicCard}>
                 <div className="hs-signature" aria-hidden="true" />
-                <h3 className="public-card-title">{room.title}</h3>
-                <p className="public-card-desc">{room.overview}</p>
+                <h3 className={publicCardTitle}>{room.title}</h3>
+                <p className={publicCardDesc}>{room.overview}</p>
                 {room.bullets?.length > 0 && (
-                  <ul className="crs-obj-bullets">
+                  <ul className="grid gap-2 text-sm text-text-secondary">
                     {room.bullets.map((bullet) => (
-                      <li key={bullet}>
-                        <FiCheckCircle size={11} />
+                      <li key={bullet} className="flex items-start gap-2">
+                        <FiCheckCircle size={11} className="mt-0.5 text-brand" />
                         {bullet}
                       </li>
                     ))}
@@ -173,8 +205,8 @@ const CourseModuleDetails = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -182,20 +214,24 @@ const CourseModuleDetails = () => {
             </p>
             <h2 className="section-title">Enroll to unlock this phase.</h2>
             <p className="section-subtitle">Join the bootcamp to access labs and guided missions.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={handleEnroll}>
                 Enroll now
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/courses')}>
+              </Button>
+              <button
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
+                onClick={() => navigate('/courses')}
+                type="button"
+              >
                 Back to courses
               </button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Operator path unlocked.</h3>
-            <p className="public-card-desc">Progress through phases and earn identity badges.</p>
+            <h3 className={publicCardTitle}>Operator path unlocked.</h3>
+            <p className={publicCardDesc}>Progress through phases and earn identity badges.</p>
           </div>
         </div>
       </section>

@@ -26,8 +26,49 @@ import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvata
 import { getPublicProfileByHandle } from '../services/publicProfile.service';
 import ProfileBadgeSection from '../../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges } from '../../../shared/utils/display/profileBadges';
-import '../../public/styles/public-landing.css';
-import '../styles/public-profile.css';
+import {
+  publicButtonBase,
+  publicButtonGhost,
+  publicButtonPrimary,
+  publicButtonSmall,
+  publicCardDesc,
+  publicCardTitle,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicPage,
+} from '../../../shared/styles/publicClasses';
+import {
+  profileAvatar,
+  profileAvatarWrap,
+  profileBadgeSection,
+  profileBadgeTitle,
+  profileBio,
+  profileButtonBase as profileButtonBaseClass,
+  profileButtonGhost as profileButtonGhostClass,
+  profileButtonOutline,
+  profileCtaRow,
+  profileHandle,
+  profileIdentity,
+  profileLayout,
+  profileMain,
+  profileMetaItem,
+  profileMetaList,
+  profileName,
+  profilePanel,
+  profileRoot,
+  profileRootStyle,
+  profileSectionTitle,
+  profileSidebar,
+  profileStatFi,
+  profileStatIcon,
+  profileStatInfo,
+  profileStatLabel,
+  profileStatRow,
+  profileStatValue,
+  profileStatsCard,
+} from '../../../shared/styles/profileClasses';
 
 /* ── Helpers ─────────────────────────────────────────────── */
 
@@ -164,16 +205,32 @@ const PublicProfile = () => {
     [profile, profileXpSummary]
   );
 
+  const cellBase =
+    'h-[var(--pp-cell-size)] w-[var(--pp-cell-size)] rounded-[var(--pp-radius)] border border-[color:color-mix(in_srgb,var(--border-color)_40%,transparent)] bg-[var(--pp-cell-0)] transition-opacity duration-150 hover:opacity-80 hover:outline hover:outline-1 hover:outline-brand';
+  const cellEmpty =
+    'bg-transparent border-dashed border-[color:color-mix(in_srgb,var(--border-color)_30%,transparent)]';
+  const cellLevels = [
+    '',
+    'bg-[var(--pp-cell-1)] border-[color:color-mix(in_srgb,var(--pp-cell-1)_60%,transparent)]',
+    'bg-[var(--pp-cell-2)] border-[color:color-mix(in_srgb,var(--pp-cell-2)_60%,transparent)]',
+    'bg-[var(--pp-cell-3)] border-[color:color-mix(in_srgb,var(--pp-cell-3)_60%,transparent)]',
+    'bg-[var(--pp-cell-4)] border-[color:color-mix(in_srgb,var(--pp-cell-4)_70%,transparent)] shadow-[0_0_6px_color-mix(in_srgb,var(--primary-color)_35%,transparent)]',
+  ];
+  const legendCellBase =
+    'h-[10px] w-[10px] rounded-[var(--pp-radius)] border border-[color:color-mix(in_srgb,var(--border-color)_40%,transparent)] bg-[var(--pp-cell-0)]';
+
   if (loading) return <PageLoader message="Loading profile..." durationMs={0} />;
 
   if (error) {
     return (
-      <section className="pp-state" aria-live="polite">
-        <div className="pp-state-card">
+      <section className="grid min-h-[65vh] place-items-center px-6 py-12" aria-live="polite">
+        <div className="relative w-full max-w-[420px] rounded-lg border border-[color:var(--pp-border)] bg-[var(--pp-card)] p-10 text-center shadow-md">
           <div className="hs-signature" aria-hidden="true" />
-          <h1>Profile not found</h1>
-          <p>{error}</p>
-          <Link className="pp-state-back" to="/">Back to home</Link>
+          <h1 className="mb-2 text-xl font-semibold text-text-primary">Profile not found</h1>
+          <p className="mb-6 text-text-secondary">{error}</p>
+          <Link className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonPrimary}`} to="/">
+            Back to home
+          </Link>
         </div>
       </section>
     );
@@ -222,14 +279,17 @@ const PublicProfile = () => {
 
   return (
     <>
-      <div className="pp-root public-page public-page-inner">
-        <div className="pp-layout">
+      <div
+        className={`${publicPage} ${profileRoot} text-text-primary`}
+        style={profileRootStyle}
+      >
+        <div className={profileLayout}>
 
           {/* ── LEFT SIDEBAR ── */}
-          <aside className="pp-sidebar hero-section public-hero reveal-on-scroll">
+          <aside className={`${profileSidebar} reveal-on-scroll`}>
             {/* Avatar */}
-            <div className="pp-avatar-wrap">
-              <div className="pp-avatar">
+            <div className={profileAvatarWrap}>
+              <div className={profileAvatar}>
                 <img
                   src={avatarSrc}
                   alt={profile?.name || 'Member'}
@@ -239,101 +299,111 @@ const PublicProfile = () => {
             </div>
 
             {/* Identity */}
-            <div className="pp-identity">
-              <h1 className="pp-name">
+            <div className={profileIdentity}>
+              <h1 className={profileName}>
                 {profile?.name || 'Community Member'}
               </h1>
-              <p className="pp-handle">{displayHandle}</p>
-              {profile?.bio && <p className="pp-bio">{profile.bio}</p>}
+              <p className={profileHandle}>{displayHandle}</p>
+              {profile?.bio && <p className={profileBio}>{profile.bio}</p>}
             </div>
 
             {/* CTA buttons */}
-            <div className="pp-cta-row">
-              <button type="button" className="pp-btn pp-btn--outline" onClick={handleShare}>
+            <div className={profileCtaRow}>
+              <button
+                type="button"
+                className={`${profileButtonBaseClass} ${profileButtonOutline}`}
+                onClick={handleShare}
+              >
                 <FiShare2 size={13} /> Share
               </button>
-              <Link className="pp-btn pp-btn--ghost" to="/community">
+              <Link className={`${profileButtonBaseClass} ${profileButtonGhostClass}`} to="/community">
                 <FiUsers size={13} /> Community
               </Link>
             </div>
 
             {/* Meta info */}
-            <ul className="pp-meta-list">
+            <ul className={profileMetaList}>
               {profile?.role && (
-                <li><FiActivity size={14} /><span>{profile.role}</span></li>
+                <li className={profileMetaItem}><FiActivity size={14} /><span>{profile.role}</span></li>
               )}
               {profile?.organization && (
-                <li><FiMapPin size={14} /><span>{profile.organization}</span></li>
+                <li className={profileMetaItem}><FiMapPin size={14} /><span>{profile.organization}</span></li>
               )}
               {profile?.joinedDate && (
-                <li><FiCalendar size={14} /><span>Joined {new Date(profile.joinedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span></li>
+                <li className={profileMetaItem}>
+                  <FiCalendar size={14} />
+                  <span>Joined {new Date(profile.joinedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+                </li>
               )}
             </ul>
 
-            <div className="pp-badge-section" aria-label="Profile badges">
-              <p className="pp-badge-title">Badges</p>
+            <div className={profileBadgeSection} aria-label="Profile badges">
+              <p className={profileBadgeTitle}>Badges</p>
               <ProfileBadgeSection badges={profileBadges} />
             </div>
 
             {/* Stats sidebar card */}
-            <div className="pp-stats-card">
+            <div className={profileStatsCard}>
               <div className="hs-signature" aria-hidden="true" />
-              <div className="pp-stat-row">
-                <div className="pp-stat-icon">
-                  <img src={cpIcon} alt="CP" className="pp-cp-icon" />
+              <div className={profileStatRow}>
+                <div className={profileStatIcon}>
+                  <img src={cpIcon} alt="CP" className="h-[18px] w-[18px] object-contain drop-shadow-[0_0_4px_color-mix(in_srgb,var(--primary-color)_55%,transparent)]" />
                 </div>
-                <div className="pp-stat-info">
-                  <span className="pp-stat-label">CP</span>
-                  <strong className="pp-stat-val">{formatValue(profile?.xpSummary?.totalXp || profile?.stats?.totalXp || 0)}</strong>
-                </div>
-              </div>
-              <div className="pp-stat-row">
-                <FiMessageSquare size={15} className="pp-stat-fi" />
-                <div className="pp-stat-info">
-                  <span className="pp-stat-label">Messages</span>
-                  <strong className="pp-stat-val">{formatValue(profile?.stats?.messages || 0)}</strong>
+                <div className={profileStatInfo}>
+                  <span className={profileStatLabel}>CP</span>
+                  <strong className={profileStatValue}>{formatValue(profile?.xpSummary?.totalXp || profile?.stats?.totalXp || 0)}</strong>
                 </div>
               </div>
-              <div className="pp-stat-row">
-                <FiHeart size={15} className="pp-stat-fi" />
-                <div className="pp-stat-info">
-                  <span className="pp-stat-label">Likes received</span>
-                  <strong className="pp-stat-val">{formatValue(profile?.stats?.likesReceived || 0)}</strong>
+              <div className={profileStatRow}>
+                <FiMessageSquare size={15} className={profileStatFi} />
+                <div className={profileStatInfo}>
+                  <span className={profileStatLabel}>Messages</span>
+                  <strong className={profileStatValue}>{formatValue(profile?.stats?.messages || 0)}</strong>
                 </div>
               </div>
-              <div className="pp-stat-row">
-                <FiMessageCircle size={15} className="pp-stat-fi" />
-                <div className="pp-stat-info">
-                  <span className="pp-stat-label">Comments</span>
-                  <strong className="pp-stat-val">{formatValue(profile?.stats?.commentsMade || 0)}</strong>
+              <div className={profileStatRow}>
+                <FiHeart size={15} className={profileStatFi} />
+                <div className={profileStatInfo}>
+                  <span className={profileStatLabel}>Likes received</span>
+                  <strong className={profileStatValue}>{formatValue(profile?.stats?.likesReceived || 0)}</strong>
+                </div>
+              </div>
+              <div className={profileStatRow}>
+                <FiMessageCircle size={15} className={profileStatFi} />
+                <div className={profileStatInfo}>
+                  <span className={profileStatLabel}>Comments</span>
+                  <strong className={profileStatValue}>{formatValue(profile?.stats?.commentsMade || 0)}</strong>
                 </div>
               </div>
             </div>
           </aside>
 
           {/* ── RIGHT MAIN ── */}
-          <main className="pp-main public-section">
+          <main className={profileMain}>
 
             {/* Contribution graph — GitHub style */}
-            <section className="pp-panel pp-contrib-panel">
+            <section className={`${profilePanel} overflow-hidden`}>
               <div className="hs-signature" aria-hidden="true" />
-              <div className="pp-contrib-header">
-                <h2 className="pp-section-title">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+                <h2 className="text-sm font-semibold text-text-primary">
                   <strong>{formatValue(contributionData.total)}</strong> logins in the last year
                 </h2>
-                <span className="pp-streak-badge">
+                <span className="rounded-full border border-[color-mix(in_srgb,var(--primary-color)_25%,transparent)] bg-[color-mix(in_srgb,var(--primary-color)_12%,transparent)] px-2.5 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-brand">
                   {formatValue(profile?.xpSummary?.streakDays || 0)} day streak
                 </span>
               </div>
 
-              <div className="pp-contrib-scroll">
-                <div className="pp-contrib-inner">
+              <div className="w-full overflow-x-auto pb-1">
+                <div className="flex min-w-max flex-col gap-1">
                   {/* Month labels row */}
-                  <div className="pp-contrib-months" style={{ '--week-count': contributionData.weeks.length }}>
+                  <div
+                    className="grid pl-[30px] [grid-template-columns:repeat(var(--week-count),calc(var(--pp-cell-size)+var(--pp-cell-gap)))]"
+                    style={{ '--week-count': contributionData.weeks.length }}
+                  >
                     {monthLabels.map((ml) => (
                       <span
                         key={`month-${ml.weekIndex}`}
-                        className="pp-month-label"
+                        className="text-[0.68rem] text-[color:var(--pp-muted)]"
                         style={{ gridColumn: ml.weekIndex + 1 }}
                       >
                         {ml.label}
@@ -342,21 +412,36 @@ const PublicProfile = () => {
                   </div>
 
                   {/* Day labels + grid */}
-                  <div className="pp-contrib-body">
-                    <div className="pp-day-labels" aria-hidden="true">
+                  <div className="flex items-start gap-2">
+                    <div
+                      className="grid w-[26px] pr-1 [grid-template-rows:repeat(7,calc(var(--pp-cell-size)+var(--pp-cell-gap)))]"
+                      aria-hidden="true"
+                    >
                       {DAY_LABELS.map((d, i) => (
-                        <span key={d} className={`pp-day-label${i % 2 === 1 ? ' visible' : ''}`}>{d}</span>
+                        <span
+                          key={d}
+                          className={[
+                            'text-right text-[0.62rem] leading-[calc(var(--pp-cell-size)+var(--pp-cell-gap))] text-transparent select-none',
+                            i % 2 === 1 ? 'text-[color:var(--pp-muted)]' : '',
+                          ].join(' ')}
+                        >
+                          {d}
+                        </span>
                       ))}
                     </div>
 
                     <div
-                      className="pp-contrib-grid"
+                      className="grid auto-cols-[var(--pp-cell-size)] grid-flow-col items-start gap-[var(--pp-cell-gap)]"
                       role="grid"
                       aria-label="Login activity over the last year"
                       style={{ '--week-count': contributionData.weeks.length }}
                     >
                       {contributionData.weeks.map((week, wi) => (
-                        <div className="pp-contrib-week" role="row" key={`w-${wi}`}>
+                        <div
+                          className="grid [grid-template-rows:repeat(7,var(--pp-cell-size))] gap-[var(--pp-cell-gap)]"
+                          role="row"
+                          key={`w-${wi}`}
+                        >
                           {week.map((cell, di) => {
                             const level = cell ? resolveContributionLevel(cell.count) : 0;
                             const label = cell
@@ -365,7 +450,11 @@ const PublicProfile = () => {
                             return (
                               <span
                                 key={`c-${wi}-${di}`}
-                                className={`pp-cell level-${level}${!cell ? ' empty' : ''}`}
+                                className={[
+                                  cellBase,
+                                  cellLevels[level],
+                                  !cell ? cellEmpty : '',
+                                ].join(' ')}
                                 role="gridcell"
                                 aria-label={label}
                                 title={cell ? label : ''}
@@ -379,10 +468,16 @@ const PublicProfile = () => {
                 </div>
 
                 {/* Legend */}
-                <div className="pp-contrib-legend" aria-hidden="true">
+                <div className="mt-2 flex items-center justify-end gap-2 text-[0.72rem] text-[color:var(--pp-muted)]" aria-hidden="true">
                   <span>Less</span>
                   {[0, 1, 2, 3, 4].map((l) => (
-                    <span key={l} className={`pp-cell level-${l}`} />
+                    <span
+                      key={l}
+                      className={[
+                        legendCellBase,
+                        cellLevels[l],
+                      ].join(' ')}
+                    />
                   ))}
                   <span>More</span>
                 </div>
@@ -390,52 +485,60 @@ const PublicProfile = () => {
             </section>
 
             {/* Overview */}
-            <section className="pp-panel">
+            <section className={profilePanel}>
               <div className="hs-signature" aria-hidden="true" />
-              <h2 className="pp-section-title">Overview</h2>
-              <p className="pp-overview-text">
+              <h2 className={profileSectionTitle}>Overview</h2>
+              <p className="mb-4 text-sm leading-relaxed text-text-secondary">
                 {profile?.summary || profile?.bio || 'This member is building offensive security skills and contributing to the HSOCIETY community.'}
               </p>
-              <div className="pp-overview-grid">
-                <div className="pp-overview-item">
-                  <span>Role</span>
-                  <strong>{profile?.role || 'Member'}</strong>
+              <div className="grid grid-cols-2 overflow-hidden rounded-md border border-[color:var(--pp-border)]">
+                <div className="flex flex-col gap-1 border-b border-r border-[color:var(--pp-border)] px-4 py-3">
+                  <span className="text-[0.68rem] uppercase tracking-[0.1em] text-[color:var(--pp-muted)]">Role</span>
+                  <strong className="text-sm font-semibold text-text-primary">{profile?.role || 'Member'}</strong>
                 </div>
-                <div className="pp-overview-item">
-                  <span>Organization</span>
-                  <strong>{profile?.organization || 'Independent'}</strong>
+                <div className="flex flex-col gap-1 border-b border-[color:var(--pp-border)] px-4 py-3">
+                  <span className="text-[0.68rem] uppercase tracking-[0.1em] text-[color:var(--pp-muted)]">Organization</span>
+                  <strong className="text-sm font-semibold text-text-primary">{profile?.organization || 'Independent'}</strong>
                 </div>
-                <div className="pp-overview-item">
-                  <span>Rank</span>
-                  <strong>{formatValue(profile?.xpSummary?.rank || '—')}</strong>
+                <div className="flex flex-col gap-1 border-r border-[color:var(--pp-border)] px-4 py-3">
+                  <span className="text-[0.68rem] uppercase tracking-[0.1em] text-[color:var(--pp-muted)]">Rank</span>
+                  <strong className="text-sm font-semibold text-text-primary">{formatValue(profile?.xpSummary?.rank || '—')}</strong>
                 </div>
-                <div className="pp-overview-item">
-                  <span>CP Total</span>
-                  <strong>{formatValue(profile?.xpSummary?.totalXp || 0)}</strong>
+                <div className="flex flex-col gap-1 px-4 py-3">
+                  <span className="text-[0.68rem] uppercase tracking-[0.1em] text-[color:var(--pp-muted)]">CP Total</span>
+                  <strong className="text-sm font-semibold text-text-primary">{formatValue(profile?.xpSummary?.totalXp || 0)}</strong>
                 </div>
               </div>
             </section>
 
             {/* Activity */}
-            <section className="pp-panel">
+            <section className={profilePanel}>
               <div className="hs-signature" aria-hidden="true" />
-              <h2 className="pp-section-title">Activity</h2>
-              <div className="pp-activity-grid">
-                <div className="pp-activity-item">
-                  <strong>{formatValue(profile?.xpSummary?.streakDays || 0)}</strong>
-                  <span>Day streak</span>
+              <h2 className={profileSectionTitle}>Activity</h2>
+              <div className="grid grid-cols-4 overflow-hidden rounded-md border border-[color:var(--pp-border)] text-center max-md:grid-cols-2">
+                <div className="flex flex-col gap-1 border-b border-r border-[color:var(--pp-border)] px-4 py-4 max-md:border-b max-md:border-r">
+                  <strong className="text-[1.35rem] font-semibold tracking-[-0.02em] text-text-primary max-md:text-lg">
+                    {formatValue(profile?.xpSummary?.streakDays || 0)}
+                  </strong>
+                  <span className="text-[0.72rem] uppercase tracking-[0.08em] text-[color:var(--pp-muted)]">Day streak</span>
                 </div>
-                <div className="pp-activity-item">
-                  <strong>{formatValue(profile?.stats?.roomsActive || 0)}</strong>
-                  <span>Rooms active</span>
+                <div className="flex flex-col gap-1 border-b border-[color:var(--pp-border)] px-4 py-4">
+                  <strong className="text-[1.35rem] font-semibold tracking-[-0.02em] text-text-primary max-md:text-lg">
+                    {formatValue(profile?.stats?.roomsActive || 0)}
+                  </strong>
+                  <span className="text-[0.72rem] uppercase tracking-[0.08em] text-[color:var(--pp-muted)]">Rooms active</span>
                 </div>
-                <div className="pp-activity-item">
-                  <strong>{formatValue(profile?.stats?.imagesShared || 0)}</strong>
-                  <span>Images shared</span>
+                <div className="flex flex-col gap-1 border-r border-[color:var(--pp-border)] px-4 py-4 max-md:border-r max-md:border-b-0">
+                  <strong className="text-[1.35rem] font-semibold tracking-[-0.02em] text-text-primary max-md:text-lg">
+                    {formatValue(profile?.stats?.imagesShared || 0)}
+                  </strong>
+                  <span className="text-[0.72rem] uppercase tracking-[0.08em] text-[color:var(--pp-muted)]">Images shared</span>
                 </div>
-                <div className="pp-activity-item">
-                  <strong>{formatValue(profile?.stats?.engagements || 0)}</strong>
-                  <span>Engagements</span>
+                <div className="flex flex-col gap-1 px-4 py-4">
+                  <strong className="text-[1.35rem] font-semibold tracking-[-0.02em] text-text-primary max-md:text-lg">
+                    {formatValue(profile?.stats?.engagements || 0)}
+                  </strong>
+                  <span className="text-[0.72rem] uppercase tracking-[0.08em] text-[color:var(--pp-muted)]">Engagements</span>
                 </div>
               </div>
             </section>
@@ -445,8 +548,8 @@ const PublicProfile = () => {
       </div>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -454,54 +557,54 @@ const PublicProfile = () => {
             </p>
             <h2 className="section-title">Build your public operator profile.</h2>
             <p className="section-subtitle">Complete missions, earn CP points, and showcase your progress.</p>
-            <div className="public-hero-actions">
-              <Link className="public-btn public-btn--primary" to="/register">
+            <div className={publicHeroActions}>
+              <Link className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonPrimary}`} to="/register">
                 Get started
               </Link>
-              <Link className="public-btn public-btn--ghost" to="/community">
+              <Link className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`} to="/community">
                 Explore community
               </Link>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Live profiles, real signals.</h3>
-            <p className="public-card-desc">Your progress, streaks, and engagement history — all in one place.</p>
+            <h3 className={publicCardTitle}>Live profiles, real signals.</h3>
+            <p className={publicCardDesc}>Your progress, streaks, and engagement history — all in one place.</p>
           </div>
         </div>
       </section>
 
       {/* ── SHARE MODAL ── */}
       {shareOpen && (
-        <div className="pp-share-overlay" role="dialog" aria-modal="true" aria-label="Share profile">
-          <button type="button" className="pp-share-backdrop" aria-label="Close" onClick={() => setShareOpen(false)} />
-          <div className="pp-share-card">
+        <div className="fixed inset-0 z-[2000] grid place-items-center p-6" role="dialog" aria-modal="true" aria-label="Share profile">
+          <button type="button" className="absolute inset-0 cursor-pointer border-0 bg-black/65" aria-label="Close" onClick={() => setShareOpen(false)} />
+          <div className="relative z-10 flex w-full max-w-[520px] flex-col gap-4 rounded-lg border border-[color:var(--pp-border)] bg-bg-secondary p-6 shadow-xl">
             <div className="hs-signature" aria-hidden="true" />
-            <header className="pp-share-header">
-              <h2>Share profile</h2>
-              <p>Share this public profile on any platform.</p>
+            <header>
+              <h2 className="text-lg font-semibold text-text-primary">Share profile</h2>
+              <p className="text-sm text-text-secondary">Share this public profile on any platform.</p>
             </header>
 
-            <div className="pp-share-preview">
-              <div className="pp-share-avatar">
+            <div className="grid grid-cols-[auto_1fr] items-center gap-3 rounded-md border border-[color:var(--pp-border)] bg-[color-mix(in_srgb,var(--bg-tertiary)_60%,transparent)] p-3">
+              <div className="h-[52px] w-[52px] overflow-hidden rounded-full border border-[color-mix(in_srgb,var(--primary-color)_30%,var(--pp-border))] bg-bg-primary">
                 <img
                   src={avatarSrc}
                   alt={profile?.name || 'Member'}
                   onError={(e) => { if (e.currentTarget.src !== fallbackAvatar) e.currentTarget.src = fallbackAvatar; }}
                 />
               </div>
-              <div className="pp-share-identity">
-                <strong>{profile?.name || 'Community Member'}</strong>
-                <span>{displayHandle}</span>
-                <span className="pp-share-role">{profile?.role || 'Member'}</span>
+              <div className="flex flex-col gap-0.5">
+                <strong className="text-sm text-text-primary">{profile?.name || 'Community Member'}</strong>
+                <span className="text-xs text-text-tertiary">{displayHandle}</span>
+                <span className="text-[0.7rem] uppercase tracking-[0.1em] text-text-tertiary">{profile?.role || 'Member'}</span>
               </div>
             </div>
 
-            <div className="pp-share-links">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(44px,1fr))] gap-2 max-sm:grid-cols-2">
               {shareLinks.map((link) => (
                 <a
                   key={link.label}
-                  className="pp-share-link"
+                  className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-[color:var(--pp-border)] bg-[color-mix(in_srgb,var(--bg-secondary)_80%,transparent)] text-text-secondary transition-colors hover:border-[color-mix(in_srgb,var(--primary-color)_50%,var(--pp-border))] hover:text-text-primary"
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
@@ -512,7 +615,7 @@ const PublicProfile = () => {
                 </a>
               ))}
               <a
-                className="pp-share-link"
+                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-[color:var(--pp-border)] bg-[color-mix(in_srgb,var(--bg-secondary)_80%,transparent)] text-text-secondary transition-colors hover:border-[color-mix(in_srgb,var(--primary-color)_50%,var(--pp-border))] hover:text-text-primary"
                 href={`mailto:?subject=${encodedTitle}&body=${encodedText}%0A${encodedUrl}`}
                 aria-label="Email"
                 title="Email"
@@ -521,7 +624,7 @@ const PublicProfile = () => {
               </a>
               <button
                 type="button"
-                className="pp-share-link"
+                className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-[color:var(--pp-border)] bg-[color-mix(in_srgb,var(--bg-secondary)_80%,transparent)] text-text-secondary transition-colors hover:border-[color-mix(in_srgb,var(--primary-color)_50%,var(--pp-border))] hover:text-text-primary"
                 onClick={handleCopy}
                 aria-label={copied ? 'Copied' : 'Copy link'}
                 title={copied ? 'Copied' : 'Copy link'}
@@ -530,8 +633,14 @@ const PublicProfile = () => {
               </button>
             </div>
 
-            <footer className="pp-share-footer">
-              <button type="button" className="pp-btn pp-btn--outline" onClick={() => setShareOpen(false)}>Close</button>
+            <footer className="flex justify-end">
+              <button
+                type="button"
+                className={`${profileButtonBaseClass} ${profileButtonOutline}`}
+                onClick={() => setShareOpen(false)}
+              >
+                Close
+              </button>
             </footer>
           </div>
         </div>

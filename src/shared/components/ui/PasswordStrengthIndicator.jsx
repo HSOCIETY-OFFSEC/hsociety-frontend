@@ -4,7 +4,6 @@
  */
 import React from 'react';
 import { validatePassword } from '../../../core/validation/input.validator';
-import './PasswordStrengthIndicator.css';
 
 const LABELS = {
   weak: 'Weak',
@@ -27,16 +26,28 @@ export default function PasswordStrengthIndicator({ password = '', className = '
   const { strength } = validatePassword(password);
   const level = getLevel(strength);
   const width = Math.min(100, strength);
+  const fillColor = {
+    weak: 'bg-status-danger',
+    fair: 'bg-status-warning',
+    good: 'bg-status-success',
+    strong: 'bg-status-success',
+  }[level];
+  const labelColor = {
+    weak: 'text-status-danger',
+    fair: 'text-status-warning',
+    good: 'text-status-success',
+    strong: 'text-status-success',
+  }[level];
 
   return (
-    <div className={`password-strength ${className}`} role="status" aria-live="polite">
-      <div className="password-strength__bar">
+    <div className={`mt-1.5 flex items-center gap-3 ${className}`} role="status" aria-live="polite">
+      <div className="h-1.5 flex-1 overflow-hidden rounded-sm bg-border">
         <div
-          className={`password-strength__fill password-strength__fill--${level}`}
+          className={`h-full rounded-sm transition-all duration-200 ${fillColor}`}
           style={{ width: `${width}%` }}
         />
       </div>
-      <span className={`password-strength__label password-strength__label--${level}`}>
+      <span className={`min-w-[3.5rem] text-xs font-semibold uppercase tracking-[0.05em] ${labelColor}`}>
         {LABELS[level]}
       </span>
     </div>

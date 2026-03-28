@@ -15,8 +15,28 @@ import { validatePassword } from '../../../core/validation/input.validator';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
 import { envConfig } from '../../../config/app/env.config';
 import { getWhatsAppLink } from '../../../config/app/social.config';
+import Button from '../../../shared/components/ui/Button';
+import SharedPasswordInput from '../../../shared/components/ui/PasswordInput';
 import brandLogoBlack from '../../../assets/branding/brand-images/brand-image-LOGO-black.png';
-import '../styles/auth-portal.css';
+import {
+  authCheckbox,
+  authDivider,
+  authDividerText,
+  authError,
+  authErrorIcon,
+  authField,
+  authForm,
+  authFormHeader,
+  authFormRow,
+  authFormSubtitle,
+  authFormTitle,
+  authHint,
+  authInput,
+  authLabel,
+  authLinkInline,
+  authLinkMuted,
+  authNotice,
+} from '../styles/authClasses';
 
 const requireEmailVerification = envConfig.auth.requireEmailVerification;
 
@@ -29,14 +49,6 @@ const IconLock = () => (
 const IconAlert = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-  </svg>
-);
-const IconEye = ({ off }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    {off
-      ? <><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></>
-      : <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></>
-    }
   </svg>
 );
 const IconShield = () => (
@@ -56,77 +68,51 @@ const IMAGE_URL = brandLogoBlack;
    LEFT PANEL
    ══════════════════════════════════════════════════════════ */
 const LeftPanel = () => (
-  <aside className="ap-left" aria-hidden="true">
-    <div className="ap-left-img" style={{ backgroundImage: `url(${IMAGE_URL})` }} />
-    <div className="ap-left-overlay" />
-    <div className="ap-left-content">
-      <p className="ap-eyebrow">HSOCIETY ACCESS</p>
-      <h2 className="ap-hero-title">Build your security edge before the next breach.</h2>
-      <p className="ap-hero-lead">
+  <aside className="group relative hidden min-h-screen overflow-hidden lg:block" aria-hidden="true">
+    <div
+      className="absolute inset-0 bg-cover bg-center bg-no-repeat brightness-75 saturate-75 transition-transform duration-[8000ms] ease-linear group-hover:scale-[1.02]"
+      style={{ backgroundImage: `url(${IMAGE_URL})` }}
+    />
+    <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.55),rgba(0,0,0,0.28)),linear-gradient(to_top,rgba(0,0,0,0.7),rgba(31,191,143,0.08),transparent)]" />
+    <div className="relative z-10 flex h-full flex-col justify-end gap-5 bg-[linear-gradient(to_top,color-mix(in_srgb,var(--bg-secondary)_85%,transparent),transparent_70%)] p-8 text-white">
+      <p className="font-mono text-xs uppercase tracking-[0.24em] text-brand">HSOCIETY ACCESS</p>
+      <h2 className="text-3xl font-bold leading-tight tracking-tight text-white">Build your security edge before the next breach.</h2>
+      <p className="text-sm leading-relaxed text-white/70">
         Choose the path that matches your mission. We tailor onboarding for
         students who want hands-on training and teams that need real-world defence.
       </p>
-      <div className="ap-stats">
-        <div className="ap-stat">
-          <strong>Real-world labs</strong>
-          <span>Operator-led training with live tooling.</span>
+      <div className="flex items-start gap-6">
+        <div className="flex flex-col gap-1">
+          <strong className="text-sm font-semibold text-white">Real-world labs</strong>
+          <span className="text-xs text-white/60">Operator-led training with live tooling.</span>
         </div>
-        <div className="ap-stat-divider" />
-        <div className="ap-stat">
-          <strong>Team defence</strong>
-          <span>Corporate workflows built for rapid hardening.</span>
+        <div className="h-auto w-px self-stretch bg-white/20" />
+        <div className="flex flex-col gap-1">
+          <strong className="text-sm font-semibold text-white">Team defence</strong>
+          <span className="text-xs text-white/60">Corporate workflows built for rapid hardening.</span>
         </div>
       </div>
-      <div className="ap-trust">
-        <span className="ap-trust-badge"><IconShield /> Security-first platform</span>
-        <span className="ap-trust-badge"><IconShield /> JWT + refresh sessions</span>
-        <span className="ap-trust-badge"><IconShield /> Rate-limited auth</span>
+      <div className="flex flex-wrap gap-2 max-sm:hidden">
+        <span className="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--primary-color)_40%,transparent)] bg-[rgb(var(--brand-rgb)/0.12)] px-2.5 py-1 text-xs font-semibold text-brand backdrop-blur">
+          <IconShield /> Security-first platform
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--primary-color)_40%,transparent)] bg-[rgb(var(--brand-rgb)/0.12)] px-2.5 py-1 text-xs font-semibold text-brand backdrop-blur">
+          <IconShield /> JWT + refresh sessions
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full border border-[color-mix(in_srgb,var(--primary-color)_40%,transparent)] bg-[rgb(var(--brand-rgb)/0.12)] px-2.5 py-1 text-xs font-semibold text-brand backdrop-blur">
+          <IconShield /> Rate-limited auth
+        </span>
       </div>
     </div>
   </aside>
 );
 
 /* ══════════════════════════════════════════════════════════
-   PASSWORD INPUT
-   ══════════════════════════════════════════════════════════ */
-const PasswordInput = React.forwardRef(({ id, name, value, onChange, onInput, placeholder, disabled, autoComplete }, ref) => {
-  const [show, setShow] = useState(false);
-  return (
-    <div style={{ position: 'relative' }}>
-      <input
-        type={show ? 'text' : 'password'}
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        onInput={onInput}
-        placeholder={placeholder}
-        disabled={disabled}
-        autoComplete={autoComplete}
-        className="ap-input"
-        style={{ paddingRight: '2.75rem' }}
-        ref={ref}
-      />
-      <button
-        type="button"
-        onClick={() => setShow(s => !s)}
-        className="ap-eye-btn"
-        tabIndex={-1}
-        aria-label={show ? 'Hide password' : 'Show password'}
-      >
-        <IconEye off={show} />
-      </button>
-    </div>
-  );
-});
-PasswordInput.displayName = 'PasswordInput';
-
-/* ══════════════════════════════════════════════════════════
    ERROR BANNER
    ══════════════════════════════════════════════════════════ */
 const ErrorBanner = ({ message }) => (
-  <div className="ap-error" role="alert">
-    <span className="ap-error-icon"><IconAlert /></span>
+  <div className={authError} role="alert">
+    <span className={authErrorIcon}><IconAlert /></span>
     {message}
   </div>
 );
@@ -211,16 +197,16 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
 
   return (
     <>
-      <div className="ap-form-header">
-        <h1 className="ap-form-title">Sign in to HSociety</h1>
-        <p className="ap-form-subtitle">Use your credentials to access your workspace.</p>
+      <div className={authFormHeader}>
+        <h1 className={authFormTitle}>Sign in to HSociety</h1>
+        <p className={authFormSubtitle}>Use your credentials to access your workspace.</p>
       </div>
 
       {error && <ErrorBanner message={error} />}
 
-      <form onSubmit={handleLogin} className="ap-form" noValidate>
-        <div className="ap-field">
-          <label htmlFor="login-email">Email address</label>
+      <form onSubmit={handleLogin} className={authForm} noValidate>
+        <div className={authField}>
+          <label htmlFor="login-email" className={authLabel}>Email address</label>
           <input
             type="email"
             id="login-email"
@@ -230,44 +216,44 @@ const LoginForm = ({ onSwitchToRegister, prefillEmail = '', roleGuard = null }) 
             required
             autoFocus
             disabled={loading}
-            className="ap-input"
+            className={authInput}
             autoComplete="username"
             inputMode="email"
             ref={emailRef}
           />
         </div>
 
-        <div className="ap-field">
-          <div className="ap-label-row">
-            <label htmlFor="login-password">Password</label>
-            <button type="button" className="ap-link-muted" onClick={() => navigate('/forgot-password')} tabIndex={-1}>
+        <div className={authField}>
+          <div className="flex items-baseline justify-between">
+            <label htmlFor="login-password" className={authLabel}>Password</label>
+            <button type="button" className={authLinkMuted} onClick={() => navigate('/forgot-password')} tabIndex={-1}>
               Forgot password?
             </button>
           </div>
-          <PasswordInput
+          <SharedPasswordInput
             id="login-password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="Your password"
             disabled={loading}
             autoComplete="current-password"
+            className={authInput}
             ref={passwordRef}
           />
         </div>
 
-        <button type="submit" className="ap-btn-primary" disabled={loading || !email || !password}>
-          {loading ? <span className="ap-spinner" /> : null}
+        <Button type="submit" variant="primary" size="medium" fullWidth loading={loading} disabled={loading || !email || !password}>
           {loading ? 'Signing in…' : 'Sign in'}
           {!loading && <IconArrow />}
-        </button>
+        </Button>
       </form>
 
-      <div className="ap-divider"><span>New here?</span></div>
+      <div className={authDivider}><span className={authDividerText}>New here?</span></div>
 
-      <div className="ap-footer-actions">
-        <button type="button" className="ap-btn-ghost" onClick={() => onSwitchToRegister('student')}>
+      <div className="flex flex-col gap-2">
+        <Button type="button" variant="ghost" size="medium" fullWidth onClick={() => onSwitchToRegister('student')}>
           Create student account
-        </button>
+        </Button>
       </div>
     </>
   );
@@ -467,36 +453,36 @@ const RegisterForm = ({ onSwitchToLogin }) => {
 
   return (
     <>
-      <div className="ap-form-header">
-        <h1 className="ap-form-title">Create your account</h1>
-        <p className="ap-form-subtitle">Join HSociety and start your security mission.</p>
+      <div className={authFormHeader}>
+        <h1 className={authFormTitle}>Create your account</h1>
+        <p className={authFormSubtitle}>Join HSociety and start your security mission.</p>
       </div>
 
       {error && <ErrorBanner message={error} />}
 
-      <form onSubmit={handleSubmit} className="ap-form" noValidate>
-        <div className="ap-form-row">
-          <div className="ap-field">
-            <label htmlFor="reg-name">Full name</label>
+      <form onSubmit={handleSubmit} className={authForm} noValidate>
+        <div className={authFormRow}>
+          <div className={authField}>
+            <label htmlFor="reg-name" className={authLabel}>Full name</label>
             <input type="text" id="reg-name" name="name" value={form.name} onChange={set('name')} onInput={set('name')}
-              placeholder="Ada Lovelace" required disabled={loading} className="ap-input" autoComplete="name" ref={nameRef} />
+              placeholder="Ada Lovelace" required disabled={loading} className={authInput} autoComplete="name" ref={nameRef} />
           </div>
-          <div className="ap-field">
-            <label htmlFor="reg-handle">Handle</label>
+          <div className={authField}>
+            <label htmlFor="reg-handle" className={authLabel}>Handle</label>
             <input type="text" id="reg-handle" name="handle" value={form.handle} onChange={set('handle')} onInput={set('handle')}
-              placeholder="ada_lovelace" disabled={loading} className="ap-input" autoComplete="username" ref={handleRef} />
+              placeholder="ada_lovelace" disabled={loading} className={authInput} autoComplete="username" ref={handleRef} />
           </div>
         </div>
 
-        <div className="ap-field">
-          <label htmlFor="reg-org">{orgLabel}</label>
+        <div className={authField}>
+          <label htmlFor="reg-org" className={authLabel}>{orgLabel}</label>
           <input type="text" id="reg-org" name="companyOrSchool" value={form.companyOrSchool} onChange={set('companyOrSchool')} onInput={set('companyOrSchool')}
-            placeholder={orgPlaceholder} required disabled={loading} className="ap-input" autoComplete="organization" ref={orgRef} />
+            placeholder={orgPlaceholder} required disabled={loading} className={authInput} autoComplete="organization" ref={orgRef} />
         </div>
 
         {accountType === 'corporate' && (
-          <div className="ap-field">
-            <label htmlFor="reg-invite">Invite code</label>
+          <div className={authField}>
+            <label htmlFor="reg-invite" className={authLabel}>Invite code</label>
             <input
               type="text"
               id="reg-invite"
@@ -507,53 +493,52 @@ const RegisterForm = ({ onSwitchToLogin }) => {
               placeholder="Provided by HSOCIETY"
               required
               disabled={loading}
-              className="ap-input"
+              className={authInput}
             />
           </div>
         )}
 
-        <div className="ap-field">
-          <label htmlFor="reg-email">Email address</label>
+        <div className={authField}>
+          <label htmlFor="reg-email" className={authLabel}>Email address</label>
           <input type="email" id="reg-email" name="email" value={form.email} onChange={set('email')} onInput={set('email')}
-            placeholder="you@example.com" required disabled={loading} className="ap-input" autoComplete="email" inputMode="email" ref={emailRef} />
+            placeholder="you@example.com" required disabled={loading} className={authInput} autoComplete="email" inputMode="email" ref={emailRef} />
         </div>
 
-        <div className="ap-form-row">
-          <div className="ap-field">
-            <label htmlFor="reg-pw">Password</label>
-            <PasswordInput id="reg-pw" name="password" value={form.password} onChange={set('password')} onInput={set('password')}
-              placeholder="Min 8 characters" disabled={loading} autoComplete="new-password" ref={passwordRef} />
-            {passwordError && <span className="ap-hint" role="status">{passwordError}</span>}
+        <div className={authFormRow}>
+          <div className={authField}>
+            <label htmlFor="reg-pw" className={authLabel}>Password</label>
+            <SharedPasswordInput id="reg-pw" name="password" value={form.password} onChange={set('password')} onInput={set('password')}
+              placeholder="Min 8 characters" disabled={loading} autoComplete="new-password" className={authInput} ref={passwordRef} />
+            {passwordError && <span className={authHint} role="status">{passwordError}</span>}
           </div>
-          <div className="ap-field">
-            <label htmlFor="reg-cpw">Confirm password</label>
-            <PasswordInput id="reg-cpw" name="confirmPassword" value={form.confirmPassword} onChange={set('confirmPassword')} onInput={set('confirmPassword')}
-              placeholder="Repeat password" disabled={loading} autoComplete="new-password" ref={confirmRef} />
-            {confirmError && <span className="ap-hint" role="status">{confirmError}</span>}
+          <div className={authField}>
+            <label htmlFor="reg-cpw" className={authLabel}>Confirm password</label>
+            <SharedPasswordInput id="reg-cpw" name="confirmPassword" value={form.confirmPassword} onChange={set('confirmPassword')} onInput={set('confirmPassword')}
+              placeholder="Repeat password" disabled={loading} autoComplete="new-password" className={authInput} ref={confirmRef} />
+            {confirmError && <span className={authHint} role="status">{confirmError}</span>}
           </div>
         </div>
 
-        <label className="ap-checkbox">
+        <label className={authCheckbox}>
           <input type="checkbox" name="agree" checked={form.agree} onChange={set('agree')} disabled={loading} />
           <span>
             I agree to the{' '}
-            <button type="button" className="ap-link-inline" onClick={() => navigate('/terms')} disabled={loading}>Terms of Service</button>
+            <button type="button" className={authLinkInline} onClick={() => navigate('/terms')} disabled={loading}>Terms of Service</button>
             .
           </span>
         </label>
 
-        <button type="submit" className="ap-btn-primary" disabled={loading || !form.agree}>
-          {loading ? <span className="ap-spinner" /> : null}
+        <Button type="submit" variant="primary" size="medium" fullWidth loading={loading} disabled={loading || !form.agree}>
           {loading ? 'Creating account…' : `Create ${accountType === 'corporate' ? 'organisation' : 'student'} account`}
           {!loading && <IconArrow />}
-        </button>
+        </Button>
       </form>
 
-      <div className="ap-divider"><span>Already have an account?</span></div>
+      <div className={authDivider}><span className={authDividerText}>Already have an account?</span></div>
 
-      <button type="button" className="ap-btn-ghost" onClick={onSwitchToLogin} disabled={loading}>
+      <Button type="button" variant="ghost" size="medium" fullWidth onClick={onSwitchToLogin} disabled={loading}>
         Sign in instead
-      </button>
+      </Button>
     </>
   );
 };
@@ -581,10 +566,10 @@ const AuthPortal = () => {
   const goLogin    = ()                 => setView('login');
 
   return (
-    <div className="ap-root">
+    <div className="min-h-screen w-full bg-bg-primary pt-[var(--navbar-height,64px)] lg:grid lg:grid-cols-[1fr_minmax(360px,480px)]">
       <LeftPanel />
-      <section className="ap-right">
-        <div className="ap-right-inner">
+      <section className="flex min-h-screen items-center justify-center overflow-y-auto bg-bg-secondary px-6 py-8 pt-12 lg:border-l lg:border-border lg:pt-14">
+        <div className="flex w-full max-w-[400px] flex-col gap-4">
           {view === 'login'
             ? (
               <LoginForm
@@ -594,7 +579,7 @@ const AuthPortal = () => {
             )
             : <RegisterForm onSwitchToLogin={goLogin} />
           }
-          <div className="ap-notice">
+          <div className={authNotice}>
             <IconLock />
             <span>Secured by 256-bit encryption. We never store plain-text passwords.</span>
           </div>

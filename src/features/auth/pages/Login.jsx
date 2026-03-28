@@ -5,9 +5,24 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { login as loginRequest } from '../../../core/auth/auth.service';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
 import PasswordInput from '../../../shared/components/ui/PasswordInput';
+import Button from '../../../shared/components/ui/Button';
 import { AUTH_FORM_CONTENT } from '../../../data/static/auth/authContent';
 import { envConfig } from '../../../config/app/env.config';
-import '../styles/auth-portal.css';
+import {
+  authError,
+  authErrorIcon,
+  authField,
+  authForm,
+  authFormHeader,
+  authFormSubtitle,
+  authFormTitle,
+  authInput,
+  authLabel,
+  authLinkInline,
+  authLinkMuted,
+  authNotice,
+  authPanel,
+} from '../styles/authClasses';
 
 const Login = ({
   mode = 'default',
@@ -116,21 +131,21 @@ const Login = ({
 
   const formContent = (
     <>
-      <div className="ap-form-header">
-        <h1 className="ap-form-title">{mode === 'pentester' ? copy.titles.pentester : copy.titles.default}</h1>
-        <p className="ap-form-subtitle">{copy.subtitles.step1}</p>
+      <div className={authFormHeader}>
+        <h1 className={authFormTitle}>{mode === 'pentester' ? copy.titles.pentester : copy.titles.default}</h1>
+        <p className={authFormSubtitle}>{copy.subtitles.step1}</p>
       </div>
 
       {error && (
-        <div className="ap-error" role="alert">
-          <span className="ap-error-icon"><FiAlertTriangle size={15} /></span>
+        <div className={authError} role="alert">
+          <span className={authErrorIcon}><FiAlertTriangle size={15} /></span>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleLogin} className="ap-form" noValidate>
-        <div className="ap-field">
-          <label htmlFor="email">{copy.fields.email.label}</label>
+      <form onSubmit={handleLogin} className={authForm} noValidate>
+        <div className={authField}>
+          <label htmlFor="email" className={authLabel}>{copy.fields.email.label}</label>
           <input
             type="email"
             id="email"
@@ -140,19 +155,19 @@ const Login = ({
             required
             autoFocus
             disabled={loading}
-            className="ap-input"
+            className={authInput}
             autoComplete="username"
             inputMode="email"
             ref={emailRef}
           />
         </div>
-        <div className="ap-field">
-          <div className="ap-label-row">
-            <label htmlFor="password">{copy.fields.password.label}</label>
+        <div className={authField}>
+          <div className="flex items-baseline justify-between">
+            <label htmlFor="password" className={authLabel}>{copy.fields.password.label}</label>
             {copy.fields.password.forgotLink && (
               <button
                 type="button"
-                className="ap-link-muted"
+                className={authLinkMuted}
                 onClick={() => navigate('/forgot-password')}
                 tabIndex={-1}
               >
@@ -167,24 +182,26 @@ const Login = ({
             placeholder={copy.fields.password.placeholder}
             required
             disabled={loading}
-            className="ap-input"
+            className={authInput}
             autoComplete="current-password"
             ref={passwordRef}
           />
         </div>
-        <div className="ap-form-actions">
-          <button
+        <div className="flex flex-col gap-3">
+          <Button
             type="submit"
-            className="ap-btn-primary"
+            variant="primary"
+            size="medium"
+            fullWidth
+            loading={loading}
             disabled={loading || !email || !password}
           >
-            {loading ? <span className="ap-spinner" /> : null}
             {loading ? copy.buttons.signingIn : copy.buttons.signIn}
-          </button>
+          </Button>
         </div>
       </form>
 
-      <div className="ap-footer">
+      <div className="flex flex-col gap-2 border-t border-border pt-2 text-xs text-text-secondary">
         <p>
           {copy.footer.studentPrompt}{' '}
           <button
@@ -193,7 +210,7 @@ const Login = ({
                 ? onRequestModeChange('register')
                 : navigate('/posts?auth=register')
             }
-            className="ap-link-inline"
+            className={authLinkInline}
             disabled={loading}
           >
             {copy.footer.studentAction}
@@ -205,15 +222,15 @@ const Login = ({
 
   const content = (
     <section
-      className={`ap-wrapper ${layout === 'modal' ? 'ap-wrapper--modal' : ''}`}
+      className={`flex w-full max-w-[520px] flex-col gap-4 ${layout === 'modal' ? 'max-h-[calc(100vh-2rem)] overflow-y-auto' : ''}`}
       onClick={layout === 'modal' ? (event) => event.stopPropagation() : undefined}
     >
-      <div className="ap-panel">
+      <div className={authPanel}>
         {formContent}
       </div>
 
-      <div className="ap-notice">
-        <FiLock size={13} />
+      <div className={authNotice}>
+        <FiLock size={13} className="text-brand" />
         {copy.notice}
       </div>
     </section>
@@ -222,7 +239,7 @@ const Login = ({
   if (layout === 'modal') return content;
 
   return (
-    <div className="ap-container">
+    <div className="flex min-h-screen w-full items-center justify-center bg-bg-primary px-6 py-8 pt-[calc(var(--navbar-height,64px)+2rem)] max-sm:px-4">
       {content}
     </div>
   );

@@ -12,7 +12,6 @@ import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvata
 import Skeleton from '../../../shared/components/ui/Skeleton';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { buildLeaderboard } from '../services/leaderboard.utils';
-import '../styles/leaderboard.css';
 
 const LeaderboardTable = ({
   entries = [],
@@ -29,45 +28,52 @@ const LeaderboardTable = ({
   if (loading) {
     const count = limit || 6;
     return (
-      <div className="lb-table" role="table" aria-label="Leaderboard">
+    <div className="flex flex-col gap-2" role="table" aria-label="Leaderboard">
 
-        {/* Header */}
-        <div className="lb-table-header" role="row">
-          <div className="lb-col lb-col-pos"   role="columnheader">#</div>
-          <div className="lb-col lb-col-user"  role="columnheader">Operator</div>
-          <div className="lb-col lb-col-rank"  role="columnheader">Rank</div>
-          <div className="lb-col lb-col-score" role="columnheader">CP · Streak</div>
-        </div>
+      {/* Header */}
+      <div
+        className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center rounded-md border border-border bg-bg-tertiary px-4 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary max-md:grid-cols-1 max-md:gap-2"
+        role="row"
+      >
+        <div role="columnheader">#</div>
+        <div role="columnheader">Operator</div>
+        <div role="columnheader">Rank</div>
+        <div role="columnheader">CP · Streak</div>
+      </div>
 
-        {Array.from({ length: count }).map((_, i) => (
-          <div key={`sk-${i}`} className="lb-row lb-row-skeleton" role="row">
-            <div className="lb-col lb-col-pos" role="cell">
-              <Skeleton className="lb-sk-num" />
-            </div>
-            <div className="lb-col lb-col-user" role="cell">
-              <Skeleton variant="circle" className="lb-sk-avatar" />
-              <div className="lb-sk-text">
-                <Skeleton className="lb-sk-line" />
-                <Skeleton className="lb-sk-line lb-sk-short" />
-              </div>
-            </div>
-            <div className="lb-col lb-col-rank" role="cell">
-              <Skeleton className="lb-sk-line" />
-            </div>
-            <div className="lb-col lb-col-score" role="cell">
-              <Skeleton className="lb-sk-chip" />
-              <Skeleton className="lb-sk-chip lb-sk-short" />
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={`sk-${i}`}
+          className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center gap-3 rounded-md border border-border bg-bg-secondary px-4 py-3 max-md:grid-cols-1"
+          role="row"
+        >
+          <div role="cell">
+            <Skeleton className="h-4 w-8 rounded-full" />
+          </div>
+          <div className="flex items-center gap-3" role="cell">
+            <Skeleton variant="circle" className="h-10 w-10" />
+            <div className="flex flex-col gap-1">
+              <Skeleton className="h-3 w-32 rounded-full" />
+              <Skeleton className="h-3 w-20 rounded-full" />
             </div>
           </div>
-        ))}
-      </div>
-    );
+          <div role="cell">
+            <Skeleton className="h-3 w-24 rounded-full" />
+          </div>
+          <div className="flex flex-wrap items-center gap-2" role="cell">
+            <Skeleton className="h-7 w-20 rounded-full" />
+            <Skeleton className="h-7 w-16 rounded-full" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
   }
 
   /* ── Empty state ── */
   if (!rows.length) {
     return (
-      <div className="lb-empty" role="status">
+      <div className="rounded-md border border-border bg-bg-secondary px-4 py-3 text-sm text-text-secondary" role="status">
         {emptyMessage}
       </div>
     );
@@ -75,14 +81,17 @@ const LeaderboardTable = ({
 
   /* ── Data rows ── */
   return (
-    <div className="lb-table" role="table" aria-label="Leaderboard">
+    <div className="flex flex-col gap-2" role="table" aria-label="Leaderboard">
 
       {/* Header */}
-      <div className="lb-table-header" role="row">
-        <div className="lb-col lb-col-pos"   role="columnheader">#</div>
-        <div className="lb-col lb-col-user"  role="columnheader">Operator</div>
-        <div className="lb-col lb-col-rank"  role="columnheader">Rank</div>
-        <div className="lb-col lb-col-score" role="columnheader">CP · Streak</div>
+      <div
+        className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center rounded-md border border-border bg-bg-tertiary px-4 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary max-md:grid-cols-1 max-md:gap-2"
+        role="row"
+      >
+        <div role="columnheader">#</div>
+        <div role="columnheader">Operator</div>
+        <div role="columnheader">Rank</div>
+        <div role="columnheader">CP · Streak</div>
       </div>
 
       {rows.map((entry) => {
@@ -93,18 +102,18 @@ const LeaderboardTable = ({
         return (
           <div
             key={entry.id || entry.position}
-            className="lb-row"
+            className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center gap-3 rounded-md border border-border bg-bg-secondary px-4 py-3 text-sm text-text-secondary transition hover:border-brand/40 hover:bg-bg-tertiary data-[rank=\"1\"]:border-brand data-[rank=\"1\"]:bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] data-[rank=\"2\"]:border-[color-mix(in_srgb,var(--primary-color)_45%,var(--border-color))] data-[rank=\"3\"]:border-[color-mix(in_srgb,var(--primary-color)_35%,var(--border-color))] max-md:grid-cols-1"
             data-rank={rankAttr}
             role="row"
           >
             {/* Position */}
-            <div className="lb-col lb-col-pos" role="cell">
-              <span className="lb-pos-value">#{entry.position}</span>
+            <div role="cell">
+              <span className="font-mono text-sm text-text-primary">#{entry.position}</span>
             </div>
 
             {/* Profile */}
-            <div className="lb-col lb-col-user" role="cell">
-              <div className="lb-avatar">
+            <div className="flex items-center gap-3" role="cell">
+              <div className="h-10 w-10 overflow-hidden rounded-full border border-border bg-bg-tertiary">
                 <img
                   src={avatarSrc}
                   alt={entry.name}
@@ -113,26 +122,27 @@ const LeaderboardTable = ({
                       e.currentTarget.src = avatarFallback;
                     }
                   }}
+                  className="h-full w-full object-cover"
                 />
               </div>
-              <div className="lb-user-text">
-                <span className="lb-name">{entry.name || 'Unknown'}</span>
-                <span className="lb-handle">{handle}</span>
+              <div className="flex min-w-0 flex-col">
+                <span className="truncate font-semibold text-text-primary">{entry.name || 'Unknown'}</span>
+                <span className="truncate text-xs text-text-tertiary">{handle}</span>
               </div>
             </div>
 
             {/* Rank title */}
-            <div className="lb-col lb-col-rank" role="cell">
-              <span className="lb-rank-title">{entry.rankTitle || '—'}</span>
+            <div role="cell">
+              <span className="text-sm text-text-secondary">{entry.rankTitle || '—'}</span>
             </div>
 
             {/* Metrics */}
-            <div className="lb-col lb-col-score" role="cell">
-              <span className="lb-chip lb-chip-cp">
-                <img src={cpIcon} alt="CP" className="lb-cp-icon" />
+            <div className="flex flex-wrap items-center gap-2" role="cell">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-tertiary px-3 py-1 text-xs text-text-secondary">
+                <img src={cpIcon} alt="CP" className="h-4 w-4 object-contain" />
                 <span>{entry.totalXp ?? '—'}</span>
               </span>
-              <span className="lb-chip">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-tertiary px-3 py-1 text-xs text-text-secondary">
                 <IoFlameOutline size={14} />
                 <span>{entry.streakDays ?? '—'}d</span>
               </span>

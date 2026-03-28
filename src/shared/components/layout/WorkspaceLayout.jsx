@@ -24,9 +24,7 @@ import { WORKSPACE_UI } from '../../../data/static/shared/workspaceUiData';
 import { useNotifications } from '../providers/NotificationProvider';
 import useScrollReveal from '../../hooks/useScrollReveal';
 import { useUserStats } from '../../hooks/useUserStats';
-import './AppShell.css';
-import './WorkspaceLayout.css';
-import '../../../styles/base/dashboard-public-profile.css';
+// WorkspaceLayout styles are now Tailwind-based.
 import BootcampComingSoonModal from '../../../features/student/components/bootcamp/BootcampComingSoonModal';
 import { envConfig } from '../../../config/app/env.config';
 
@@ -239,13 +237,40 @@ const WorkspaceLayout = () => {
     [avatarSrc, avatarFallback]
   );
 
+  const topbarBase =
+    'fixed left-0 right-0 z-40 flex h-16 items-center border-b border-border bg-bg-secondary px-5 font-sans';
+  const iconBtn =
+    'inline-flex h-8 w-8 items-center justify-center rounded-xs border border-border text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
+  const pillBtn =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1.5 text-sm font-semibold text-text-primary transition-colors duration-150 hover:bg-bg-tertiary';
+  const dropdownBase =
+    'absolute top-full mt-2 w-72 max-w-sm origin-top-left rounded-sm border border-border bg-bg-secondary p-2 shadow-lg animate-workspace-pop';
+  const dropdownItem =
+    'flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
+
+  const mainPaddingTop = isLessonWorkspace
+    ? 'calc(var(--navbar-height, 64px) + 0.75rem)'
+    : isCommunity
+    ? 'calc(var(--navbar-height, 64px) + 1rem)'
+    : 'calc(var(--navbar-height, 64px) + 1.5rem)';
+
+  const mainPaddingBottom = isCommunity
+    ? '0px'
+    : isMobile
+    ? 'calc(1.5rem + var(--bottom-nav-height, 64px))'
+    : '2rem';
+
+  const mainPaddingX = isLessonWorkspace ? '0px' : isMobile ? '1rem' : '1.5rem';
+
+  const mainPaddingLeft = showSidebar && !isLessonWorkspace && !isMobile
+    ? 'calc(var(--sidebar-width, 260px) + 1.5rem)'
+    : mainPaddingX;
+
   return (
     <div
-      className={`workspace-layout app-shell ${showSidebar ? '' : 'no-sidebar'} ${
-        isLessonWorkspace ? 'lesson-only' : ''
-      } ${navMode} ${isCommunity ? 'community-mode' : ''} ${isDashboardTheme ? 'pp-dashboard-theme' : ''} ${
-        mobileSidebarOpen ? 'sidebar-open' : ''
-      }`}
+      className={`workspace-layout relative flex min-h-screen flex-col ${isCommunity ? 'community-mode h-screen overflow-hidden' : ''} ${
+        isDashboardTheme ? 'pp-dashboard-theme' : ''
+      } ${mobileSidebarOpen ? 'sidebar-open' : ''}`}
       style={{
         '--sidebar-collapsed-width': '84px',
         '--bottom-nav-height': isMobile ? '90px' : '64px',
@@ -254,7 +279,9 @@ const WorkspaceLayout = () => {
       {showSidebar && isMobile && (
         <button
           type="button"
-          className={`workspace-sidebar-overlay ${mobileSidebarOpen ? 'open' : ''}`}
+          className={`fixed inset-0 z-30 border-0 bg-black/50 transition-opacity duration-150 ${
+            mobileSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
           onClick={() => setMobileSidebarOpen(false)}
           aria-label="Close sidebar"
         />
@@ -266,13 +293,13 @@ const WorkspaceLayout = () => {
         />
       )}
       {!isLessonWorkspace && (
-        <header className="workspace-topbar">
-          <div className="workspace-topbar-content">
-            <div className="workspace-topbar-left">
+        <header className={topbarBase} style={{ top: '0px' }}>
+          <div className="flex w-full items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-2">
               {showSidebar && (
                 <button
                   type="button"
-                  className="workspace-collapse-btn"
+                  className={iconBtn}
                   onClick={handleSidebarToggle}
                   aria-label={isMobile ? 'Toggle sidebar' : sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 >
@@ -281,21 +308,23 @@ const WorkspaceLayout = () => {
               )}
               <button
                 type="button"
-                className="workspace-home-button"
+                className={pillBtn}
                 onClick={() => navigate(isBootcamp ? '/student-dashboard' : '/')}
                 aria-label={isBootcamp ? 'Back to dashboard' : WORKSPACE_UI.aria.goHome}
               >
                 <LuHouse size={16} />
-                <span>{isBootcamp ? 'Back' : WORKSPACE_UI.topbar.home}</span>
+                <span className="hidden sm:inline">{isBootcamp ? 'Back' : WORKSPACE_UI.topbar.home}</span>
               </button>
 
               {isCommunity && !showSidebar && (
-                <nav className="workspace-community-nav" aria-label="Workspace navigation">
+                <nav className="flex max-w-xs flex-wrap items-center gap-1 overflow-x-auto md:max-w-sm md:overflow-visible" aria-label="Workspace navigation">
                   {defaultLinks.map((link) => (
                     <button
                       key={link.path}
                       type="button"
-                      className={`workspace-community-link ${pathname === link.path ? 'active' : ''}`}
+                      className={`inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1.5 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary ${
+                        pathname === link.path ? 'bg-bg-tertiary text-text-primary border-brand/30' : ''
+                      }`}
                       onClick={() => navigate(link.path)}
                     >
                       <link.icon size={16} />
@@ -305,12 +334,14 @@ const WorkspaceLayout = () => {
 
                   {learnLinks.length > 0 && (
                     <div
-                      className={`workspace-community-dropdown ${learnOpen ? 'open' : ''}`}
+                      className="relative"
                       onMouseLeave={() => setLearnOpen(false)}
                     >
                       <button
                         type="button"
-                        className={`workspace-community-link ${learnOpen ? 'active' : ''}`}
+                        className={`inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1.5 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary ${
+                          learnOpen ? 'bg-bg-tertiary text-text-primary border-brand/30' : ''
+                        }`}
                         onClick={() => setLearnOpen((prev) => !prev)}
                       >
                         <LuLayers size={16} />
@@ -318,13 +349,13 @@ const WorkspaceLayout = () => {
                         <LuChevronDown size={14} />
                       </button>
                       {learnOpen && (
-                        <div className="workspace-community-menu">
+                        <div className={`${dropdownBase} left-0`}>
                           {learnLinks.map((link) => (
                             <button
                               key={link.path}
                               type="button"
-                              className={`workspace-community-item ${
-                                pathname === link.path ? 'active' : ''
+                              className={`${dropdownItem} ${
+                                pathname === link.path ? 'bg-bg-tertiary text-text-primary' : ''
                               }`}
                               onClick={() => {
                                 setLearnOpen(false);
@@ -343,50 +374,57 @@ const WorkspaceLayout = () => {
               )}
             </div>
 
-            <div className="workspace-topbar-actions">
+            <div className="flex items-center gap-2">
               {role === 'student' && isBootcamp && (
                 <button
                   type="button"
-                  className="workspace-bootcamp-btn"
+                  className="hidden items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1.5 text-xs font-semibold text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary sm:inline-flex"
                   onClick={() => navigate('/student-bootcamps/live-class')}
                 >
                   Live Class
                 </button>
               )}
               {user?.id && (
-                <div className="workspace-cp-chip" title={WORKSPACE_UI.cpChipTitle}>
-                  <img src={cpIcon} alt="CP" className="workspace-cp-chip-icon" />
+                <div
+                  className="hidden items-center gap-2 rounded-xs border border-status-success/40 bg-status-success/10 px-3 py-1 text-sm font-semibold text-status-success sm:inline-flex"
+                  title={WORKSPACE_UI.cpChipTitle}
+                >
+                  <img src={cpIcon} alt="CP" className="h-5 w-5 object-contain" />
                   <span>{cpTotal}</span>
                 </div>
               )}
 
               {role === 'student' && (
-                <div className="workspace-streak-chip" title={WORKSPACE_UI.streakTitle}>
+                <div className="hidden items-center gap-1 rounded-xs border border-status-orange/40 bg-status-orange/10 px-3 py-1 text-xs font-semibold text-text-primary sm:inline-flex" title={WORKSPACE_UI.streakTitle}>
                   <IoFlameOutline size={15} />
-                  <span>{streakDays}</span>
+                  <span className="hidden sm:inline">{streakDays}</span>
                 </div>
               )}
 
               <div
-                className="workspace-notification-wrap"
+                className="relative"
                 ref={notificationMenuRef}
                 onMouseLeave={() => setNotificationMenuOpen(false)}
               >
                 <button
                   type="button"
-                  className="workspace-notification-btn"
+                  className={iconBtn}
                   onClick={() => setNotificationMenuOpen((prev) => !prev)}
                   aria-label={WORKSPACE_UI.aria.notifications}
                 >
                   <LuBell size={16} />
-                  {unreadCount > 0 && <span className="workspace-notification-badge">{unreadCount}</span>}
+                  {unreadCount > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-status-danger px-1 text-xs font-semibold text-ink-white">
+                      {unreadCount}
+                    </span>
+                  )}
                 </button>
 
                 {notificationMenuOpen && (
-                  <div className="workspace-notification-menu">
-                    <div className="workspace-notification-head">
-                      <strong>{WORKSPACE_UI.notifications.title}</strong>
-                      <div className="workspace-notification-actions">
+                  <div className={`${dropdownBase} right-0 origin-top-right`}>
+                    <div className="flex items-center justify-between gap-2 border-b border-border pb-2">
+                      <strong className="text-sm text-text-primary">{WORKSPACE_UI.notifications.title}</strong>
+                      <div className="flex items-center gap-2 text-xs text-text-secondary">
                         <button
                           type="button"
                           onClick={async () => {
@@ -408,20 +446,22 @@ const WorkspaceLayout = () => {
                     </div>
 
                     {notifications.length === 0 ? (
-                      <p className="workspace-notification-empty">{WORKSPACE_UI.notifications.empty}</p>
+                      <p className="py-2 text-sm text-text-tertiary">{WORKSPACE_UI.notifications.empty}</p>
                     ) : (
                       notifications.slice(0, 8).map((item) => (
                         <button
                           key={item.id}
                           type="button"
-                          className={`workspace-notification-item ${item.read ? '' : 'unread'}`}
-                        onClick={async () => {
-                          await markRead(item.id);
-                          openNotificationTarget(item, navigate);
-                        }}
-                      >
-                          <strong>{item.title}</strong>
-                          <span>{item.message}</span>
+                          className={`flex w-full flex-col gap-1 rounded-xs border border-border px-3 py-2 text-left text-xs text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary ${
+                            item.read ? '' : 'border-brand/40'
+                          }`}
+                          onClick={async () => {
+                            await markRead(item.id);
+                            openNotificationTarget(item, navigate);
+                          }}
+                        >
+                          <strong className="text-sm text-text-primary">{item.title}</strong>
+                          <span className="text-xs text-text-secondary">{item.message}</span>
                         </button>
                       ))
                     )}
@@ -431,13 +471,13 @@ const WorkspaceLayout = () => {
 
               {isMobile && overflowNavLinks.length > 0 && (
                 <div
-                  className="workspace-overflow"
+                  className="relative"
                   ref={overflowMenuRef}
                   onMouseLeave={() => setOverflowMenuOpen(false)}
                 >
                   <button
                     type="button"
-                    className="workspace-overflow-btn"
+                    className={iconBtn}
                     onClick={() => setOverflowMenuOpen((prev) => !prev)}
                     aria-label="More"
                     aria-haspopup="menu"
@@ -446,14 +486,14 @@ const WorkspaceLayout = () => {
                   <BsThreeDotsVertical size={18} />
                   </button>
                   {overflowMenuOpen && (
-                    <div className="workspace-overflow-menu" role="menu">
+                    <div className={`${dropdownBase} right-0 origin-top-right`} role="menu">
                       {overflowNavLinks.map((link) => (
                         <button
                           key={link.path}
                           type="button"
                           role="menuitem"
-                          className={`workspace-overflow-item ${
-                            pathname === link.path ? 'active' : ''
+                          className={`${dropdownItem} ${
+                            pathname === link.path ? 'bg-brand/10 text-brand' : ''
                           }`}
                           onClick={() => {
                             setOverflowMenuOpen(false);
@@ -471,12 +511,12 @@ const WorkspaceLayout = () => {
 
               {isCommunity && (
                 <div
-                  className="workspace-community-tools"
+                  className="relative"
                   ref={communityMenuRef}
                 >
                   <button
                     type="button"
-                    className="workspace-community-tool-btn"
+                    className={iconBtn}
                     onClick={() => setCommunityMenuOpen((prev) => !prev)}
                     aria-label={WORKSPACE_UI.topbar.community}
                     aria-haspopup="menu"
@@ -485,10 +525,11 @@ const WorkspaceLayout = () => {
                     <LuChartBar size={16} />
                   </button>
                   {communityMenuOpen && (
-                    <div className="workspace-community-menu" role="menu">
+                    <div className={`${dropdownBase} right-0 origin-top-right`} role="menu">
                       <button
                         type="button"
                         role="menuitem"
+                        className={dropdownItem}
                         onClick={() => {
                           setCommunityMenuOpen(false);
                           navigate('/community/profiles');
@@ -500,6 +541,7 @@ const WorkspaceLayout = () => {
                       <button
                         type="button"
                         role="menuitem"
+                        className={dropdownItem}
                         onClick={() => {
                           setCommunityMenuOpen(false);
                           navigate('/community/media');
@@ -515,15 +557,15 @@ const WorkspaceLayout = () => {
 
 
               {!isMobile && (
-                <div ref={menuRef}>
+                <div ref={menuRef} className="relative">
                   <button
                     type="button"
-                    className="workspace-profile-button"
+                    className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-2 py-1.5 text-sm font-semibold text-text-primary transition-colors duration-150 hover:bg-bg-tertiary"
                     onClick={() => setMenuOpen((prev) => !prev)}
                     aria-haspopup="menu"
                     aria-expanded={menuOpen}
                   >
-                    <span className="workspace-avatar">
+                    <span className="inline-flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-brand text-ink-white">
                       <img
                         src={avatarSrc}
                         alt="Profile"
@@ -534,16 +576,17 @@ const WorkspaceLayout = () => {
                         }}
                       />
                     </span>
-                    <span className="workspace-profile-name">
+                    <span className="hidden max-w-32 truncate text-sm sm:inline">
                       {user?.name || user?.email || WORKSPACE_UI.topbar.userFallback}
                     </span>
                     <LuChevronDown size={16} />
                   </button>
                   {menuOpen && (
-                    <div className="workspace-profile-menu" role="menu">
+                    <div className={`${dropdownBase} right-0 origin-top-right`} role="menu">
                       <button
                         type="button"
                         role="menuitem"
+                        className={dropdownItem}
                         onClick={() => {
                           setMenuOpen(false);
                           navigate('/settings');
@@ -555,6 +598,7 @@ const WorkspaceLayout = () => {
                       <button
                         type="button"
                         role="menuitem"
+                        className={dropdownItem}
                         onClick={() => {
                           setMenuOpen(false);
                           navigate('/settings');
@@ -565,6 +609,7 @@ const WorkspaceLayout = () => {
                       <button
                         type="button"
                         role="menuitem"
+                        className={dropdownItem}
                         onClick={async () => {
                           setMenuOpen(false);
                           await logout();
@@ -582,22 +627,31 @@ const WorkspaceLayout = () => {
         </header>
       )}
 
-      <main className={`workspace-main ${isCommunity ? 'community-main' : ''} ${showPaymentBanner ? 'has-payment-banner' : ''}`}>
+      <main
+        className="workspace-main w-full min-w-0 flex-1 overflow-x-hidden"
+        style={{
+          paddingTop: mainPaddingTop,
+          paddingLeft: mainPaddingLeft,
+          paddingRight: mainPaddingX,
+          paddingBottom: mainPaddingBottom,
+          height: isCommunity ? 'calc(100vh - var(--navbar-height, 64px))' : 'auto',
+        }}
+      >
         {showPaymentBanner && (
-          <div className="workspace-payment-banner">
-            <span className="workspace-payment-banner-text">
+          <div className="mb-5 flex flex-wrap items-center gap-2 rounded-xs border border-status-warning/40 bg-status-warning/10 px-3 py-2 text-sm text-text-secondary">
+            <span className="flex-1 min-w-0">
               Your bootcamp access is paused — complete payment to unlock all phases.
             </span>
             <button
               type="button"
-              className="workspace-payment-banner-cta"
+              className="rounded-xs bg-status-warning px-3 py-1 text-xs font-semibold text-ink-black transition-colors duration-150 hover:bg-status-warning/80"
               onClick={() => navigate('/student-payments?open=payment')}
             >
               Pay Now
             </button>
             <button
               type="button"
-              className="workspace-payment-banner-close"
+              className="inline-flex items-center rounded-xs p-1 text-text-tertiary hover:text-text-primary"
               onClick={dismissPaymentBanner}
               aria-label="Dismiss"
             >
@@ -605,7 +659,7 @@ const WorkspaceLayout = () => {
             </button>
           </div>
         )}
-        <div className="dashboard-shell">
+        <div className="flex flex-col gap-5">
           <Outlet />
         </div>
       </main>

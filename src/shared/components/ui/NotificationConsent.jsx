@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './notification-consent.css';
-
 const STORAGE_KEY = 'hsociety_notification_consent';
 
 const NotificationConsent = () => {
@@ -31,23 +29,31 @@ const NotificationConsent = () => {
   if (!visible) return null;
 
   return (
-    <div className="notif-consent" role="dialog" aria-live="polite" aria-label="Notification permission">
-      <div className="notif-consent-card">
-        <div className="notif-consent-copy">
-          <strong>Enable notifications?</strong>
+    <div
+      className="pointer-events-none fixed inset-0 z-50 flex items-end justify-end p-5"
+      role="dialog"
+      aria-live="polite"
+      aria-label="Notification permission"
+      style={{
+        paddingBottom: 'calc(1.2rem + var(--mobile-action-dock-height, 0px) + env(safe-area-inset-bottom))',
+      }}
+    >
+      <div className="pointer-events-auto flex w-[min(360px,100%)] flex-col gap-3 rounded-2xl border border-border bg-bg-secondary p-4 shadow-lg">
+        <div className="flex flex-col gap-1.5 text-sm text-text-secondary">
+          <strong className="text-base text-text-primary">Enable notifications?</strong>
           <p>Get alerts for account changes, mentions, and new activity even while you browse.</p>
         </div>
-        <div className="notif-consent-actions">
+        <div className="flex justify-end gap-2">
           <button
             type="button"
-            className="notif-consent-btn ghost"
+            className="rounded-full border border-border bg-transparent px-3.5 py-1.5 text-xs text-text-secondary"
             onClick={() => handleChoice('dismissed')}
           >
             Maybe later
           </button>
           <button
             type="button"
-            className="notif-consent-btn primary"
+            className="rounded-full border border-[color-mix(in_srgb,var(--primary-color)_60%,var(--bg-primary))] bg-brand px-3.5 py-1.5 text-xs font-semibold text-ink-white"
             onClick={() => handleChoice('accepted')}
           >
             Allow notifications

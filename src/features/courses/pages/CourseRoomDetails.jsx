@@ -12,8 +12,32 @@ import {
 import { getHackerProtocolModule, getHackerProtocolRoom } from '../../../data/static/bootcamps/hackerProtocolData';
 import { useAuth } from '../../../core/auth/AuthContext';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/courses.css';
+import Button from '../../../shared/components/ui/Button';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardTitle,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+  publicButtonBase,
+  publicButtonGhost,
+  publicButtonSmall,
+} from '../../../shared/styles/publicClasses';
 
 const CourseRoomDetails = () => {
   const { bootcampId, moduleId, roomId } = useParams();
@@ -33,62 +57,68 @@ const CourseRoomDetails = () => {
 
   if (bootcampId !== 'hacker-protocol' || !module || !room) {
     return (
-      <div className="public-page public-page-inner crs-page">
-        <div className="crs-not-found">Room not found.</div>
+      <div className={`${publicPage} text-text-primary`}>
+        <div className="mx-auto max-w-3xl px-6 py-16 text-center text-text-secondary">
+          Room not found.
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="public-page public-page-inner crs-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / {module.codename} / Room {room.roomId}
             </p>
-            <h1 className="public-hero-title">{room.title}</h1>
-            <p className="public-hero-desc">{room.overview}</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+            <h1 className={publicHeroTitle}>{room.title}</h1>
+            <p className={publicHeroDesc}>{room.overview}</p>
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={handleEnroll}>
                 <FiZap size={14} />
                 Enroll now
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate(`/courses/hacker-protocol/modules/${module.moduleId}`)}>
+              </Button>
+              <button
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
+                onClick={() => navigate(`/courses/hacker-protocol/modules/${module.moduleId}`)}
+                type="button"
+              >
                 <FiArrowLeft size={14} />
                 Back to phase
               </button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiTerminal size={12} />
                 {module.roleTitle}
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiList size={12} />
                 Room {room.roomId}
               </span>
-              <span className="public-pill">Est. 2h</span>
+              <span className={publicPill}>Est. 2h</span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Room objectives</p>
-            <div className="public-list">
+            <p className={publicBadge}>Room objectives</p>
+            <div className="grid gap-3">
               {room.bullets?.slice(0, 3).map((bullet) => (
-                <div key={bullet} className="public-list-item">
+                <div key={bullet} className="flex items-start gap-3 text-text-secondary">
                   <FiCheckCircle size={14} />
                   <span>{bullet}</span>
                 </div>
               ))}
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
                 <strong>Room</strong> {room.roomId}
               </span>
-              <span className="public-hero-stat">
+              <span className={publicHeroStat}>
                 <strong>Est.</strong> 2h
               </span>
             </div>
@@ -97,7 +127,7 @@ const CourseRoomDetails = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -109,10 +139,10 @@ const CourseRoomDetails = () => {
           </div>
           <PublicCardGrid>
             {room.bullets?.map((bullet) => (
-              <article key={bullet} className="public-card">
+              <article key={bullet} className={publicCard}>
                 <div className="hs-signature" aria-hidden="true" />
-                <h3 className="public-card-title">Objective</h3>
-                <p className="public-card-desc">{bullet}</p>
+                <h3 className={publicCardTitle}>Objective</h3>
+                <p className={publicCardDesc}>{bullet}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -120,8 +150,8 @@ const CourseRoomDetails = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -129,20 +159,24 @@ const CourseRoomDetails = () => {
             </p>
             <h2 className="section-title">Unlock this room in the bootcamp.</h2>
             <p className="section-subtitle">Join the Hacker Protocol program to access the full lab.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={handleEnroll}>
+            <div className={publicHeroActions}>
+              <Button size="small" onClick={handleEnroll}>
                 Enroll now
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/courses')}>
+              </Button>
+              <button
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost}`}
+                onClick={() => navigate('/courses')}
+                type="button"
+              >
                 Back to courses
               </button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Operator training, real missions.</h3>
-            <p className="public-card-desc">Every room is built with real-world context and skills.</p>
+            <h3 className={publicCardTitle}>Operator training, real missions.</h3>
+            <p className={publicCardDesc}>Every room is built with real-world context and skills.</p>
           </div>
         </div>
       </section>

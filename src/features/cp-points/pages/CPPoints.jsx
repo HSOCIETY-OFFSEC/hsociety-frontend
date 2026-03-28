@@ -11,8 +11,30 @@ import {
 } from 'react-icons/fi';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/cp-points.css';
+import Button from '../../../shared/components/ui/Button';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const CPPoints = () => {
   const navigate = useNavigate();
@@ -51,47 +73,54 @@ const CPPoints = () => {
   ];
 
   return (
-    <div className="public-page public-page-inner cp-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / CP Points
             </p>
-            <h1 className="public-hero-title">Your operator reputation score.</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>Your operator reputation score.</h1>
+            <p className={publicHeroDesc}>
               Every lab, report, and streak compounds your presence. CP Points are the signal.
             </p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/courses')}
+              >
                 Start a program
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/leaderboard')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/leaderboard')}
+              >
                 View leaderboard
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
+            <div className={publicPillRow}>
               {stats.map((stat) => (
-                <span key={stat.label} className="public-pill">
+                <span key={stat.label} className={publicPill}>
                   {stat.icon}
                   {stat.label}: {stat.value}
                 </span>
               ))}
             </div>
           </div>
-          <div className="public-hero-panel">
-            
-            <p className="public-badge">CP icon</p>
-            <img src={cpIcon} alt="CP" className="cp-hero-icon" />
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>Daily</strong> streaks
+          <div className="p-0">
+            <img src={cpIcon} alt="CP" className="mx-auto h-auto w-[min(420px,92vw)]" />
+            <div className={`${publicHeroStats} justify-center`}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Daily</strong> streaks
               </span>
-              <span className="public-hero-stat">
-                <strong>Live</strong> leaderboard
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Live</strong> leaderboard
               </span>
             </div>
           </div>
@@ -99,7 +128,7 @@ const CPPoints = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -110,14 +139,18 @@ const CPPoints = () => {
             <p className="section-subtitle">Each action compounds your operator signal.</p>
           </div>
           <PublicCardGrid>
-            {actions.map((action) => (
-              <article key={action.title} className="public-card">
+            {actions.map((action, index) => (
+              <article
+                key={action.title}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">{action.badge}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>{action.badge}</span>
                 </div>
-                <h3 className="public-card-title">{action.title}</h3>
-                <p className="public-card-desc">{action.description}</p>
+                <h3 className={publicCardTitle}>{action.title}</h3>
+                <p className={publicCardDesc}>{action.description}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -125,8 +158,8 @@ const CPPoints = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -134,20 +167,29 @@ const CPPoints = () => {
             </p>
             <h2 className="section-title">Start collecting CP Points today.</h2>
             <p className="section-subtitle">Join a bootcamp or run live missions to stack your signal.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/courses')}
+              >
                 View programs
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/contact')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Talk to us
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Operators earn, operators rise.</h3>
-            <p className="public-card-desc">Every verified mission pushes your ranking forward.</p>
+            <h3 className={publicCardTitle}>Operators earn, operators rise.</h3>
+            <p className={publicCardDesc}>Every verified mission pushes your ranking forward.</p>
           </div>
         </div>
       </section>

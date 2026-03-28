@@ -63,7 +63,7 @@ const AdminSecurity = () => {
   if (loading) {
     return (
       <div className="admin-dashboard">
-        <div className="dashboard-shell">
+        <div className="flex flex-col gap-5">
           <TableSkeleton rows={8} columns={7} />
         </div>
       </div>
@@ -72,7 +72,7 @@ const AdminSecurity = () => {
 
   return (
     <div className="admin-dashboard">
-      <div className="dashboard-shell">
+      <div className="flex flex-col gap-5">
         <PublicError message={error} className="admin-alert" />
 
         <div className="admin-overview-grid">

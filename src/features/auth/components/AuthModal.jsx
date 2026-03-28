@@ -4,7 +4,6 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import { AUTH_MODAL_MODES } from '../../../shared/utils/auth/authModal';
-import '../styles/auth.css';
 
 const AuthModal = () => {
   const { mode, payload, redirect, closeAuthModal, openAuthModal } = useAuthModal();
@@ -39,7 +38,7 @@ const AuthModal = () => {
 
   return (
     <div
-      className="auth-modal-backdrop"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--modal-overlay-bg)] p-4 backdrop-blur"
       role="dialog"
       aria-modal="true"
       aria-label="Account access"

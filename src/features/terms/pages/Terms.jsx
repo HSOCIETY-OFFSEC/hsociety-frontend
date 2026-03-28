@@ -14,8 +14,28 @@ import {
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
 import { getTermsContent } from '../services/terms.service';
-import '../../public/styles/public-landing.css';
-import '../styles/terms.css';
+import Button from '../../../shared/components/ui/Button';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardTitle,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const FALLBACK_TERMS = {
   effectiveDate: '—',
@@ -106,43 +126,52 @@ const Terms = () => {
   }
 
   return (
-    <div className="public-page public-page-inner trm-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Terms
             </p>
-            <h1 className="public-hero-title">Terms & Conditions</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>Terms & Conditions</h1>
+            <p className={publicHeroDesc}>
               These terms govern access to HSOCIETY OFFSEC services, including training, community, and professional engagements.
             </p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Contact support
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/privacy')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/privacy')}
+              >
                 View privacy
-              </button>
+              </Button>
             </div>
-            {error && <p className="trm-error">{error}</p>}
+            {error && <p className="mt-4 text-sm text-status-orange">{error}</p>}
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Effective dates</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={publicBadge}>Effective dates</p>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiCalendar size={14} />
                 <span>Effective: {terms.effectiveDate || '—'}</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiClipboard size={14} />
                 <span>Last updated: {terms.lastUpdated || '—'}</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiGlobe size={14} />
                 <span>Jurisdiction: {terms.jurisdiction || '—'}</span>
               </div>
@@ -152,7 +181,7 @@ const Terms = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -163,15 +192,19 @@ const Terms = () => {
             <p className="section-subtitle">Each section summarizes the key expectations and responsibilities.</p>
           </div>
           <PublicCardGrid>
-            {sections.map((section) => (
-              <article key={section.title} className="public-card">
+            {sections.map((section, index) => (
+              <article
+                key={section.title}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <h3 className="public-card-title">{section.title}</h3>
-                {section.body && <p className="public-card-desc">{section.body}</p>}
+                <h3 className={publicCardTitle}>{section.title}</h3>
+                {section.body && <p className={publicCardDesc}>{section.body}</p>}
                 {section.bullets && (
-                  <ul className="trm-bullets">
+                  <ul className="mt-3 grid gap-2 text-sm text-text-secondary">
                     {section.bullets.map((bullet) => (
-                      <li key={bullet}>
+                      <li key={bullet} className="flex items-start gap-2">
                         <FiCheckCircle size={12} />
                         {bullet}
                       </li>
@@ -185,8 +218,8 @@ const Terms = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -194,20 +227,29 @@ const Terms = () => {
             </p>
             <h2 className="section-title">Questions about these terms?</h2>
             <p className="section-subtitle">Contact the HSOCIETY OFFSEC team for clarifications.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Reach support
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/services')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/services')}
+              >
                 View services
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Compliance-first operations.</h3>
-            <p className="public-card-desc">We operate within ethical and legal standards for all engagements.</p>
+            <h3 className={publicCardTitle}>Compliance-first operations.</h3>
+            <p className={publicCardDesc}>We operate within ethical and legal standards for all engagements.</p>
           </div>
         </div>
       </section>

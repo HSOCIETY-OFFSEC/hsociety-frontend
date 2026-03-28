@@ -13,12 +13,16 @@ const StudentLearnOverview = () => {
 
   return (
     <div className="student-page">
-      <div className="dashboard-shell">
-        <header className="student-hero dashboard-shell-header reveal-on-scroll">
+      <div className="flex flex-col gap-5">
+        <header className="student-hero reveal-on-scroll w-full border-b border-border bg-card px-4 py-4 md:rounded-md md:border md:shadow-sm">
           <div>
-            <p className="student-kicker dashboard-shell-kicker">Learn</p>
-            <h1 className="dashboard-shell-title">Train through a structured offensive journey.</h1>
-            <p className="dashboard-shell-subtitle">
+            <p className="inline-flex items-center rounded-xs border border-border bg-bg-secondary px-2 py-1 text-xs font-semibold uppercase tracking-widest text-text-tertiary">
+              Learn
+            </p>
+            <h1 className="mt-3 text-2xl font-semibold text-text-primary md:text-3xl">
+              Train through a structured offensive journey.
+            </h1>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
               Start with an overview, enroll in a bootcamp, and progress through validated phases.
             </p>
           </div>

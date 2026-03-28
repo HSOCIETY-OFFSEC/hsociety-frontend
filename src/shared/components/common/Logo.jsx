@@ -1,5 +1,4 @@
 import React from 'react';
-import './Logo.css';
 import { logger } from '../../../core/logging/logger';
 
 /**
@@ -30,33 +29,13 @@ const Logo = ({
   // Dark-only theme: default to the white logo unless overridden.
   const logoSrc = src || '/hsociety-logo-white.png';
   
-  // Size configurations
- const sizeMap = {
-  small: {
-    height: '40px',
-    width: 'auto'
-  },
-  medium: {
-    height: '60px',
-    width: 'auto'
-  },
-  large: {
-    height: '90px',
-    width: 'auto'
-  },
-  xlarge: {
-    height: 'auto',
-    width: '100%'
-  }
-};
-
-  const logoStyle = {
-    ...sizeMap[size],
-    display: 'block',
-    objectFit: 'contain',
-    transition: 'all 0.3s ease',
-    cursor: clickable || onClick ? 'pointer' : 'default'
+  const sizeClassMap = {
+    small: 'h-10 w-auto',
+    medium: 'h-14 w-auto',
+    large: 'h-16 w-auto',
+    xlarge: 'h-auto w-full',
   };
+  const sizeClass = sizeClassMap[size] || sizeClassMap.medium;
 
   const handleClick = () => {
     if (onClick) {
@@ -67,15 +46,16 @@ const Logo = ({
   };
 
   return (
-    <div 
-      className={`logo-container ${className}`}
+    <div
+      className={`inline-flex items-center justify-center ${className}`.trim()}
       onClick={handleClick}
     >
       <img
         src={logoSrc}
         alt="HSOCIETY OFFSEC Logo"
-        style={logoStyle}
-        className="logo-image"
+        className={`block object-contain transition-all duration-200 ${sizeClass} ${
+          clickable || onClick ? 'cursor-pointer' : 'cursor-default'
+        }`.trim()}
         onError={(e) => {
           logger.error('Logo failed to load:', logoSrc);
           e.target.style.display = 'none';

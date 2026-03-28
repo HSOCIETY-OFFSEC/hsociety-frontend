@@ -25,8 +25,32 @@ import ImageWithLoader from '../../../shared/components/ui/ImageWithLoader';
 import teamContent from '../../../data/static/team.json';
 import { getTeamContent } from '../services/team.service';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/team.css';
+import Button from '../../../shared/components/ui/Button';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const ensureArray = (v, fallback = []) => (Array.isArray(v) ? v : fallback);
 
@@ -103,55 +127,61 @@ const Team = () => {
   }));
 
   return (
-    <div className="public-page public-page-inner tm-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Team
             </p>
-            <h1 className="public-hero-title">{content.hero?.title || 'Meet the operators.'}</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>{content.hero?.title || 'Meet the operators.'}</h1>
+            <p className={publicHeroDesc}>
               {content.hero?.subtitle || 'The team behind HSOCIETY OFFSEC’s security programs and community.'}
             </p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate(content.hero?.route || '/feedback')}
               >
                 {content.hero?.button || 'Work with us'}
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/careers')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/careers')}
+              >
                 View careers
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiUsers size={12} />
                 Leadership {leadership.length}
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiShield size={12} />
                 Teams {teams.length}
               </span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Operator culture</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={publicBadge}>Operator culture</p>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Offensive security focus.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Community-driven execution.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Remote-first collaboration.</span>
               </div>
@@ -161,7 +191,7 @@ const Team = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -175,29 +205,30 @@ const Team = () => {
           </div>
           <PublicCardGrid className="tm-leadership-grid">
             {leadership.map((member, i) => (
-              <article key={`${member.name}-${i}`} className="public-card tm-member-card">
+              <article key={`${member.name}-${i}`} className={`${publicCard} grid gap-4`}>
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="tm-member-avatar">
+                <div className="overflow-hidden rounded-md">
                   <ImageWithLoader
                     src={member.image}
                     alt={member.name}
                     loading="lazy"
                     loaderMessage="Loading profile..."
+                    className="h-[220px] w-full object-cover"
                   />
                 </div>
-                <div className="tm-member-body">
-                  <div className="tm-member-header">
-                    <div className="tm-member-icon">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--primary-color)_18%,var(--bg-secondary))] text-brand">
                       <member.icon size={14} />
                     </div>
                     <div>
-                      <strong className="tm-member-name">{member.name}</strong>
-                      <span className="tm-member-role">{member.role}</span>
+                      <strong className="block font-semibold text-text-primary">{member.name}</strong>
+                      <span className="block text-sm text-text-tertiary">{member.role}</span>
                     </div>
                   </div>
-                  {member.focus && <p className="tm-member-focus">{member.focus}</p>}
+                  {member.focus && <p className="mt-2 text-sm text-text-secondary">{member.focus}</p>}
                   {!!member.socials?.length && (
-                    <div className="tm-member-socials">
+                    <div className="mt-3 flex flex-wrap gap-2">
                       {member.socials.map((social, si) => {
                         if (!social?.url) return null;
                         const key = String(social?.platform || '').toLowerCase().trim();
@@ -208,7 +239,7 @@ const Team = () => {
                             href={social.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="tm-social-link"
+                            className="inline-flex items-center gap-2 rounded-full border border-border px-2.5 py-1 text-xs text-text-secondary"
                             aria-label={`${member.name} on ${social.platform || 'social'}`}
                           >
                             <Icon size={13} />
@@ -226,7 +257,7 @@ const Team = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -240,13 +271,17 @@ const Team = () => {
           </div>
           <PublicCardGrid>
             {teams.map((group, i) => (
-              <article key={`${group.title}-${i}`} className="public-card">
+              <article
+                key={`${group.title}-${i}`}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(i)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">{group.title}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>{group.title}</span>
                 </div>
-                <h3 className="public-card-title">{group.title}</h3>
-                <p className="public-card-desc">{group.description}</p>
+                <h3 className={publicCardTitle}>{group.title}</h3>
+                <p className={publicCardDesc}>{group.description}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -254,8 +289,8 @@ const Team = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -263,23 +298,29 @@ const Team = () => {
             </p>
             <h2 className="section-title">{content.cta?.subtitle || 'We are always looking for operators.'}</h2>
             <p className="section-subtitle">Build with us across research, training, and community.</p>
-            <div className="public-hero-actions">
-              <button
-                className="public-btn public-btn--primary"
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
                 onClick={() => navigate(content.cta?.route || '/feedback')}
               >
                 {content.cta?.button || 'Open roles'}
                 <FiArrowUpRight size={13} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/contact')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Contact the team
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Operators, educators, builders.</h3>
-            <p className="public-card-desc">HSOCIETY OFFSEC is built by practitioners with real engagement experience.</p>
+            <h3 className={publicCardTitle}>Operators, educators, builders.</h3>
+            <p className={publicCardDesc}>HSOCIETY OFFSEC is built by practitioners with real engagement experience.</p>
           </div>
         </div>
       </section>

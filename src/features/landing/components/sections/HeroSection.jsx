@@ -5,7 +5,6 @@ import Logo from '../../../../shared/components/common/Logo';
 import useRequestPentest from '../../../../shared/hooks/useRequestPentest';
 import useAuthModal from '../../../../shared/hooks/useAuthModal';
 import { validateEmail } from '../../../../core/validation/input.validator';
-import '../../styles/sections/hero.css';
 
 /* ════════════════════════════════════════
    TYPEWRITER HOOK
@@ -53,8 +52,11 @@ const ColoredText = ({ text }) => {
       {parts.map((part, i) => {
         if (!HACKER_RE.test(part)) return part;
         return (
-          <span key={i} className="hero-hacker-word">
-            <span className="hero-hacker-code">{part}</span>
+          <span
+            key={i}
+            className="relative inline-flex items-end gap-1 px-1.5 pb-1 text-brand before:mr-0.5 before:text-[0.85em] before:tracking-[0.08em] before:content-['<'] after:ml-0.5 after:text-[0.85em] after:tracking-[0.08em] after:content-['/>'] before:font-mono after:font-mono"
+          >
+            <span className="relative">{part}</span>
           </span>
         );
       })}
@@ -132,74 +134,93 @@ const HeroSection = ({ content }) => {
   const heroCtaLabel = ctas?.[0]?.label || 'Sign up for HSOCIETY OFFSEC';
 
   return (
-    <section className="hero-section hero-section--centered">
-      <div className="hero-bg-image" aria-hidden="true" />
-      <div className="hero-grid-overlay" aria-hidden="true" />
+    <section className="relative flex h-[100svh] min-h-[600px] w-full items-center justify-center overflow-hidden pb-0 pt-8">
+      <div
+        className="pointer-events-none absolute -inset-[6%] z-0 bg-[image:var(--hero-brand-image)] bg-cover bg-center bg-no-repeat opacity-90 blur-[5px] saturate-90 brightness-110 hue-rotate-[-6deg]"
+        aria-hidden="true"
+      />
+      <div className="pointer-events-none absolute inset-0 z-[2] opacity-0" aria-hidden="true" />
 
       {/* ── Radial glow behind title ── */}
-      <div className="hero-center-glow" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute left-1/2 top-[30%] z-[1] h-[clamp(300px,50vh,600px)] w-[clamp(400px,70vw,900px)] -translate-x-1/2 -translate-y-1/2"
+        aria-hidden="true"
+      />
 
       {/* ── Logo silhouette watermark ── */}
-      <div className="hero-logo-silhouette" aria-hidden="true">
-        <Logo size="xlarge" className="hero-logo-silhouette-img" />
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 z-[1] flex w-[clamp(320px,55vw,700px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center animate-silhouette-drift motion-reduce:animate-none"
+        aria-hidden="true"
+      >
+        <Logo
+          size="xlarge"
+          className="w-full select-none brightness-0 invert opacity-[0.025]"
+        />
       </div>
 
-      <div className="hero-centered-container">
+      <div className="relative z-[3] flex h-full w-full max-w-[900px] flex-col items-center justify-center gap-5 px-6 py-10 text-center">
 
         {/* TITLE */}
-        <div className="hero-title-block hs-reveal hs-reveal--delay-1">
+        <div className="flex w-full flex-col items-center gap-1 animate-hs-reveal" style={{ animationDelay: '0.08s' }}>
           {/* Single-line (desktop) */}
-          <h1 className="hero-title-mega hero-title-mega--single">
-            <span className="hero-typed-text">
+          <h1 className="hidden min-h-[1.1em] text-center text-[clamp(4rem,8.5vw,9rem)] font-extrabold leading-[1.06] tracking-[-0.05em] text-text-primary lg:block">
+            <span className="inline">
               <ColoredText text={singleText} />
             </span>
             {cursorSingle && (
-              <span className="hero-type-cursor" aria-hidden="true" />
+              <span className="ml-2 inline-block h-[1.15em] w-[3px] rounded-sm bg-brand align-baseline animate-hero-cursor motion-reduce:animate-none" aria-hidden="true" />
             )}
             {!cursorSingle && (
-              <span className="hero-type-cursor hero-type-cursor--idle" aria-hidden="true" />
+              <span className="ml-2 inline-block h-[1.15em] w-[3px] rounded-sm bg-[color-mix(in_srgb,var(--primary-color)_60%,var(--text-tertiary))] align-baseline opacity-70 animate-hero-cursor-idle motion-reduce:animate-none" aria-hidden="true" />
             )}
           </h1>
 
           {/* Line 1 */}
-          <h1 className="hero-title-mega hero-title-mega--line1">
-            <span className="hero-typed-text">
+          <h1
+            className="min-h-[1.1em] text-[clamp(3rem,8vw,6.5rem)] font-extrabold leading-[1.06] tracking-[-0.04em] text-text-primary lg:hidden"
+            style={{ contain: 'layout style' }}
+          >
+            <span className="inline">
               <ColoredText text={text1} />
             </span>
             {cursorOnLine1 && (
-              <span className="hero-type-cursor" aria-hidden="true" />
+              <span className="ml-2 inline-block h-[1.15em] w-[3px] rounded-sm bg-brand align-baseline animate-hero-cursor motion-reduce:animate-none" aria-hidden="true" />
             )}
           </h1>
 
           {/* Line 2 */}
           {line2 && (
             <h1
-              className={`hero-title-mega hero-title-mega--line2 hs-reveal ${done1 ? '' : 'hero-title-mega--ghost'}`}
+              className={`min-h-[1.1em] text-[clamp(3rem,8vw,6.5rem)] font-extrabold leading-[1.06] tracking-[-0.04em] text-text-primary lg:hidden ${done1 ? '' : 'invisible'}`}
               aria-hidden={!done1}
+              style={{ contain: 'layout style' }}
             >
-              <span className="hero-typed-text">
+              <span className="inline">
                 <ColoredText text={done1 ? text2 : line2} />
               </span>
               {cursorOnLine2 && (
-                <span className="hero-type-cursor" aria-hidden="true" />
+                <span className="ml-2 inline-block h-[1.15em] w-[3px] rounded-sm bg-brand align-baseline animate-hero-cursor motion-reduce:animate-none" aria-hidden="true" />
               )}
               {cursorIdle && (
-                <span className="hero-type-cursor hero-type-cursor--idle" aria-hidden="true" />
+                <span className="ml-2 inline-block h-[1.15em] w-[3px] rounded-sm bg-[color-mix(in_srgb,var(--primary-color)_60%,var(--text-tertiary))] align-baseline opacity-70 animate-hero-cursor-idle motion-reduce:animate-none" aria-hidden="true" />
               )}
             </h1>
           )}
         </div>
 
         {/* DESCRIPTION */}
-        <p className="hero-desc-centered hs-reveal hs-reveal--delay-2">
+        <p
+          className="max-w-[560px] text-[clamp(0.95rem,1.8vw,1.05rem)] leading-[1.75] text-text-secondary animate-hs-reveal"
+          style={{ animationDelay: '0.22s' }}
+        >
           {description ||
             'HSOCIETY OFFSEC is a cybersecurity ecosystem that trains beginners, integrates them into a community, and deploys them into supervised real-world security engagements.'}
         </p>
 
         {/* CTAs */}
-        <div className="hero-cta-centered hs-reveal hs-reveal--delay-3">
-          <form className="hero-email-form" onSubmit={handleEmailSubmit} noValidate>
-            <div className="hero-email-shell">
+        <div className="flex w-full flex-col items-center gap-2 animate-hs-reveal" style={{ animationDelay: '0.36s' }}>
+          <form className="w-full max-w-[820px]" onSubmit={handleEmailSubmit} noValidate>
+            <div className="relative w-full">
               <input
                 type="email"
                 name="hero-email"
@@ -212,22 +233,22 @@ const HeroSection = ({ content }) => {
                 }}
                 autoComplete="email"
                 inputMode="email"
-                className="hero-email-input"
+                className="w-full rounded-lg border border-border bg-bg-secondary px-5 py-4 pr-4 text-sm text-text-primary transition-all focus:border-[color-mix(in_srgb,var(--primary-color)_50%,var(--border-color))] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--primary-color)_20%,transparent)] sm:pr-[11.5rem]"
               />
               <button
                 type="submit"
-                className="hero-email-button"
+                className="mt-3 w-full rounded-md bg-brand px-5 py-3 text-sm font-semibold text-ink-white sm:absolute sm:right-2 sm:top-1/2 sm:mt-0 sm:w-auto sm:-translate-y-1/2"
               >
                 {heroCtaLabel}
               </button>
             </div>
           </form>
           {emailError && (
-            <p className="hero-email-error" role="alert">{emailError}</p>
+            <p className="text-sm text-brand" role="alert">{emailError}</p>
           )}
           <button
             type="button"
-            className="hero-email-signin"
+            className="text-sm text-text-tertiary transition-colors hover:text-text-primary"
             onClick={() => openAuthModal('login', { email: String(email || '').trim().toLowerCase() || undefined })}
           >
             Already have an account? Sign in.
@@ -235,8 +256,8 @@ const HeroSection = ({ content }) => {
         </div>
 
         {/* SOCIAL + SCROLL FOOTER */}
-        <div className="hero-footer">
-          <div className="hero-socials-centered hs-reveal hs-reveal--delay-4">
+        <div className="flex w-full flex-col items-center gap-2">
+          <div className="flex flex-wrap justify-center gap-2 animate-hs-reveal" style={{ animationDelay: '0.48s' }}>
             {getSocialLinks().map((link) => {
               const Icon = link.icon;
               return (
@@ -246,7 +267,7 @@ const HeroSection = ({ content }) => {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={link.label}
-                  className="hero-social-link"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-border bg-bg-secondary text-text-secondary transition-colors hover:border-brand hover:bg-[color-mix(in_srgb,var(--primary-color)_8%,var(--bg-secondary))] hover:text-brand"
                 >
                   <Icon size={16} />
                 </a>
@@ -255,7 +276,9 @@ const HeroSection = ({ content }) => {
           </div>
 
           <div
-            className={`hero-scroll-cue-centered ${pulse ? 'hero-scroll-cue-centered--visible' : ''}`}
+            className={`flex items-center justify-center text-text-tertiary transition-opacity motion-reduce:animate-none ${
+              pulse ? 'opacity-60 animate-hero-scroll-pulse' : 'opacity-0'
+            }`}
             aria-hidden="true"
           >
             <FiChevronDown size={18} />

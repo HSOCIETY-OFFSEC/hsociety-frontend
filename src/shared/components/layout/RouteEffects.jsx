@@ -5,7 +5,6 @@ import { trackSecurityEvent } from '../../../core/security/security-events.servi
 import { trackPageView } from '../../services/analytics.service';
 import Seo from '../seo/Seo';
 import { getSeoForPath } from '../../../config/app/seo.config';
-import './RouteEffects.css';
 
 const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
   const location = useLocation();
@@ -74,7 +73,7 @@ const RouteEffects = ({ durationMs = 220, loaderDelayMs = 120 }) => {
     <>
       <Seo {...seo} />
       {showLoader && (
-        <div className="route-loader-overlay" aria-hidden="true">
+        <div className="route-loader-overlay animate-route-fade" aria-hidden="true">
           <Loader size="lg" label="Switching secure context" />
         </div>
       )}

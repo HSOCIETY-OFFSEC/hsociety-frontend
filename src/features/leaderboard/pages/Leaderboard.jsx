@@ -8,12 +8,36 @@ import {
   FiTrendingUp,
   FiArrowUpRight,
 } from 'react-icons/fi';
+import Button from '../../../shared/components/ui/Button';
 import LeaderboardTable from '../components/LeaderboardTable';
 import { getLeaderboard } from '../services/leaderboard.service';
 import { extractLeaderboardEntries } from '../services/leaderboard.utils';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
-import '../../public/styles/public-landing.css';
-import '../styles/leaderboard.css';
+import {
+  publicBadge,
+  publicBadgePulse,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicCardDesc,
+  publicCardTitle,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+  publicSurface,
+} from '../../../shared/styles/publicClasses';
 
 const Leaderboard = () => {
   const navigate = useNavigate();
@@ -52,66 +76,75 @@ const Leaderboard = () => {
   const topCp = entries[0]?.totalXp ?? '—';
 
   return (
-    <div className="public-page public-page-inner lb-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Leaderboard
             </p>
-            <h1 className="public-hero-title">Top operators in the community.</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>Top operators in the community.</h1>
+            <p className={publicHeroDesc}>
               Rankings based on Compromised Points, streaks, and verified learning milestones.
             </p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/community')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/community')}
+              >
                 Join the community
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/cp-points')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/cp-points')}
+              >
                 Learn about CP points
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiUsers size={12} />
                 {totalEntries} operators
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiTrendingUp size={12} />
                 Top streak {topStreak}
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiZap size={12} />
                 Top CP {topCp}
               </span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge badge--pulse">Leaderboard live</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={`${publicBadge} ${publicBadgePulse}`}>Leaderboard live</p>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Verified mission completions.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Daily streak multipliers.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Community contribution weight.</span>
               </div>
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>{totalEntries}</strong> operators
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">{totalEntries}</strong> operators
               </span>
-              <span className="public-hero-stat">
-                <strong>{topStreak}</strong> top streak
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">{topStreak}</strong> top streak
               </span>
             </div>
           </div>
@@ -119,7 +152,7 @@ const Leaderboard = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -129,16 +162,19 @@ const Leaderboard = () => {
             <h2 className="section-title">Current operator leaderboard.</h2>
             <p className="section-subtitle">Updated with every verified mission and streak.</p>
           </div>
-          <div className="public-surface">
+          <div className={publicSurface}>
             <div className="hs-signature" aria-hidden="true" />
             {loading ? (
-              <div className="lb-skeleton" aria-label="Loading leaderboard">
+              <div className="grid gap-3" aria-label="Loading leaderboard">
                 {skeletonRows.map((_, idx) => (
-                  <div key={idx} className="lb-skeleton-row" />
+                  <div
+                    key={idx}
+                    className="h-[42px] rounded-sm bg-[linear-gradient(90deg,var(--bg-tertiary),var(--bg-secondary),var(--bg-tertiary))] bg-[length:200px_100%] animate-table-shimmer"
+                  />
                 ))}
               </div>
             ) : statusMessage ? (
-              <p className="lb-status">{statusMessage}</p>
+              <p className="text-text-secondary">{statusMessage}</p>
             ) : (
               <LeaderboardTable entries={entries} />
             )}
@@ -147,8 +183,8 @@ const Leaderboard = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -156,20 +192,31 @@ const Leaderboard = () => {
             </p>
             <h2 className="section-title">Start earning Compromised Points.</h2>
             <p className="section-subtitle">Complete labs, ship reports, and build streak momentum.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/courses')}
+              >
                 View programs
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/cp-points')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/cp-points')}
+              >
                 CP Points guide
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Operators only.</h3>
-            <p className="public-card-desc">Train, execute, and earn your position on the board.</p>
+            <h3 className={publicCardTitle}>Operators only.</h3>
+            <p className={publicCardDesc}>
+              Train, execute, and earn your position on the board.
+            </p>
           </div>
         </div>
       </section>

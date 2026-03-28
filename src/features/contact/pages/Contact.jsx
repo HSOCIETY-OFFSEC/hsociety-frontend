@@ -9,14 +9,41 @@ import {
   FiCheckCircle,
 } from 'react-icons/fi';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/contact.css';
 import {
   CONTACT_HERO,
   CONTACT_CHANNELS,
   CONTACT_STATS,
   CONTACT_SOCIAL_LINKS,
 } from '../../../config/app/contact.config';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicButtonBase,
+  publicButtonGhost,
+  publicButtonPrimary,
+  publicButtonSmall,
+  publicCard,
+  publicCardDesc,
+  publicCardTitle,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 export default function Contact() {
   const hero = CONTACT_HERO;
@@ -24,72 +51,72 @@ export default function Contact() {
   const SecondaryActionIcon = hero.secondaryAction.icon;
 
   return (
-    <div className="public-page public-page-inner contact-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Contact
             </p>
-            <h1 className="public-hero-title">Talk to the operators.</h1>
-            <p className="public-hero-desc">{hero.description}</p>
-            <div className="public-hero-actions">
+            <h1 className={publicHeroTitle}>Talk to the operators.</h1>
+            <p className={publicHeroDesc}>{hero.description}</p>
+            <div className={publicHeroActions}>
               <a
                 href={hero.primaryAction.href}
-                className="public-btn public-btn--primary"
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonPrimary} px-[1.1rem] text-[0.9rem]`}
               >
                 <PrimaryActionIcon size={14} />
                 {hero.primaryAction.label}
               </a>
               <a
                 href={hero.secondaryAction.href}
-                className="public-btn public-btn--ghost"
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost} bg-transparent px-[1.1rem] text-[0.9rem]`}
               >
                 <SecondaryActionIcon size={14} />
                 {hero.secondaryAction.label}
               </a>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
-                <span className="contact-status-dot" />
+            <div className={publicPillRow}>
+              <span className={publicPill}>
+                <span className="mr-2 inline-block h-2 w-2 rounded-full bg-brand" />
                 {hero.availability}
               </span>
               {CONTACT_STATS.map((s) => (
-                <span key={s.label} className="public-pill">
+                <span key={s.label} className={publicPill}>
                   {s.value} {s.label}
                 </span>
               ))}
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Support signals</p>
-            <div className="public-list">
-              <div className="public-list-item">
+            <p className={publicBadge}>Support signals</p>
+            <div className={publicList}>
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>24-hour email response.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Dedicated support desk.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>Global team coverage.</span>
               </div>
-              <div className="public-list-item">
+              <div className={publicListItem}>
                 <FiCheckCircle size={14} />
                 <span>98% satisfaction rate.</span>
               </div>
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>24h</strong> response
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">24h</strong> response
               </span>
-              <span className="public-hero-stat">
-                <strong>98%</strong> CSAT
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">98%</strong> CSAT
               </span>
             </div>
           </div>
@@ -97,7 +124,7 @@ export default function Contact() {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -110,27 +137,28 @@ export default function Contact() {
             </p>
           </div>
           <PublicCardGrid className="contact-card-grid">
-            {CONTACT_CHANNELS.map((card) => {
+            {CONTACT_CHANNELS.map((card, index) => {
               const Icon = card.icon;
               return (
                 <article
                   key={card.label}
-                  className={`public-card contact-card contact-card-${card.accent}`}
+                  className={`${publicCard} gap-3`}
+                  style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
                 >
                   <div className="hs-signature" aria-hidden="true" />
-                  <div className="contact-card-header">
-                    <span className="contact-card-icon">
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--primary-color)_14%,var(--bg-secondary))] text-brand">
                       <Icon size={18} />
                     </span>
-                    <span className={`contact-label contact-label-${card.accent}`}>
+                    <span className="text-[0.65rem] uppercase tracking-[0.18em] text-text-tertiary">
                       {card.tag}
                     </span>
                   </div>
-                  <h3 className="public-card-title">{card.label}</h3>
-                  <p className="contact-card-value">{card.value}</p>
-                  <div className="contact-card-footer">
-                    <span className={`contact-lang-dot contact-lang-dot-${card.accent}`} />
-                    <span className="contact-lang-label">{card.sub}</span>
+                  <h3 className={publicCardTitle}>{card.label}</h3>
+                  <p className="text-[0.95rem] text-text-secondary">{card.value}</p>
+                  <div className="flex items-center gap-2 text-xs text-text-tertiary">
+                    <span className="h-2 w-2 rounded-full bg-brand" />
+                    <span>{card.sub}</span>
                   </div>
                 </article>
               );
@@ -140,8 +168,8 @@ export default function Contact() {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -151,38 +179,44 @@ export default function Contact() {
             <p className="section-subtitle">
               Product updates, behind-the-scenes stories, and industry insights.
             </p>
-            <div className="public-hero-actions">
-              <a href={hero.primaryAction.href} className="public-btn public-btn--primary">
+            <div className={publicHeroActions}>
+              <a
+                href={hero.primaryAction.href}
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonPrimary} px-[1.1rem] text-[0.9rem]`}
+              >
                 <FiMessageSquare size={14} />
                 Start a conversation
               </a>
-              <a href={hero.secondaryAction.href} className="public-btn public-btn--ghost">
+              <a
+                href={hero.secondaryAction.href}
+                className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonGhost} bg-transparent px-[1.1rem] text-[0.9rem]`}
+              >
                 <FiArrowUpRight size={14} />
                 Request a briefing
               </a>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Follow our channels</h3>
-            <p className="public-card-desc">
+            <h3 className={publicCardTitle}>Follow our channels</h3>
+            <p className={publicCardDesc}>
               Stay up to date with product updates, behind-the-scenes stories,
               and industry insights across our channels.
             </p>
-            <div className="contact-social-links">
+            <div className="grid gap-3">
               {CONTACT_SOCIAL_LINKS.map((link) => {
                 const SocialIcon = link.icon;
                 return (
                   <a
                     key={link.label}
                     href={link.href}
-                    className="contact-social-link"
+                    className="inline-flex items-center gap-2 rounded-sm border border-border bg-bg-secondary px-3 py-2 text-sm text-text-primary transition hover:-translate-y-0.5 hover:border-[color-mix(in_srgb,var(--primary-color)_25%,var(--border-color))]"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <SocialIcon size={14} />
                     {link.label}
-                    <FiArrowUpRight size={12} className="contact-social-arrow" />
+                    <FiArrowUpRight size={12} className="ml-auto" />
                   </a>
                 );
               })}

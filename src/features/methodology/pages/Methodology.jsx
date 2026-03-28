@@ -3,8 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { FiCheckCircle, FiClipboard, FiSearch, FiShield, FiTarget, FiTool } from 'react-icons/fi';
 import methodologyContent from '../../../data/static/methodology.json';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/methodology.css';
+import Button from '../../../shared/components/ui/Button';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const Methodology = () => {
   const navigate = useNavigate();
@@ -23,48 +49,57 @@ const Methodology = () => {
   }));
 
   return (
-    <div className="public-page public-page-inner methodology-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Methodology
             </p>
-            <h1 className="public-hero-title">{methodologyContent.hero.title}</h1>
-            <p className="public-hero-desc">{methodologyContent.hero.subtitle}</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <h1 className={publicHeroTitle}>{methodologyContent.hero.title}</h1>
+            <p className={publicHeroDesc}>{methodologyContent.hero.subtitle}</p>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Start an engagement
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/services')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/services')}
+              >
                 Explore services
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
+            <div className={publicPillRow}>
               {methodologyContent.hero.chips.map((chip) => (
-                <span key={chip} className="public-pill">{chip}</span>
+                <span key={chip} className={publicPill}>{chip}</span>
               ))}
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Operator workflow</p>
-            <div className="public-list">
+            <p className={publicBadge}>Operator workflow</p>
+            <div className={publicList}>
               {phases.slice(0, 4).map((phase) => (
-                <div key={phase.title} className="public-list-item">
+                <div key={phase.title} className={publicListItem}>
                   {phase.icon && <phase.icon size={14} />}
                   <span>{phase.title}</span>
                 </div>
               ))}
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>{phases.length}</strong> phases
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">{phases.length}</strong> phases
               </span>
-              <span className="public-hero-stat">
-                <strong>Repeatable</strong> cycle
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Repeatable</strong> cycle
               </span>
             </div>
           </div>
@@ -72,7 +107,7 @@ const Methodology = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -83,14 +118,18 @@ const Methodology = () => {
             <p className="section-subtitle">Every phase is designed to surface risk and ship fixes.</p>
           </div>
           <PublicCardGrid>
-            {phases.map((phase) => (
-              <article key={phase.title} className="public-card">
+            {phases.map((phase, index) => (
+              <article
+                key={phase.title}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">{phase.title}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>{phase.title}</span>
                 </div>
-                <h3 className="public-card-title">{phase.title}</h3>
-                <p className="public-card-desc">{phase.detail}</p>
+                <h3 className={publicCardTitle}>{phase.title}</h3>
+                <p className={publicCardDesc}>{phase.detail}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -98,8 +137,8 @@ const Methodology = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -107,19 +146,28 @@ const Methodology = () => {
             </p>
             <h2 className="section-title">Let’s apply this methodology to your stack.</h2>
             <p className="section-subtitle">Scope a pentest or training cycle with the HSOCIETY OFFSEC team.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Book a briefing
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/pricing')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/pricing')}
+              >
                 View pricing
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Cycle-based, evidence-first.</h3>
-            <p className="public-card-desc">Continuous validation, clear remediation paths, and operator-grade output.</p>
+            <h3 className={publicCardTitle}>Cycle-based, evidence-first.</h3>
+            <p className={publicCardDesc}>Continuous validation, clear remediation paths, and operator-grade output.</p>
           </div>
         </div>
       </section>

@@ -3,13 +3,38 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAuthModal from '../../../shared/hooks/useAuthModal';
 import landingContent from '../../../data/static/landing.json';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/services.css';
 import {
   FiArrowUpRight,
   FiCheckCircle,
   FiZap,
 } from 'react-icons/fi';
+import Button from '../../../shared/components/ui/Button';
+import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicList,
+  publicListItem,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const slugify = (value) =>
   value
@@ -35,51 +60,60 @@ const ServiceDetail = () => {
   if (!service) return null;
 
   return (
-    <div className="public-page public-page-inner svc-detail-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Services
             </p>
-            <h1 className="public-hero-title">{service.title}</h1>
-            <p className="public-hero-desc">{service.description}</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <h1 className={publicHeroTitle}>{service.title}</h1>
+            <p className={publicHeroDesc}>{service.description}</p>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 <FiZap size={14} />
                 Talk to HSOCIETY OFFSEC
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => openAuthModal('login')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => openAuthModal('login')}
+              >
                 Join training cycle
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiCheckCircle size={12} />
                 {service.features.length} coverage areas
               </span>
-              <span className="public-pill">Active service</span>
+              <span className={publicPill}>Active service</span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Coverage summary</p>
-            <div className="public-list">
+            <p className={publicBadge}>Coverage summary</p>
+            <div className={publicList}>
               {service.features.slice(0, 4).map((item) => (
-                <div key={item} className="public-list-item">
+                <div key={item} className={publicListItem}>
                   <FiCheckCircle size={14} />
                   <span>{item}</span>
                 </div>
               ))}
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>{service.features.length}</strong> controls
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">{service.features.length}</strong> controls
               </span>
-              <span className="public-hero-stat">
-                <strong>Rapid</strong> reporting
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">Rapid</strong> reporting
               </span>
             </div>
           </div>
@@ -87,7 +121,7 @@ const ServiceDetail = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -98,11 +132,15 @@ const ServiceDetail = () => {
             <p className="section-subtitle">Every engagement prioritizes clarity, evidence, and impact.</p>
           </div>
           <PublicCardGrid>
-            {service.features.map((feature) => (
-              <article key={feature} className="public-card">
+            {service.features.map((feature, index) => (
+              <article
+                key={feature}
+                className={publicCard}
+                style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
+              >
                 <div className="hs-signature" aria-hidden="true" />
-                <h3 className="public-card-title">{feature}</h3>
-                <p className="public-card-desc">Operator-led coverage with remediation guidance.</p>
+                <h3 className={publicCardTitle}>{feature}</h3>
+                <p className={publicCardDesc}>Operator-led coverage with remediation guidance.</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -110,7 +148,7 @@ const ServiceDetail = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -123,7 +161,7 @@ const ServiceDetail = () => {
           <PublicCardGrid>
             {prevService && (
               <article
-                className="public-card svc-nav-card interactive-card"
+                className={`${publicCard} cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand`}
                 role="button"
                 tabIndex={0}
                 onClick={() => navigate(`/services/${slugify(prevService.title)}`)}
@@ -136,14 +174,14 @@ const ServiceDetail = () => {
                 aria-label={`View service ${prevService.title}`}
               >
                 <div className="hs-signature" aria-hidden="true" />
-                <p className="public-card-meta">Previous service</p>
-                <h3 className="public-card-title">{prevService.title}</h3>
-                <p className="public-card-desc">{prevService.description}</p>
+                <p className={publicCardMeta}>Previous service</p>
+                <h3 className={publicCardTitle}>{prevService.title}</h3>
+                <p className={publicCardDesc}>{prevService.description}</p>
               </article>
             )}
             {nextService && (
               <article
-                className="public-card svc-nav-card interactive-card"
+                className={`${publicCard} cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand`}
                 role="button"
                 tabIndex={0}
                 onClick={() => navigate(`/services/${slugify(nextService.title)}`)}
@@ -156,13 +194,13 @@ const ServiceDetail = () => {
                 aria-label={`View service ${nextService.title}`}
               >
                 <div className="hs-signature" aria-hidden="true" />
-                <p className="public-card-meta">Next service</p>
-                <h3 className="public-card-title">{nextService.title}</h3>
-                <p className="public-card-desc">{nextService.description}</p>
+                <p className={publicCardMeta}>Next service</p>
+                <h3 className={publicCardTitle}>{nextService.title}</h3>
+                <p className={publicCardDesc}>{nextService.description}</p>
               </article>
             )}
             <article
-              className="public-card svc-nav-card interactive-card"
+              className={`${publicCard} cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand`}
               role="button"
               tabIndex={0}
               onClick={() => navigate('/services')}
@@ -175,17 +213,17 @@ const ServiceDetail = () => {
               aria-label="View all services"
             >
               <div className="hs-signature" aria-hidden="true" />
-              <p className="public-card-meta">All services</p>
-              <h3 className="public-card-title">Service catalog</h3>
-              <p className="public-card-desc">Browse all HSOCIETY OFFSEC offerings.</p>
+              <p className={publicCardMeta}>All services</p>
+              <h3 className={publicCardTitle}>Service catalog</h3>
+              <p className={publicCardDesc}>Browse all HSOCIETY OFFSEC offerings.</p>
             </article>
           </PublicCardGrid>
         </div>
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -193,20 +231,29 @@ const ServiceDetail = () => {
             </p>
             <h2 className="section-title">Start a security engagement.</h2>
             <p className="section-subtitle">Talk to our team about your attack surface and goals.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/contact')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Book a call
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/pricing')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/pricing')}
+              >
                 View pricing
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Operator-led delivery.</h3>
-            <p className="public-card-desc">Supervised pentests, clear findings, and remediation mapping.</p>
+            <h3 className={publicCardTitle}>Operator-led delivery.</h3>
+            <p className={publicCardDesc}>Supervised pentests, clear findings, and remediation mapping.</p>
           </div>
         </div>
       </section>

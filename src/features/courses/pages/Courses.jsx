@@ -8,70 +8,102 @@ import {
 } from 'react-icons/fi';
 import { HACKER_PROTOCOL_BOOTCAMP, HACKER_PROTOCOL_PHASES } from '../../../data/static/bootcamps/hackerProtocolData';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
-import '../../public/styles/public-landing.css';
-import '../styles/courses.css';
+import Button from '../../../shared/components/ui/Button';
+import {
+  publicBadge,
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicCtaCard,
+  publicCtaInner,
+  publicCtaSection,
+  publicHeroActions,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroPanel,
+  publicHeroSection,
+  publicHeroStat,
+  publicHeroStats,
+  publicHeroTitle,
+  publicPage,
+  publicPill,
+  publicPillRow,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const Courses = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="public-page public-page-inner crs-page">
+    <div className={`${publicPage} text-text-primary`}>
       {/* ── HERO ─────────────────────────────────── */}
-      <section className="hero-section public-hero reveal-on-scroll">
-        <div className="section-container">
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
           <div>
-            <p className="public-hero-kicker">
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               HSOCIETY OFFSEC / Courses
             </p>
-            <h1 className="public-hero-title">Operator-grade training programs.</h1>
-            <p className="public-hero-desc">
+            <h1 className={publicHeroTitle}>Operator-grade training programs.</h1>
+            <p className={publicHeroDesc}>
               Structured programs built for skill progression, identity validation, and real-world deployment.
             </p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses/hacker-protocol')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/courses/hacker-protocol')}
+              >
                 View Hacker Protocol
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/contact')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/contact')}
+              >
                 Talk to us
-              </button>
+              </Button>
             </div>
-            <div className="public-pill-row">
-              <span className="public-pill">
+            <div className={publicPillRow}>
+              <span className={publicPill}>
                 <FiShield size={12} />
                 Programs 1 active
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiLayers size={12} />
                 {HACKER_PROTOCOL_BOOTCAMP.phases} phases
               </span>
-              <span className="public-pill">
+              <span className={publicPill}>
                 <FiClock size={12} />
                 {HACKER_PROTOCOL_BOOTCAMP.duration}
               </span>
             </div>
           </div>
-          <div className="public-hero-panel">
+          <div className={publicHeroPanel}>
             <div className="hs-signature" aria-hidden="true" />
-            <p className="public-badge">Featured program</p>
-            <div className="crs-featured-panel">
+            <p className={publicBadge}>Featured program</p>
+            <div className="flex items-center gap-4">
               <img
                 src={HACKER_PROTOCOL_BOOTCAMP.emblem}
                 alt="Hacker Protocol emblem"
-                className="crs-featured-emblem"
+                className="h-16 w-16 object-contain"
               />
               <div>
-                <h3 className="public-card-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h3>
-                <p className="public-card-desc">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
+                <h3 className={publicCardTitle}>{HACKER_PROTOCOL_BOOTCAMP.title}</h3>
+                <p className={publicCardDesc}>{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
               </div>
             </div>
-            <div className="public-hero-stats">
-              <span className="public-hero-stat">
-                <strong>{HACKER_PROTOCOL_BOOTCAMP.phases}</strong> phases
+            <div className={publicHeroStats}>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">{HACKER_PROTOCOL_BOOTCAMP.phases}</strong> phases
               </span>
-              <span className="public-hero-stat">
-                <strong>{HACKER_PROTOCOL_BOOTCAMP.duration}</strong>
+              <span className={publicHeroStat}>
+                <strong className="font-semibold text-text-secondary">{HACKER_PROTOCOL_BOOTCAMP.duration}</strong>
               </span>
             </div>
           </div>
@@ -79,7 +111,7 @@ const Courses = () => {
       </section>
 
       {/* ── CARDS ────────────────────────────────── */}
-      <section className="public-section reveal-on-scroll">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -93,15 +125,15 @@ const Courses = () => {
             {HACKER_PROTOCOL_PHASES.map((phase, index) => (
               <article
                 key={phase.title}
-                className="public-card crs-phase-card"
+                className={`${publicCard} before:bg-contain before:bg-no-repeat before:bg-center`}
                 style={{ '--public-card-media': `url(${phase.emblem})` }}
               >
                 <div className="hs-signature" aria-hidden="true" />
-                <div className="public-card-meta">
-                  <span className="public-chip">Phase {index + 1}</span>
+                <div className={publicCardMeta}>
+                  <span className={publicChip}>Phase {index + 1}</span>
                 </div>
-                <h3 className="public-card-title">{phase.title}</h3>
-                <p className="public-card-desc">{phase.summary}</p>
+                <h3 className={publicCardTitle}>{phase.title}</h3>
+                <p className={publicCardDesc}>{phase.summary}</p>
               </article>
             ))}
           </PublicCardGrid>
@@ -109,8 +141,8 @@ const Courses = () => {
       </section>
 
       {/* ── CTA ─────────────────────────────────── */}
-      <section className="public-cta reveal-on-scroll">
-        <div className="section-container public-cta-inner">
+      <section className={`reveal-on-scroll ${publicCtaSection}`}>
+        <div className={`section-container ${publicCtaInner}`}>
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -118,20 +150,29 @@ const Courses = () => {
             </p>
             <h2 className="section-title">Start the Hacker Protocol journey.</h2>
             <p className="section-subtitle">Enroll in the bootcamp and move into supervised engagements.</p>
-            <div className="public-hero-actions">
-              <button className="public-btn public-btn--primary" onClick={() => navigate('/courses/hacker-protocol')}>
+            <div className={publicHeroActions}>
+              <Button
+                size="small"
+                className="px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/courses/hacker-protocol')}
+              >
                 View curriculum
                 <FiArrowUpRight size={14} />
-              </button>
-              <button className="public-btn public-btn--ghost" onClick={() => navigate('/student-bootcamps')}>
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                className="bg-transparent px-[1.1rem] text-[0.9rem]"
+                onClick={() => navigate('/student-bootcamps')}
+              >
                 Go to bootcamp
-              </button>
+              </Button>
             </div>
           </div>
-          <div className="public-cta-card">
+          <div className={publicCtaCard}>
             <div className="hs-signature" aria-hidden="true" />
-            <h3 className="public-card-title">Built by operators.</h3>
-            <p className="public-card-desc">Learn with live labs, guided missions, and real-world context.</p>
+            <h3 className={publicCardTitle}>Built by operators.</h3>
+            <p className={publicCardDesc}>Learn with live labs, guided missions, and real-world context.</p>
           </div>
         </div>
       </section>

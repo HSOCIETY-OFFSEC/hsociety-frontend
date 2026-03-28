@@ -646,7 +646,7 @@ const AdminContent = () => {
 
   return (
     <div className="admin-dashboard">
-      <div className="dashboard-shell">
+      <div className="flex flex-col gap-5">
         {error && <div className="admin-alert">{error}</div>}
         {status && <div className="admin-alert">{status}</div>}
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import './BinaryToast.css';
 
 const buildParticles = () =>
   Array.from({ length: 26 }, () => {
@@ -36,18 +35,34 @@ const BinaryToast = ({ toast, onClose }) => {
 
   if (!toast) return null;
 
+  const variant = toast.variant || 'success';
+  const dotClasses =
+    variant === 'info'
+      ? 'bg-status-info shadow-[0_0_10px_color-mix(in_srgb,rgb(var(--info-rgb))_70%,transparent)]'
+      : 'bg-brand shadow-[0_0_10px_color-mix(in_srgb,var(--primary-color)_70%,transparent)]';
+
   return (
-    <div className={`binary-toast ${isVisible ? 'is-visible' : ''}`} aria-live="polite">
-      <div className={`binary-toast-card ${toast.variant || 'success'}`}>
-        <div className="binary-toast-header">
-          <span className="binary-toast-dot" aria-hidden="true" />
-          <strong>{toast.title || 'Success'}</strong>
-          <button type="button" className="binary-toast-close" onClick={onClose} aria-label="Close">
+    <div
+      className={`fixed inset-0 z-50 flex items-start justify-center pt-4 transition-all duration-200 ${
+        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-3 opacity-0'
+      }`}
+      aria-live="polite"
+    >
+      <div className="pointer-events-auto relative min-w-[260px] max-w-[min(90vw,380px)] overflow-hidden rounded-xl border border-border bg-[color-mix(in_srgb,var(--card-bg)_92%,transparent)] px-4 py-3 shadow-lg">
+        <div className="flex items-center gap-2.5">
+          <span className={`h-2 w-2 rounded-full ${dotClasses}`} aria-hidden="true" />
+          <strong className="mr-auto text-sm text-text-primary">{toast.title || 'Success'}</strong>
+          <button
+            type="button"
+            className="text-lg leading-none text-text-tertiary transition-colors hover:text-text-secondary"
+            onClick={onClose}
+            aria-label="Close"
+          >
             ×
           </button>
         </div>
-        {toast.message && <p className="binary-toast-message">{toast.message}</p>}
-        <div className="binary-toast-particles" aria-hidden="true">
+        {toast.message && <p className="mt-2 text-sm text-text-secondary">{toast.message}</p>}
+        <div className="pointer-events-none fixed inset-0 z-40 overflow-hidden" aria-hidden="true">
           {particles.map((particle, index) => (
             <span
               key={`${particle.digit}-${index}`}
@@ -56,11 +71,12 @@ const BinaryToast = ({ toast, onClose }) => {
                 '--origin-y': particle.originY,
                 '--x': particle.x,
                 '--y': particle.y,
-                '--delay': particle.delay,
                 '--duration': particle.duration,
                 '--size': particle.size,
                 '--opacity': particle.opacity,
+                animationDelay: particle.delay,
               }}
+              className="absolute left-[var(--origin-x)] top-[var(--origin-y)] -translate-x-1/2 -translate-y-1/2 font-bold text-[length:var(--size)] text-[color-mix(in_srgb,var(--primary-color)_80%,var(--text-primary))] opacity-[var(--opacity)] animate-binary-pop"
             >
               {particle.digit}
             </span>
