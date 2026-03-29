@@ -6,6 +6,34 @@ const BootcampResources = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const headerClassName = 'mb-6 flex flex-col gap-4';
+  const headerInnerClassName = 'flex flex-wrap items-center justify-between gap-6';
+  const headerLeftClassName = 'flex items-center gap-4';
+  const iconWrapClassName = 'flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-bg-secondary text-brand';
+  const breadcrumbClassName = 'flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary';
+  const breadcrumbStrongClassName = 'font-semibold text-text-secondary';
+  const visibilityClassName =
+    'rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold uppercase tracking-widest text-text-secondary';
+  const headerDescClassName = 'mt-1 text-sm text-text-secondary';
+  const metaRowClassName = 'flex flex-wrap gap-3';
+  const metaPillClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+  const metaValueClassName = 'font-semibold text-text-primary';
+  const sectionClassName = 'flex flex-col gap-4';
+  const sectionTitleClassName = 'text-lg font-semibold text-text-primary';
+  const sectionDescClassName = 'text-sm text-text-secondary';
+  const panelClassName = 'rounded-lg border border-border bg-bg-secondary p-5 text-sm text-text-secondary';
+  const cardGridClassName = 'grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3';
+  const cardClassName = 'flex flex-col gap-4 rounded-lg border border-border bg-bg-secondary p-5 shadow-sm';
+  const cardHeaderClassName = 'flex items-start justify-between gap-4';
+  const cardKickerClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const cardTitleClassName = 'text-base font-semibold text-text-primary';
+  const cardSubtitleClassName = 'text-sm text-text-secondary';
+  const buttonSecondaryClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-xs font-semibold text-text-primary transition hover:bg-bg-tertiary disabled:opacity-60';
+  const subcardClassName = 'rounded-lg border border-dashed border-border bg-bg-tertiary p-4';
 
   useEffect(() => {
     let mounted = true;
@@ -49,73 +77,75 @@ const BootcampResources = () => {
   }, [items]);
 
   return (
-    <div className="bc-page">
-        <header className="bc-page-header">
-          <div className="bc-page-header-inner">
-            <div className="bc-header-left">
-              <div className="bc-header-icon-wrap">
-                <FiBookOpen size={20} className="bc-header-icon" />
+    <div className={pageClassName}>
+        <header className={headerClassName}>
+          <div className={headerInnerClassName}>
+            <div className={headerLeftClassName}>
+              <div className={iconWrapClassName}>
+                <FiBookOpen size={20} />
               </div>
               <div>
-                <div className="bc-header-breadcrumb">
-                  <span className="bc-breadcrumb-org">HSOCIETY</span>
-                  <span className="bc-breadcrumb-sep">/</span>
-                  <span className="bc-breadcrumb-page">bootcamp-resources</span>
-                  <span className="bc-header-visibility">Private</span>
+                <div className={breadcrumbClassName}>
+                  <span className={breadcrumbStrongClassName}>HSOCIETY</span>
+                  <span>/</span>
+                  <span className={breadcrumbStrongClassName}>bootcamp-resources</span>
+                  <span className={visibilityClassName}>Private</span>
                 </div>
-                <p className="bc-header-desc">Guides, tools, and playbooks supporting each room.</p>
+                <p className={headerDescClassName}>Guides, tools, and playbooks supporting each room.</p>
               </div>
             </div>
           </div>
-          <div className="bc-header-meta">
-            <span className="bc-meta-pill">
-              <FiLayers size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Libraries</span>
-              <strong className="bc-meta-value">{items.length}</strong>
+          <div className={metaRowClassName}>
+            <span className={metaPillClassName}>
+              <FiLayers size={13} className="text-text-tertiary" />
+              <span>Libraries</span>
+              <strong className={metaValueClassName}>{items.length}</strong>
             </span>
-            <span className="bc-meta-pill">
-              <FiTool size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Tooling</span>
-              <strong className="bc-meta-value">Curated</strong>
+            <span className={metaPillClassName}>
+              <FiTool size={13} className="text-text-tertiary" />
+              <span>Tooling</span>
+              <strong className={metaValueClassName}>Curated</strong>
             </span>
           </div>
         </header>
 
-        <div className="bc-layout">
-          <main className="bc-main">
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiBookOpen size={15} className="bc-section-icon" />
+        <div className="grid gap-6">
+          <main>
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiBookOpen size={15} className="mr-2 inline-block text-brand" />
                 Resource Library
               </h2>
-              <p className="bc-section-desc">Downloadable guides and playbooks aligned to each phase.</p>
+              <p className={sectionDescClassName}>Downloadable guides and playbooks aligned to each phase.</p>
               {loading && (
-                <div className="bc-panel">
+                <div className={panelClassName}>
                   <p>Loading bootcamp resources...</p>
                 </div>
               )}
               {error && !loading && (
-                <div className="bc-panel bc-alert">
-                  <FiInfo size={16} />
-                  <p>{error}</p>
+                <div className={panelClassName}>
+                  <div className="flex items-start gap-2">
+                    <FiInfo size={16} className="text-text-tertiary" />
+                    <p>{error}</p>
+                  </div>
                 </div>
               )}
               {!loading && !error && items.length === 0 && (
-                <div className="bc-panel">
+                <div className={panelClassName}>
                   <p>No bootcamp resources available yet.</p>
                 </div>
               )}
               {!loading && !error && items.length > 0 && (
-                <div className="bc-card-grid">
+                <div className={cardGridClassName}>
                   {grouped.map((module) => (
-                    <article key={`module-${module.moduleId}`} className="bc-card">
-                      <div className="bc-card-header">
+                    <article key={`module-${module.moduleId}`} className={cardClassName}>
+                      <div className={cardHeaderClassName}>
                         <div>
-                          <p className="bc-card-kicker">Phase {module.moduleId || '—'}</p>
-                          <h3 className="bc-card-title">
+                          <p className={cardKickerClassName}>Phase {module.moduleId || '—'}</p>
+                          <h3 className={cardTitleClassName}>
                             {module.moduleTitle || `Module ${module.moduleId || '—'}`}
                           </h3>
-                          <p className="bc-card-subtitle">
+                          <p className={cardSubtitleClassName}>
                             {(module.moduleResources || []).length + (module.rooms || []).reduce((sum, room) => sum + (room.resources || []).length, 0)}
                             {' '}downloads
                           </p>
@@ -124,12 +154,12 @@ const BootcampResources = () => {
                       </div>
 
                       {(module.moduleResources || []).length > 0 && (
-                        <div className="bc-card-actions">
+                        <div className="flex flex-wrap gap-2">
                           {module.moduleResources.map((resource) => (
                             <button
                               key={resource.url || resource.title}
                               type="button"
-                              className="bc-btn bc-btn-secondary"
+                              className={buttonSecondaryClassName}
                               onClick={() => resource.url && window.open(resource.url, '_blank', 'noopener,noreferrer')}
                               disabled={!resource.url}
                             >
@@ -141,21 +171,21 @@ const BootcampResources = () => {
                       )}
 
                       {(module.rooms || []).length > 0 && (
-                        <div className="bc-card-stack">
+                        <div className="grid gap-3">
                           {(module.rooms || []).map((room) => (
-                            <div key={`room-${module.moduleId}-${room.roomId}`} className="bc-subcard">
-                              <div className="bc-subcard-header">
+                            <div key={`room-${module.moduleId}-${room.roomId}`} className={subcardClassName}>
+                              <div>
                                 <div>
-                                  <p className="bc-card-kicker">Room {room.roomId || '—'}</p>
-                                  <h4 className="bc-subcard-title">{room.roomTitle || 'Room resources'}</h4>
+                                  <p className={cardKickerClassName}>Room {room.roomId || '—'}</p>
+                                  <h4 className="text-sm font-semibold text-text-primary">{room.roomTitle || 'Room resources'}</h4>
                                 </div>
                               </div>
-                              <div className="bc-card-actions">
+                              <div className="mt-3 flex flex-wrap gap-2">
                                 {(room.resources || []).map((resource) => (
                                   <button
                                     key={resource.url || resource.title}
                                     type="button"
-                                    className="bc-btn bc-btn-secondary"
+                                    className={buttonSecondaryClassName}
                                     onClick={() => resource.url && window.open(resource.url, '_blank', 'noopener,noreferrer')}
                                     disabled={!resource.url}
                                   >

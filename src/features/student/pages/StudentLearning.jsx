@@ -6,7 +6,6 @@ import Button from '../../../shared/components/ui/Button';
 import { getStudentCourse } from '../services/course.service';
 import { getStudentOverview } from '../../dashboards/student/services/student.service';
 import { listNotifications, markNotificationRead } from '../services/notifications.service';
-import '../styles/learning.css';
 import {
   HACKER_PROTOCOL_BOOTCAMP,
   HACKER_PROTOCOL_PHASES,
@@ -97,18 +96,43 @@ const StudentLearning = () => {
     return firstIncomplete?.moduleId || phaseCards[phaseCards.length - 1]?.moduleId;
   }, [phaseCards]);
 
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const shellClassName = 'flex flex-col gap-5';
+  const introClassName =
+    'relative flex flex-wrap items-center justify-between gap-4 overflow-hidden rounded-lg border border-border bg-card p-5 shadow-sm';
+  const introOverlayClassName =
+    "absolute inset-0 pointer-events-none after:absolute after:inset-0 after:bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(var(--brand-rgb),0.05)_3px,rgba(var(--brand-rgb),0.05)_4px)] after:content-[''] before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-[linear-gradient(180deg,transparent,rgba(var(--brand-rgb),1)_30%,rgba(var(--brand-rgb),1)_70%,transparent)] before:opacity-70";
+  const introContentClassName = 'relative z-10 flex flex-1 flex-col gap-2';
+  const introTitleClassName = 'text-2xl font-semibold text-text-primary md:text-3xl';
+  const introBodyClassName = 'text-sm text-text-secondary';
+  const actionsClassName = 'relative z-10 flex flex-wrap items-center gap-2';
+  const statusCardClassName = 'border-border bg-card';
+  const statusHeaderClassName = 'flex items-center gap-3 border-b border-border pb-3';
+  const statusTitleClassName = 'text-sm font-semibold text-text-primary';
+  const timelineClassName = 'grid gap-3';
+  const timelineItemBase =
+    'grid w-full cursor-pointer grid-cols-1 items-center gap-4 rounded-lg border border-border bg-card p-4 text-left transition md:grid-cols-[120px_1fr_auto]';
+  const timelinePhaseClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const timelineTitleClassName = 'text-base font-semibold text-text-primary';
+  const timelineBodyClassName = 'text-sm text-text-secondary';
+  const timelineStatusClassName = 'flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-text-secondary';
+
   return (
-    <div className="student-page bootcamp-page">
-      <div className="bootcamp-shell">
-        <section className="bootcamp-intro">
-          <div>
-            <p className="bootcamp-kicker">{HACKER_PROTOCOL_BOOTCAMP.title}</p>
-            <h1>Phase Dashboard</h1>
-            <p>
+    <div className={pageClassName}>
+      <div className={shellClassName}>
+        <section className={introClassName}>
+          <div className={introOverlayClassName} />
+          <div className={introContentClassName}>
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand">
+              {HACKER_PROTOCOL_BOOTCAMP.title}
+            </p>
+            <h1 className={introTitleClassName}>Phase Dashboard</h1>
+            <p className={introBodyClassName}>
               Five gated phases. Each validation unlocks the next phase and activates your emblem.
             </p>
           </div>
-          <div className="bootcamp-actions">
+          <div className={actionsClassName}>
             <Button variant="secondary" size="small" onClick={() => navigate('/student-bootcamps')}>
               Bootcamps
             </Button>
@@ -119,12 +143,12 @@ const StudentLearning = () => {
         </section>
 
         {meetingNotification && (
-          <Card padding="medium" className="bootcamp-status-card">
-            <div className="bootcamp-status-card-header">
-              <FiVideo size={20} />
-              <h3>Live Session Alert</h3>
+          <Card padding="medium" shadow="small" className={statusCardClassName}>
+            <div className={statusHeaderClassName}>
+              <FiVideo size={20} className="text-text-tertiary" />
+              <h3 className={statusTitleClassName}>Live Session Alert</h3>
             </div>
-            <p style={{ marginTop: 0 }}>{meetingNotification.message}</p>
+            <p className="text-sm text-text-secondary">{meetingNotification.message}</p>
             <Button
               variant="primary"
               size="small"
@@ -140,46 +164,54 @@ const StudentLearning = () => {
         )}
 
         {loading && (
-          <Card padding="medium" className="bootcamp-status-card">
-            <p>Loading bootcamp phases...</p>
+          <Card padding="medium" shadow="small" className={statusCardClassName}>
+            <p className="text-sm text-text-secondary">Loading bootcamp phases...</p>
           </Card>
         )}
 
         {error && (
-          <Card padding="medium" className="bootcamp-status-card">
-            <p>{error}</p>
+          <Card padding="medium" shadow="small" className={statusCardClassName}>
+            <p className="text-sm text-text-secondary">{error}</p>
           </Card>
         )}
 
         {statusMessage && (
-          <Card padding="medium" className="bootcamp-status-card">
-            <p>{statusMessage}</p>
+          <Card padding="medium" shadow="small" className={statusCardClassName}>
+            <p className="text-sm text-text-secondary">{statusMessage}</p>
           </Card>
         )}
 
-        <section className="bootcamp-timeline">
+        <section className={timelineClassName}>
           {phaseCards.map((module, index) => {
             const progress = module.progress || 0;
             const isCompleted = progress >= 100;
             const isCurrent = module.moduleId === currentPhaseId;
             const isLocked = !isCompleted && !isCurrent;
+            const stateClassName = isLocked
+              ? 'cursor-not-allowed opacity-70'
+              : 'hover:-translate-y-0.5 hover:border-brand/40';
+            const progressClassName = isCompleted
+              ? 'border-status-success/40'
+              : isCurrent
+                ? 'border-brand/50 bg-brand/5'
+                : '';
             return (
               <button
                 key={module.moduleId}
                 type="button"
-                className={`bootcamp-timeline-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}`}
+                className={`${timelineItemBase} ${stateClassName} ${progressClassName}`}
                 onClick={() => {
                   if (isLocked) return;
                   handleModuleClick(module, index);
                 }}
                 disabled={isLocked}
               >
-                <span className="bootcamp-timeline-phase">Phase {module.moduleId}</span>
-                <div className="bootcamp-timeline-body">
-                  <h3>{module.codename || module.title}</h3>
-                  <p>{module.roleTitle || module.description || module.ctf || 'Skill building module'}</p>
+                <span className={timelinePhaseClassName}>Phase {module.moduleId}</span>
+                <div>
+                  <h3 className={timelineTitleClassName}>{module.codename || module.title}</h3>
+                  <p className={timelineBodyClassName}>{module.roleTitle || module.description || module.ctf || 'Skill building module'}</p>
                 </div>
-                <div className="bootcamp-timeline-status">
+                <div className={timelineStatusClassName}>
                   {isCompleted ? 'Completed' : isCurrent ? 'Current' : 'Locked'}
                   {isLocked && <FiLock size={14} />}
                 </div>

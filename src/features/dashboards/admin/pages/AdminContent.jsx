@@ -17,7 +17,32 @@ import {
 } from '../services/admin.service';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import defaultTeamContent from '../../../../data/static/team.json';
-import '../styles/admin-dashboard.css';
+
+const alertClassName =
+  'flex items-center gap-3 rounded-sm border border-[color-mix(in_srgb,#ef4444_30%,var(--border-color))] bg-[color-mix(in_srgb,#ef4444_8%,var(--card-bg))] px-4 py-3 text-sm text-[color-mix(in_srgb,#ef4444_80%,var(--text-primary))]';
+
+const inputClassName =
+  'w-full rounded-sm border border-border bg-[var(--input-bg)] px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-[var(--input-bg-focus)] focus:outline-none';
+
+const textareaClassName =
+  'w-full rounded-md border border-border bg-bg-primary px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-bg-tertiary focus:outline-none';
+
+const cardClassName =
+  'rounded-lg border border-border bg-bg-secondary shadow-[0_12px_24px_rgba(15,23,42,0.08)]';
+
+const statsFormClassName =
+  'grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(180px,1fr))]';
+
+const labelClassName = 'flex flex-col gap-2 text-sm text-text-secondary';
+
+const contentPostsClassName = 'flex flex-col gap-4';
+
+const contentPostClassName =
+  'grid gap-3 rounded-md border border-border bg-bg-primary p-4';
+
+const contentActionsClassName = 'flex flex-wrap gap-2';
+
+const uploadLabelClassName = 'flex flex-col gap-2 text-sm text-text-secondary';
 
 const emptyPost = { title: '', date: '', summary: '' };
 const emptyResource = { title: '', description: '', url: '', type: 'link' };
@@ -645,55 +670,55 @@ const AdminContent = () => {
   if (loading) return <PageLoader message="Loading content manager..." durationMs={0} />;
 
   return (
-    <div className="admin-dashboard">
-      <div className="flex flex-col gap-5">
-        {error && <div className="admin-alert">{error}</div>}
-        {status && <div className="admin-alert">{status}</div>}
+    <div className="min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,3vw,1.5rem)] pt-[clamp(1.25rem,3vw,2rem)] pb-16 text-text-primary">
+      <div className="flex flex-col gap-6">
+        {error && <div className={alertClassName}>{error}</div>}
+        {status && <div className={alertClassName}>{status}</div>}
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Landing Page Overrides</h2>
-            <p>Leave blank to keep default copy.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Landing Page Overrides</h2>
+            <p className="text-sm text-text-secondary">Leave blank to keep default copy.</p>
           </div>
-          <div className="admin-stats-form">
-            <label>
+          <div className={statsFormClassName}>
+            <label className={labelClassName}>
               Hero Title
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={landing.heroTitle}
                 onChange={(e) => setLanding((prev) => ({ ...prev, heroTitle: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Hero Description
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={landing.heroDescription}
                 onChange={(e) =>
                   setLanding((prev) => ({ ...prev, heroDescription: e.target.value }))
                 }
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               CTA Primary
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={landing.ctaPrimary}
                 onChange={(e) => setLanding((prev) => ({ ...prev, ctaPrimary: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               CTA Secondary
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={landing.ctaSecondary}
                 onChange={(e) => setLanding((prev) => ({ ...prev, ctaSecondary: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Community Subtitle
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={landing.communitySubtitle}
                 onChange={(e) =>
                   setLanding((prev) => ({ ...prev, communitySubtitle: e.target.value }))
@@ -703,48 +728,49 @@ const AdminContent = () => {
           </div>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Free Resources (Learn &gt; Resources)</h2>
-            <p>Students see this section even without bootcamp enrollment.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Free Resources (Learn &gt; Resources)</h2>
+            <p className="text-sm text-text-secondary">Students see this section even without bootcamp enrollment.</p>
           </div>
-          <div className="admin-stats-form">
-            <label>
+          <div className={statsFormClassName}>
+            <label className={labelClassName}>
               Empty state message
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={resourcesMessage}
                 onChange={(e) => setResourcesMessage(e.target.value)}
               />
             </label>
           </div>
 
-          <div className="admin-content-posts">
+          <div className={`${contentPostsClassName} mt-4`}>
             {resources.map((resource, index) => (
-              <div className="admin-content-post" key={`resource-${index}`}>
+              <div className={contentPostClassName} key={`resource-${index}`}>
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Resource title"
                   value={resource.title}
                   onChange={(e) => updateResource(index, 'title', e.target.value)}
                 />
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="URL"
                   value={resource.url}
                   onChange={(e) => updateResource(index, 'url', e.target.value)}
                 />
-                <label className="admin-upload">
+                <label className={uploadLabelClassName}>
                   Upload PDF
                   <input
                     type="file"
                     accept="application/pdf"
                     onChange={(e) => handleResourceUpload(index, e.target.files?.[0])}
                     disabled={uploadingIndex === index}
+                    className="rounded-md border border-dashed border-border bg-bg-tertiary px-3 py-2 text-sm text-text-primary"
                   />
                 </label>
                 <textarea
-                  className="admin-textarea"
+                  className={textareaClassName}
                   rows={2}
                   placeholder="Description"
                   value={resource.description}
@@ -768,48 +794,48 @@ const AdminContent = () => {
           </div>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Bootcamp Downloads</h2>
-            <p>Upload or link downloadable lesson materials per phase and room.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Bootcamp Downloads</h2>
+            <p className="text-sm text-text-secondary">Upload or link downloadable lesson materials per phase and room.</p>
           </div>
 
-          <div className="admin-content-posts">
+          <div className={contentPostsClassName}>
             {bootcampResources.map((resourceGroup, index) => (
-              <div className="admin-content-post" key={`bootcamp-resource-${index}`}>
-                <div className="admin-stats-form">
-                  <label>
+              <div className={contentPostClassName} key={`bootcamp-resource-${index}`}>
+                <div className={statsFormClassName}>
+                  <label className={labelClassName}>
                     Module ID
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       type="number"
                       min="0"
                       value={resourceGroup.moduleId}
                       onChange={(e) => updateBootcampResource(index, 'moduleId', Number(e.target.value))}
                     />
                   </label>
-                  <label>
+                  <label className={labelClassName}>
                     Module Title
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       value={resourceGroup.moduleTitle}
                       onChange={(e) => updateBootcampResource(index, 'moduleTitle', e.target.value)}
                     />
                   </label>
-                  <label>
+                  <label className={labelClassName}>
                     Room ID (optional)
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       type="number"
                       min="0"
                       value={resourceGroup.roomId}
                       onChange={(e) => updateBootcampResource(index, 'roomId', Number(e.target.value))}
                     />
                   </label>
-                  <label>
+                  <label className={labelClassName}>
                     Room Title (optional)
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       value={resourceGroup.roomTitle}
                       onChange={(e) => updateBootcampResource(index, 'roomTitle', e.target.value)}
                     />
@@ -817,9 +843,9 @@ const AdminContent = () => {
                 </div>
 
                 {(resourceGroup.resources || []).map((resource, resourceIndex) => (
-                  <div key={`bootcamp-resource-item-${index}-${resourceIndex}`} className="admin-content-post">
+                  <div key={`bootcamp-resource-item-${index}-${resourceIndex}`} className={contentPostClassName}>
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       placeholder="Resource title"
                       value={resource.title || ''}
                       onChange={(e) =>
@@ -827,7 +853,7 @@ const AdminContent = () => {
                       }
                     />
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       placeholder="Download URL"
                       value={resource.url || ''}
                       onChange={(e) =>
@@ -835,7 +861,7 @@ const AdminContent = () => {
                       }
                     />
                     <textarea
-                      className="admin-textarea"
+                      className={textareaClassName}
                       rows={2}
                       placeholder="Description"
                       value={resource.description || ''}
@@ -855,7 +881,7 @@ const AdminContent = () => {
                   </div>
                 ))}
 
-                <div className="admin-content-actions">
+                <div className={contentActionsClassName}>
                   <Button variant="secondary" size="small" onClick={() => addBootcampResourceItem(index)}>
                     <FiPlus size={14} />
                     Add download
@@ -880,45 +906,45 @@ const AdminContent = () => {
           </div>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>ZeroDay Market Products</h2>
-            <p>Manage book listings shown in ZeroDay Market and the public catalog.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">ZeroDay Market Products</h2>
+            <p className="text-sm text-text-secondary">Manage book listings shown in ZeroDay Market and the public catalog.</p>
           </div>
-          <div className="admin-content-posts">
+          <div className={contentPostsClassName}>
             {cpProducts.map((product, index) => (
-              <div className="admin-content-post" key={`cp-product-${product.id || index}`}>
-                <div className="admin-stats-form">
-                  <label>
+              <div className={contentPostClassName} key={`cp-product-${product.id || index}`}>
+                <div className={statsFormClassName}>
+                  <label className={labelClassName}>
                     Title
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       placeholder="Book title"
                       value={product.title}
                       onChange={(e) => updateCpProductField(index, 'title', e.target.value)}
                     />
                   </label>
-                  <label>
+                  <label className={labelClassName}>
                     CP Price
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       type="number"
                       min="0"
                       value={product.cpPrice}
                       onChange={(e) => updateCpProductField(index, 'cpPrice', Number(e.target.value))}
                     />
                   </label>
-                  <label>
+                  <label className={labelClassName}>
                     Sort Order
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       type="number"
                       min="0"
                       value={product.sortOrder}
                       onChange={(e) => updateCpProductField(index, 'sortOrder', Number(e.target.value))}
                     />
                   </label>
-                  <label className="admin-checkbox">
+                  <label className="inline-flex items-center gap-2 text-sm text-text-secondary">
                     <input
                       type="checkbox"
                       checked={product.isActive !== false}
@@ -928,19 +954,19 @@ const AdminContent = () => {
                   </label>
                 </div>
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Cover image URL"
                   value={product.coverUrl}
                   onChange={(e) => updateCpProductField(index, 'coverUrl', e.target.value)}
                 />
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Product URL (optional)"
                   value={product.productUrl}
                   onChange={(e) => updateCpProductField(index, 'productUrl', e.target.value)}
                 />
                 <textarea
-                  className="admin-textarea"
+                  className={textareaClassName}
                   rows={2}
                   placeholder="Short description"
                   value={product.description}
@@ -964,31 +990,31 @@ const AdminContent = () => {
           </div>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Bootcamp Meeting Broadcast</h2>
-            <p>Paste a Google Meet link and notify enrolled bootcamp students instantly.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Bootcamp Meeting Broadcast</h2>
+            <p className="text-sm text-text-secondary">Paste a Google Meet link and notify enrolled bootcamp students instantly.</p>
           </div>
-          <div className="admin-stats-form">
-            <label>
+          <div className={statsFormClassName}>
+            <label className={labelClassName}>
               Google Meet URL
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={meetingForm.meetUrl}
                 onChange={(e) => setMeetingForm((prev) => ({ ...prev, meetUrl: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Message
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={meetingForm.message}
                 onChange={(e) => setMeetingForm((prev) => ({ ...prev, message: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Audience
-              <select className="admin-input" value={meetingForm.audience} disabled>
+              <select className={inputClassName} value={meetingForm.audience} disabled>
                 <option value="enrolled">Enrolled students only</option>
               </select>
             </label>
@@ -999,34 +1025,34 @@ const AdminContent = () => {
           </Button>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Targeted Notifications</h2>
-            <p>Send role-targeted in-app notifications.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Targeted Notifications</h2>
+            <p className="text-sm text-text-secondary">Send role-targeted in-app notifications.</p>
           </div>
-          <div className="admin-stats-form">
-            <label>
+          <div className={statsFormClassName}>
+            <label className={labelClassName}>
               Title
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={notificationForm.title}
                 onChange={(e) => setNotificationForm((prev) => ({ ...prev, title: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Message
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={notificationForm.message}
                 onChange={(e) =>
                   setNotificationForm((prev) => ({ ...prev, message: e.target.value }))
                 }
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Audience
               <select
-                className="admin-input"
+                className={inputClassName}
                 value={notificationForm.audience}
                 onChange={(e) =>
                   setNotificationForm((prev) => ({ ...prev, audience: e.target.value }))
@@ -1044,28 +1070,28 @@ const AdminContent = () => {
           </Button>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Blog Posts</h2>
-            <p>Public blog cards shown on the Blog page.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Blog Posts</h2>
+            <p className="text-sm text-text-secondary">Public blog cards shown on the Blog page.</p>
           </div>
-          <div className="admin-content-posts">
+          <div className={contentPostsClassName}>
             {posts.map((post, index) => (
-              <div className="admin-content-post" key={`post-${index}`}>
+              <div className={contentPostClassName} key={`post-${index}`}>
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Title"
                   value={post.title}
                   onChange={(e) => updatePost(index, 'title', e.target.value)}
                 />
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Date (e.g., Jan 14, 2026)"
                   value={post.date}
                   onChange={(e) => updatePost(index, 'date', e.target.value)}
                 />
                 <textarea
-                  className="admin-textarea"
+                  className={textareaClassName}
                   rows={3}
                   placeholder="Summary"
                   value={post.summary}
@@ -1089,100 +1115,100 @@ const AdminContent = () => {
           </div>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Team Section</h2>
-            <p>Manage team hero and each member card, including social links.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Team Section</h2>
+            <p className="text-sm text-text-secondary">Manage team hero and each member card, including social links.</p>
           </div>
 
-          <div className="admin-stats-form">
-            <label>
+          <div className={statsFormClassName}>
+            <label className={labelClassName}>
               Team Kicker
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={team.hero?.kicker || ''}
                 onChange={(e) => updateTeamHero('kicker', e.target.value)}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Team Title
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={team.hero?.title || ''}
                 onChange={(e) => updateTeamHero('title', e.target.value)}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Team Subtitle
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={team.hero?.subtitle || ''}
                 onChange={(e) => updateTeamHero('subtitle', e.target.value)}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Team Button Text
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={team.hero?.button || ''}
                 onChange={(e) => updateTeamHero('button', e.target.value)}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Team Button Route
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={team.hero?.route || ''}
                 onChange={(e) => updateTeamHero('route', e.target.value)}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Leadership Title
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={team.leadership?.title || ''}
                 onChange={(e) => updateTeamLeadership('title', e.target.value)}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Leadership Subtitle
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={team.leadership?.subtitle || ''}
                 onChange={(e) => updateTeamLeadership('subtitle', e.target.value)}
               />
             </label>
           </div>
 
-          <div className="admin-content-posts">
+          <div className={`${contentPostsClassName} mt-4`}>
             {ensureArray(team.leadership?.members).map((member, memberIndex) => (
-              <div className="admin-content-post" key={`team-member-${memberIndex}`}>
+              <div className={contentPostClassName} key={`team-member-${memberIndex}`}>
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Member name"
                   value={member.name || ''}
                   onChange={(e) => updateTeamMember(memberIndex, 'name', e.target.value)}
                 />
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Role"
                   value={member.role || ''}
                   onChange={(e) => updateTeamMember(memberIndex, 'role', e.target.value)}
                 />
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Image path (e.g. /team-images/name.jpg)"
                   value={member.image || ''}
                   onChange={(e) => updateTeamMember(memberIndex, 'image', e.target.value)}
                 />
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Icon (FiCrosshair, FiCpu, FiTarget...)"
                   value={member.icon || ''}
                   onChange={(e) => updateTeamMember(memberIndex, 'icon', e.target.value)}
                 />
                 <textarea
-                  className="admin-textarea"
+                  className={textareaClassName}
                   rows={2}
                   placeholder="Focus"
                   value={member.focus || ''}
@@ -1190,9 +1216,9 @@ const AdminContent = () => {
                 />
 
                 {ensureArray(member.socials).map((social, socialIndex) => (
-                  <div key={`team-member-${memberIndex}-social-${socialIndex}`} className="admin-stats-form">
+                  <div key={`team-member-${memberIndex}-social-${socialIndex}`} className={statsFormClassName}>
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       placeholder="Platform (LinkedIn, GitHub, X...)"
                       value={social.platform || ''}
                       onChange={(e) =>
@@ -1200,7 +1226,7 @@ const AdminContent = () => {
                       }
                     />
                     <input
-                      className="admin-input"
+                      className={inputClassName}
                       placeholder="Profile URL"
                       value={social.url || ''}
                       onChange={(e) =>
@@ -1242,56 +1268,56 @@ const AdminContent = () => {
           </div>
         </Card>
 
-        <Card className="admin-card" padding="medium">
-          <div className="admin-section-header">
-            <h2>Terms & Conditions</h2>
-            <p>Update the public terms page content.</p>
+        <Card className={cardClassName} padding="medium" shadow="none">
+          <div className="mb-4 flex flex-col gap-1.5">
+            <h2 className="text-base font-semibold text-text-primary">Terms & Conditions</h2>
+            <p className="text-sm text-text-secondary">Update the public terms page content.</p>
           </div>
-          <div className="admin-stats-form">
-            <label>
+          <div className={statsFormClassName}>
+            <label className={labelClassName}>
               Effective Date
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={terms.effectiveDate}
                 onChange={(e) => setTerms((prev) => ({ ...prev, effectiveDate: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Last Updated
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={terms.lastUpdated}
                 onChange={(e) => setTerms((prev) => ({ ...prev, lastUpdated: e.target.value }))}
               />
             </label>
-            <label>
+            <label className={labelClassName}>
               Jurisdiction
               <input
-                className="admin-input"
+                className={inputClassName}
                 value={terms.jurisdiction}
                 onChange={(e) => setTerms((prev) => ({ ...prev, jurisdiction: e.target.value }))}
               />
             </label>
           </div>
 
-          <div className="admin-content-posts">
+          <div className={`${contentPostsClassName} mt-4`}>
             {terms.sections.map((section, index) => (
-              <div className="admin-content-post" key={`terms-section-${index}`}>
+              <div className={contentPostClassName} key={`terms-section-${index}`}>
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   placeholder="Section title"
                   value={section.title}
                   onChange={(e) => updateTermsSection(index, 'title', e.target.value)}
                 />
                 <textarea
-                  className="admin-textarea"
+                  className={textareaClassName}
                   rows={3}
                   placeholder="Section body"
                   value={section.body}
                   onChange={(e) => updateTermsSection(index, 'body', e.target.value)}
                 />
                 <textarea
-                  className="admin-textarea"
+                  className={textareaClassName}
                   rows={3}
                   placeholder="Bullets (one per line)"
                   value={(section.bullets || []).join('\n')}
@@ -1324,7 +1350,7 @@ const AdminContent = () => {
           </div>
         </Card>
 
-        <div className="admin-actions admin-actions-right">
+        <div className="flex justify-end">
           <Button variant="primary" size="small" onClick={handleSave} disabled={saving}>
             <FiSave size={14} />
             {saving ? 'Saving...' : 'Save Content'}

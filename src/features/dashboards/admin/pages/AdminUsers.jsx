@@ -6,7 +6,6 @@ import { getUsers, updateUser, muteUser, sendBootcampRoomLink, grantCpPoints } f
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import PublicError from '../../../../shared/components/ui/PublicError';
 import { HACKER_PROTOCOL_PHASES } from '../../../../data/static/bootcamps/hackerProtocolData';
-import '../styles/admin-dashboard.css';
 
 const ROLE_OPTIONS = [
   { value: 'student', label: 'Student' },
@@ -14,6 +13,21 @@ const ROLE_OPTIONS = [
   { value: 'corporate', label: 'Corporate' },
   { value: 'admin', label: 'Admin' }
 ];
+
+const alertClassName =
+  'flex items-center gap-3 rounded-sm border border-[color-mix(in_srgb,#ef4444_30%,var(--border-color))] bg-[color-mix(in_srgb,#ef4444_8%,var(--card-bg))] px-4 py-3 text-sm text-[color-mix(in_srgb,#ef4444_80%,var(--text-primary))]';
+
+const inputClassName =
+  'w-full rounded-sm border border-border bg-[var(--input-bg)] px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-[var(--input-bg-focus)] focus:outline-none';
+
+const textareaClassName =
+  'w-full rounded-md border border-border bg-bg-primary px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-bg-tertiary focus:outline-none';
+
+const pillClassName =
+  'inline-flex items-center rounded-full border border-border bg-[color-mix(in_srgb,var(--border-color)_60%,var(--card-bg))] px-2.5 py-1 text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+
+const warningFlagClassName =
+  'inline-flex items-center rounded-full border border-status-orange/40 bg-status-orange/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-widest text-status-orange';
 
 const AdminUsers = () => {
   const [loading, setLoading] = useState(true);
@@ -206,8 +220,8 @@ const AdminUsers = () => {
 
   if (loading) {
     return (
-      <div className="ad-table-page">
-        <div className="ad-table-body">
+      <div className="min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,3vw,1.5rem)] pt-[clamp(1.25rem,3vw,2rem)] pb-16 text-text-primary">
+        <div className="mt-5">
           <TableSkeleton rows={10} columns={6} />
         </div>
       </div>
@@ -215,105 +229,110 @@ const AdminUsers = () => {
   }
 
   return (
-    <div className="ad-table-page">
+    <div className="min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,3vw,1.5rem)] pt-[clamp(1.25rem,3vw,2rem)] pb-16 text-text-primary">
       {/* Page header */}
-      <header className="ad-table-header">
-        <div className="ad-table-header-inner">
-          <div className="ad-header-left">
-            <div className="ad-header-icon-wrap">
-              <FiUsers size={20} className="ad-header-icon" />
+      <header className="mb-6 flex flex-col gap-3 border-b border-border pb-5">
+        <div className="flex flex-wrap items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border bg-bg-secondary">
+              <FiUsers size={20} className="text-brand" />
             </div>
             <div>
-              <div className="ad-header-breadcrumb">
-                <span className="ad-breadcrumb-org">HSOCIETY</span>
-                <span className="ad-breadcrumb-sep">/</span>
-                <span className="ad-breadcrumb-page">users</span>
-                <span className="ad-header-visibility">Admin</span>
+              <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary">
+                <span className="font-semibold text-text-secondary">HSOCIETY</span>
+                <span className="text-text-tertiary">/</span>
+                <span className="font-semibold text-text-secondary">users</span>
+                <span className="rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                  Admin
+                </span>
               </div>
-              <p className="ad-header-desc">Manage roles, bootcamp access, and send live class links.</p>
+              <p className="mt-1 text-sm text-text-secondary">Manage roles, bootcamp access, and send live class links.</p>
             </div>
           </div>
         </div>
-        <div className="ad-header-meta">
-          <span className="ad-meta-pill">
-            <FiUsers size={13} className="ad-meta-icon" />
-            <span className="ad-meta-label">Total</span>
-            <strong className="ad-meta-value">{stats.total}</strong>
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-2.5 py-1 text-xs text-text-secondary">
+            <FiUsers size={13} className="text-text-tertiary" />
+            <span className="text-xs font-semibold uppercase tracking-widest text-text-tertiary">Total</span>
+            <strong className="font-semibold text-text-primary">{stats.total}</strong>
           </span>
-          <span className="ad-meta-pill">
-            <span className="ad-meta-label">Students</span>
-            <strong className="ad-meta-value">{stats.student}</strong>
+          <span className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-2.5 py-1 text-xs text-text-secondary">
+            <span className="text-xs font-semibold uppercase tracking-widest text-text-tertiary">Students</span>
+            <strong className="font-semibold text-text-primary">{stats.student}</strong>
           </span>
-          <span className="ad-meta-pill">
-            <span className="ad-meta-label">Pentesters</span>
-            <strong className="ad-meta-value">{stats.pentester}</strong>
+          <span className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-2.5 py-1 text-xs text-text-secondary">
+            <span className="text-xs font-semibold uppercase tracking-widest text-text-tertiary">Pentesters</span>
+            <strong className="font-semibold text-text-primary">{stats.pentester}</strong>
           </span>
-          <span className="ad-meta-pill">
-            <span className="ad-meta-label">Corporate</span>
-            <strong className="ad-meta-value">{stats.corporate}</strong>
+          <span className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-2.5 py-1 text-xs text-text-secondary">
+            <span className="text-xs font-semibold uppercase tracking-widest text-text-tertiary">Corporate</span>
+            <strong className="font-semibold text-text-primary">{stats.corporate}</strong>
           </span>
         </div>
       </header>
 
-      <div className="ad-table-body dashboard-section">
-        <PublicError message={error} className="admin-alert" />
-        {bulkStatus && <div className="admin-alert">{bulkStatus}</div>}
+      <div className="mt-5">
+        <PublicError message={error} className={`${alertClassName} mb-4`} />
+        {bulkStatus && <div className={`${alertClassName} mb-4`}>{bulkStatus}</div>}
 
         {/* Bulk action toolbar */}
-        <div className="ad-toolbar">
-          <div className="ad-toolbar-left">
-            <span className="ad-toolbar-count">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3 py-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="border-r border-border pr-2 text-sm text-text-secondary">
               <strong>{selectedIds.size}</strong> selected
             </span>
-            <button type="button" className="ad-btn ad-btn-ghost" onClick={selectAllStudents}>
+            <Button type="button" variant="ghost" size="small" onClick={selectAllStudents}>
               All Students
-            </button>
-            <button type="button" className="ad-btn ad-btn-ghost" onClick={selectPaidStudents}>
+            </Button>
+            <Button type="button" variant="ghost" size="small" onClick={selectPaidStudents}>
               Paid Students
-            </button>
-            <button type="button" className="ad-btn ad-btn-ghost" onClick={clearSelection}>
+            </Button>
+            <Button type="button" variant="ghost" size="small" onClick={clearSelection}>
               Clear
-            </button>
+            </Button>
           </div>
-          <div className="ad-toolbar-right">
-            <button
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
               type="button"
-              className="ad-btn ad-btn-secondary"
+              variant="secondary"
+              size="small"
               onClick={() => bulkUpdateUsers({ bootcampAccessRevoked: false, bootcampStatus: 'active' })}
               disabled={bulkLoading}
             >
               <FiCheckSquare size={14} /> Grant Access
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="ad-btn ad-btn-ghost"
+              variant="ghost"
+              size="small"
               onClick={() => bulkUpdateUsers({ bootcampAccessRevoked: true, bootcampStatus: 'enrolled' })}
               disabled={bulkLoading}
             >
               <FiSlash size={14} /> Revoke Access
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="ad-btn ad-btn-primary"
+              variant="primary"
+              size="small"
               onClick={() => setCpGrantOpen(true)}
               disabled={bulkLoading}
             >
               <FiZap size={14} /> Grant CP
-            </button>
+            </Button>
           </div>
         </div>
 
         {/* Live class link sender */}
-        <details className="ad-collapsible">
-          <summary className="ad-collapsible-trigger">
+        <details className="mb-4 overflow-hidden rounded-sm border border-border bg-bg-secondary">
+          <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary [&::-webkit-details-marker]:hidden">
             <FiLink2 size={14} /> Send Live Class Link to Selected Students
           </summary>
-          <div className="ad-collapsible-body">
-            <div className="admin-bulk-room-form">
-              <label>
+          <div className="flex flex-col gap-3 border-t border-border px-4 pb-4 pt-3">
+            <div className="grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(160px,1fr))]">
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 Module
                 <select
-                  className="admin-select"
+                  className={inputClassName}
                   value={roomForm.moduleId}
                   onChange={(e) => {
                     const nextModuleId = Number(e.target.value);
@@ -332,10 +351,10 @@ const AdminUsers = () => {
                   ))}
                 </select>
               </label>
-              <label>
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 Room
                 <select
-                  className="admin-select"
+                  className={inputClassName}
                   value={roomForm.roomId}
                   onChange={(e) => setRoomForm((prev) => ({ ...prev, roomId: Number(e.target.value) }))}
                 >
@@ -346,41 +365,42 @@ const AdminUsers = () => {
                   ))}
                 </select>
               </label>
-              <label>
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 Class Title
-                <input className="admin-input" value={roomForm.title}
+                <input className={inputClassName} value={roomForm.title}
                   onChange={(e) => setRoomForm((prev) => ({ ...prev, title: e.target.value }))} />
               </label>
-              <label>
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 Instructor
-                <input className="admin-input" value={roomForm.instructor}
+                <input className={inputClassName} value={roomForm.instructor}
                   onChange={(e) => setRoomForm((prev) => ({ ...prev, instructor: e.target.value }))} />
               </label>
-              <label>
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 Time
-                <input className="admin-input" value={roomForm.time}
+                <input className={inputClassName} value={roomForm.time}
                   onChange={(e) => setRoomForm((prev) => ({ ...prev, time: e.target.value }))} />
               </label>
-              <label>
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 Live Class Link
-                <input className="admin-input" value={roomForm.meetUrl}
+                <input className={inputClassName} value={roomForm.meetUrl}
                   onChange={(e) => setRoomForm((prev) => ({ ...prev, meetUrl: e.target.value }))} />
               </label>
             </div>
-            <button
+            <Button
               type="button"
-              className="ad-btn ad-btn-primary"
+              variant="primary"
+              size="small"
               onClick={handleSendRoomLink}
               disabled={bulkLoading}
             >
               <FiLink2 size={14} /> Send to Selected
-            </button>
+            </Button>
           </div>
         </details>
 
         {/* Users table */}
-        <div className="ad-list">
-          <div className="ad-list-header ad-list-row-users">
+        <div className="overflow-x-auto rounded-sm border border-border">
+          <div className="grid min-w-[1160px] grid-cols-[0.4fr_1.2fr_1.6fr_1fr_0.8fr_0.7fr_0.9fr_0.8fr_0.7fr_0.9fr_0.7fr_1.6fr] items-center gap-3 border-b border-border bg-bg-secondary px-4 py-2 text-xs font-semibold uppercase tracking-widest text-text-tertiary">
             <span />
             <span>Name</span>
             <span>Email</span>
@@ -400,7 +420,12 @@ const AdminUsers = () => {
             const draft = drafts[user.id] || {};
             const isMuted = user.mutedUntil && new Date(user.mutedUntil) > new Date();
             return (
-              <div key={user.id} className={`ad-list-row ad-list-row-users ${isEditing ? 'editing' : ''}`}>
+              <div
+                key={user.id}
+                className={`grid min-w-[1160px] grid-cols-[0.4fr_1.2fr_1.6fr_1fr_0.8fr_0.7fr_0.9fr_0.8fr_0.7fr_0.9fr_0.7fr_1.6fr] items-center gap-3 border-b border-border px-4 py-3 text-sm transition-colors hover:bg-bg-secondary ${
+                  isEditing ? 'bg-[color-mix(in_srgb,var(--primary-color)_4%,var(--bg-secondary))]' : 'bg-bg-primary'
+                }`}
+              >
                 <div>
                   <input
                     type="checkbox"
@@ -410,62 +435,62 @@ const AdminUsers = () => {
                 </div>
                 <div>
                   {isEditing ? (
-                    <input className="admin-input" value={draft.name || ''}
+                    <input className={inputClassName} value={draft.name || ''}
                       onChange={(e) => updateDraft(user.id, 'name', e.target.value)} />
                   ) : (
-                    <span className="ad-list-name ad-ellipsis" title={user.name || '—'}>
+                    <span className="block truncate font-semibold text-text-primary" title={user.name || '—'}>
                       {user.name || '—'}
                     </span>
                   )}
                 </div>
                 <div>
                   {isEditing ? (
-                    <input className="admin-input" value={draft.email || ''}
+                    <input className={inputClassName} value={draft.email || ''}
                       onChange={(e) => updateDraft(user.id, 'email', e.target.value)} />
                   ) : (
-                    <span className="ad-list-email ad-ellipsis" title={user.email}>
+                    <span className="block truncate text-text-secondary" title={user.email}>
                       {user.email}
                     </span>
                   )}
                 </div>
                 <div>
                   {isEditing ? (
-                    <input className="admin-input" value={draft.organization || ''}
+                    <input className={inputClassName} value={draft.organization || ''}
                       onChange={(e) => updateDraft(user.id, 'organization', e.target.value)} />
                   ) : (
-                    <span className="ad-ellipsis" title={user.organization || '—'}>
+                    <span className="block truncate" title={user.organization || '—'}>
                       {user.organization || '—'}
                     </span>
                   )}
                 </div>
                 <div>
                   {isEditing ? (
-                    <select className="admin-select" value={draft.role || 'student'}
+                    <select className={inputClassName} value={draft.role || 'student'}
                       onChange={(e) => updateDraft(user.id, 'role', e.target.value)}>
                       {ROLE_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                     </select>
                   ) : (
-                    <span className={`admin-role role-${user.role || 'student'}`}>{user.role || 'student'}</span>
+                    <span className={pillClassName}>{user.role || 'student'}</span>
                   )}
                 </div>
                 <div>
-                  <span className="admin-role">{user.cpPoints ?? 0}</span>
+                  <span className={pillClassName}>{user.cpPoints ?? 0}</span>
                 </div>
                 <div>
                   {isEditing ? (
-                    <select className="admin-select" value={draft.bootcampStatus || 'not_enrolled'}
+                    <select className={inputClassName} value={draft.bootcampStatus || 'not_enrolled'}
                       onChange={(e) => updateDraft(user.id, 'bootcampStatus', e.target.value)}>
                       {['not_enrolled', 'enrolled', 'active', 'completed'].map((s) => (
                         <option key={s} value={s}>{s.replace('_', ' ')}</option>
                       ))}
                     </select>
                   ) : (
-                    <span className="admin-role">{(user.bootcampStatus || 'not_enrolled').replace('_', ' ')}</span>
+                    <span className={pillClassName}>{(user.bootcampStatus || 'not_enrolled').replace('_', ' ')}</span>
                   )}
                 </div>
                 <div>
                   {isEditing ? (
-                    <select className="admin-select" value={draft.bootcampPaymentStatus || 'unpaid'}
+                    <select className={inputClassName} value={draft.bootcampPaymentStatus || 'unpaid'}
                       onChange={(e) => updateDraft(user.id, 'bootcampPaymentStatus', e.target.value)}>
                       {['unpaid', 'pending', 'paid'].map((s) => (
                         <option
@@ -478,33 +503,33 @@ const AdminUsers = () => {
                       ))}
                     </select>
                   ) : (
-                    <span className="admin-role">{user.bootcampPaymentStatus || 'unpaid'}</span>
+                    <span className={pillClassName}>{user.bootcampPaymentStatus || 'unpaid'}</span>
                   )}
                 </div>
                 <div>
                   {isEditing ? (
-                    <select className="admin-select"
+                    <select className={inputClassName}
                       value={draft.bootcampAccessRevoked ? 'revoked' : 'allowed'}
                       onChange={(e) => updateDraft(user.id, 'bootcampAccessRevoked', e.target.value === 'revoked')}>
                       <option value="allowed">allowed</option>
                       <option value="revoked">revoked</option>
                     </select>
                   ) : (
-                    <div className="admin-inline-meta">
-                      <span className="admin-role">{user.bootcampAccessRevoked ? 'revoked' : 'allowed'}</span>
+                    <div className="inline-flex flex-wrap items-center gap-2">
+                      <span className={pillClassName}>{user.bootcampAccessRevoked ? 'revoked' : 'allowed'}</span>
                       {user.bootcampAccessRevoked === true && (
-                        <span className="admin-flag admin-flag-warning">Revoked</span>
+                        <span className={warningFlagClassName}>Revoked</span>
                       )}
                     </div>
                   )}
                 </div>
                 <div>
-                  <span className="admin-role">{user.bootcampAccessKey || '—'}</span>
+                  <span className={pillClassName}>{user.bootcampAccessKey || '—'}</span>
                 </div>
                 <div>
-                  <span className="admin-role">{isMuted ? 'Muted' : 'Active'}</span>
+                  <span className={pillClassName}>{isMuted ? 'Muted' : 'Active'}</span>
                 </div>
-                <div className="admin-actions">
+                <div className="flex w-full min-w-0 flex-wrap items-center justify-end gap-2 [&>*]:flex-1 sm:w-auto sm:[&>*]:flex-none">
                   {!isEditing && (
                     <Button size="small" variant="ghost" onClick={() => startEdit(user)}>
                       <FiEdit2 size={14} /> Edit
@@ -539,36 +564,36 @@ const AdminUsers = () => {
           })}
 
           {users.length === 0 && (
-            <div className="ad-list-empty">No users found.</div>
+            <div className="bg-bg-primary px-4 py-6 text-center text-sm text-text-tertiary">No users found.</div>
           )}
         </div>
         {cpGrantOpen && (
-          <div className="admin-modal-backdrop" role="dialog" aria-modal="true">
-            <div className="admin-modal">
-              <h3>Grant CP Points</h3>
-              <p>Grant CP Points to selected students/pentesters. Add a reason to notify them.</p>
-              {cpGrantStatus && <div className="admin-alert">{cpGrantStatus}</div>}
-              <label>
+          <div className="fixed inset-0 z-[1200] flex items-center justify-center bg-[var(--modal-overlay-bg)] p-6 backdrop-blur-sm" role="dialog" aria-modal="true">
+            <div className="flex w-[min(520px,92vw)] flex-col gap-4 rounded-lg border border-border bg-bg-secondary p-6 shadow-xl">
+              <h3 className="text-base font-semibold text-text-primary">Grant CP Points</h3>
+              <p className="text-sm text-text-secondary">Grant CP Points to selected students/pentesters. Add a reason to notify them.</p>
+              {cpGrantStatus && <div className={`${alertClassName} mb-2`}>{cpGrantStatus}</div>}
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 CP Points
                 <input
-                  className="admin-input"
+                  className={inputClassName}
                   type="number"
                   min="1"
                   value={cpGrantPoints}
                   onChange={(e) => setCpGrantPoints(Number(e.target.value))}
                 />
               </label>
-              <label>
+              <label className="flex flex-col gap-2 text-sm text-text-secondary">
                 Reason / Message
                 <textarea
-                  className="admin-textarea"
+                  className={textareaClassName}
                   rows={3}
                   value={cpGrantReason}
                   onChange={(e) => setCpGrantReason(e.target.value)}
                   placeholder="e.g. Top leaderboard performance this month."
                 />
               </label>
-              <div className="admin-modal-actions">
+              <div className="flex justify-end gap-3">
                 <Button variant="ghost" size="small" onClick={() => setCpGrantOpen(false)}>
                   Cancel
                 </Button>

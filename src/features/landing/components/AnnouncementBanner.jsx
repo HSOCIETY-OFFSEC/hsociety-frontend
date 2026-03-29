@@ -46,15 +46,15 @@ const AnnouncementBanner = () => {
 
   return (
     <div
-      className="fixed inset-x-0 top-0 z-[calc(var(--z-sticky,60)+1)] flex flex-wrap items-center gap-3 border-b border-border bg-bg-secondary px-6 py-2 text-sm text-text-secondary transition-[opacity,transform,visibility] duration-200 [html:not(.nav-scrolled)_&]:border-transparent [html:not(.nav-scrolled)_&]:bg-transparent [html.nav-scrolled_&]:pointer-events-none [html.nav-scrolled_&]:invisible [html.nav-scrolled_&]:-translate-y-2 [html.nav-scrolled_&]:opacity-0 max-sm:gap-2"
+      className="fixed inset-x-0 top-0 z-[calc(var(--z-sticky,60)+1)] flex items-center gap-3 border-b border-border/20 bg-bg-primary/95 px-6 py-2 text-xs font-mono text-text-secondary transition-[opacity,transform,visibility] duration-200 [html:not(.nav-scrolled)_&]:border-transparent [html:not(.nav-scrolled)_&]:bg-transparent [html.nav-scrolled_&]:pointer-events-none [html.nav-scrolled_&]:invisible [html.nav-scrolled_&]:-translate-y-2 [html.nav-scrolled_&]:opacity-0"
       ref={bannerRef}
       role="banner"
       aria-label="Announcement"
     >
-      <span className="rounded-full bg-brand px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.1em] text-ink-black">
+      <span className="rounded-full border border-brand/40 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.1em] text-brand">
         New
       </span>
-      <p className="flex-1 basis-[260px] text-sm text-text-secondary max-sm:basis-full">
+      <p className="min-w-0 flex-1 truncate text-xs text-text-secondary">
         Next bootcamp cohort is open — limited seats available.{' '}
         <a href="#pathways" className="font-semibold text-brand hover:underline" onClick={dismiss}>
           Secure your spot &rarr;
@@ -62,7 +62,7 @@ const AnnouncementBanner = () => {
       </p>
       <button
         type="button"
-        className="rounded-sm px-1.5 py-0.5 text-lg leading-none text-text-tertiary transition-colors hover:text-text-primary"
+        className="rounded-sm px-1.5 py-0.5 text-base leading-none text-text-tertiary transition-colors hover:text-text-primary"
         onClick={dismiss}
         aria-label="Dismiss announcement"
       >

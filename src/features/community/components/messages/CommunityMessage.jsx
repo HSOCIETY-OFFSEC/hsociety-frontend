@@ -123,15 +123,15 @@ const CommunityMessage = ({
 
   return (
     <article
-      className={`community-post ${own ? 'own' : ''} ${grouped ? 'grouped' : ''}`}
+      className={`flex gap-3 border-b border-border px-5 py-4 ${own ? 'bg-bg-secondary/30' : ''} ${grouped ? 'pt-2' : ''}`}
       id={message?.id ? `community-message-${message.id}` : undefined}
     >
       {/* Avatar column — always visible (X/Twitter style, not hidden in grouped) */}
-      <div className="community-post-avatar-col">
+      <div className="flex w-10 flex-col items-center">
         {!grouped ? (
           <button
             type="button"
-            className="community-post-avatar-btn"
+            className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-border bg-bg-secondary"
             onClick={handleOpenProfile}
             aria-label={`Open ${authorName} profile`}
           >
@@ -145,35 +145,39 @@ const CommunityMessage = ({
           </button>
         ) : (
           /* Thin thread line for grouped messages */
-          <div className="community-post-thread-line" aria-hidden="true" />
+          <div className="h-full w-px bg-border/70" aria-hidden="true" />
         )}
       </div>
 
       {/* Content column */}
-      <div className="community-post-content">
+      <div className="flex min-w-0 flex-1 flex-col">
 
         {/* Post header: author + handle + time + role badge */}
         {!grouped && (
-          <div className="community-post-header">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-text-tertiary">
             <button
               type="button"
-              className="community-post-author"
+              className="text-sm font-semibold text-text-primary"
               onClick={handleOpenProfile}
               aria-label={`Open ${authorName} profile`}
             >
               {authorName}
             </button>
             {message?.hackerHandle && (
-              <span className="community-post-handle">@{message.hackerHandle}</span>
+              <span className="text-xs text-text-tertiary">@{message.hackerHandle}</span>
             )}
             {message?.userRole && (
-              <span className="community-post-role-badge">{message.userRole}</span>
+              <span className="rounded-full border border-border px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                {message.userRole}
+              </span>
             )}
             {message?.pinned && (
-              <span className="community-post-pin-badge">{COMMUNITY_UI.messages.pinnedTitle}</span>
+              <span className="rounded-full border border-border px-2 py-0.5 text-xs font-semibold text-text-tertiary">
+                {COMMUNITY_UI.messages.pinnedTitle}
+              </span>
             )}
             <time
-              className="community-post-time"
+              className="text-xs text-text-tertiary"
               dateTime={message?.createdAt}
               title={message?.createdAt ? new Date(message.createdAt).toLocaleString() : undefined}
             >
@@ -183,13 +187,13 @@ const CommunityMessage = ({
         )}
 
         {/* Post body */}
-        <div className="community-post-body" onTouchEnd={handleDoubleTap}>
+        <div className="mt-2 flex flex-col gap-2" onTouchEnd={handleDoubleTap}>
           {message?.content && (
-            <p className="community-post-text">{sanitizeText(message.content)}</p>
+            <p className="text-sm text-text-secondary">{sanitizeText(message.content)}</p>
           )}
           {message?.imageUrl && (
             <img
-              className="community-post-image"
+              className="max-w-full rounded-lg border border-border"
               src={message.imageUrl}
               alt="Shared attachment"
               loading="lazy"
@@ -198,10 +202,10 @@ const CommunityMessage = ({
         </div>
 
         {/* Action bar — X/Twitter style icon row */}
-        <div className="community-post-actions">
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-text-tertiary">
           <button
             type="button"
-            className="community-post-action-btn"
+            className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold text-text-tertiary transition hover:bg-bg-secondary hover:text-text-primary"
             onClick={() => setCommentOpen((prev) => !prev)}
             aria-expanded={commentOpen}
             aria-label="Toggle comments"
@@ -213,7 +217,7 @@ const CommunityMessage = ({
           {/* Re-share placeholder (visual only for now) */}
           <button
             type="button"
-            className="community-post-action-btn repost"
+            className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold text-text-tertiary transition hover:bg-bg-secondary hover:text-text-primary"
             aria-label="Repost"
             onClick={handleRepost}
           >
@@ -222,7 +226,9 @@ const CommunityMessage = ({
 
           <button
             type="button"
-            className={`community-post-action-btn like ${liked ? 'active' : ''}`}
+            className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold transition ${
+              liked ? 'text-status-danger' : 'text-text-tertiary hover:text-text-primary'
+            } hover:bg-bg-secondary`}
             onClick={() => onLike?.(message.id)}
             aria-pressed={liked}
             aria-label={liked ? 'Unlike message' : 'Like message'}
@@ -232,7 +238,7 @@ const CommunityMessage = ({
           </button>
 
           <div
-            className="community-post-reaction-picker"
+            className="relative"
             ref={reactionRef}
             onMouseEnter={() => { if (supportsHover) { if (hoverCloseTimer.current) { clearTimeout(hoverCloseTimer.current); hoverCloseTimer.current = null; } setReactionOpen(true); } }}
             onMouseLeave={() => {
@@ -248,7 +254,9 @@ const CommunityMessage = ({
           >
             <button
               type="button"
-              className={`community-post-action-btn react ${reactionOpen ? 'active' : ''}`}
+              className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold transition ${
+                reactionOpen ? 'text-brand' : 'text-text-tertiary hover:text-text-primary'
+              } hover:bg-bg-secondary`}
               onClick={() => {
                 if (hoverCloseTimer.current) {
                   clearTimeout(hoverCloseTimer.current);
@@ -268,7 +276,7 @@ const CommunityMessage = ({
             </button>
             {reactionOpen && (
               <div
-                className="community-post-reaction-panel"
+                className="absolute bottom-full left-0 mb-2 grid w-48 grid-cols-6 gap-1 rounded-lg border border-border bg-bg-secondary p-2 shadow-lg"
                 role="listbox"
                 aria-label={COMMUNITY_UI.reactions.panelLabel}
                 onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); setReactionOpen(false); } }}
@@ -282,7 +290,7 @@ const CommunityMessage = ({
                     <button
                       key={emoji}
                       type="button"
-                      className="community-post-reaction-panel-item"
+                      className="flex items-center justify-between gap-2 rounded-md px-2 py-1 text-sm transition hover:bg-bg-tertiary disabled:opacity-40"
                       onClick={() => {
                         if (blocked) return;
                         onReact?.(message.id, emoji);
@@ -293,7 +301,7 @@ const CommunityMessage = ({
                     >
                       <span>{emoji}</span>
                       {data.count > 0 && (
-                        <span className="community-post-reaction-count">{data.count}</span>
+                        <span className="text-xs text-text-tertiary">{data.count}</span>
                       )}
                     </button>
                   );
@@ -304,7 +312,7 @@ const CommunityMessage = ({
 
           <button
             type="button"
-            className="community-post-action-btn bookmark"
+            className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold text-text-tertiary transition hover:bg-bg-secondary hover:text-text-primary"
             aria-label="Bookmark"
             disabled
           >
@@ -312,7 +320,7 @@ const CommunityMessage = ({
           </button>
           <button
             type="button"
-            className="community-post-action-btn"
+            className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold text-text-tertiary transition hover:bg-bg-secondary hover:text-text-primary"
             aria-label="Report message"
             onClick={() => onReport?.(message.id)}
           >
@@ -321,7 +329,7 @@ const CommunityMessage = ({
         </div>
 
         {reactionEntries.length > 0 && (
-          <div className="community-msg-reactions" aria-label="Reactions">
+          <div className="mt-2 flex flex-wrap gap-2" aria-label="Reactions">
             {reactionEntries.map(([emoji, data]) => {
               const reacted =
                 currentUserId && Array.isArray(data.users) && data.users.includes(currentUserId);
@@ -329,13 +337,15 @@ const CommunityMessage = ({
                 <button
                   key={emoji}
                   type="button"
-                  className={`community-msg-reaction ${reacted ? 'active' : ''}`}
+                  className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold ${
+                    reacted ? 'border-brand/40 bg-brand/10 text-brand' : 'border-border bg-bg-secondary text-text-tertiary'
+                  }`}
                   onClick={() => onReact?.(message.id, emoji)}
                   aria-pressed={reacted}
                   aria-label={`React with ${emoji}`}
                 >
-                  <span className="community-msg-reaction-emoji">{emoji}</span>
-                  <span className="community-msg-reaction-count">{data.count}</span>
+                  <span>{emoji}</span>
+                  <span>{data.count}</span>
                 </button>
               );
             })}
@@ -344,30 +354,30 @@ const CommunityMessage = ({
 
         {/* Comments thread */}
         {commentOpen && (
-          <div className="community-post-comments" role="region" aria-label="Comments">
+          <div className="mt-3 rounded-md border border-border bg-bg-secondary p-3" role="region" aria-label="Comments">
             {comments.length === 0 ? (
-              <p className="community-post-no-comments">{COMMUNITY_UI.messages.noCommentsText}</p>
+              <p className="text-sm text-text-tertiary">{COMMUNITY_UI.messages.noCommentsText}</p>
             ) : (
               comments.map((comment) => (
-                <div className="community-post-comment" key={comment.id || comment.createdAt}>
-                  <div className="community-post-comment-meta">
-                    <span className="community-post-comment-author">
+                <div className="mb-3 last:mb-0" key={comment.id || comment.createdAt}>
+                  <div className="flex items-center gap-2 text-xs text-text-tertiary">
+                    <span className="font-semibold text-text-primary">
                       {getDisplayName(comment.username)}
                     </span>
                     <time
-                      className="community-post-comment-time"
+                      className="text-xs text-text-tertiary"
                       dateTime={comment.createdAt}
                       title={comment.createdAt ? new Date(comment.createdAt).toLocaleString() : undefined}
                     >
                       · {formatMessageTime(comment.createdAt)}
                     </time>
                   </div>
-                  <p className="community-post-comment-body">{sanitizeText(comment.content)}</p>
+                  <p className="text-sm text-text-secondary">{sanitizeText(comment.content)}</p>
                 </div>
               ))
             )}
 
-            <div className="community-post-comment-compose">
+            <div className="mt-3 flex items-center gap-2">
               <input
                 type="text"
                 value={commentDraft}
@@ -381,12 +391,14 @@ const CommunityMessage = ({
                     handleSubmitComment();
                   }
                 }}
+                className="flex-1 rounded-md border border-border bg-bg-primary px-2 py-1 text-xs text-text-primary placeholder:text-text-tertiary focus:outline-none"
               />
               <button
                 type="button"
                 onClick={handleSubmitComment}
                 disabled={!commentDraft.trim()}
                 aria-label={COMMUNITY_UI.messages.sendCommentAria}
+                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-brand text-ink-onBrand transition hover:bg-brand-hover disabled:opacity-60"
               >
                 <FiSend size={13} />
               </button>

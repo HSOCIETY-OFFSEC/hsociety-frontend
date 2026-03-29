@@ -241,24 +241,23 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
   const handleEscape = (e, setter) => { if (e.key === 'Escape') setter(false); };
 
   const navBase =
-    'fixed left-0 right-0 z-40 h-16 border-b border-border bg-bg-secondary font-sans transition-colors duration-200';
+    'fixed left-0 right-0 z-40 h-16 border-b border-border/20 bg-bg-primary/80 backdrop-blur font-sans transition-colors duration-200';
   const navTransparent = 'bg-transparent border-transparent';
-  const navInner = 'mx-auto flex h-full w-full items-center gap-4 px-4';
-  const navLinks = 'hidden flex-1 items-center justify-center gap-1 lg:flex';
+  const navInner = 'mx-auto flex h-full w-full max-w-7xl items-center gap-6 px-4';
+  const navLinks = 'hidden flex-1 items-center justify-center gap-6 lg:flex';
   const navLinkBase =
-    'inline-flex h-8 items-center gap-2 rounded-xs px-3 text-sm font-medium text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
-  const navLinkActive = 'text-text-primary font-semibold';
-  const navLinkPill =
-    'border border-border bg-bg-secondary text-text-primary hover:border-brand/40';
+    'inline-flex items-center gap-2 px-1 py-2 text-sm font-medium text-text-secondary transition-colors duration-150 hover:text-text-primary hover:underline hover:underline-offset-4';
+  const navLinkActive = 'text-text-primary underline underline-offset-4';
+  const navLinkPill = 'text-brand hover:text-brand';
   const dropdownBase =
-    'absolute left-0 top-full mt-2 w-56 max-w-sm rounded-sm border border-border bg-bg-secondary p-1 shadow-lg';
+    'absolute left-0 top-full mt-2 w-56 max-w-sm rounded-sm border border-border/20 bg-bg-primary/95 p-1 shadow-lg backdrop-blur';
   const dropdownItem =
-    'flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
-  const dropdownDivider = 'my-1 h-px w-full bg-border';
+    'flex w-full items-center gap-2 rounded-sm px-3 py-2 text-sm text-text-secondary transition-colors duration-150 hover:bg-bg-secondary/60 hover:text-text-primary';
+  const dropdownDivider = 'my-1 h-px w-full bg-border/40';
   const iconBtn =
-    'relative inline-flex h-9 w-9 items-center justify-center rounded-xs border border-transparent text-text-secondary transition-colors duration-150 hover:bg-bg-tertiary hover:text-text-primary';
+    'relative inline-flex h-9 w-9 items-center justify-center rounded-sm text-text-secondary transition-colors duration-150 hover:text-text-primary';
   const pillBtn =
-    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1.5 text-sm font-medium text-text-primary transition-colors duration-150 hover:border-brand/40 hover:bg-bg-tertiary';
+    'inline-flex items-center gap-2 rounded-sm border border-brand/50 px-3 py-1.5 text-sm font-semibold text-brand shadow-[0_0_12px_rgba(var(--brand-rgb),0.25)] transition-colors duration-150 hover:bg-bg-secondary';
 
   return (
     <nav

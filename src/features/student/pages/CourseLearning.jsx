@@ -11,7 +11,6 @@ import { QuizPanel } from '../components/QuizPanel';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import { ROUTES } from '../../../app/router/routes';
 import { logger } from '../../../core/logging/logger';
-import '../styles/learning.css';
 
 /**
  * CourseLearning
@@ -135,6 +134,58 @@ export const CourseLearning = () => {
   const [activeModuleId, setActiveModuleId] = useState(null);
 
   const [quizContext, setQuizContext] = useState(null);
+
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const layoutClassName = 'flex flex-col gap-5';
+  const layoutMainClassName = 'flex flex-col gap-5';
+  const headerCardClassName = 'border-border bg-card';
+  const headerMainClassName = 'flex flex-wrap items-start justify-between gap-6';
+  const kickerClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const titleClassName = 'flex items-center gap-3 text-2xl font-semibold text-text-primary';
+  const titleAccentClassName = 'flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-bg-tertiary text-text-primary';
+  const subtitleClassName = 'mt-2 max-w-[520px] text-sm text-text-secondary';
+  const miniStatsClassName = 'flex flex-col gap-2 rounded-md border border-border bg-bg-secondary px-4 py-3 text-sm text-text-secondary';
+  const miniStatRowClassName = 'flex items-center justify-between gap-4';
+  const miniStatLabelClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const miniStatValueClassName = 'font-semibold text-text-primary';
+  const headerActionsClassName = 'mt-4';
+  const progressRowClassName = 'mt-4';
+  const progressLabelClassName = 'flex items-center justify-between text-xs text-text-secondary';
+  const progressBarClassName = 'mt-2 h-2 rounded-full bg-bg-tertiary';
+  const progressFillClassName = 'h-full rounded-full bg-brand';
+  const footerRowClassName = 'mt-4 flex flex-wrap items-center justify-between gap-3';
+  const badgesClassName = 'flex flex-wrap gap-2';
+  const badgeClassName = 'inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+  const badgeMutedClassName = 'text-text-tertiary';
+  const certificateClassName =
+    'inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-primary';
+  const modulesGridClassName = 'grid grid-cols-1 gap-4 lg:grid-cols-2';
+  const moduleCardBaseClassName =
+    'rounded-lg border border-border bg-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-text-secondary/40 hover:shadow-md';
+  const moduleCardActiveClassName = 'border-text-secondary/40';
+  const moduleHeaderClassName = 'flex items-start justify-between gap-4';
+  const moduleLabelClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const moduleStatePillBaseClassName = 'inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-2 py-1 text-xs font-semibold';
+  const moduleStateCompletedClassName = 'text-text-primary';
+  const moduleStateActiveClassName = 'text-text-secondary';
+  const moduleStateLockedClassName = 'text-text-tertiary border-dashed';
+  const moduleProgressRowClassName = 'mt-4';
+  const roomsListClassName = 'mt-4 flex flex-col gap-3';
+  const roomRowBaseClassName =
+    'flex flex-col gap-3 rounded-md border border-border bg-bg-secondary px-3 py-3 text-sm text-text-secondary sm:flex-row sm:items-center sm:justify-between';
+  const roomRowCompletedClassName = 'border-text-secondary/40';
+  const roomRowDisabledClassName = 'border-dashed text-text-tertiary';
+  const roomMainClassName = 'flex items-center gap-3';
+  const roomDotClassName = 'h-2.5 w-2.5 rounded-full bg-text-tertiary ring-2 ring-border/60';
+  const roomDotCompletedClassName = 'bg-text-primary';
+  const roomActionsClassName = 'flex flex-wrap gap-2';
+  const ctfRowClassName = 'mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-border pt-4';
+  const ctfPillBaseClassName = 'inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-2 py-1 text-xs font-semibold';
+  const ctfPillUnlockedClassName = 'text-text-primary';
+  const ctfPillLockedClassName = 'text-text-tertiary';
+  const moduleFooterClassName = 'mt-4 flex flex-wrap items-center justify-between gap-3';
+  const moduleBadgeClassName = 'inline-flex items-center gap-2 text-sm text-text-secondary';
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -291,64 +342,64 @@ export const CourseLearning = () => {
     const { xp, levelInfo, unlockedBadges, hasCertificate, certificationName } = profileSnapshot;
 
     return (
-      <Card padding="medium" shadow="small" className="course-header-card reveal-on-scroll">
-        <div className="course-header-main">
+      <Card padding="medium" shadow="small" className={`${headerCardClassName} reveal-on-scroll`}>
+        <div className={headerMainClassName}>
           <div>
-            <p className="course-kicker">Bootcamp Resources</p>
-            <h2 className="course-title">
+            <p className={kickerClassName}>Bootcamp Resources</p>
+            <h2 className={titleClassName}>
               {course.title}
-              <span className="course-title-accent">
+              <span className={titleAccentClassName}>
                 <FiBookOpen size={20} />
               </span>
             </h2>
-            <p className="course-subtitle">
+            <p className={subtitleClassName}>
               Follow the HSOCIETY bootcamp modules and track what you&apos;ve covered during live
               sessions and self-study.
             </p>
           </div>
-          <div className="course-mini-stats">
-            <div className="course-mini-stat">
-              <span className="label">Level</span>
-              <span className="value">{levelInfo.level}</span>
+          <div className={miniStatsClassName}>
+            <div className={miniStatRowClassName}>
+              <span className={miniStatLabelClassName}>Level</span>
+              <span className={miniStatValueClassName}>{levelInfo.level}</span>
             </div>
-            <div className="course-mini-stat">
-              <span className="label">XP</span>
-              <span className="value">{xp}</span>
+            <div className={miniStatRowClassName}>
+              <span className={miniStatLabelClassName}>XP</span>
+              <span className={miniStatValueClassName}>{xp}</span>
             </div>
-            <div className="course-mini-stat">
-              <span className="label">Badges</span>
-              <span className="value">{unlockedBadges.length}</span>
+            <div className={miniStatRowClassName}>
+              <span className={miniStatLabelClassName}>Badges</span>
+              <span className={miniStatValueClassName}>{unlockedBadges.length}</span>
             </div>
           </div>
         </div>
 
-        <div className="course-header-actions">
+        <div className={headerActionsClassName}>
           <Button variant="primary" size="large" onClick={handleContinueLearning}>
             <FiCompass size={18} />
             Jump to Resources
           </Button>
         </div>
 
-        <div className="course-progress-row">
-          <div className="course-progress-label">
+        <div className={progressRowClassName}>
+          <div className={progressLabelClassName}>
             <span>Overall Progress</span>
             <span>{overallPercent}%</span>
           </div>
-          <div className="course-progress-bar">
-            <div style={{ width: `${overallPercent}%` }} />
+          <div className={progressBarClassName}>
+            <div className={progressFillClassName} style={{ width: `${overallPercent}%` }} />
           </div>
         </div>
 
-        <div className="course-footer-row">
-          <div className="course-badges">
+        <div className={footerRowClassName}>
+          <div className={badgesClassName}>
             {unlockedBadges.length === 0 ? (
-              <span className="badge-pill badge-pill-muted">
+              <span className={`${badgeClassName} ${badgeMutedClassName}`}>
                 <FiAward size={14} />
                 No badges yet – complete modules to unlock them.
               </span>
             ) : (
               unlockedBadges.map((badge) => (
-                <span key={badge} className="badge-pill">
+                <span key={badge} className={badgeClassName}>
                   <FiAward size={14} />
                   {badge}
                 </span>
@@ -357,7 +408,7 @@ export const CourseLearning = () => {
           </div>
 
           {hasCertificate && certificationName && (
-            <div className="course-certificate-pill">
+            <div className={certificateClassName}>
               <FiFlag size={14} />
               {certificationName} unlocked
             </div>
@@ -371,7 +422,7 @@ export const CourseLearning = () => {
     if (!course) return null;
 
     return (
-      <div className="course-modules-grid">
+      <div className={modulesGridClassName}>
         {course.modules.map((module) => {
           const state = getModuleState(course, progressState, module.moduleId);
           const stats = courseProgress.moduleStats[module.moduleId] || {
@@ -395,17 +446,23 @@ export const CourseLearning = () => {
               id={state === 'active' ? 'active-course-module' : undefined}
               padding="medium"
               shadow="small"
-              className={`course-module-card reveal-on-scroll state-${state} ${
-                activeModuleId === module.moduleId ? 'is-active' : ''
-              }`}
+              className={`${moduleCardBaseClassName} reveal-on-scroll${activeModuleId === module.moduleId ? ` ${moduleCardActiveClassName}` : ''}`}
               onClick={() => setActiveModuleId(module.moduleId)}
             >
-              <div className="course-module-header">
-                <div className="course-module-meta">
-                  <span className="course-module-label">Module {module.moduleId}</span>
-                  <h3>{module.title}</h3>
+              <div className={moduleHeaderClassName}>
+                <div>
+                  <span className={moduleLabelClassName}>Module {module.moduleId}</span>
+                  <h3 className="text-lg font-semibold text-text-primary">{module.title}</h3>
                 </div>
-                <div className="course-module-state-pill">
+                <div
+                  className={`${moduleStatePillBaseClassName} ${
+                    state === 'completed'
+                      ? moduleStateCompletedClassName
+                      : state === 'active'
+                        ? moduleStateActiveClassName
+                        : moduleStateLockedClassName
+                  }`}
+                >
                   {state === 'completed' && (
                     <>
                       <FiZap size={14} />
@@ -427,36 +484,39 @@ export const CourseLearning = () => {
                 </div>
               </div>
 
-              <div className="course-module-progress-row">
-                <div className="course-progress-label">
+              <div className={moduleProgressRowClassName}>
+                <div className={progressLabelClassName}>
                   <span>Module progress</span>
                   <span>{stats.percent}%</span>
                 </div>
-                <div className="course-progress-bar module">
-                  <div style={{ width: `${stats.percent}%` }} />
+                <div className={progressBarClassName}>
+                  <div className={progressFillClassName} style={{ width: `${stats.percent}%` }} />
                 </div>
               </div>
 
-              <div className="course-rooms-list">
+              <div className={roomsListClassName}>
                 {module.rooms.map((room) => {
                   const completed = !!moduleProgress.rooms[room.roomId];
                   const disabled = state === 'locked';
+                  const rowClassName = [
+                    roomRowBaseClassName,
+                    completed ? roomRowCompletedClassName : '',
+                    disabled ? roomRowDisabledClassName : ''
+                  ].filter(Boolean).join(' ');
 
                   return (
                     <div
                       key={room.roomId}
-                      className={`course-room-row ${completed ? 'completed' : ''} ${
-                        disabled ? 'disabled' : ''
-                      }`}
+                      className={rowClassName}
                     >
-                      <div className="course-room-main">
-                        <span className="course-room-dot" />
+                      <div className={roomMainClassName}>
+                        <span className={`${roomDotClassName}${completed ? ` ${roomDotCompletedClassName}` : ''}`} />
                         <div>
-                          <h4>{room.title}</h4>
-                          <span>Room #{room.roomId}</span>
+                          <h4 className="text-sm font-semibold text-text-primary">{room.title}</h4>
+                          <span className="text-xs text-text-tertiary">Room #{room.roomId}</span>
                         </div>
                       </div>
-                      <div className="course-room-actions">
+                      <div className={roomActionsClassName}>
                         <Button
                           variant="primary"
                           size="small"
@@ -486,9 +546,9 @@ export const CourseLearning = () => {
                 })}
               </div>
 
-              <div className="course-ctf-row">
-                <div className="course-ctf-main">
-                  <span className={`course-ctf-pill ${allRoomsCompleted ? 'unlocked' : 'locked'}`}>
+              <div className={ctfRowClassName}>
+                <div className="flex flex-col gap-2">
+                  <span className={`${ctfPillBaseClassName} ${allRoomsCompleted ? ctfPillUnlockedClassName : ctfPillLockedClassName}`}>
                     {allRoomsCompleted ? (
                     <>
                       <FiTarget size={14} />
@@ -501,7 +561,7 @@ export const CourseLearning = () => {
                     </>
                   )}
                 </span>
-                  <h4>{module.ctf}</h4>
+                  <h4 className="text-sm font-semibold text-text-primary">{module.ctf}</h4>
                 </div>
                 <Button
                   variant={moduleProgress.ctfCompleted ? 'secondary' : 'primary'}
@@ -518,8 +578,8 @@ export const CourseLearning = () => {
                 </Button>
               </div>
 
-              <div className="course-module-footer">
-                <span className="course-module-badge">
+              <div className={moduleFooterClassName}>
+                <span className={moduleBadgeClassName}>
                   <FiAward size={14} />
                   Badge: {module.badge}
                 </span>
@@ -544,29 +604,20 @@ export const CourseLearning = () => {
 
   if (loading) {
     return (
-      <div className="course-learning">
-        <div className="course-layout flex flex-col gap-5">
-          <div className="course-layout-main">
-            <Card padding="medium" className="course-header-card">
-              <Skeleton className="skeleton-line" style={{ width: '40%' }} />
-              <Skeleton className="skeleton-line" style={{ width: '65%', marginTop: '0.75rem' }} />
-              <Skeleton
-                className="skeleton-line"
-                style={{ width: '100%', height: '16px', marginTop: '1.5rem' }}
-              />
+      <div className={pageClassName}>
+        <div className={layoutClassName}>
+          <div className={layoutMainClassName}>
+            <Card padding="medium" className={headerCardClassName}>
+              <Skeleton className="h-3 rounded-full" style={{ width: '40%' }} />
+              <Skeleton className="h-3 rounded-full" style={{ width: '65%', marginTop: '0.75rem' }} />
+              <Skeleton className="h-4 rounded-full" style={{ width: '100%', marginTop: '1.5rem' }} />
             </Card>
-            <div className="course-modules-grid">
+            <div className={modulesGridClassName}>
               {[1, 2].map((key) => (
-                <Card key={key} padding="medium" className="course-module-card">
-                  <Skeleton className="skeleton-line" style={{ width: '60%' }} />
-                  <Skeleton
-                    className="skeleton-line"
-                    style={{ width: '100%', height: '12px', marginTop: '1rem' }}
-                  />
-                  <Skeleton
-                    className="skeleton-line"
-                    style={{ width: '90%', height: '12px', marginTop: '0.5rem' }}
-                  />
+                <Card key={key} padding="medium" className={moduleCardBaseClassName}>
+                  <Skeleton className="h-3 rounded-full" style={{ width: '60%' }} />
+                  <Skeleton className="h-3 rounded-full" style={{ width: '100%', marginTop: '1rem' }} />
+                  <Skeleton className="h-3 rounded-full" style={{ width: '90%', marginTop: '0.5rem' }} />
                 </Card>
               ))}
             </div>
@@ -578,11 +629,11 @@ export const CourseLearning = () => {
 
   if (error) {
     return (
-      <div className="course-learning">
-        <div className="course-layout flex flex-col gap-5">
-          <div className="course-layout-main">
-            <Card padding="medium" className="course-header-card">
-              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
+      <div className={pageClassName}>
+        <div className={layoutClassName}>
+          <div className={layoutMainClassName}>
+            <Card padding="medium" className={headerCardClassName}>
+              <p className="text-sm text-text-secondary">{error}</p>
             </Card>
           </div>
         </div>
@@ -591,9 +642,9 @@ export const CourseLearning = () => {
   }
 
   return (
-    <div className="course-learning">
-      <div className="course-layout flex flex-col gap-5">
-        <div className="course-layout-main">
+    <div className={pageClassName}>
+      <div className={layoutClassName}>
+        <div className={layoutMainClassName}>
           {renderOverallHeader()}
           {renderModules()}
         </div>

@@ -1,46 +1,59 @@
 import React from 'react';
 import { FiShield } from 'react-icons/fi';
+import Button from '../../../../shared/components/ui/Button';
+
+const panelClassName =
+  'flex flex-col gap-4 rounded-lg border border-border bg-bg-secondary p-5 shadow-[0_12px_24px_rgba(15,23,42,0.08)]';
+const panelHeaderClassName = 'flex flex-wrap items-center justify-between gap-3';
+const panelTitleClassName = 'text-base font-semibold text-text-primary';
+const labelBaseClassName =
+  'inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold';
+const labelStyles = {
+  low: 'border-status-success/30 bg-status-success/10 text-status-success',
+  medium: 'border-status-warning/30 bg-status-warning/10 text-status-warning',
+  high: 'border-status-purple/30 bg-status-purple/10 text-status-purple',
+};
 
 const SecurityCommandCenterCard = ({ securityScore, riskLevel, lastScan, onRunScan, onViewReports }) => {
   const normalizedRisk = String(riskLevel || 'medium').toLowerCase();
   const riskClass = normalizedRisk.includes('low')
-    ? 'cd-label-beta'
+    ? labelStyles.low
     : normalizedRisk.includes('high')
-      ? 'cd-label-delta'
-      : 'cd-label-gamma';
+      ? labelStyles.high
+      : labelStyles.medium;
 
   return (
-    <div className="cd-panel cd-command-panel">
-      <div className="cd-panel-header">
+    <div className={panelClassName}>
+      <div className={panelHeaderClassName}>
         <div>
-          <h2 className="cd-panel-title">Security Command Center</h2>
+          <h2 className={panelTitleClassName}>Security Command Center</h2>
         </div>
-        <span className={`cd-label ${riskClass}`}>{riskLevel}</span>
+        <span className={`${labelBaseClassName} ${riskClass}`}>{riskLevel}</span>
       </div>
 
-      <div className="cd-metric-grid">
-        <div className="cd-metric">
-          <span className="cd-metric-label">Security Score</span>
-          <strong className="cd-metric-value">{securityScore} / 100</strong>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="flex flex-col gap-1 rounded-sm border border-border bg-bg-tertiary px-3 py-3">
+          <span className="text-xs uppercase tracking-widest text-text-tertiary">Security Score</span>
+          <strong className="text-sm font-semibold text-text-primary">{securityScore} / 100</strong>
         </div>
-        <div className="cd-metric">
-          <span className="cd-metric-label">Risk Level</span>
-          <strong className="cd-metric-value">{riskLevel}</strong>
+        <div className="flex flex-col gap-1 rounded-sm border border-border bg-bg-tertiary px-3 py-3">
+          <span className="text-xs uppercase tracking-widest text-text-tertiary">Risk Level</span>
+          <strong className="text-sm font-semibold text-text-primary">{riskLevel}</strong>
         </div>
-        <div className="cd-metric">
-          <span className="cd-metric-label">Last Scan</span>
-          <strong className="cd-metric-value">{lastScan}</strong>
+        <div className="flex flex-col gap-1 rounded-sm border border-border bg-bg-tertiary px-3 py-3">
+          <span className="text-xs uppercase tracking-widest text-text-tertiary">Last Scan</span>
+          <strong className="text-sm font-semibold text-text-primary">{lastScan}</strong>
         </div>
       </div>
 
-      <div className="cd-panel-actions">
-        <button type="button" className="cd-btn cd-btn-primary" onClick={onRunScan}>
+      <div className="flex flex-wrap gap-2">
+        <Button type="button" variant="primary" size="small" onClick={onRunScan}>
           <FiShield size={14} />
           Run Security Scan
-        </button>
-        <button type="button" className="cd-btn cd-btn-secondary" onClick={onViewReports}>
+        </Button>
+        <Button type="button" variant="secondary" size="small" onClick={onViewReports}>
           View Reports
-        </button>
+        </Button>
       </div>
     </div>
   );

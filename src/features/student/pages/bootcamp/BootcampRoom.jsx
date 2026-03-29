@@ -172,13 +172,44 @@ const BootcampRoom = () => {
   }, [liveClassNotification, room, roomMeta]);
 
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const headerClassName = 'mb-6 flex flex-col gap-4';
+  const headerInnerClassName = 'flex flex-wrap items-center justify-between gap-6';
+  const headerLeftClassName = 'flex items-center gap-4';
+  const iconWrapClassName = 'flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-bg-secondary text-brand';
+  const breadcrumbClassName = 'flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary';
+  const breadcrumbStrongClassName = 'font-semibold text-text-secondary';
+  const visibilityClassName =
+    'rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold uppercase tracking-widest text-text-secondary';
+  const headerDescClassName = 'mt-1 text-sm text-text-secondary';
+  const headerActionsClassName = 'flex flex-wrap gap-2';
+  const buttonPrimaryClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-brand bg-brand px-3 py-2 text-xs font-semibold text-ink-onBrand transition hover:bg-brand/90';
+  const buttonSecondaryClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-xs font-semibold text-text-primary transition hover:bg-bg-tertiary';
+  const metaRowClassName = 'flex flex-wrap gap-3';
+  const metaPillClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+  const metaValueClassName = 'font-semibold text-text-primary';
+  const panelClassName = 'rounded-lg border border-border bg-bg-secondary p-5 text-sm text-text-secondary';
+  const alertClassName = 'flex items-start gap-2';
+  const sectionClassName = 'flex flex-col gap-4';
+  const sectionTitleClassName = 'text-lg font-semibold text-text-primary';
+  const sectionDescClassName = 'text-sm text-text-secondary';
+  const dividerClassName = 'h-px bg-border';
+  const cardClassName = 'rounded-lg border border-border bg-bg-secondary p-5';
+  const cardActionsClassName = 'flex flex-wrap gap-2';
+  const mutedClassName = 'text-sm text-text-tertiary';
+  const listClassName = 'list-disc space-y-1 pl-5 text-sm text-text-secondary';
+  const roomNavClassName = 'flex flex-wrap gap-3 pt-4';
 
   if (loading) {
     return (
-      <div className="bc-page">
-        <div className="bc-panel">
-          <div className="bc-skeleton" style={{ width: '40%' }} />
-          <div className="bc-skeleton" style={{ width: '80%' }} />
+      <div className={pageClassName}>
+        <div className={panelClassName}>
+          <div className="h-3 rounded-xs bg-bg-tertiary" style={{ width: '40%' }} />
+          <div className="mt-2 h-3 rounded-xs bg-bg-tertiary" style={{ width: '80%' }} />
         </div>
       </div>
     );
@@ -186,13 +217,13 @@ const BootcampRoom = () => {
 
   if (error || !module || !room || !moduleMeta || !roomMeta) {
     return (
-      <div className="bc-page">
-        <div className="bc-panel bc-alert">
-          <h3 className="bc-panel-title">Room unavailable</h3>
-          <p>{error || 'We could not load this lesson.'}</p>
+      <div className={pageClassName}>
+        <div className={panelClassName}>
+          <h3 className="text-base font-semibold text-text-primary">Room unavailable</h3>
+          <p className="text-sm text-text-secondary">{error || 'We could not load this lesson.'}</p>
           <button
             type="button"
-            className="bc-btn bc-btn-secondary"
+            className={buttonSecondaryClassName}
             onClick={() => navigate('/student-bootcamps/modules')}
           >
             <FiArrowLeft size={14} />
@@ -205,27 +236,27 @@ const BootcampRoom = () => {
 
   return (
     <>
-      <div className="bc-page">
-        <header className="bc-page-header">
-          <div className="bc-page-header-inner">
-            <div className="bc-header-left">
-              <div className="bc-header-icon-wrap">
-                <FiFileText size={20} className="bc-header-icon" />
+      <div className={pageClassName}>
+        <header className={headerClassName}>
+          <div className={headerInnerClassName}>
+            <div className={headerLeftClassName}>
+              <div className={iconWrapClassName}>
+                <FiFileText size={20} />
               </div>
               <div>
-                <div className="bc-header-breadcrumb">
-                  <span className="bc-breadcrumb-org">HSOCIETY</span>
-                  <span className="bc-breadcrumb-sep">/</span>
-                  <span className="bc-breadcrumb-page">phase-{moduleMeta.moduleId}-room-{room.roomId}</span>
-                  <span className="bc-header-visibility">Private</span>
+                <div className={breadcrumbClassName}>
+                  <span className={breadcrumbStrongClassName}>HSOCIETY</span>
+                  <span>/</span>
+                  <span className={breadcrumbStrongClassName}>phase-{moduleMeta.moduleId}-room-{room.roomId}</span>
+                  <span className={visibilityClassName}>Private</span>
                 </div>
-                <p className="bc-header-desc">{roomOverview}</p>
+                <p className={headerDescClassName}>{roomOverview}</p>
               </div>
             </div>
-            <div className="bc-header-actions">
+            <div className={headerActionsClassName}>
               <button
                 type="button"
-                className="bc-btn bc-btn-secondary"
+                className={buttonSecondaryClassName}
                 onClick={() => navigate(`/student-bootcamps/modules/${moduleId}`)}
               >
                 <FiArrowLeft size={14} />
@@ -233,41 +264,41 @@ const BootcampRoom = () => {
               </button>
             </div>
           </div>
-          <div className="bc-header-meta">
-            <span className="bc-meta-pill">
-              <FiLayers size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Phase</span>
-              <strong className="bc-meta-value">{moduleMeta.moduleId}</strong>
+          <div className={metaRowClassName}>
+            <span className={metaPillClassName}>
+              <FiLayers size={13} className="text-text-tertiary" />
+              <span>Phase</span>
+              <strong className={metaValueClassName}>{moduleMeta.moduleId}</strong>
             </span>
-            <span className="bc-meta-pill">
-              <FiTarget size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Room</span>
-              <strong className="bc-meta-value">{room.roomId}</strong>
+            <span className={metaPillClassName}>
+              <FiTarget size={13} className="text-text-tertiary" />
+              <span>Room</span>
+              <strong className={metaValueClassName}>{room.roomId}</strong>
             </span>
           </div>
         </header>
 
-        <div className="bc-layout">
-          <main className="bc-main">
+        <div className="grid gap-6">
+          <main>
             {isLocked && (
-              <div className="bc-panel bc-alert">
-                <FiLock size={16} />
-                <p>Complete the previous room quiz to unlock this lesson.</p>
+              <div className={`${panelClassName} ${alertClassName}`}>
+                <FiLock size={16} className="text-text-tertiary" />
+                <p className="text-sm text-text-secondary">Complete the previous room quiz to unlock this lesson.</p>
               </div>
             )}
 
             {statusMessage && (
-              <div className="bc-panel bc-alert">
-                <p>{statusMessage}</p>
+              <div className={panelClassName}>
+                <p className="text-sm text-text-secondary">{statusMessage}</p>
               </div>
             )}
 
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiMessageSquare size={15} className="bc-section-icon" />
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiMessageSquare size={15} className="mr-2 inline-block text-brand" />
                 Live Class
               </h2>
-              <p className="bc-section-desc">Join instructor-led sessions tied to this room.</p>
+              <p className={sectionDescClassName}>Join instructor-led sessions tied to this room.</p>
               <LiveClassCard
                 title={liveClass?.title || `Today's class session`}
                 instructor={liveClass?.instructor || 'Admin'}
@@ -275,47 +306,47 @@ const BootcampRoom = () => {
                 link={liveClass?.link}
               />
             </section>
-            <div className="bc-divider" />
+            <div className={dividerClassName} />
 
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiFileText size={15} className="bc-section-icon" />
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiFileText size={15} className="mr-2 inline-block text-brand" />
                 Lesson Content
               </h2>
-              <p className="bc-section-desc">Review the core material before attempting the quiz.</p>
-              <div className="bc-panel">
-                <h3 className="bc-panel-title">Overview</h3>
-                <p>{roomOverview}</p>
-                <div className="bc-panel-divider" />
-                <h4 className="bc-panel-subtitle">Reading materials & guides</h4>
-                <ul className="bc-list">
+              <p className={sectionDescClassName}>Review the core material before attempting the quiz.</p>
+              <div className={panelClassName}>
+                <h3 className="text-base font-semibold text-text-primary">Overview</h3>
+                <p className="text-sm text-text-secondary">{roomOverview}</p>
+                <div className={dividerClassName} />
+                <h4 className="text-sm font-semibold text-text-primary">Reading materials & guides</h4>
+                <ul className={listClassName}>
                   {(roomBullets || []).map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <div className="bc-panel-divider" />
-                <strong>Tools & playbooks</strong>
-                <p>Check the Resources tab for playbooks, tooling, and walkthroughs.</p>
+                <div className={dividerClassName} />
+                <strong className="text-sm text-text-primary">Tools & playbooks</strong>
+                <p className="text-sm text-text-secondary">Check the Resources tab for playbooks, tooling, and walkthroughs.</p>
               </div>
             </section>
-            <div className="bc-divider" />
+            <div className={dividerClassName} />
 
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiDownload size={15} className="bc-section-icon" />
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiDownload size={15} className="mr-2 inline-block text-brand" />
                 Downloads
               </h2>
-              <p className="bc-section-desc">Download slides, labs, and supporting files for this room.</p>
-              <div className="bc-card">
+              <p className={sectionDescClassName}>Download slides, labs, and supporting files for this room.</p>
+              <div className={cardClassName}>
                 {roomResources.length === 0 ? (
-                  <p className="bc-muted">No downloads published yet for this room.</p>
+                  <p className={mutedClassName}>No downloads published yet for this room.</p>
                 ) : (
-                  <div className="bc-card-actions">
+                  <div className={cardActionsClassName}>
                     {roomResources.map((resource) => (
                       <button
                         key={resource.url || resource.title}
                         type="button"
-                        className="bc-btn bc-btn-secondary"
+                        className={buttonSecondaryClassName}
                         onClick={() => resource.url && window.open(resource.url, '_blank', 'noopener,noreferrer')}
                         disabled={!resource.url}
                       >
@@ -327,19 +358,19 @@ const BootcampRoom = () => {
                 )}
               </div>
             </section>
-            <div className="bc-divider" />
+            <div className={dividerClassName} />
 
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiCheckCircle size={15} className="bc-section-icon" />
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiCheckCircle size={15} className="mr-2 inline-block text-brand" />
                 Quiz
               </h2>
-              <p className="bc-section-desc">Quizzes validate progression and unlock the next room.</p>
-              <div className="bc-panel">
-                <p>Submit the quiz to unlock the next lesson.</p>
+              <p className={sectionDescClassName}>Quizzes validate progression and unlock the next room.</p>
+              <div className={panelClassName}>
+                <p className="text-sm text-text-secondary">Submit the quiz to unlock the next lesson.</p>
                 <button
                   type="button"
-                  className="bc-btn bc-btn-primary"
+                  className={buttonPrimaryClassName}
                   onClick={() => setQuizContext({
                     scope: {
                       type: 'room',
@@ -356,10 +387,10 @@ const BootcampRoom = () => {
               </div>
             </section>
 
-            <div className="bc-room-nav">
+            <div className={roomNavClassName}>
               <button
                 type="button"
-                className="bc-btn bc-btn-secondary"
+                className={buttonSecondaryClassName}
                 onClick={() => {
                   if (!previousRoom) return;
                   navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${previousRoom.roomId}`);
@@ -371,7 +402,7 @@ const BootcampRoom = () => {
               </button>
               <button
                 type="button"
-                className="bc-btn bc-btn-primary"
+                className={buttonPrimaryClassName}
                 onClick={() => {
                   if (!nextRoom) return;
                   if (!canAdvance) {

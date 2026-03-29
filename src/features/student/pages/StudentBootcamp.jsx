@@ -6,9 +6,6 @@ import { useAuth } from '../../../core/auth/AuthContext';
 import { getStudentOverview, registerBootcamp } from '../../dashboards/student/services/student.service';
 import useBootcampAccess from '../hooks/useBootcampAccess';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
-import '../styles/base.css';
-import '../styles/components.css';
-import '../styles/bootcamp.css';
 import {
   HACKER_PROTOCOL_BOOTCAMP,
 } from '../../../data/static/bootcamps/hackerProtocolData';
@@ -44,10 +41,24 @@ const StudentBootcamp = () => {
   }, [isRegistered, isPaid]);
 
   const statusDotClass = useMemo(() => {
-    if (!isRegistered) return 'bootcamp-status-dot';
-    if (isRegistered && !isPaid) return 'bootcamp-status-dot registered';
-    return 'bootcamp-status-dot active';
+    if (!isRegistered) return 'bg-text-tertiary';
+    if (isRegistered && !isPaid) return 'bg-status-warning';
+    return 'bg-status-success';
   }, [isRegistered, isPaid]);
+
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full max-w-[1200px] mx-auto px-[clamp(1rem,4vw,2rem)] py-[clamp(1.5rem,3vw,2.5rem)] text-text-primary';
+  const heroClassName =
+    'w-full rounded-lg border border-border bg-card p-4 shadow-sm md:p-5';
+  const heroCardClassName =
+    'grid overflow-hidden rounded-lg border border-border bg-card shadow-sm lg:grid-cols-[260px_1fr]';
+  const heroBodyClassName = 'flex flex-col gap-4 border-t border-border p-6 lg:border-t-0 lg:border-l';
+  const eyebrowClassName = 'flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const metadataPillClassName =
+    'inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+  const statusRowClassName = 'flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4';
+  const statusLabelClassName = 'flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const errorClassName = 'rounded-sm border border-status-danger/30 bg-status-danger/10 px-4 py-3 text-sm text-status-danger';
 
   const handleEnroll = async () => {
     setSaving(true);
@@ -74,10 +85,10 @@ const StudentBootcamp = () => {
   };
 
   return (
-    <div className="student-page">
+    <div className={pageClassName}>
       <div className="flex flex-col gap-5">
 
-        <header className="student-hero reveal-on-scroll w-full border-b border-border bg-card px-4 py-4 md:rounded-md md:border md:shadow-sm">
+        <header className={`reveal-on-scroll ${heroClassName}`}>
           <div>
             <p className="inline-flex items-center rounded-xs border border-border bg-bg-secondary px-2 py-1 text-xs font-semibold uppercase tracking-widest text-text-tertiary">
               Bootcamps
@@ -92,52 +103,56 @@ const StudentBootcamp = () => {
         </header>
 
         {error && (
-          <div className="student-notice error reveal-on-scroll" style={{ marginBottom: '0.5rem' }}>
+          <div className={`reveal-on-scroll ${errorClassName}`}>
             <span>{error}</span>
           </div>
         )}
 
-        <div className="bootcamp-layout">
-          <div className="bootcamp-hero-card reveal-on-scroll">
-            <div className="bootcamp-hero-cover">
-              <img src={HACKER_PROTOCOL_BOOTCAMP.emblem} alt="Hacker Protocol emblem" />
+        <div className="flex flex-col gap-6">
+          <div className={`reveal-on-scroll ${heroCardClassName}`}>
+            <div className="flex items-center justify-center bg-bg-secondary p-6 lg:p-0">
+              <img
+                src={HACKER_PROTOCOL_BOOTCAMP.emblem}
+                alt="Hacker Protocol emblem"
+                className="h-full w-full object-contain lg:object-cover"
+              />
             </div>
 
-            <div className="bootcamp-hero-body">
-              <div className="bootcamp-hero-eyebrow">
-                <FiShield size={14} />
+            <div className={heroBodyClassName}>
+              <div className={eyebrowClassName}>
+                <FiShield size={14} className="text-text-tertiary" />
                 <span>{HACKER_PROTOCOL_BOOTCAMP.title}</span>
               </div>
 
-              <h2 className="bootcamp-hero-title">{HACKER_PROTOCOL_BOOTCAMP.title}</h2>
-              <p className="bootcamp-hero-subtitle">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
+              <h2 className="text-xl font-semibold text-text-primary">{HACKER_PROTOCOL_BOOTCAMP.title}</h2>
+              <p className="text-sm text-text-secondary">{HACKER_PROTOCOL_BOOTCAMP.subtitle}</p>
 
-              <div className="bootcamp-metadata">
-                <span className="bootcamp-metadata-pill">
-                  <FiClock size={12} />
+              <div className="flex flex-wrap gap-2">
+                <span className={metadataPillClassName}>
+                  <FiClock size={12} className="text-text-tertiary" />
                   {HACKER_PROTOCOL_BOOTCAMP.duration}
                 </span>
-                <span className="bootcamp-metadata-pill">
-                  <FiMonitor size={12} />
+                <span className={metadataPillClassName}>
+                  <FiMonitor size={12} className="text-text-tertiary" />
                   {HACKER_PROTOCOL_BOOTCAMP.format}
                 </span>
-                <span className="bootcamp-metadata-pill">
-                  <FiLayers size={12} />
+                <span className={metadataPillClassName}>
+                  <FiLayers size={12} className="text-text-tertiary" />
                   {HACKER_PROTOCOL_BOOTCAMP.phases} phases
                 </span>
-                <span className="bootcamp-metadata-pill">
-                  <FiTrendingUp size={12} />
+                <span className={metadataPillClassName}>
+                  <FiTrendingUp size={12} className="text-text-tertiary" />
                   {progress}% progress
                 </span>
               </div>
 
-              <div className="bootcamp-status-row">
-                <div className="bootcamp-status-label">
-                  <span className={statusDotClass} />
+              <div className={statusRowClassName}>
+                <div className={statusLabelClassName}>
+                  <span className={`h-2 w-2 rounded-full ${statusDotClass}`} />
                   {enrolledStateLabel}
                 </div>
 
-                <div className="bootcamp-hero-actions">
+                <div className="flex flex-wrap items-center gap-2">
                   {!isRegistered && (
                     <Button
                       variant="primary"

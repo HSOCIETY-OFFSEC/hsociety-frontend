@@ -4,7 +4,6 @@ import { getCommunityProfile } from '../services/community.service';
 import ProfileBadgeSection from '../../../shared/components/ui/ProfileBadgeSection';
 import { buildProfileBadges } from '../../../shared/utils/display/profileBadges';
 import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvatar';
-import '../styles/community.css';
 
 const formatCount = (value) => Number(value || 0).toLocaleString();
 const formatDate = (value) =>
@@ -79,23 +78,28 @@ const CommunityProfile = () => {
   const handleBack = () => navigate('/community');
 
   return (
-    <div className="community-profile">
-      <div className="community-profile-head">
-        <button type="button" className="community-profile-back" onClick={handleBack}>
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6">
+      <div className="flex items-center justify-between gap-4">
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-sm font-medium text-text-primary transition hover:bg-bg-tertiary"
+          onClick={handleBack}
+        >
           ← Back to community
         </button>
-        <h1>Community profile</h1>
+        <h1 className="text-base font-semibold text-text-primary">Community profile</h1>
       </div>
 
-      {loading && <p className="community-profile-state">Loading profile…</p>}
-      {error && <p className="community-profile-state error">{error}</p>}
+      {loading && <p className="text-sm text-text-secondary">Loading profile…</p>}
+      {error && <p className="text-sm text-status-danger">{error}</p>}
 
       {!loading && !error && profileData && (
         <>
-          <section className="community-profile-hero">
+          <section className="flex flex-col gap-4 rounded-lg border border-border bg-bg-secondary p-6 sm:flex-row sm:items-start">
             <img
               src={heroAvatarSrc}
               alt={profileData.user.name || profileData.user.hackerHandle}
+              className="h-24 w-24 rounded-full object-cover"
               onError={(e) => {
                 if (e.currentTarget.src !== heroAvatarFallback) {
                   e.currentTarget.src = heroAvatarFallback;
@@ -103,50 +107,52 @@ const CommunityProfile = () => {
               }}
             />
             <div>
-              <p className="community-profile-handle">
+              <p className="text-xs uppercase tracking-widest text-text-tertiary">
                 @{profileData.user.name || profileData.user.hackerHandle || profileData.user.id}
               </p>
-              <h2>{profileData.user.name || 'Community member'}</h2>
-              <div className="community-profile-badges" aria-label="Profile badges">
-                <p className="community-profile-badges-title">Badges</p>
+              <h2 className="mt-1 text-xl font-semibold text-text-primary">
+                {profileData.user.name || 'Community member'}
+              </h2>
+              <div className="mt-3 grid gap-2" aria-label="Profile badges">
+                <p className="text-xs uppercase tracking-widest text-text-tertiary">Badges</p>
                 <ProfileBadgeSection badges={profileBadges} />
               </div>
               {profileData.user.organization && (
-                <p className="community-profile-meta">{profileData.user.organization}</p>
+                <p className="mt-2 text-sm text-text-secondary">{profileData.user.organization}</p>
               )}
-              <p className="community-profile-meta">
+              <p className="text-sm text-text-secondary">
                 Joined {formatDate(profileData.user.joinedAt)}
               </p>
               {profileData.user.bio && (
-                <p className="community-profile-bio">{profileData.user.bio}</p>
+                <p className="mt-2 text-sm text-text-secondary">{profileData.user.bio}</p>
               )}
             </div>
           </section>
 
-          <section className="community-profile-metrics" aria-label="Interaction metrics">
+          <section className="grid grid-cols-2 gap-3 rounded-lg border border-border bg-bg-secondary p-4 sm:grid-cols-5" aria-label="Interaction metrics">
             {metrics.map((metric) => (
-              <article key={metric.label}>
-                <strong>{metric.value}</strong>
-                <span>{metric.label}</span>
+              <article key={metric.label} className="rounded-md border border-border bg-bg-primary px-3 py-2 text-center">
+                <strong className="block text-lg font-semibold text-text-primary">{metric.value}</strong>
+                <span className="text-xs text-text-tertiary">{metric.label}</span>
               </article>
             ))}
           </section>
 
-          <section className="community-profile-xp" aria-label="XP summary">
-            <h3>XP streak & rank</h3>
-            <div className="community-profile-xp-grid">
+          <section className="rounded-lg border border-border bg-bg-secondary p-4" aria-label="XP summary">
+            <h3 className="text-sm font-semibold text-text-primary">XP streak & rank</h3>
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {xpDetails.map((item) => (
-                <article key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}</strong>
+                <article key={item.label} className="rounded-md border border-border bg-bg-primary px-3 py-2 text-center">
+                  <span className="text-xs text-text-tertiary">{item.label}</span>
+                  <strong className="mt-1 block text-sm font-semibold text-text-primary">{item.value}</strong>
                 </article>
               ))}
             </div>
           </section>
 
-          <section className="community-profile-emblems" aria-label="Unlocked emblems">
-            <h3>Unlocked emblems</h3>
-            <p>
+          <section className="rounded-lg border border-border bg-bg-secondary p-4" aria-label="Unlocked emblems">
+            <h3 className="text-sm font-semibold text-text-primary">Unlocked emblems</h3>
+            <p className="mt-2 text-sm text-text-secondary">
               {profileData.emblems?.unlockedModules?.length
                 ? `${profileData.emblems.unlockedModules.length} modules unlocked`
                 : 'No emblems earned yet.'}
@@ -156,7 +162,7 @@ const CommunityProfile = () => {
       )}
 
       {!loading && !error && !profileData && (
-        <p className="community-profile-state">No profile data available.</p>
+        <p className="text-sm text-text-tertiary">No profile data available.</p>
       )}
     </div>
   );

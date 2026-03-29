@@ -1,9 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import '../../styles/bootcamp/bootcamp-app.css';
 
 const BootcampLayout = () => (
-  <div className="bootcamp-app">
+  <div className="min-h-[calc(100vh-60px)] w-full bg-bg-primary text-text-primary">
     <Outlet />
   </div>
 );

@@ -47,14 +47,13 @@ const CommunityCompose = ({
   };
 
   return (
-    <div className="community-compose" role="form" aria-label="Send a message">
-
-      <div className="community-compose-stack">
-        <div className="community-compose-inner">
-          <div className="community-emoji" ref={emojiRef}>
+    <div className="flex items-center gap-3 border-t border-border bg-bg-primary px-5 py-3" role="form" aria-label="Send a message">
+      <div className="flex flex-1 flex-col gap-2">
+        <div className="flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 transition focus-within:border-text-tertiary/40 focus-within:ring-2 focus-within:ring-text-tertiary/10">
+          <div className="relative" ref={emojiRef}>
             <button
               type="button"
-              className={`community-emoji-btn ${emojiOpen ? 'active' : ''}`}
+              className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-text-secondary transition hover:bg-bg-tertiary hover:text-text-primary ${emojiOpen ? 'bg-bg-tertiary text-text-primary' : ''}`}
               onClick={() => setEmojiOpen((prev) => !prev)}
               aria-label="Insert emoji"
               aria-expanded={emojiOpen}
@@ -62,12 +61,12 @@ const CommunityCompose = ({
               <FiSmile size={16} />
             </button>
             {emojiOpen && (
-              <div className="community-emoji-panel" role="listbox" aria-label="Emoji picker">
+              <div className="absolute bottom-full left-0 mb-2 grid w-48 grid-cols-6 gap-1 rounded-lg border border-border bg-bg-secondary p-2 shadow-lg" role="listbox" aria-label="Emoji picker">
                 {EMOJIS.map((emoji) => (
                   <button
                     key={emoji}
                     type="button"
-                    className="community-emoji-item"
+                    className="flex h-7 w-7 items-center justify-center rounded-md text-lg transition hover:bg-bg-tertiary"
                     onClick={() => {
                       onDraftChange(`${draft}${emoji}`);
                       setEmojiOpen(false);
@@ -93,11 +92,12 @@ const CommunityCompose = ({
               }
             }}
             onBlur={() => onTyping?.(false)}
+            className="flex-1 bg-transparent py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none"
           />
 
           {nearLimit && draft.length > 0 && (
             <span
-              className={`community-compose-counter ${charsLeft < 20 ? 'danger' : 'warn'}`}
+              className={`text-xs font-semibold ${charsLeft < 20 ? 'text-status-danger' : 'text-status-warning'}`}
             >
               {charsLeft}
             </span>
@@ -105,7 +105,7 @@ const CommunityCompose = ({
 
           <button
             type="button"
-            className="community-send-btn"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-ink-onBrand transition hover:bg-brand-hover disabled:opacity-60"
             onClick={onSend}
             disabled={!canSend}
             aria-label="Send message"

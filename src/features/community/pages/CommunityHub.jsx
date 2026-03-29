@@ -16,7 +16,6 @@ import { getProfile } from '../../account/services/account.service';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import { COMMUNITY_HUB_DATA } from '../../../data/static/community/communityHubData';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
-import '../styles/community.css';
 
 const CommunityHub = () => {
   const { user } = useAuth();
@@ -437,9 +436,9 @@ const CommunityHub = () => {
   })();
 
   return (
-    <div className="community-root">
+    <div className="mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6 px-4 pb-10 pt-6 lg:grid-cols-[minmax(0,1fr)_320px]">
       {/* ── MAIN FEED (X/Twitter style) ── */}
-      <main className="community-main" aria-label={`#${displayRoom(room)} channel`}>
+      <main className="flex min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-bg-primary" aria-label={`#${displayRoom(room)} channel`}>
         {/* Sticky header with channel tabs */}
         <CommunityHeader
           activeChannels={activeChannels}
@@ -481,20 +480,24 @@ const CommunityHub = () => {
         />
       </main>
 
-      <aside className="community-aside" aria-label="Community overview">
-        <div className="community-aside-widget" id="community-stats">
-          <div className="community-aside-widget-header">
+      <aside className="hidden flex-col gap-4 lg:flex" aria-label="Community overview">
+        <div className="rounded-lg border border-border bg-bg-secondary p-4" id="community-stats">
+          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary">
             <FiUsers size={14} aria-hidden="true" />
             <span>{COMMUNITY_HUB_DATA.aside.communityTitle}</span>
           </div>
-          <div className="community-aside-stats-grid">
-            <div className="community-aside-stat-cell">
-              <strong>{Number(overview.stats?.learners || 0).toLocaleString()}</strong>
-              <span>{COMMUNITY_HUB_DATA.aside.onlineNowLabel}</span>
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <div className="rounded-md border border-border bg-bg-primary px-3 py-2 text-center">
+              <strong className="block text-lg font-semibold text-text-primary">
+                {Number(overview.stats?.learners || 0).toLocaleString()}
+              </strong>
+              <span className="text-xs text-text-tertiary">{COMMUNITY_HUB_DATA.aside.onlineNowLabel}</span>
             </div>
-            <div className="community-aside-stat-cell">
-              <strong>{Number(overview.stats?.questions || 0).toLocaleString()}</strong>
-              <span>{COMMUNITY_HUB_DATA.aside.totalPostsLabel}</span>
+            <div className="rounded-md border border-border bg-bg-primary px-3 py-2 text-center">
+              <strong className="block text-lg font-semibold text-text-primary">
+                {Number(overview.stats?.questions || 0).toLocaleString()}
+              </strong>
+              <span className="text-xs text-text-tertiary">{COMMUNITY_HUB_DATA.aside.totalPostsLabel}</span>
             </div>
           </div>
         </div>
@@ -502,57 +505,59 @@ const CommunityHub = () => {
         {user && (
           <button
             type="button"
-            className="community-aside-user-card"
+            className="flex items-center gap-3 rounded-lg border border-border bg-bg-secondary p-3 text-left transition hover:border-brand/30"
             onClick={() => navigate('/settings')}
             aria-label={COMMUNITY_HUB_DATA.userCard.openAccountAria}
           >
             <img
               src={currentUserAvatar}
               alt={user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
-              className="community-aside-user-avatar"
+              className="h-11 w-11 rounded-full object-cover"
               onError={(e) => {
                 if (e.currentTarget.src !== currentUserAvatarFallback) {
                   e.currentTarget.src = currentUserAvatarFallback;
                 }
               }}
             />
-            <div className="community-aside-user-info">
-              <span className="community-aside-user-name">
+            <div className="flex min-w-0 flex-1 flex-col">
+              <span className="truncate text-sm font-semibold text-text-primary">
                 {user?.name || user?.username || COMMUNITY_HUB_DATA.userCard.defaultName}
               </span>
-              <span className="community-aside-user-meta">
-                <span className="community-aside-user-role">{role}</span>
-                <span className="community-aside-user-cp">
-                  <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
+              <span className="flex items-center gap-2 text-xs text-text-tertiary">
+                <span className="rounded-full border border-border bg-bg-primary px-2 py-0.5 uppercase tracking-widest">
+                  {role}
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <img src={cpIcon} alt="CP" className="h-4 w-4" />
                   {cpTotal}
                 </span>
               </span>
             </div>
-            <div className="community-aside-user-right">
-              <span className="community-aside-user-cp">
-                <img src={cpIcon} alt="CP" className="community-aside-cp-icon" />
-                {cpTotal}
-              </span>
-              <FiSettings size={13} className="community-aside-settings-icon" aria-hidden="true" />
+            <div className="flex items-center gap-2 text-text-tertiary">
+              <FiSettings size={13} aria-hidden="true" />
             </div>
           </button>
         )}
 
-        <div className="community-aside-widget">
-          <div className="community-aside-widget-header">
+        <div className="rounded-lg border border-border bg-bg-secondary p-4">
+          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary">
             <FiMessageSquare size={14} aria-hidden="true" />
             <span>Channels</span>
           </div>
-          <div className="community-aside-channel-list">
+          <div className="mt-3 flex flex-col gap-1">
             {activeChannels.map((channel) => (
               <button
                 key={channel.id}
                 type="button"
-                className={`community-aside-channel-item ${channel.id === room ? 'active' : ''}`}
+                className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold transition ${
+                  channel.id === room
+                    ? 'bg-bg-primary text-text-primary'
+                    : 'text-text-secondary hover:bg-bg-primary hover:text-text-primary'
+                }`}
                 onClick={() => handleRoomChange(channel.id)}
               >
-                <span className="community-aside-channel-hash">#</span>
-                <span className="community-aside-channel-item-name">{channel.name}</span>
+                <span className="text-text-tertiary">#</span>
+                <span className="truncate">{channel.name}</span>
               </button>
             ))}
           </div>

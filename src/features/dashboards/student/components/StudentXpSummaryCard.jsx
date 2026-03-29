@@ -1,6 +1,9 @@
 import React from 'react';
 import cpIcon from '../../../../assets/icons/CP/cp-icon.webp';
 
+const panelClassName =
+  'flex flex-col gap-4 rounded-lg border border-border bg-bg-secondary p-6 shadow-[0_12px_24px_rgba(15,23,42,0.08)]';
+
 const LEVELS = [
   { min: 0, max: 500, title: 'Script Kiddie', next: 'Exploit Apprentice' },
   { min: 500, max: 1000, title: 'Exploit Apprentice', next: 'Payload Architect' },
@@ -31,19 +34,19 @@ const StudentXpSummaryCard = ({ xpSummary }) => {
   const { levelTitle, nextLevel, currentXp, nextXp, progress } = getLevelInfo(xpSummary.totalXp);
 
   return (
-    <div className="sd-panel sd-xp-panel">
-      <div className="sd-panel-header">
-        <img src={cpIcon} alt="CP" className="sd-cp-icon" />
-        <h3>Progress</h3>
+    <div className={panelClassName}>
+      <div className="flex items-center gap-2 font-semibold text-text-primary">
+        <img src={cpIcon} alt="CP" className="h-5 w-5" />
+        <h3 className="text-sm">Progress</h3>
       </div>
-      <p className="sd-xp-line">Level: <strong>{levelTitle}</strong></p>
-      <p className="sd-xp-line">
-        XP: <strong>{currentXp}</strong> / {nextXp}
+      <p className="text-sm text-text-secondary">Level: <strong className="text-text-primary">{levelTitle}</strong></p>
+      <p className="text-sm text-text-secondary">
+        XP: <strong className="text-text-primary">{currentXp}</strong> / {nextXp}
       </p>
-      <div className="sd-progress-bar" role="presentation">
-        <span className="sd-progress-fill" style={{ width: `${progress}%` }} />
+      <div className="h-1.5 w-full rounded-full bg-bg-tertiary" role="presentation">
+        <span className="block h-full rounded-full bg-brand" style={{ width: `${progress}%` }} />
       </div>
-      <p className="sd-xp-next">Next Level: {nextLevel}</p>
+      <p className="text-xs text-text-tertiary">Next Level: {nextLevel}</p>
     </div>
   );
 };

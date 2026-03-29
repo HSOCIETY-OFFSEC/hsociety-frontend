@@ -55,6 +55,26 @@ const BootcampLiveClass = () => {
   const [overview, setOverview] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [course, setCourse] = useState(null);
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const headerClassName = 'mb-6 flex flex-col gap-4';
+  const headerInnerClassName = 'flex flex-wrap items-center justify-between gap-6';
+  const headerLeftClassName = 'flex items-center gap-4';
+  const iconWrapClassName = 'flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-bg-secondary text-brand';
+  const breadcrumbClassName = 'flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary';
+  const breadcrumbStrongClassName = 'font-semibold text-text-secondary';
+  const visibilityClassName =
+    'rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold uppercase tracking-widest text-text-secondary';
+  const headerDescClassName = 'mt-1 text-sm text-text-secondary';
+  const metaRowClassName = 'flex flex-wrap gap-3';
+  const metaPillClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+  const metaValueClassName = 'font-semibold text-text-primary';
+  const sectionClassName = 'flex flex-col gap-4';
+  const sectionTitleClassName = 'text-lg font-semibold text-text-primary';
+  const sectionDescClassName = 'text-sm text-text-secondary';
+  const panelClassName = 'rounded-lg border border-border bg-bg-secondary p-5 text-sm text-text-secondary';
+  const gridClassName = 'grid gap-4 md:grid-cols-2';
 
   useEffect(() => {
     let mounted = true;
@@ -94,49 +114,49 @@ const BootcampLiveClass = () => {
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
 
   return (
-    <div className="bc-page">
-        <header className="bc-page-header">
-          <div className="bc-page-header-inner">
-            <div className="bc-header-left">
-              <div className="bc-header-icon-wrap">
-                <FiVideo size={20} className="bc-header-icon" />
+    <div className={pageClassName}>
+        <header className={headerClassName}>
+          <div className={headerInnerClassName}>
+            <div className={headerLeftClassName}>
+              <div className={iconWrapClassName}>
+                <FiVideo size={20} />
               </div>
               <div>
-                <div className="bc-header-breadcrumb">
-                  <span className="bc-breadcrumb-org">HSOCIETY</span>
-                  <span className="bc-breadcrumb-sep">/</span>
-                  <span className="bc-breadcrumb-page">bootcamp-live-class</span>
-                  <span className="bc-header-visibility">Private</span>
+                <div className={breadcrumbClassName}>
+                  <span className={breadcrumbStrongClassName}>HSOCIETY</span>
+                  <span>/</span>
+                  <span className={breadcrumbStrongClassName}>bootcamp-live-class</span>
+                  <span className={visibilityClassName}>Private</span>
                 </div>
-                <p className="bc-header-desc">Join instructor-led sessions. Links appear when instructors publish them.</p>
+                <p className={headerDescClassName}>Join instructor-led sessions. Links appear when instructors publish them.</p>
               </div>
             </div>
           </div>
-          <div className="bc-header-meta">
-            <span className="bc-meta-pill">
-              <FiVideo size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Sessions</span>
-              <strong className="bc-meta-value">{notificationClasses.length + roomClasses.length}</strong>
+          <div className={metaRowClassName}>
+            <span className={metaPillClassName}>
+              <FiVideo size={13} className="text-text-tertiary" />
+              <span>Sessions</span>
+              <strong className={metaValueClassName}>{notificationClasses.length + roomClasses.length}</strong>
             </span>
-            <span className="bc-meta-pill">
-              <FiActivity size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Status</span>
-              <strong className="bc-meta-value">{statusMeta.value}</strong>
+            <span className={metaPillClassName}>
+              <FiActivity size={13} className="text-text-tertiary" />
+              <span>Status</span>
+              <strong className={metaValueClassName}>{statusMeta.value}</strong>
             </span>
           </div>
         </header>
 
-        <div className="bc-layout">
-          <main className="bc-main">
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiVideo size={15} className="bc-section-icon" />
+        <div className="grid gap-6">
+          <main>
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiVideo size={15} className="mr-2 inline-block text-brand" />
                 Live Sessions
               </h2>
-              <p className="bc-section-desc">Join live classes or review upcoming room sessions.</p>
-              <div className="bc-section-grid">
+              <p className={sectionDescClassName}>Join live classes or review upcoming room sessions.</p>
+              <div className={gridClassName}>
                 {(notificationClasses.length === 0 && roomClasses.length === 0) && (
-                  <div className="bc-panel">
+                  <div className={panelClassName}>
                     <p>Live class schedules will appear here when posted.</p>
                   </div>
                 )}

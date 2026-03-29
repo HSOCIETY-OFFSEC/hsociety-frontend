@@ -71,21 +71,21 @@ const CommunityMessageList = ({
 
   return (
     <div
-      className="community-messages"
+      className="flex flex-col gap-4 px-5 py-4"
       role="log"
       aria-live="polite"
       aria-label="Messages"
       ref={containerRef}
     >
       {loading ? (
-        <div className="community-msg-state">
-          <div className="community-loading-skeleton" aria-hidden="true">
+        <div className="flex flex-col items-center gap-3 rounded-md border border-border bg-bg-secondary px-4 py-6 text-sm text-text-secondary">
+          <div className="w-full" aria-hidden="true">
             {Array.from({ length: 6 }).map((_, index) => (
-              <div key={`skeleton-${index}`} className="community-skeleton-row">
-                <Skeleton variant="circle" className="community-skeleton-avatar" />
-                <div className="community-skeleton-body">
-                  <Skeleton variant="line" className="community-skeleton-line" />
-                  <Skeleton variant="line" className="community-skeleton-line short" />
+              <div key={`skeleton-${index}`} className="mb-3 flex items-start gap-3">
+                <Skeleton variant="circle" className="h-10 w-10" />
+                <div className="flex flex-1 flex-col gap-2">
+                  <Skeleton variant="line" className="h-3 w-2/3" />
+                  <Skeleton variant="line" className="h-3 w-1/3" />
                 </div>
               </div>
             ))}
@@ -93,7 +93,7 @@ const CommunityMessageList = ({
           <p>{COMMUNITY_UI.messages.loadingText}</p>
         </div>
       ) : messages.length === 0 ? (
-        <div className="community-msg-state">
+        <div className="flex flex-col items-center gap-2 rounded-md border border-border bg-bg-secondary px-4 py-6 text-sm text-text-secondary">
           <FiMessageSquare size={28} />
           <p>{COMMUNITY_UI.messages.emptyText}</p>
         </div>
@@ -102,7 +102,7 @@ const CommunityMessageList = ({
           {hasOlderNormalMessages && (
             <button
               type="button"
-              className="community-load-older"
+              className="mx-auto rounded-full border border-border bg-bg-secondary px-4 py-2 text-xs font-semibold text-text-secondary transition hover:text-text-primary"
               onClick={() =>
                 setVisibleNormalCount((prev) => Math.min(normalMessages.length, prev + loadMoreStep))
               }
@@ -111,8 +111,10 @@ const CommunityMessageList = ({
             </button>
           )}
           {pinnedMessages.length > 0 && (
-            <div className="community-pinned">
-              <div className="community-pinned-header">{COMMUNITY_UI.messages.pinnedTitle}</div>
+            <div className="rounded-md border border-border bg-bg-secondary/60 p-3">
+              <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-text-tertiary">
+                {COMMUNITY_UI.messages.pinnedTitle}
+              </div>
               {renderList(pinnedMessages)}
             </div>
           )}
@@ -121,20 +123,22 @@ const CommunityMessageList = ({
       )}
 
       {typingUsers.length > 0 && (
-        <div className="community-typing" role="status" aria-live="polite">
-          <span className="community-typing-label">
+        <div className="flex items-center gap-3 text-xs text-text-tertiary" role="status" aria-live="polite">
+          <span>
             {typingUsers.length === 1
               ? `${typingUsers[0].username} is typing`
               : `${typingUsers.length} people are typing`}
           </span>
-          <span className="community-typing-dots" aria-hidden="true">
-            <span /><span /><span />
+          <span className="flex gap-1" aria-hidden="true">
+            <span className="h-1.5 w-1.5 animate-cs-dot-pulse rounded-full bg-text-tertiary" />
+            <span className="h-1.5 w-1.5 animate-cs-dot-pulse rounded-full bg-text-tertiary [animation-delay:0.2s]" />
+            <span className="h-1.5 w-1.5 animate-cs-dot-pulse rounded-full bg-text-tertiary [animation-delay:0.4s]" />
           </span>
         </div>
       )}
 
       {error && (
-        <div className="community-error" role="alert">
+        <div className="rounded-md border border-status-danger/30 bg-status-danger/10 px-3 py-2 text-sm text-status-danger" role="alert">
           {error}
         </div>
       )}

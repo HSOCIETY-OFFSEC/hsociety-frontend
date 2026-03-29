@@ -20,10 +20,34 @@ import StudentRecentNotificationsCard from '../components/StudentRecentNotificat
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import SkillProgressCard from '../components/SkillProgressCard';
 import Skeleton from '../../../../shared/components/ui/Skeleton';
+import Button from '../../../../shared/components/ui/Button';
 import reportRum from '../../../../shared/utils/perf/rum';
 import { logger } from '../../../../core/logging/logger';
 import { envConfig } from '../../../../config/app/env.config';
-import '../styles/student-dashboard.css';
+
+const pageClassName =
+  'min-h-[calc(100vh-60px)] w-full max-w-[1280px] mx-auto px-[clamp(1.1rem,4vw,2.25rem)] pt-[clamp(1.75rem,3.2vw,2.75rem)] pb-16 text-text-primary';
+const headerClassName = 'mb-8 flex flex-col gap-4';
+const headerInnerClassName = 'flex flex-wrap items-center justify-between gap-6';
+const breadcrumbClassName = 'flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary';
+const metaPillClassName =
+  'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+const metaLabelClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+const panelClassName =
+  'flex flex-col gap-5 rounded-lg border border-border bg-bg-secondary p-6 shadow-[0_12px_24px_rgba(15,23,42,0.08)]';
+const progressBarClassName = 'h-1.5 w-full rounded-full bg-bg-tertiary';
+const progressFillClassName = 'block h-full rounded-full bg-brand';
+const itemListClassName = 'overflow-hidden rounded-sm border border-border';
+const itemRowClassName =
+  'flex flex-col gap-3 border-b border-border bg-bg-secondary px-4 py-4 text-sm transition-colors hover:bg-bg-tertiary sm:flex-row sm:items-center sm:justify-between';
+const labelBaseClassName =
+  'inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold';
+const labelStyles = {
+  alpha: 'border-brand/30 bg-brand/10 text-brand',
+  beta: 'border-status-success/30 bg-status-success/10 text-status-success',
+  gamma: 'border-status-warning/30 bg-status-warning/10 text-status-warning',
+  delta: 'border-status-purple/30 bg-status-purple/10 text-status-purple',
+};
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -148,7 +172,7 @@ const StudentDashboard = () => {
 
   const renderMetaValue = (value, width = 36) => {
     if (loading) {
-      return <Skeleton className="sd-meta-skeleton" style={{ width }} />;
+      return <Skeleton className="h-3 rounded-full" style={{ width }} />;
     }
     if (error) return '—';
     return value;
@@ -219,203 +243,213 @@ const StudentDashboard = () => {
   }, [accessRevoked, bootcampProgressItems, isPaid, isRegistered]);
 
   return (
-    <div className="sd-page">
-      <header className="sd-page-header">
-        <div className="sd-page-header-inner">
-          <div className="sd-header-left">
-            <div className="sd-header-icon-wrap">
-              <FiCompass size={20} className="sd-header-icon" />
+    <div className={pageClassName}>
+      <header className={headerClassName}>
+        <div className={headerInnerClassName}>
+          <div className="flex items-center gap-4">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border bg-bg-secondary">
+              <FiCompass size={20} className="text-brand" />
             </div>
             <div>
-              <div className="sd-header-breadcrumb">
-                <span className="sd-breadcrumb-org">HSOCIETY</span>
-                <span className="sd-breadcrumb-sep">/</span>
-                <span className="sd-breadcrumb-page">student-dashboard</span>
-                <span className="sd-header-visibility">Private</span>
+              <div className={breadcrumbClassName}>
+                <span className="font-semibold text-text-secondary">HSOCIETY</span>
+                <span className="text-text-tertiary">/</span>
+                <span className="font-semibold text-text-secondary">student-dashboard</span>
+                <span className="rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                  Private
+                </span>
               </div>
             </div>
           </div>
-        <div className="sd-header-actions">
-          <button
-            type="button"
-            className="sd-btn sd-btn-secondary"
-            onClick={() => navigate('/student-resources')}
-            disabled={loading}
-          >
-            <FiBookOpen size={16} />
-            Free Resources
-          </button>
-          <button
-            type="button"
-            className="sd-btn sd-btn-primary"
-            onClick={() => navigate('/community')}
-            disabled={loading}
-          >
-            <FiMessageSquare size={16} />
-            Join Community
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              size="small"
+              onClick={() => navigate('/student-resources')}
+              disabled={loading}
+            >
+              <FiBookOpen size={16} />
+              Free Resources
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              size="small"
+              onClick={() => navigate('/community')}
+              disabled={loading}
+            >
+              <FiMessageSquare size={16} />
+              Join Community
+            </Button>
+          </div>
         </div>
-        </div>
-        <div className="sd-header-meta">
-          <span className="sd-meta-pill">
-            <FiTarget size={13} className="sd-meta-icon" />
-            <span className="sd-meta-label">XP</span>
-            <strong className="sd-meta-value">{renderMetaValue(xpTotal, 34)}</strong>
+        <div className="flex flex-wrap gap-2">
+          <span className={metaPillClassName}>
+            <FiTarget size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>XP</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(xpTotal, 34)}</strong>
           </span>
-          <span className="sd-meta-pill">
-            <FiBookOpen size={13} className="sd-meta-icon" />
-            <span className="sd-meta-label">Modules</span>
-            <strong className="sd-meta-value">{renderMetaValue(moduleCount, 28)}</strong>
+          <span className={metaPillClassName}>
+            <FiBookOpen size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>Modules</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(moduleCount, 28)}</strong>
           </span>
-          <span className="sd-meta-pill">
-            <FiBell size={13} className="sd-meta-icon" />
-            <span className="sd-meta-label">Alerts</span>
-            <strong className="sd-meta-value">{renderMetaValue(notifications.length, 24)}</strong>
+          <span className={metaPillClassName}>
+            <FiBell size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>Alerts</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(notifications.length, 24)}</strong>
           </span>
-          <span className="sd-meta-pill">
-            <FiActivity size={13} className="sd-meta-icon" />
-            <span className="sd-meta-label">Bootcamp</span>
-            <strong className="sd-meta-value">{renderMetaValue(statusMeta.value, 54)}</strong>
+          <span className={metaPillClassName}>
+            <FiActivity size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>Bootcamp</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(statusMeta.value, 54)}</strong>
           </span>
         </div>
       </header>
 
-      <div className="sd-layout">
-        <main className="sd-main">
+      <div className="grid gap-8">
+        <main className="min-w-0">
           {!onboardingComplete && (
-            <div className="sd-panel sd-alert">
-              <p>Complete onboarding to unlock your full HSOCIETY experience.</p>
-              <button
+            <div className={panelClassName}>
+              <p className="text-sm text-text-secondary">Complete onboarding to unlock your full HSOCIETY experience.</p>
+              <Button
                 type="button"
-                className="sd-btn sd-btn-secondary"
+                variant="secondary"
+                size="small"
                 onClick={() => navigate('/student-onboarding')}
               >
                 Go to Onboarding <FiArrowRight size={14} />
-              </button>
+              </Button>
             </div>
           )}
           {loading && (
-            <div className="sd-loading">
+            <div className="rounded-sm border border-border bg-bg-secondary p-5 text-sm text-text-secondary">
               <p>Loading your training data...</p>
-              <div className="sd-loading-list">
+              <div className="mt-4 grid gap-3">
                 {Array.from({ length: 4 }).map((_, index) => (
-                  <div key={`sd-load-${index}`} className="sd-loading-item" />
+                  <div key={`sd-load-${index}`} className="h-12 rounded-xs bg-bg-tertiary" />
                 ))}
               </div>
             </div>
           )}
 
           {error && !loading && (
-            <div className="sd-panel sd-error">
-              <div className="sd-panel-header">
+            <div className={panelClassName}>
+              <div className="flex items-center gap-2 font-semibold text-text-primary">
                 <FiShield size={18} />
-                <h3>Something went wrong</h3>
+                <h3 className="text-sm">Something went wrong</h3>
               </div>
-              <p>We couldn&apos;t load your training dashboard.</p>
-              <button
+              <p className="text-sm text-text-secondary">We couldn&apos;t load your training dashboard.</p>
+              <Button
                 type="button"
-                className="sd-btn sd-btn-secondary"
+                variant="secondary"
+                size="small"
                 onClick={loadStudentData}
               >
                 Reload Dashboard
-              </button>
+              </Button>
             </div>
           )}
 
           {!error && !loading && (
             <>
-              <div className="sd-panel sd-alert">
-                <div className="sd-panel-header">
+              <div className={panelClassName}>
+                <div className="flex items-center gap-2 font-semibold text-text-primary">
                   <FiBookOpen size={18} />
-                  <h3>Start With Free Resources</h3>
+                  <h3 className="text-sm">Start With Free Resources</h3>
                 </div>
-                <p>Bootcamp modules are opening soon. In the meantime, dive into curated free learning and connect with the community.</p>
-                <div className="sd-panel-actions">
-                  <button
+                <p className="text-sm text-text-secondary">Bootcamp modules are opening soon. In the meantime, dive into curated free learning and connect with the community.</p>
+                <div className="flex flex-wrap gap-3">
+                  <Button
                     type="button"
-                    className="sd-btn sd-btn-secondary"
+                    variant="secondary"
+                    size="small"
                     onClick={() => navigate('/student-resources')}
                   >
                     Browse Free Resources <FiArrowRight size={14} />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
-                    className="sd-btn sd-btn-primary"
+                    variant="primary"
+                    size="small"
                     onClick={() => navigate('/community')}
                   >
                     Open Community <FiArrowRight size={14} />
-                  </button>
+                  </Button>
                 </div>
               </div>
-              <section className="sd-section">
-                <h2 className="sd-section-title">
-                  <FiCompass size={15} className="sd-section-icon" />
+              <section className="py-6">
+                <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-text-primary">
+                  <FiCompass size={15} className="text-text-tertiary" />
                   Continue Learning
                 </h2>
-                <div className="sd-panel sd-continue-panel">
-                  <div className="sd-continue-main">
-                    <h3 className="sd-continue-title">{continueModule?.title || 'Start your bootcamp'}</h3>
-                    <p className="sd-continue-meta">
+                <div className={`${panelClassName} lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center`}>
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-lg font-semibold text-text-primary">{continueModule?.title || 'Start your bootcamp'}</h3>
+                    <p className="text-sm text-text-secondary">
                       Phase {continueModule?.id || '1'}
                       {continueModule?.roomsTotal
                         ? ` · Rooms ${continueModule?.roomsCompleted || 0}/${continueModule?.roomsTotal}`
                         : ''}
                     </p>
-                    <div className="sd-progress-bar" role="presentation">
+                    <div className={progressBarClassName} role="presentation">
                       <span
-                        className="sd-progress-fill"
+                        className={progressFillClassName}
                         style={{ width: `${Math.round(continueModule?.progress || 0)}%` }}
                       />
                     </div>
-                    <span className="sd-progress-note">
+                    <span className="text-xs text-text-tertiary">
                       Progress {Math.round(continueModule?.progress || 0)}%
                     </span>
                   </div>
-                  <button
+                  <Button
                     type="button"
-                    className="sd-btn sd-btn-primary"
+                    variant="primary"
+                    size="small"
                     onClick={primaryAction.onClick}
                   >
                     {primaryAction.label} <FiArrowRight size={14} />
-                  </button>
+                  </Button>
                 </div>
               </section>
-              <section className="sd-section">
-                <h2 className="sd-section-title">
-                  <FiTarget size={15} className="sd-section-icon" />
+              <section className="py-6">
+                <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-text-primary">
+                  <FiTarget size={15} className="text-text-tertiary" />
                   Current Phase & Role
                 </h2>
-                <div className="sd-panel sd-continue-panel">
-                  <div className="sd-continue-main">
-                    <h3 className="sd-continue-title">
+                <div className={`${panelClassName} lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center`}>
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-lg font-semibold text-text-primary">
                       {data.progressMeta?.currentPhase?.title || 'Phase 1'}
                     </h3>
-                    <p className="sd-continue-meta">
+                    <p className="text-sm text-text-secondary">
                       Role: {data.progressMeta?.earned?.roleTitle || 'Candidate'}
                     </p>
-                    <span className="sd-progress-note">
+                    <span className="text-xs text-text-tertiary">
                       Badge: {data.progressMeta?.earned?.badge || 'Complete phases to unlock badges.'}
                     </span>
                   </div>
-                  <button
+                  <Button
                     type="button"
-                    className="sd-btn sd-btn-secondary"
+                    variant="secondary"
+                    size="small"
                     onClick={() => navigate('/student-bootcamps/overview')}
                   >
                     View Bootcamp <FiArrowRight size={14} />
-                  </button>
+                  </Button>
                 </div>
               </section>
-              <div className="sd-divider" />
+              <div className="h-px bg-border" />
 
-              <section className="sd-section">
-                <h2 className="sd-section-title">
-                  <FiBookOpen size={15} className="sd-section-icon" />
+              <section className="py-6">
+                <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-text-primary">
+                  <FiBookOpen size={15} className="text-text-tertiary" />
                   Bootcamp Progress
                 </h2>
-                <div className="sd-item-list">
+                <div className={itemListClassName}>
                   {bootcampProgressItems.length === 0 ? (
-                    <div className="sd-empty">No bootcamp phases yet.</div>
+                    <div className="bg-bg-secondary px-4 py-4 text-sm text-text-tertiary">No bootcamp phases yet.</div>
                   ) : (
                     bootcampProgressItems.map((phase) => {
                       const progress = Number(phase.progress) || 0;
@@ -423,19 +457,19 @@ const StudentDashboard = () => {
                       const isCompleted = status === 'done' || progress >= 100;
                       const isCurrent = status === 'in-progress' || status === 'current';
                       const labelClass = isCompleted
-                        ? 'sd-label-beta'
+                        ? labelStyles.beta
                         : isCurrent
-                          ? 'sd-label-alpha'
-                          : 'sd-label-gamma';
+                          ? labelStyles.alpha
+                          : labelStyles.gamma;
 
                       return (
-                        <article key={phase.id} className="sd-item-row">
-                          <div className="sd-item-main">
-                            <span className="sd-item-title">Phase {phase.phaseNumber}</span>
-                            <span className="sd-item-subtitle">{phase.title}</span>
+                        <article key={phase.id} className={itemRowClassName}>
+                          <div className="min-w-0">
+                            <span className="block font-semibold text-text-primary">Phase {phase.phaseNumber}</span>
+                            <span className="text-sm text-text-secondary">{phase.title}</span>
                           </div>
-                          <div className="sd-item-meta">
-                            <span className={`sd-label ${labelClass}`}>
+                          <div className="flex w-full items-center justify-start gap-3 sm:w-auto sm:justify-end">
+                            <span className={`${labelBaseClassName} ${labelClass}`}>
                               {isCompleted ? (
                                 <>
                                   <FiCheckCircle size={12} />
@@ -453,7 +487,7 @@ const StudentDashboard = () => {
                                 </>
                               )}
                             </span>
-                            <span className="sd-item-progress">{progress}%</span>
+                            <span className="text-xs text-text-tertiary">{progress}%</span>
                           </div>
                         </article>
                       );
@@ -461,39 +495,40 @@ const StudentDashboard = () => {
                   )}
                 </div>
               </section>
-              <div className="sd-divider" />
+              <div className="h-px bg-border" />
 
-              <section className="sd-section">
-                <h2 className="sd-section-title">
-                  <FiActivity size={15} className="sd-section-icon" />
+              <section className="py-6">
+                <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-text-primary">
+                  <FiActivity size={15} className="text-text-tertiary" />
                   Progress Overview
                 </h2>
-                <div className="sd-section-grid">
+                <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
                   <StudentXpSummaryCard xpSummary={data.xpSummary} />
                   <SkillProgressCard pillars={skillPillars} />
                 </div>
               </section>
-              <div className="sd-divider" />
+              <div className="h-px bg-border" />
 
-              <section className="sd-section">
-                <h2 className="sd-section-title">
-                  <FiMessageSquare size={15} className="sd-section-icon" />
+              <section className="py-6">
+                <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-text-primary">
+                  <FiMessageSquare size={15} className="text-text-tertiary" />
                   Community & Updates
                 </h2>
-                <div className="sd-section-grid">
+                <div className="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
                   <StudentRecentNotificationsCard notifications={notifications} />
-                  <div className="sd-panel sd-community-panel">
-                    <div className="sd-panel-header">
+                  <div className={panelClassName}>
+                    <div className="flex items-center gap-2 font-semibold text-text-primary">
                       <FiMessageSquare size={18} />
-                      <h3>Community</h3>
+                      <h3 className="text-sm">Community</h3>
                     </div>
-                    <button
+                    <Button
                       type="button"
-                      className="sd-btn sd-btn-secondary"
+                      variant="secondary"
+                      size="small"
                       onClick={() => navigate('/community')}
                     >
                       Open Community
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </section>

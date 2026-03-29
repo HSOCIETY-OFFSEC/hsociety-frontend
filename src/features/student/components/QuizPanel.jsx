@@ -86,19 +86,42 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
       ? 'Module Quiz'
       : 'Quiz';
 
+  const backdropClassName = 'fixed inset-0 z-[60] flex items-end justify-center bg-black/55 p-4 sm:items-center';
+  const panelClassName = 'w-full max-w-[640px] pb-6';
+  const cardClassName = 'max-h-[90vh] overflow-y-auto rounded-lg';
+  const headerClassName = 'mb-5 flex items-start justify-between gap-4';
+  const kickerClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const closeButtonClassName =
+    'rounded-full p-1 text-text-secondary transition hover:bg-bg-tertiary hover:text-text-primary';
+  const bodyClassName = 'flex flex-col gap-4';
+  const errorClassName = 'text-sm text-text-tertiary';
+  const questionTextClassName = 'text-sm font-medium text-text-primary';
+  const optionsClassName = 'flex flex-col gap-2';
+  const optionBaseClassName =
+    'flex w-full items-center gap-3 rounded-md border border-border bg-bg-secondary px-3 py-2 text-left text-sm text-text-secondary transition hover:-translate-y-0.5 hover:border-text-secondary/40';
+  const optionSelectedClassName = 'border-text-secondary/40 bg-card text-text-primary';
+  const optionCorrectClassName = 'border-text-primary/40';
+  const optionIncorrectClassName = 'border-text-tertiary/40';
+  const optionIndexClassName =
+    'flex h-7 w-7 items-center justify-center rounded-full bg-[var(--input-bg)] text-xs font-semibold text-text-secondary';
+  const footerClassName = 'mt-5 flex flex-wrap items-center gap-3';
+  const resultPillBaseClassName =
+    'inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-secondary';
+  const resultPillPassedClassName = 'text-text-primary';
+
   return (
-    <div className="quiz-panel-backdrop">
-      <div className="quiz-panel">
-        <Card padding="large" className="quiz-card">
-          <div className="quiz-header">
+    <div className={backdropClassName}>
+      <div className={panelClassName}>
+        <Card padding="large" className={cardClassName}>
+          <div className={headerClassName}>
             <div>
-              <p className="quiz-kicker">{headerLabel}</p>
-              <h3>{title}</h3>
+              <p className={kickerClassName}>{headerLabel}</p>
+              <h3 className="text-lg font-semibold text-text-primary">{title}</h3>
             </div>
             <button
               type="button"
               aria-label="Close quiz"
-              className="quiz-close-btn"
+              className={closeButtonClassName}
               onClick={onClose}
             >
               <FiX size={18} />
@@ -106,26 +129,20 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
           </div>
 
           {loading && (
-            <div className="quiz-body">
+            <div className={bodyClassName}>
               {[1, 2].map((key) => (
-                <div key={key} className="quiz-question">
-                  <Skeleton className="skeleton-line" style={{ width: '70%' }} />
-                  <Skeleton
-                    className="skeleton-line"
-                    style={{ width: '90%', marginTop: '0.75rem' }}
-                  />
-                  <Skeleton
-                    className="skeleton-line"
-                    style={{ width: '80%', marginTop: '0.5rem' }}
-                  />
+                <div key={key} className="flex flex-col gap-2">
+                  <Skeleton className="h-3 rounded-full" style={{ width: '70%' }} />
+                  <Skeleton className="h-3 rounded-full" style={{ width: '90%' }} />
+                  <Skeleton className="h-3 rounded-full" style={{ width: '80%' }} />
                 </div>
               ))}
             </div>
           )}
 
           {!loading && error && (
-            <div className="quiz-body">
-              <p className="quiz-error">{error}</p>
+            <div className={bodyClassName}>
+              <p className={errorClassName}>{error}</p>
               <Button variant="secondary" size="small" onClick={onClose}>
                 Close
               </Button>
@@ -133,37 +150,39 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
           )}
 
           {!loading && !error && quiz && (
-            <div className="quiz-body">
+            <div className={bodyClassName}>
               {quiz.questions.map((q) => (
-                <div key={q.id} className="quiz-question">
-                  <p className="quiz-question-text">{q.text}</p>
-                  <div className="quiz-options">
+                <div key={q.id} className="flex flex-col gap-2">
+                  <p className={questionTextClassName}>{q.text}</p>
+                  <div className={optionsClassName}>
                     {q.options.map((opt, index) => {
                       const isSelected = answers[q.id] === index;
                       const isCorrect = result && index === q.correctIndex;
                       const isWrongSelection =
                         result && isSelected && index !== q.correctIndex;
+                      const optionClassName = [
+                        optionBaseClassName,
+                        isSelected ? optionSelectedClassName : '',
+                        isCorrect ? optionCorrectClassName : '',
+                        isWrongSelection ? optionIncorrectClassName : '',
+                      ].filter(Boolean).join(' ');
 
                       return (
                         <button
                           key={index}
                           type="button"
-                          className={`quiz-option ${
-                            isSelected ? 'selected' : ''
-                          } ${isCorrect ? 'correct' : ''} ${
-                            isWrongSelection ? 'incorrect' : ''
-                          }`}
+                          className={optionClassName}
                           onClick={() => handleSelectOption(q.id, index)}
                         >
-                          <span className="quiz-option-index">
+                          <span className={optionIndexClassName}>
                             {String.fromCharCode(65 + index)}
                           </span>
                           <span>{opt}</span>
                           {isCorrect && result && (
-                            <FiCheckCircle size={16} className="quiz-option-icon correct" />
+                            <FiCheckCircle size={16} className="ml-auto text-text-primary" />
                           )}
                           {isWrongSelection && result && (
-                            <FiXCircle size={16} className="quiz-option-icon incorrect" />
+                            <FiXCircle size={16} className="ml-auto text-text-tertiary" />
                           )}
                         </button>
                       );
@@ -175,12 +194,10 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
           )}
 
           {!loading && quiz && (
-            <div className="quiz-footer">
+            <div className={footerClassName}>
               {result && (
                 <div
-                  className={`quiz-result-pill ${
-                    result.passed ? 'passed' : 'failed'
-                  }`}
+                  className={`${resultPillBaseClassName}${result.passed ? ` ${resultPillPassedClassName}` : ''}`}
                 >
                   {result.passed ? (
                     <>
@@ -197,7 +214,7 @@ export const QuizPanel = ({ scope, title, onClose, onComplete }) => {
                   )}
                 </div>
               )}
-              <div className="quiz-actions">
+              <div className="ml-auto flex flex-wrap gap-2">
                 <Button variant="ghost" size="small" onClick={onClose}>
                   Close
                 </Button>

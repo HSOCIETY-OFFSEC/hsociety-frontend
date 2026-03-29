@@ -7,9 +7,6 @@ import Skeleton from '../../../shared/components/ui/Skeleton';
 import { getStudentCourse } from '../services/course.service';
 import { getStudentOverview } from '../../dashboards/student/services/student.service';
 import { QuizPanel } from '../components/QuizPanel';
-import '../styles/base.css';
-import '../styles/components.css';
-import '../styles/lesson.css';
 import {
   getHackerProtocolModule,
   getHackerProtocolRoom,
@@ -83,19 +80,41 @@ const StudentLesson = () => {
   const previousRoom = currentRoomIndex > 0 ? module?.rooms?.[currentRoomIndex - 1] : null;
   const nextRoom = currentRoomIndex >= 0 ? module?.rooms?.[currentRoomIndex + 1] : null;
 
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const topbarClassName =
+    'mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border bg-card p-5';
+  const topbarKickerClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const topbarMetaClassName = 'flex flex-wrap items-center gap-3 text-sm text-text-secondary';
+  const bodyClassName = 'grid gap-4 px-4';
+  const layoutClassName = 'mt-4 grid gap-4 px-4';
+  const actionRowClassName = 'mt-6 flex flex-wrap gap-3 px-4';
+  const actionButtonClassName = 'flex-1 min-w-[180px] justify-center';
+  const contentCardClassName = 'rounded-lg shadow-lg';
+  const notesCardClassName = 'border-dashed';
+  const statusCardClassName = 'bg-bg-secondary';
+  const notesInputClassName =
+    'mt-3 w-full rounded-md border border-border bg-[var(--input-bg)] px-3 py-2 text-sm text-text-primary transition focus:border-brand/40 focus:ring-2 focus:ring-brand/20';
+
+  const pageStyle = {
+    background: 'radial-gradient(circle at top left, rgba(var(--brand-rgb), 0.14), transparent 45%),\
+      radial-gradient(circle at 20% 80%, rgba(var(--brand-rgb), 0.1), transparent 50%),\
+      var(--bg-primary)'
+  };
+
   if (loading) {
     return (
-      <div className="student-page lesson-page">
-        <header className="student-hero reveal-on-scroll">
+      <div className={pageClassName} style={pageStyle}>
+        <header className="reveal-on-scroll rounded-lg border border-border bg-card p-5">
           <div>
-            <p className="student-kicker">Loading lesson</p>
-            <h1>Preparing your lesson...</h1>
+            <p className={topbarKickerClassName}>Loading lesson</p>
+            <h1 className="text-2xl font-semibold text-text-primary">Preparing your lesson...</h1>
           </div>
         </header>
-        <section className="lesson-layout">
-          <Card padding="large" className="lesson-main-card">
-            <Skeleton className="skeleton-line" style={{ width: '50%' }} />
-            <Skeleton className="skeleton-line" style={{ width: '80%', marginTop: '0.75rem' }} />
+        <section className={layoutClassName}>
+          <Card padding="large" shadow="large" className={contentCardClassName}>
+            <Skeleton className="h-3 rounded-full" style={{ width: '50%' }} />
+            <Skeleton className="h-3 rounded-full" style={{ width: '80%', marginTop: '0.75rem' }} />
           </Card>
         </section>
       </div>
@@ -104,12 +123,12 @@ const StudentLesson = () => {
 
   if (error || !course) {
     return (
-      <div className="student-page lesson-page">
-        <header className="student-hero reveal-on-scroll">
+      <div className={pageClassName} style={pageStyle}>
+        <header className="reveal-on-scroll rounded-lg border border-border bg-card p-5">
           <div>
-            <p className="student-kicker">Learning Path</p>
-            <h1>Lesson unavailable.</h1>
-            <p>We could not load this lesson. Please try again or go back.</p>
+            <p className={topbarKickerClassName}>Learning Path</p>
+            <h1 className="text-2xl font-semibold text-text-primary">Lesson unavailable.</h1>
+            <p className="mt-2 text-sm text-text-secondary">We could not load this lesson. Please try again or go back.</p>
           </div>
           <Button
             variant="primary"
@@ -120,9 +139,9 @@ const StudentLesson = () => {
             Back to Dashboard
           </Button>
         </header>
-        <section className="lesson-layout">
-          <Card padding="large" className="lesson-main-card">
-            <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{error}</p>
+        <section className={layoutClassName}>
+          <Card padding="large" shadow="large" className={contentCardClassName}>
+            <p className="text-sm text-text-secondary">{error}</p>
           </Card>
         </section>
       </div>
@@ -131,12 +150,12 @@ const StudentLesson = () => {
 
   if (!module || !room || !moduleMeta || !roomMeta) {
     return (
-      <div className="student-page lesson-page">
-        <header className="student-hero reveal-on-scroll">
+      <div className={pageClassName} style={pageStyle}>
+        <header className="reveal-on-scroll rounded-lg border border-border bg-card p-5">
           <div>
-            <p className="student-kicker">Learning Path</p>
-            <h1>Lesson not found.</h1>
-            <p>The requested phase or room does not exist.</p>
+            <p className={topbarKickerClassName}>Learning Path</p>
+            <h1 className="text-2xl font-semibold text-text-primary">Lesson not found.</h1>
+            <p className="mt-2 text-sm text-text-secondary">The requested phase or room does not exist.</p>
           </div>
           <Button
             variant="primary"
@@ -152,13 +171,13 @@ const StudentLesson = () => {
   }
 
   return (
-    <div className="student-page lesson-page">
-      <header className="lesson-topbar">
+    <div className={pageClassName} style={pageStyle}>
+      <header className={topbarClassName}>
         <div>
-          <p className="lesson-topbar-kicker">Phase {module.moduleId} · Room {room.roomId}</p>
-          <h1>{room.title}</h1>
+          <p className={topbarKickerClassName}>Phase {module.moduleId} · Room {room.roomId}</p>
+          <h1 className="text-2xl font-semibold text-text-primary">{room.title}</h1>
         </div>
-        <div className="lesson-topbar-meta">
+        <div className={topbarMetaClassName}>
           <span>Progress {moduleProgressMap[String(module.moduleId)] || 0}%</span>
           <span>{objectivesCount} objectives</span>
           <Button
@@ -171,14 +190,14 @@ const StudentLesson = () => {
         </div>
       </header>
 
-      <section className="lesson-body">
-        <Card padding="large" className="lesson-content-card">
-          <div className="lesson-content">
-            <h2>Lesson overview</h2>
+      <section className={bodyClassName}>
+        <Card padding="large" shadow="large" className={contentCardClassName}>
+          <div className="space-y-4 text-sm text-text-secondary">
+            <h2 className="text-base font-semibold text-text-primary">Lesson overview</h2>
             <p>{roomMeta.overview}</p>
 
-            <h3>Objectives</h3>
-            <ul>
+            <h3 className="text-sm font-semibold text-text-primary">Objectives</h3>
+            <ul className="list-disc space-y-1 pl-5 text-text-secondary">
               {(roomMeta.bullets || []).map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -187,11 +206,11 @@ const StudentLesson = () => {
         </Card>
 
         {showNotes && (
-          <Card padding="medium" className="lesson-notes-card">
-            <h3>Quick Notes</h3>
-            <p className="lesson-notes-help">Personal notes are stored locally in this session.</p>
+          <Card padding="medium" shadow="small" className={notesCardClassName}>
+            <h3 className="text-sm font-semibold text-text-primary">Quick Notes</h3>
+            <p className="text-xs text-text-tertiary">Personal notes are stored locally in this session.</p>
             <textarea
-              className="lesson-notes-input"
+              className={notesInputClassName}
               placeholder="Capture key takeaways, questions, and next steps..."
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
@@ -201,13 +220,13 @@ const StudentLesson = () => {
         )}
 
         {statusMessage && (
-          <Card padding="medium" className="lesson-status-card">
-            <p>{statusMessage}</p>
+          <Card padding="medium" shadow="small" className={statusCardClassName}>
+            <p className="text-sm text-text-secondary">{statusMessage}</p>
           </Card>
         )}
       </section>
 
-      <div className="lesson-action-row">
+      <div className={actionRowClassName}>
         <Button
           variant="ghost"
           size="large"
@@ -216,6 +235,7 @@ const StudentLesson = () => {
             navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${previousRoom.roomId}`);
           }}
           disabled={!previousRoom}
+          className={actionButtonClassName}
         >
           Previous Room
         </Button>
@@ -231,6 +251,7 @@ const StudentLesson = () => {
             },
             title: room.title,
           })}
+          className={actionButtonClassName}
         >
           Take Quiz
         </Button>
@@ -244,6 +265,7 @@ const StudentLesson = () => {
             }
             setStatusMessage('Complete the quiz to unlock the next room.');
           }}
+          className={actionButtonClassName}
         >
           Mark Completed
         </Button>

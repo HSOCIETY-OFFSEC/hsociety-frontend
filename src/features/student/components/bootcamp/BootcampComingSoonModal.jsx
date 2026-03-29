@@ -39,7 +39,7 @@ const BootcampComingSoonModal = ({ onClose }) => {
           ×
         </button>
         <BootcampAccessPage
-          className="bootcamp-access-page--modal min-h-0 bg-transparent p-0"
+          className="min-h-0 bg-transparent p-0"
           kicker="Coming Soon"
           title="Bootcamp access is opening soon."
           description="We are preparing the next cohort. Join the community on WhatsApp to get early access when modules go live."

@@ -1,7 +1,0 @@
-/* ── Cards ──────────────────────────────────────────────────── */
-.admin-card {
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08) !important;
-}

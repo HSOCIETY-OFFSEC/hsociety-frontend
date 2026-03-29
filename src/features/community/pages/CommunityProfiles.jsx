@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { getCommunityProfilesList } from '../services/community.service';
 import { resolveProfileAvatar } from '../../../shared/utils/display/profileAvatar';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
-import '../styles/community.css';
 
 const CommunityProfiles = () => {
   const navigate = useNavigate();
@@ -44,92 +43,100 @@ const CommunityProfiles = () => {
   }, [profiles]);
 
   return (
-    <div className="cpr-page">
-      <header className="cpr-page-header">
-        <div className="cpr-page-header-inner">
-          <div className="cpr-header-left">
-            <div className="cpr-header-icon-wrap">
-              <FiUsers size={20} className="cpr-header-icon" />
+    <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
+      <header className="flex flex-col gap-4 pb-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="grid h-10 w-10 place-items-center rounded-sm border border-border bg-bg-secondary">
+              <FiUsers size={20} className="text-brand" />
             </div>
             <div>
-              <div className="cpr-header-breadcrumb">
-                <span className="cpr-breadcrumb-org">HSOCIETY</span>
-                <span className="cpr-breadcrumb-sep">/</span>
-                <span className="cpr-breadcrumb-page">community-profiles</span>
-                <span className="cpr-header-visibility">Private</span>
+              <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary">
+                <span className="font-semibold text-text-secondary">HSOCIETY</span>
+                <span>/</span>
+                <span className="font-semibold text-text-secondary">community-profiles</span>
+                <span className="rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                  Private
+                </span>
               </div>
-              <p className="cpr-header-desc">Community operators actively posting in HSOCIETY channels.</p>
+              <p className="mt-1 text-sm text-text-secondary">
+                Community operators actively posting in HSOCIETY channels.
+              </p>
             </div>
           </div>
         </div>
-        <div className="cpr-header-meta">
-          <span className="cpr-meta-pill">
-            <FiMessageSquare size={13} className="cpr-meta-icon" />
-            <span className="cpr-meta-label">Messages</span>
-            <strong className="cpr-meta-value">{totals.messages}</strong>
+        <div className="flex flex-wrap gap-3">
+          <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-secondary">
+            <FiMessageSquare size={13} className="text-text-tertiary" />
+            <span>Messages</span>
+            <strong className="text-text-primary">{totals.messages}</strong>
           </span>
-          <span className="cpr-meta-pill">
-            <FiStar size={13} className="cpr-meta-icon" />
-            <span className="cpr-meta-label">Likes</span>
-            <strong className="cpr-meta-value">{totals.likes}</strong>
+          <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-secondary">
+            <FiStar size={13} className="text-text-tertiary" />
+            <span>Likes</span>
+            <strong className="text-text-primary">{totals.likes}</strong>
           </span>
-          <span className="cpr-meta-pill">
-            <FiUsers size={13} className="cpr-meta-icon" />
-            <span className="cpr-meta-label">Profiles</span>
-            <strong className="cpr-meta-value">{profiles.length}</strong>
+          <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-secondary">
+            <FiUsers size={13} className="text-text-tertiary" />
+            <span>Profiles</span>
+            <strong className="text-text-primary">{profiles.length}</strong>
           </span>
         </div>
       </header>
 
-      <div className="cpr-layout">
-        <main className="cpr-main">
-          <section className="cpr-section">
-            <h2 className="cpr-section-title">Active profiles</h2>
-            <p className="cpr-section-desc">Open a profile to view public stats and highlights.</p>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <main className="min-w-0">
+          <section className="py-4">
+            <h2 className="text-base font-semibold text-text-primary">Active profiles</h2>
+            <p className="mt-1 text-sm text-text-secondary">
+              Open a profile to view public stats and highlights.
+            </p>
 
-            <div className="cpr-item-list">
-              {loading && <div className="cpr-empty">Loading profiles...</div>}
-              {!loading && error && <div className="cpr-empty">{error}</div>}
+            <div className="mt-4 overflow-hidden rounded-sm border border-border">
+              {loading && <div className="bg-bg-secondary px-4 py-4 text-sm text-text-tertiary">Loading profiles...</div>}
+              {!loading && error && <div className="bg-bg-secondary px-4 py-4 text-sm text-status-danger">{error}</div>}
               {!loading && !error && profiles.length === 0 && (
-                <div className="cpr-empty">No community profiles yet.</div>
+                <div className="bg-bg-secondary px-4 py-4 text-sm text-text-tertiary">No community profiles yet.</div>
               )}
               {!loading && !error && profiles.map((profile) => {
                 const handle = String(profile.hackerHandle || profile.id || '').trim();
                 const displayHandle = String(profile.name || profile.hackerHandle || '').trim();
                 const { src: avatarSrc, fallback: avatarFallback } = resolveProfileAvatar(profile);
                 return (
-                  <article key={profile.id || handle} className="cpr-item-row">
-                    <div className="cpr-item-main cpr-profile-main">
+                  <article key={profile.id || handle} className="flex flex-col gap-3 border-b border-border px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-3">
                       <img
                         src={avatarSrc}
                         alt={profile.name}
-                        className="cpr-avatar"
+                        className="h-11 w-11 rounded-full object-cover"
                         onError={(e) => {
                           if (e.currentTarget.src !== avatarFallback) {
                             e.currentTarget.src = avatarFallback;
                           }
                         }}
                       />
-                      <div className="cpr-profile-copy">
-                        <span className="cpr-item-title">{profile.name || 'Community Member'}</span>
-                        <span className="cpr-item-subtitle">
+                      <div className="min-w-0">
+                        <span className="block truncate text-sm font-semibold text-text-primary">
+                          {profile.name || 'Community Member'}
+                        </span>
+                        <span className="text-xs text-text-secondary">
                           {profile.organization || 'Independent'}
                           {displayHandle ? ` · @${displayHandle}` : ''}
                         </span>
                       </div>
                     </div>
-                    <div className="cpr-item-meta">
-                      <span className="cpr-metric-pill">
-                        <span className="cpr-metric-label">Messages</span>
-                        <strong>{profile.stats?.messages || 0}</strong>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                        <span>Messages</span>
+                        <strong className="text-text-primary">{profile.stats?.messages || 0}</strong>
                       </span>
-                      <span className="cpr-metric-pill">
-                        <span className="cpr-metric-label">Likes</span>
-                        <strong>{profile.stats?.likesReceived || 0}</strong>
+                      <span className="inline-flex items-center gap-1 rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                        <span>Likes</span>
+                        <strong className="text-text-primary">{profile.stats?.likesReceived || 0}</strong>
                       </span>
                       <button
                         type="button"
-                        className="cpr-btn cpr-btn-secondary"
+                        className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-sm font-medium text-text-primary transition hover:bg-bg-tertiary"
                         onClick={() => {
                           if (!handle) return;
                           navigate(`/@${encodeURIComponent(handle)}`);
@@ -146,17 +153,17 @@ const CommunityProfiles = () => {
           </section>
         </main>
 
-        <aside className="cpr-sidebar">
-          <div className="cpr-sidebar-box">
-            <h3 className="cpr-sidebar-heading">About</h3>
-            <p className="cpr-sidebar-about">
+        <aside className="hidden flex-col gap-4 lg:flex">
+          <div className="rounded-sm border border-border bg-bg-secondary p-4">
+            <h3 className="text-sm font-semibold text-text-primary">About</h3>
+            <p className="mt-2 text-sm text-text-secondary">
               Profiles are ranked by recent community activity and engagement.
             </p>
-            <div className="cpr-sidebar-divider" />
-            <ul className="cpr-sidebar-list">
-              <li><FiMessageSquare size={13} className="cpr-sidebar-icon" />Message volume</li>
-              <li><FiStar size={13} className="cpr-sidebar-icon" />Likes received</li>
-              <li><FiUsers size={13} className="cpr-sidebar-icon" />Active members</li>
+            <div className="my-3 h-px bg-border" />
+            <ul className="flex flex-col gap-2 text-sm text-text-secondary">
+              <li className="flex items-center gap-2"><FiMessageSquare size={13} />Message volume</li>
+              <li className="flex items-center gap-2"><FiStar size={13} />Likes received</li>
+              <li className="flex items-center gap-2"><FiUsers size={13} />Active members</li>
             </ul>
           </div>
         </aside>

@@ -5,7 +5,6 @@ import { getCpBalance, getCpTransactions } from '../services/cp.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import PageLoader from '../../../shared/components/ui/PageLoader';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
-import '../styles/cp-wallet.css';
 
 const CPWallet = () => {
   const navigate = useNavigate();
@@ -51,88 +50,111 @@ const CPWallet = () => {
   if (loading) return <PageLoader message="Loading CP wallet..." durationMs={0} />;
 
   return (
-    <div className="cp-wallet-page">
-      <header className="cp-wallet-hero">
-        <div className="cp-wallet-hero-inner">
+    <div className="w-full px-4 py-8 sm:px-6 lg:px-8">
+      <header className="rounded-xl border border-border bg-bg-secondary p-6 shadow-lg sm:p-8">
+        <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] lg:gap-10">
           <div>
-            <p className="cp-wallet-kicker">HSOCIETY / CP Wallet</p>
-            <h1>Manage your CP Points balance.</h1>
-            <p className="cp-wallet-subtitle">
+            <p className="text-xs uppercase tracking-widest text-text-tertiary">HSOCIETY / CP Wallet</p>
+            <h1 className="mt-2 text-2xl font-semibold text-text-primary sm:text-3xl">
+              Manage your CP Points balance.
+            </h1>
+            <p className="mt-3 max-w-[50ch] text-sm leading-relaxed text-text-secondary">
               CP Points are your in-platform currency. Track earnings, review purchases, and
               redeem for books in the marketplace.
             </p>
-            <div className="cp-wallet-actions">
-              <button className="cp-wallet-btn primary" onClick={() => navigate('/cp-marketplace')}>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                className="inline-flex items-center gap-2 rounded-md border border-brand bg-brand px-4 py-2 text-sm font-semibold text-ink-onBrand transition hover:bg-brand-hover"
+                onClick={() => navigate('/cp-marketplace')}
+              >
                 Open ZeroDay Market <FiArrowUpRight size={14} />
               </button>
-              <button className="cp-wallet-btn ghost" onClick={() => navigate('/leaderboard')}>
+              <button
+                className="inline-flex items-center gap-2 rounded-md border border-border bg-transparent px-4 py-2 text-sm font-semibold text-text-primary transition hover:bg-bg-tertiary"
+                onClick={() => navigate('/leaderboard')}
+              >
                 View Leaderboard
               </button>
             </div>
-            <div className="cp-wallet-pills">
+            <div className="mt-4 flex flex-wrap gap-2">
               {pills.map((pill) => (
-                <span key={pill.label} className="cp-wallet-pill">
+                <span key={pill.label} className="rounded-full border border-border bg-bg-tertiary px-3 py-1 text-xs text-text-secondary">
                   {pill.label}: {pill.value}
                 </span>
               ))}
             </div>
           </div>
-          <div className="cp-wallet-balance-card">
-            <span className="cp-wallet-balance-label">Available CP</span>
-            <strong className="cp-wallet-balance">
-              <img src={cpIcon} alt="CP" className="cp-wallet-balance-icon" />
+          <div className="flex flex-col gap-3 rounded-lg border border-border bg-bg-primary p-6">
+            <span className="text-xs uppercase tracking-widest text-text-tertiary">Available CP</span>
+            <strong className="inline-flex items-center gap-2 text-3xl font-semibold text-brand">
+              <img src={cpIcon} alt="CP" className="h-8 w-8 p-1" />
               {balance.toLocaleString()}
             </strong>
-            <div className="cp-wallet-balance-meta">
-              <span><FiTrendingUp size={14} /> Live signal</span>
-              <span><FiCreditCard size={14} /> Spendable points</span>
+            <div className="flex flex-col gap-2 text-sm text-text-secondary">
+              <span className="flex items-center gap-2"><FiTrendingUp size={14} /> Live signal</span>
+              <span className="flex items-center gap-2"><FiCreditCard size={14} /> Spendable points</span>
             </div>
-            <button className="cp-wallet-btn secondary" onClick={loadData}>
+            <button
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-brand/40 bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand/20 sm:w-auto sm:self-start"
+              onClick={loadData}
+            >
               Refresh <FiRefreshCcw size={14} />
             </button>
           </div>
         </div>
       </header>
 
-      <section className="cp-wallet-grid">
-        <div className="cp-wallet-panel">
-          <div className="cp-wallet-panel-header">
-            <h2>Quick Actions</h2>
+      <section className="mt-8 grid gap-6 lg:grid-cols-2">
+        <div className="rounded-lg border border-border bg-bg-secondary p-6 shadow-md">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-text-primary">Quick Actions</h2>
           </div>
-          <div className="cp-wallet-actions-grid">
-            <button type="button" onClick={() => navigate('/cp-marketplace')}>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <button
+              type="button"
+              className="flex flex-col items-start gap-2 rounded-md border border-border bg-bg-tertiary p-3 text-sm font-medium text-text-primary transition hover:bg-bg-secondary"
+              onClick={() => navigate('/cp-marketplace')}
+            >
               <FiBookOpen size={16} />
               Browse Marketplace
             </button>
-            <button type="button" onClick={() => navigate('/community')}>
+            <button
+              type="button"
+              className="flex flex-col items-start gap-2 rounded-md border border-border bg-bg-tertiary p-3 text-sm font-medium text-text-primary transition hover:bg-bg-secondary"
+              onClick={() => navigate('/community')}
+            >
               <FiTarget size={16} />
               Join Community
             </button>
-            <button type="button" onClick={() => navigate('/courses')}>
+            <button
+              type="button"
+              className="flex flex-col items-start gap-2 rounded-md border border-border bg-bg-tertiary p-3 text-sm font-medium text-text-primary transition hover:bg-bg-secondary"
+              onClick={() => navigate('/courses')}
+            >
               <FiTrendingUp size={16} />
               Start Training
             </button>
           </div>
         </div>
 
-        <div className="cp-wallet-panel">
-          <div className="cp-wallet-panel-header">
-            <h2>Recent Activity</h2>
-            {error && <span className="cp-wallet-error">{error}</span>}
+        <div className="rounded-lg border border-border bg-bg-secondary p-6 shadow-md">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-base font-semibold text-text-primary">Recent Activity</h2>
+            {error && <span className="text-xs text-status-danger">{error}</span>}
           </div>
           {transactions.length === 0 ? (
-            <div className="cp-wallet-empty">
-              <p>No CP activity yet. Complete labs or redeem from the marketplace.</p>
+            <div className="rounded-md bg-bg-tertiary p-4 text-sm text-text-secondary">
+              No CP activity yet. Complete labs or redeem from the marketplace.
             </div>
           ) : (
-            <div className="cp-wallet-list">
+            <div className="flex flex-col gap-3">
               {transactions.map((tx) => (
-                <div key={tx._id} className="cp-wallet-row">
+                <div key={tx._id} className="flex items-center justify-between border-b border-dashed border-border/60 py-3 last:border-b-0">
                   <div>
-                    <strong>{tx.note || tx.type}</strong>
-                    <span>{new Date(tx.createdAt).toLocaleDateString()}</span>
+                    <strong className="block text-sm font-semibold text-text-primary">{tx.note || tx.type}</strong>
+                    <span className="text-xs text-text-tertiary">{new Date(tx.createdAt).toLocaleDateString()}</span>
                   </div>
-                  <div className={`cp-wallet-points ${tx.points < 0 ? 'negative' : 'positive'}`}>
+                  <div className={`text-sm font-bold ${tx.points < 0 ? 'text-status-danger' : 'text-status-success'}`}>
                     {tx.points < 0 ? '' : '+'}{tx.points}
                   </div>
                 </div>

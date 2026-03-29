@@ -1,22 +1,26 @@
 import React from 'react';
 
+const panelClassName =
+  'flex flex-col gap-4 rounded-lg border border-border bg-bg-secondary p-5 shadow-[0_12px_24px_rgba(15,23,42,0.08)]';
+const panelTitleClassName = 'text-base font-semibold text-text-primary';
+
 const SecurityIndicatorsCard = ({ securityScore, riskLevel, criticalCount }) => (
-  <div className="cd-panel cd-indicators-panel">
-    <div className="cd-panel-header">
-      <h3 className="cd-panel-title">Security Indicators</h3>
+  <div className={panelClassName}>
+    <div className="flex items-center justify-between">
+      <h3 className={panelTitleClassName}>Security Indicators</h3>
     </div>
-    <div className="cd-metric-grid">
-      <div className="cd-metric">
-        <span className="cd-metric-label">Security Score</span>
-        <strong className="cd-metric-value">{securityScore}</strong>
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div className="flex flex-col gap-1 rounded-sm border border-border bg-bg-tertiary px-3 py-3">
+        <span className="text-xs uppercase tracking-widest text-text-tertiary">Security Score</span>
+        <strong className="text-sm font-semibold text-text-primary">{securityScore}</strong>
       </div>
-      <div className="cd-metric">
-        <span className="cd-metric-label">Risk Level</span>
-        <strong className="cd-metric-value">{riskLevel}</strong>
+      <div className="flex flex-col gap-1 rounded-sm border border-border bg-bg-tertiary px-3 py-3">
+        <span className="text-xs uppercase tracking-widest text-text-tertiary">Risk Level</span>
+        <strong className="text-sm font-semibold text-text-primary">{riskLevel}</strong>
       </div>
-      <div className="cd-metric">
-        <span className="cd-metric-label">Critical Vulnerabilities</span>
-        <strong className="cd-metric-value">{criticalCount}</strong>
+      <div className="flex flex-col gap-1 rounded-sm border border-border bg-bg-tertiary px-3 py-3">
+        <span className="text-xs uppercase tracking-widest text-text-tertiary">Critical Vulnerabilities</span>
+        <strong className="text-sm font-semibold text-text-primary">{criticalCount}</strong>
       </div>
     </div>
   </div>

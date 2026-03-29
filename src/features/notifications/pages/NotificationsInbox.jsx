@@ -3,7 +3,6 @@ import { FiBell, FiCheckCircle, FiInbox, FiRefreshCcw, FiShield, FiMessageSquare
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../../shared/components/providers/NotificationProvider';
 import { openNotificationTarget } from '../../../shared/utils/notificationNavigation';
-import '../styles/notifications.css';
 
 const NotificationsInbox = () => {
   const navigate = useNavigate();
@@ -40,27 +39,31 @@ const NotificationsInbox = () => {
   }, [notifications]);
 
   return (
-    <div className="nb-page">
-      <header className="nb-page-header">
-        <div className="nb-page-header-inner">
-          <div className="nb-header-left">
-            <div className="nb-header-icon-wrap">
-              <FiBell size={20} className="nb-header-icon" />
+    <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
+      <header className="flex flex-col gap-4 pb-6">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="grid h-10 w-10 place-items-center rounded-sm border border-border bg-bg-secondary">
+              <FiBell size={20} className="text-brand" />
             </div>
             <div>
-              <div className="nb-header-breadcrumb">
-                <span className="nb-breadcrumb-org">HSOCIETY</span>
-                <span className="nb-breadcrumb-sep">/</span>
-                <span className="nb-breadcrumb-page">notifications</span>
-                <span className="nb-header-visibility">Private</span>
+              <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary">
+                <span className="font-semibold text-text-secondary">HSOCIETY</span>
+                <span className="text-text-tertiary">/</span>
+                <span className="font-semibold text-text-secondary">notifications</span>
+                <span className="rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                  Private
+                </span>
               </div>
-              <p className="nb-header-desc">Review all alerts, mentions, and account updates in one feed.</p>
+              <p className="mt-1 text-sm text-text-secondary">
+                Review all alerts, mentions, and account updates in one feed.
+              </p>
             </div>
           </div>
-          <div className="nb-header-actions">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              className="nb-btn nb-btn-secondary"
+              className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-sm font-medium text-text-primary transition hover:bg-bg-tertiary disabled:opacity-60"
               onClick={() => refreshNotifications({ shouldToast: false })}
               data-sound="off"
             >
@@ -69,7 +72,7 @@ const NotificationsInbox = () => {
             </button>
             <button
               type="button"
-              className="nb-btn nb-btn-primary"
+              className="inline-flex items-center gap-2 rounded-xs border border-brand bg-brand px-3 py-2 text-sm font-medium text-ink-onBrand transition hover:bg-brand-hover disabled:opacity-60"
               onClick={markAllRead}
               disabled={totalCount === 0 || unreadCount === 0}
             >
@@ -78,70 +81,92 @@ const NotificationsInbox = () => {
             </button>
           </div>
         </div>
-        <div className="nb-header-meta">
-          <span className="nb-meta-pill">
-            <FiInbox size={13} className="nb-meta-icon" />
-            <span className="nb-meta-label">Total</span>
-            <strong className="nb-meta-value">{totalCount}</strong>
+        <div className="flex flex-wrap gap-3">
+          <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-secondary">
+            <FiInbox size={13} className="text-text-tertiary" />
+            <span>Total</span>
+            <strong className="text-text-primary">{totalCount}</strong>
           </span>
-          <span className="nb-meta-pill">
-            <FiBell size={13} className="nb-meta-icon" />
-            <span className="nb-meta-label">Unread</span>
-            <strong className="nb-meta-value">{unreadCount}</strong>
+          <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-secondary">
+            <FiBell size={13} className="text-text-tertiary" />
+            <span>Unread</span>
+            <strong className="text-text-primary">{unreadCount}</strong>
           </span>
-          <span className="nb-meta-pill">
-            <FiRefreshCcw size={13} className="nb-meta-icon" />
-            <span className="nb-meta-label">Status</span>
-            <strong className="nb-meta-value">{isPolling ? 'Syncing' : 'Idle'}</strong>
+          <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-bg-secondary px-3 py-1 text-xs font-semibold text-text-secondary">
+            <FiRefreshCcw size={13} className="text-text-tertiary" />
+            <span>Status</span>
+            <strong className="text-text-primary">{isPolling ? 'Syncing' : 'Idle'}</strong>
           </span>
         </div>
       </header>
 
-      <div className="nb-layout">
-        <main className="nb-main">
-          <section className="nb-section">
-            <h2 className="nb-section-title">All notifications</h2>
-            <p className="nb-section-desc">Open a notification to jump to the linked message or resource.</p>
+      <div className="grid grid-cols-1 gap-6">
+        <main className="min-w-0">
+          <section className="py-4">
+            <h2 className="text-base font-semibold text-text-primary">All notifications</h2>
+            <p className="mt-1 text-sm text-text-secondary">
+              Open a notification to jump to the linked message or resource.
+            </p>
 
-            <div className="nb-filter-row">
+            <div className="mt-4 flex gap-2">
               <button
                 type="button"
-                className={`nb-filter-btn ${filter === 'all' ? 'active' : ''}`}
+                className={`rounded-xs border px-3 py-1 text-xs font-semibold transition ${
+                  filter === 'all'
+                    ? 'border-brand/40 bg-bg-tertiary text-text-primary'
+                    : 'border-border bg-bg-secondary text-text-secondary hover:text-text-primary'
+                }`}
                 onClick={() => setFilter('all')}
               >
                 All
               </button>
               <button
                 type="button"
-                className={`nb-filter-btn ${filter === 'unread' ? 'active' : ''}`}
+                className={`rounded-xs border px-3 py-1 text-xs font-semibold transition ${
+                  filter === 'unread'
+                    ? 'border-brand/40 bg-bg-tertiary text-text-primary'
+                    : 'border-border bg-bg-secondary text-text-secondary hover:text-text-primary'
+                }`}
                 onClick={() => setFilter('unread')}
               >
                 Unread
               </button>
             </div>
 
-            <div className="nb-item-list">
+            <div className="mt-4 overflow-hidden rounded-sm border border-border">
               {filtered.length === 0 ? (
-                <div className="nb-empty">No notifications to show.</div>
+                <div className="bg-bg-secondary px-4 py-4 text-sm text-text-tertiary">
+                  No notifications to show.
+                </div>
               ) : (
                 filtered.map((item) => (
                   <article
                     key={item.id}
-                    className={`nb-item-row ${item.read ? '' : 'unread'}`}
+                    className={`flex flex-col gap-4 border-b border-border px-4 py-3 transition sm:flex-row sm:items-center sm:justify-between ${
+                      item.read ? 'bg-bg-secondary hover:bg-bg-tertiary' : 'bg-brand/5 hover:bg-bg-tertiary'
+                    }`}
                   >
-                    <div className="nb-item-main">
-                      <span className="nb-item-title">{item.title}</span>
-                      <span className="nb-item-subtitle">{item.message}</span>
-                      <span className="nb-item-time">
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <span className="text-sm font-semibold text-text-primary">{item.title}</span>
+                      <span className="text-sm text-text-secondary">{item.message}</span>
+                      <span className="text-xs text-text-tertiary">
                         {item.createdAt ? new Date(item.createdAt).toLocaleString() : 'Just now'}
                       </span>
                     </div>
-                    <div className="nb-item-meta">
-                      {!item.read && <span className="nb-label nb-label-gamma">Unread</span>}
-                      {item.read && <span className="nb-label nb-label-alpha">Read</span>}
+                    <div className="flex flex-wrap items-center gap-2">
+                      {!item.read && (
+                        <span className="inline-flex items-center rounded-full border border-status-warning/40 bg-status-warning/10 px-2 py-0.5 text-xs font-semibold text-status-warning">
+                          Unread
+                        </span>
+                      )}
+                      {item.read && (
+                        <span className="inline-flex items-center rounded-full border border-brand/40 bg-brand/10 px-2 py-0.5 text-xs font-semibold text-brand">
+                          Read
+                        </span>
+                      )}
                       <button
                         type="button"
-                        className="nb-btn nb-btn-secondary"
+                        className="inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-sm font-medium text-text-primary transition hover:bg-bg-tertiary"
                         onClick={async () => {
                           await markRead(item.id);
                           openNotificationTarget(item, navigate);

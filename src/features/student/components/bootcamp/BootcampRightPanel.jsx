@@ -29,26 +29,33 @@ const BootcampRightPanel = ({ overview }) => {
     };
   }, [overview]);
 
+  const panelClassName = 'rounded-lg border border-border bg-bg-secondary p-4';
+  const headingClassName = 'text-sm font-semibold text-text-primary';
+  const bodyClassName = 'text-sm text-text-secondary';
+  const dividerClassName = 'my-3 h-px bg-border';
+  const itemTitleClassName = 'flex items-center gap-2 text-sm font-semibold text-text-primary';
+  const itemSubtitleClassName = 'text-xs text-text-tertiary';
+
   return (
-    <div className="bootcamp-right-inner">
-      <div className="bc-sidebar-box">
-        <h3 className="bc-sidebar-heading">Your Progress</h3>
-        <p className="bc-sidebar-about">Track overall completion and next lesson.</p>
-        <div className="bc-sidebar-divider" />
-        <div className="bc-item-main">
-          <span className="bc-item-title">
-            <FiTarget size={14} />
+    <div className="flex flex-col gap-4">
+      <div className={panelClassName}>
+        <h3 className={headingClassName}>Your Progress</h3>
+        <p className={bodyClassName}>Track overall completion and next lesson.</p>
+        <div className={dividerClassName} />
+        <div className="flex flex-col gap-1">
+          <span className={itemTitleClassName}>
+            <FiTarget size={14} className="text-text-tertiary" />
             {summary.progress}% complete
           </span>
-          <span className="bc-item-subtitle">{summary.completedRooms} / {summary.totalRooms} rooms complete</span>
+          <span className={itemSubtitleClassName}>{summary.completedRooms} / {summary.totalRooms} rooms complete</span>
         </div>
-        <div className="bc-panel-divider" />
-        <div className="bc-item-main">
-          <span className="bc-item-title">
-            <FiCheckCircle size={14} />
+        <div className={dividerClassName} />
+        <div className="flex flex-col gap-1">
+          <span className={itemTitleClassName}>
+            <FiCheckCircle size={14} className="text-text-tertiary" />
             {summary.nextLabel}
           </span>
-          <span className="bc-item-subtitle">{summary.moduleTitle}</span>
+          <span className={itemSubtitleClassName}>{summary.moduleTitle}</span>
         </div>
       </div>
     </div>

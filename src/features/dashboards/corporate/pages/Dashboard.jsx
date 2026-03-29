@@ -17,9 +17,21 @@ import VulnerabilitySnapshotCard from '../components/VulnerabilitySnapshotCard';
 import ReportsListCard from '../components/ReportsListCard';
 import SecurityActivityFeedCard from '../components/SecurityActivityFeedCard';
 import Skeleton from '../../../../shared/components/ui/Skeleton';
+import Button from '../../../../shared/components/ui/Button';
 import reportRum from '../../../../shared/utils/perf/rum';
 import { logger } from '../../../../core/logging/logger';
-import '../styles/corporate-dashboard.css';
+
+const pageClassName =
+  'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pt-[clamp(1.5rem,3vw,2.5rem)] pb-16 text-text-primary';
+const headerClassName = 'mb-6 flex flex-col gap-4';
+const headerInnerClassName = 'flex flex-wrap items-center justify-between gap-6';
+const breadcrumbClassName = 'flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary';
+const metaPillClassName =
+  'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-2.5 py-1 text-xs text-text-secondary';
+const metaLabelClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+const sectionClassName = 'py-6';
+const sectionTitleClassName = 'mb-2 flex items-center gap-2 text-base font-semibold text-text-primary';
+const sectionGridClassName = 'grid grid-cols-1 gap-5 lg:grid-cols-2';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -145,92 +157,94 @@ const Dashboard = () => {
 
   const renderMetaValue = (value, width = 36) => {
     if (loading) {
-      return <Skeleton className="cd-meta-skeleton" style={{ width }} />;
+      return <Skeleton className="h-3 rounded-full" style={{ width }} />;
     }
     if (error) return '—';
     return value;
   };
 
   return (
-    <div className="cd-page">
-      <header className="cd-page-header">
-        <div className="cd-page-header-inner">
-          <div className="cd-header-left">
-            <div className="cd-header-icon-wrap">
-              <FiShield size={20} className="cd-header-icon" />
+    <div className={pageClassName}>
+      <header className={headerClassName}>
+        <div className={headerInnerClassName}>
+          <div className="flex items-center gap-4">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border bg-bg-secondary">
+              <FiShield size={20} className="text-brand" />
             </div>
             <div>
-              <div className="cd-header-breadcrumb">
-                <span className="cd-breadcrumb-org">HSOCIETY</span>
-                <span className="cd-breadcrumb-sep">/</span>
-                <span className="cd-breadcrumb-page">corporate-dashboard</span>
-                <span className="cd-header-visibility">Private</span>
+              <div className={breadcrumbClassName}>
+                <span className="font-semibold text-text-secondary">HSOCIETY</span>
+                <span className="text-text-tertiary">/</span>
+                <span className="font-semibold text-text-secondary">corporate-dashboard</span>
+                <span className="rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold text-text-secondary">
+                  Private
+                </span>
               </div>
             </div>
           </div>
-          <div className="cd-header-actions">
-            <button type="button" className="cd-btn cd-btn-primary" onClick={() => navigate('/engagements')}>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" variant="primary" size="small" onClick={() => navigate('/engagements')}>
               <FiShield size={14} />
               Run Security Scan
-            </button>
-            <button type="button" className="cd-btn cd-btn-secondary" onClick={() => navigate('/reports')}>
+            </Button>
+            <Button type="button" variant="secondary" size="small" onClick={() => navigate('/reports')}>
               <FiFileText size={14} />
               View Reports
-            </button>
+            </Button>
           </div>
         </div>
-        <div className="cd-header-meta">
-          <span className="cd-meta-pill">
-            <FiBarChart2 size={13} className="cd-meta-icon" />
-            <span className="cd-meta-label">Security Score</span>
-            <strong className="cd-meta-value">{renderMetaValue(securityScore, 38)}</strong>
+        <div className="flex flex-wrap gap-2">
+          <span className={metaPillClassName}>
+            <FiBarChart2 size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>Security Score</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(securityScore, 38)}</strong>
           </span>
-          <span className="cd-meta-pill">
-            <FiActivity size={13} className="cd-meta-icon" />
-            <span className="cd-meta-label">Engagements</span>
-            <strong className="cd-meta-value">{renderMetaValue(activeEngagements, 28)}</strong>
+          <span className={metaPillClassName}>
+            <FiActivity size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>Engagements</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(activeEngagements, 28)}</strong>
           </span>
-          <span className="cd-meta-pill">
-            <FiAlertTriangle size={13} className="cd-meta-icon" />
-            <span className="cd-meta-label">Critical</span>
-            <strong className="cd-meta-value">{renderMetaValue(criticalCount, 28)}</strong>
+          <span className={metaPillClassName}>
+            <FiAlertTriangle size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>Critical</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(criticalCount, 28)}</strong>
           </span>
-          <span className="cd-meta-pill">
-            <FiFileText size={13} className="cd-meta-icon" />
-            <span className="cd-meta-label">Last Scan</span>
-            <strong className="cd-meta-value">{renderMetaValue(lastScan, 72)}</strong>
+          <span className={metaPillClassName}>
+            <FiFileText size={13} className="text-text-tertiary" />
+            <span className={metaLabelClassName}>Last Scan</span>
+            <strong className="font-semibold text-text-primary">{renderMetaValue(lastScan, 72)}</strong>
           </span>
         </div>
       </header>
 
-      <div className="cd-layout">
-        <main className="cd-main">
+      <div className="grid gap-6">
+        <main className="min-w-0">
           {loading && (
-            <div className="cd-loading">
+            <div className="rounded-sm border border-border bg-bg-secondary p-5 text-sm text-text-secondary">
               <p>Loading your security dashboard...</p>
-              <div className="cd-loading-list">
+              <div className="mt-4 grid gap-3">
                 {Array.from({ length: 5 }).map((_, index) => (
-                  <div key={`cd-load-${index}`} className="cd-skeleton" />
+                  <div key={`cd-load-${index}`} className="h-12 rounded-xs bg-bg-tertiary" />
                 ))}
               </div>
             </div>
           )}
 
           {error && !loading && (
-            <div className="cd-panel cd-alert">
-              <h3 className="cd-panel-title">Dashboard Unavailable</h3>
-              <p>We couldn&apos;t load your security data.</p>
-              <button type="button" className="cd-btn cd-btn-secondary" onClick={loadDashboardData}>
+            <div className="flex flex-col gap-3 rounded-lg border border-border bg-bg-primary p-5 shadow-[0_12px_24px_rgba(15,23,42,0.08)]">
+              <h3 className="text-base font-semibold text-text-primary">Dashboard Unavailable</h3>
+              <p className="text-sm text-text-secondary">We couldn&apos;t load your security data.</p>
+              <Button type="button" variant="secondary" size="small" onClick={loadDashboardData}>
                 Retry
-              </button>
+              </Button>
             </div>
           )}
 
           {!error && !loading && (
             <>
-              <section className="cd-section">
-                <h2 className="cd-section-title">
-                  <FiShield size={15} className="cd-section-icon" />
+              <section className={sectionClassName}>
+                <h2 className={sectionTitleClassName}>
+                  <FiShield size={15} className="text-text-tertiary" />
                   Security Command Center
                 </h2>
                 <SecurityCommandCenterCard
@@ -241,14 +255,14 @@ const Dashboard = () => {
                   onViewReports={() => navigate('/reports')}
                 />
               </section>
-              <div className="cd-divider" />
+              <div className="h-px bg-border" />
 
-              <section className="cd-section">
-                <h2 className="cd-section-title">
-                  <FiActivity size={15} className="cd-section-icon" />
+              <section className={sectionClassName}>
+                <h2 className={sectionTitleClassName}>
+                  <FiActivity size={15} className="text-text-tertiary" />
                   Action Center
                 </h2>
-                <div className="cd-section-grid">
+                <div className={sectionGridClassName}>
                   <SecurityActionCenterCard
                     status={engagementStatus}
                     onNavigate={(route) => navigate(route)}
@@ -260,11 +274,11 @@ const Dashboard = () => {
                   />
                 </div>
               </section>
-              <div className="cd-divider" />
+              <div className="h-px bg-border" />
 
-              <section className="cd-section">
-                <h2 className="cd-section-title">
-                  <FiAlertTriangle size={15} className="cd-section-icon" />
+              <section className={sectionClassName}>
+                <h2 className={sectionTitleClassName}>
+                  <FiAlertTriangle size={15} className="text-text-tertiary" />
                   Vulnerability Snapshot
                 </h2>
                 <VulnerabilitySnapshotCard
@@ -272,14 +286,14 @@ const Dashboard = () => {
                   onView={() => navigate('/remediation')}
                 />
               </section>
-              <div className="cd-divider" />
+              <div className="h-px bg-border" />
 
-              <section className="cd-section">
-                <h2 className="cd-section-title">
-                  <FiFileText size={15} className="cd-section-icon" />
+              <section className={sectionClassName}>
+                <h2 className={sectionTitleClassName}>
+                  <FiFileText size={15} className="text-text-tertiary" />
                   Activity & Reports
                 </h2>
-                <div className="cd-section-grid">
+                <div className={sectionGridClassName}>
                   <ReportsListCard
                     reports={reports}
                     onViewReport={() => navigate('/reports')}

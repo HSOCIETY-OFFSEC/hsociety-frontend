@@ -66,6 +66,42 @@ const BootcampModule = () => {
   const [overview, setOverview] = useState(null);
   const [course, setCourse] = useState(null);
   const [statusMessage, setStatusMessage] = useState('');
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const headerClassName = 'mb-6 flex flex-col gap-4';
+  const headerInnerClassName = 'flex flex-wrap items-center justify-between gap-6';
+  const headerLeftClassName = 'flex items-center gap-4';
+  const iconWrapClassName = 'flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-bg-secondary text-brand';
+  const breadcrumbClassName = 'flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary';
+  const breadcrumbStrongClassName = 'font-semibold text-text-secondary';
+  const visibilityClassName =
+    'rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold uppercase tracking-widest text-text-secondary';
+  const headerDescClassName = 'mt-1 text-sm text-text-secondary';
+  const headerActionsClassName = 'flex flex-wrap gap-2';
+  const buttonPrimaryClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-brand bg-brand px-3 py-2 text-xs font-semibold text-ink-onBrand transition hover:bg-brand/90';
+  const buttonSecondaryClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-2 text-xs font-semibold text-text-primary transition hover:bg-bg-tertiary';
+  const metaRowClassName = 'flex flex-wrap gap-3';
+  const metaPillClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+  const metaValueClassName = 'font-semibold text-text-primary';
+  const panelClassName = 'rounded-lg border border-border bg-bg-secondary p-5 text-sm text-text-secondary';
+  const sectionClassName = 'flex flex-col gap-4';
+  const sectionTitleClassName = 'text-lg font-semibold text-text-primary';
+  const sectionDescClassName = 'text-sm text-text-secondary';
+  const cardGridClassName = 'grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3';
+  const cardBaseClassName =
+    'flex w-full flex-col gap-4 rounded-lg border border-border bg-bg-secondary p-5 text-left shadow-sm transition';
+  const cardHeaderClassName = 'flex items-start justify-between gap-4';
+  const cardKickerClassName = 'text-xs font-semibold uppercase tracking-widest text-text-tertiary';
+  const cardTitleClassName = 'text-base font-semibold text-text-primary';
+  const cardSubtitleClassName = 'text-sm text-text-secondary';
+  const labelBaseClassName = 'inline-flex items-center gap-2 rounded-full border px-2 py-0.5 text-xs font-semibold';
+  const labelAlphaClassName = `${labelBaseClassName} border-brand/30 bg-brand/10 text-brand`;
+  const labelBetaClassName = `${labelBaseClassName} border-status-success/30 bg-status-success/10 text-status-success`;
+  const labelGammaClassName = `${labelBaseClassName} border-status-warning/30 bg-status-warning/10 text-status-warning`;
+  const dividerClassName = 'h-px bg-border';
 
   const moduleMeta = getHackerProtocolModule(id);
 
@@ -102,12 +138,12 @@ const BootcampModule = () => {
 
   if (!module || !moduleMeta) {
     return (
-      <div className="bc-page">
-        <div className="bc-panel bc-alert">
-          <h3 className="bc-panel-title">Module not found</h3>
+      <div className={pageClassName}>
+        <div className={panelClassName}>
+          <h3 className="text-base font-semibold text-text-primary">Module not found</h3>
           <button
             type="button"
-            className="bc-btn bc-btn-secondary"
+            className={buttonSecondaryClassName}
             onClick={() => navigate('/student-bootcamps/modules')}
           >
             <FiArrowLeft size={14} />
@@ -119,27 +155,27 @@ const BootcampModule = () => {
   }
 
   return (
-    <div className="bc-page">
-        <header className="bc-page-header">
-          <div className="bc-page-header-inner">
-            <div className="bc-header-left">
-              <div className="bc-header-icon-wrap">
-                <FiLayers size={20} className="bc-header-icon" />
+    <div className={pageClassName}>
+        <header className={headerClassName}>
+          <div className={headerInnerClassName}>
+            <div className={headerLeftClassName}>
+              <div className={iconWrapClassName}>
+                <FiLayers size={20} />
               </div>
               <div>
-                <div className="bc-header-breadcrumb">
-                  <span className="bc-breadcrumb-org">HSOCIETY</span>
-                  <span className="bc-breadcrumb-sep">/</span>
-                  <span className="bc-breadcrumb-page">phase-{module.moduleId}</span>
-                  <span className="bc-header-visibility">Private</span>
+                <div className={breadcrumbClassName}>
+                  <span className={breadcrumbStrongClassName}>HSOCIETY</span>
+                  <span>/</span>
+                  <span className={breadcrumbStrongClassName}>phase-{module.moduleId}</span>
+                  <span className={visibilityClassName}>Private</span>
                 </div>
-                <p className="bc-header-desc">{module?.description || moduleMeta.description}</p>
+                <p className={headerDescClassName}>{module?.description || moduleMeta.description}</p>
               </div>
             </div>
-            <div className="bc-header-actions">
+            <div className={headerActionsClassName}>
               <button
                 type="button"
-                className="bc-btn bc-btn-primary"
+                className={buttonPrimaryClassName}
                 onClick={() => {
                   const nextRoom = module.rooms?.[roomsCompleted] || module.rooms?.[0];
                   if (!nextRoom) return;
@@ -151,7 +187,7 @@ const BootcampModule = () => {
               </button>
               <button
                 type="button"
-                className="bc-btn bc-btn-secondary"
+                className={buttonSecondaryClassName}
                 onClick={() => navigate('/student-bootcamps/modules')}
               >
                 <FiArrowLeft size={14} />
@@ -159,50 +195,50 @@ const BootcampModule = () => {
               </button>
             </div>
           </div>
-          <div className="bc-header-meta">
-            <span className="bc-meta-pill">
-              <FiTarget size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Progress</span>
-              <strong className="bc-meta-value">{roomsCompleted}/{roomsTotal}</strong>
+          <div className={metaRowClassName}>
+            <span className={metaPillClassName}>
+              <FiTarget size={13} className="text-text-tertiary" />
+              <span>Progress</span>
+              <strong className={metaValueClassName}>{roomsCompleted}/{roomsTotal}</strong>
             </span>
-            <span className="bc-meta-pill">
-              <FiLayers size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Phase</span>
-              <strong className="bc-meta-value">{module.moduleId}</strong>
+            <span className={metaPillClassName}>
+              <FiLayers size={13} className="text-text-tertiary" />
+              <span>Phase</span>
+              <strong className={metaValueClassName}>{module.moduleId}</strong>
             </span>
           </div>
         </header>
 
-        <div className="bc-layout">
-          <main className="bc-main">
+        <div className="grid gap-6">
+          <main>
             {statusMessage && (
-              <div className="bc-panel bc-alert">
+              <div className={panelClassName}>
                 <p>{statusMessage}</p>
               </div>
             )}
 
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiLayers size={15} className="bc-section-icon" />
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiLayers size={15} className="mr-2 inline-block text-brand" />
                 Rooms
               </h2>
-              <p className="bc-section-desc">Complete room quizzes in order to unlock the next lesson.</p>
-              <div className="bc-card-grid">
+              <p className={sectionDescClassName}>Complete room quizzes in order to unlock the next lesson.</p>
+              <div className={cardGridClassName}>
                 {(module.rooms || []).map((room, index) => {
                   const isCompleted = index < roomsCompleted;
                   const isCurrent = index === roomsCompleted;
                   const isLocked = index > roomsCompleted;
                   const labelClass = isCompleted
-                    ? 'bc-label-beta'
+                    ? labelBetaClassName
                     : isCurrent
-                      ? 'bc-label-alpha'
-                      : 'bc-label-gamma';
+                      ? labelAlphaClassName
+                      : labelGammaClassName;
 
                   return (
                     <button
                       key={room.roomId}
                       type="button"
-                      className={`bc-card bc-card-action ${isLocked ? 'bc-card-locked' : ''}`}
+                      className={`${cardBaseClassName}${isLocked ? ' opacity-60 cursor-not-allowed' : ' hover:-translate-y-0.5 hover:border-brand/40'}`}
                       onClick={() => {
                         if (isLocked) {
                           setStatusMessage('Complete the previous room quiz to unlock this lesson.');
@@ -212,15 +248,15 @@ const BootcampModule = () => {
                         navigate(`/student-bootcamps/modules/${module.moduleId}/rooms/${room.roomId}`);
                       }}
                     >
-                      <div className="bc-card-header">
+                      <div className={cardHeaderClassName}>
                         <div>
-                          <p className="bc-card-kicker">Room {room.roomId}</p>
-                          <h3 className="bc-card-title">{room.title}</h3>
-                          <p className="bc-card-subtitle">
+                          <p className={cardKickerClassName}>Room {room.roomId}</p>
+                          <h3 className={cardTitleClassName}>{room.title}</h3>
+                          <p className={cardSubtitleClassName}>
                             {isCompleted ? 'Completed' : isCurrent ? 'Next up' : 'Locked'}
                           </p>
                         </div>
-                        <span className={`bc-label ${labelClass}`}>
+                        <span className={labelClass}>
                           {isCompleted ? (
                             <>
                               <FiCheckCircle size={12} />
@@ -233,29 +269,29 @@ const BootcampModule = () => {
                               <FiLock size={12} />
                               Locked
                             </>
-                          )}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-            <div className="bc-divider" />
+                        )}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+            <div className={dividerClassName} />
 
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiTarget size={15} className="bc-section-icon" />
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiTarget size={15} className="mr-2 inline-block text-brand" />
                 CTF Completion
               </h2>
-              <p className="bc-section-desc">
+              <p className={sectionDescClassName}>
                 Finish the module CTF to close this phase and unlock the next one.
               </p>
-              <div className="bc-panel">
-                <p>{module.ctf}</p>
+              <div className={panelClassName}>
+                <p className="text-sm text-text-secondary">{module.ctf}</p>
                 <button
                   type="button"
-                  className="bc-btn bc-btn-primary"
+                  className={buttonPrimaryClassName}
                   disabled={ctfCompleted || roomsCompleted < roomsTotal}
                   onClick={async () => {
                     const response = await completeLearningCtf(module.moduleId);

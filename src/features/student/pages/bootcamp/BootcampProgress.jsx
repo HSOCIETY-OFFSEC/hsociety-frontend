@@ -52,6 +52,35 @@ const buildStatusMeta = (overview) => {
 const BootcampProgress = () => {
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(true);
+  const pageClassName =
+    'min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,4vw,2rem)] pb-16 text-text-primary';
+  const headerClassName = 'mb-6 flex flex-col gap-4';
+  const headerInnerClassName = 'flex flex-wrap items-center justify-between gap-6';
+  const headerLeftClassName = 'flex items-center gap-4';
+  const iconWrapClassName = 'flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-bg-secondary text-brand';
+  const breadcrumbClassName = 'flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-text-tertiary';
+  const breadcrumbStrongClassName = 'font-semibold text-text-secondary';
+  const visibilityClassName =
+    'rounded-full border border-border bg-bg-secondary px-2 py-0.5 text-xs font-semibold uppercase tracking-widest text-text-secondary';
+  const headerDescClassName = 'mt-1 text-sm text-text-secondary';
+  const metaRowClassName = 'flex flex-wrap gap-3';
+  const metaPillClassName =
+    'inline-flex items-center gap-2 rounded-xs border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary';
+  const metaValueClassName = 'font-semibold text-text-primary';
+  const sectionClassName = 'flex flex-col gap-4';
+  const sectionTitleClassName = 'text-lg font-semibold text-text-primary';
+  const sectionDescClassName = 'text-sm text-text-secondary';
+  const listClassName = 'overflow-hidden rounded-sm border border-border';
+  const rowClassName =
+    'flex flex-col gap-3 border-b border-border bg-bg-secondary px-4 py-3 text-sm transition hover:bg-bg-tertiary sm:flex-row sm:items-center sm:justify-between';
+  const rowTitleClassName = 'text-sm font-semibold text-text-primary';
+  const rowSubtitleClassName = 'text-sm text-text-secondary';
+  const rowMetaClassName = 'flex items-center gap-2 text-xs text-text-secondary';
+  const labelBaseClassName = 'inline-flex items-center gap-2 rounded-full border px-2 py-0.5 text-xs font-semibold';
+  const labelAlphaClassName = `${labelBaseClassName} border-brand/30 bg-brand/10 text-brand`;
+  const labelBetaClassName = `${labelBaseClassName} border-status-success/30 bg-status-success/10 text-status-success`;
+  const dividerClassName = 'h-px bg-border';
+  const panelClassName = 'rounded-lg border border-border bg-bg-secondary p-5 text-sm text-text-secondary';
 
   useEffect(() => {
     let mounted = true;
@@ -78,70 +107,70 @@ const BootcampProgress = () => {
   const statusMeta = useMemo(() => buildStatusMeta(overview), [overview]);
 
   return (
-    <div className="bc-page">
-        <header className="bc-page-header">
-          <div className="bc-page-header-inner">
-            <div className="bc-header-left">
-              <div className="bc-header-icon-wrap">
-                <FiTarget size={20} className="bc-header-icon" />
+    <div className={pageClassName}>
+        <header className={headerClassName}>
+          <div className={headerInnerClassName}>
+            <div className={headerLeftClassName}>
+              <div className={iconWrapClassName}>
+                <FiTarget size={20} />
               </div>
               <div>
-                <div className="bc-header-breadcrumb">
-                  <span className="bc-breadcrumb-org">HSOCIETY</span>
-                  <span className="bc-breadcrumb-sep">/</span>
-                  <span className="bc-breadcrumb-page">bootcamp-progress</span>
-                  <span className="bc-header-visibility">Private</span>
+                <div className={breadcrumbClassName}>
+                  <span className={breadcrumbStrongClassName}>HSOCIETY</span>
+                  <span>/</span>
+                  <span className={breadcrumbStrongClassName}>bootcamp-progress</span>
+                  <span className={visibilityClassName}>Private</span>
                 </div>
-                <p className="bc-header-desc">
+                <p className={headerDescClassName}>
                   Track room completion and module status. Certification is handled through manual interviews.
                 </p>
               </div>
             </div>
           </div>
-          <div className="bc-header-meta">
-            <span className="bc-meta-pill">
-              <FiLayers size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Phases</span>
-              <strong className="bc-meta-value">{HACKER_PROTOCOL_PHASES.length}</strong>
+          <div className={metaRowClassName}>
+            <span className={metaPillClassName}>
+              <FiLayers size={13} className="text-text-tertiary" />
+              <span>Phases</span>
+              <strong className={metaValueClassName}>{HACKER_PROTOCOL_PHASES.length}</strong>
             </span>
-            <span className="bc-meta-pill">
-              <FiTarget size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Completion</span>
-              <strong className="bc-meta-value">{statusMeta.progress}%</strong>
+            <span className={metaPillClassName}>
+              <FiTarget size={13} className="text-text-tertiary" />
+              <span>Completion</span>
+              <strong className={metaValueClassName}>{statusMeta.progress}%</strong>
             </span>
-            <span className="bc-meta-pill">
-              <FiActivity size={13} className="bc-meta-icon" />
-              <span className="bc-meta-label">Status</span>
-              <strong className="bc-meta-value">{statusMeta.value}</strong>
+            <span className={metaPillClassName}>
+              <FiActivity size={13} className="text-text-tertiary" />
+              <span>Status</span>
+              <strong className={metaValueClassName}>{statusMeta.value}</strong>
             </span>
           </div>
         </header>
 
-        <div className="bc-layout">
-          <main className="bc-main">
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiLayers size={15} className="bc-section-icon" />
+        <div className="grid gap-6">
+          <main>
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiLayers size={15} className="mr-2 inline-block text-brand" />
                 Phase Progress
               </h2>
-              <p className="bc-section-desc">Progress is updated after each room quiz submission.</p>
-              <div className="bc-item-list">
+              <p className={sectionDescClassName}>Progress is updated after each room quiz submission.</p>
+              <div className={listClassName}>
                 {HACKER_PROTOCOL_PHASES.map((phase) => {
                   const phaseProgress = progressMap[Number(phase.moduleId)] || 0;
                   const isComplete = phaseProgress >= 100;
                   return (
-                  <article key={phase.moduleId} className="bc-item-row">
-                    <div className="bc-item-main">
-                      <span className="bc-item-title">Phase {phase.moduleId}: {phase.codename}</span>
-                      <span className="bc-item-subtitle">{phase.title}</span>
+                  <article key={phase.moduleId} className={rowClassName}>
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <span className={rowTitleClassName}>Phase {phase.moduleId}: {phase.codename}</span>
+                      <span className={rowSubtitleClassName}>{phase.title}</span>
                     </div>
-                    <div className="bc-item-meta">
+                    <div className={rowMetaClassName}>
                       {loading ? (
-                        <span className="bc-item-progress">Loading…</span>
+                        <span>Loading…</span>
                       ) : (
                         <>
-                          <span className="bc-item-progress">{phaseProgress}%</span>
-                          <span className={`bc-label ${isComplete ? 'bc-label-beta' : 'bc-label-alpha'}`}>
+                          <span>{phaseProgress}%</span>
+                          <span className={isComplete ? labelBetaClassName : labelAlphaClassName}>
                             {isComplete ? 'Complete' : 'In progress'}
                           </span>
                         </>
@@ -152,19 +181,19 @@ const BootcampProgress = () => {
                 })}
               </div>
             </section>
-            <div className="bc-divider" />
+            <div className={dividerClassName} />
 
-            <section className="bc-section">
-              <h2 className="bc-section-title">
-                <FiCheckCircle size={15} className="bc-section-icon" />
+            <section className={sectionClassName}>
+              <h2 className={sectionTitleClassName}>
+                <FiCheckCircle size={15} className="mr-2 inline-block text-brand" />
                 Final Evaluation
               </h2>
-              <p className="bc-section-desc">
+              <p className={sectionDescClassName}>
                 Final certification is completed via a manual interview with instructors after all modules and quizzes are done.
               </p>
-              <div className="bc-panel">
-                <p className="bc-panel-title">Certification Interview</p>
-                <p>Once every phase is complete, the team will schedule your final assessment.</p>
+              <div className={panelClassName}>
+                <p className="text-base font-semibold text-text-primary">Certification Interview</p>
+                <p className="text-sm text-text-secondary">Once every phase is complete, the team will schedule your final assessment.</p>
               </div>
             </section>
           </main>

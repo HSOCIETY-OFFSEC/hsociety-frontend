@@ -8,7 +8,6 @@ import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError'
 import { apiClient } from '../../../shared/services/api.client';
 import { API_ENDPOINTS, buildEndpoint } from '../../../config/api/api.config';
 import { logger } from '../../../core/logging/logger';
-import '../styles/remediation.css';
 
 const Remediation = () => {
   const [summary, setSummary] = useState(null);
@@ -85,35 +84,41 @@ const Remediation = () => {
   ];
 
   return (
-    <div className="remediation-page">
-      <header className="remediation-header">
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6">
+      <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1>Remediation Progress</h1>
-          <p>Monitor fixed vs open vulnerabilities and download remediation reports.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">Remediation Progress</h1>
+          <p className="text-sm leading-relaxed text-text-secondary">
+            Monitor fixed vs open vulnerabilities and download remediation reports.
+          </p>
         </div>
         <Button variant="ghost" size="small" onClick={fetchSummary}>
           Refresh Summary
         </Button>
       </header>
 
-      {error && <p className="remediation-error">{error}</p>}
+      {error && (
+        <p className="rounded-md border border-status-danger/30 bg-status-danger/10 px-4 py-3 text-sm text-status-danger">
+          {error}
+        </p>
+      )}
 
-      <div className="remediation-summary">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {loadingSummary
           ? summaryStats.map((_, index) => (
               <Card key={index} padding="medium" shadow="small">
-                <Skeleton className="skeleton-line" style={{ width: '80%', height: '22px' }} />
-                <Skeleton className="skeleton-line" style={{ width: '60%' }} />
+                <Skeleton className="h-5 w-4/5 rounded-md" />
+                <Skeleton className="h-4 w-3/5 rounded-md" />
               </Card>
             ))
           : summaryStats.map((stat) => (
-              <Card key={stat.label} padding="medium" shadow="small" className="remediation-stat-card">
-                <div className="stat-icon">
+              <Card key={stat.label} padding="medium" shadow="small" className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-bg-secondary text-text-secondary">
                   <stat.icon size={18} />
                 </div>
                 <div>
-                  <p className="stat-label">{stat.label}</p>
-                  <p className="stat-value">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-text-tertiary">{stat.label}</p>
+                  <p className="text-2xl font-bold tracking-tight text-text-primary">
                     {stat.value ?? 0}
                     {stat.suffix || ''}
                   </p>
@@ -122,25 +127,30 @@ const Remediation = () => {
             ))}
       </div>
 
-      <section className="remediation-reports">
-        <div className="section-title-row">
-          <h2>Remediation Reports</h2>
-          <p>Each report is a downloadable PDF outlining next steps.</p>
+      <section className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-base font-semibold text-text-primary">Remediation Reports</h2>
+          <p className="text-sm text-text-secondary">Each report is a downloadable PDF outlining next steps.</p>
         </div>
-        <div className="remediation-list">
+        <div className="flex flex-col gap-3">
           {loadingReports
             ? [...Array(2)].map((_, index) => (
-                <Card key={index} padding="large" shadow="small" className="remediation-report-card">
-                  <Skeleton className="skeleton-line" style={{ width: '70%', height: '20px' }} />
-                  <Skeleton className="skeleton-line" style={{ width: '50%' }} />
+                <Card key={index} padding="large" shadow="small" className="flex flex-wrap items-center justify-between gap-4">
+                  <Skeleton className="h-5 w-4/5 rounded-md" />
+                  <Skeleton className="h-4 w-1/2 rounded-md" />
                 </Card>
               ))
             : reports.map((report) => (
-                <Card key={report.id} padding="large" shadow="medium" className="remediation-report-card">
-                  <div className="remediation-report-meta">
-                    <h3>{report.title}</h3>
-                    <p>{report.owner}</p>
-                    <small>
+                <Card
+                  key={report.id}
+                  padding="large"
+                  shadow="medium"
+                  className="flex flex-wrap items-center justify-between gap-4 transition-colors hover:border-brand/30"
+                >
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-semibold text-text-primary">{report.title}</h3>
+                    <p className="text-sm text-text-secondary">{report.owner}</p>
+                    <small className="text-xs text-text-tertiary">
                       Generated on{' '}
                       {new Date(report.generatedOn).toLocaleDateString('en-US', {
                         month: 'short',

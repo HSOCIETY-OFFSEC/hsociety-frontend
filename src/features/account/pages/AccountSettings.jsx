@@ -54,7 +54,6 @@ import {
   updateProfile,
 } from '../services/account.service';
 import { listNotifications, markNotificationRead } from '../../student/services/notifications.service';
-import '../styles/account.css';
 
 const normalizeHandle = (handle) => {
   if (!handle) return '';
@@ -104,6 +103,12 @@ const AccountSettings = () => {
     () => buildProfileBadges({ xpSummary, badges: earnedBadges, rankTitle: xpSummary.rank }),
     [earnedBadges, xpSummary]
   );
+
+  const labelClass = 'text-xs uppercase tracking-widest text-text-tertiary';
+  const inputClass =
+    'w-full rounded-md border border-border bg-bg-secondary px-3 py-2 text-sm text-text-primary transition focus:border-brand/60 focus:outline-none focus:ring-2 focus:ring-brand/20';
+  const textareaClass =
+    'w-full min-h-[110px] rounded-md border border-border bg-bg-secondary px-3 py-2 text-sm text-text-primary transition focus:border-brand/60 focus:outline-none focus:ring-2 focus:ring-brand/20';
 
   useEffect(() => {
     if (error) window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -300,7 +305,7 @@ const AccountSettings = () => {
 
   return (
     <div
-      className={`${profileRoot} account-settings text-text-primary`}
+      className={`${profileRoot} text-text-primary`}
       style={profileRootStyle}
     >
       <div className={profileLayout}>
@@ -398,73 +403,94 @@ const AccountSettings = () => {
         </aside>
 
         <main className={profileMain}>
-          {error && <div className="account-error">{error}</div>}
+          {error && (
+            <div className="rounded-md border border-status-danger/30 bg-status-danger/10 px-4 py-3 text-sm text-status-danger">
+              {error}
+            </div>
+          )}
 
           <section className={profilePanel}>
             <h2 className={profileSectionTitle}>Profile Overview</h2>
 
-            <div className="account-progress-grid">
-              <div className="account-progress-card">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-bg-secondary px-3 py-2">
                 <FiTrendingUp size={15} />
                 <div>
-                  <span className="account-progress-label">Rank</span>
-                  <strong>{xpSummary.rank || 'Candidate'}</strong>
+                  <span className="block text-xs uppercase tracking-widest text-text-tertiary">Rank</span>
+                  <strong className="block text-sm text-text-primary">{xpSummary.rank || 'Candidate'}</strong>
                 </div>
               </div>
-              <div className="account-progress-card account-progress-card--cp">
-                <img src={cpIcon} alt="CP" className="cp-icon cp-icon-lg" />
+              <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-bg-secondary px-3 py-2">
+                <img
+                  src={cpIcon}
+                  alt="CP"
+                  className="h-7 w-7 object-contain drop-shadow-[0_0_4px_color-mix(in_srgb,var(--primary-color)_40%,transparent)]"
+                />
                 <div>
-                  <strong>{xpSummary.totalXp || 0}</strong>
+                  <span className="block text-xs uppercase tracking-widest text-text-tertiary">CP</span>
+                  <strong className="block text-lg text-status-success">
+                    {xpSummary.totalXp || 0}
+                  </strong>
                 </div>
               </div>
-              <div className="account-progress-card">
+              <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-bg-secondary px-3 py-2">
                 <IoFlameOutline size={15} />
                 <div>
-                  <span className="account-progress-label">Streak</span>
-                  <strong>{xpSummary.streakDays || 0} days</strong>
+                  <span className="block text-xs uppercase tracking-widest text-text-tertiary">Streak</span>
+                  <strong className="block text-sm text-text-primary">{xpSummary.streakDays || 0} days</strong>
                 </div>
               </div>
-              <div className="account-progress-card">
+              <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-bg-secondary px-3 py-2">
                 <FiAward size={15} />
                 <div>
-                  <span className="account-progress-label">Emblems</span>
-                  <strong>{emblems.unlockedModules.length}/5</strong>
+                  <span className="block text-xs uppercase tracking-widest text-text-tertiary">Emblems</span>
+                  <strong className="block text-sm text-text-primary">{emblems.unlockedModules.length}/5</strong>
                 </div>
               </div>
             </div>
 
-            <div className="account-emblem-list" aria-label="Unlocked module emblems">
+            <div className="mt-5 grid grid-cols-3 gap-2 sm:grid-cols-[repeat(auto-fit,minmax(120px,1fr))]" aria-label="Unlocked module emblems">
               {[1, 2, 3, 4, 5].map((moduleId) => {
                 const unlocked = emblems.unlockedModules.includes(moduleId);
                 return (
                   <div
                     key={moduleId}
-                    className={`account-emblem-chip ${unlocked ? 'unlocked' : 'locked'}`}
+                    className={`rounded-md border px-2.5 py-2 ${
+                      unlocked ? 'border-status-success/40' : 'border-border'
+                    }`}
                   >
-                    <span>Phase {String(moduleId).padStart(2, '0')}</span>
-                    <strong>{unlocked ? 'Unlocked' : 'Locked'}</strong>
+                    <span className="block truncate text-xs text-text-secondary">
+                      Phase {String(moduleId).padStart(2, '0')}
+                    </span>
+                    <strong className="block truncate text-sm text-text-primary">
+                      {unlocked ? 'Unlocked' : 'Locked'}
+                    </strong>
                   </div>
                 );
               })}
               <div
-                className={`account-emblem-chip ${emblems.graduationUnlocked ? 'unlocked' : 'locked'}`}
+                className={`rounded-md border px-2.5 py-2 ${
+                  emblems.graduationUnlocked ? 'border-status-success/40' : 'border-border'
+                }`}
               >
-                <span>HP Badge</span>
-                <strong>{emblems.graduationUnlocked ? 'Unlocked' : 'Locked'}</strong>
+                <span className="block truncate text-xs text-text-secondary">HP Badge</span>
+                <strong className="block truncate text-sm text-text-primary">
+                  {emblems.graduationUnlocked ? 'Unlocked' : 'Locked'}
+                </strong>
               </div>
             </div>
 
             {profileLoading && (
-              <p className="account-profile-refreshing">{ACCOUNT_UI.profile.refreshingText}</p>
+              <p className="mt-3 text-sm text-text-secondary">{ACCOUNT_UI.profile.refreshingText}</p>
             )}
           </section>
 
           <section className={profilePanel}>
             <h2 className={profileSectionTitle}>Profile Details</h2>
 
-            <div className="account-info account-info-spaced">
-              <div className="account-field account-field-wide">
-                <span className="account-label">Notifications</span>
+            <div className="mb-5 grid grid-cols-1 gap-5">
+              <div>
+                <span className={labelClass}>Notifications</span>
                 <AccountNotificationsList
                   notifications={notifications}
                   onOpen={async (item) => {
@@ -480,8 +506,8 @@ const AccountSettings = () => {
               </div>
             </div>
 
-            <div className="account-avatar">
-              <div className="account-avatar-preview">
+            <div className="flex flex-wrap items-start gap-5">
+              <div className="flex h-[88px] w-[88px] items-center justify-center overflow-hidden rounded-full border border-border bg-bg-secondary text-lg font-semibold text-text-secondary">
                 <img
                   src={avatarPreview || identiconFallback}
                   alt="Profile avatar"
@@ -492,21 +518,22 @@ const AccountSettings = () => {
                   }}
                 />
               </div>
-              <div className="account-avatar-actions">
+              <div className="flex flex-1 flex-col gap-3">
                 <div>
-                  <span className="account-label">Profile Photo</span>
-                  <p className="account-avatar-meta">
+                  <span className={labelClass}>Profile Photo</span>
+                  <p className="text-sm text-text-secondary">
                     {avatarFileName || user?.avatarUrl
                       ? 'Custom image selected.'
                       : 'Upload a photo.'}
                   </p>
                 </div>
-                <div className="account-avatar-buttons">
-                  <label className="account-upload">
+                <div className="flex flex-wrap items-center gap-3">
+                  <label className="relative inline-flex cursor-pointer items-center gap-2 rounded-md border border-border bg-bg-secondary px-3 py-2 text-sm font-semibold text-text-primary">
                     <input
                       type="file"
                       accept="image/*"
                       onChange={(e) => handleAvatarFile(e.target.files?.[0])}
+                      className="absolute inset-0 cursor-pointer opacity-0"
                     />
                     Choose Image
                   </label>
@@ -530,20 +557,20 @@ const AccountSettings = () => {
               </div>
             </div>
 
-            <div className="account-info">
-              <div className="account-field">
-                <span className="account-label">Name</span>
+            <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <span className={labelClass}>Name</span>
                 <input
-                  className="account-input"
+                  className={inputClass}
                   value={profile.name}
                   onChange={(e) => setProfile((prev) => ({ ...prev, name: e.target.value }))}
                   placeholder="Your name"
                 />
               </div>
-              <div className="account-field">
-                <span className="account-label">Organization</span>
+              <div className="flex flex-col gap-1.5">
+                <span className={labelClass}>Organization</span>
                 <input
-                  className="account-input"
+                  className={inputClass}
                   value={profile.organization}
                   onChange={(e) =>
                     setProfile((prev) => ({ ...prev, organization: e.target.value }))
@@ -554,12 +581,12 @@ const AccountSettings = () => {
 
               {isPentester && (
                 <>
-                  <div className="account-field">
-                    <span className="account-label">Hacker handle</span>
-                    <div className="account-handle-row">
-                      <span className="account-handle-prefix">@</span>
+                  <div className="flex flex-col gap-1.5">
+                    <span className={labelClass}>Hacker handle</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-text-secondary">@</span>
                       <input
-                        className="account-input"
+                        className={inputClass}
                         value={profile.hackerHandle}
                         onChange={(e) =>
                           setProfile((prev) => ({ ...prev, hackerHandle: e.target.value }))
@@ -568,10 +595,10 @@ const AccountSettings = () => {
                       />
                     </div>
                   </div>
-                  <div className="account-field account-field-wide">
-                    <span className="account-label">Description</span>
+                  <div className="flex flex-col gap-1.5 sm:col-span-2">
+                    <span className={labelClass}>Description</span>
                     <textarea
-                      className="account-textarea"
+                      className={textareaClass}
                       value={profile.bio}
                       onChange={(e) =>
                         setProfile((prev) => ({ ...prev, bio: e.target.value }))
@@ -582,17 +609,17 @@ const AccountSettings = () => {
                 </>
               )}
 
-              <div className="account-field">
-                <span className="account-label">Email</span>
-                <strong>{user?.email || '—'}</strong>
+              <div className="flex flex-col gap-1.5">
+                <span className={labelClass}>Email</span>
+                <strong className="text-sm text-text-primary">{user?.email || '—'}</strong>
               </div>
-              <div className="account-field">
-                <span className="account-label">Role</span>
-                <strong>{user?.role || '—'}</strong>
+              <div className="flex flex-col gap-1.5">
+                <span className={labelClass}>Role</span>
+                <strong className="text-sm text-text-primary">{user?.role || '—'}</strong>
               </div>
             </div>
 
-            <div className="account-actions">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Button
                 variant="primary"
                 size="small"
@@ -604,33 +631,33 @@ const AccountSettings = () => {
             </div>
           </section>
 
-          <section className={`${profilePanel} account-password-card`}>
-            <div className="account-section-header">
-              <FiLock size={20} />
+          <section className={profilePanel}>
+            <div className="mb-5 flex items-start gap-3">
+              <FiLock size={20} className="text-brand" />
               <div>
-                <h2>Change Password</h2>
-                <p>
+                <h2 className="text-base font-semibold text-text-primary">Change Password</h2>
+                <p className="text-sm text-text-secondary">
                   Use at least 8 characters with uppercase, lowercase, a number, and a special
                   character.
                 </p>
               </div>
             </div>
 
-            <div className="account-password-fields">
-              <div className="account-field">
-                <span className="account-label">Current password</span>
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5">
+                <span className={labelClass}>Current password</span>
                 <PasswordInput
-                  className="account-input"
+                  className={`${inputClass} max-w-[360px]`}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   placeholder="••••••••"
                   autoComplete="current-password"
                 />
               </div>
-              <div className="account-field">
-                <span className="account-label">New password</span>
+              <div className="flex flex-col gap-1.5">
+                <span className={labelClass}>New password</span>
                 <PasswordInput
-                  className="account-input"
+                  className={`${inputClass} max-w-[360px]`}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="••••••••"
@@ -638,13 +665,13 @@ const AccountSettings = () => {
                 />
                 <PasswordStrengthIndicator
                   password={newPassword}
-                  className="password-strength--account"
+                  className="max-w-[360px]"
                 />
               </div>
-              <div className="account-field">
-                <span className="account-label">Confirm new password</span>
+              <div className="flex flex-col gap-1.5">
+                <span className={labelClass}>Confirm new password</span>
                 <PasswordInput
-                  className="account-input"
+                  className={`${inputClass} max-w-[360px]`}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
@@ -653,7 +680,7 @@ const AccountSettings = () => {
               </div>
             </div>
 
-            <div className="account-actions">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Button
                 variant="secondary"
                 size="small"
@@ -667,18 +694,18 @@ const AccountSettings = () => {
             </div>
           </section>
 
-          <section className={`${profilePanel} account-danger`}>
-            <div className="account-danger-header">
-              <FiAlertTriangle size={18} />
+          <section className={`${profilePanel} border-status-danger/40 bg-status-danger/5`}>
+            <div className="mb-5 flex items-start gap-3">
+              <FiAlertTriangle size={18} className="text-status-danger" />
               <div>
-                <h2>Delete Account</h2>
-                <p>This is permanent. All your data will be removed.</p>
+                <h2 className="text-base font-semibold text-text-primary">Delete Account</h2>
+                <p className="text-sm text-text-secondary">This is permanent. All your data will be removed.</p>
               </div>
             </div>
 
-            <div className="account-delete-controls">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <input
-                className="account-input"
+                className={`${inputClass} sm:max-w-[320px]`}
                 placeholder='Type "DELETE" to confirm'
                 value={confirmText}
                 onChange={(e) => setConfirmText(e.target.value)}
