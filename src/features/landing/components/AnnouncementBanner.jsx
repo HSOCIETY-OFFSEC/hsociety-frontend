@@ -46,7 +46,7 @@ const AnnouncementBanner = () => {
 
   return (
     <div
-      className="fixed inset-x-0 top-0 z-[calc(var(--z-sticky,60)+1)] flex items-center gap-3 border-b border-border/20 bg-bg-primary/95 px-6 py-2 text-xs font-mono text-text-secondary transition-[opacity,transform,visibility] duration-200 [html:not(.nav-scrolled)_&]:border-transparent [html:not(.nav-scrolled)_&]:bg-transparent [html.nav-scrolled_&]:pointer-events-none [html.nav-scrolled_&]:invisible [html.nav-scrolled_&]:-translate-y-2 [html.nav-scrolled_&]:opacity-0"
+      className="fixed inset-x-0 top-0 z-[calc(var(--z-sticky,60)+1)] flex items-center gap-3 border-b border-border bg-bg-secondary px-6 py-2 text-xs font-mono text-text-secondary shadow-sm"
       ref={bannerRef}
       role="banner"
       aria-label="Announcement"

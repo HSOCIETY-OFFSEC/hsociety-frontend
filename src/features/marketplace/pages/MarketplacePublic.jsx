@@ -3,6 +3,20 @@ import { FiBookOpen, FiDownloadCloud } from 'react-icons/fi';
 import { getPublicFreeResources, getPublicProducts } from '../services/marketplace.service';
 import { getPublicErrorMessage } from '../../../shared/utils/errors/publicError';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
+import {
+  publicCard,
+  publicCardDesc,
+  publicCardMeta,
+  publicCardTitle,
+  publicChip,
+  publicHeroDesc,
+  publicHeroGrid,
+  publicHeroKicker,
+  publicHeroSection,
+  publicHeroTitle,
+  publicPage,
+  publicSection,
+} from '../../../shared/styles/publicClasses';
 
 const MarketplacePublic = () => {
   const [loading, setLoading] = useState(true);
@@ -45,30 +59,29 @@ const MarketplacePublic = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-bg-primary px-6 pb-12 pt-10 [background-image:linear-gradient(180deg,color-mix(in_srgb,var(--bg-primary)_92%,transparent),var(--bg-primary)),var(--landing-brand-image)] bg-no-repeat [background-position:center_top,center_top] [background-size:cover,min(1100px,82vw)_auto]">
-      <section className="reveal-on-scroll">
-        <div className="section-container">
-          <div className="rounded-[20px] border border-border bg-bg-secondary p-8 shadow-lg">
-            <p className="mb-3 inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary">
+    <div className={`${publicPage} text-text-primary`}>
+      <section className={`hero-section reveal-on-scroll ${publicHeroSection}`}>
+        <div className={`section-container ${publicHeroGrid}`}>
+          <div>
+            <p className={publicHeroKicker}>
               <span className="eyebrow-dot" />
               ZeroDay Market
             </p>
-            <h1 className="text-[clamp(2rem,4vw,2.6rem)] font-semibold tracking-[-0.03em] text-text-primary">
-              Welcome to the ZeroDay Market.
-            </h1>
-            <p className="mt-4 max-w-[720px] text-[1.02rem] text-text-secondary">
-              CP Points unlock exclusive books and playbooks. Earn CP inside HSOCIETY,
-              then redeem in ZeroDay Market.
+            <h1 className={publicHeroTitle}>Welcome to the ZeroDay Market.</h1>
+            <p className={publicHeroDesc}>
+              CP Points unlock exclusive books and playbooks. Earn CP inside HSOCIETY, then redeem in ZeroDay Market.
             </p>
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-1 text-xs text-text-secondary" aria-label="CP Coins">
-              <img src={cpIcon} alt="CP" className="h-4 w-4" />
-              <span>CP Coins</span>
+            <div className={publicCardMeta}>
+              <span className={publicChip}>
+                <img src={cpIcon} alt="CP" className="h-3.5 w-3.5" />
+                CP Coins
+              </span>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="reveal-on-scroll py-[clamp(3rem,7vw,5.5rem)]">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -92,22 +105,24 @@ const MarketplacePublic = () => {
           ) : (
             <div className="mt-8 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
               {products.map((product) => (
-                <article key={product._id} className="flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-secondary shadow-md">
-                  {product.coverUrl ? (
-                    <img src={product.coverUrl} alt={product.title} className="h-[180px] w-full object-cover" />
-                  ) : (
-                    <div className="flex h-[180px] items-center justify-center bg-bg-tertiary text-sm font-semibold uppercase tracking-[0.2em] text-text-tertiary">
-                      CP
-                    </div>
-                  )}
-                  <div className="flex flex-1 flex-col gap-2 p-5">
-                    <h3 className="text-base font-semibold text-text-primary">{product.title}</h3>
-                    <p className="text-sm text-text-secondary">{product.description || 'ZeroDay Market item'}</p>
-                    <span className="mt-auto inline-flex items-center gap-2 font-semibold text-brand">
-                      <img src={cpIcon} alt="CP" className="h-8 w-8 p-1" />
-                      {product.cpPrice} CP
-                    </span>
+                <article
+                  key={product._id}
+                  className={publicCard}
+                  style={{
+                    '--card-media': product.coverUrl
+                      ? `url(${product.coverUrl})`
+                      : 'linear-gradient(120deg, rgba(31,191,143,0.22), rgba(0,0,0,0.6))',
+                  }}
+                >
+                  <div className={publicCardMeta}>
+                    <span className={publicChip}>CP drop</span>
                   </div>
+                  <h3 className={publicCardTitle}>{product.title}</h3>
+                  <p className={publicCardDesc}>{product.description || 'ZeroDay Market item'}</p>
+                  <span className="mt-auto inline-flex items-center gap-2 font-semibold text-brand">
+                    <img src={cpIcon} alt="CP" className="h-6 w-6 p-1" />
+                    {product.cpPrice} CP
+                  </span>
                 </article>
               ))}
             </div>
@@ -115,7 +130,7 @@ const MarketplacePublic = () => {
         </div>
       </section>
 
-      <section className="reveal-on-scroll py-[clamp(3rem,7vw,5.5rem)]">
+      <section className={`reveal-on-scroll ${publicSection}`}>
         <div className="section-container">
           <div className="section-header">
             <p className="section-eyebrow">
@@ -139,34 +154,38 @@ const MarketplacePublic = () => {
           ) : (
             <div className="mt-8 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6">
               {resources.map((resource) => (
-                <article key={resource.id || resource.url} className="flex flex-col overflow-hidden rounded-2xl border border-border bg-bg-secondary shadow-md">
-                  <div className="flex h-[180px] items-center justify-center bg-bg-tertiary text-sm font-semibold uppercase tracking-[0.2em] text-text-tertiary">
-                    FREE
+                <article
+                  key={resource.id || resource.url}
+                  className={publicCard}
+                  style={{
+                    '--card-media': 'linear-gradient(120deg, rgba(31,191,143,0.2), rgba(0,0,0,0.7))',
+                  }}
+                >
+                  <div className={publicCardMeta}>
+                    <span className={publicChip}>Free drop</span>
                   </div>
-                  <div className="flex flex-1 flex-col gap-2 p-5">
-                    <h3 className="text-base font-semibold text-text-primary">{resource.title || 'Free resource'}</h3>
-                    <p className="text-sm text-text-secondary">{resource.description || 'Downloadable resource.'}</p>
-                    <div className="mt-auto flex items-center justify-between gap-3">
-                      <span className="inline-flex items-center gap-2 font-semibold text-brand">
-                        <img src={cpIcon} alt="CP" className="h-8 w-8 p-1" />
-                        0 CP
+                  <h3 className={publicCardTitle}>{resource.title || 'Free resource'}</h3>
+                  <p className={publicCardDesc}>{resource.description || 'Downloadable resource.'}</p>
+                  <div className="mt-auto flex items-center justify-between gap-3">
+                    <span className="inline-flex items-center gap-2 font-semibold text-brand">
+                      <img src={cpIcon} alt="CP" className="h-6 w-6 p-1" />
+                      0 CP
+                    </span>
+                    {resource.url ? (
+                      <a
+                        className="inline-flex items-center gap-2 rounded-md border border-[color-mix(in_srgb,var(--primary-color)_40%,var(--border-color))] bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] px-3 py-2 text-sm text-brand"
+                        href={resource.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <FiDownloadCloud size={14} />
+                        Download
+                      </a>
+                    ) : (
+                      <span className="inline-flex items-center gap-2 rounded-md border border-[color-mix(in_srgb,var(--primary-color)_40%,var(--border-color))] bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] px-3 py-2 text-sm text-brand opacity-60">
+                        Unavailable
                       </span>
-                      {resource.url ? (
-                        <a
-                          className="inline-flex items-center gap-2 rounded-md border border-[color-mix(in_srgb,var(--primary-color)_40%,var(--border-color))] bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] px-3 py-2 text-sm text-brand"
-                          href={resource.url}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <FiDownloadCloud size={14} />
-                          Download
-                        </a>
-                      ) : (
-                        <span className="inline-flex items-center gap-2 rounded-md border border-[color-mix(in_srgb,var(--primary-color)_40%,var(--border-color))] bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] px-3 py-2 text-sm text-brand opacity-60">
-                          Unavailable
-                        </span>
-                      )}
-                    </div>
+                    )}
                   </div>
                 </article>
               ))}

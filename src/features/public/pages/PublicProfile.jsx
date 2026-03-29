@@ -224,8 +224,7 @@ const PublicProfile = () => {
   if (error) {
     return (
       <section className="grid min-h-[65vh] place-items-center px-6 py-12" aria-live="polite">
-        <div className="relative w-full max-w-[420px] rounded-lg border border-[color:var(--pp-border)] bg-[var(--pp-card)] p-10 text-center shadow-md">
-          <div className="hs-signature" aria-hidden="true" />
+        <div className="w-full max-w-[420px] text-center">
           <h1 className="mb-2 text-xl font-semibold text-text-primary">Profile not found</h1>
           <p className="mb-6 text-text-secondary">{error}</p>
           <Link className={`${publicButtonBase} ${publicButtonSmall} ${publicButtonPrimary}`} to="/">
@@ -344,7 +343,6 @@ const PublicProfile = () => {
 
             {/* Stats sidebar card */}
             <div className={profileStatsCard}>
-              <div className="hs-signature" aria-hidden="true" />
               <div className={profileStatRow}>
                 <div className={profileStatIcon}>
                   <img src={cpIcon} alt="CP" className="h-[18px] w-[18px] object-contain drop-shadow-[0_0_4px_color-mix(in_srgb,var(--primary-color)_55%,transparent)]" />
@@ -383,7 +381,6 @@ const PublicProfile = () => {
 
             {/* Contribution graph — GitHub style */}
             <section className={`${profilePanel} overflow-hidden`}>
-              <div className="hs-signature" aria-hidden="true" />
               <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
                 <h2 className="text-sm font-semibold text-text-primary">
                   <strong>{formatValue(contributionData.total)}</strong> logins in the last year
@@ -486,7 +483,6 @@ const PublicProfile = () => {
 
             {/* Overview */}
             <section className={profilePanel}>
-              <div className="hs-signature" aria-hidden="true" />
               <h2 className={profileSectionTitle}>Overview</h2>
               <p className="mb-4 text-sm leading-relaxed text-text-secondary">
                 {profile?.summary || profile?.bio || 'This member is building offensive security skills and contributing to the HSOCIETY community.'}
@@ -513,7 +509,6 @@ const PublicProfile = () => {
 
             {/* Activity */}
             <section className={profilePanel}>
-              <div className="hs-signature" aria-hidden="true" />
               <h2 className={profileSectionTitle}>Activity</h2>
               <div className="grid grid-cols-4 overflow-hidden rounded-md border border-[color:var(--pp-border)] text-center max-md:grid-cols-2">
                 <div className="flex flex-col gap-1 border-b border-r border-[color:var(--pp-border)] px-4 py-4 max-md:border-b max-md:border-r">
@@ -567,7 +562,6 @@ const PublicProfile = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Live profiles, real signals.</h3>
             <p className={publicCardDesc}>Your progress, streaks, and engagement history — all in one place.</p>
           </div>
@@ -579,7 +573,6 @@ const PublicProfile = () => {
         <div className="fixed inset-0 z-[2000] grid place-items-center p-6" role="dialog" aria-modal="true" aria-label="Share profile">
           <button type="button" className="absolute inset-0 cursor-pointer border-0 bg-black/65" aria-label="Close" onClick={() => setShareOpen(false)} />
           <div className="relative z-10 flex w-full max-w-[520px] flex-col gap-4 rounded-lg border border-[color:var(--pp-border)] bg-bg-secondary p-6 shadow-xl">
-            <div className="hs-signature" aria-hidden="true" />
             <header>
               <h2 className="text-lg font-semibold text-text-primary">Share profile</h2>
               <p className="text-sm text-text-secondary">Share this public profile on any platform.</p>

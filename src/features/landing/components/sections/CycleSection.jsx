@@ -57,7 +57,6 @@ const CycleSection = ({ steps }) => {
               className="group relative flex min-h-[250px] flex-1 flex-col items-center gap-2 rounded-lg border border-[color-mix(in_srgb,var(--border-color)_85%,transparent)] bg-[linear-gradient(135deg,color-mix(in_srgb,var(--primary-color)_8%,transparent),transparent_55%),var(--bg-secondary)] px-6 py-7 text-center shadow-[0_14px_28px_rgba(15,23,42,0.12)] transition-all duration-200 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--primary-color)_35%,var(--border-color))] hover:shadow-[0_18px_36px_rgba(15,23,42,0.18)] motion-reduce:transform-none max-lg:items-start max-lg:px-5 max-lg:text-left"
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="hs-signature absolute -right-2 -top-2 h-5 w-5" aria-hidden="true" />
               <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--primary-color)_45%,var(--border-color))] bg-[color-mix(in_srgb,var(--primary-color)_8%,var(--bg-secondary))] text-brand transition-colors group-hover:border-brand group-hover:bg-[color-mix(in_srgb,var(--primary-color)_14%,var(--bg-secondary))]" aria-hidden="true">
                 <div className="pointer-events-none absolute -inset-1.5 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--primary-color)_18%,transparent)_0%,transparent_70%)] opacity-0 transition-opacity group-hover:opacity-100" />
                 {React.createElement(icons[index] || FiBookOpen, { size: 18 })}

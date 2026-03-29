@@ -2,12 +2,6 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FiArrowUpRight,
-  FiTrendingUp,
-  FiTarget,
-  FiShield,
-  FiZap,
-  FiCheckCircle,
-  FiBarChart2,
 } from 'react-icons/fi';
 import cpIcon from '../../../assets/icons/CP/cp-icon.webp';
 import PublicCardGrid from '../../../shared/components/public/PublicCardGrid';
@@ -16,9 +10,7 @@ import { getPublicCardMedia } from '../../../shared/data/publicCardMedia';
 import {
   publicCard,
   publicCardDesc,
-  publicCardMeta,
   publicCardTitle,
-  publicChip,
   publicCtaCard,
   publicCtaInner,
   publicCtaSection,
@@ -31,8 +23,6 @@ import {
   publicHeroStats,
   publicHeroTitle,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -45,32 +35,20 @@ const CPPoints = () => {
         title: 'Complete mission labs',
         description:
           'Finish guided strike labs and earn stacked CP boosts with every verified objective.',
-        icon: <FiTarget size={16} />,
-        badge: '+250 CP',
       },
       {
         title: 'Ship real pentest wins',
         description:
           'Deliver findings, document remediations, and stack multipliers for high-impact reports.',
-        icon: <FiShield size={16} />,
-        badge: '+500 CP',
       },
       {
         title: 'Stay on streak',
         description:
           'Daily progress unlocks streak bonuses that amplify every point you collect.',
-        icon: <FiTrendingUp size={16} />,
-        badge: '2× boost',
       },
     ],
     []
   );
-
-  const stats = [
-    { label: 'Momentum Score', value: 'Adaptive', icon: <FiBarChart2 size={14} /> },
-    { label: 'Streak Boost', value: 'Live', icon: <FiZap size={14} /> },
-    { label: 'Rank Signal', value: 'Verified', icon: <FiCheckCircle size={14} /> },
-  ];
 
   return (
     <div className={`${publicPage} text-text-primary`}>
@@ -103,14 +81,6 @@ const CPPoints = () => {
               >
                 View leaderboard
               </Button>
-            </div>
-            <div className={publicPillRow}>
-              {stats.map((stat) => (
-                <span key={stat.label} className={publicPill}>
-                  {stat.icon}
-                  {stat.label}: {stat.value}
-                </span>
-              ))}
             </div>
           </div>
           <div className="p-0">
@@ -145,10 +115,6 @@ const CPPoints = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
-                <div className={publicCardMeta}>
-                  <span className={publicChip}>{action.badge}</span>
-                </div>
                 <h3 className={publicCardTitle}>{action.title}</h3>
                 <p className={publicCardDesc}>{action.description}</p>
               </article>
@@ -187,7 +153,6 @@ const CPPoints = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Operators earn, operators rise.</h3>
             <p className={publicCardDesc}>Every verified mission pushes your ranking forward.</p>
           </div>

@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import landingContent from '../../../data/static/landing.json';
 import methodologyContent from '../../../data/static/methodology.json';
 import { HACKER_PROTOCOL_PHASES } from '../../../data/static/bootcamps/hackerProtocolData';
-import { getLeaderboard } from '../../leaderboard/services/leaderboard.service';
 import {
   getCommunityProfiles,
   getLandingCacheSnapshot,
@@ -19,12 +18,10 @@ import MarketplaceSection from '../components/sections/MarketplaceSection';
 import WhySection from '../components/sections/WhySection';
 import CycleSection from '../components/sections/CycleSection';
 import ProcessSection from '../components/sections/ProcessSection';
-import CoursesSection from '../components/sections/CoursesSection';
 import ModulesSection from '../components/sections/ModulesSection';
 import PathwaysSection from '../components/sections/PathwaysSection';
-import LeaderboardSection from '../components/sections/LeaderboardSection';
 import CommunityProfilesSection from '../components/sections/CommunityProfilesSection';
-import TrustSection from '../components/sections/TrustSection';
+import PartnerCarouselSection from '../components/sections/PartnerCarouselSection';
 import DeliverablesSection from '../components/sections/DeliverablesSection';
 import CtaSection from '../components/sections/CtaSection';
 import FaqSection from '../components/sections/FaqSection';
@@ -50,8 +47,6 @@ const Landing = ({ scrollToId = null }) => {
   const [landingOverrides, setLandingOverrides] = useState({});
   const [statsError, setStatsError] = useState('');
   const [profilesError, setProfilesError] = useState('');
-  const [leaderboardEntries, setLeaderboardEntries] = useState([]);
-  const [leaderboardLoading, setLeaderboardLoading] = useState(true);
 
   const imageMap = {
     terminal: terminalWallpaper,
@@ -121,20 +116,6 @@ const Landing = ({ scrollToId = null }) => {
       }
     };
 
-    const loadLeaderboard = async () => {
-      try {
-        const response = await getLeaderboard(5);
-        if (!isMounted) return;
-        if (response.success) {
-          const live = response.data?.leaderboard || [];
-          setLeaderboardEntries(live);
-        }
-      } catch {
-        // leave entries empty — section will hide itself
-      } finally {
-        if (isMounted) setLeaderboardLoading(false);
-      }
-    };
 
     const loadContent = async () => {
       try {
@@ -149,7 +130,6 @@ const Landing = ({ scrollToId = null }) => {
     };
 
     loadStats();
-    timeoutIds.push(window.setTimeout(loadLeaderboard, 200));
     timeoutIds.push(window.setTimeout(loadProfiles, 300));
     if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
       idleId = window.requestIdleCallback(loadContent, { timeout: 1500 });
@@ -263,10 +243,8 @@ const Landing = ({ scrollToId = null }) => {
       <WhySection items={whyItems} />
       <CycleSection />
       <ProcessSection steps={processSteps} />
-      <CoursesSection />
       <ModulesSection modules={moduleEmblems} />
       <PathwaysSection pathways={landingContent.pathways} />
-      <LeaderboardSection entries={leaderboardEntries} loading={leaderboardLoading} />
       <CommunityProfilesSection
         title={landingContent.communityProfiles?.title || 'Community wins in the open'}
         subtitle={
@@ -277,7 +255,7 @@ const Landing = ({ scrollToId = null }) => {
         profiles={profileContent}
         error={profilesError}
       />
-      <TrustSection signals={landingContent.trust} />
+      <PartnerCarouselSection />
       <DeliverablesSection items={landingContent.deliverables} />
       <CtaSection content={landingContent.cta} />
       <FaqSection content={landingContent.faq} />

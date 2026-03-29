@@ -4,41 +4,41 @@ import Card from '../../../../shared/components/ui/Card';
 import Button from '../../../../shared/components/ui/Button';
 import PageLoader from '../../../../shared/components/ui/PageLoader';
 import {
-  getAdminContent,
-  getUsers,
-  sendBootcampRoomLink,
-  sendAdminNotification,
-  updateAdminContent,
-  uploadFreeResource,
-  getCpProducts,
-  createCpProduct,
-  updateCpProduct,
-  deleteCpProduct,
+ getAdminContent,
+ getUsers,
+ sendBootcampRoomLink,
+ sendAdminNotification,
+ updateAdminContent,
+ uploadFreeResource,
+ getCpProducts,
+ createCpProduct,
+ updateCpProduct,
+ deleteCpProduct,
 } from '../services/admin.service';
 import { getPublicErrorMessage } from '../../../../shared/utils/errors/publicError';
 import defaultTeamContent from '../../../../data/static/team.json';
 
 const alertClassName =
-  'flex items-center gap-3 rounded-sm border border-[color-mix(in_srgb,#ef4444_30%,var(--border-color))] bg-[color-mix(in_srgb,#ef4444_8%,var(--card-bg))] px-4 py-3 text-sm text-[color-mix(in_srgb,#ef4444_80%,var(--text-primary))]';
+ 'flex items-center gap-3 rounded-sm border border-[color-mix(in_srgb,#ef4444_30%,var(--border-color))] bg-[color-mix(in_srgb,#ef4444_8%,var(--card-bg))] px-4 py-3 text-sm text-[color-mix(in_srgb,#ef4444_80%,var(--text-primary))]';
 
 const inputClassName =
-  'w-full rounded-sm border border-border bg-[var(--input-bg)] px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-[var(--input-bg-focus)] focus:outline-none';
+ 'w-full rounded-sm border border-border bg-[var(--input-bg)] px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-[var(--input-bg-focus)] focus:outline-none';
 
 const textareaClassName =
-  'w-full rounded-md border border-border bg-bg-primary px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-bg-tertiary focus:outline-none';
+ 'w-full rounded-md border border-border bg-bg-primary px-3 py-2 text-sm text-text-primary transition focus:border-[color-mix(in_srgb,var(--text-primary)_30%,var(--border-color))] focus:bg-bg-tertiary focus:outline-none';
 
 const cardClassName =
-  'rounded-lg border border-border bg-bg-secondary shadow-[0_12px_24px_rgba(15,23,42,0.08)]';
+ 'card-plain';
 
 const statsFormClassName =
-  'grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(180px,1fr))]';
+ 'grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(180px,1fr))]';
 
 const labelClassName = 'flex flex-col gap-2 text-sm text-text-secondary';
 
 const contentPostsClassName = 'flex flex-col gap-4';
 
 const contentPostClassName =
-  'grid gap-3 rounded-md border border-border bg-bg-primary p-4';
+ 'grid gap-3 rounded-md border border-border bg-bg-primary p-4';
 
 const contentActionsClassName = 'flex flex-wrap gap-2';
 
@@ -48,1317 +48,1317 @@ const emptyPost = { title: '', date: '', summary: '' };
 const emptyResource = { title: '', description: '', url: '', type: 'link' };
 const emptyBootcampResourceItem = { title: '', description: '', url: '', type: 'file' };
 const emptyBootcampResource = {
-  id: '',
-  moduleId: 1,
-  moduleTitle: '',
-  roomId: 0,
-  roomTitle: '',
-  resources: [{ ...emptyBootcampResourceItem }],
+ id: '',
+ moduleId: 1,
+ moduleTitle: '',
+ roomId: 0,
+ roomTitle: '',
+ resources: [{ ...emptyBootcampResourceItem }],
 };
 const emptyCpProduct = {
-  id: '',
-  title: '',
-  description: '',
-  cpPrice: 0,
-  coverUrl: '',
-  productUrl: '',
-  isActive: true,
-  sortOrder: 0,
+ id: '',
+ title: '',
+ description: '',
+ cpPrice: 0,
+ coverUrl: '',
+ productUrl: '',
+ isActive: true,
+ sortOrder: 0,
 };
 const emptyTeamSocial = { platform: '', url: '' };
 const emptyTeamMember = {
-  name: '',
-  role: '',
-  focus: '',
-  icon: 'FiUsers',
-  image: '',
-  socials: [{ ...emptyTeamSocial }],
+ name: '',
+ role: '',
+ focus: '',
+ icon: 'FiUsers',
+ image: '',
+ socials: [{ ...emptyTeamSocial }],
 };
 
 const ensureArray = (value, fallback = []) => (Array.isArray(value) ? value : fallback);
 
 const normalizeTeam = (incoming = {}) => ({
-  ...defaultTeamContent,
-  ...incoming,
-  hero: { ...defaultTeamContent.hero, ...(incoming.hero || {}) },
-  leadership: {
-    ...defaultTeamContent.leadership,
-    ...(incoming.leadership || {}),
-    members: ensureArray(
-      incoming.leadership?.members,
-      defaultTeamContent.leadership?.members || []
-    ).map((member) => ({
-      ...member,
-      icon: String(member?.icon || 'FiUsers'),
-      socials: ensureArray(member?.socials, []).length
-        ? ensureArray(member?.socials, []).map((social) => ({
-            platform: String(social?.platform || ''),
-            url: String(social?.url || ''),
-          }))
-        : [{ ...emptyTeamSocial }],
-    })),
-  },
-  groups: {
-    ...defaultTeamContent.groups,
-    ...(incoming.groups || {}),
-    items: ensureArray(incoming.groups?.items, defaultTeamContent.groups?.items || []),
-  },
-  cta: { ...defaultTeamContent.cta, ...(incoming.cta || {}) },
+ ...defaultTeamContent,
+ ...incoming,
+ hero: { ...defaultTeamContent.hero, ...(incoming.hero || {}) },
+ leadership: {
+  ...defaultTeamContent.leadership,
+  ...(incoming.leadership || {}),
+  members: ensureArray(
+   incoming.leadership?.members,
+   defaultTeamContent.leadership?.members || []
+  ).map((member) => ({
+   ...member,
+   icon: String(member?.icon || 'FiUsers'),
+   socials: ensureArray(member?.socials, []).length
+    ? ensureArray(member?.socials, []).map((social) => ({
+      platform: String(social?.platform || ''),
+      url: String(social?.url || ''),
+     }))
+    : [{ ...emptyTeamSocial }],
+  })),
+ },
+ groups: {
+  ...defaultTeamContent.groups,
+  ...(incoming.groups || {}),
+  items: ensureArray(incoming.groups?.items, defaultTeamContent.groups?.items || []),
+ },
+ cta: { ...defaultTeamContent.cta, ...(incoming.cta || {}) },
 });
 
 const AdminContent = () => {
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
-  const [status, setStatus] = useState('');
-  const [uploadingIndex, setUploadingIndex] = useState(null);
-  const [landing, setLanding] = useState({
-    heroTitle: '',
-    heroDescription: '',
-    ctaPrimary: '',
-    ctaSecondary: '',
-    communitySubtitle: '',
-  });
-  const [posts, setPosts] = useState([emptyPost]);
-  const [resources, setResources] = useState([emptyResource]);
-  const [resourcesMessage, setResourcesMessage] = useState('We do not have free resources yet.');
-  const [bootcampResources, setBootcampResources] = useState([emptyBootcampResource]);
-  const [cpProducts, setCpProducts] = useState([emptyCpProduct]);
-  const [removedCpProductIds, setRemovedCpProductIds] = useState([]);
-  const [terms, setTerms] = useState({
-    effectiveDate: '',
-    lastUpdated: '',
-    jurisdiction: '',
-    sections: [{ title: '', body: '', bullets: [] }],
-  });
-  const [team, setTeam] = useState(() => normalizeTeam({}));
-  const [meetingForm, setMeetingForm] = useState({ meetUrl: '', message: '', audience: 'enrolled' });
-  const [notificationForm, setNotificationForm] = useState({
-    title: '',
-    message: '',
-    audience: 'all',
-  });
+ const [loading, setLoading] = useState(true);
+ const [saving, setSaving] = useState(false);
+ const [error, setError] = useState('');
+ const [status, setStatus] = useState('');
+ const [uploadingIndex, setUploadingIndex] = useState(null);
+ const [landing, setLanding] = useState({
+  heroTitle: '',
+  heroDescription: '',
+  ctaPrimary: '',
+  ctaSecondary: '',
+  communitySubtitle: '',
+ });
+ const [posts, setPosts] = useState([emptyPost]);
+ const [resources, setResources] = useState([emptyResource]);
+ const [resourcesMessage, setResourcesMessage] = useState('We do not have free resources yet.');
+ const [bootcampResources, setBootcampResources] = useState([emptyBootcampResource]);
+ const [cpProducts, setCpProducts] = useState([emptyCpProduct]);
+ const [removedCpProductIds, setRemovedCpProductIds] = useState([]);
+ const [terms, setTerms] = useState({
+  effectiveDate: '',
+  lastUpdated: '',
+  jurisdiction: '',
+  sections: [{ title: '', body: '', bullets: [] }],
+ });
+ const [team, setTeam] = useState(() => normalizeTeam({}));
+ const [meetingForm, setMeetingForm] = useState({ meetUrl: '', message: '', audience: 'enrolled' });
+ const [notificationForm, setNotificationForm] = useState({
+  title: '',
+  message: '',
+  audience: 'all',
+ });
 
-  const handleResourceUpload = async (index, file) => {
-    if (!file) return;
-    setStatus('');
-    setError('');
-    setUploadingIndex(index);
-    try {
-      const response = await uploadFreeResource(file);
-      if (!response.success) {
-        setError(response.error || 'Upload failed.');
-        return;
-      }
-      const url = response.data?.url || '';
-      if (!url) {
-        setError('Upload failed. Missing file URL.');
-        return;
-      }
-      setResources((prev) =>
-        prev.map((item, idx) =>
-          idx === index ? { ...item, url, type: 'file' } : item
-        )
-      );
-      setStatus('PDF uploaded. Remember to save changes.');
-    } finally {
-      setUploadingIndex(null);
-    }
-  };
+ const handleResourceUpload = async (index, file) => {
+  if (!file) return;
+  setStatus('');
+  setError('');
+  setUploadingIndex(index);
+  try {
+   const response = await uploadFreeResource(file);
+   if (!response.success) {
+    setError(response.error || 'Upload failed.');
+    return;
+   }
+   const url = response.data?.url || '';
+   if (!url) {
+    setError('Upload failed. Missing file URL.');
+    return;
+   }
+   setResources((prev) =>
+    prev.map((item, idx) =>
+     idx === index ? { ...item, url, type: 'file' } : item
+    )
+   );
+   setStatus('PDF uploaded. Remember to save changes.');
+  } finally {
+   setUploadingIndex(null);
+  }
+ };
 
-  useEffect(() => {
-    let mounted = true;
-    const load = async () => {
-      setLoading(true);
-      const response = await getAdminContent();
-      if (!mounted) return;
-      if (response.success) {
-        const data = response.data || {};
-        setLanding({
-          heroTitle: data.landing?.heroTitle || '',
-          heroDescription: data.landing?.heroDescription || '',
-          ctaPrimary: data.landing?.ctaPrimary || '',
-          ctaSecondary: data.landing?.ctaSecondary || '',
-          communitySubtitle: data.landing?.communitySubtitle || '',
-        });
-        const existing = data.blog?.posts || [];
-        setPosts(existing.length ? existing : [emptyPost]);
-
-        const freeResources = data.learn?.freeResources || [];
-        setResources(freeResources.length ? freeResources : [emptyResource]);
-        setResourcesMessage(data.learn?.freeResourcesMessage || 'We do not have free resources yet.');
-        setMeetingForm((prev) => ({
-          ...prev,
-          meetUrl: data.learn?.bootcampMeetingUrl || '',
-          message: data.learn?.bootcampMeetingMessage || '',
-        }));
-
-        const existingBootcampResources = data.learn?.bootcampResources || [];
-        setBootcampResources(
-          existingBootcampResources.length
-            ? existingBootcampResources.map((item, index) => ({
-                id: item.id || String(index + 1),
-                moduleId: Number(item.moduleId || 0),
-                moduleTitle: item.moduleTitle || '',
-                roomId: Number(item.roomId || 0),
-                roomTitle: item.roomTitle || '',
-                resources: Array.isArray(item.resources) && item.resources.length
-                  ? item.resources.map((resource) => ({
-                      title: resource.title || '',
-                      description: resource.description || '',
-                      url: resource.url || '',
-                      type: resource.type || 'file',
-                    }))
-                  : [{ ...emptyBootcampResourceItem }],
-              }))
-            : [{ ...emptyBootcampResource }]
-        );
-
-        const existingTerms = data.terms || {};
-        setTerms({
-          effectiveDate: existingTerms.effectiveDate || '',
-          lastUpdated: existingTerms.lastUpdated || '',
-          jurisdiction: existingTerms.jurisdiction || '',
-          sections:
-            Array.isArray(existingTerms.sections) && existingTerms.sections.length
-              ? existingTerms.sections.map((section) => ({
-                  title: section.title || '',
-                  body: section.body || '',
-                  bullets: Array.isArray(section.bullets) ? section.bullets : [],
-                }))
-              : [{ title: '', body: '', bullets: [] }],
-        });
-        setTeam(normalizeTeam(data.team || {}));
-
-        const cpProductsRes = await getCpProducts();
-        if (cpProductsRes.success) {
-          const items = cpProductsRes.data || [];
-          setCpProducts(
-            items.length
-              ? items.map((item) => ({
-                  id: item._id,
-                  title: item.title || '',
-                  description: item.description || '',
-                  cpPrice: Number(item.cpPrice || 0),
-                  coverUrl: item.coverUrl || '',
-                  productUrl: item.productUrl || '',
-                  isActive: item.isActive !== false,
-                  sortOrder: Number(item.sortOrder || 0),
-                }))
-              : [{ ...emptyCpProduct }]
-          );
-        }
-      } else {
-        setError(getPublicErrorMessage({ action: 'load', response }));
-      }
-      setLoading(false);
-    };
-    load();
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const updatePost = (index, field, value) => {
-    setPosts((prev) => prev.map((post, i) => (i === index ? { ...post, [field]: value } : post)));
-  };
-
-  const updateResource = (index, field, value) => {
-    setResources((prev) =>
-      prev.map((resource, i) => (i === index ? { ...resource, [field]: value } : resource))
-    );
-  };
-
-  const addPost = () => setPosts((prev) => [...prev, { ...emptyPost }]);
-  const addResource = () => setResources((prev) => [...prev, { ...emptyResource }]);
-  const addBootcampResource = () =>
-    setBootcampResources((prev) => [...prev, { ...emptyBootcampResource }]);
-
-  const removePost = (index) => {
-    setPosts((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const removeResource = (index) => {
-    setResources((prev) => prev.filter((_, i) => i !== index));
-  };
-  const removeBootcampResource = (index) => {
-    setBootcampResources((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const updateBootcampResource = (index, field, value) => {
-    setBootcampResources((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, [field]: value } : item))
-    );
-  };
-
-  const updateBootcampResourceItem = (resourceIndex, itemIndex, field, value) => {
-    setBootcampResources((prev) =>
-      prev.map((item, i) => {
-        if (i !== resourceIndex) return item;
-        const resourcesList = Array.isArray(item.resources) ? item.resources : [];
-        return {
-          ...item,
-          resources: resourcesList.map((resource, idx) =>
-            idx === itemIndex ? { ...resource, [field]: value } : resource
-          ),
-        };
-      })
-    );
-  };
-
-  const addBootcampResourceItem = (resourceIndex) => {
-    setBootcampResources((prev) =>
-      prev.map((item, i) =>
-        i === resourceIndex
-          ? { ...item, resources: [...(item.resources || []), { ...emptyBootcampResourceItem }] }
-          : item
-      )
-    );
-  };
-
-  const removeBootcampResourceItem = (resourceIndex, itemIndex) => {
-    setBootcampResources((prev) =>
-      prev.map((item, i) => {
-        if (i !== resourceIndex) return item;
-        const nextResources = (item.resources || []).filter((_, idx) => idx !== itemIndex);
-        return { ...item, resources: nextResources.length ? nextResources : [{ ...emptyBootcampResourceItem }] };
-      })
-    );
-  };
-
-  const updateTermsSection = (index, field, value) => {
-    setTerms((prev) => ({
-      ...prev,
-      sections: prev.sections.map((section, i) =>
-        i === index ? { ...section, [field]: value } : section
-      ),
-    }));
-  };
-
-  const addTermsSection = () => {
-    setTerms((prev) => ({ ...prev, sections: [...prev.sections, { title: '', body: '', bullets: [] }] }));
-  };
-
-  const removeTermsSection = (index) => {
-    setTerms((prev) => ({ ...prev, sections: prev.sections.filter((_, i) => i !== index) }));
-  };
-
-  const updateTeamHero = (field, value) => {
-    setTeam((prev) => ({ ...prev, hero: { ...(prev.hero || {}), [field]: value } }));
-  };
-
-  const updateTeamLeadership = (field, value) => {
-    setTeam((prev) => ({
-      ...prev,
-      leadership: { ...(prev.leadership || {}), [field]: value },
-    }));
-  };
-
-  const updateTeamMember = (index, field, value) => {
-    setTeam((prev) => ({
-      ...prev,
-      leadership: {
-        ...(prev.leadership || {}),
-        members: ensureArray(prev.leadership?.members).map((member, memberIndex) =>
-          memberIndex === index ? { ...member, [field]: value } : member
-        ),
-      },
-    }));
-  };
-
-  const addTeamMember = () => {
-    setTeam((prev) => ({
-      ...prev,
-      leadership: {
-        ...(prev.leadership || {}),
-        members: [...ensureArray(prev.leadership?.members), { ...emptyTeamMember }],
-      },
-    }));
-  };
-
-  const removeTeamMember = (index) => {
-    setTeam((prev) => ({
-      ...prev,
-      leadership: {
-        ...(prev.leadership || {}),
-        members: ensureArray(prev.leadership?.members).filter((_, memberIndex) => memberIndex !== index),
-      },
-    }));
-  };
-
-  const updateTeamMemberSocial = (memberIndex, socialIndex, field, value) => {
-    setTeam((prev) => ({
-      ...prev,
-      leadership: {
-        ...(prev.leadership || {}),
-        members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) => {
-          if (currentMemberIndex !== memberIndex) return member;
-          return {
-            ...member,
-            socials: ensureArray(member.socials).map((social, currentSocialIndex) =>
-              currentSocialIndex === socialIndex ? { ...social, [field]: value } : social
-            ),
-          };
-        }),
-      },
-    }));
-  };
-
-  const addTeamMemberSocial = (memberIndex) => {
-    setTeam((prev) => ({
-      ...prev,
-      leadership: {
-        ...(prev.leadership || {}),
-        members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) =>
-          currentMemberIndex === memberIndex
-            ? { ...member, socials: [...ensureArray(member.socials), { ...emptyTeamSocial }] }
-            : member
-        ),
-      },
-    }));
-  };
-
-  const removeTeamMemberSocial = (memberIndex, socialIndex) => {
-    setTeam((prev) => ({
-      ...prev,
-      leadership: {
-        ...(prev.leadership || {}),
-        members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) => {
-          if (currentMemberIndex !== memberIndex) return member;
-          const socials = ensureArray(member.socials).filter((_, idx) => idx !== socialIndex);
-          return { ...member, socials: socials.length ? socials : [{ ...emptyTeamSocial }] };
-        }),
-      },
-    }));
-  };
-
-  const updateCpProductField = (index, field, value) => {
-    setCpProducts((prev) =>
-      prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item))
-    );
-  };
-
-  const addCpProduct = () => {
-    setCpProducts((prev) => [...prev, { ...emptyCpProduct }]);
-  };
-
-  const removeCpProduct = (index) => {
-    setCpProducts((prev) => {
-      const target = prev[index];
-      if (target?.id) {
-        setRemovedCpProductIds((ids) => [...ids, target.id]);
-      }
-      const next = prev.filter((_, idx) => idx !== index);
-      return next.length ? next : [{ ...emptyCpProduct }];
+ useEffect(() => {
+  let mounted = true;
+  const load = async () => {
+   setLoading(true);
+   const response = await getAdminContent();
+   if (!mounted) return;
+   if (response.success) {
+    const data = response.data || {};
+    setLanding({
+     heroTitle: data.landing?.heroTitle || '',
+     heroDescription: data.landing?.heroDescription || '',
+     ctaPrimary: data.landing?.ctaPrimary || '',
+     ctaSecondary: data.landing?.ctaSecondary || '',
+     communitySubtitle: data.landing?.communitySubtitle || '',
     });
-  };
+    const existing = data.blog?.posts || [];
+    setPosts(existing.length ? existing : [emptyPost]);
 
-  const handleSave = async () => {
-    setSaving(true);
-    setError('');
-    setStatus('');
+    const freeResources = data.learn?.freeResources || [];
+    setResources(freeResources.length ? freeResources : [emptyResource]);
+    setResourcesMessage(data.learn?.freeResourcesMessage || 'We do not have free resources yet.');
+    setMeetingForm((prev) => ({
+     ...prev,
+     meetUrl: data.learn?.bootcampMeetingUrl || '',
+     message: data.learn?.bootcampMeetingMessage || '',
+    }));
 
-    const payload = {
-      landing,
-      blog: {
-        posts: posts
-          .map((post) => ({
-            title: String(post.title || '').trim(),
-            date: String(post.date || '').trim(),
-            summary: String(post.summary || '').trim(),
+    const existingBootcampResources = data.learn?.bootcampResources || [];
+    setBootcampResources(
+     existingBootcampResources.length
+      ? existingBootcampResources.map((item, index) => ({
+        id: item.id || String(index + 1),
+        moduleId: Number(item.moduleId || 0),
+        moduleTitle: item.moduleTitle || '',
+        roomId: Number(item.roomId || 0),
+        roomTitle: item.roomTitle || '',
+        resources: Array.isArray(item.resources) && item.resources.length
+         ? item.resources.map((resource) => ({
+           title: resource.title || '',
+           description: resource.description || '',
+           url: resource.url || '',
+           type: resource.type || 'file',
           }))
-          .filter((post) => post.title && post.summary),
-      },
-      terms: {
-        effectiveDate: terms.effectiveDate,
-        lastUpdated: terms.lastUpdated,
-        jurisdiction: terms.jurisdiction,
-        sections: terms.sections.map((section) => ({
-          title: String(section.title || '').trim(),
-          body: String(section.body || '').trim(),
-          bullets: Array.isArray(section.bullets)
-            ? section.bullets.map((item) => String(item || '').trim()).filter(Boolean)
-            : [],
-        })),
-      },
-      learn: {
-        freeResources: resources
-          .map((item) => ({
-            title: String(item.title || '').trim(),
-            description: String(item.description || '').trim(),
-            url: String(item.url || '').trim(),
-            type: String(item.type || 'link').trim() || 'link',
-          }))
-          .filter((item) => item.title),
-        freeResourcesMessage: resourcesMessage,
-        bootcampResources: bootcampResources.map((item, index) => ({
-          id: String(item.id || index + 1).trim(),
-          moduleId: Number(item.moduleId || 0),
-          moduleTitle: String(item.moduleTitle || '').trim(),
-          roomId: Number(item.roomId || 0),
-          roomTitle: String(item.roomTitle || '').trim(),
-          resources: Array.isArray(item.resources)
-            ? item.resources
-                .map((resource) => ({
-                  title: String(resource.title || '').trim(),
-                  description: String(resource.description || '').trim(),
-                  url: String(resource.url || '').trim(),
-                  type: String(resource.type || 'file').trim() || 'file',
-                }))
-                .filter((resource) => resource.title || resource.url)
-            : [],
-        })),
-        bootcampMeetingUrl: meetingForm.meetUrl,
-        bootcampMeetingMessage: meetingForm.message,
-      },
-      team: {
-        hero: {
-          kicker: String(team.hero?.kicker || '').trim(),
-          title: String(team.hero?.title || '').trim(),
-          subtitle: String(team.hero?.subtitle || '').trim(),
-          button: String(team.hero?.button || '').trim(),
-          route: String(team.hero?.route || '').trim(),
-        },
-        leadership: {
-          title: String(team.leadership?.title || '').trim(),
-          subtitle: String(team.leadership?.subtitle || '').trim(),
-          members: ensureArray(team.leadership?.members)
-            .map((member) => ({
-              name: String(member?.name || '').trim(),
-              role: String(member?.role || '').trim(),
-              focus: String(member?.focus || '').trim(),
-              icon: String(member?.icon || '').trim(),
-              image: String(member?.image || '').trim(),
-              socials: ensureArray(member?.socials)
-                .map((social) => ({
-                  platform: String(social?.platform || '').trim(),
-                  url: String(social?.url || '').trim(),
-                }))
-                .filter((social) => social.platform && social.url),
-            }))
-            .filter((member) => member.name),
-        },
-        groups: {
-          title: String(team.groups?.title || '').trim(),
-          subtitle: String(team.groups?.subtitle || '').trim(),
-          items: ensureArray(team.groups?.items)
-            .map((item) => ({
-              title: String(item?.title || '').trim(),
-              description: String(item?.description || '').trim(),
-              icon: String(item?.icon || '').trim(),
-            }))
-            .filter((item) => item.title && item.description),
-        },
-        cta: {
-          title: String(team.cta?.title || '').trim(),
-          subtitle: String(team.cta?.subtitle || '').trim(),
-          button: String(team.cta?.button || '').trim(),
-          route: String(team.cta?.route || '').trim(),
-        },
-      },
-    };
+         : [{ ...emptyBootcampResourceItem }],
+       }))
+      : [{ ...emptyBootcampResource }]
+    );
 
-    for (const id of removedCpProductIds) {
-      await deleteCpProduct(id);
-    }
-
-    const nextProducts = [];
-    for (const product of cpProducts) {
-      if (!String(product.title || '').trim()) continue;
-      const body = {
-        title: String(product.title || '').trim(),
-        description: String(product.description || '').trim(),
-        cpPrice: Number(product.cpPrice || 0),
-        coverUrl: String(product.coverUrl || '').trim(),
-        productUrl: String(product.productUrl || '').trim(),
-        isActive: product.isActive !== false,
-        sortOrder: Number(product.sortOrder || 0),
-        type: 'book',
-      };
-      if (product.id) {
-        const res = await updateCpProduct(product.id, body);
-        if (res.success) {
-          nextProducts.push({
-            ...product,
-            id: res.data._id || product.id,
-          });
-        }
-      } else {
-        const res = await createCpProduct(body);
-        if (res.success) {
-          nextProducts.push({
-            ...product,
-            id: res.data._id,
-          });
-        }
-      }
-    }
-
-    const response = await updateAdminContent(payload);
-    if (!response.success) {
-      setError(getPublicErrorMessage({ action: 'save', response }));
-    } else {
-      if (nextProducts.length) setCpProducts(nextProducts);
-      setRemovedCpProductIds([]);
-      setStatus('Content saved.');
-    }
-    setSaving(false);
-  };
-
-  const handleSendNotification = async () => {
-    setError('');
-    setStatus('');
-    const response = await sendAdminNotification({
-      title: notificationForm.title,
-      message: notificationForm.message,
-      audience: notificationForm.audience,
-      type: 'admin_message',
+    const existingTerms = data.terms || {};
+    setTerms({
+     effectiveDate: existingTerms.effectiveDate || '',
+     lastUpdated: existingTerms.lastUpdated || '',
+     jurisdiction: existingTerms.jurisdiction || '',
+     sections:
+      Array.isArray(existingTerms.sections) && existingTerms.sections.length
+       ? existingTerms.sections.map((section) => ({
+         title: section.title || '',
+         body: section.body || '',
+         bullets: Array.isArray(section.bullets) ? section.bullets : [],
+        }))
+       : [{ title: '', body: '', bullets: [] }],
     });
-    if (!response.success) {
-      setError(getPublicErrorMessage({ action: 'submit', response }));
-      return;
+    setTeam(normalizeTeam(data.team || {}));
+
+    const cpProductsRes = await getCpProducts();
+    if (cpProductsRes.success) {
+     const items = cpProductsRes.data || [];
+     setCpProducts(
+      items.length
+       ? items.map((item) => ({
+         id: item._id,
+         title: item.title || '',
+         description: item.description || '',
+         cpPrice: Number(item.cpPrice || 0),
+         coverUrl: item.coverUrl || '',
+         productUrl: item.productUrl || '',
+         isActive: item.isActive !== false,
+         sortOrder: Number(item.sortOrder || 0),
+        }))
+       : [{ ...emptyCpProduct }]
+     );
     }
-    setStatus(`Notification sent to ${response.data?.sentCount || 0} users.`);
+   } else {
+    setError(getPublicErrorMessage({ action: 'load', response }));
+   }
+   setLoading(false);
   };
-
-  const handlePublishMeeting = async () => {
-    setError('');
-    setStatus('');
-    if (!meetingForm.meetUrl) {
-      setError('Add a live class link before publishing.');
-      return;
-    }
-
-    const usersRes = await getUsers();
-    if (!usersRes.success) {
-      setError(getPublicErrorMessage({ action: 'load', response: usersRes }));
-      return;
-    }
-
-    const enrolledStudentIds = (usersRes.data || [])
-      .filter((user) => user.role === 'student')
-      .filter((user) => {
-        const status = String(user.bootcampStatus || '').toLowerCase();
-        const isEnrolled = status === 'enrolled' || status === 'active' || status === 'completed';
-        return isEnrolled && user.bootcampAccessRevoked !== true;
-      })
-      .map((user) => user.id);
-
-    if (!enrolledStudentIds.length) {
-      setStatus('No enrolled students found for this broadcast.');
-      return;
-    }
-
-    const response = await sendBootcampRoomLink({
-      title: meetingForm.message?.trim() || 'Live Class',
-      message: meetingForm.message?.trim() || 'A live class session is now available.',
-      audience: 'custom',
-      userIds: enrolledStudentIds,
-      metadata: {
-        meetUrl: meetingForm.meetUrl,
-        title: meetingForm.message?.trim() || 'Live Class',
-      }
-    });
-
-    if (!response.success) {
-      setError(getPublicErrorMessage({ action: 'submit', response }));
-      return;
-    }
-    setStatus(`Meeting alert sent to ${response.data?.sentCount || enrolledStudentIds.length} enrolled students.`);
+  load();
+  return () => {
+   mounted = false;
   };
+ }, []);
 
-  if (loading) return <PageLoader message="Loading content manager..." durationMs={0} />;
+ const updatePost = (index, field, value) => {
+  setPosts((prev) => prev.map((post, i) => (i === index ? { ...post, [field]: value } : post)));
+ };
 
-  return (
-    <div className="min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,3vw,1.5rem)] pt-[clamp(1.25rem,3vw,2rem)] pb-16 text-text-primary">
-      <div className="flex flex-col gap-6">
-        {error && <div className={alertClassName}>{error}</div>}
-        {status && <div className={alertClassName}>{status}</div>}
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Landing Page Overrides</h2>
-            <p className="text-sm text-text-secondary">Leave blank to keep default copy.</p>
-          </div>
-          <div className={statsFormClassName}>
-            <label className={labelClassName}>
-              Hero Title
-              <input
-                className={inputClassName}
-                value={landing.heroTitle}
-                onChange={(e) => setLanding((prev) => ({ ...prev, heroTitle: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              Hero Description
-              <input
-                className={inputClassName}
-                value={landing.heroDescription}
-                onChange={(e) =>
-                  setLanding((prev) => ({ ...prev, heroDescription: e.target.value }))
-                }
-              />
-            </label>
-            <label className={labelClassName}>
-              CTA Primary
-              <input
-                className={inputClassName}
-                value={landing.ctaPrimary}
-                onChange={(e) => setLanding((prev) => ({ ...prev, ctaPrimary: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              CTA Secondary
-              <input
-                className={inputClassName}
-                value={landing.ctaSecondary}
-                onChange={(e) => setLanding((prev) => ({ ...prev, ctaSecondary: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              Community Subtitle
-              <input
-                className={inputClassName}
-                value={landing.communitySubtitle}
-                onChange={(e) =>
-                  setLanding((prev) => ({ ...prev, communitySubtitle: e.target.value }))
-                }
-              />
-            </label>
-          </div>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Free Resources (Learn &gt; Resources)</h2>
-            <p className="text-sm text-text-secondary">Students see this section even without bootcamp enrollment.</p>
-          </div>
-          <div className={statsFormClassName}>
-            <label className={labelClassName}>
-              Empty state message
-              <input
-                className={inputClassName}
-                value={resourcesMessage}
-                onChange={(e) => setResourcesMessage(e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className={`${contentPostsClassName} mt-4`}>
-            {resources.map((resource, index) => (
-              <div className={contentPostClassName} key={`resource-${index}`}>
-                <input
-                  className={inputClassName}
-                  placeholder="Resource title"
-                  value={resource.title}
-                  onChange={(e) => updateResource(index, 'title', e.target.value)}
-                />
-                <input
-                  className={inputClassName}
-                  placeholder="URL"
-                  value={resource.url}
-                  onChange={(e) => updateResource(index, 'url', e.target.value)}
-                />
-                <label className={uploadLabelClassName}>
-                  Upload PDF
-                  <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={(e) => handleResourceUpload(index, e.target.files?.[0])}
-                    disabled={uploadingIndex === index}
-                    className="rounded-md border border-dashed border-border bg-bg-tertiary px-3 py-2 text-sm text-text-primary"
-                  />
-                </label>
-                <textarea
-                  className={textareaClassName}
-                  rows={2}
-                  placeholder="Description"
-                  value={resource.description}
-                  onChange={(e) => updateResource(index, 'description', e.target.value)}
-                />
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => removeResource(index)}
-                  disabled={resources.length <= 1}
-                >
-                  <FiTrash2 size={14} />
-                  Remove
-                </Button>
-              </div>
-            ))}
-            <Button variant="secondary" size="small" onClick={addResource}>
-              <FiPlus size={14} />
-              Add Resource
-            </Button>
-          </div>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Bootcamp Downloads</h2>
-            <p className="text-sm text-text-secondary">Upload or link downloadable lesson materials per phase and room.</p>
-          </div>
-
-          <div className={contentPostsClassName}>
-            {bootcampResources.map((resourceGroup, index) => (
-              <div className={contentPostClassName} key={`bootcamp-resource-${index}`}>
-                <div className={statsFormClassName}>
-                  <label className={labelClassName}>
-                    Module ID
-                    <input
-                      className={inputClassName}
-                      type="number"
-                      min="0"
-                      value={resourceGroup.moduleId}
-                      onChange={(e) => updateBootcampResource(index, 'moduleId', Number(e.target.value))}
-                    />
-                  </label>
-                  <label className={labelClassName}>
-                    Module Title
-                    <input
-                      className={inputClassName}
-                      value={resourceGroup.moduleTitle}
-                      onChange={(e) => updateBootcampResource(index, 'moduleTitle', e.target.value)}
-                    />
-                  </label>
-                  <label className={labelClassName}>
-                    Room ID (optional)
-                    <input
-                      className={inputClassName}
-                      type="number"
-                      min="0"
-                      value={resourceGroup.roomId}
-                      onChange={(e) => updateBootcampResource(index, 'roomId', Number(e.target.value))}
-                    />
-                  </label>
-                  <label className={labelClassName}>
-                    Room Title (optional)
-                    <input
-                      className={inputClassName}
-                      value={resourceGroup.roomTitle}
-                      onChange={(e) => updateBootcampResource(index, 'roomTitle', e.target.value)}
-                    />
-                  </label>
-                </div>
-
-                {(resourceGroup.resources || []).map((resource, resourceIndex) => (
-                  <div key={`bootcamp-resource-item-${index}-${resourceIndex}`} className={contentPostClassName}>
-                    <input
-                      className={inputClassName}
-                      placeholder="Resource title"
-                      value={resource.title || ''}
-                      onChange={(e) =>
-                        updateBootcampResourceItem(index, resourceIndex, 'title', e.target.value)
-                      }
-                    />
-                    <input
-                      className={inputClassName}
-                      placeholder="Download URL"
-                      value={resource.url || ''}
-                      onChange={(e) =>
-                        updateBootcampResourceItem(index, resourceIndex, 'url', e.target.value)
-                      }
-                    />
-                    <textarea
-                      className={textareaClassName}
-                      rows={2}
-                      placeholder="Description"
-                      value={resource.description || ''}
-                      onChange={(e) =>
-                        updateBootcampResourceItem(index, resourceIndex, 'description', e.target.value)
-                      }
-                    />
-                    <Button
-                      variant="ghost"
-                      size="small"
-                      onClick={() => removeBootcampResourceItem(index, resourceIndex)}
-                      disabled={(resourceGroup.resources || []).length <= 1}
-                    >
-                      <FiTrash2 size={14} />
-                      Remove download
-                    </Button>
-                  </div>
-                ))}
-
-                <div className={contentActionsClassName}>
-                  <Button variant="secondary" size="small" onClick={() => addBootcampResourceItem(index)}>
-                    <FiPlus size={14} />
-                    Add download
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="small"
-                    onClick={() => removeBootcampResource(index)}
-                    disabled={bootcampResources.length <= 1}
-                  >
-                    <FiTrash2 size={14} />
-                    Remove group
-                  </Button>
-                </div>
-              </div>
-            ))}
-
-            <Button variant="secondary" size="small" onClick={addBootcampResource}>
-              <FiPlus size={14} />
-              Add Resource Group
-            </Button>
-          </div>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">ZeroDay Market Products</h2>
-            <p className="text-sm text-text-secondary">Manage book listings shown in ZeroDay Market and the public catalog.</p>
-          </div>
-          <div className={contentPostsClassName}>
-            {cpProducts.map((product, index) => (
-              <div className={contentPostClassName} key={`cp-product-${product.id || index}`}>
-                <div className={statsFormClassName}>
-                  <label className={labelClassName}>
-                    Title
-                    <input
-                      className={inputClassName}
-                      placeholder="Book title"
-                      value={product.title}
-                      onChange={(e) => updateCpProductField(index, 'title', e.target.value)}
-                    />
-                  </label>
-                  <label className={labelClassName}>
-                    CP Price
-                    <input
-                      className={inputClassName}
-                      type="number"
-                      min="0"
-                      value={product.cpPrice}
-                      onChange={(e) => updateCpProductField(index, 'cpPrice', Number(e.target.value))}
-                    />
-                  </label>
-                  <label className={labelClassName}>
-                    Sort Order
-                    <input
-                      className={inputClassName}
-                      type="number"
-                      min="0"
-                      value={product.sortOrder}
-                      onChange={(e) => updateCpProductField(index, 'sortOrder', Number(e.target.value))}
-                    />
-                  </label>
-                  <label className="inline-flex items-center gap-2 text-sm text-text-secondary">
-                    <input
-                      type="checkbox"
-                      checked={product.isActive !== false}
-                      onChange={(e) => updateCpProductField(index, 'isActive', e.target.checked)}
-                    />
-                    Active
-                  </label>
-                </div>
-                <input
-                  className={inputClassName}
-                  placeholder="Cover image URL"
-                  value={product.coverUrl}
-                  onChange={(e) => updateCpProductField(index, 'coverUrl', e.target.value)}
-                />
-                <input
-                  className={inputClassName}
-                  placeholder="Product URL (optional)"
-                  value={product.productUrl}
-                  onChange={(e) => updateCpProductField(index, 'productUrl', e.target.value)}
-                />
-                <textarea
-                  className={textareaClassName}
-                  rows={2}
-                  placeholder="Short description"
-                  value={product.description}
-                  onChange={(e) => updateCpProductField(index, 'description', e.target.value)}
-                />
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => removeCpProduct(index)}
-                  disabled={cpProducts.length <= 1}
-                >
-                  <FiTrash2 size={14} />
-                  Remove product
-                </Button>
-              </div>
-            ))}
-            <Button variant="secondary" size="small" onClick={addCpProduct}>
-              <FiPlus size={14} />
-              Add Product
-            </Button>
-          </div>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Bootcamp Meeting Broadcast</h2>
-            <p className="text-sm text-text-secondary">Paste a Google Meet link and notify enrolled bootcamp students instantly.</p>
-          </div>
-          <div className={statsFormClassName}>
-            <label className={labelClassName}>
-              Google Meet URL
-              <input
-                className={inputClassName}
-                value={meetingForm.meetUrl}
-                onChange={(e) => setMeetingForm((prev) => ({ ...prev, meetUrl: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              Message
-              <input
-                className={inputClassName}
-                value={meetingForm.message}
-                onChange={(e) => setMeetingForm((prev) => ({ ...prev, message: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              Audience
-              <select className={inputClassName} value={meetingForm.audience} disabled>
-                <option value="enrolled">Enrolled students only</option>
-              </select>
-            </label>
-          </div>
-          <Button variant="primary" size="small" onClick={handlePublishMeeting}>
-            <FiVideo size={14} />
-            Publish Meeting Alert
-          </Button>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Targeted Notifications</h2>
-            <p className="text-sm text-text-secondary">Send role-targeted in-app notifications.</p>
-          </div>
-          <div className={statsFormClassName}>
-            <label className={labelClassName}>
-              Title
-              <input
-                className={inputClassName}
-                value={notificationForm.title}
-                onChange={(e) => setNotificationForm((prev) => ({ ...prev, title: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              Message
-              <input
-                className={inputClassName}
-                value={notificationForm.message}
-                onChange={(e) =>
-                  setNotificationForm((prev) => ({ ...prev, message: e.target.value }))
-                }
-              />
-            </label>
-            <label className={labelClassName}>
-              Audience
-              <select
-                className={inputClassName}
-                value={notificationForm.audience}
-                onChange={(e) =>
-                  setNotificationForm((prev) => ({ ...prev, audience: e.target.value }))
-                }
-              >
-                <option value="all">All users</option>
-                <option value="students">Students</option>
-                <option value="organizers">Organizers</option>
-              </select>
-            </label>
-          </div>
-          <Button variant="secondary" size="small" onClick={handleSendNotification}>
-            <FiSend size={14} />
-            Send Notification
-          </Button>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Blog Posts</h2>
-            <p className="text-sm text-text-secondary">Public blog cards shown on the Blog page.</p>
-          </div>
-          <div className={contentPostsClassName}>
-            {posts.map((post, index) => (
-              <div className={contentPostClassName} key={`post-${index}`}>
-                <input
-                  className={inputClassName}
-                  placeholder="Title"
-                  value={post.title}
-                  onChange={(e) => updatePost(index, 'title', e.target.value)}
-                />
-                <input
-                  className={inputClassName}
-                  placeholder="Date (e.g., Jan 14, 2026)"
-                  value={post.date}
-                  onChange={(e) => updatePost(index, 'date', e.target.value)}
-                />
-                <textarea
-                  className={textareaClassName}
-                  rows={3}
-                  placeholder="Summary"
-                  value={post.summary}
-                  onChange={(e) => updatePost(index, 'summary', e.target.value)}
-                />
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => removePost(index)}
-                  disabled={posts.length <= 1}
-                >
-                  <FiTrash2 size={14} />
-                  Remove
-                </Button>
-              </div>
-            ))}
-            <Button variant="secondary" size="small" onClick={addPost}>
-              <FiPlus size={14} />
-              Add Post
-            </Button>
-          </div>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Team Section</h2>
-            <p className="text-sm text-text-secondary">Manage team hero and each member card, including social links.</p>
-          </div>
-
-          <div className={statsFormClassName}>
-            <label className={labelClassName}>
-              Team Kicker
-              <input
-                className={inputClassName}
-                value={team.hero?.kicker || ''}
-                onChange={(e) => updateTeamHero('kicker', e.target.value)}
-              />
-            </label>
-            <label className={labelClassName}>
-              Team Title
-              <input
-                className={inputClassName}
-                value={team.hero?.title || ''}
-                onChange={(e) => updateTeamHero('title', e.target.value)}
-              />
-            </label>
-            <label className={labelClassName}>
-              Team Subtitle
-              <input
-                className={inputClassName}
-                value={team.hero?.subtitle || ''}
-                onChange={(e) => updateTeamHero('subtitle', e.target.value)}
-              />
-            </label>
-            <label className={labelClassName}>
-              Team Button Text
-              <input
-                className={inputClassName}
-                value={team.hero?.button || ''}
-                onChange={(e) => updateTeamHero('button', e.target.value)}
-              />
-            </label>
-            <label className={labelClassName}>
-              Team Button Route
-              <input
-                className={inputClassName}
-                value={team.hero?.route || ''}
-                onChange={(e) => updateTeamHero('route', e.target.value)}
-              />
-            </label>
-            <label className={labelClassName}>
-              Leadership Title
-              <input
-                className={inputClassName}
-                value={team.leadership?.title || ''}
-                onChange={(e) => updateTeamLeadership('title', e.target.value)}
-              />
-            </label>
-            <label className={labelClassName}>
-              Leadership Subtitle
-              <input
-                className={inputClassName}
-                value={team.leadership?.subtitle || ''}
-                onChange={(e) => updateTeamLeadership('subtitle', e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className={`${contentPostsClassName} mt-4`}>
-            {ensureArray(team.leadership?.members).map((member, memberIndex) => (
-              <div className={contentPostClassName} key={`team-member-${memberIndex}`}>
-                <input
-                  className={inputClassName}
-                  placeholder="Member name"
-                  value={member.name || ''}
-                  onChange={(e) => updateTeamMember(memberIndex, 'name', e.target.value)}
-                />
-                <input
-                  className={inputClassName}
-                  placeholder="Role"
-                  value={member.role || ''}
-                  onChange={(e) => updateTeamMember(memberIndex, 'role', e.target.value)}
-                />
-                <input
-                  className={inputClassName}
-                  placeholder="Image path (e.g. /team-images/name.jpg)"
-                  value={member.image || ''}
-                  onChange={(e) => updateTeamMember(memberIndex, 'image', e.target.value)}
-                />
-                <input
-                  className={inputClassName}
-                  placeholder="Icon (FiCrosshair, FiCpu, FiTarget...)"
-                  value={member.icon || ''}
-                  onChange={(e) => updateTeamMember(memberIndex, 'icon', e.target.value)}
-                />
-                <textarea
-                  className={textareaClassName}
-                  rows={2}
-                  placeholder="Focus"
-                  value={member.focus || ''}
-                  onChange={(e) => updateTeamMember(memberIndex, 'focus', e.target.value)}
-                />
-
-                {ensureArray(member.socials).map((social, socialIndex) => (
-                  <div key={`team-member-${memberIndex}-social-${socialIndex}`} className={statsFormClassName}>
-                    <input
-                      className={inputClassName}
-                      placeholder="Platform (LinkedIn, GitHub, X...)"
-                      value={social.platform || ''}
-                      onChange={(e) =>
-                        updateTeamMemberSocial(memberIndex, socialIndex, 'platform', e.target.value)
-                      }
-                    />
-                    <input
-                      className={inputClassName}
-                      placeholder="Profile URL"
-                      value={social.url || ''}
-                      onChange={(e) =>
-                        updateTeamMemberSocial(memberIndex, socialIndex, 'url', e.target.value)
-                      }
-                    />
-                    <Button
-                      variant="ghost"
-                      size="small"
-                      onClick={() => removeTeamMemberSocial(memberIndex, socialIndex)}
-                    >
-                      <FiTrash2 size={14} />
-                      Remove Social
-                    </Button>
-                  </div>
-                ))}
-
-                <Button variant="ghost" size="small" onClick={() => addTeamMemberSocial(memberIndex)}>
-                  <FiPlus size={14} />
-                  Add Social
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => removeTeamMember(memberIndex)}
-                  disabled={ensureArray(team.leadership?.members).length <= 1}
-                >
-                  <FiTrash2 size={14} />
-                  Remove Member
-                </Button>
-              </div>
-            ))}
-
-            <Button variant="secondary" size="small" onClick={addTeamMember}>
-              <FiPlus size={14} />
-              Add Team Member
-            </Button>
-          </div>
-        </Card>
-
-        <Card className={cardClassName} padding="medium" shadow="none">
-          <div className="mb-4 flex flex-col gap-1.5">
-            <h2 className="text-base font-semibold text-text-primary">Terms & Conditions</h2>
-            <p className="text-sm text-text-secondary">Update the public terms page content.</p>
-          </div>
-          <div className={statsFormClassName}>
-            <label className={labelClassName}>
-              Effective Date
-              <input
-                className={inputClassName}
-                value={terms.effectiveDate}
-                onChange={(e) => setTerms((prev) => ({ ...prev, effectiveDate: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              Last Updated
-              <input
-                className={inputClassName}
-                value={terms.lastUpdated}
-                onChange={(e) => setTerms((prev) => ({ ...prev, lastUpdated: e.target.value }))}
-              />
-            </label>
-            <label className={labelClassName}>
-              Jurisdiction
-              <input
-                className={inputClassName}
-                value={terms.jurisdiction}
-                onChange={(e) => setTerms((prev) => ({ ...prev, jurisdiction: e.target.value }))}
-              />
-            </label>
-          </div>
-
-          <div className={`${contentPostsClassName} mt-4`}>
-            {terms.sections.map((section, index) => (
-              <div className={contentPostClassName} key={`terms-section-${index}`}>
-                <input
-                  className={inputClassName}
-                  placeholder="Section title"
-                  value={section.title}
-                  onChange={(e) => updateTermsSection(index, 'title', e.target.value)}
-                />
-                <textarea
-                  className={textareaClassName}
-                  rows={3}
-                  placeholder="Section body"
-                  value={section.body}
-                  onChange={(e) => updateTermsSection(index, 'body', e.target.value)}
-                />
-                <textarea
-                  className={textareaClassName}
-                  rows={3}
-                  placeholder="Bullets (one per line)"
-                  value={(section.bullets || []).join('\n')}
-                  onChange={(e) =>
-                    updateTermsSection(
-                      index,
-                      'bullets',
-                      e.target.value
-                        .split('\n')
-                        .map((item) => item.trim())
-                        .filter(Boolean)
-                    )
-                  }
-                />
-                <Button
-                  variant="ghost"
-                  size="small"
-                  onClick={() => removeTermsSection(index)}
-                  disabled={terms.sections.length <= 1}
-                >
-                  <FiTrash2 size={14} />
-                  Remove
-                </Button>
-              </div>
-            ))}
-            <Button variant="secondary" size="small" onClick={addTermsSection}>
-              <FiPlus size={14} />
-              Add Section
-            </Button>
-          </div>
-        </Card>
-
-        <div className="flex justify-end">
-          <Button variant="primary" size="small" onClick={handleSave} disabled={saving}>
-            <FiSave size={14} />
-            {saving ? 'Saving...' : 'Save Content'}
-          </Button>
-        </div>
-      </div>
-    </div>
+ const updateResource = (index, field, value) => {
+  setResources((prev) =>
+   prev.map((resource, i) => (i === index ? { ...resource, [field]: value } : resource))
   );
+ };
+
+ const addPost = () => setPosts((prev) => [...prev, { ...emptyPost }]);
+ const addResource = () => setResources((prev) => [...prev, { ...emptyResource }]);
+ const addBootcampResource = () =>
+  setBootcampResources((prev) => [...prev, { ...emptyBootcampResource }]);
+
+ const removePost = (index) => {
+  setPosts((prev) => prev.filter((_, i) => i !== index));
+ };
+
+ const removeResource = (index) => {
+  setResources((prev) => prev.filter((_, i) => i !== index));
+ };
+ const removeBootcampResource = (index) => {
+  setBootcampResources((prev) => prev.filter((_, i) => i !== index));
+ };
+
+ const updateBootcampResource = (index, field, value) => {
+  setBootcampResources((prev) =>
+   prev.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+  );
+ };
+
+ const updateBootcampResourceItem = (resourceIndex, itemIndex, field, value) => {
+  setBootcampResources((prev) =>
+   prev.map((item, i) => {
+    if (i !== resourceIndex) return item;
+    const resourcesList = Array.isArray(item.resources) ? item.resources : [];
+    return {
+     ...item,
+     resources: resourcesList.map((resource, idx) =>
+      idx === itemIndex ? { ...resource, [field]: value } : resource
+     ),
+    };
+   })
+  );
+ };
+
+ const addBootcampResourceItem = (resourceIndex) => {
+  setBootcampResources((prev) =>
+   prev.map((item, i) =>
+    i === resourceIndex
+     ? { ...item, resources: [...(item.resources || []), { ...emptyBootcampResourceItem }] }
+     : item
+   )
+  );
+ };
+
+ const removeBootcampResourceItem = (resourceIndex, itemIndex) => {
+  setBootcampResources((prev) =>
+   prev.map((item, i) => {
+    if (i !== resourceIndex) return item;
+    const nextResources = (item.resources || []).filter((_, idx) => idx !== itemIndex);
+    return { ...item, resources: nextResources.length ? nextResources : [{ ...emptyBootcampResourceItem }] };
+   })
+  );
+ };
+
+ const updateTermsSection = (index, field, value) => {
+  setTerms((prev) => ({
+   ...prev,
+   sections: prev.sections.map((section, i) =>
+    i === index ? { ...section, [field]: value } : section
+   ),
+  }));
+ };
+
+ const addTermsSection = () => {
+  setTerms((prev) => ({ ...prev, sections: [...prev.sections, { title: '', body: '', bullets: [] }] }));
+ };
+
+ const removeTermsSection = (index) => {
+  setTerms((prev) => ({ ...prev, sections: prev.sections.filter((_, i) => i !== index) }));
+ };
+
+ const updateTeamHero = (field, value) => {
+  setTeam((prev) => ({ ...prev, hero: { ...(prev.hero || {}), [field]: value } }));
+ };
+
+ const updateTeamLeadership = (field, value) => {
+  setTeam((prev) => ({
+   ...prev,
+   leadership: { ...(prev.leadership || {}), [field]: value },
+  }));
+ };
+
+ const updateTeamMember = (index, field, value) => {
+  setTeam((prev) => ({
+   ...prev,
+   leadership: {
+    ...(prev.leadership || {}),
+    members: ensureArray(prev.leadership?.members).map((member, memberIndex) =>
+     memberIndex === index ? { ...member, [field]: value } : member
+    ),
+   },
+  }));
+ };
+
+ const addTeamMember = () => {
+  setTeam((prev) => ({
+   ...prev,
+   leadership: {
+    ...(prev.leadership || {}),
+    members: [...ensureArray(prev.leadership?.members), { ...emptyTeamMember }],
+   },
+  }));
+ };
+
+ const removeTeamMember = (index) => {
+  setTeam((prev) => ({
+   ...prev,
+   leadership: {
+    ...(prev.leadership || {}),
+    members: ensureArray(prev.leadership?.members).filter((_, memberIndex) => memberIndex !== index),
+   },
+  }));
+ };
+
+ const updateTeamMemberSocial = (memberIndex, socialIndex, field, value) => {
+  setTeam((prev) => ({
+   ...prev,
+   leadership: {
+    ...(prev.leadership || {}),
+    members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) => {
+     if (currentMemberIndex !== memberIndex) return member;
+     return {
+      ...member,
+      socials: ensureArray(member.socials).map((social, currentSocialIndex) =>
+       currentSocialIndex === socialIndex ? { ...social, [field]: value } : social
+      ),
+     };
+    }),
+   },
+  }));
+ };
+
+ const addTeamMemberSocial = (memberIndex) => {
+  setTeam((prev) => ({
+   ...prev,
+   leadership: {
+    ...(prev.leadership || {}),
+    members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) =>
+     currentMemberIndex === memberIndex
+      ? { ...member, socials: [...ensureArray(member.socials), { ...emptyTeamSocial }] }
+      : member
+    ),
+   },
+  }));
+ };
+
+ const removeTeamMemberSocial = (memberIndex, socialIndex) => {
+  setTeam((prev) => ({
+   ...prev,
+   leadership: {
+    ...(prev.leadership || {}),
+    members: ensureArray(prev.leadership?.members).map((member, currentMemberIndex) => {
+     if (currentMemberIndex !== memberIndex) return member;
+     const socials = ensureArray(member.socials).filter((_, idx) => idx !== socialIndex);
+     return { ...member, socials: socials.length ? socials : [{ ...emptyTeamSocial }] };
+    }),
+   },
+  }));
+ };
+
+ const updateCpProductField = (index, field, value) => {
+  setCpProducts((prev) =>
+   prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item))
+  );
+ };
+
+ const addCpProduct = () => {
+  setCpProducts((prev) => [...prev, { ...emptyCpProduct }]);
+ };
+
+ const removeCpProduct = (index) => {
+  setCpProducts((prev) => {
+   const target = prev[index];
+   if (target?.id) {
+    setRemovedCpProductIds((ids) => [...ids, target.id]);
+   }
+   const next = prev.filter((_, idx) => idx !== index);
+   return next.length ? next : [{ ...emptyCpProduct }];
+  });
+ };
+
+ const handleSave = async () => {
+  setSaving(true);
+  setError('');
+  setStatus('');
+
+  const payload = {
+   landing,
+   blog: {
+    posts: posts
+     .map((post) => ({
+      title: String(post.title || '').trim(),
+      date: String(post.date || '').trim(),
+      summary: String(post.summary || '').trim(),
+     }))
+     .filter((post) => post.title && post.summary),
+   },
+   terms: {
+    effectiveDate: terms.effectiveDate,
+    lastUpdated: terms.lastUpdated,
+    jurisdiction: terms.jurisdiction,
+    sections: terms.sections.map((section) => ({
+     title: String(section.title || '').trim(),
+     body: String(section.body || '').trim(),
+     bullets: Array.isArray(section.bullets)
+      ? section.bullets.map((item) => String(item || '').trim()).filter(Boolean)
+      : [],
+    })),
+   },
+   learn: {
+    freeResources: resources
+     .map((item) => ({
+      title: String(item.title || '').trim(),
+      description: String(item.description || '').trim(),
+      url: String(item.url || '').trim(),
+      type: String(item.type || 'link').trim() || 'link',
+     }))
+     .filter((item) => item.title),
+    freeResourcesMessage: resourcesMessage,
+    bootcampResources: bootcampResources.map((item, index) => ({
+     id: String(item.id || index + 1).trim(),
+     moduleId: Number(item.moduleId || 0),
+     moduleTitle: String(item.moduleTitle || '').trim(),
+     roomId: Number(item.roomId || 0),
+     roomTitle: String(item.roomTitle || '').trim(),
+     resources: Array.isArray(item.resources)
+      ? item.resources
+        .map((resource) => ({
+         title: String(resource.title || '').trim(),
+         description: String(resource.description || '').trim(),
+         url: String(resource.url || '').trim(),
+         type: String(resource.type || 'file').trim() || 'file',
+        }))
+        .filter((resource) => resource.title || resource.url)
+      : [],
+    })),
+    bootcampMeetingUrl: meetingForm.meetUrl,
+    bootcampMeetingMessage: meetingForm.message,
+   },
+   team: {
+    hero: {
+     kicker: String(team.hero?.kicker || '').trim(),
+     title: String(team.hero?.title || '').trim(),
+     subtitle: String(team.hero?.subtitle || '').trim(),
+     button: String(team.hero?.button || '').trim(),
+     route: String(team.hero?.route || '').trim(),
+    },
+    leadership: {
+     title: String(team.leadership?.title || '').trim(),
+     subtitle: String(team.leadership?.subtitle || '').trim(),
+     members: ensureArray(team.leadership?.members)
+      .map((member) => ({
+       name: String(member?.name || '').trim(),
+       role: String(member?.role || '').trim(),
+       focus: String(member?.focus || '').trim(),
+       icon: String(member?.icon || '').trim(),
+       image: String(member?.image || '').trim(),
+       socials: ensureArray(member?.socials)
+        .map((social) => ({
+         platform: String(social?.platform || '').trim(),
+         url: String(social?.url || '').trim(),
+        }))
+        .filter((social) => social.platform && social.url),
+      }))
+      .filter((member) => member.name),
+    },
+    groups: {
+     title: String(team.groups?.title || '').trim(),
+     subtitle: String(team.groups?.subtitle || '').trim(),
+     items: ensureArray(team.groups?.items)
+      .map((item) => ({
+       title: String(item?.title || '').trim(),
+       description: String(item?.description || '').trim(),
+       icon: String(item?.icon || '').trim(),
+      }))
+      .filter((item) => item.title && item.description),
+    },
+    cta: {
+     title: String(team.cta?.title || '').trim(),
+     subtitle: String(team.cta?.subtitle || '').trim(),
+     button: String(team.cta?.button || '').trim(),
+     route: String(team.cta?.route || '').trim(),
+    },
+   },
+  };
+
+  for (const id of removedCpProductIds) {
+   await deleteCpProduct(id);
+  }
+
+  const nextProducts = [];
+  for (const product of cpProducts) {
+   if (!String(product.title || '').trim()) continue;
+   const body = {
+    title: String(product.title || '').trim(),
+    description: String(product.description || '').trim(),
+    cpPrice: Number(product.cpPrice || 0),
+    coverUrl: String(product.coverUrl || '').trim(),
+    productUrl: String(product.productUrl || '').trim(),
+    isActive: product.isActive !== false,
+    sortOrder: Number(product.sortOrder || 0),
+    type: 'book',
+   };
+   if (product.id) {
+    const res = await updateCpProduct(product.id, body);
+    if (res.success) {
+     nextProducts.push({
+      ...product,
+      id: res.data._id || product.id,
+     });
+    }
+   } else {
+    const res = await createCpProduct(body);
+    if (res.success) {
+     nextProducts.push({
+      ...product,
+      id: res.data._id,
+     });
+    }
+   }
+  }
+
+  const response = await updateAdminContent(payload);
+  if (!response.success) {
+   setError(getPublicErrorMessage({ action: 'save', response }));
+  } else {
+   if (nextProducts.length) setCpProducts(nextProducts);
+   setRemovedCpProductIds([]);
+   setStatus('Content saved.');
+  }
+  setSaving(false);
+ };
+
+ const handleSendNotification = async () => {
+  setError('');
+  setStatus('');
+  const response = await sendAdminNotification({
+   title: notificationForm.title,
+   message: notificationForm.message,
+   audience: notificationForm.audience,
+   type: 'admin_message',
+  });
+  if (!response.success) {
+   setError(getPublicErrorMessage({ action: 'submit', response }));
+   return;
+  }
+  setStatus(`Notification sent to ${response.data?.sentCount || 0} users.`);
+ };
+
+ const handlePublishMeeting = async () => {
+  setError('');
+  setStatus('');
+  if (!meetingForm.meetUrl) {
+   setError('Add a live class link before publishing.');
+   return;
+  }
+
+  const usersRes = await getUsers();
+  if (!usersRes.success) {
+   setError(getPublicErrorMessage({ action: 'load', response: usersRes }));
+   return;
+  }
+
+  const enrolledStudentIds = (usersRes.data || [])
+   .filter((user) => user.role === 'student')
+   .filter((user) => {
+    const status = String(user.bootcampStatus || '').toLowerCase();
+    const isEnrolled = status === 'enrolled' || status === 'active' || status === 'completed';
+    return isEnrolled && user.bootcampAccessRevoked !== true;
+   })
+   .map((user) => user.id);
+
+  if (!enrolledStudentIds.length) {
+   setStatus('No enrolled students found for this broadcast.');
+   return;
+  }
+
+  const response = await sendBootcampRoomLink({
+   title: meetingForm.message?.trim() || 'Live Class',
+   message: meetingForm.message?.trim() || 'A live class session is now available.',
+   audience: 'custom',
+   userIds: enrolledStudentIds,
+   metadata: {
+    meetUrl: meetingForm.meetUrl,
+    title: meetingForm.message?.trim() || 'Live Class',
+   }
+  });
+
+  if (!response.success) {
+   setError(getPublicErrorMessage({ action: 'submit', response }));
+   return;
+  }
+  setStatus(`Meeting alert sent to ${response.data?.sentCount || enrolledStudentIds.length} enrolled students.`);
+ };
+
+ if (loading) return <PageLoader message="Loading content manager..." durationMs={0} />;
+
+ return (
+  <div className="min-h-[calc(100vh-60px)] w-full px-[clamp(1rem,3vw,1.5rem)] pt-[clamp(1.25rem,3vw,2rem)] pb-16 text-text-primary">
+   <div className="flex flex-col gap-6">
+    {error && <div className={alertClassName}>{error}</div>}
+    {status && <div className={alertClassName}>{status}</div>}
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Landing Page Overrides</h2>
+      <p className="text-sm text-text-secondary">Leave blank to keep default copy.</p>
+     </div>
+     <div className={statsFormClassName}>
+      <label className={labelClassName}>
+       Hero Title
+       <input
+        className={inputClassName}
+        value={landing.heroTitle}
+        onChange={(e) => setLanding((prev) => ({ ...prev, heroTitle: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       Hero Description
+       <input
+        className={inputClassName}
+        value={landing.heroDescription}
+        onChange={(e) =>
+         setLanding((prev) => ({ ...prev, heroDescription: e.target.value }))
+        }
+       />
+      </label>
+      <label className={labelClassName}>
+       CTA Primary
+       <input
+        className={inputClassName}
+        value={landing.ctaPrimary}
+        onChange={(e) => setLanding((prev) => ({ ...prev, ctaPrimary: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       CTA Secondary
+       <input
+        className={inputClassName}
+        value={landing.ctaSecondary}
+        onChange={(e) => setLanding((prev) => ({ ...prev, ctaSecondary: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       Community Subtitle
+       <input
+        className={inputClassName}
+        value={landing.communitySubtitle}
+        onChange={(e) =>
+         setLanding((prev) => ({ ...prev, communitySubtitle: e.target.value }))
+        }
+       />
+      </label>
+     </div>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Free Resources (Learn &gt; Resources)</h2>
+      <p className="text-sm text-text-secondary">Students see this section even without bootcamp enrollment.</p>
+     </div>
+     <div className={statsFormClassName}>
+      <label className={labelClassName}>
+       Empty state message
+       <input
+        className={inputClassName}
+        value={resourcesMessage}
+        onChange={(e) => setResourcesMessage(e.target.value)}
+       />
+      </label>
+     </div>
+
+     <div className={`${contentPostsClassName} mt-4`}>
+      {resources.map((resource, index) => (
+       <div className={contentPostClassName} key={`resource-${index}`}>
+        <input
+         className={inputClassName}
+         placeholder="Resource title"
+         value={resource.title}
+         onChange={(e) => updateResource(index, 'title', e.target.value)}
+        />
+        <input
+         className={inputClassName}
+         placeholder="URL"
+         value={resource.url}
+         onChange={(e) => updateResource(index, 'url', e.target.value)}
+        />
+        <label className={uploadLabelClassName}>
+         Upload PDF
+         <input
+          type="file"
+          accept="application/pdf"
+          onChange={(e) => handleResourceUpload(index, e.target.files?.[0])}
+          disabled={uploadingIndex === index}
+          className="rounded-md border border-dashed border-border bg-bg-tertiary px-3 py-2 text-sm text-text-primary"
+         />
+        </label>
+        <textarea
+         className={textareaClassName}
+         rows={2}
+         placeholder="Description"
+         value={resource.description}
+         onChange={(e) => updateResource(index, 'description', e.target.value)}
+        />
+        <Button
+         variant="ghost"
+         size="small"
+         onClick={() => removeResource(index)}
+         disabled={resources.length <= 1}
+        >
+         <FiTrash2 size={14} />
+         Remove
+        </Button>
+       </div>
+      ))}
+      <Button variant="secondary" size="small" onClick={addResource}>
+       <FiPlus size={14} />
+       Add Resource
+      </Button>
+     </div>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Bootcamp Downloads</h2>
+      <p className="text-sm text-text-secondary">Upload or link downloadable lesson materials per phase and room.</p>
+     </div>
+
+     <div className={contentPostsClassName}>
+      {bootcampResources.map((resourceGroup, index) => (
+       <div className={contentPostClassName} key={`bootcamp-resource-${index}`}>
+        <div className={statsFormClassName}>
+         <label className={labelClassName}>
+          Module ID
+          <input
+           className={inputClassName}
+           type="number"
+           min="0"
+           value={resourceGroup.moduleId}
+           onChange={(e) => updateBootcampResource(index, 'moduleId', Number(e.target.value))}
+          />
+         </label>
+         <label className={labelClassName}>
+          Module Title
+          <input
+           className={inputClassName}
+           value={resourceGroup.moduleTitle}
+           onChange={(e) => updateBootcampResource(index, 'moduleTitle', e.target.value)}
+          />
+         </label>
+         <label className={labelClassName}>
+          Room ID (optional)
+          <input
+           className={inputClassName}
+           type="number"
+           min="0"
+           value={resourceGroup.roomId}
+           onChange={(e) => updateBootcampResource(index, 'roomId', Number(e.target.value))}
+          />
+         </label>
+         <label className={labelClassName}>
+          Room Title (optional)
+          <input
+           className={inputClassName}
+           value={resourceGroup.roomTitle}
+           onChange={(e) => updateBootcampResource(index, 'roomTitle', e.target.value)}
+          />
+         </label>
+        </div>
+
+        {(resourceGroup.resources || []).map((resource, resourceIndex) => (
+         <div key={`bootcamp-resource-item-${index}-${resourceIndex}`} className={contentPostClassName}>
+          <input
+           className={inputClassName}
+           placeholder="Resource title"
+           value={resource.title || ''}
+           onChange={(e) =>
+            updateBootcampResourceItem(index, resourceIndex, 'title', e.target.value)
+           }
+          />
+          <input
+           className={inputClassName}
+           placeholder="Download URL"
+           value={resource.url || ''}
+           onChange={(e) =>
+            updateBootcampResourceItem(index, resourceIndex, 'url', e.target.value)
+           }
+          />
+          <textarea
+           className={textareaClassName}
+           rows={2}
+           placeholder="Description"
+           value={resource.description || ''}
+           onChange={(e) =>
+            updateBootcampResourceItem(index, resourceIndex, 'description', e.target.value)
+           }
+          />
+          <Button
+           variant="ghost"
+           size="small"
+           onClick={() => removeBootcampResourceItem(index, resourceIndex)}
+           disabled={(resourceGroup.resources || []).length <= 1}
+          >
+           <FiTrash2 size={14} />
+           Remove download
+          </Button>
+         </div>
+        ))}
+
+        <div className={contentActionsClassName}>
+         <Button variant="secondary" size="small" onClick={() => addBootcampResourceItem(index)}>
+          <FiPlus size={14} />
+          Add download
+         </Button>
+         <Button
+          variant="ghost"
+          size="small"
+          onClick={() => removeBootcampResource(index)}
+          disabled={bootcampResources.length <= 1}
+         >
+          <FiTrash2 size={14} />
+          Remove group
+         </Button>
+        </div>
+       </div>
+      ))}
+
+      <Button variant="secondary" size="small" onClick={addBootcampResource}>
+       <FiPlus size={14} />
+       Add Resource Group
+      </Button>
+     </div>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">ZeroDay Market Products</h2>
+      <p className="text-sm text-text-secondary">Manage book listings shown in ZeroDay Market and the public catalog.</p>
+     </div>
+     <div className={contentPostsClassName}>
+      {cpProducts.map((product, index) => (
+       <div className={contentPostClassName} key={`cp-product-${product.id || index}`}>
+        <div className={statsFormClassName}>
+         <label className={labelClassName}>
+          Title
+          <input
+           className={inputClassName}
+           placeholder="Book title"
+           value={product.title}
+           onChange={(e) => updateCpProductField(index, 'title', e.target.value)}
+          />
+         </label>
+         <label className={labelClassName}>
+          CP Price
+          <input
+           className={inputClassName}
+           type="number"
+           min="0"
+           value={product.cpPrice}
+           onChange={(e) => updateCpProductField(index, 'cpPrice', Number(e.target.value))}
+          />
+         </label>
+         <label className={labelClassName}>
+          Sort Order
+          <input
+           className={inputClassName}
+           type="number"
+           min="0"
+           value={product.sortOrder}
+           onChange={(e) => updateCpProductField(index, 'sortOrder', Number(e.target.value))}
+          />
+         </label>
+         <label className="inline-flex items-center gap-2 text-sm text-text-secondary">
+          <input
+           type="checkbox"
+           checked={product.isActive !== false}
+           onChange={(e) => updateCpProductField(index, 'isActive', e.target.checked)}
+          />
+          Active
+         </label>
+        </div>
+        <input
+         className={inputClassName}
+         placeholder="Cover image URL"
+         value={product.coverUrl}
+         onChange={(e) => updateCpProductField(index, 'coverUrl', e.target.value)}
+        />
+        <input
+         className={inputClassName}
+         placeholder="Product URL (optional)"
+         value={product.productUrl}
+         onChange={(e) => updateCpProductField(index, 'productUrl', e.target.value)}
+        />
+        <textarea
+         className={textareaClassName}
+         rows={2}
+         placeholder="Short description"
+         value={product.description}
+         onChange={(e) => updateCpProductField(index, 'description', e.target.value)}
+        />
+        <Button
+         variant="ghost"
+         size="small"
+         onClick={() => removeCpProduct(index)}
+         disabled={cpProducts.length <= 1}
+        >
+         <FiTrash2 size={14} />
+         Remove product
+        </Button>
+       </div>
+      ))}
+      <Button variant="secondary" size="small" onClick={addCpProduct}>
+       <FiPlus size={14} />
+       Add Product
+      </Button>
+     </div>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Bootcamp Meeting Broadcast</h2>
+      <p className="text-sm text-text-secondary">Paste a Google Meet link and notify enrolled bootcamp students instantly.</p>
+     </div>
+     <div className={statsFormClassName}>
+      <label className={labelClassName}>
+       Google Meet URL
+       <input
+        className={inputClassName}
+        value={meetingForm.meetUrl}
+        onChange={(e) => setMeetingForm((prev) => ({ ...prev, meetUrl: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       Message
+       <input
+        className={inputClassName}
+        value={meetingForm.message}
+        onChange={(e) => setMeetingForm((prev) => ({ ...prev, message: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       Audience
+       <select className={inputClassName} value={meetingForm.audience} disabled>
+        <option value="enrolled">Enrolled students only</option>
+       </select>
+      </label>
+     </div>
+     <Button variant="primary" size="small" onClick={handlePublishMeeting}>
+      <FiVideo size={14} />
+      Publish Meeting Alert
+     </Button>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Targeted Notifications</h2>
+      <p className="text-sm text-text-secondary">Send role-targeted in-app notifications.</p>
+     </div>
+     <div className={statsFormClassName}>
+      <label className={labelClassName}>
+       Title
+       <input
+        className={inputClassName}
+        value={notificationForm.title}
+        onChange={(e) => setNotificationForm((prev) => ({ ...prev, title: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       Message
+       <input
+        className={inputClassName}
+        value={notificationForm.message}
+        onChange={(e) =>
+         setNotificationForm((prev) => ({ ...prev, message: e.target.value }))
+        }
+       />
+      </label>
+      <label className={labelClassName}>
+       Audience
+       <select
+        className={inputClassName}
+        value={notificationForm.audience}
+        onChange={(e) =>
+         setNotificationForm((prev) => ({ ...prev, audience: e.target.value }))
+        }
+       >
+        <option value="all">All users</option>
+        <option value="students">Students</option>
+        <option value="organizers">Organizers</option>
+       </select>
+      </label>
+     </div>
+     <Button variant="secondary" size="small" onClick={handleSendNotification}>
+      <FiSend size={14} />
+      Send Notification
+     </Button>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Blog Posts</h2>
+      <p className="text-sm text-text-secondary">Public blog cards shown on the Blog page.</p>
+     </div>
+     <div className={contentPostsClassName}>
+      {posts.map((post, index) => (
+       <div className={contentPostClassName} key={`post-${index}`}>
+        <input
+         className={inputClassName}
+         placeholder="Title"
+         value={post.title}
+         onChange={(e) => updatePost(index, 'title', e.target.value)}
+        />
+        <input
+         className={inputClassName}
+         placeholder="Date (e.g., Jan 14, 2026)"
+         value={post.date}
+         onChange={(e) => updatePost(index, 'date', e.target.value)}
+        />
+        <textarea
+         className={textareaClassName}
+         rows={3}
+         placeholder="Summary"
+         value={post.summary}
+         onChange={(e) => updatePost(index, 'summary', e.target.value)}
+        />
+        <Button
+         variant="ghost"
+         size="small"
+         onClick={() => removePost(index)}
+         disabled={posts.length <= 1}
+        >
+         <FiTrash2 size={14} />
+         Remove
+        </Button>
+       </div>
+      ))}
+      <Button variant="secondary" size="small" onClick={addPost}>
+       <FiPlus size={14} />
+       Add Post
+      </Button>
+     </div>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Team Section</h2>
+      <p className="text-sm text-text-secondary">Manage team hero and each member card, including social links.</p>
+     </div>
+
+     <div className={statsFormClassName}>
+      <label className={labelClassName}>
+       Team Kicker
+       <input
+        className={inputClassName}
+        value={team.hero?.kicker || ''}
+        onChange={(e) => updateTeamHero('kicker', e.target.value)}
+       />
+      </label>
+      <label className={labelClassName}>
+       Team Title
+       <input
+        className={inputClassName}
+        value={team.hero?.title || ''}
+        onChange={(e) => updateTeamHero('title', e.target.value)}
+       />
+      </label>
+      <label className={labelClassName}>
+       Team Subtitle
+       <input
+        className={inputClassName}
+        value={team.hero?.subtitle || ''}
+        onChange={(e) => updateTeamHero('subtitle', e.target.value)}
+       />
+      </label>
+      <label className={labelClassName}>
+       Team Button Text
+       <input
+        className={inputClassName}
+        value={team.hero?.button || ''}
+        onChange={(e) => updateTeamHero('button', e.target.value)}
+       />
+      </label>
+      <label className={labelClassName}>
+       Team Button Route
+       <input
+        className={inputClassName}
+        value={team.hero?.route || ''}
+        onChange={(e) => updateTeamHero('route', e.target.value)}
+       />
+      </label>
+      <label className={labelClassName}>
+       Leadership Title
+       <input
+        className={inputClassName}
+        value={team.leadership?.title || ''}
+        onChange={(e) => updateTeamLeadership('title', e.target.value)}
+       />
+      </label>
+      <label className={labelClassName}>
+       Leadership Subtitle
+       <input
+        className={inputClassName}
+        value={team.leadership?.subtitle || ''}
+        onChange={(e) => updateTeamLeadership('subtitle', e.target.value)}
+       />
+      </label>
+     </div>
+
+     <div className={`${contentPostsClassName} mt-4`}>
+      {ensureArray(team.leadership?.members).map((member, memberIndex) => (
+       <div className={contentPostClassName} key={`team-member-${memberIndex}`}>
+        <input
+         className={inputClassName}
+         placeholder="Member name"
+         value={member.name || ''}
+         onChange={(e) => updateTeamMember(memberIndex, 'name', e.target.value)}
+        />
+        <input
+         className={inputClassName}
+         placeholder="Role"
+         value={member.role || ''}
+         onChange={(e) => updateTeamMember(memberIndex, 'role', e.target.value)}
+        />
+        <input
+         className={inputClassName}
+         placeholder="Image path (e.g. /team-images/name.jpg)"
+         value={member.image || ''}
+         onChange={(e) => updateTeamMember(memberIndex, 'image', e.target.value)}
+        />
+        <input
+         className={inputClassName}
+         placeholder="Icon (FiCrosshair, FiCpu, FiTarget...)"
+         value={member.icon || ''}
+         onChange={(e) => updateTeamMember(memberIndex, 'icon', e.target.value)}
+        />
+        <textarea
+         className={textareaClassName}
+         rows={2}
+         placeholder="Focus"
+         value={member.focus || ''}
+         onChange={(e) => updateTeamMember(memberIndex, 'focus', e.target.value)}
+        />
+
+        {ensureArray(member.socials).map((social, socialIndex) => (
+         <div key={`team-member-${memberIndex}-social-${socialIndex}`} className={statsFormClassName}>
+          <input
+           className={inputClassName}
+           placeholder="Platform (LinkedIn, GitHub, X...)"
+           value={social.platform || ''}
+           onChange={(e) =>
+            updateTeamMemberSocial(memberIndex, socialIndex, 'platform', e.target.value)
+           }
+          />
+          <input
+           className={inputClassName}
+           placeholder="Profile URL"
+           value={social.url || ''}
+           onChange={(e) =>
+            updateTeamMemberSocial(memberIndex, socialIndex, 'url', e.target.value)
+           }
+          />
+          <Button
+           variant="ghost"
+           size="small"
+           onClick={() => removeTeamMemberSocial(memberIndex, socialIndex)}
+          >
+           <FiTrash2 size={14} />
+           Remove Social
+          </Button>
+         </div>
+        ))}
+
+        <Button variant="ghost" size="small" onClick={() => addTeamMemberSocial(memberIndex)}>
+         <FiPlus size={14} />
+         Add Social
+        </Button>
+
+        <Button
+         variant="ghost"
+         size="small"
+         onClick={() => removeTeamMember(memberIndex)}
+         disabled={ensureArray(team.leadership?.members).length <= 1}
+        >
+         <FiTrash2 size={14} />
+         Remove Member
+        </Button>
+       </div>
+      ))}
+
+      <Button variant="secondary" size="small" onClick={addTeamMember}>
+       <FiPlus size={14} />
+       Add Team Member
+      </Button>
+     </div>
+    </Card>
+
+    <Card className={cardClassName} padding="medium" shadow="none">
+     <div className="mb-4 flex flex-col gap-1.5">
+      <h2 className="text-base font-semibold text-text-primary">Terms & Conditions</h2>
+      <p className="text-sm text-text-secondary">Update the public terms page content.</p>
+     </div>
+     <div className={statsFormClassName}>
+      <label className={labelClassName}>
+       Effective Date
+       <input
+        className={inputClassName}
+        value={terms.effectiveDate}
+        onChange={(e) => setTerms((prev) => ({ ...prev, effectiveDate: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       Last Updated
+       <input
+        className={inputClassName}
+        value={terms.lastUpdated}
+        onChange={(e) => setTerms((prev) => ({ ...prev, lastUpdated: e.target.value }))}
+       />
+      </label>
+      <label className={labelClassName}>
+       Jurisdiction
+       <input
+        className={inputClassName}
+        value={terms.jurisdiction}
+        onChange={(e) => setTerms((prev) => ({ ...prev, jurisdiction: e.target.value }))}
+       />
+      </label>
+     </div>
+
+     <div className={`${contentPostsClassName} mt-4`}>
+      {terms.sections.map((section, index) => (
+       <div className={contentPostClassName} key={`terms-section-${index}`}>
+        <input
+         className={inputClassName}
+         placeholder="Section title"
+         value={section.title}
+         onChange={(e) => updateTermsSection(index, 'title', e.target.value)}
+        />
+        <textarea
+         className={textareaClassName}
+         rows={3}
+         placeholder="Section body"
+         value={section.body}
+         onChange={(e) => updateTermsSection(index, 'body', e.target.value)}
+        />
+        <textarea
+         className={textareaClassName}
+         rows={3}
+         placeholder="Bullets (one per line)"
+         value={(section.bullets || []).join('\n')}
+         onChange={(e) =>
+          updateTermsSection(
+           index,
+           'bullets',
+           e.target.value
+            .split('\n')
+            .map((item) => item.trim())
+            .filter(Boolean)
+          )
+         }
+        />
+        <Button
+         variant="ghost"
+         size="small"
+         onClick={() => removeTermsSection(index)}
+         disabled={terms.sections.length <= 1}
+        >
+         <FiTrash2 size={14} />
+         Remove
+        </Button>
+       </div>
+      ))}
+      <Button variant="secondary" size="small" onClick={addTermsSection}>
+       <FiPlus size={14} />
+       Add Section
+      </Button>
+     </div>
+    </Card>
+
+    <div className="flex justify-end">
+     <Button variant="primary" size="small" onClick={handleSave} disabled={saving}>
+      <FiSave size={14} />
+      {saving ? 'Saving...' : 'Save Content'}
+     </Button>
+    </div>
+   </div>
+  </div>
+ );
 };
 
 export default AdminContent;

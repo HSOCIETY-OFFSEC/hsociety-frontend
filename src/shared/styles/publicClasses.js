@@ -19,7 +19,7 @@ export const publicHeroActions =
   'flex flex-wrap gap-3 max-sm:flex-col max-sm:items-stretch';
 
 export const publicHeroPanel =
-  'relative rounded-lg border border-border bg-[color-mix(in_srgb,var(--bg-secondary)_88%,transparent)] p-7 shadow-sm';
+  'relative card-plain p-7';
 
 export const publicHeroPanelImage =
   'block max-w-full drop-shadow-[0_18px_24px_color-mix(in_srgb,var(--primary-color)_18%,transparent)]';
@@ -40,7 +40,7 @@ export const publicCardGrid =
   'grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))] max-md:gap-4 max-md:[grid-template-columns:1fr] lg:gap-7 lg:[grid-template-columns:repeat(auto-fit,minmax(280px,1fr))] xl:gap-8 xl:[grid-template-columns:repeat(auto-fit,minmax(320px,1fr))]';
 
 export const publicCard =
-  "relative flex min-w-0 flex-col gap-3 overflow-hidden rounded-lg border border-border bg-bg-secondary p-6 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--primary-color)_35%,var(--border-color))] hover:shadow-md before:block before:content-[''] before:w-[calc(100%+3rem)] before:mx-[-1.5rem] before:mt-[-1.5rem] before:mb-4 before:aspect-[16/9] before:bg-[image:linear-gradient(to_bottom,transparent_48%,var(--bg-secondary)),var(--public-card-media)] before:bg-cover before:bg-center before:rounded-t-[calc(var(--radius-lg)-1px)] before:border-b before:border-border max-md:p-5 max-md:gap-2 max-md:before:w-[calc(100%+2.5rem)] max-md:before:mx-[-1.25rem] max-md:before:mt-[-1.1rem] max-md:before:mb-3 max-md:before:aspect-[2.2/1]";
+  'relative card-media card-plain flex min-w-0 flex-col gap-3 p-6 transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-1 hover:border-[color-mix(in_srgb,var(--primary-color)_35%,var(--border-color))] hover:shadow-md max-md:p-5 max-md:gap-2';
 
 export const publicCardSkeleton =
   'before:bg-none before:bg-[color-mix(in_srgb,var(--bg-secondary)_92%,var(--border-color))]';
@@ -68,10 +68,10 @@ export const publicCtaInner =
   'grid items-center gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] max-md:grid-cols-1';
 
 export const publicCtaCard =
-  'grid gap-3 rounded-lg border border-border bg-bg-secondary p-7';
+  'card-cta grid gap-3 p-7';
 
 export const publicSurface =
-  'relative rounded-lg border border-border bg-bg-secondary p-6';
+  'relative card-plain p-6';
 
 export const publicBadge =
   'inline-flex items-center gap-2 rounded-full border border-border bg-[color-mix(in_srgb,var(--bg-secondary)_85%,transparent)] px-2.5 py-1 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary';

@@ -180,7 +180,6 @@ const Feedback = () => {
             <p className={publicHeroDesc}>{feedbackContent.header.subtitle}</p>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={`${publicBadge} ${publicBadgePulse}`}>Feedback live</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -490,7 +489,6 @@ const Feedback = () => {
             <p className="section-subtitle">Our team reviews feedback and ships fixes fast.</p>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className="text-[1.05rem] font-semibold text-text-primary">Prefer email?</h3>
             <p className="text-[0.98rem] leading-relaxed text-text-secondary">
               Reach out via the contact page for direct support.

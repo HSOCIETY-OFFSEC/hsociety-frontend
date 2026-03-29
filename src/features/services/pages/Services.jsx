@@ -53,7 +53,6 @@ import {
   publicListItem,
   publicPage,
   publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -128,14 +127,8 @@ const Services = () => {
                 <FiArrowUpRight size={14} />
               </Button>
             </div>
-            <div className={publicPillRow}>
-              {heroTrust.map((item) => (
-                <span key={item} className={publicPill}>{item}</span>
-              ))}
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={`${publicBadge} ${publicBadgePulse}`}>Engagements / Open</p>
             <h3 className={publicCardTitle}>Why teams choose HSOCIETY OFFSEC</h3>
             <div className={publicList}>
@@ -186,7 +179,6 @@ const Services = () => {
                   }
                 }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>
                     {service.icon && <service.icon size={14} />}
@@ -245,7 +237,6 @@ const Services = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Security + training under one roof.</h3>
             <p className={publicCardDesc}>
               Move from assessment to remediation to upskilling without switching vendors.

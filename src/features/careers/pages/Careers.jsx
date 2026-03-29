@@ -33,8 +33,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -85,20 +83,8 @@ const Careers = () => {
                 <FiArrowUpRight size={14} />
               </Button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiClock size={12} />
-                Hiring paused
-              </span>
-              <span className={publicPill}>
-                <FiUsers size={12} />
-                Community first
-              </span>
-              <span className={publicPill}>Reopening 2026</span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Status</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -144,7 +130,6 @@ const Careers = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>Status</span>
                 </div>
@@ -186,7 +171,6 @@ const Careers = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Roles include analysts, builders, mentors.</h3>
             <p className={publicCardDesc}>We hire operators with real-world engagement experience.</p>
           </div>

@@ -27,7 +27,6 @@ const ServiceCardSlide = ({ service, index, offset, slideRef, total }) => {
       aria-label={`Service ${index + 1} of ${total}: ${service.title}`}
     >
       <article data-service-card className="group relative flex min-h-full flex-col overflow-hidden rounded-md border border-border bg-bg-secondary transition-all duration-200">
-        <div className="hs-signature" aria-hidden="true" />
         <div className="relative w-full overflow-hidden aspect-video max-md:aspect-[2.2/1] after:absolute after:inset-0 after:bg-[linear-gradient(to_bottom,transparent_50%,var(--bg-secondary))] after:opacity-60 after:transition-opacity after:content-['']">
           <ImageWithLoader
             src={service.image}

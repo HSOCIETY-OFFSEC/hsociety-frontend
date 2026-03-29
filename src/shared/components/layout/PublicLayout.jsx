@@ -22,7 +22,7 @@ const PublicLayout = () => {
   return (
     <div className="landing-layout relative flex min-h-screen flex-col">
       <AnnouncementBanner />
-      <Navbar sticky={true} logoSrc="/logo-nav-banner.png" transparentOnTop={true} />
+      <Navbar sticky={true} logoSrc="/logo-nav-banner.png" transparentOnTop={false} />
       <main
         className="landing-main flex w-full flex-1 flex-col"
         style={{ paddingTop: 'calc(var(--navbar-height, 64px) + var(--ann-banner-height, 0px) + 0.5rem)' }}

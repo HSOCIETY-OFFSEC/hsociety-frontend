@@ -18,7 +18,7 @@ export const profileRootStyle = {
 export const profileLayout = 'grid gap-10 max-md:gap-6';
 
 export const profileSidebar =
-  'relative flex flex-col gap-5 rounded-lg border border-[color:var(--pp-border)] bg-[var(--pp-card)] p-8 max-md:p-6';
+  'relative flex flex-col gap-5 p-2';
 
 export const profileAvatarWrap = 'w-full';
 
@@ -55,7 +55,7 @@ export const profileBadgeTitle =
   'text-[0.72rem] uppercase tracking-[0.08em] text-[color:var(--pp-muted)]';
 
 export const profileStatsCard =
-  'relative flex flex-col gap-3 rounded-md border border-[color:var(--pp-border)] bg-[var(--pp-card)] p-4';
+  'relative flex flex-col gap-3 p-2';
 
 export const profileStatRow = 'flex items-center gap-2.5';
 
@@ -74,7 +74,7 @@ export const profileStatFi = 'w-8 text-center text-[color:var(--pp-muted)]';
 export const profileMain = 'flex min-w-0 flex-col gap-5';
 
 export const profilePanel =
-  'relative rounded-lg border border-[color:var(--pp-border)] bg-[var(--pp-card)] p-6';
+  'relative py-4';
 
 export const profileSectionTitle =
   'mb-4 text-sm font-semibold text-text-primary';

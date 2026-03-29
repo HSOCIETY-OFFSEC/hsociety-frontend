@@ -86,7 +86,6 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
   );
 
   const handleLogout = async () => { await logout(); };
-  const [footerInView, setFooterInView] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
@@ -103,31 +102,12 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
 
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
-    const shouldShowDock = viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && !footerInView;
+    const shouldShowDock = viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen;
     document.body.classList.toggle('has-auth-dock', shouldShowDock);
     return () => {
       document.body.classList.remove('has-auth-dock');
     };
-  }, [viewportMode, isAuthenticated, mobileMenuOpen, footerInView]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return undefined;
-    const footer = document.getElementById('footer');
-    if (!footer || typeof IntersectionObserver === 'undefined') return undefined;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const visible = Boolean(entry.isIntersecting);
-        setFooterInView(visible);
-        document.body.classList.toggle('footer-in-view', visible);
-      },
-      { threshold: 0.2 }
-    );
-    observer.observe(footer);
-    return () => {
-      observer.disconnect();
-      document.body.classList.remove('footer-in-view');
-    };
-  }, [location.pathname]);
+  }, [viewportMode, isAuthenticated, mobileMenuOpen]);
 
   useEffect(() => {
     if (!transparentOnTop || typeof window === 'undefined') return undefined;
@@ -241,8 +221,8 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
   const handleEscape = (e, setter) => { if (e.key === 'Escape') setter(false); };
 
   const navBase =
-    'fixed left-0 right-0 z-40 h-16 border-b border-border/20 bg-bg-primary/80 backdrop-blur font-sans transition-colors duration-200';
-  const navTransparent = 'bg-transparent border-transparent';
+    'fixed left-0 right-0 z-40 h-16 border-b border-border bg-bg-secondary font-sans transition-colors duration-200';
+  const navTransparent = '';
   const navInner = 'mx-auto flex h-full w-full max-w-7xl items-center gap-6 px-4';
   const navLinks = 'hidden flex-1 items-center justify-center gap-6 lg:flex';
   const navLinkBase =
@@ -265,6 +245,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
       style={{ top: 'var(--ann-banner-height, 0px)' }}
     >
       <div className={navInner}>
+        
 
         {/* ── Logo ─────────────────────────────────── */}
         <button
@@ -389,7 +370,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
         </div>
 
         {/* ── Right cluster ────────────────────────── */}
-        <div className="flex items-center gap-2 lg:gap-3">
+        <div className="ml-auto flex items-center gap-2 lg:gap-3">
           {/* CP + streak stat chips */}
           {showStats && (
             <div className="hidden items-center gap-2 lg:flex">
@@ -569,7 +550,7 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
             </div>
           )}
 
-          {/* Hamburger (mobile) */}
+          {/* Hamburger (mobile, right) */}
           {viewportMode === 'mobile' && (
             <button
               type="button"
@@ -696,17 +677,6 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
                 <LuLogOut size={16} />
                 <span>Sign out</span>
               </button>
-            ) : !isAuthPage ? (
-              <>
-                <button
-                  type="button"
-                  className="flex w-full items-center gap-2 rounded-xs px-3 py-2 text-sm text-text-secondary hover:bg-bg-tertiary hover:text-text-primary"
-                  onClick={() => { openAuthModal('login'); setMobileMenuOpen(false); }}
-                >
-                  <LuLogIn size={16} />
-                  <span>Login</span>
-                </button>
-              </>
             ) : null}
           </div>
         </div>
@@ -715,13 +685,22 @@ const Navbar = ({ sticky = true, logoSrc = null, transparentOnTop = false }) => 
       {/* ── Mobile action dock (unauthenticated, menu closed) ── */}
       {viewportMode === 'mobile' && !isAuthenticated && !mobileMenuOpen && !isAuthPage && (
         <div className="fixed bottom-4 left-4 right-4 z-30" role="navigation" aria-label="Quick actions">
-          <button
-            type="button"
-            className="w-full rounded-sm border border-border bg-bg-secondary px-4 py-3 text-sm font-semibold text-text-primary shadow-lg"
-            onClick={() => openAuthModal('login')}
-          >
-            Login
-          </button>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              className="w-full rounded-sm border border-border bg-bg-secondary px-4 py-3 text-sm font-semibold text-text-primary shadow-lg"
+              onClick={() => openAuthModal('login')}
+            >
+              Login
+            </button>
+            <button
+              type="button"
+              className="w-full rounded-sm border border-brand/40 bg-brand px-4 py-3 text-sm font-semibold text-ink-white shadow-lg"
+              onClick={() => openAuthModal('register')}
+            >
+              Register
+            </button>
+          </div>
         </div>
       )}
     </nav>

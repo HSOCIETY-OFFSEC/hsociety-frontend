@@ -82,7 +82,6 @@ const ServicesSection = ({ services = [] }) => {
                 style={isVisible ? { animationDelay: `${index * 100}ms` } : undefined}
                 role="listitem"
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className="relative aspect-video w-full overflow-hidden after:absolute after:inset-0 after:bg-[linear-gradient(to_bottom,transparent_50%,var(--bg-secondary))] after:opacity-60 after:transition-opacity after:content-['']">
                   <ImageWithLoader
                     src={service.image}

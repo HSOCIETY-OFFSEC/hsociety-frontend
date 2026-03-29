@@ -30,9 +30,9 @@ const Logo = ({
   const logoSrc = src || '/hsociety-logo-white.png';
   
   const sizeClassMap = {
-    small: 'h-10 w-auto',
-    medium: 'h-14 w-auto',
-    large: 'h-16 w-auto',
+    small: 'h-8 w-auto',
+    medium: 'h-10 w-auto',
+    large: 'h-12 w-auto',
     xlarge: 'h-auto w-full',
   };
   const sizeClass = sizeClassMap[size] || sizeClassMap.medium;
@@ -53,7 +53,7 @@ const Logo = ({
       <img
         src={logoSrc}
         alt="HSOCIETY OFFSEC Logo"
-        className={`block object-contain transition-all duration-200 ${sizeClass} ${
+        className={`block max-h-full object-contain transition-all duration-200 ${sizeClass} ${
           clickable || onClick ? 'cursor-pointer' : 'cursor-default'
         }`.trim()}
         onError={(e) => {

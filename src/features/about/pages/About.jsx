@@ -66,7 +66,6 @@ const About = () => {
             </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Cycle overview</p>
             <div className={publicList}>
               {cycle.phases.slice(0, 4).map((phase) => (
@@ -105,7 +104,6 @@ const About = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>Phase {String(index + 1).padStart(2, '0')}</span>
                 </div>
@@ -135,7 +133,6 @@ const About = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <h3 className={publicCardTitle}>{card.title}</h3>
                 <p className={publicCardDesc}>{card.description}</p>
               </article>
@@ -162,7 +159,6 @@ const About = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(i)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>Principle {i + 1}</span>
                 </div>
@@ -202,7 +198,6 @@ const About = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Stay in the loop</h3>
             <p className={publicCardDesc}>Follow the latest research and community updates.</p>
             <SocialLinks className="flex flex-wrap gap-3" />

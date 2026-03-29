@@ -130,7 +130,6 @@ const Privacy = () => {
             </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Effective dates</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -167,7 +166,6 @@ const Privacy = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <h3 className={publicCardTitle}>{section.title}</h3>
                 {section.body && <p className={publicCardDesc}>{section.body}</p>}
                 {section.bullets && (

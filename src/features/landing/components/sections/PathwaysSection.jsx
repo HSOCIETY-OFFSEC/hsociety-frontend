@@ -77,7 +77,6 @@ const PathwaysSection = ({ pathways }) => {
                 card.isPrimary ? 'border-brand' : ''
               }`}
             >
-              <div className="hs-signature" aria-hidden="true" />
               <div className="relative h-[clamp(140px,22vw,180px)] overflow-hidden rounded-sm border border-border bg-bg-tertiary">
                 <ImageWithLoader
                   src={card.image}

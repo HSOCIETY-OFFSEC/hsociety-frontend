@@ -42,8 +42,6 @@ import {
   publicHeroStats,
   publicHeroTitle,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
   publicButtonBase,
   publicButtonGhost,
@@ -109,7 +107,6 @@ const Pricing = () => {
             </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Billing toggle</p>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-secondary px-3 py-2">
               <span className="text-[0.7rem] uppercase tracking-[0.15em] text-text-tertiary">
@@ -133,14 +130,6 @@ const Pricing = () => {
                 Annual
               </span>
               {annual && <span className="text-[0.7rem] font-semibold text-brand">Save 20%</span>}
-            </div>
-            <div className={publicPillRow}>
-              {TRUST_ITEMS.map((t) => (
-                <span key={t.title} className={publicPill}>
-                  {t.icon}
-                  {t.title}
-                </span>
-              ))}
             </div>
             <div className={publicHeroStats}>
               <span className={publicHeroStat}>
@@ -256,7 +245,6 @@ const Pricing = () => {
           <PublicCardGrid>
             {PRICING_INCLUDED_ITEMS.map((item) => (
               <article key={item} className={publicCard}>
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>Deliverable</span>
                 </div>
@@ -294,7 +282,6 @@ const Pricing = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Engagements open</h3>
             <p className={publicCardDesc}>
               Accepting new clients. SLA-backed delivery and clear remediation paths.

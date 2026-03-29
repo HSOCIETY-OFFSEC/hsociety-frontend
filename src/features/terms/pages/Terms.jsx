@@ -160,7 +160,6 @@ const Terms = () => {
             {error && <p className="mt-4 text-sm text-status-orange">{error}</p>}
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Effective dates</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -198,7 +197,6 @@ const Terms = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <h3 className={publicCardTitle}>{section.title}</h3>
                 {section.body && <p className={publicCardDesc}>{section.body}</p>}
                 {section.bullets && (
@@ -247,7 +245,6 @@ const Terms = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Compliance-first operations.</h3>
             <p className={publicCardDesc}>We operate within ethical and legal standards for all engagements.</p>
           </div>

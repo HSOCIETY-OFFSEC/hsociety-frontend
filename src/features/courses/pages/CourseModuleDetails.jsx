@@ -34,8 +34,6 @@ import {
   publicHeroStats,
   publicHeroTitle,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
   publicButtonBase,
   publicButtonGhost,
@@ -93,19 +91,8 @@ const CourseModuleDetails = () => {
                 Back to program
               </button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiTerminal size={12} />
-                {module.roleTitle}
-              </span>
-              <span className={publicPill}>
-                <FiList size={12} />
-                {module.rooms.length} rooms
-              </span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Phase overview</p>
             <div className="grid gap-3">
               <div className="flex items-start gap-3 text-text-secondary">
@@ -153,7 +140,6 @@ const CourseModuleDetails = () => {
                 className={`${publicCard} cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand`}
                 to={`/courses/hacker-protocol/modules/${module.moduleId}/rooms/${room.roomId}`}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>Room {room.roomId}</span>
                   <span className={publicChip}>Difficulty: {difficulty}</span>
@@ -185,7 +171,6 @@ const CourseModuleDetails = () => {
           <PublicCardGrid>
             {module.rooms.map((room) => (
               <article key={room.roomId} className={publicCard}>
-                <div className="hs-signature" aria-hidden="true" />
                 <h3 className={publicCardTitle}>{room.title}</h3>
                 <p className={publicCardDesc}>{room.overview}</p>
                 {room.bullets?.length > 0 && (
@@ -229,7 +214,6 @@ const CourseModuleDetails = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Operator path unlocked.</h3>
             <p className={publicCardDesc}>Progress through phases and earn identity badges.</p>
           </div>

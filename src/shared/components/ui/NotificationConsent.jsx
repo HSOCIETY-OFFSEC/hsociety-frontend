@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../../core/auth/AuthContext';
 const STORAGE_KEY = 'hsociety_notification_consent';
 
 const NotificationConsent = () => {
   const [visible, setVisible] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     if (typeof window === 'undefined' || !('Notification' in window)) return;
     if (Notification.permission !== 'default') return;
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (!stored) setVisible(true);
-  }, []);
+  }, [isAuthenticated]);
 
   const handleChoice = async (value) => {
     if (typeof window !== 'undefined') {

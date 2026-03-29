@@ -87,7 +87,6 @@ const CaseStudies = () => {
             </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Impact metrics</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -133,7 +132,6 @@ const CaseStudies = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>
                     {study.title}
@@ -180,7 +178,6 @@ const CaseStudies = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Evidence-first reports.</h3>
             <p className={publicCardDesc}>Reproduce-ready findings, prioritized remediation, and operator notes.</p>
           </div>

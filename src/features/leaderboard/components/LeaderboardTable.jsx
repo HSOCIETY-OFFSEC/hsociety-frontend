@@ -28,45 +28,44 @@ const LeaderboardTable = ({
   if (loading) {
     const count = limit || 6;
     return (
-    <div className="flex flex-col gap-2" role="table" aria-label="Leaderboard">
-
-      {/* Header */}
-      <div
-        className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center rounded-md border border-border bg-bg-tertiary px-4 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary max-md:grid-cols-1 max-md:gap-2"
-        role="row"
-      >
-        <div role="columnheader">#</div>
-        <div role="columnheader">Operator</div>
-        <div role="columnheader">Rank</div>
-        <div role="columnheader">CP · Streak</div>
-      </div>
-
-      {Array.from({ length: count }).map((_, i) => (
+      <div className="overflow-hidden rounded-md border border-border bg-bg-secondary" role="table" aria-label="Leaderboard">
+        {/* Header */}
         <div
-          key={`sk-${i}`}
-          className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center gap-3 rounded-md border border-border bg-bg-secondary px-4 py-3 max-md:grid-cols-1"
+          className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center border-b border-border bg-bg-tertiary px-4 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary max-md:grid-cols-1 max-md:gap-2"
           role="row"
         >
-          <div role="cell">
-            <Skeleton className="h-4 w-8 rounded-full" />
-          </div>
-          <div className="flex items-center gap-3" role="cell">
-            <Skeleton variant="circle" className="h-10 w-10" />
-            <div className="flex flex-col gap-1">
-              <Skeleton className="h-3 w-32 rounded-full" />
-              <Skeleton className="h-3 w-20 rounded-full" />
+          <div role="columnheader">#</div>
+          <div role="columnheader">Operator</div>
+          <div role="columnheader">Rank</div>
+          <div role="columnheader">CP · Streak</div>
+        </div>
+
+        {Array.from({ length: count }).map((_, i) => (
+          <div
+            key={`sk-${i}`}
+            className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 max-md:grid-cols-1"
+            role="row"
+          >
+            <div role="cell">
+              <Skeleton className="h-4 w-8 rounded-full" />
+            </div>
+            <div className="flex items-center gap-3" role="cell">
+              <Skeleton variant="circle" className="h-10 w-10" />
+              <div className="flex flex-col gap-1">
+                <Skeleton className="h-3 w-32 rounded-full" />
+                <Skeleton className="h-3 w-20 rounded-full" />
+              </div>
+            </div>
+            <div role="cell">
+              <Skeleton className="h-3 w-24 rounded-full" />
+            </div>
+            <div className="flex flex-wrap items-center gap-2" role="cell">
+              <Skeleton className="h-7 w-20 rounded-full" />
+              <Skeleton className="h-7 w-16 rounded-full" />
             </div>
           </div>
-          <div role="cell">
-            <Skeleton className="h-3 w-24 rounded-full" />
-          </div>
-          <div className="flex flex-wrap items-center gap-2" role="cell">
-            <Skeleton className="h-7 w-20 rounded-full" />
-            <Skeleton className="h-7 w-16 rounded-full" />
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
   );
   }
 
@@ -81,11 +80,10 @@ const LeaderboardTable = ({
 
   /* ── Data rows ── */
   return (
-    <div className="flex flex-col gap-2" role="table" aria-label="Leaderboard">
-
+    <div className="overflow-hidden rounded-md border border-border bg-bg-secondary" role="table" aria-label="Leaderboard">
       {/* Header */}
       <div
-        className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center rounded-md border border-border bg-bg-tertiary px-4 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary max-md:grid-cols-1 max-md:gap-2"
+        className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center border-b border-border bg-bg-tertiary px-4 py-3 text-[0.7rem] uppercase tracking-[0.2em] text-text-tertiary max-md:grid-cols-1 max-md:gap-2"
         role="row"
       >
         <div role="columnheader">#</div>
@@ -102,7 +100,7 @@ const LeaderboardTable = ({
         return (
           <div
             key={entry.id || entry.position}
-            className="grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center gap-3 rounded-md border border-border bg-bg-secondary px-4 py-3 text-sm text-text-secondary transition hover:border-brand/40 hover:bg-bg-tertiary data-[rank=\"1\"]:border-brand data-[rank=\"1\"]:bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] data-[rank=\"2\"]:border-[color-mix(in_srgb,var(--primary-color)_45%,var(--border-color))] data-[rank=\"3\"]:border-[color-mix(in_srgb,var(--primary-color)_35%,var(--border-color))] max-md:grid-cols-1"
+            className='grid grid-cols-[60px_minmax(0,1fr)_140px_180px] items-center gap-3 border-b border-border px-4 py-3 text-sm text-text-secondary transition hover:bg-bg-tertiary data-[rank="1"]:bg-[color-mix(in_srgb,var(--primary-color)_12%,var(--bg-secondary))] data-[rank="1"]:text-text-primary data-[rank="2"]:bg-[color-mix(in_srgb,var(--primary-color)_6%,var(--bg-secondary))] data-[rank="3"]:bg-[color-mix(in_srgb,var(--primary-color)_4%,var(--bg-secondary))] last:border-b-0 max-md:grid-cols-1'
             data-rank={rankAttr}
             role="row"
           >
@@ -140,7 +138,7 @@ const LeaderboardTable = ({
             <div className="flex flex-wrap items-center gap-2" role="cell">
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-tertiary px-3 py-1 text-xs text-text-secondary">
                 <img src={cpIcon} alt="CP" className="h-4 w-4 object-contain" />
-                <span>{entry.totalXp ?? '—'}</span>
+                <span>{entry.totalCp ?? '—'}</span>
               </span>
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-tertiary px-3 py-1 text-xs text-text-secondary">
                 <IoFlameOutline size={14} />

@@ -25,9 +25,9 @@ const MarketplaceSection = () => {
   }, []);
 
   return (
-    <section className="reveal-on-scroll border-t border-border bg-bg-primary py-16" id="marketplace" ref={sectionRef}>
+    <section className="reveal-on-scroll border-t border-border bg-bg-primary py-[clamp(3rem,7vw,5.5rem)]" id="marketplace" ref={sectionRef}>
       <div className="section-container">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <div>
             <p className="section-eyebrow">
               <span className="eyebrow-dot" />
@@ -38,7 +38,7 @@ const MarketplaceSection = () => {
               ZeroDay Market is the student-only shelf for operator books and curated freebies.
               Earn CP points inside HSOCIETY, then redeem them for premium titles.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3 max-sm:w-full max-sm:flex-col">
+            <div className="mt-5 flex flex-wrap gap-3 max-sm:w-full max-sm:flex-col">
               <button
                 type="button"
                 className="rounded-md bg-brand px-6 py-3 font-semibold text-ink-black shadow-[0_12px_18px_color-mix(in_srgb,var(--primary-color)_25%,transparent)] transition-transform duration-200 hover:-translate-y-0.5 max-sm:w-full"
@@ -57,21 +57,21 @@ const MarketplaceSection = () => {
           </div>
 
           <div className="grid gap-4" role="list">
-            <article className="rounded-lg border border-border bg-bg-secondary p-5 shadow-md" role="listitem">
+            <article className="card-plain p-5" role="listitem">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-bg-tertiary text-brand">
                 <FiBookOpen size={16} />
               </span>
               <h3 className="mt-2 text-lg font-semibold text-text-primary">CP Books</h3>
               <p className="text-sm leading-relaxed text-text-secondary">Redeem points for operator-grade playbooks and guides.</p>
             </article>
-            <article className="rounded-lg border border-border bg-bg-secondary p-5 shadow-md" role="listitem">
+            <article className="card-plain p-5" role="listitem">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-bg-tertiary text-brand">
                 <FiDownloadCloud size={16} />
               </span>
               <h3 className="mt-2 text-lg font-semibold text-text-primary">Free Resources</h3>
               <p className="text-sm leading-relaxed text-text-secondary">Download analyst-ready PDFs without spending CP.</p>
             </article>
-            <article className="rounded-lg border border-border bg-bg-secondary p-5 shadow-md" role="listitem">
+            <article className="card-plain p-5" role="listitem">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-border bg-bg-tertiary text-brand">
                 <FiZap size={16} />
               </span>

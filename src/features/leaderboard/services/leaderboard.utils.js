@@ -12,11 +12,12 @@ export const normalizeLeaderboardEntry = (entry = {}) => {
   const name = entry.name || entry.fullName || entry.username || entry.handle || 'Anonymous';
   const handle = entry.name || entry.handle || entry.hackerHandle || entry.username || '';
   const rankTitle = entry.rank || entry.rankTitle || entry.tier || 'Candidate';
-  const totalXp = Number(
-    entry.totalXp ??
-      entry.cpTotal ??
+  const totalCp = Number(
+    entry.cpTotal ??
+      entry.totalCp ??
       entry.cp ??
-      entry.xpSummary?.totalXp ??
+      entry.xpSummary?.totalCp ??
+      entry.totalXp ??
       entry.xp ??
       0
   );
@@ -32,7 +33,7 @@ export const normalizeLeaderboardEntry = (entry = {}) => {
     name,
     handle,
     rankTitle,
-    totalXp,
+    totalCp,
     streakDays,
     avatarUrl: entry.avatarUrl || entry.avatar || entry.profileImage || '',
   };
@@ -42,7 +43,7 @@ export const buildLeaderboard = (entries = []) => {
   const normalized = entries.map(normalizeLeaderboardEntry).filter(Boolean);
   const sorted = normalized
     .sort((a, b) => {
-      if (b.totalXp !== a.totalXp) return b.totalXp - a.totalXp;
+      if (b.totalCp !== a.totalCp) return b.totalCp - a.totalCp;
       if (b.streakDays !== a.streakDays) return b.streakDays - a.streakDays;
       return a.name.localeCompare(b.name);
     })

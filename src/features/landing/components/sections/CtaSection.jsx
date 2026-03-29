@@ -15,7 +15,6 @@ const CtaSection = ({ content }) => {
     <section className="reveal-on-scroll border-t border-border bg-bg-secondary py-16" id="cta">
       <div className="section-container">
         <div className="relative overflow-visible rounded-lg border border-border bg-bg-secondary px-6 py-12 text-center shadow-md">
-          <div className="hs-signature absolute -right-2 -top-2 h-5 w-5" aria-hidden="true" />
           <div className="absolute inset-0 opacity-0" aria-hidden="true" />
           <h2 className="text-[clamp(2.2rem,3.8vw,3.8rem)] text-text-primary">
             {content?.left?.title || 'Ready to join HSOCIETY OFFSEC?'}

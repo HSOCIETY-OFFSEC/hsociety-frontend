@@ -33,8 +33,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
   publicSurface,
 } from '../../../shared/styles/publicClasses';
@@ -73,7 +71,7 @@ const Leaderboard = () => {
 
   const totalEntries = entries.length;
   const topStreak = entries[0]?.streakDays ?? '—';
-  const topCp = entries[0]?.totalXp ?? '—';
+  const topCp = entries[0]?.totalCp ?? '—';
 
   return (
     <div className={`${publicPage} text-text-primary`}>
@@ -107,23 +105,8 @@ const Leaderboard = () => {
                 Learn about CP points
               </Button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiUsers size={12} />
-                {totalEntries} operators
-              </span>
-              <span className={publicPill}>
-                <FiTrendingUp size={12} />
-                Top streak {topStreak}
-              </span>
-              <span className={publicPill}>
-                <FiZap size={12} />
-                Top CP {topCp}
-              </span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={`${publicBadge} ${publicBadgePulse}`}>Leaderboard live</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -163,7 +146,6 @@ const Leaderboard = () => {
             <p className="section-subtitle">Updated with every verified mission and streak.</p>
           </div>
           <div className={publicSurface}>
-            <div className="hs-signature" aria-hidden="true" />
             {loading ? (
               <div className="grid gap-3" aria-label="Loading leaderboard">
                 {skeletonRows.map((_, idx) => (
@@ -212,7 +194,6 @@ const Leaderboard = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Operators only.</h3>
             <p className={publicCardDesc}>
               Train, execute, and earn your position on the board.

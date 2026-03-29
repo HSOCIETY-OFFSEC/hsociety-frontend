@@ -43,8 +43,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -133,18 +131,8 @@ const Blog = () => {
                 <FiArrowUpRight size={14} />
               </Button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiCalendar size={12} />
-                Weekly cadence
-              </span>
-              <span className={publicPill}>Red team tactics</span>
-              <span className={publicPill}>Learning playbooks</span>
-              <span className={publicPill}>{posts.length} posts</span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={`${publicBadge} ${publicBadgePulse}`}>Field Notes / Live</p>
             <h3 className={publicCardTitle}>What you get</h3>
             <div className={publicList}>
@@ -202,7 +190,6 @@ const Blog = () => {
                   }
                 }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   {post.tag && <span className={publicChip}>{post.tag}</span>}
                   <span>{post.date}</span>
@@ -252,7 +239,6 @@ const Blog = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Follow HSOCIETY OFFSEC</h3>
             <p className={publicCardDesc}>
               Signals, research drops, and community wins — in real time.

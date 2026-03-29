@@ -34,8 +34,6 @@ import {
   publicHeroStats,
   publicHeroTitle,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
   publicButtonBase,
   publicButtonGhost,
@@ -92,23 +90,8 @@ const CourseDetails = () => {
                 Back to courses
               </button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiClock size={12} />
-                {HACKER_PROTOCOL_BOOTCAMP.duration}
-              </span>
-              <span className={publicPill}>
-                <FiLayers size={12} />
-                {HACKER_PROTOCOL_BOOTCAMP.phases} phases
-              </span>
-              <span className={publicPill}>
-                <FiShield size={12} />
-                Operator-led training
-              </span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Program highlights</p>
             <div className="grid gap-3">
               {HACKER_PROTOCOL_BOOTCAMP.highlights?.map((item) => (
@@ -144,7 +127,6 @@ const CourseDetails = () => {
           <PublicCardGrid>
             {HACKER_PROTOCOL_PHASES.map((phase, index) => (
               <article key={phase.title} className={publicCard}>
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>Phase {index + 1}</span>
                 </div>
@@ -181,7 +163,6 @@ const CourseDetails = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Bootcamp-ready operators.</h3>
             <p className={publicCardDesc}>Train with real-world context and supervised execution.</p>
           </div>

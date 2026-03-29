@@ -31,8 +31,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -89,16 +87,8 @@ const ServiceDetail = () => {
                 Join training cycle
               </Button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiCheckCircle size={12} />
-                {service.features.length} coverage areas
-              </span>
-              <span className={publicPill}>Active service</span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Coverage summary</p>
             <div className={publicList}>
               {service.features.slice(0, 4).map((item) => (
@@ -138,7 +128,6 @@ const ServiceDetail = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <h3 className={publicCardTitle}>{feature}</h3>
                 <p className={publicCardDesc}>Operator-led coverage with remediation guidance.</p>
               </article>
@@ -173,7 +162,6 @@ const ServiceDetail = () => {
                 }}
                 aria-label={`View service ${prevService.title}`}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <p className={publicCardMeta}>Previous service</p>
                 <h3 className={publicCardTitle}>{prevService.title}</h3>
                 <p className={publicCardDesc}>{prevService.description}</p>
@@ -193,7 +181,6 @@ const ServiceDetail = () => {
                 }}
                 aria-label={`View service ${nextService.title}`}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <p className={publicCardMeta}>Next service</p>
                 <h3 className={publicCardTitle}>{nextService.title}</h3>
                 <p className={publicCardDesc}>{nextService.description}</p>
@@ -212,7 +199,6 @@ const ServiceDetail = () => {
               }}
               aria-label="View all services"
             >
-              <div className="hs-signature" aria-hidden="true" />
               <p className={publicCardMeta}>All services</p>
               <h3 className={publicCardTitle}>Service catalog</h3>
               <p className={publicCardDesc}>Browse all HSOCIETY OFFSEC offerings.</p>
@@ -251,7 +237,6 @@ const ServiceDetail = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Operator-led delivery.</h3>
             <p className={publicCardDesc}>Supervised pentests, clear findings, and remediation mapping.</p>
           </div>

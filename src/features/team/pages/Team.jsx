@@ -47,8 +47,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -158,19 +156,8 @@ const Team = () => {
                 View careers
               </Button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiUsers size={12} />
-                Leadership {leadership.length}
-              </span>
-              <span className={publicPill}>
-                <FiShield size={12} />
-                Teams {teams.length}
-              </span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Operator culture</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -206,7 +193,6 @@ const Team = () => {
           <PublicCardGrid className="tm-leadership-grid">
             {leadership.map((member, i) => (
               <article key={`${member.name}-${i}`} className={`${publicCard} grid gap-4`}>
-                <div className="hs-signature" aria-hidden="true" />
                 <div className="overflow-hidden rounded-md">
                   <ImageWithLoader
                     src={member.image}
@@ -276,7 +262,6 @@ const Team = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(i)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>{group.title}</span>
                 </div>
@@ -318,7 +303,6 @@ const Team = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Operators, educators, builders.</h3>
             <p className={publicCardDesc}>HSOCIETY OFFSEC is built by practitioners with real engagement experience.</p>
           </div>

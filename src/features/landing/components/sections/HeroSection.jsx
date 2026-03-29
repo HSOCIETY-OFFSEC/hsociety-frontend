@@ -136,7 +136,7 @@ const HeroSection = ({ content }) => {
   return (
     <section className="relative flex h-[100svh] min-h-[600px] w-full items-center justify-center overflow-hidden pb-0 pt-8">
       <div
-        className="pointer-events-none absolute -inset-[6%] z-0 bg-[image:var(--hero-brand-image)] bg-cover bg-center bg-no-repeat opacity-90 blur-[5px] saturate-90 brightness-110 hue-rotate-[-6deg]"
+        className="pointer-events-none absolute -inset-[6%] z-0 bg-[image:var(--hero-brand-image)] bg-cover bg-center bg-no-repeat opacity-90 blur-[12px] saturate-90 brightness-110 hue-rotate-[-6deg]"
         aria-hidden="true"
       />
       <div className="pointer-events-none absolute inset-0 z-[2] opacity-0" aria-hidden="true" />
@@ -147,23 +147,14 @@ const HeroSection = ({ content }) => {
         aria-hidden="true"
       />
 
-      {/* ── Logo silhouette watermark ── */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/2 z-[1] flex w-[clamp(320px,55vw,700px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center animate-silhouette-drift motion-reduce:animate-none"
-        aria-hidden="true"
-      >
-        <Logo
-          size="xlarge"
-          className="w-full select-none brightness-0 invert opacity-[0.025]"
-        />
-      </div>
+      
 
       <div className="relative z-[3] flex h-full w-full max-w-[900px] flex-col items-center justify-center gap-5 px-6 py-10 text-center">
 
         {/* TITLE */}
         <div className="flex w-full flex-col items-center gap-1 animate-hs-reveal" style={{ animationDelay: '0.08s' }}>
           {/* Single-line (desktop) */}
-          <h1 className="hidden min-h-[1.1em] text-center text-[clamp(4rem,8.5vw,9rem)] font-extrabold leading-[1.06] tracking-[-0.05em] text-text-primary lg:block">
+          <h1 className="hidden min-h-[1.1em] whitespace-nowrap text-center text-[clamp(4rem,8.5vw,9rem)] font-extrabold leading-[1.06] tracking-[-0.05em] text-text-primary lg:block">
             <span className="inline">
               <ColoredText text={singleText} />
             </span>
@@ -218,8 +209,8 @@ const HeroSection = ({ content }) => {
         </p>
 
         {/* CTAs */}
-        <div className="flex w-full flex-col items-center gap-2 animate-hs-reveal" style={{ animationDelay: '0.36s' }}>
-          <form className="w-full max-w-[820px]" onSubmit={handleEmailSubmit} noValidate>
+        <div className="flex w-full max-w-[560px] flex-col items-center gap-2 animate-hs-reveal" style={{ animationDelay: '0.36s' }}>
+          <form className="w-full" onSubmit={handleEmailSubmit} noValidate>
             <div className="relative w-full">
               <input
                 type="email"

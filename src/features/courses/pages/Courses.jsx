@@ -29,8 +29,6 @@ import {
   publicHeroStats,
   publicHeroTitle,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -69,23 +67,8 @@ const Courses = () => {
                 Talk to us
               </Button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiShield size={12} />
-                Programs 1 active
-              </span>
-              <span className={publicPill}>
-                <FiLayers size={12} />
-                {HACKER_PROTOCOL_BOOTCAMP.phases} phases
-              </span>
-              <span className={publicPill}>
-                <FiClock size={12} />
-                {HACKER_PROTOCOL_BOOTCAMP.duration}
-              </span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Featured program</p>
             <div className="flex items-center gap-4">
               <img
@@ -128,7 +111,6 @@ const Courses = () => {
                 className={`${publicCard} before:bg-contain before:bg-no-repeat before:bg-center`}
                 style={{ '--public-card-media': `url(${phase.emblem})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>Phase {index + 1}</span>
                 </div>
@@ -170,7 +152,6 @@ const Courses = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Built by operators.</h3>
             <p className={publicCardDesc}>Learn with live labs, guided missions, and real-world context.</p>
           </div>

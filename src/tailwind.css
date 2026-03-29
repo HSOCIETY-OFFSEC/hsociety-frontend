@@ -218,27 +218,6 @@
     }
   }
 
-  .hs-signature {
-    position: absolute;
-    top: 0.85rem;
-    right: 0.85rem;
-    width: 18px;
-    height: 18px;
-    pointer-events: none;
-    opacity: 0.95;
-    z-index: 2;
-  }
-
-  .hs-signature::before,
-  .hs-signature::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-radius: 4px;
-    box-shadow: 0 0 0 1px rgba(26, 26, 26, 0.7);
-  }
-
   .app-sidebar-inner::-webkit-scrollbar {
     width: 4px;
   }
@@ -293,35 +272,7 @@
     }
   }
 
-  .hs-signature::before {
-    top: 0;
-    left: 0;
-    background: theme('colors.brand.DEFAULT');
-    opacity: 0.85;
-  }
-
-  .hs-signature::after {
-    bottom: 0;
-    right: 0;
-    background: theme('colors.text.secondary');
-    opacity: 0.55;
-  }
-
-  @media (max-width: 640px) {
-    .hs-signature {
-      top: 0.6rem;
-      right: 0.6rem;
-      width: 16px;
-      height: 16px;
-    }
-
-    .hs-signature::before,
-    .hs-signature::after {
-      width: 10px;
-      height: 10px;
-      border-radius: 3px;
-    }
-  }
+  
 }
 
 @layer components {
@@ -410,5 +361,49 @@
   @media (max-width: 480px) {
     .section-title { font-size: 1.5rem; }
     .section-subtitle { font-size: 0.92rem; }
+  }
+
+  /* Card system: only three card types across public + dashboard */
+  .card-plain {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card-media {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-media::before {
+    content: '';
+    display: block;
+    width: calc(100% + 3rem);
+    margin: -1.5rem -1.5rem 1rem;
+    aspect-ratio: 16 / 9;
+    background-image:
+      linear-gradient(to bottom, transparent 48%, var(--bg-secondary)),
+      var(--card-media, var(--public-card-media));
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .card-cta {
+    background:
+      linear-gradient(145deg,
+        color-mix(in srgb, var(--bg-primary) 82%, transparent),
+        color-mix(in srgb, var(--primary-color) 18%, var(--bg-secondary))
+      );
+    border: 1px solid color-mix(in srgb, var(--primary-color) 28%, var(--border-color));
+  }
+
+  @media (max-width: 768px) {
+    .card-media::before {
+      width: calc(100% + 2.5rem);
+      margin: -1.25rem -1.25rem 0.9rem;
+      aspect-ratio: 2.2 / 1;
+    }
   }
 }

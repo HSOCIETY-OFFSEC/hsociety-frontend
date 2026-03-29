@@ -40,8 +40,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -78,20 +76,8 @@ export default function Contact() {
                 {hero.secondaryAction.label}
               </a>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <span className="mr-2 inline-block h-2 w-2 rounded-full bg-brand" />
-                {hero.availability}
-              </span>
-              {CONTACT_STATS.map((s) => (
-                <span key={s.label} className={publicPill}>
-                  {s.value} {s.label}
-                </span>
-              ))}
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Support signals</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -145,7 +131,6 @@ export default function Contact() {
                   className={`${publicCard} gap-3`}
                   style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
                 >
-                  <div className="hs-signature" aria-hidden="true" />
                   <div className="flex items-center justify-between">
                     <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[color-mix(in_srgb,var(--primary-color)_14%,var(--bg-secondary))] text-brand">
                       <Icon size={18} />
@@ -197,7 +182,6 @@ export default function Contact() {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Follow our channels</h3>
             <p className={publicCardDesc}>
               Stay up to date with product updates, behind-the-scenes stories,

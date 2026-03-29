@@ -31,8 +31,6 @@ import {
   publicHeroStats,
   publicHeroTitle,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
   publicButtonBase,
   publicButtonGhost,
@@ -91,20 +89,8 @@ const CourseRoomDetails = () => {
                 Back to phase
               </button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>
-                <FiTerminal size={12} />
-                {module.roleTitle}
-              </span>
-              <span className={publicPill}>
-                <FiList size={12} />
-                Room {room.roomId}
-              </span>
-              <span className={publicPill}>Est. 2h</span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Room objectives</p>
             <div className="grid gap-3">
               {room.bullets?.slice(0, 3).map((bullet) => (
@@ -140,7 +126,6 @@ const CourseRoomDetails = () => {
           <PublicCardGrid>
             {room.bullets?.map((bullet) => (
               <article key={bullet} className={publicCard}>
-                <div className="hs-signature" aria-hidden="true" />
                 <h3 className={publicCardTitle}>Objective</h3>
                 <p className={publicCardDesc}>{bullet}</p>
               </article>
@@ -174,7 +159,6 @@ const CourseRoomDetails = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Operator training, real missions.</h3>
             <p className={publicCardDesc}>Every room is built with real-world context and skills.</p>
           </div>

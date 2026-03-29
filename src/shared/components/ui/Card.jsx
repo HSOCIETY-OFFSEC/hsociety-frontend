@@ -51,7 +51,7 @@ const Card = ({
   };
 
   const baseClasses = [
-    'relative overflow-hidden rounded-md border border-border bg-card text-text-primary transition-all duration-200 ease-out',
+    'card-plain relative overflow-hidden text-text-primary transition-all duration-200 ease-out',
     paddingMap[padding] || paddingMap.medium,
     shadowMap[shadow] || shadowMap.medium,
     isClickable ? 'cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand' : '',

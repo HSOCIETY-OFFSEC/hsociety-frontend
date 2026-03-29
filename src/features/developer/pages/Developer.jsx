@@ -25,8 +25,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -82,14 +80,8 @@ const Developer = () => {
                 Explore services
               </Button>
             </div>
-            <div className={publicPillRow}>
-              <span className={publicPill}>Open source</span>
-              <span className={publicPill}>Operator tooling</span>
-              <span className={publicPill}>Community build</span>
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Dev focus</p>
             <div className={publicList}>
               <div className={publicListItem}>
@@ -127,7 +119,6 @@ const Developer = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>{item.title}</span>
                 </div>
@@ -157,7 +148,6 @@ const Developer = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>{item.title}</span>
                 </div>
@@ -199,7 +189,6 @@ const Developer = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Open-source alignment.</h3>
             <p className={publicCardDesc}>We ship with transparency, mentorship, and real-world operator feedback.</p>
           </div>

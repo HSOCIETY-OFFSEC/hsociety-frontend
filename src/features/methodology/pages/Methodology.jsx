@@ -27,8 +27,6 @@ import {
   publicList,
   publicListItem,
   publicPage,
-  publicPill,
-  publicPillRow,
   publicSection,
 } from '../../../shared/styles/publicClasses';
 
@@ -77,14 +75,8 @@ const Methodology = () => {
                 Explore services
               </Button>
             </div>
-            <div className={publicPillRow}>
-              {methodologyContent.hero.chips.map((chip) => (
-                <span key={chip} className={publicPill}>{chip}</span>
-              ))}
-            </div>
           </div>
           <div className={publicHeroPanel}>
-            <div className="hs-signature" aria-hidden="true" />
             <p className={publicBadge}>Operator workflow</p>
             <div className={publicList}>
               {phases.slice(0, 4).map((phase) => (
@@ -124,7 +116,6 @@ const Methodology = () => {
                 className={publicCard}
                 style={{ '--public-card-media': `url(${getPublicCardMedia(index)})` }}
               >
-                <div className="hs-signature" aria-hidden="true" />
                 <div className={publicCardMeta}>
                   <span className={publicChip}>{phase.title}</span>
                 </div>
@@ -165,7 +156,6 @@ const Methodology = () => {
             </div>
           </div>
           <div className={publicCtaCard}>
-            <div className="hs-signature" aria-hidden="true" />
             <h3 className={publicCardTitle}>Cycle-based, evidence-first.</h3>
             <p className={publicCardDesc}>Continuous validation, clear remediation paths, and operator-grade output.</p>
           </div>
