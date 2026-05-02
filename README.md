@@ -1,161 +1,141 @@
-# HSOCIETY — Offensive Security Training Platform
+# HSOCIETY OFFSEC — Frontend
 
-A complete React frontend for the HSOCIETY offensive security training platform.
+React 19 + Vite frontend for the HSOCIETY offensive security training platform.
 
-## Tech Stack
-- **React 18** + **Vite**
-- **Tailwind CSS** (with dark/light theme)
-- **React Router v6**
-- **Context API** (Auth, Theme, Toast, Modal)
-- **Axios** (API service layer, mock-ready)
-- **Lucide React** (icons)
+## Stack
 
----
+| Layer | Technology |
+|---|---|
+| Framework | React 19 + Vite 6 |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Routing | React Router v6 |
+| Animation | Motion (Framer Motion) |
+| 3D Globe | Three.js |
+| Icons | Lucide React |
+| HTTP | Axios |
+| State | Context API (Auth, Theme, Toast) |
 
 ## Quick Start
 
 ```bash
 npm install
+cp .env.example .env
+# Set VITE_API_BASE_URL to your backend URL
 npm run dev
 ```
 
-Visit `http://localhost:5173`
+Runs at `http://localhost:5173`.
 
----
+## Environment Variables
 
-## Demo Credentials
+```env
+# Local dev — points to local backend
+VITE_API_BASE_URL=http://localhost:3000/api
 
-| Role    | Email                   | Password   |
-|---------|-------------------------|------------|
-| Student | `student@hsociety.io`   | any value  |
-| Admin   | `admin@hsociety.io`     | any value  |
+# Production — points to deployed backend
+VITE_API_BASE_URL=https://hsociety-backend.onrender.com/api
+```
 
----
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server on port 5173 |
+| `npm run build` | Production build to `dist/` |
+| `npm run lint` | ESLint check |
+| `npm run preview` | Preview production build locally |
 
 ## Project Structure
 
 ```
 src/
-├── assets/
-├── components/
-│   ├── layout/         # Shared layout parts
-│   ├── shared/         # Shared components
-│   └── ui/             # Reusable UI primitives
-│       └── index.jsx   # Button, Card, Input, Badge, StatCard, etc.
-├── context/
-│   ├── AuthContext.jsx     # Auth state (user, login, logout, register)
-│   ├── ModalContext.jsx    # Global modal system
-│   ├── ThemeContext.jsx    # Dark/light theme toggle
-│   └── ToastContext.jsx    # Toast notification system
+├── app/
+│   └── router.tsx              # All routes (public, student, admin)
+├── core/
+│   ├── contexts/               # Auth, Theme, Toast, Modal contexts
+│   ├── hooks/                  # useScrollY, useDebounce, etc.
+│   └── services/
+│       └── api.ts              # Axios instance with interceptors
 ├── features/
 │   ├── auth/
-│   ├── bootcamp/
-│   ├── marketplace/
-│   ├── wallet/
-│   └── admin/
-├── hooks/
-├── layouts/
-│   ├── AdminLayout.jsx     # Admin sidebar + header
-│   ├── PublicLayout.jsx    # Public nav + footer
-│   └── StudentLayout.jsx   # Student sidebar + header
-├── pages/
-│   ├── auth/
-│   │   ├── LoginPage.jsx
-│   │   └── RegisterPage.jsx
+│   │   └── pages/LoginPage.tsx
+│   ├── marketing/
+│   │   ├── components/
+│   │   │   ├── landing/        # HeroSection, EconomySection, etc.
+│   │   │   ├── layout/         # Navbar, Footer
+│   │   │   ├── HackerGlobe.tsx # Three.js globe
+│   │   │   └── HeroCanvas.tsx  # Canvas background
+│   │   ├── content/
+│   │   │   └── siteConfig.ts   # Nav items, brand config
+│   │   └── pages/              # LandingPage, ChainPage, ServicesPage, etc.
 │   ├── student/
-│   │   ├── Dashboard.jsx   # Main student hub
-│   │   ├── Bootcamp.jsx    # Phase learning UI
-│   │   ├── Marketplace.jsx # Zero-Day Market
-│   │   ├── Wallet.jsx      # CP wallet + transactions
-│   │   └── Profile.jsx     # XP, rank, leaderboard
-│   ├── admin/
-│   │   ├── Dashboard.jsx   # Platform overview
-│   │   ├── Users.jsx       # User management + ban
-│   │   ├── Content.jsx     # PDF/content upload
-│   │   └── Marketplace.jsx # Approve/reject listings
-│   └── LandingPage.jsx     # Public marketing page
-├── services/
-│   └── authService.js      # Axios API layer (all endpoints)
-├── utils/
-│   └── mockData.js         # All mock data (phases, items, users)
-├── App.jsx                 # Routes + providers
-├── index.css               # Global styles + CSS vars
-└── main.jsx
+│   │   ├── components/         # EnrollmentModal, BootcampCard, etc.
+│   │   ├── constants/
+│   │   │   └── bootcampConfig.ts # Single source of truth for bootcamp structure
+│   │   ├── pages/              # Dashboard, Bootcamp, Wallet, Profile, etc.
+│   │   └── services/
+│   │       └── chain.service.ts # Chain history proxy calls
+│   └── admin/
+│       ├── components/
+│       │   ├── ChainExplorer.tsx # Admin chain block viewer
+│       │   └── QuizManager.tsx
+│       └── pages/AdminDashboardPage.tsx
+└── shared/
+    ├── components/
+    │   ├── brand/Logo.tsx
+    │   ├── ChainLogo.tsx       # HSOCIETY Chain logo component
+    │   ├── CpLogo.tsx          # Cyber Points logo component
+    │   └── ScrollReveal.tsx
+    ├── layouts/                # PublicLayout, StudentLayout, AdminLayout
+    └── utils/
+        └── resolveImg.ts
+
+public/
+├── images/
+│   ├── bootcamp-room-images/   # Per-phase room card images
+│   ├── cp-images/              # Cyber Points logo + visual
+│   ├── HSOCIETY_LOGO.png       # Main dark logo
+│   ├── HSOCIETY_LOGO_LIGHT.png # Main light logo
+│   ├── HSOCIETY-H-LOGO.webp    # H mark only
+│   ├── HSOCIETY_CHAIN_LOGO.png # Chain logo 512×512
+│   └── HPB-image.png           # Hacker Protocol Bootcamp hero image
+├── HPB-Walkthrough-images/     # Step-by-step walkthrough images
+├── _headers                    # Netlify/Vercel response headers
+├── _redirects                  # Netlify SPA redirect rule
+└── robots.txt
 ```
 
----
+## Routes
 
-## Features Built
+| Path | Access | Page |
+|---|---|---|
+| `/` | Public | Landing page |
+| `/chain` | Public | CP + HSOCIETY Chain explainer |
+| `/cyber-points` | Public | Redirects to `/chain` |
+| `/leaderboard` | Public | Operator leaderboard |
+| `/zero-day-market` | Public | Marketplace preview |
+| `/services` | Public | Services page |
+| `/contact` | Public | Contact form |
+| `/login` | Public | Login / Register |
+| `/dashboard` | Student | Main dashboard |
+| `/bootcamps` | Student | Bootcamp list |
+| `/bootcamps/:id` | Student | Curriculum map |
+| `/bootcamps/:id/phases/:phaseId/rooms/:roomId` | Student | Room walkthrough |
+| `/wallet` | Student | CP wallet + chain ledger |
+| `/profile` | Student | Operator profile |
+| `/mr-robot/dashboard` | Admin | Admin console |
 
-### Public
-- ✅ Landing page (Hero, Flow, Phases, CP System, Ranks, CTA)
-- ✅ Login page
-- ✅ Register page with password strength indicator
+## Deployment
 
-### Student
-- ✅ Dashboard (Phase progress, XP, CP, activity feed)
-- ✅ Bootcamp (Phase map, module list, locked states)
-- ✅ CP Wallet (Balance, earn/spend history)
-- ✅ Marketplace (Filter, search, purchase flow)
-- ✅ Profile (Edit, rank progress, leaderboard)
+Deployed on Vercel. Every push to `master` triggers a production deploy.
 
-### Admin
-- ✅ Overview (Stats, recent users, event log)
-- ✅ User management (Search, filter, ban/unban)
-- ✅ Content upload (Drag & drop, file list)
-- ✅ Marketplace control (Approve/reject pending)
+```bash
+# Build
+npm run build
 
-### System
-- ✅ Dark/Light theme toggle (persistent)
-- ✅ Toast notification system (success, error, info, warning)
-- ✅ Global modal system (confirm dialogs, purchase confirms)
-- ✅ Protected routes by role
-- ✅ Responsive layout (mobile + desktop)
-- ✅ Skeleton loaders
-- ✅ Empty states
-
----
-
-## API Layer
-
-All API calls are in `src/services/authService.js`. Replace mock logic in `AuthContext.jsx` with real API calls:
-
-```js
-// Example: real login
-const login = async (email, password) => {
-  const { data } = await authService.login(email, password)
-  setUser(data.user)
-  setToken(data.token)
-  ...
-}
+# Preview locally
+npm run preview
 ```
 
-Set your backend URL in `.env`:
-```
-VITE_API_URL=https://api.yourdomain.com/v1
-```
-
----
-
-## Theme Colors
-
-| Token       | Value     |
-|-------------|-----------|
-| Accent      | `#1fbf8f` |
-| Success     | `#22c55e` |
-| Warning     | `#f59e0b` |
-| Danger      | `#ef4444` |
-| Phase 1     | `#3A3F8F` |
-| Phase 2     | `#0EA5E9` |
-| Phase 3     | `#22C55E` |
-| Phase 4     | `#B8860B` |
-| Phase 5     | `#6D28D9` |
-
----
-
-## Connecting to Backend
-
-1. Update `VITE_API_URL` in `.env`
-2. Replace mock logic in `AuthContext.jsx` with real API calls
-3. Remove mock data from context, wire to `src/services/authService.js`
-4. All service functions are already defined and typed correctly
+Set `VITE_API_BASE_URL` in the Vercel project environment variables.
